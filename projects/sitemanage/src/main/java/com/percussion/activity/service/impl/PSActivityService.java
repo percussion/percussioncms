@@ -56,8 +56,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.jcr.Value;
@@ -90,7 +90,7 @@ import static org.apache.commons.lang.Validate.notNull;
 @PSSiteManageBean("activityService")
 public class PSActivityService implements IPSActivityService
 {
-    private static Log ms_log = LogFactory.getLog(PSActivityService.class);
+    private static final Logger ms_log = LogManager.getLogger(PSActivityService.class);
     
     IPSSiteManager siteMgr;
     IPSResourceDefinitionGroupDao resDao;

@@ -20,8 +20,8 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -40,7 +40,7 @@ import com.percussion.utils.jsr170.PSProperty;
 
 public class ImageSizeTemplateExpanderTest
 {
-   Log log = LogFactory.getLog(ImageSizeTemplateExpanderTest.class); 
+   private static final Logger log = LogManager.getLogger(ImageSizeTemplateExpanderTest.class);
    
    Mockery context;
    TestableImageSizeTemplateExpander cut;

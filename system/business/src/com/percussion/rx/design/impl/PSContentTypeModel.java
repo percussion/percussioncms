@@ -50,7 +50,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSContentTypeModel extends PSDesignModel
 {
@@ -334,6 +335,6 @@ public class PSContentTypeModel extends PSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSContentTypeModel");
+   private static final Logger ms_logger = LogManager.getLogger("PSContentTypeModel");
 
 }

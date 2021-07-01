@@ -25,8 +25,8 @@
 package com.percussion.soln.linkback.servlet;
 
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
@@ -39,7 +39,7 @@ import java.util.Arrays;
 public class ActionPanelLinkbackController extends GenericLinkbackController {
 
     @SuppressWarnings("unused")
-    private static final Log log = LogFactory.getLog(ActionPanelLinkbackController.class);
+    private static final Logger log = LogManager.getLogger(ActionPanelLinkbackController.class);
 
     private static final String REDIRECT_PATH = "/ui/actionpage/panel";
 

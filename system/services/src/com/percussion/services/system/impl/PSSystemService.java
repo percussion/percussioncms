@@ -66,8 +66,8 @@ import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.workflow.mail.IPSMailMessageContext;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -1267,7 +1267,7 @@ public class PSSystemService
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_logger = LogFactory.getLog(
+   private static final Logger ms_logger = LogManager.getLogger(
       PSSystemService.class);
 
    /**

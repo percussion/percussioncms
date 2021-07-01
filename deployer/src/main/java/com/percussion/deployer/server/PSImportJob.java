@@ -67,8 +67,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -90,7 +90,7 @@ import java.util.ResourceBundle;
  */
 public class PSImportJob extends PSDeployJob
 {
-   private static Log log = LogFactory.getLog(PSImportJob.class);
+   private static final Logger log = LogManager.getLogger(PSImportJob.class);
     
    /**
     * Restores the import descriptor from the supplied document, and validates
@@ -266,7 +266,7 @@ public class PSImportJob extends PSDeployJob
          setStatusMessage("error: " + ex.getLocalizedMessage());
          ctx.setCurrentDependency(null);
          setStatus(-1);
-         LogFactory.getLog(getClass()).error(
+         LogManager.getLogger(getClass()).error(
                "Error installing Deployer " + "package", ex);
          if (storeException)
              runException = ex;
@@ -622,7 +622,7 @@ public class PSImportJob extends PSDeployJob
          PSPkgInfo depPkgInfo = pkgService.findPkgInfo(pkgName);
          if (depPkgInfo == null)
          {
-            LogFactory.getLog(getClass()).info(
+            LogManager.getLogger(getClass()).info(
                   "Skipping package dependency " + "entry for package "
                         + pkgInfo.getPackageDescriptorName()
                         + " with dependent " + pkgName

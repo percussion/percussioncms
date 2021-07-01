@@ -35,8 +35,8 @@ import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -85,7 +85,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
     /**
      * Logger for this class.
      */
-    public static Log log = LogFactory.getLog(PSMetadataQueryService.class);
+    public static final Logger log = LogManager.getLogger(PSMetadataQueryService.class);
 
     /**
      * Property datatype mappings, loaded by Spring.

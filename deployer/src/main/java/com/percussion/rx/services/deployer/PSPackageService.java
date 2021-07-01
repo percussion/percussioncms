@@ -38,7 +38,8 @@ import com.percussion.services.pkginfo.data.PSPkgInfo.PackageAction;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.Consumes;
@@ -500,6 +501,6 @@ public class PSPackageService
   /**
    * The logger for this class.
    */
-  private static Logger ms_logger = Logger.getLogger("PSPackageService");
+  private static final Logger ms_logger = LogManager.getLogger("PSPackageService");
 
 }

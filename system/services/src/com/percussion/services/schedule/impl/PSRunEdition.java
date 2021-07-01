@@ -46,8 +46,8 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
@@ -378,5 +378,5 @@ public class PSRunEdition implements IPSTask, IPSPublishingJobStatusCallback
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSRunEdition.class);
+   private static final Logger ms_log = LogManager.getLogger(PSRunEdition.class);
 }

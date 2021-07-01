@@ -40,8 +40,8 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +65,7 @@ public class PSCloudService implements IPSCloudService {
 	protected IPSPageService pageService;
 	protected PSLicenseService licenseService;
 	protected boolean isLogged;
-	protected static Log log;
+	protected static Logger log;
 	
 	@Autowired
 	public PSCloudService(IPSFolderHelper folderHelper, IPSRenderService renderService, 
@@ -74,7 +74,7 @@ public class PSCloudService implements IPSCloudService {
 	    this.renderService = renderService;
 	    this.pageService = pageService;
 		this.licenseService = licenseService;
-		this.log = LogFactory.getLog(PSCloudService.class);
+		this.log = LogManager.getLogger(PSCloudService.class);
 	}
 
 	@Override

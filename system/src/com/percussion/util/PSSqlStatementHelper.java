@@ -28,8 +28,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a utility class providing methods to execute JDBC SQL statements
@@ -42,7 +42,7 @@ public abstract class PSSqlStatementHelper
    /**
     * Logger for this class
     */
-   static Log ms_log = LogFactory.getLog(PSSqlStatementHelper.class);
+    private static final Logger ms_log = LogManager.getLogger(PSSqlStatementHelper.class);
 
    /**
     * Prepare a statement for execution.

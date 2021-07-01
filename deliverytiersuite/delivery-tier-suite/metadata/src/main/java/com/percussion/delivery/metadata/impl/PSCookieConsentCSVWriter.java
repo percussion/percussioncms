@@ -28,7 +28,8 @@ import com.percussion.delivery.metadata.IPSCookieConsent;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -40,7 +41,7 @@ import org.apache.log4j.Logger;
  */
 public class PSCookieConsentCSVWriter {
     
-    private static final Logger MS_LOG = Logger.getLogger(PSCookieConsentCSVWriter.class.getName());
+    private static final Logger MS_LOG = LogManager.getLogger(PSCookieConsentCSVWriter.class.getName());
 
     private Collection<IPSCookieConsent> entries;
     

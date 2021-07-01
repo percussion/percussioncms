@@ -61,7 +61,7 @@ public class PSEhCacheAccessor implements IPSCacheAccess
    /**
     * Logger for this class
     */
-   private static Logger log = LogManager.getLogger("PSEhCacheAccessor");
+   private static final Logger log = LogManager.getLogger("PSEhCacheAccessor");
    
    /**
     * Implements the notification service endpoint used to invalidate objects

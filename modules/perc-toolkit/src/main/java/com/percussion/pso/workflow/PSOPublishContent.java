@@ -15,8 +15,8 @@
  */
 package com.percussion.pso.workflow;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSWorkFlowContext;
 import com.percussion.extension.IPSWorkflowAction;
@@ -38,7 +38,7 @@ public class PSOPublishContent extends PSDefaultExtension
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOPublishContent.class);
+   private static final Logger log = LogManager.getLogger(PSOPublishContent.class);
 
    
    private static PublishEditionService svc = null; 

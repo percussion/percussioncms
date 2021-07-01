@@ -44,8 +44,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,7 +59,7 @@ import org.xml.sax.SAXException;
  */
 public class PSSiteCatalogServlet extends javax.servlet.http.HttpServlet
 {
-   private static Log ms_log = LogFactory.getLog(PSSiteCatalogServlet.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSiteCatalogServlet.class);
 
    private static final long serialVersionUID = 1L;
 

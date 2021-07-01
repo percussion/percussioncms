@@ -6509,7 +6509,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
     */
    private PSItemDefinition m_folderItemDef = null;
 
-   private static Logger log = LogManager.getLogger(PSServerFolderProcessor.class);
+   private static final Logger log = LogManager.getLogger(PSServerFolderProcessor.class);
    
    /**
     * The beginning part of a folder path to the root.

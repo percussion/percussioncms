@@ -65,7 +65,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class to handle packaging and deploying a Slot definition the new way.
@@ -960,7 +961,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
    /**
     * logger 
     */
-   private Logger m_log = Logger.getLogger(this.getClass());
+   private static final Logger m_log = LogManager.getLogger(PSSlotDefDependencyHandler.class);
 
    
    /**

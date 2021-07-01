@@ -37,7 +37,8 @@ import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
 import com.percussion.services.pkginfo.data.PSPkgInfo.PackageAction;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -230,7 +231,7 @@ public class PSConfigRegistrationMgr implements IPSConfigRegistrationMgr,
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger
+   private static final Logger ms_logger = LogManager
          .getLogger("PSConfigRegistrationMgr");
 
 }

@@ -38,8 +38,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.search.BooleanQuery;
@@ -268,8 +268,7 @@ public class PSSearchEngineImpl extends PSSearchEngine
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = LogFactory
-         .getLog(PSSearchEngineImpl.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSearchEngineImpl.class);
    
    /**
     * Holds the current state of the engine as one of the <code>STATUS_xxx

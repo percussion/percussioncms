@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Document;
 
 /**
@@ -182,7 +182,7 @@ public class PSValidationJob extends PSDeployJob
          // getLocalizedMessage often returns empty string
          setStatusMessage("error: " + ex.toString());
          setStatus(-1);
-         LogFactory.getLog(getClass()).error("Error validating MSM archive", 
+         LogManager.getLogger(getClass()).error("Error validating MSM archive",
             ex);
       }
       finally

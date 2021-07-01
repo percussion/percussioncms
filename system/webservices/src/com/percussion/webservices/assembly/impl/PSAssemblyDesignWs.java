@@ -55,7 +55,8 @@ import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
@@ -1084,5 +1085,5 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
    /**
     * The logger for this class
     */
-   private static Logger ms_logger = Logger.getLogger("PSAssemblyDesignWs");
+   private static final Logger ms_logger = LogManager.getLogger("PSAssemblyDesignWs");
 }

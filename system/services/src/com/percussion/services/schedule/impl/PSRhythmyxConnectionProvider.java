@@ -30,8 +30,8 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.utils.ConnectionProvider;
 
 /**
@@ -44,7 +44,7 @@ import org.quartz.utils.ConnectionProvider;
  */
 public class PSRhythmyxConnectionProvider implements ConnectionProvider
 {
-   private static Log ms_log = LogFactory.getLog(PSRhythmyxConnectionProvider.class);
+   private static final Logger ms_log = LogManager.getLogger(PSRhythmyxConnectionProvider.class);
    
    /**
     * Returns Rhythmyx connection.

@@ -43,8 +43,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a post edition task assumed to be get added to all staging editions to perform certain tasks
@@ -131,5 +131,5 @@ public class PSStagingPostEditionTask implements IPSEditionTask {
 	{
 		this.pubServerService = pubServerService;
 	}
-    protected final Log log = LogFactory.getLog(getClass());	
+    protected final Logger log = LogManager.getLogger(getClass());
 }

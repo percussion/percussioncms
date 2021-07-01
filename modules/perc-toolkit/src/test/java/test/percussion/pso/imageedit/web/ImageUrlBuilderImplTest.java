@@ -11,8 +11,8 @@ package test.percussion.pso.imageedit.web;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ import com.percussion.pso.imageedit.web.impl.ImageUrlBuilderImpl;
 
 public class ImageUrlBuilderImplTest
 {
-   private static Log log = LogFactory.getLog(ImageUrlBuilderImplTest.class);
+   private static final Logger log = LogManager.getLogger(ImageUrlBuilderImplTest.class);
    ImageUrlBuilderImpl cut; 
    @Before
    public void setUp() throws Exception

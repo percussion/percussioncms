@@ -45,7 +45,8 @@ import java.util.Map;
 import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Ignacio Erro
@@ -57,7 +58,7 @@ public class PSAssetCreator
 
     private IPSItemWorkflowService itemWorkflowService;
 
-    private Logger logger = Logger.getLogger("PSAssetCreator");
+    private static final Logger logger = LogManager.getLogger("PSAssetCreator");
         
     /**
      * Mapping of asset type string name to the AssetType.

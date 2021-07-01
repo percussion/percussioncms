@@ -25,8 +25,8 @@ package com.percussion.services.utils.general;
 
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This java bean contains properties to be used by the various service beans
@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSServiceConfigurationBean
 {
-   static Log ms_log = LogFactory.getLog("PSServiceConfigurationBean");
+    private static final Logger ms_log = LogManager.getLogger("PSServiceConfigurationBean");
 
    /**
     * This property is used by the assembly service to decide if a content node

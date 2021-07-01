@@ -625,5 +625,5 @@ public class PSNavXMLUtils
    /**
     * Logger for these classes.
     */
-   private static Logger log = LogManager.getLogger(PSNavXMLUtils.class);
+   private static final Logger log = LogManager.getLogger(PSNavXMLUtils.class);
 }

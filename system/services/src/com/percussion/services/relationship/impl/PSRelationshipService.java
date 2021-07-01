@@ -38,7 +38,8 @@ import com.percussion.services.relationship.IPSRelationshipService;
 import com.percussion.services.relationship.data.PSRelationshipConfigName;
 import com.percussion.services.relationship.data.PSRelationshipData;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -824,7 +825,7 @@ public class PSRelationshipService
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("RelationshipService");
+   private static final Logger ms_logger = LogManager.getLogger("RelationshipService");
 
    /*
    @SuppressWarnings("unchecked")

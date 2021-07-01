@@ -46,7 +46,8 @@ import net.htmlparser.jericho.Tag;
 import net.htmlparser.jericho.Attribute;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -64,7 +65,7 @@ public class PSHtmlUtils
     /**
      * The logger for this class.
      */
-    private static Logger ms_logger = Logger.getLogger("PSHtmlUtils");
+    private static final Logger ms_logger = LogManager.getLogger("PSHtmlUtils");
     
     /**
      * The flag used to convert XML to string.

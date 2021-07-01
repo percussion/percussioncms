@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 public class PSProfanityFilter 
 {
 
-    private static Logger log = LogManager.getLogger(PSProfanityFilter.class);
+    private static final Logger log = LogManager.getLogger(PSProfanityFilter.class);
 
     /*
      * Comma separated word list of profanity words.

@@ -13,11 +13,12 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSExampleEditionTask implements IPSEditionTask {
 	
-	private static Logger logger = Logger.getLogger(PSExampleEditionTask.class);
+	private static final Logger logger = LogManager.getLogger(PSExampleEditionTask.class);
 
 
 	public void init(IPSExtensionDef def, File codeRoot) {

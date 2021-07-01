@@ -22,8 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -47,7 +47,7 @@ import com.percussion.utils.guid.IPSGuid;
 public class PSORevisionCorrectingItemFilterTest
 {
    
-   private static Log log = LogFactory.getLog(PSORevisionCorrectingItemFilterTest.class); 
+   private static final Logger log = LogManager.getLogger(PSORevisionCorrectingItemFilterTest.class);
    
    
    Mockery context; 

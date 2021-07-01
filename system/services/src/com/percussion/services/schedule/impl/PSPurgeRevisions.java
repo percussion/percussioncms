@@ -30,8 +30,8 @@ import com.percussion.services.purge.data.RevisionData;
 import com.percussion.services.schedule.IPSTask;
 import com.percussion.services.schedule.IPSTaskResult;
 import com.percussion.services.schedule.data.PSTaskResult;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Map;
@@ -66,12 +66,12 @@ public class PSPurgeRevisions implements IPSTask
    /**
     * logger for this class.
     */
-   static Log m_log = LogFactory.getLog(PSPurgeRevisions.class);
+    private static final Logger m_log = LogManager.getLogger(PSPurgeRevisions.class);
 
    /**
     * * Revision purge logger
     */
-   static Log purge_logger = LogFactory.getLog("RevisionPurge");
+    private static final Logger purge_logger = LogManager.getLogger("RevisionPurge");
 
    public IPSTaskResult perform(Map<String, String> params)
    {

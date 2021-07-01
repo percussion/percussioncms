@@ -50,7 +50,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is touch parent code that used to be
@@ -277,7 +278,7 @@ public final class PSTouchParentHelper
    /**
     * The singleton instance logger used by this class.
     */
-   final private static Logger ms_logger = Logger
+   private static final  Logger ms_logger = LogManager
          .getLogger(PSTouchParentHelper.class);
 
 

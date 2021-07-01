@@ -30,8 +30,8 @@ import java.io.InputStream;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSTestUtils
 {
@@ -83,5 +83,5 @@ public class PSTestUtils
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSTestUtils.class);
+    private static final Logger log = LogManager.getLogger(PSTestUtils.class);
 }

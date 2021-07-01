@@ -45,7 +45,8 @@ import com.percussion.security.SecureStringUtils;
 import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -488,5 +489,5 @@ public class PSAutotuneCache
    /**
     * Logger.
     */
-   public static final Logger log = Logger.getLogger(PSAutotuneCache.class.getName());
+   public static final Logger log = LogManager.getLogger(PSAutotuneCache.class.getName());
 }

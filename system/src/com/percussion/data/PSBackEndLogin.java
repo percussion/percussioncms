@@ -43,8 +43,8 @@ import java.util.Locale;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -58,7 +58,7 @@ import org.w3c.dom.Document;
  * @since      1.0
  */
 public class PSBackEndLogin implements IPSExecutionStep, IPSConnectionInfo {
-   static Log ms_log = LogFactory.getLog(PSBackEndLogin.class);
+    private static final Logger ms_log = LogManager.getLogger(PSBackEndLogin.class);
    
    /**
     * Create a new backend login that uses a JNDI datasource

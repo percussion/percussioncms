@@ -27,8 +27,8 @@ import com.percussion.extension.*;
 import com.percussion.server.PSServer;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.servlet.PSServletUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.tools.ToolManager;
 
 import java.io.File;
@@ -88,8 +88,7 @@ public class PSServiceJexlEvaluatorBase extends PSJexlEvaluator
     */
    public static final String TOOLS_PREFIX = "$tools";
 
-   protected static Log ms_log = LogFactory
-         .getLog(PSServiceJexlEvaluatorBase.class);
+   protected static Logger ms_log = LogManager.getLogger(PSServiceJexlEvaluatorBase.class);
 
    /**
     * The toolbox manager

@@ -151,7 +151,7 @@ public class PSFolderHelper implements IPSFolderHelper
     private IPSRecycleService recycleService;
     
     
-    private static Logger log = LogManager.getLogger(PSFolderHelper.class);
+    private static final Logger log = LogManager.getLogger(PSFolderHelper.class);
     
     private List<String> reservedPathNames = Arrays.asList(
             "web_resources",

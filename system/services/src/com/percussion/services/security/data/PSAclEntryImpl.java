@@ -31,7 +31,8 @@ import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.*;
 
@@ -59,7 +60,7 @@ import java.util.*;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSAclEntryImpl")
 public class PSAclEntryImpl implements IPSAclEntry
 {
-   private static final Logger log = Logger.getLogger(PSAclEntryImpl.class);
+   private static final Logger log = LogManager.getLogger(PSAclEntryImpl.class);
    
    /**
     * Default ctor. Added to keep the serializers happy. Not recommended but if

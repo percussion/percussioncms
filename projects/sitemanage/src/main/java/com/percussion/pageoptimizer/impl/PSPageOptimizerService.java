@@ -35,7 +35,7 @@ import com.percussion.pageoptimizer.IPSPageOptimizerService;
 import com.percussion.pageoptimizer.data.PSPageOptimizerData;
 import com.percussion.pageoptimizer.data.PSPageOptimizerInfo;
 import com.percussion.share.dao.IPSFolderHelper;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -56,7 +56,7 @@ public class PSPageOptimizerService extends PSCloudService implements IPSPageOpt
             IPSPageService pageService, PSLicenseService licenseService)
     {
     	super(folderHelper, renderService, pageService, licenseService);
-    	this.log = LogFactory.getLog(PSPageOptimizerService.class);
+    	this.log = LogManager.getLogger(PSPageOptimizerService.class);
     }
     
     @Override

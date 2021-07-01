@@ -29,8 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
@@ -278,5 +278,5 @@ public class PSChildRelationshipBuilder extends PSChildRelationshipBase
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   protected Log m_log = LogFactory.getLog(PSChildRelationshipBuilder.class);
+   protected static final Logger m_log = LogManager.getLogger(PSChildRelationshipBuilder.class);
 }

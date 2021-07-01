@@ -61,8 +61,8 @@ import com.percussion.webservices.publishing.IPSPublishingWs;
 import com.percussion.webservices.system.IPSSystemWs;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -846,7 +846,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 
 }
 

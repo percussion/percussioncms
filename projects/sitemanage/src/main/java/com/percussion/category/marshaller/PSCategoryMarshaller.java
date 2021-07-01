@@ -32,8 +32,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryFileLockData;
 import com.percussion.server.PSServer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -55,7 +55,7 @@ import java.util.Map;
 @Lazy
 public class PSCategoryMarshaller {
 	
-	private static Log log = LogFactory.getLog(PSCategoryMarshaller.class);
+	private static final Logger log = LogManager.getLogger(PSCategoryMarshaller.class);
 	private PSCategory category;
 	private static Map<String, PSCategoryFileLockData> lockMap = new HashMap<>();
 

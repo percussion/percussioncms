@@ -34,8 +34,8 @@ import com.percussion.soln.linkback.codec.impl.StringLinkBackTokenImpl;
 import com.percussion.soln.linkback.servlet.ActionPanelLinkbackController;
 import com.percussion.soln.linkback.utils.LinkbackUtils;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -49,7 +49,7 @@ import static org.junit.Assert.*;
 
 public class ActionPanelLinkbackControllerTest {
 
-    private static Log log = LogFactory.getLog(ActionPanelLinkbackControllerTest.class);
+    private static final Logger log = LogManager.getLogger(ActionPanelLinkbackControllerTest.class);
 
     ActionPanelLinkbackController cut;
 

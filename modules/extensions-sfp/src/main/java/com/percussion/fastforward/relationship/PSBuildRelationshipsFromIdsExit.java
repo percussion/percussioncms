@@ -26,8 +26,8 @@ package com.percussion.fastforward.relationship;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import com.percussion.cms.PSCmsException;
@@ -175,7 +175,6 @@ public class PSBuildRelationshipsFromIdsExit extends PSDefaultExtension
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSBuildRelationshipsFromIdsExit.class);
+   private static final Logger ms_log = LogManager.getLogger(PSBuildRelationshipsFromIdsExit.class);
 
 }

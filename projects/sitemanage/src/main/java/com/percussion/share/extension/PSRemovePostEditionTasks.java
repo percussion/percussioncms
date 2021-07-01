@@ -31,7 +31,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
@@ -61,7 +62,7 @@ import com.percussion.utils.guid.IPSGuid;
  */
 public class PSRemovePostEditionTasks implements IPSStartupProcess {
 
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(PSRemovePostEditionTasks.class.getName());
 
     private static final String BASE_DIR = PSServer.getBaseConfigDir();

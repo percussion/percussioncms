@@ -29,7 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -806,7 +807,7 @@ public class PSWorkflowInfo
    /**
     * Logger for use with log4j
     */
-   private Logger m_logger = Logger.getLogger(getClass());
+   private Logger m_logger = LogManager.getLogger(getClass());
 
    /**
     * Constants for XML ELEMENTS

@@ -82,8 +82,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -1012,6 +1012,6 @@ public class PSSiteDataServiceTest extends PSRestTestCase<PSSiteRestClient> {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteDataServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSSiteDataServiceTest.class);
 
 }

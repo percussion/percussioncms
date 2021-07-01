@@ -27,8 +27,8 @@ package com.percussion.rest.deliverytypes;
 import com.percussion.rest.Status;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -51,7 +51,7 @@ public class DeliveryTypesResource {
     @Context
     private UriInfo uriInfo;
 	
-    private Log log = LogFactory.getLog(DeliveryTypesResource.class);
+    private static final Logger log = LogManager.getLogger(DeliveryTypesResource.class);
 
     public DeliveryTypesResource(){}
 

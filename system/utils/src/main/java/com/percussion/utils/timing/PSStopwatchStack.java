@@ -31,8 +31,8 @@ import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
@@ -45,7 +45,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
  */
 public class PSStopwatchStack
 {
-   private static Log ms_logger = LogFactory.getLog(PSStopwatchStack.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSStopwatchStack.class);
 
    /**
     * Holds a reference to the stopwatch stack for the current thread.

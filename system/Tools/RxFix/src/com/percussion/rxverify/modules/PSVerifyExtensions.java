@@ -36,7 +36,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -125,7 +126,7 @@ public class PSVerifyExtensions implements IPSVerify
    @SuppressWarnings("unchecked")
    public void verify(File rxdir, File originalRxDir, PSInstallation installation) throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       // Call generate on the new directory, then compare the differences
       PSInstallation existing = new PSInstallation();
       generate(rxdir, existing);
