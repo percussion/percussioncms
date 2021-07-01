@@ -110,7 +110,7 @@ public class PSDefaultAssemblyLocation implements IPSAssemblyLocation
          location = root + path + contentid + suffix;
          request.printTraceMessage("Location= " + location);
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          StringWriter writer = new StringWriter();
          PrintWriter printer = new PrintWriter(writer, true);
