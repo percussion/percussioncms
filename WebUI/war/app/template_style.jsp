@@ -25,16 +25,16 @@
   --%>
 
 <%
-	String locale= PSRoleUtilities.getUserCurrentLocale();
-	String lang="en";
-	if(locale==null){
-		locale="en-us";
-	}else{
-		if(locale.contains("-"))
-			lang=locale.split("-")[0];
-		else
-			lang=locale;
-	}
+    String locale= PSRoleUtilities.getUserCurrentLocale();
+    String lang="en";
+    if(locale==null){
+        locale="en-us";
+    }else{
+        if(locale.contains("-"))
+            lang=locale.split("-")[0];
+        else
+            lang=locale;
+    }
     String debug = request.getParameter("debug");
     boolean isDebug = "true".equals(debug);
     String debugQueryString = isDebug ? "?debug=true" : "";
@@ -49,11 +49,11 @@
         <div class='perc-template-container'>
             <div id="perc-styleTabs">
                 <ul>
-                    <div id = "perc-dropdown-actions-style"></div>
-                    <div id = "perc-dropdown-view-style"></div>
-                    <li onclick="$(this).find('a').trigger('click');"><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
-                    <li onclick="$(this).find('a').trigger('click');"><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
-                    <li onclick="$(this).find('a').trigger('click');"><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
+                    <div id = "perc-dropdown-actions-style" style="float:left;"></div>
+                    <div id = "perc-dropdown-view-style" style="float:left;"></div>
+                    <li ><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
+                    <li ><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
+                    <li ><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
                     <div style="text-align: right; float : right" class="ui-layout-east">
                         <button id="perc-css-editor-save"   class="btn btn-primary" name="perc_wizard_save"   ><i18n:message key ="perc.ui.button@Save"/></button>
                         <button id="perc-css-editor-cancel" class="btn btn-primary" name="perc_wizard_cancel" ><i18n:message key ="perc.ui.common.label@Cancel"/></button>
@@ -71,8 +71,8 @@
                     <div id="perc-css-editor">
                     </div>
                 </div>
-            </div>  
-        </div>        
+            </div>
+        </div>
     </div>
 </div>
 
