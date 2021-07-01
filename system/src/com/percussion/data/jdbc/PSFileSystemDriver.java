@@ -36,7 +36,7 @@ import java.sql.SQLFeatureNotSupportedException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.logging.log4j.Logger;
+import java.util.logging.Logger;
 
 /**
  * The PSFileSystemDriver class implements the File System driver.
