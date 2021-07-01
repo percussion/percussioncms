@@ -60,7 +60,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 /**
@@ -464,7 +465,7 @@ public class PSPropFindMethod extends PSWebdavMethod
          }
          else
          {
-            Logger logger = Logger.getLogger(getClass());
+            Logger logger = LogManager.getLogger(getClass());
             logger.error("The value of \"mi_valueMap\" for component (contentId, name, cotnentTypeId)=(" 
                   + comp.mi_summary.getName() + ", " 
                   + comp.mi_summary.getContentId() + ", "

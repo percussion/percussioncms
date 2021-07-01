@@ -62,8 +62,8 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.derby.database.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -2123,7 +2123,7 @@ public class PSSitePublishDao
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSitePublishDao.class);
+    private static final Logger log = LogManager.getLogger(PSSitePublishDao.class);
     
     private static final Map<String, String> descriptionTexts = new HashMap<>();
     static{

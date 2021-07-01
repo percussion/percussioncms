@@ -96,7 +96,8 @@ import org.apache.commons.jexl3.parser.ASTVar;
 import org.apache.commons.jexl3.parser.ASTWhileStatement;
 import org.apache.commons.jexl3.parser.ParserVisitor;
 import org.apache.commons.jexl3.parser.SimpleNode;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 
@@ -113,7 +114,7 @@ public abstract class PSBaseJexlParserVisitor extends ParserVisitor
   
 
 
-private static Logger ms_logger = Logger
+private static final Logger ms_logger = LogManager
          .getLogger(PSBaseJexlParserVisitor.class);
 
 

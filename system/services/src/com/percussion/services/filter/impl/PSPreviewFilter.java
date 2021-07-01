@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -126,6 +126,6 @@ public class PSPreviewFilter extends PSBaseFilter
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static final Log ms_log = LogFactory.getLog(PSPreviewFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPreviewFilter.class);
 
 }

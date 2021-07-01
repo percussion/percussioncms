@@ -12,8 +12,8 @@ import java.util.Map;
 
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
@@ -51,7 +51,7 @@ public class FolderTools extends PSJexlUtilBase implements IPSJexlExpression
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(FolderTools.class);
+   private static final Logger log = LogManager.getLogger(FolderTools.class);
    private IPSContentWs contentWs;
    private IPSGuidManager guidManager;
    

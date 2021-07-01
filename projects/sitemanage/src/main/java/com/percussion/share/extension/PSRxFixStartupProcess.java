@@ -42,12 +42,12 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSRxFixStartupProcess implements IPSStartupProcess
 {
-    private static final Log log = LogFactory.getLog(PSRxFixStartupProcess.class);
+    private static final Logger log = LogManager.getLogger(PSRxFixStartupProcess.class);
 
     @Override
     public void doStartupWork(Properties startupProps) throws Exception

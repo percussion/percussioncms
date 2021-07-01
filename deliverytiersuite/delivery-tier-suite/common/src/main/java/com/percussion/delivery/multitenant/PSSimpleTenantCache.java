@@ -31,8 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.ServletRequest;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
 
@@ -59,7 +59,7 @@ public class PSSimpleTenantCache implements IPSTenantCache {
 	  /**
      * Log for this class.
      */
-    private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LogManager.getLogger(PSSimpleTenantCache.class);
     
     private boolean authorizeExpiredTTL;
     private IPSTenantAuthorization auth;

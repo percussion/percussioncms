@@ -52,8 +52,8 @@ import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.PSUiWsLocator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -391,7 +391,7 @@ public class PSTemplateActionMenuHelper {
     private static List<String> ms_removeParamsList = Collections.unmodifiableList(Arrays.asList("targetStyle",
             "pssessionid", "target", "launchesWindow", "refreshHint"));
 
-    private static Log ms_log = LogFactory.getLog(PSTemplateActionMenuHelper.class);
+    private static final Logger ms_log = LogManager.getLogger(PSTemplateActionMenuHelper.class);
 
     private static PSTemplateActionMenuHelper instance;
 

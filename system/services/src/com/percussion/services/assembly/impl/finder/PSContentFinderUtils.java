@@ -48,8 +48,8 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class provides various helper methods for content finders.
@@ -228,5 +228,5 @@ public class PSContentFinderUtils
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSContentFinderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSContentFinderUtils.class);
 }

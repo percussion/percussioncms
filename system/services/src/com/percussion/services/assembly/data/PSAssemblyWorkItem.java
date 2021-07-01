@@ -89,8 +89,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Concrete implementation class for assembly items and results. Allows the
@@ -108,7 +108,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSAssemblyWorkItem.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAssemblyWorkItem.class);
    /**
     * Small result data is stored in memory, but data larger than this size
     * in bytes will be stored in a temp file. Stored stream data is always

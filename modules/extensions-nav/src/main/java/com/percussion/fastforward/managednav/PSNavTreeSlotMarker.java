@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -334,7 +335,7 @@ public class PSNavTreeSlotMarker extends PSDefaultExtension
    /**
     * The logger for this class
     */
-   private static final Logger ms_log = Logger
+   private static final Logger ms_log = LogManager
          .getLogger(PSNavTreeSlotMarker.class);
 
    /**

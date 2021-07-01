@@ -38,8 +38,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -52,6 +52,8 @@ public class PSDatasourceCatalogHandler extends PSCatalogRequestHandler
    implements
       IPSCatalogRequestHandler
 {
+   private static final Logger logger = LogManager.getLogger(PSDatasourceCatalogHandler.class);
+
    /**
     * Default ctor.
     */
@@ -125,7 +127,6 @@ public class PSDatasourceCatalogHandler extends PSCatalogRequestHandler
             catch (Exception e)
             {
                // error occurred loading connection information
-               Log logger = LogFactory.getLog(this.getClass());
                logger.warn("Error occurred loading connection info for: " +
                      dsName, e);
                continue;

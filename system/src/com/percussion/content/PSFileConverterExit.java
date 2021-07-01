@@ -33,8 +33,8 @@ import com.percussion.server.IPSRequestContext;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This extension enables the conversion of data from a number of file formats
@@ -203,5 +203,5 @@ public class PSFileConverterExit extends PSDefaultExtension
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = LogFactory.getLog(PSFileConverterExit.class);
+   private static final Logger ms_log = LogManager.getLogger(PSFileConverterExit.class);
 }

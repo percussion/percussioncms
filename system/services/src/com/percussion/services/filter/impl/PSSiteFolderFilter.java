@@ -45,8 +45,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A item filter that mimics the behavior of authtype 101 in part. This filter
@@ -60,8 +60,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
    /**
     * Site folder filter logger
     */
-   private final static Log ms_log = LogFactory
-         .getLog(PSSiteFolderFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSiteFolderFilter.class);
 
    /** (non-Javadoc)
     * @see com.percussion.services.filter.impl.PSBaseFilter#filter(java.util.List, java.util.Map)

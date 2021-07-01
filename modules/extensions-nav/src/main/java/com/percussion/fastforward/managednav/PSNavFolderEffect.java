@@ -52,7 +52,8 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A relationship effect for managing folders and navons. This effect is
@@ -93,7 +94,6 @@ public class PSNavFolderEffect extends PSNavAbstractEffect implements IPSEffect
          throws PSExtensionException
    {
       super.init(arg0, arg1);
-      m_log = Logger.getLogger(this.getClass());
    }
 
    /**

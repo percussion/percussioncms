@@ -36,8 +36,8 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -327,7 +327,6 @@ public class PSSiteTemplateVisibilitySetter extends PSPropertySetterWithValidati
    /**
     * The logger of the setter.
     */
-   private static Log ms_log = LogFactory
-         .getLog("PSSiteTemplateVisibilitySetter");
+   private static final Logger ms_log = LogManager.getLogger("PSSiteTemplateVisibilitySetter");
 
 }

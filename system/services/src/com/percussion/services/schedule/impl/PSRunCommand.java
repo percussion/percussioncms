@@ -39,8 +39,8 @@ import java.io.File;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is used to execute a native command. The command and its associated
@@ -54,7 +54,7 @@ public class PSRunCommand implements IPSTask
    /**
     * logger for this class.
     */
-   private Log ms_log = LogFactory.getLog(getClass());
+   private static final Logger ms_log = LogManager.getLogger(PSRunCommand.class);
    
    /**
     * Invokes the native command. The returned task result will contain the

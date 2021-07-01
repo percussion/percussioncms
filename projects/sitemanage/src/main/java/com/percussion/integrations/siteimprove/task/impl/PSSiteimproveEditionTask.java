@@ -50,7 +50,8 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A post publish edition task that runs if a siteimprove configuration is found.
@@ -71,7 +72,7 @@ public class PSSiteimproveEditionTask implements IPSEditionTask {
 	private static final String HTTP = "http";
 
 	private static IPSIntegrationProviderService siteimproveService = new PSSiteImproveProviderService();
-	private static Logger logger = Logger.getLogger(PSSiteimproveEditionTask.class);
+	private static final Logger logger = LogManager.getLogger(PSSiteimproveEditionTask.class);
 	private IPSMetadataService metadataService;
 	private IPSPubServerService pubServerService;
 

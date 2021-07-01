@@ -37,8 +37,8 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -62,7 +62,7 @@ public class PSSiteCreationHelper extends PSImportHelper
      * Server logger for the helper (It's a mandatory helper so context log will
      * be erased if an error occurs).
      */
-    public static Log log = LogFactory.getLog(PSSiteCreationHelper.class);
+    public static final Logger log = LogManager.getLogger(PSSiteCreationHelper.class);
     
     private IPSiteDao siteDao;
     

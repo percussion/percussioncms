@@ -30,8 +30,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.assetmanagement.data.PSAssetSummary;
 import com.percussion.assetmanagement.service.IPSAssetService;
@@ -220,7 +220,7 @@ public class PSAssetUploadFolderPathMap
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAssetUploadFolderPathMap.class);
+    private static final Logger log = LogManager.getLogger(PSAssetUploadFolderPathMap.class);
     
     
 }

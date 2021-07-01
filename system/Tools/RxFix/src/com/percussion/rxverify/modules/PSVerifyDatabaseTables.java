@@ -31,7 +31,8 @@ import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableMetaData;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -105,7 +106,7 @@ public class PSVerifyDatabaseTables extends PSVerifyDatabaseBase
    private void checkColumns(File rxdir, PSInstallation installation)
          throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       PSJdbcDbmsDef def = getDbmsDef(rxdir);
       Connection c = null;
       boolean hasErrors = false;

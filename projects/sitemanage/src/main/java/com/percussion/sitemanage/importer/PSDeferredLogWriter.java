@@ -27,8 +27,8 @@ import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
 
 import java.util.concurrent.Executors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Saves log in separate thread, waits for {@link IPSSiteImportLogger#waitForThreads(long)} to return
@@ -39,7 +39,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSDeferredLogWriter implements Runnable
 {
-    private static final Log log = LogFactory.getLog(PSDeferredLogWriter.class);
+    private static final Logger log = LogManager.getLogger(PSDeferredLogWriter.class);
             
     private String siteId;
     private String desc;

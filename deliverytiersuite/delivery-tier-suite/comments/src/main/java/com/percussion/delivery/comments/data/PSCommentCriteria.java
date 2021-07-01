@@ -25,8 +25,8 @@ package com.percussion.delivery.comments.data;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +41,7 @@ import com.percussion.delivery.comments.data.IPSComment.APPROVAL_STATE;
  */
 public class PSCommentCriteria
 {
-	private static Log log = LogFactory.getLog(PSCommentCriteria.class);
+	private static final Logger log = LogManager.getLogger(PSCommentCriteria.class);
 			
    private String sortby;
     private String ascending;

@@ -19,8 +19,8 @@ import static org.junit.Assert.*;
 
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -32,7 +32,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 
 public class PSOActionTest
 {
-   private Log log = LogFactory.getLog(PSOActionTest.class);
+   private static final Logger log = LogManager.getLogger(PSOActionTest.class);
    
    @Before
    public void setUp() throws Exception

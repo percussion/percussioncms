@@ -39,8 +39,8 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.collections.PSMultiValueHashMap;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ import java.util.List;
  */
 public class PSLocalDeployerClient implements IPSPackageInstaller
 {
-    private static final Log log = LogFactory.getLog(PSLocalDeployerClient.class);
+    private static final Logger log = LogManager.getLogger(PSLocalDeployerClient.class);
     
     public PSLocalDeployerClient()
     {

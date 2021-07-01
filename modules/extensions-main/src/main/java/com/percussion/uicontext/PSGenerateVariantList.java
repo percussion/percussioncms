@@ -72,8 +72,8 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -408,7 +408,7 @@ public class PSGenerateVariantList extends PSDefaultExtension implements IPSResu
    private static List<String> ms_removeParamsList = Collections.unmodifiableList(Arrays.asList("targetStyle",
          "pssessionid", "target", "launchesWindow", "refreshHint"));
    
-   private static Log ms_log = LogFactory.getLog(PSGenerateVariantList.class);
+   private static final Logger ms_log = LogManager.getLogger(PSGenerateVariantList.class);
 
    
 }

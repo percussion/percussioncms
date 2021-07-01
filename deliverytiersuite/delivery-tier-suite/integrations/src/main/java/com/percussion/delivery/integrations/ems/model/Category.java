@@ -26,8 +26,8 @@ package com.percussion.delivery.integrations.ems.model;
 
 import com.percussion.delivery.integrations.ems.IPSEMSEventService;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -56,7 +56,7 @@ import java.util.Date;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Category {
 	
-	private static Log log = LogFactory.getLog(Category.class);
+	private static final Logger log = LogManager.getLogger(Category.class);
 	private Integer categoryID;
 	private String categoryDesc;
 	private boolean useCutOff;

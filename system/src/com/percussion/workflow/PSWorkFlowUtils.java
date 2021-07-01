@@ -54,7 +54,8 @@ import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 
 import javax.naming.NamingException;
@@ -2547,6 +2548,6 @@ public class PSWorkFlowUtils
    /**
     * The logger
     */
-   private static final Logger ms_log = Logger.getLogger(PSWorkFlowUtils.class.getName());
+   private static final Logger ms_log = LogManager.getLogger(PSWorkFlowUtils.class.getName());
 }
 

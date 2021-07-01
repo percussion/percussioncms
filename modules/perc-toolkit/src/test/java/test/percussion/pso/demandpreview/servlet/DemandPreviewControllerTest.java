@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.TimeoutException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -32,7 +32,7 @@ import com.percussion.utils.guid.IPSGuid;
 
 public class DemandPreviewControllerTest {
 
-	Log log = LogFactory.getLog(DemandPreviewControllerTest.class); 
+    private static final Logger log = LogManager.getLogger(DemandPreviewControllerTest.class);
 	Mockery context;
 	IPSGuidManager gmgr; 
 	TestableDemandPreviewController cut; 

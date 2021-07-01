@@ -24,6 +24,7 @@
 
 package com.percussion.delivery.utils.spring;
 
+import org.apache.logging.log4j.LogManager;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -38,7 +39,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.net.URI;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Logger;
 
 public class SpringAwareGrizzlyTestContainerFactory implements TestContainerFactory {
 
@@ -51,7 +52,7 @@ public class SpringAwareGrizzlyTestContainerFactory implements TestContainerFact
 
     private static class SpringAwareGrizzlyWebTestContainer implements TestContainer {
 
-        private static final Logger log = Logger.getLogger(SpringAwareGrizzlyWebTestContainer.class.getName());
+        private static final Logger log = LogManager.getLogger(SpringAwareGrizzlyWebTestContainer.class.getName());
         private URI baseUri;
         private HttpServer webServer;
         private Object springTarget;

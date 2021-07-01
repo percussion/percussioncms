@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -45,7 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class PSCookieConsentService implements IPSCookieConsentService {
 
-    private static final Logger MS_LOG = Logger.getLogger(PSCookieConsentService.class.getName());
+    private static final Logger MS_LOG = LogManager.getLogger(PSCookieConsentService.class.getName());
 
     private IPSCookieConsentDao consentDao;
 

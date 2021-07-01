@@ -105,7 +105,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import com.percussion.xml.PSXmlValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -141,7 +142,7 @@ import java.util.Set;
 public class PSDeploymentHandler implements IPSLoadableRequestHandler
 {
 
-   private  static final Logger ms_log = Logger.getLogger(PSDeploymentHandler.class);
+   private  static final Logger ms_log = LogManager.getLogger(PSDeploymentHandler.class);
    
    /**
     * Parameterless ctor used by server to construct this loadable handler.

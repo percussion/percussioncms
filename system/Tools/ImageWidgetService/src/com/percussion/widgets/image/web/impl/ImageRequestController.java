@@ -32,8 +32,8 @@ package com.percussion.widgets.image.web.impl;
       import net.sf.json.JSON;
       import net.sf.json.JSONSerializer;
       import org.apache.commons.lang.StringUtils;
-      import org.apache.commons.logging.Log;
-      import org.apache.commons.logging.LogFactory;
+      import org.apache.logging.log4j.Logger;
+      import org.apache.logging.log4j.LogManager;
       import org.springframework.web.servlet.ModelAndView;
       import org.springframework.web.servlet.mvc.Controller;
       import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -41,7 +41,7 @@ package com.percussion.widgets.image.web.impl;
       public class ImageRequestController extends ParameterizableViewController
         implements Controller
       {
-    	  private static Log log = LogFactory.getLog(ImageRequestController.class);
+    	  private static final Logger log = LogManager.getLogger(ImageRequestController.class);
     	  private String modelObjectName = "results";
     	  private ImageCacheManager imageCacheManager = null;
       

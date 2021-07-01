@@ -31,8 +31,8 @@ import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
@@ -75,7 +75,7 @@ public class PSMetadataDao implements IPSMetadataDao
     /**
      * Logger for this class.
      */
-    private static final Log log = LogFactory.getLog(PSMetadataDao.class);
+    private static final Logger log = LogManager.getLogger(PSMetadataDao.class);
 
 
     private static PSHashCalculator hashCalculator = new PSHashCalculator();

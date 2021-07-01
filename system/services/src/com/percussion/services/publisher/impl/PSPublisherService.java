@@ -326,7 +326,7 @@ public class PSPublisherService
    /**
     * Logger used for publisher service.
     */
-   private static Logger log = LogManager.getLogger(PSPublisherService.class);
+   private static final Logger log = LogManager.getLogger(PSPublisherService.class);
    
    /**
     * These ids are stored by the demand publishing system. These are stored

@@ -33,7 +33,8 @@ import com.percussion.design.objectstore.PSRelationshipPropertyData;
 import com.percussion.services.relationship.data.PSRelationshipData;
 import static com.percussion.util.PSSqlHelper.qualifyTableName;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -66,7 +67,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * The logger for this class.
      */
     @SuppressWarnings("unused")
-    private static Logger ms_logger = Logger.getLogger("RelationshipService");
+    private static final Logger ms_logger = LogManager.getLogger("RelationshipService");
 
     /**
      * A list of field names for PSRelationshipData class.

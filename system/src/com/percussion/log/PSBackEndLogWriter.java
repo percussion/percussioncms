@@ -28,8 +28,8 @@ import java.util.Date;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The PSBackEndLogWriter class implements logging to a back-end data store.
@@ -196,6 +196,6 @@ public class PSBackEndLogWriter implements IPSLogWriter
             
    }
    
-   private static Log ms_log = LogFactory.getLog(PSBackEndLogWriter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSBackEndLogWriter.class);
    
 }

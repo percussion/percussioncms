@@ -44,8 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -66,7 +66,7 @@ public class PSImportThemeHelper extends PSImportHelper
 
     private IPSThemeService themeService;
     
-    private static Log log = LogFactory.getLog(PSImportThemeHelper.class);
+    private static final Logger log = LogManager.getLogger(PSImportThemeHelper.class);
     
     private PSHTMLHeaderImporter headerImporter;
     

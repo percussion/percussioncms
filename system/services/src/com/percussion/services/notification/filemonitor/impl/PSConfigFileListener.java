@@ -26,8 +26,8 @@ package com.percussion.services.notification.filemonitor.impl;
 import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.services.notification.PSNotificationHelper;
 
@@ -176,6 +176,6 @@ public class PSConfigFileListener extends PSBaseListener
     /**
      * Logger for this class.
      */
-    private static Log ms_log = LogFactory.getLog("PSConfigFileListener");
+    private static final Logger ms_log = LogManager.getLogger("PSConfigFileListener");
 }
 

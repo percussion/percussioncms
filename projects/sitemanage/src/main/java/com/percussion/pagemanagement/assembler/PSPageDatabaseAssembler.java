@@ -37,8 +37,8 @@ import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This assembler is used to publish a page to a set of database tables.
@@ -108,7 +108,7 @@ public class PSPageDatabaseAssembler extends PSDatabaseAssembler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPageDatabaseAssembler.class);
+    private static final Logger log = LogManager.getLogger(PSPageDatabaseAssembler.class);
     
 
 }

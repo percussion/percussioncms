@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -34,7 +34,7 @@ import com.percussion.services.workflow.data.PSWorkflow;
 
 public class PSOWFActionServiceTest
 {
-   Log log = LogFactory.getLog(PSOWFActionServiceTest.class);
+   private static final Logger log = LogManager.getLogger(PSOWFActionServiceTest.class);
    
    Mockery context;
    

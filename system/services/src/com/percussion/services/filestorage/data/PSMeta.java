@@ -35,8 +35,8 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tika.metadata.ClimateForcast;
 import org.apache.tika.metadata.CreativeCommons;
 import org.apache.tika.metadata.DublinCore;
@@ -86,7 +86,7 @@ public class PSMeta
    /**
     * Logger for this class
     */
-   private transient static final Log log = LogFactory.getLog(PSMeta.class);
+   private transient static final Logger log = LogManager.getLogger(PSMeta.class);
 
    /*
     * A key to store in the metadata map the hash value for the item.

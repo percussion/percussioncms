@@ -84,7 +84,7 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
    /**
     * The log4j logger used for this class.
     */
-   private static Logger log = LogManager.getLogger(PSFixInvalidSysTitle.class);
+   private static final Logger log = LogManager.getLogger(PSFixInvalidSysTitle.class);
 
    /**
     * Ctor

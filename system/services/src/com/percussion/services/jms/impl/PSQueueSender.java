@@ -38,7 +38,8 @@ import javax.jms.QueueSender;
 import javax.jms.QueueSession;
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The implementation of the {@link IPSQueueSender} interface.
@@ -51,7 +52,7 @@ public class PSQueueSender implements IPSQueueSender
    /**
     * The logger for this class.
     */
-   private static Logger ms_log = Logger.getLogger(PSQueueSender.class);
+   private static final Logger ms_log = LogManager.getLogger(PSQueueSender.class);
 
    /**
     * The connection factory. It is set by Spring bean framework.

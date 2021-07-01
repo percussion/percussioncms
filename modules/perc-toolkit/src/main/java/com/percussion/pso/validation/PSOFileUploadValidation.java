@@ -13,8 +13,8 @@ package com.percussion.pso.validation;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSFieldValidator;
 import com.percussion.extension.IPSExtensionDef;
@@ -35,7 +35,7 @@ public class PSOFileUploadValidation implements IPSFieldValidator
 {
    // Constants
    private final String CLASSNAME = getClass().getName();
-   private static Log log = LogFactory.getLog(PSOFileUploadValidation.class); 
+   private static final Logger log = LogManager.getLogger(PSOFileUploadValidation.class);
    // Fields
    private String fieldName = "";
    private String excludedMimeTypes = "";

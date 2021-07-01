@@ -28,8 +28,8 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.services.schedule.IPSTask;
 import com.percussion.services.schedule.IPSTaskResult;
 import com.percussion.services.schedule.data.PSTaskResult;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Calendar;
@@ -46,7 +46,7 @@ public abstract class PSPurgeExpiredLog implements IPSTask
    /**
     * logger for this class.
     */
-   private Log m_log = LogFactory.getLog(getClass());
+   private static final Logger m_log = LogManager.getLogger(PSPurgeExpiredLog.class);
    
    /**
     * Invokes the process of purging expired log entries. The returned task
@@ -125,7 +125,7 @@ public abstract class PSPurgeExpiredLog implements IPSTask
          Throwable cause = e;
          if (e.getCause() != null)
             cause = e.getCause();
-         m_log.error("Failed to purge log. Error:" + cause.getLocalizedMessage());
+         m_log.error("Failed to purge log. Error: {}" + cause.getMessage());
          m_log.debug(cause);
          errorCause = cause.getLocalizedMessage();
       }

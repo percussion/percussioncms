@@ -58,8 +58,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -76,7 +76,7 @@ import org.w3c.dom.Document;
  */
 public class PSExtensionRunner
 {
-   private static Log ms_log = LogFactory.getLog(PSExtensionRunner.class);
+   private static final Logger ms_log = LogManager.getLogger(PSExtensionRunner.class);
    
    /**
     * Constructs a new extension runner that can run the given extension,

@@ -27,8 +27,8 @@ import com.percussion.workflow.PSWorkFlowUtils;
 import com.percussion.workflow.mail.IPSMailMessageContext;
 import com.percussion.workflow.mail.IPSMailProgram;
 import com.percussion.workflow.mail.PSMailException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -49,7 +49,7 @@ public class PSEmailMessageHandler implements MessageListener
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_logger = LogFactory.getLog(
+   private static final Logger ms_logger = LogManager.getLogger(
          PSEmailMessageHandler.class);
    
    /**

@@ -30,7 +30,8 @@ import com.percussion.rx.config.impl.jaxb.SolutionConfig;
 import com.percussion.rx.config.impl.jaxb.SolutionConfigurations;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -677,7 +678,7 @@ public class PSConfigNormalizer
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(
+   private static final Logger ms_log = LogManager.getLogger(
          "com.percussion.rx.config.impl.PSConfigNormalizer");
 
 }

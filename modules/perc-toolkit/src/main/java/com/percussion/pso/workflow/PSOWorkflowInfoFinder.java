@@ -17,8 +17,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.error.PSException;
@@ -47,7 +47,7 @@ public class PSOWorkflowInfoFinder implements IPSOWorkflowInfoFinder
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSOWorkflowInfoFinder.class);
+   private static final Logger log = LogManager.getLogger(PSOWorkflowInfoFinder.class);
 
    private IPSSystemWs sws = null;
    private IPSGuidManager gmgr = null; 

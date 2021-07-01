@@ -25,8 +25,8 @@ package com.percussion.sitemanage.task.impl;
 
 
 import com.percussion.sitemanage.task.IPSAntService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
@@ -54,7 +54,7 @@ public class PSAntService implements IPSAntService {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    public static final Log log = LogFactory.getLog(PSAntService.class);
+     public static final Logger log = LogManager.getLogger(PSAntService.class);
     
     
     /**

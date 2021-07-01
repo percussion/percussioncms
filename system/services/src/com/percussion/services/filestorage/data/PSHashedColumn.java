@@ -35,7 +35,8 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Entity
 @Table(name = "PSX_BINARYCOLUMNS")
@@ -124,7 +125,7 @@ public class PSHashedColumn implements Serializable
    
    private static final long serialVersionUID = 1;
 
-   private static Logger ms_logger = Logger.getLogger(PSHashedColumn.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSHashedColumn.class);
 
    @Embeddable
    public static class HashedColumnsPK implements Serializable

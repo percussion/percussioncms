@@ -69,7 +69,7 @@ import java.util.Objects;
 public class PSUserInfo implements IPSCmsComponent
 {
 
-   private static Logger log = LogManager.getLogger(PSUserInfo.class);
+   private static final Logger log = LogManager.getLogger(PSUserInfo.class);
    /**
     * Default constructor. Does nothing. Must be followed by call to fromXml()
     * method. This is useful only to build an object in the fly means the state

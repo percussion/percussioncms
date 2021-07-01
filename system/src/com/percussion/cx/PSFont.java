@@ -29,7 +29,8 @@ import com.percussion.util.PSXMLDomUtil;
 
 import java.awt.Font;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -41,7 +42,7 @@ import org.w3c.dom.Text;
  */
 public class PSFont implements IPSClientObjects
 {
-   static Logger log = Logger.getLogger(PSFont.class);
+   private static final Logger log = LogManager.getLogger(PSFont.class);
    
    /**
     * Default constructor, this is needed so that an instance of this class can

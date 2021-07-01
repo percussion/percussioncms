@@ -31,8 +31,8 @@ import com.percussion.delivery.integrations.ems.model.GroupType;
 import com.percussion.delivery.integrations.ems.model.Status;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -72,7 +72,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	private String endpoint;
 
 	
-	private static Log log = LogFactory.getLog(EMSSOAPEventService.class);
+	private static final Logger log = LogManager.getLogger(EMSSOAPEventService.class);
 	
 	public static final int STATUS_TYPE_BOOKEDSPACE=-14;
 	public static final int STATUS_TYPE_INFOONLY=-11;

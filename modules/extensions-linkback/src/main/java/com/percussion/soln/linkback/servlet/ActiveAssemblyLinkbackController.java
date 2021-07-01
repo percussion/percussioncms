@@ -28,8 +28,8 @@ import com.percussion.error.PSException;
 import com.percussion.soln.linkback.utils.ItemSummaryFinder;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public class ActiveAssemblyLinkbackController extends GenericLinkbackController {
 
-    private static final Log log = LogFactory.getLog(ActiveAssemblyLinkbackController.class);
+    private static final Logger log = LogManager.getLogger(ActiveAssemblyLinkbackController.class);
 
     private static final String REDIRECT_PATH = "/assembler/render";
 

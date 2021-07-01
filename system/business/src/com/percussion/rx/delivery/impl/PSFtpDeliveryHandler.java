@@ -38,8 +38,8 @@ import java.io.InputStream;
 import java.net.SocketException;
 import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
@@ -55,7 +55,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSFtpDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSFtpDeliveryHandler.class);
 
    /**
     * Holds the per thread ftp client. Initialized in {@link #commit(long)} and

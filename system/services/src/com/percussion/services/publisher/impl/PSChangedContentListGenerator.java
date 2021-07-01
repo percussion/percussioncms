@@ -41,8 +41,8 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utilizes {@link IPSContentChangeService} to generate a content list of changed content
@@ -55,7 +55,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSChangedContentListGenerator extends PSBaseGenerator
 {
    private IPSContentChangeService changeService = PSContentChangeServiceLocator.getContentChangeService();
-   private static final Log log = LogFactory.getLog(PSChangedContentListGenerator.class);
+   private static final Logger log = LogManager.getLogger(PSChangedContentListGenerator.class);
    
    public QueryResult generate(Map<String, String> parameters) throws PSPublisherException
    {
