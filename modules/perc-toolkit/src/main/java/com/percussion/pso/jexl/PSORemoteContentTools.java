@@ -6,8 +6,8 @@ import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.HttpStatus;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpression {
 
 
-    private static final Log log = LogFactory.getLog(PSORemoteContentTools.class);
+    private static final Logger log = LogManager.getLogger(PSORemoteContentTools.class);
 
     public PSORemoteContentTools(){
         super();

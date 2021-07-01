@@ -27,8 +27,8 @@ package com.percussion.share.web.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.percussion.share.service.exception.PSErrorUtils;
 import com.percussion.share.validation.PSErrors;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Produces;
@@ -62,5 +62,5 @@ public class PSJsonProcessingExceptionMapper extends PSAbstractExceptionMapper<J
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(JsonProcessingException.class);
+    private static final Logger log = LogManager.getLogger(JsonProcessingException.class);
 }

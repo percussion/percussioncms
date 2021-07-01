@@ -37,7 +37,8 @@ import java.util.Map;
 import javax.security.auth.Subject;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -62,7 +63,7 @@ import org.apache.log4j.Logger;
 public abstract class PSRunAsUser<CONTEXT> 
 {  
    
-   private static Logger log = Logger.getLogger(PSRunAsUser.class);
+   private static final Logger log = LogManager.getLogger(PSRunAsUser.class);
    /**
     * Runs the callback {@link #run(Object, PSRequest)} as the given user.
     * @param userName not blank or null.

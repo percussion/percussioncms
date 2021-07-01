@@ -25,19 +25,18 @@
 
 package com.percussion.server;
 
-import java.io.File;
-import java.nio.channels.FileLock;
-
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.testing.IntegrationTest;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
-
 import org.junit.AfterClass;
 import org.junit.experimental.categories.Category;
 
-import static org.junit.Assert.*;
+import java.io.File;
+import java.nio.channels.FileLock;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Andriy Palamarchuk
@@ -48,7 +47,6 @@ public class PSServerTest
    /**
     * Name of system property storing Rhythmyx root directory name.
     * Used for testing.
-    * @see #getRxDir()
     */
    static final String DEPLOY_DIR_PROP = "rxdeploydir";
 
@@ -77,9 +75,7 @@ public class PSServerTest
 
       //non-existing value
       System.getProperties().setProperty(DEPLOY_DIR_PROP, "Non-Existing Dir");
-      Logger.getRootLogger().setLevel(Level.OFF);
       assertEquals(CURRENT_DIR, PathUtils.getRxDir(null));
-      Logger.getRootLogger().setLevel(CURRENT_LOGGING_LEVEL);
 
       //existing dir
       System.getProperties().setProperty(DEPLOY_DIR_PROP,
@@ -116,9 +112,8 @@ public class PSServerTest
       assertNull(fl1);
 
    }
-   /**
-    * @see junit.framework.TestCase#tearDown()
-    */
+
+
    @AfterClass
    protected void tearDown() throws Exception
    {
@@ -131,7 +126,6 @@ public class PSServerTest
     */
    private void restoreLogging()
    {
-      Logger.getRootLogger().setLevel(CURRENT_LOGGING_LEVEL);
    }
 
    /**
@@ -166,8 +160,4 @@ public class PSServerTest
    private final String CURRENT_DEPLOY_DIR =
            System.getProperty(DEPLOY_DIR_PROP);
 
-   /**
-    * Original root logger logging level.
-    */
-   private final Level CURRENT_LOGGING_LEVEL = Logger.getRootLogger().getLevel();
 }

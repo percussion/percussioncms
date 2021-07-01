@@ -31,7 +31,6 @@ import com.percussion.HTTPClient.ModuleException;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
 
-import com.percussion.tools.Logger;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.util.IOTools;
 import com.percussion.security.PSEncryptionException;
@@ -65,6 +64,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -111,8 +112,7 @@ public class XmlUploader
          propsFilename = Utils.DEFAULT_PROPERTY_FILENAME;
       propsFilename = propsFilename.trim();
       File propsFile = new File(propsFilename);
-      ms_logger.logStreamMessage( "[Init] Using property file "
-         + propsFile.getAbsolutePath());
+      ms_logger.info( "[Init] Using property file {}", propsFile.getAbsolutePath());
 
       if (propsFile.isFile())
       {
@@ -123,13 +123,13 @@ public class XmlUploader
          }
          catch (IOException ioe)
          {
-            ms_logger.logMessage("Failed to load properties file \"" +
+            ms_logger.info("Failed to load properties file \"" +
                propsFile.getAbsolutePath() + "\". Using defaults.");
          }
       }
       else
       {
-         ms_logger.logMessage("Properties file \"" + propsFile.getAbsolutePath() +
+         ms_logger.info("Properties file \"" + propsFile.getAbsolutePath() +
             "\" does not exist. Using defaults.");
       }
 
@@ -150,11 +150,7 @@ public class XmlUploader
          Integer timeout = new Integer((String) args.get(Utils.TIMEOUT_OPTION));
          m_timeout = timeout.intValue() * 1000; // Convert to millis
       }
-
-      ms_logger.enableDebuggingOutput(m_debug);
-      if (m_debug)
-         ms_logger.logStreamMessage("Debugging output is enabled");
-
+      
       // get the log file
       String logFilename = (String) args.get( Utils.LOGFILE_OPTION );
       if ((logFilename == null) || (logFilename.trim().length() == 0))
@@ -169,13 +165,13 @@ public class XmlUploader
          {
             if (!logFile.isFile())
                logFile.createNewFile();
-            ms_logger.setOutputFile(logFile);
-            ms_logger.logStreamMessage( "[Init] Logging to "
+            
+            ms_logger.info( "[Init] Logging to "
                + logFile.getAbsolutePath());
          }
          catch (IOException e)
          {
-            ms_logger.logStreamMessage( "Failed to open log file \""
+            ms_logger.info( "Failed to open log file \""
                + logFile.getAbsolutePath()
                + "\". Messages will not be logged.");
          }
@@ -350,7 +346,7 @@ public class XmlUploader
               String urlLine = urlReader.readLine();
               while (urlLine != null)
               {
-                 ms_logger.logMessage("Processing URL: " + urlLine);
+                 ms_logger.info("Processing URL: " + urlLine);
                  if(isHttpURL(urlLine))
                  {
                     list.add( uploader.new UrlContent( new URL(urlLine)));
@@ -374,7 +370,7 @@ public class XmlUploader
                String firstName = (String) filenames.get(0);
                if ( firstName.indexOf('*') >= 0 || firstName.indexOf('?') >= 0 )
                {
-                  ms_logger.logStreamMessage( "No files to process." );
+                  ms_logger.info( "No files to process." );
                   System.exit( Utils.SUCCESS );
                }
 
@@ -401,32 +397,32 @@ public class XmlUploader
       }
    catch ( FileNotFoundException e )
       {
-         ms_logger.logMessage("[Main] " + e.getLocalizedMessage());
+         ms_logger.info("[Main] " + e.getLocalizedMessage());
          status = Utils.ERROR_CLASS_NOT_FOUND;
       }
       catch ( MalformedURLException e )
       {
-         ms_logger.logMessage( "[Main] Improperly formed URL: " +
+         ms_logger.info( "[Main] Improperly formed URL: " +
             e.getLocalizedMessage());
          status = Utils.ERROR_IO;
       }
       catch ( IOException e )
       {
-         ms_logger.logStreamMessage( "[Main] An IO error occurred: " +
+         ms_logger.info( "[Main] An IO error occurred: " +
             e.getLocalizedMessage());
          status = Utils.ERROR_IO;
       }
       catch ( IllegalArgumentException e )
       {
-         ms_logger.logStreamMessage( "[Main] An Illegal argument exception was thrown: " +
+         ms_logger.info( "[Main] An Illegal argument exception was thrown: " +
             e.getLocalizedMessage());
          status = Utils.ERROR_UNKNOWN; // a design flaw exists, so it's not really important to the batch program
       }
       catch ( Throwable t )
       {
-         ms_logger.logMessage( "[Main] Unexpected exception: " +
-            t.getLocalizedMessage());
-         t.printStackTrace( ms_logger.getOutputStream());
+         ms_logger.info( "[Main] Unexpected exception: " +
+            t.getMessage());
+
          status = Utils.ERROR_UNKNOWN;
       }
       finally
@@ -449,19 +445,19 @@ public class XmlUploader
     */
    public static void usage()
    {
-      ms_logger.logStreamMessage( "Usage: java com.percussion.uploader.XmlUploader" +
+      ms_logger.info( "Usage: java com.percussion.uploader.XmlUploader" +
          " options sources(s)" );
-      ms_logger.logStreamMessage( "Where the possible options are (optional ones in []):" );
-      ms_logger.logStreamMessage( "    [-" + Utils.PROPERTYFILE_OPTION + " propertyFile]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.LOGINID_OPTION + " loginid]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.LOGINPWD_OPTION + " password]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.COMMUNITYID_OPTION + " community id/name]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.LOGFILE_OPTION + " logFile]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.DEBUG_OPTION + "]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.FILE_OPTION + " URLListFile]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.TIMEOUT_OPTION + " TimeInSeconds]");
-      ms_logger.logStreamMessage( "    -" + Utils.REQUESTURL_OPTION + " requestUrl (e.g. /Rhythmyx/application/resource.htm?...)" );
-      ms_logger.logStreamMessage( "source(s) is either a list of files or a list of http URLs" );
+      ms_logger.info( "Where the possible options are (optional ones in []):" );
+      ms_logger.info( "    [-" + Utils.PROPERTYFILE_OPTION + " propertyFile]" );
+      ms_logger.info( "    [-" + Utils.LOGINID_OPTION + " loginid]" );
+      ms_logger.info( "    [-" + Utils.LOGINPWD_OPTION + " password]" );
+      ms_logger.info( "    [-" + Utils.COMMUNITYID_OPTION + " community id/name]" );
+      ms_logger.info( "    [-" + Utils.LOGFILE_OPTION + " logFile]" );
+      ms_logger.info( "    [-" + Utils.DEBUG_OPTION + "]" );
+      ms_logger.info( "    [-" + Utils.FILE_OPTION + " URLListFile]" );
+      ms_logger.info( "    [-" + Utils.TIMEOUT_OPTION + " TimeInSeconds]");
+      ms_logger.info( "    -" + Utils.REQUESTURL_OPTION + " requestUrl (e.g. /Rhythmyx/application/resource.htm?...)" );
+      ms_logger.info( "source(s) is either a list of files or a list of http URLs" );
 
    }
 
@@ -557,8 +553,8 @@ public class XmlUploader
                if (m_debug) {
                   StringWriter sw = new StringWriter();
                   PSXmlDocumentBuilder.write(response, sw);
-                  ms_logger.logMessage(sw.toString());
-                  ms_logger.logMessage("\n");
+                  ms_logger.info(sw.toString());
+                  ms_logger.info("\n");
                }
 
                int firstFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN |
@@ -591,7 +587,7 @@ public class XmlUploader
       }
       catch (Exception e)
       {
-         ms_logger.logMessage("Exception : " + e.getLocalizedMessage());
+         ms_logger.info("Exception : " + e.getLocalizedMessage());
          communityId = -1;
       }
       if (communityId == 0)
@@ -601,7 +597,7 @@ public class XmlUploader
       }
       else
       {
-         ms_logger.logMessage("Failed to verify community id.");
+         ms_logger.info("Failed to verify community id.");
       }
       return -1;
    }
@@ -632,9 +628,9 @@ public class XmlUploader
 
       if (m_debug)
       {
-         ms_logger.logMessage("Using host: " + m_rxServer);
-         ms_logger.logMessage("Using port: " + m_rxPort);
-         ms_logger.logMessage("Using resource URL: " + urlText);
+         ms_logger.info("Using host: " + m_rxServer);
+         ms_logger.info("Using port: " + m_rxPort);
+         ms_logger.info("Using resource URL: " + urlText);
       }
 
       // set up the connection
@@ -684,7 +680,7 @@ public class XmlUploader
             InputStream errResponse = null;
             stats.docsProcessed++;
 
-            ms_logger.logMessage("\nProcessing " + sources[i].getDisplayName()
+            ms_logger.info("\nProcessing " + sources[i].getDisplayName()
                         + "...\n");
             // variables used outside try block
             boolean isResponseOk = false;
@@ -708,8 +704,8 @@ public class XmlUploader
                      if (m_debug) {
                         StringWriter sw = new StringWriter();
                         PSXmlDocumentBuilder.write(response, sw);
-                        ms_logger.logMessage(sw.toString());
-                        ms_logger.logDebugMessage("\n");
+                        ms_logger.info(sw.toString());
+                        ms_logger.debug("\n");
                      }
 
                      PSXmlTreeWalker walker = new PSXmlTreeWalker(response);
@@ -720,7 +716,7 @@ public class XmlUploader
                              walker.getElementData("RowsSkipped"));
                      stats.rowsFailed += Integer.parseInt(
                              walker.getElementData("RowsFailed"));
-                     ms_logger.logMessage("Deleting file.");
+                     ms_logger.info("Deleting file.");
                   }
                }
                else
@@ -738,7 +734,7 @@ public class XmlUploader
                try {
                   sources[i].close(!m_debug && rowsInserted > 0);
                } catch (Throwable t) {
-                  ms_logger.logMessage("An error occurred while trying to close the stream: " +
+                  ms_logger.info("An error occurred while trying to close the stream: " +
                           t.getLocalizedMessage());
                }
 
@@ -784,11 +780,11 @@ public class XmlUploader
                   userMsg = "";
                }
 
-               ms_logger.logMessage(pattern,
+               ms_logger.info(pattern,
                        new Object[]{sources[i].getDisplayName()});
                String excText = null != exc ? exc.getLocalizedMessage() : "";
                if (excText.length() > 0 || userMsg.length() > 0)
-                  ms_logger.logMessage(userMsg + excText);
+                  ms_logger.info(userMsg + excText);
             }
       }
       return stats;
@@ -812,17 +808,17 @@ public class XmlUploader
 
       DateFormat formatter = DateFormat.getDateTimeInstance( DateFormat.LONG,
          DateFormat.LONG );
-      ms_logger.logMessage( "Started at    " + formatter.format( stats.startTime ));
-      ms_logger.logMessage( "Finished at   " + formatter.format( stats.finishTime ));
+      ms_logger.info( "Started at    " + formatter.format( stats.startTime ));
+      ms_logger.info( "Finished at   " + formatter.format( stats.finishTime ));
       if ( stats.errors > 0 )
-         ms_logger.logMessage( "****************** Errors Encountered ******************" );
-      ms_logger.logMessage( "Error Count:               " + stats.errors );
-      ms_logger.logMessage( "Total Documents processed  " + stats.docsProcessed );
-      ms_logger.logMessage( "Total Rows Processed:      "
+         ms_logger.info( "****************** Errors Encountered ******************" );
+      ms_logger.info( "Error Count:               " + stats.errors );
+      ms_logger.info( "Total Documents processed  " + stats.docsProcessed );
+      ms_logger.info( "Total Rows Processed:      "
          + stats.getRowsProcessed());
-      ms_logger.logMessage( "Rows Inserted:             " + stats.rowsInserted );
-      ms_logger.logMessage( "Rows Skipped:              " + stats.rowsSkipped );
-      ms_logger.logMessage( "Rows Failed:               " + stats.rowsFailed );
+      ms_logger.info( "Rows Inserted:             " + stats.rowsInserted );
+      ms_logger.info( "Rows Skipped:              " + stats.rowsSkipped );
+      ms_logger.info( "Rows Failed:               " + stats.rowsFailed );
    }
 
 
@@ -832,8 +828,7 @@ public class XmlUploader
     */
    public void shutdown()
    {
-      ms_logger.logShutdown();
-      ms_logger = null;
+      //NOOP
    }
    /**
     * test if a given URL represents an HTTP URL or a file
@@ -1091,7 +1086,7 @@ public class XmlUploader
     * The singleton instance of the logger. All methods use this guy to display
     * status and error messages.
     */
-   private static Logger ms_logger = Logger.getLogger();
+   private static final Logger ms_logger = LogManager.getLogger();
 
    /**
     * A debugging flag. If <code>true</code>, additional debugging information

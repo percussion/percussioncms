@@ -37,7 +37,8 @@ import com.percussion.webservices.PSErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 /**
@@ -352,6 +353,6 @@ public class PSCrossSiteMoveTest extends PSCrossSiteTestCase
       }
    }
    
-   private static final Logger log = Logger.getLogger(PSCrossSiteMoveTest.class);
+   private static final Logger log = LogManager.getLogger(PSCrossSiteMoveTest.class);
 
 }

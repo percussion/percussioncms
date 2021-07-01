@@ -42,8 +42,8 @@ import java.util.Map;
 
 import javax.jcr.Value;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The base generator class, used for more than one implementation.
@@ -55,7 +55,7 @@ public abstract class PSBaseGenerator implements IPSContentListGenerator
    /**
     * The logger
     */
-   protected static Log ms_log = LogFactory.getLog(PSBaseGenerator.class);
+   protected static Logger ms_log = LogManager.getLogger(PSBaseGenerator.class);
 
    /**
     * The cms service

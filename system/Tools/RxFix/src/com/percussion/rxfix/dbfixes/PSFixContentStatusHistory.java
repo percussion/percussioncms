@@ -43,7 +43,8 @@ import java.util.Set;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Detect and attempt to fix missing entries in CONTENTSTATUSHISTORY for items
@@ -363,7 +364,7 @@ public class PSFixContentStatusHistory extends PSFixDBBase implements IPSFix
          throws PSStringTemplateException, SQLException, NamingException
    {
       List<Integer> rval = new ArrayList<Integer>();
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       int nextid = getNextIdBlock(20, "CONTENTSTATUSHISTORY", preview);
       int end = nextid + 20 - 1;
       while (rs.next())
@@ -414,7 +415,7 @@ public class PSFixContentStatusHistory extends PSFixDBBase implements IPSFix
          NamingException
    {
       List<Integer> rval = new ArrayList<Integer>();
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       int nextid = getNextIdBlock(20, "CONTENTSTATUSHISTORY", preview);
       int end = nextid + 20 - 1;
       while (rs.next())

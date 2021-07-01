@@ -28,8 +28,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import com.percussion.pagemanagement.data.PSWidgetItem;
@@ -129,6 +129,6 @@ public class PSWidgetServiceTest extends PSRestTestCase<PSWidgetServiceTest.PSWi
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetServiceTest.class);
 
 }

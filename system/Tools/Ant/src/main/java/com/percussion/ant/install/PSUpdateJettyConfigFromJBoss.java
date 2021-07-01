@@ -38,8 +38,8 @@ import com.percussion.utils.jdbc.PSJdbcUtils;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 
 import java.io.BufferedReader;
@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
  */
 public class PSUpdateJettyConfigFromJBoss extends PSAction
 {
-    private static final Log log = LogFactory.getLog(PSUpdateJettyConfigFromJBoss.class);
+    private static final Logger log = LogManager.getLogger(PSUpdateJettyConfigFromJBoss.class);
 
     public static final String PERCUSSION_SERVER_LAX = "PercussionServer.lax";
     public static final String PERCUSSION_SERVER_LINUX_LAX = "PercussionServer.bin.lax";

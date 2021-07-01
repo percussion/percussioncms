@@ -34,8 +34,8 @@ import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.converters.BooleanConverter;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.extension.IPSExtensionDef;
@@ -63,13 +63,8 @@ public class PSExtensionParamsHelper {
     /**
      * The log instance to use for this class if one is not provided, never <code>null</code>.
      */
-    private static final Log defaultLog = LogFactory
-            .getLog(PSExtensionParamsHelper.class);
-    
-    /**
-     * The user log instance.
-     */
-    private Log log;
+    private static Logger log = LogManager
+            .getLogger(PSExtensionParamsHelper.class);
     
     /**
      * Constructor
@@ -85,7 +80,7 @@ public class PSExtensionParamsHelper {
      */
     public PSExtensionParamsHelper(IPSExtensionDef def, Object [] params,
             IPSRequestContext request,
-            Log log) {
+            Logger log) {
         this.extensionDef = def;
         this.params = params;
         this.request = request;
@@ -106,7 +101,7 @@ public class PSExtensionParamsHelper {
      * @see #getParameter(String)
      */
     public PSExtensionParamsHelper(Map<String,String> parameters, 
-            IPSRequestContext request, Log log) {
+            IPSRequestContext request, Logger log) {
         this.extensionParameters = parameters;
         this.request = request;
         doLog(log);
@@ -120,7 +115,7 @@ public class PSExtensionParamsHelper {
      * @param log
      */
     public PSExtensionParamsHelper(Map<String,? extends Object> args, 
-            Map<String,Object> selectors, Log log) {
+            Map<String,Object> selectors, Logger log) {
         doLog(log);
         if (args == null)
         {
@@ -297,8 +292,8 @@ public class PSExtensionParamsHelper {
         return this.extensionParameters;
     }
     
-    protected void doLog(Log log) {
-        this.log = log == null ? PSExtensionParamsHelper.defaultLog : log;
+    protected void doLog(Logger log) {
+        this.log = log;
     }
     
     @SuppressWarnings("unchecked")

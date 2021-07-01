@@ -42,6 +42,8 @@ import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.buf.CharChunk;
 import org.apache.tomcat.util.buf.MessageBytes;
 
@@ -72,7 +74,7 @@ import org.apache.tomcat.util.buf.MessageBytes;
  */
 public class PSSimpleRedirectorValve extends ValveBase implements Lifecycle
 {
-    private static Log log = LogFactory.getLog(PSSimpleRedirectorValve.class);
+    private static final Logger log = LogManager.getLogger(PSSimpleRedirectorValve.class);
 
     /**
      * See class description.

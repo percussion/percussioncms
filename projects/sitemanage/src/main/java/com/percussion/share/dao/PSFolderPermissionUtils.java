@@ -44,8 +44,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A utility class used to retrieve and store {@link PSFolderPermission} from {@link PSFolder}
@@ -77,7 +77,7 @@ public class PSFolderPermissionUtils
     /**
      * The logger
      */
-    public static Log log = LogFactory.getLog(PSFolderPermissionUtils.class);
+    public static final Logger log = LogManager.getLogger(PSFolderPermissionUtils.class);
 
     /**
      * Gets the permission for the specified folder.

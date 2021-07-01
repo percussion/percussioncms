@@ -70,8 +70,8 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.request.PSRequestInfo;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -1172,12 +1172,12 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
    /**
     * Commons logger
     */
-   static Log ms_logger = LogFactory.getLog("RevisionPurge");
+    private static final Logger ms_logger = LogManager.getLogger("RevisionPurge");
 
    /**
     * Revision purge logger
     */
-   static Log purge_logger = LogFactory.getLog("RevisionPurge");
+    private static final Logger purge_logger = LogManager.getLogger("RevisionPurge");
 
    /**
     * The non type specific content tables that need cleaning up with a purge.

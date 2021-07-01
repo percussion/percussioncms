@@ -53,8 +53,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -70,7 +70,7 @@ import static org.junit.Assert.assertTrue;
 @Category(IntegrationTest.class)
 public class PSWsFolderProcessorTest extends PSClientTestCase
 {
-   private static Log ms_log = LogFactory.getLog(PSWsFolderProcessorTest.class);
+   private static final Logger ms_log = LogManager.getLogger(PSWsFolderProcessorTest.class);
 
    /**
     * Construct this unit test

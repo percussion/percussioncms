@@ -43,8 +43,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Methods that enable the use of keywords when building assembly output.
@@ -56,7 +56,7 @@ public class PSKeywordUtils extends PSJexlUtilBase
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSKeywordUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSKeywordUtils.class);
 
    /**
     * Retrieve the named keyword and output the available choices as html

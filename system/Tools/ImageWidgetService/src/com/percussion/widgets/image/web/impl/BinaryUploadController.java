@@ -45,8 +45,8 @@ import net.sf.json.JSONSerializer;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +62,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 @RequestMapping("/imageWidget/upload")
 public class BinaryUploadController
 {
-   private static Log log = LogFactory.getLog(BinaryUploadController.class);
+   private static final Logger log = LogManager.getLogger(BinaryUploadController.class);
 
    private ImageCacheManager cacheManager = null;
 

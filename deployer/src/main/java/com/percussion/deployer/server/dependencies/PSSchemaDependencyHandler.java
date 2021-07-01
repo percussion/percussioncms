@@ -46,7 +46,8 @@ import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -397,7 +398,7 @@ public class PSSchemaDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(
+   private static final Logger ms_log = LogManager.getLogger(
          "com.percussion.deployer.server.dependencies.PSSchemaDependencyHandler");
    
    /**

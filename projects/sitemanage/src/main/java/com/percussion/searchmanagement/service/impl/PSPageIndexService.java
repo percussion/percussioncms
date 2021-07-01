@@ -43,14 +43,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PSSiteManageBean("pageIndexService")
 public class PSPageIndexService implements IPSPageIndexService
 {
     
-    private static final Logger log = Logger.getLogger(PSPageIndexService.class.getName());
+    private static final Logger log = LogManager.getLogger(PSPageIndexService.class.getName());
     
     IPSIdMapper idMapper;
 

@@ -92,8 +92,8 @@ import com.percussion.webservices.ui.PSUiWsLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -108,8 +108,7 @@ public class PSWebserviceUtils
 {
    
    
-   private static Log log = LogFactory
-         .getLog(PSWebserviceUtils.class);
+   private static final Logger log = LogManager.getLogger(PSWebserviceUtils.class);
    
    /**
     * Converts the supplied catalog summaries into object summaries and adds the

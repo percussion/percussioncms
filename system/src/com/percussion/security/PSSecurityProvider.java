@@ -51,7 +51,8 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The PSSecurityProvider abstract class is extended by the various security
@@ -587,7 +588,7 @@ public abstract class PSSecurityProvider implements IPSSecurityProvider
    /**
     * never null.
     */
-   private static final Logger ms_logger = Logger.getLogger(PSSecurityProvider.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSSecurityProvider.class);
 
    /**
     * The property key used to specify the provider reference. The referenced 

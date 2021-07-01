@@ -45,7 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSSlotModel extends PSDesignModel
 {
@@ -336,6 +337,6 @@ public class PSSlotModel extends PSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSSlotModel");
+   private static final Logger ms_logger = LogManager.getLogger("PSSlotModel");
 
 }

@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class SiteEditionLookUpServiceImpl implements SiteEditionLookUpService
 {
-	 private static Logger log = LogManager.getLogger(SiteEditionLookUpServiceImpl.class);
+	 private static final Logger log = LogManager.getLogger(SiteEditionLookUpServiceImpl.class);
 	 
 	 private IPSSiteManager siteManager = null;
 	 private IPSPublisherService publisherService = null;

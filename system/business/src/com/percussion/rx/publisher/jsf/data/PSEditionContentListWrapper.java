@@ -39,8 +39,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Presentation wrapper to aid in the displaying of an edition content list.
@@ -52,7 +52,7 @@ public class PSEditionContentListWrapper implements Comparable<PSEditionContentL
    /**
     * Logger
     */
-   public static Log ms_log = LogFactory.getLog(PSEditionContentListWrapper.class);
+   public static final Logger ms_log = LogManager.getLogger(PSEditionContentListWrapper.class);
    
    /**
     * The edition content list

@@ -28,8 +28,8 @@ import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
@@ -56,7 +56,7 @@ import java.util.Properties;
 public class PSTlsSocketFactory implements SecureProtocolSocketFactory
 {
 
-	   public static Log log = LogFactory.getLog(PSTlsSocketFactory.class);
+	   public static final Logger log = LogManager.getLogger(PSTlsSocketFactory.class);
 	   private final static String defaultProtocols = "TLSv1.1,TLSv1.2";
 	   private final String[] protocols;
 	   private SSLSocketFactory internalSSLSocketFactory;

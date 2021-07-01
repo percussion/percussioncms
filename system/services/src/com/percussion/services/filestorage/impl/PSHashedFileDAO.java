@@ -28,8 +28,8 @@ import com.percussion.services.filestorage.data.*;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
@@ -53,7 +53,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSHashedFileDAO.class);
+   private static final Logger log = LogManager.getLogger(PSHashedFileDAO.class);
 
    /**
     * The hibernate session factory injected by spring

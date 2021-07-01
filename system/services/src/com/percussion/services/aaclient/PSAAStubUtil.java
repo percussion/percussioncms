@@ -36,8 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This utility class is used to retrieve various "template" files.
@@ -170,5 +170,5 @@ public class PSAAStubUtil
    static private final String AB_FILE_SNIPPET_ACTIONS_PATH = 
       HTMLBASE_PATH + "sys_aaSnippetActions.html";
 
-   private static Log ms_log = LogFactory.getLog(PSAAStubUtil.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAAStubUtil.class);
 }

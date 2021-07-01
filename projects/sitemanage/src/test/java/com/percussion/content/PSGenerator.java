@@ -26,13 +26,13 @@ package com.percussion.content;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class PSGenerator<CLIENT_TYPE>
 {
     private CLIENT_TYPE restClient;
-    protected Log log = null;
+    protected static final Logger log = LogManager.getLogger(PSGenerator.class);
 
     /**
      * See this {@link #PSGenerator(Class, String, String, String) ctor} for param
@@ -59,13 +59,7 @@ public abstract class PSGenerator<CLIENT_TYPE>
             restClient = ctor.newInstance(baseUrl);
             Method m = cl.getMethod("login", String.class, String.class);
             m.invoke(restClient, uid, pw);
-            
-            //FB: WL_USING_GETCLASS_RATHER_THAN_CLASS_LITERAL NC 1-16-16
-            synchronized (PSGenerator.class)
-            {
-                if (log == null)
-                    log = LogFactory.getLog(getClass());
-            }
+
         }
         catch (Exception e)
         {

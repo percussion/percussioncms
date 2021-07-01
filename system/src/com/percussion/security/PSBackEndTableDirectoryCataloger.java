@@ -41,8 +41,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A directory cataloger using a backend table security provider configuration
@@ -279,6 +279,6 @@ public class PSBackEndTableDirectoryCataloger extends PSDirectoryCataloger
     */
    private PSBackEndConnection m_backendConnection = null;
    
-   static Log ms_log = LogFactory.getLog(
+    private static final Logger ms_log = LogManager.getLogger(
       PSBackEndTableDirectoryCataloger.class);
 }

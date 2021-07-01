@@ -32,8 +32,8 @@ import java.util.Map;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -53,7 +53,7 @@ public class PSSaxCopier extends DefaultHandler2
    /**
     * Logger for the sax copier
     */
-   private static Log ms_log = LogFactory.getLog(PSSaxCopier.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSaxCopier.class);
    
    /**
     * The stream writer, initialized in the Ctor and never modified

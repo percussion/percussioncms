@@ -42,8 +42,8 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -74,7 +74,7 @@ public class PSSiteimprove {
 	private static PSSiteImproveProviderService providerService = new PSSiteImproveProviderService();
 	private static IPSSiteManagerInternal sitemgr = (IPSSiteManagerInternal) PSSiteManagerLocator.getSiteManager();
 	private IPSMetadataService metadataService;
-	private static final Log logger = LogFactory.getLog(PSSiteimprove.class);
+	private static final Logger logger = LogManager.getLogger(PSSiteimprove.class);
 
 	private static final String SITEIMPROVE_CREDENTIALS_BASE_KEY = "perc.siteimprove.credentials.";
 	private static final String SITEIMPROVE_CONFIGURATION_BASE_KEY = "perc.siteimprove.site.";

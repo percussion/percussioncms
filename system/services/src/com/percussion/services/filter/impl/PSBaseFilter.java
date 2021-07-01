@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Base class for all percussion written item filters
@@ -48,7 +48,7 @@ public abstract class PSBaseFilter implements IPSExtension, IPSItemFilterRule
    /**
     * Logger for the base filter
     */
-   Log ms_log = LogFactory.getLog(PSBaseFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSBaseFilter.class);
 
    /**
     * Priority for this rule, set via the init parameters

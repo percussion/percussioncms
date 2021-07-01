@@ -35,8 +35,8 @@ import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
@@ -53,7 +53,7 @@ import com.percussion.services.contentmgr.PSContentMgrLocator;
  */
 public class PSOQueryTools extends PSJexlUtilBase implements IPSJexlExpression
 {
-   private static Log log = LogFactory.getLog(PSOQueryTools.class); 
+   private static final Logger log = LogManager.getLogger(PSOQueryTools.class); 
    
    private static IPSContentMgr cmgr = null;
    

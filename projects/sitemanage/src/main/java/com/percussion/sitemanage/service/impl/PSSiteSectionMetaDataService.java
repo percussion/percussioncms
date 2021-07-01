@@ -33,8 +33,8 @@ import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -276,6 +276,6 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteSectionMetaDataService.class);
+    private static final Logger log = LogManager.getLogger(PSSiteSectionMetaDataService.class);
 
 }

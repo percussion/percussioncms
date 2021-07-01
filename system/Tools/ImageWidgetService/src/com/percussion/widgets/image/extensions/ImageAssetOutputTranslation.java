@@ -53,14 +53,14 @@ package com.percussion.widgets.image.extensions;
       import javax.jcr.RepositoryException;
       import javax.jcr.ValueFormatException;
       import org.apache.commons.lang.StringUtils;
-      import org.apache.commons.logging.Log;
-      import org.apache.commons.logging.LogFactory;
+      import org.apache.logging.log4j.Logger;
+      import org.apache.logging.log4j.LogManager;
       import org.w3c.dom.Document;
       
       public class ImageAssetOutputTranslation extends PSDefaultExtension
         implements IPSItemOutputTransformer
       {
-    	  private static Log log = LogFactory.getLog(ImageAssetOutputTranslation.class);
+    	  private static final Logger log = LogManager.getLogger(ImageAssetOutputTranslation.class);
       
     	  private IPSGuidManager gmgr = null;
     	  private IPSContentMgr cmgr = null;

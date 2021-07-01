@@ -32,7 +32,8 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -50,7 +51,7 @@ import java.util.Properties;
  */
 public class PSI18nStartupManager implements IPSNotificationListener {
     private static final String RUN_AT_STARTUP = "runAtStartup";
-    Logger m_log = Logger
+    private static final Logger m_log = LogManager
             .getLogger(PSI18nStartupManager.class);
 
 

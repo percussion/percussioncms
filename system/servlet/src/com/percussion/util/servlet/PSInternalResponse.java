@@ -24,7 +24,8 @@
 package com.percussion.util.servlet;
 
 import com.percussion.util.PSCharSetsConstants;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
@@ -554,7 +555,7 @@ class PSInternalResponse
    /**
     * our private logger.
     */
-   private Logger m_logger = Logger.getLogger(this.getClass());
+   private Logger m_logger = LogManager.getLogger(this.getClass());
 
    private static final String ILLEGAL_STREAM =
       "Output stream cannot be used when Writer is already in use";

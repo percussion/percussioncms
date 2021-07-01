@@ -31,8 +31,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -165,9 +165,9 @@ public class PSProcessAction implements Runnable
       int status = PSProcessStatus.PROCESS_FAILED_TO_START;
       try
       {
-         Log l = LogFactory.getLog(getClass());
-         if (l.isDebugEnabled())
-            l.debug("About to execute command: " + toString());
+
+
+         log.debug("About to execute command: {}" , toString());
          m_process = Runtime.getRuntime().exec(m_cmdArray, m_envp, m_dir);
 
          // Set the status

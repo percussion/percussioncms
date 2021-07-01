@@ -33,8 +33,8 @@ import java.util.Vector;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -52,7 +52,7 @@ public class TaxonomyTextConverter implements IPSLuceneTextConverter {
 	private String SQL_GET_VALUES = "select v.Name from Value v where v.node.id in (:ids) and v.lang.id = :language_id";
 
 
-	private Log log = LogFactory.getLog(TaxonomyTextConverter.class);
+	private static final Logger log = LogManager.getLogger(TaxonomyTextConverter.class);
 
 	public String getConvertedText(InputStream is, String mimetype)
 			throws PSExtensionProcessingException {

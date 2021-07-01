@@ -43,8 +43,8 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.user.service.IPSUserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -246,7 +246,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRecyclePathItemService.class);
+    private static final Logger log = LogManager.getLogger(PSRecyclePathItemService.class);
 
     /**
      * Static constant to represent the {@link PSRelationshipConfig} constant for recycled content

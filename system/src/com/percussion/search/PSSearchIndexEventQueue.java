@@ -91,7 +91,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.jcr.RepositoryException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 /**
@@ -1713,7 +1714,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     * code a little clearer. Initialized during class construction, then never
     * <code>null</code> or modified.
     */
-   private Logger m_logger = Logger.getLogger(getClass());
+   private Logger m_logger = LogManager.getLogger(getClass());
 
    /**
     * Used for keeping performance metrics and logging results to the server

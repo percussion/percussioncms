@@ -53,8 +53,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -65,7 +65,7 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSSitePublishStatusServiceTest {
 
-	Log log = LogFactory.getLog(PSSitePublishStatusServiceTest.class);
+	private static final Logger log = LogManager.getLogger(PSSitePublishStatusServiceTest.class);
 	
 	Mockery context; 
 	

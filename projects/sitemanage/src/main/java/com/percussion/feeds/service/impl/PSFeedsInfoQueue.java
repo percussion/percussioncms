@@ -34,8 +34,8 @@ import com.percussion.security.PSEncryptor;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -69,7 +69,7 @@ public class PSFeedsInfoQueue implements InitializingBean
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSFeedsInfoQueue.class);
+    public static final Logger log = LogManager.getLogger(PSFeedsInfoQueue.class);
 
     @Autowired
     public PSFeedsInfoQueue(IPSMetadataService metadataService, IPSDeliveryInfoService deliveryInfoService)

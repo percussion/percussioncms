@@ -48,8 +48,8 @@ import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.user.service.IPSUserService;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -434,6 +434,6 @@ public class PSSitePathItemService extends PSPathItemService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSitePathItemService.class);
+    private static final Logger log = LogManager.getLogger(PSSitePathItemService.class);
     
 }

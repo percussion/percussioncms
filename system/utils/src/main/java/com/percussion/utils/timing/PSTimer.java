@@ -23,7 +23,7 @@
  */
 package com.percussion.utils.timing;
 
-import org.apache.commons.logging.Log;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Logger;
 
 /**
@@ -32,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 public class PSTimer
 {
    PSStopwatch m_watch = new PSStopwatch();
-   Log m_log;
+   private static final Logger m_log;
    Logger log;
 
    public PSTimer(Log log)

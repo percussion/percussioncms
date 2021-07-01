@@ -27,8 +27,8 @@ import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 
@@ -69,7 +69,7 @@ public class PSDatasourceSessionFactoryBean extends LocalSessionFactoryBean
    /**
     * Logger for this class
     */
-   private static final Log ms_log = LogFactory.getLog(
+   private static final Logger ms_log = LogManager.getLogger(
       PSDatasourceSessionFactoryBean.class);
    
    /**

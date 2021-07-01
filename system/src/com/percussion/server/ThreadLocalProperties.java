@@ -31,8 +31,8 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class helps us to get around issues caused by certain java features
@@ -52,7 +52,7 @@ public class ThreadLocalProperties
    /**
     * Logger for this class.
     */
-   public static Log log = LogFactory.getLog(ThreadLocalProperties.class);
+   public static final Logger log = LogManager.getLogger(ThreadLocalProperties.class);
 
    public static synchronized void setupProperties()
    {

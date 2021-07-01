@@ -106,8 +106,8 @@ import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -178,7 +178,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PageAdaptor.class);
+    public static final Logger log = LogManager.getLogger(PageAdaptor.class);
 
     @Autowired
     public PageAdaptor(@Qualifier("pathService") IPSPathService pathService, IPSFolderHelper folderHelper, IPSSiteSectionService sectionService,

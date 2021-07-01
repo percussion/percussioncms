@@ -37,7 +37,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class implements the DELETE WebDAV method.
@@ -120,7 +121,7 @@ public class PSDeleteMethod extends PSWebdavMethod
    /**
     * log4j 
     */
-   private Logger m_logger = Logger.getLogger(getClass());
+   private static final Logger m_logger = LogManager.getLogger(PSDeleteMethod.class);
 }
 
 

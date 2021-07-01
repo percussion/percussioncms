@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -67,7 +67,7 @@ import com.percussion.webservices.content.PSContentWsLocator;
  */
 public class PSOSlotContents
 {
-   private static Log log = LogFactory.getLog(PSOSlotContents.class);
+   private static final Logger log = LogManager.getLogger(PSOSlotContents.class);
    
    private static IPSContentWs cws = null; 
    private static IPSGuidManager gmgr = null; 

@@ -34,11 +34,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public final class LinkExtractorHarness {
 
@@ -46,8 +46,7 @@ public final class LinkExtractorHarness {
 	private static final String CR = "\n";
 	private static final String CRLF = "\r\n";
 
-	private static final Log log = LogFactory
-			.getLog(LinkExtractorHarness.class);
+	private static final Logger log = LogManager.getLogger(LinkExtractorHarness.class);
 
 	private LinkExtractorHarness() {
 	}

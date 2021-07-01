@@ -1218,7 +1218,7 @@ public class PSManagedNavService implements IPSManagedNavService
    /**
     * Logger for this service.
     */
-   private static Logger log = LogManager.getLogger(PSManagedNavService.class);
+   private static final Logger log = LogManager.getLogger(PSManagedNavService.class);
    
    /**
     * The dummy template ID, used for create AA relationship between navigation nodes

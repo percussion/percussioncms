@@ -162,6 +162,6 @@ public class PSBeanProperties implements IPSBeanPropertiesInternal
    /**
     * Logger for this class.
     */
-   //private static Log ms_log = LogFactory.getLog("PSBeanProperties");
+   //private static final Logger ms_log = LogManager.getLogger("PSBeanProperties");
    
 }

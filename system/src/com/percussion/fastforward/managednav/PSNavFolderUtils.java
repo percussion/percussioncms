@@ -37,7 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSFieldValue;
@@ -1162,5 +1163,5 @@ public class PSNavFolderUtils
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSNavFolderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSNavFolderUtils.class);
 }
