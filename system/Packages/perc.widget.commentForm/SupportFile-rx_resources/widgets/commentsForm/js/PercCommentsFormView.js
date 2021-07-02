@@ -498,20 +498,23 @@
                     minWidth: 200,
                     modal: true,
                     zIndex: 50000,
-                    buttons:[ {text:"Apply",
+                    buttons:[ {
+                                text:"Apply",
+                                id : "perc-field-prefs-apply",
                         click:function(){
 
                         }
                     },
                         {
                             text:"Close",
+                            id : "perc-field-prefs-close",
                             click:function(){
                                 $(this).dialog("close");
                             }
 
                         }]
                 });
-            $(".ui-button-text-only").attr('id','perc-field-prefs-apply');
+            //$(".ui-button-text-only").attr('id','perc-field-prefs-apply');
             $("#perc-field-prefs-apply").css({"margin-right": "13px"});
         }
         var preferenceVals = control.data('preferences');
