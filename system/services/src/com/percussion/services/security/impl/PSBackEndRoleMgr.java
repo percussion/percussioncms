@@ -54,8 +54,8 @@ import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.security.IPSPrincipalAttribute;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -78,7 +78,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
     /**
      * Used for logging of all messages, never <code>null</code>.
      */
-    private static Log ms_log = LogFactory.getLog(PSBackEndRoleMgr.class);
+    private static final Logger ms_log = LogManager.getLogger(PSBackEndRoleMgr.class);
 
     /**
      * Used to set/get email on the subject

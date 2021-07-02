@@ -28,8 +28,8 @@ import com.percussion.soln.linkback.codec.LinkbackTokenCodec;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public class StringLinkBackTokenImpl implements LinkbackTokenCodec {
 
-    private static Log log = LogFactory.getLog(StringLinkBackTokenImpl.class);
+    private static final Logger log = LogManager.getLogger(StringLinkBackTokenImpl.class);
 
     private static byte bitMask;
 

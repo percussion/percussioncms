@@ -25,7 +25,8 @@ package com.percussion.rxverify.modules;
 
 import com.percussion.tablefactory.*;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.*;
@@ -61,7 +62,7 @@ public class PSJdbcTableCheck extends PSVerifyDatabaseBase
 
         PSJdbcDbmsDef dbmsDef = getDbmsDef( rxdir );
 
-        Logger l = Logger.getLogger( getClass() );
+        Logger l = LogManager.getLogger( getClass() );
 
         PSJdbcDataTypeMap dataMap = null;
 

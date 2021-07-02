@@ -23,11 +23,7 @@
  */
 package com.percussion.i18n.rxlt;
 
-import com.percussion.util.PSProperties;
 import com.percussion.utils.xml.PSEntityResolver;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -203,38 +199,6 @@ public class PSRxltMain
       {
          if (!rxRoot.isDirectory())
             rxRoot = new File("."); //default to current dir
-         
-         // init the log4j properties if it has not been configured
-         if (!Logger.getRootLogger().getAllAppenders().hasMoreElements())
-         {
-            LogManager.resetConfiguration();
-            
-            // Not configured, setup a minimal configuration here that
-            // logs to the console only. 
-            PSProperties props = new PSProperties();
-            
-            //set console appender for WARN and up at rool level
-            props.setProperty("log4j.rootCategory", "ALL, rxltFile");
-            props.setProperty("log4j.additivity.rxltFile", "false");
-            props.setProperty("log4j.appender.rxltFile",
-               "org.apache.log4j.RollingFileAppender");
-
-            props.setProperty("log4j.appender.rxltFile.Threshold", "DEBUG");
-            props.setProperty("log4j.appender.rxltFile.File", 
-                  rxRoot.getAbsolutePath() + "/jetty/base/logs/rxlt.log");
-
-            props.setProperty("log4j.appender.rxltFile.layout",
-               "org.apache.log4j.PatternLayout");
-
-            props.setProperty("log4j.appender.rxltFile.layout.ConversionPattern",
-               "%-5p [%c{1}] %d{MM/dd/yy HH:mm:ss}  %m%n");
-
-            props.setProperty("log4j.appender.rxltFile.MaxFileSize", "800KB");
-            props.setProperty("log4j.appender.rxltFile.MaxBackupIndex", "10");          
-               
-            PropertyConfigurator.configure(props);
-
-         }
       }
       catch (Throwable e)
       {

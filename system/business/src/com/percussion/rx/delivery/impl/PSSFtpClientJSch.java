@@ -45,7 +45,8 @@ import java.util.Vector;
 
 import com.percussion.server.PSServer;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A wrapper for the {@link ChannelSftp} class. This code was integrated from 
@@ -56,7 +57,7 @@ public class PSSFtpClientJSch
    /**
     * The logger of the class.
     */
-   private static Logger ms_log = Logger.getLogger(PSSFtpClientJSch.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSFtpClientJSch.class);
 
     protected static final String JSCH_KEX = "jsch.kex";
 

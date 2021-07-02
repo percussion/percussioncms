@@ -29,8 +29,8 @@ package com.percussion.sitemanage.dao.impl;
 
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.user.data.PSUserLogin;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -55,7 +55,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration("TestSpringContext.xml")
 public class PSUserLoginDaoTestIntegration extends AbstractTransactionalJUnit4SpringContextTests
 {
-    private static Log log = LogFactory.getLog(PSUserLoginDaoTestIntegration.class); 
+    private static final Logger log = LogManager.getLogger(PSUserLoginDaoTestIntegration.class);
 
     @Autowired
     PSUserLoginDao dao;
@@ -216,4 +216,3 @@ public class PSUserLoginDaoTestIntegration extends AbstractTransactionalJUnit4Sp
     
     
 
-    

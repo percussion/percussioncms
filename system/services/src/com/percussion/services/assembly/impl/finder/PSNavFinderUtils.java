@@ -41,8 +41,8 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class provide utility method for navigation finder plugins.
@@ -127,6 +127,6 @@ public class PSNavFinderUtils
    /**
     * Logger for content finder
     */
-   private static Log ms_log = LogFactory.getLog(PSNavFinderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSNavFinderUtils.class);
 
 }

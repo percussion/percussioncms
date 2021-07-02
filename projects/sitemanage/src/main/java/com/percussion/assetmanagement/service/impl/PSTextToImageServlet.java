@@ -38,7 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Servlet responsible for converting supplied text to an image and serve it as
@@ -90,7 +91,7 @@ public class PSTextToImageServlet extends HttpServlet
     /**
      * The logger
      */
-    private static Logger ms_logger = Logger.getLogger(PSTextToImageServlet.class);
+    private static final Logger ms_logger = LogManager.getLogger(PSTextToImageServlet.class);
 
     private static final String DEFAULT_IMAGE_TEXT = "";
 

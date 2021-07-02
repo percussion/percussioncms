@@ -37,8 +37,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -129,7 +129,7 @@ public class PSDataCollectionHelper
    /**
     * The logger for this class.
     */
-   private static Log ms_logger = LogFactory.getLog("PSDataCollectionHelper");
+   private static final Logger ms_logger = LogManager.getLogger("PSDataCollectionHelper");
    
    /**
     * If there are more ids than this in a query, use the data service to store

@@ -38,8 +38,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author DougRand
@@ -73,7 +73,7 @@ public class PSReflectionHelper
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSReflectionHelper.class);
+   private static final Logger ms_log = LogManager.getLogger(PSReflectionHelper.class);
    
    /**
     * This class groups the information about a specific field&apos;s getter and

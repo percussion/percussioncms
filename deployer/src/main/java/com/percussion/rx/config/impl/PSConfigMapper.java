@@ -27,8 +27,8 @@ import com.percussion.rx.config.IPSConfigHandler;
 import com.percussion.rx.config.IPSPropertySetter;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -768,5 +768,5 @@ public class PSConfigMapper
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSConfigMapper");
+   private static final Logger ms_log = LogManager.getLogger("PSConfigMapper");
 }

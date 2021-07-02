@@ -47,8 +47,8 @@ import com.percussion.util.PSDateFormatISO8601;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.ObjectFactory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -138,7 +138,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
    /**
     * Logger used for business publisher service
     */
-   static Log ms_log = LogFactory.getLog(PSRxPublisherService.class);
+    private static final Logger ms_log = LogManager.getLogger(PSRxPublisherService.class);
    
       public final String DEFAULT_GENERATOR =
       "Java/global/percussion/system/sys_SelectedItemsGenerator";

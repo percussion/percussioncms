@@ -174,7 +174,7 @@ public class PSNavSqlConnectionMgr
    /**
     * Writes the log.
     */
-   private static Logger log = LogManager.getLogger(PSNavSqlConnectionMgr.class);
+   private static final Logger log = LogManager.getLogger(PSNavSqlConnectionMgr.class);
 
    /**
     * User name for database.

@@ -33,8 +33,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Synchronized notification service implementation
@@ -44,7 +44,7 @@ public class PSNotificationService implements IPSNotificationService
    /**
     * The log to use
     */
-   private static Log ms_log = LogFactory.getLog(PSNotificationService.class);
+   private static final Logger ms_log = LogManager.getLogger(PSNotificationService.class);
 
    /**
     * The listeners to call

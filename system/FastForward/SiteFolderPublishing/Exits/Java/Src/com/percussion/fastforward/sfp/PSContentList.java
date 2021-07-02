@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -313,5 +313,5 @@ public class PSContentList
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger log = Logger.getLogger(getClass());
+   private Logger log = LogManager.getLogger(getClass());
 }

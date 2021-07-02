@@ -57,7 +57,8 @@ import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.workflow.PSWorkFlowUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -1067,7 +1068,7 @@ public class PSAddAssemblerInfo implements IPSResultDocumentProcessor
          TransformerConfigurationException
    {
       String destXsl = buildEditFilePath(sourceXsl);
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       
       File fileTransform = null;
       File fileSrc = null;
@@ -1666,5 +1667,5 @@ public class PSAddAssemblerInfo implements IPSResultDocumentProcessor
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSAddAssemblerInfo.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAddAssemblerInfo.class);
 }

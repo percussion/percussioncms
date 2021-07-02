@@ -39,7 +39,8 @@ import com.percussion.services.touchitem.PSTouchItemLocator;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Touches Active Assembly parent items and Managed Navigation items (navons)
@@ -52,7 +53,7 @@ import org.apache.log4j.Logger;
 public class PSTouchItemsWorkflowAction extends PSDefaultExtension implements IPSWorkflowAction
 {
 
-   private static Logger ms_logger = Logger.getLogger(PSTouchItemsWorkflowAction.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTouchItemsWorkflowAction.class);
    
    /**
     * perform the workflow action.
@@ -90,7 +91,7 @@ public class PSTouchItemsWorkflowAction extends PSDefaultExtension implements IP
       IPSRequestContext request) throws PSExtensionProcessingException
    {
       diagMessage(request,"Starting Workflow Action");
-      Integer contentId = new Integer(context.getContentID());
+      Integer contentId = context.getContentID();
 
       try
       {

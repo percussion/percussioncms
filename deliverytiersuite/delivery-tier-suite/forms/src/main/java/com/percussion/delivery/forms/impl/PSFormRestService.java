@@ -129,7 +129,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     /**
      * Logger for this class.
      */
-    //public static Log log = LogFactory.getLog(PSFormRestService.class);
+    //public static final Logger log = LogManager.getLogger(PSFormRestService.class);
     private final static Logger log = LogManager.getLogger(PSFormRestService.class);
 
 

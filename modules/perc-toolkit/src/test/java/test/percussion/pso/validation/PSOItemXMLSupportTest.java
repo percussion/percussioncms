@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -25,7 +25,7 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 
 public class PSOItemXMLSupportTest
 {
-   Log log = LogFactory.getLog(PSOItemXMLSupportTest.class);
+   private static final Logger log = LogManager.getLogger(PSOItemXMLSupportTest.class);
    
    PSOItemXMLSupport cut; 
    Document sample;

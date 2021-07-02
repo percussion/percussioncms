@@ -65,7 +65,7 @@ import java.util.*;
 public class PSDbmsHelper
 {
 	
-	private static Logger logger = LogManager.getLogger(PSDbmsHelper.class);
+	private static final Logger logger = LogManager.getLogger(PSDbmsHelper.class);
 	
    /**
     * Private ctor to enforce singleton pattern.

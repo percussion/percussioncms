@@ -51,11 +51,11 @@
                 <div id="perc-dropdown-actions-layout" style="float:left;"></div>
                 <div id="perc-dropdown-view-layout" style="float:left;"></div>
 
-                <div id="dragger-tool">&nbsp;</div>
+                <div id="dragger-tool" style="float:left;">&nbsp;</div>
                 <div class="perc-lib-expander-div">
                         <span id="perc-wid-lib-expander">
                             <a id="perc-wid-lib-maximizer" href="#" style="float: left;"></a>
-                            <span><i18n:message key = "perc.ui.template.layout@Add Widget"/></span>                
+                            <span><i18n:message key = "perc.ui.template.layout@Add Widget"/></span>
                         </span>
                 </div>
 
@@ -63,23 +63,23 @@
                 <div class="perc-lib-expander-div">
                         <span id="perc-region-library-expander">
                             <a id="perc-region-library-maximizer" href="#" style="float: left;"></a>
-                            <span><i18n:message key = "perc.ui.template.layout@Explore Regions"/></span>                
+                            <span><i18n:message key = "perc.ui.template.layout@Explore Regions"/></span>
                         </span>
                 </div>
-                <div id="perc-dropdown-help-layout" style="float:left;line-height:31px;"></div>
-                <div id='perc-error-alert' title = 'Errors' style="float:left;line-height:31px;">
+                <div id="perc-dropdown-help-layout" style="float:left;"></div>
+                <div id='perc-error-alert' title = 'Errors' style="float:left;">
                 </div>
             </td>
-            <td style = 'width:14%; min-width:135px'>
+            <td style = 'width:14%; min-width:135px' >
                 <div id = 'perc-region-tool-wrapper'>
-                    <div id='region-tool'>
+                    <div id='region-tool' >
                         <img src='../images/images/iconAddCell.gif' alt="Click and Drag to Add a Region" title ="<i18n:message key = "perc.ui.template.layout@Drag and drop"/>" onMouseOver="this.src='../images/images/iconAddCellOver.gif';this.style.cursor='pointer';" onMouseOut="this.src='../images/images/iconAddCell.gif';" draggable="true" aria-dropeffect="execute"/>
                     </div>
                     <div id='region-tool-disabled' style = 'display:none' aria-hidden="true">
                         <img src='../images/images/iconAddCellGray.png' alt="<i18n:message key = "perc.ui.template.layout@Drag and drop disabled"/>" title ="<i18n:message key = "perc.ui.template.layout@Drag and drop"/>" />
                     </div>
                     <div id='perc-region-tool-inspector' title = "<i18n:message key = "perc.ui.template.layout@Design Inspector"/>"></div>
-                    <div id = 'perc-region-tool-menu'></div>
+                    <div id = 'perc-region-tool-menu' style="float:left;"></div>
                     <div id='perc-undo-tool' title = "<i18n:message key = "perc.ui.template.layout@Undo"/>" style = 'display:none'>
                     </div>
                     <div id='perc-undo-tool-disabled' title = "<i18n:message key = "perc.ui.template.layout@Undo"/>" style = 'display:none'></div>

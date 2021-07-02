@@ -20,8 +20,8 @@ import static org.junit.Assert.fail;
 
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -36,7 +36,7 @@ import com.percussion.pso.preview.ContentTypeLoggingInterceptor;
  */
 public class ContentTypeLoggingInterceptorTest
 {
-   private static Log log = LogFactory.getLog(ContentTypeLoggingInterceptorTest.class);
+   private static final Logger log = LogManager.getLogger(ContentTypeLoggingInterceptorTest.class);
    
    /**
     * Test method for {@link ContentTypeLoggingInterceptor#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, Object)}.

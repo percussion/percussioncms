@@ -23,11 +23,6 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import static java.text.MessageFormat.format;
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
@@ -58,10 +53,17 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONException;
 
+import javax.ws.rs.core.MediaType;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,15 +74,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.json.JSONException;
+import static java.text.MessageFormat.format;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The meta-data delivery handler, which publishes and unpublishes pages to the indexer
@@ -123,7 +119,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
    /**
      * The logger
      */
-    private static final Log log = LogFactory.getLog(PSMetadataDeliveryHandler.class);
+    private static final Logger log = LogManager.getLogger(PSMetadataDeliveryHandler.class);
 
     public void init(long jobid, IPSSite site, IPSPubServer pubServer) throws PSDeliveryException
     {

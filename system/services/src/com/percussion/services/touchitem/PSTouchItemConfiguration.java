@@ -34,7 +34,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -50,7 +51,7 @@ public class PSTouchItemConfiguration implements InitializingBean
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSTouchItemConfiguration.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTouchItemConfiguration.class);
       
    /**
     * Set of properties used to configure the behavior for

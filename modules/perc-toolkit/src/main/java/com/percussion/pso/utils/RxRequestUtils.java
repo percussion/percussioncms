@@ -15,8 +15,8 @@
  */
 package com.percussion.pso.utils;
 import javax.servlet.ServletRequest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.server.IPSRequestContext;
 
 /**
@@ -30,7 +30,7 @@ public class RxRequestUtils
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(RxRequestUtils.class);
+   private static final Logger log = LogManager.getLogger(RxRequestUtils.class);
    
    /**
     * Static methods only 

@@ -32,7 +32,8 @@ import java.util.ArrayList;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.rxfix.IPSFix;
 import com.percussion.util.PSPreparedStatement;
@@ -50,7 +51,7 @@ public class PSFixOrphanedContentChangeEvents extends PSFixDBBase implements IPS
    /**
     * The log4j logger used for this class.
     */
-   private static Logger log = Logger.getLogger(PSFixOrphanedContentChangeEvents.class);
+   private static final Logger log = LogManager.getLogger(PSFixOrphanedContentChangeEvents.class);
 
 
    public PSFixOrphanedContentChangeEvents() throws NamingException, SQLException

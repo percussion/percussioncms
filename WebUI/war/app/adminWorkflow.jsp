@@ -136,7 +136,7 @@
                 dirtyController.setDirty(true, "asset");
             });
             $("#tabs").tabs({
-                select: function (event, ui) {
+                activate: function (event, ui) {
                     if (dirtyController.isDirty()) {
                         // if dirty, then show a confirmation dialog                    
                         dirtyController.confirmIfDirty(function () {
@@ -144,7 +144,7 @@
                             dirtyController.setDirty(false);
                             $.PercUserController.cancel();
                             $.PercRoleController.cancel();
-                            $("#tabs").tabs('select', ui.index);
+                            $("#tabs").tabs( "option", "active", ui.index);
                         });
                         return false;
                     }
@@ -211,7 +211,7 @@
                             } else if (user !== $.PercNavigationManager.getUserName()) {
                                 $.PercCategoryController.confirmDialog(I18n.message("perc.ui.admin.workflow@Categories Locked", [0]), function (action) {
                                     if (action === "cancel") {
-                                        $("#tabs").tabs('select', 0);
+                                        $("#tabs").tabs( "option", "active", 0);
                                     }
                                 });
                             }

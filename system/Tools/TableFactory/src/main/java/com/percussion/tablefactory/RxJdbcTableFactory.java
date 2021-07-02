@@ -5008,5 +5008,5 @@ System.out.println("NULL Values not allowed as Update Key");
    static final int getChild = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN;
    static final int getSibling = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS;
 
-   private static org.apache.logging.log4j.Logger log = LogManager.getLogger(RxJdbcTableFactory.class);
+   private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(RxJdbcTableFactory.class);
 }

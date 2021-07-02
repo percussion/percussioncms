@@ -81,8 +81,8 @@ import com.percussion.utils.types.PSPair;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -144,7 +144,7 @@ public class PSContentRepository
     /**
      * Logger used for the content repository
      */
-    static Log ms_log = LogFactory.getLog("PSContentRepository");
+    private static final Logger ms_log = LogManager.getLogger("PSContentRepository");
 
     /**
      * Eponymously named

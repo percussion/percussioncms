@@ -28,8 +28,8 @@ import javax.imageio.ImageReader;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageInputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +38,7 @@ import com.percussion.pso.transform.PSOThumbnailGenerator;
 
 public class PSOThumbnailGeneratorTest
 {
-   static Log log = LogFactory.getLog(PSOThumbnailGeneratorTest.class);
+    private static final Logger log = LogManager.getLogger(PSOThumbnailGeneratorTest.class);
    
    private static final String GIF_IMAGE = "test/percussion/pso/transform/ninja_avatar.gif";
    private static final String PNG_IMAGE = "test/percussion/pso/transform/TestPNG.png";

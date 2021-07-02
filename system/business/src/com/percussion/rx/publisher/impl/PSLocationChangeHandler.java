@@ -66,8 +66,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a utility class used to un-publish the items that are selected by a
@@ -91,8 +91,7 @@ public class PSLocationChangeHandler
    /**
     * Logger.
     */
-   private static final Log ms_log = LogFactory
-         .getLog(PSLocationChangeHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSLocationChangeHandler.class);
 
    /**
     * It maps delivery name to its delivery type, used to cache the delivery

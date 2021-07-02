@@ -36,8 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 public class PSPageRegionBranchesSerializationTest
@@ -111,5 +111,5 @@ public class PSPageRegionBranchesSerializationTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPageRegionBranchesSerializationTest.class);
+    private static final Logger log = LogManager.getLogger(PSPageRegionBranchesSerializationTest.class);
 }

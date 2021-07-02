@@ -29,7 +29,8 @@ import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.search.data.PSSearchIndexQueueItem;
 import com.percussion.util.PSSqlHelper;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -443,5 +444,5 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
     * code a little clearer. Initialized during class construction, then never
     * <code>null</code> or modified.
     */
-   private Logger m_logger = Logger.getLogger(getClass());
+   private static final Logger m_logger = LogManager.getLogger(PSSearchIndexQueue.class);
 }

@@ -21,8 +21,8 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
 
 import junit.framework.TestCase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -47,7 +47,7 @@ import com.percussion.webservices.system.IPSSystemWs;
 
 public class PSOUniqueFieldWithInFoldersValidatorTest extends TestCase {
 
-    private static Log log = LogFactory.getLog(PSOUniqueFieldWithInFoldersValidatorTest.class);
+    private static final Logger log = LogManager.getLogger(PSOUniqueFieldWithInFoldersValidatorTest.class);
     
     TestablePSOUniqueFieldValidator validator;
     Mockery context;

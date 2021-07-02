@@ -41,7 +41,8 @@ import java.util.Observer;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This singleton class wraps the authtype configuration read off of
@@ -74,7 +75,7 @@ public class PSAuthTypes implements Observer
     * 
     * @return only object of the class, never <code>null</code>.
     */
-   static synchronized public PSAuthTypes getInstance()
+   public static synchronized  PSAuthTypes getInstance()
    {
       if (ms_this == null)
          ms_this = new PSAuthTypes();
@@ -131,8 +132,7 @@ public class PSAuthTypes implements Observer
     *           loaded, assumed not <code>null</code>
     * @throws IOException if loading the file fails.
     */
-   @SuppressWarnings("unchecked") // for iterator of prop keyset
-   synchronized private void loadProperties(PSObservableFile configFile)
+   private synchronized void loadProperties(PSObservableFile configFile)
          throws IOException
    {
       m_authTypeMap.clear();
@@ -234,5 +234,5 @@ public class PSAuthTypes implements Observer
    /**
     * Logger to write the error log.
     */
-   private Logger m_log = Logger.getLogger(getClass());
+   private static final Logger m_log = LogManager.getLogger(PSAuthTypes.class);
 }

@@ -40,8 +40,8 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -57,7 +57,7 @@ public final class PSMessageQueueService implements MessageListener, IPSMessageQ
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_logger = LogFactory.getLog(
+   private static final Logger ms_logger = LogManager.getLogger(
          PSMessageQueueService.class);
    
    private IPSQueueSender m_queueSender;

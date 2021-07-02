@@ -28,7 +28,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.PSSlotTypeSet;
@@ -165,5 +166,5 @@ public class PSNavSlotSet
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger m_log = Logger.getLogger(getClass());
+   private static final Logger m_log = LogManager.getLogger(PSNavSlotSet.class);
 }

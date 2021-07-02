@@ -27,8 +27,8 @@ package com.percussion.services.widgetbuilder;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.dao.IPSGenericDao;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +44,7 @@ public class PSWidgetBuilderDefinitionDao
         implements IPSWidgetBuilderDefinitionDao
 {
     
-    private static final Log log = LogFactory.getLog(PSWidgetBuilderDefinitionDao.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetBuilderDefinitionDao.class);
 
 
     private SessionFactory sessionFactory;

@@ -32,8 +32,8 @@ import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,7 +50,7 @@ import java.io.InputStream;
       @RequestMapping("/imageWidget/resizeImage.do")
       public class ImageResizeController
       {
-        private static Log log = LogFactory.getLog(ImageResizeController.class);
+        private static final Logger log = LogManager.getLogger(ImageResizeController.class);
         private String viewName;
         private String modelObjectName;
         private ImageCacheManager imageCacheManager;

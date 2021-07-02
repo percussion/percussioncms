@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.IPSExtensionManager;
@@ -84,7 +84,7 @@ public class PSOWFActionService implements IPSOWFActionService
    /**
     * Logger for class.
     */
-   private static Log log = LogFactory.getLog(PSOWFActionService.class);
+   private static final Logger log = LogManager.getLogger(PSOWFActionService.class);
    
    /**
     * Workflow Info finder. 

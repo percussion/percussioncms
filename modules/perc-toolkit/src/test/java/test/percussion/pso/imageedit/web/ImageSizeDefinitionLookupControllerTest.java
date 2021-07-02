@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 
 public class ImageSizeDefinitionLookupControllerTest
 {
-   private static Log log = LogFactory.getLog(ImageSizeDefinitionLookupControllerTest.class);
+   private static final Logger log = LogManager.getLogger(ImageSizeDefinitionLookupControllerTest.class);
    
    private ImageSizeDefinitionLookupController cut; 
    

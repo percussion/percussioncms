@@ -278,6 +278,6 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger log = LogManager.getLogger(PSNavTreeLinkExtension.class);
+   private static final Logger log = LogManager.getLogger(PSNavTreeLinkExtension.class);
 
 }

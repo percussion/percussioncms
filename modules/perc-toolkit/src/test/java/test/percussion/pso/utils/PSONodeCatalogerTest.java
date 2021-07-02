@@ -24,8 +24,8 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.Sequence;
@@ -39,7 +39,7 @@ import com.percussion.services.contentmgr.IPSNodeDefinition;
 public class PSONodeCatalogerTest
 {
 
-   private static Log log = LogFactory.getLog(PSONodeCatalogerTest.class); 
+   private static final Logger log = LogManager.getLogger(PSONodeCatalogerTest.class);
    
    Mockery context; 
    PSONodeCataloger cut; 

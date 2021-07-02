@@ -31,8 +31,8 @@ import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,7 +48,7 @@ public class PSGoogleAnalyticsProviderHandler
          implements
             IPSAnalyticsProviderHandler
 {
-    private static final Log log = LogFactory.getLog(PSGoogleAnalyticsProviderHandler.class);
+    private static final Logger log = LogManager.getLogger(PSGoogleAnalyticsProviderHandler.class);
   /* *//* (non-Javadoc)
     * @see com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler#getProfiles(java.lang.String, java.lang.String)
     */

@@ -27,8 +27,8 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsContentSummaries;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -47,7 +47,7 @@ import static org.junit.Assert.fail;
 
 public class ActionActiveAssemblyControllerTest
 {
-   private static Log log = LogFactory.getLog(ActionActiveAssemblyControllerTest.class);
+   private static final Logger log = LogManager.getLogger(ActionActiveAssemblyControllerTest.class);
    TestableActiveAssemblyController cut; 
    Mockery context; 
    

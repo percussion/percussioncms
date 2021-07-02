@@ -41,8 +41,8 @@ import java.util.Collection;
 import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Deliver files via SFtp, a secure transfer mechanism. This borrows some 
@@ -55,7 +55,7 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSSFtpDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSFtpDeliveryHandler.class);
 
    /**
     * See {@link #getTimeout()}

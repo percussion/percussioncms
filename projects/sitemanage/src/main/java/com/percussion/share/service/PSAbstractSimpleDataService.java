@@ -28,8 +28,8 @@ import java.util.List;
 
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
@@ -64,5 +64,5 @@ public abstract class PSAbstractSimpleDataService<T, PK extends Serializable> ex
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 }

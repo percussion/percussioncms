@@ -31,13 +31,13 @@ package com.percussion.widgets.image.services.impl;
       import net.sf.ehcache.Cache;
       import net.sf.ehcache.Element;
       import org.apache.commons.lang.StringUtils;
-      import org.apache.commons.logging.Log;
-      import org.apache.commons.logging.LogFactory;
+      import org.apache.logging.log4j.Logger;
+      import org.apache.logging.log4j.LogManager;
       
       public class ImageCacheManagerImpl
         implements ImageCacheManager
       {
-    	  private Log log = LogFactory.getLog(ImageCacheManagerImpl.class);
+    	  private static final Logger log = LogManager.getLogger(ImageCacheManagerImpl.class);
         private long counter;
         private Cache cache;
       

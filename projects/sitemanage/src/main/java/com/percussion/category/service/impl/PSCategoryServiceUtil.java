@@ -43,8 +43,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -58,7 +58,7 @@ import com.percussion.delivery.service.IPSDeliveryInfoService;
 
 public class PSCategoryServiceUtil {
     public static final String DUMMYROOT = "dummyroot";
-    private static Log log = LogFactory.getLog(PSCategoryServiceUtil.class);
+    private static final Logger log = LogManager.getLogger(PSCategoryServiceUtil.class);
     private static final String CATEGORIES_UPDATE = "perc-metadata-services/metadata/categories/update/";
 
     public static void preserveDeletedNodes(List<PSCategoryNode> newCategories, List<PSCategoryNode> oldCategories, String site, List<String> parentSites) {

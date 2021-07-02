@@ -136,7 +136,7 @@ public class PSNavProxyFactory
    /**
     * Writes messages from this class to the log file.
     */
-   private static Logger log = LogManager.getLogger(PSNavProxyFactory.class);
+   private static final Logger log = LogManager.getLogger(PSNavProxyFactory.class);
 
    /**
     * The Active Assembly Processor proxy.

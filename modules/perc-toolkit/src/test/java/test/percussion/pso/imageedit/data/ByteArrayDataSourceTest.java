@@ -11,8 +11,8 @@ package test.percussion.pso.imageedit.data;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ import com.percussion.pso.imageedit.data.ByteArrayDataSource;
 
 public class ByteArrayDataSourceTest
 {
-   private static Log log = LogFactory.getLog(ByteArrayDataSourceTest.class);
+   private static final Logger log = LogManager.getLogger(ByteArrayDataSourceTest.class);
    
    ByteArrayDataSource cut; 
    @Before

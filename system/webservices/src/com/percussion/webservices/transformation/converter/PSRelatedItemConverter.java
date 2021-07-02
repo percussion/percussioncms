@@ -40,8 +40,8 @@ import java.util.Iterator;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 /**
@@ -175,7 +175,7 @@ public class PSRelatedItemConverter extends PSConverter
    /**
     * Logger for the assembler.
     */
-   public static Log ms_log = LogFactory.getLog(PSRelatedItemConverter.class);
+   public static final Logger ms_log = LogManager.getLogger(PSRelatedItemConverter.class);
 
 }
 

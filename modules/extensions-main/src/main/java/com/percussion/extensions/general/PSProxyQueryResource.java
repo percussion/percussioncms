@@ -49,8 +49,8 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -91,7 +91,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSProxyQueryResource.class);
+    private static final Logger log = LogManager.getLogger(PSProxyQueryResource.class);
 
     public boolean canModifyStyleSheet() {
         return false;

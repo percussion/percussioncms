@@ -42,7 +42,7 @@ import com.percussion.server.job.PSJobException;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -137,7 +137,7 @@ public class PSValidationJob extends PSDeployJob
          // getLocalizedMessage often returns empty string
          setStatusMessage("error: " + ex.toString());
          setStatus(-1);
-         LogFactory.getLog(getClass()).error("Error validating Deployer "
+         LogManager.getLogger(getClass()).error("Error validating Deployer "
                + "package", ex);
       }
       finally

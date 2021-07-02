@@ -75,8 +75,8 @@ import javax.jcr.RepositoryException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * JSF bean for performing the migration of variants into templates. This bean
@@ -133,7 +133,7 @@ public class PSVariantMigrationBean
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSVariantMigrationBean.class);
+   private static final Logger ms_log = LogManager.getLogger(PSVariantMigrationBean.class);
 
    /**
     * Represent a single variant "set". Each set contains one or more variants,

@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -34,7 +34,7 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 
 public class SimpleXmlViewTest
 {
-   Log log = LogFactory.getLog(SimpleXmlViewTest.class);
+   private static final Logger log = LogManager.getLogger(SimpleXmlViewTest.class);
    SimpleXmlView cut; 
    Map<String, Object> model; 
    @Before

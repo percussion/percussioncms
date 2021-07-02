@@ -1167,7 +1167,7 @@ public class PSRelationship extends PSComponent
    /**
     * The logger for this class.
     */
-   private static Logger log = LogManager.getLogger(PSRelationship.class);
+   private static final Logger log = LogManager.getLogger(PSRelationship.class);
 
    /*
     * The following strings define all elements/attributes used to parse/create

@@ -30,7 +30,8 @@ import com.percussion.utils.guid.IPSGuid;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The design model manages {@link IPSPublishingContext} objects.
@@ -82,7 +83,7 @@ public class PSContextModel extends PSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSContextModel");
+   private static final Logger ms_logger = LogManager.getLogger("PSContextModel");
    
  
 }

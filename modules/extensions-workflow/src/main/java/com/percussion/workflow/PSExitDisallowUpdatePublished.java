@@ -41,8 +41,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class is an extension that is part of Rhythmyx workflow engine. The
@@ -51,7 +51,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSExitDisallowUpdatePublished implements IPSRequestPreProcessor
 {
-   private static Log ms_log = LogFactory.getLog(PSExitDisallowUpdatePublished.class);
+   private static final Logger ms_log = LogManager.getLogger(PSExitDisallowUpdatePublished.class);
    /* Set the parameter count to not initialized */
    static private int ms_correctParamCount = NOT_INITIALIZED;
 

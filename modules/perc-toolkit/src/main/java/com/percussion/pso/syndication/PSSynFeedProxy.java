@@ -21,8 +21,8 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class PSSynFeedProxy {
 
-	private static final Log log = LogFactory.getLog(PSSynFeedProxy.class);
+	private static final Logger log = LogManager.getLogger(PSSynFeedProxy.class);
 	private static final String HTTP_IFMODIFIED="If-Modified-Since";
 	private static final String HTTP_IFNONEMATCH="If-None-Match";
 	

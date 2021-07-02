@@ -49,8 +49,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -79,8 +79,7 @@ import org.w3c.dom.NodeList;
  */
 public class PSSearchCommunityHandler implements IPSRequestPreProcessor
 {
-   protected static Log ms_log = LogFactory
-         .getLog(PSSearchCommunityHandler.class);
+   protected static Logger ms_log = LogManager.getLogger(PSSearchCommunityHandler.class);
 
    @SuppressWarnings("unused")
    public void preProcessRequest(Object[] params, IPSRequestContext request)

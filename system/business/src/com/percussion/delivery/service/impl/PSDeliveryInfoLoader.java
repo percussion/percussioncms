@@ -46,8 +46,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class responsible for loading the delivery servers configuration
@@ -62,7 +62,7 @@ public class PSDeliveryInfoLoader
     /**
      * Logger for this class
      */
-    public static Log log = LogFactory.getLog(PSDeliveryInfoLoader.class);
+    public static final Logger log = LogManager.getLogger(PSDeliveryInfoLoader.class);
 
     /**
      * Delivery servers list.

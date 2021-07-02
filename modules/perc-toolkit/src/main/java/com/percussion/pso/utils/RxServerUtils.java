@@ -24,8 +24,8 @@ import java.nio.channels.FileLock;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.Map;
 
 /**
@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public class RxServerUtils
 {
-   private static Log log = LogFactory.getLog(RxServerUtils.class);
+   private static final Logger log = LogManager.getLogger(RxServerUtils.class);
    
    /**
     * Static methods only, never constructed. 

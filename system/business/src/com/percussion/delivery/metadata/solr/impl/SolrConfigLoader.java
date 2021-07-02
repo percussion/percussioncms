@@ -35,15 +35,15 @@ import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class SolrConfigLoader
 {
    /**
     * Logger for this class
     */
-   public static Log log = LogFactory.getLog(SolrConfigLoader.class);
+   public static final Logger log = LogManager.getLogger(SolrConfigLoader.class);
 
    /**
     * The configuration file path, never <code>null</code>.

@@ -35,8 +35,8 @@ import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
@@ -63,7 +63,7 @@ public class PSSiteImporter
 {
     public static final String REDIRECTED_FROM_URL = "Redirect the original URL from  '{originalUrl}' to '{newUrl}'";
 
-    private static final Log log = LogFactory.getLog(PSSiteImporter.class);
+    private static final Logger log = LogManager.getLogger(PSSiteImporter.class);
     private static final String SITE_IMPORTER = "Site Importer";
     private static final String HTML = "html";
     private static final String HEAD = "head";

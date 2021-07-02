@@ -23,7 +23,8 @@
  */
 package com.percussion.fastforward.managednav;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -65,7 +66,7 @@ public class PSNavFolderSelector extends PSDefaultExtension
    public PSNavFolderSelector()
    {
       super();
-      m_log = Logger.getLogger(getClass());
+      m_log = LogManager.getLogger(getClass());
    }
 
    /**

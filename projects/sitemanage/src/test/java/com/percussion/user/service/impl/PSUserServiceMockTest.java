@@ -78,7 +78,7 @@ import static org.junit.Assert.assertTrue;
 @Ignore
 public class PSUserServiceMockTest
 {
-    private static Logger log = LogManager.getLogger(PSUserServiceMockTest.class);
+    private static final Logger log = LogManager.getLogger(PSUserServiceMockTest.class);
     
     Mockery context; 
     PSUserService cut; 

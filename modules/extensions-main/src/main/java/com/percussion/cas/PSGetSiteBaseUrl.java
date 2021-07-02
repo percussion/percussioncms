@@ -31,7 +31,8 @@ import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -143,5 +144,5 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger m_log = Logger.getLogger(this.getClass());
+   Logger m_log = LogManager.getLogger(this.getClass());
 }

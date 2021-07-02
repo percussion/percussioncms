@@ -25,8 +25,8 @@ package com.percussion.webservices;
 
 import com.percussion.server.PSServer;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.text.MessageFormat;
@@ -223,8 +223,7 @@ public class PSTemplateImageUtils
    /**
     * Logger to use, never <code>null</code>.
     */
-   public static Log ms_log = LogFactory
-         .getLog(PSTemplateImageUtils.class);
+   public static final Logger ms_log = LogManager.getLogger(PSTemplateImageUtils.class);
 
    /**
     * Wild card constant for any site

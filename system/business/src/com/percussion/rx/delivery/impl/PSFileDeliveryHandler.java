@@ -42,8 +42,8 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This handler delivers content to the file system.
@@ -64,7 +64,7 @@ public class PSFileDeliveryHandler extends PSBaseDeliveryHandler
     * Logger.
     */
    @SuppressWarnings("hiding")
-   static Log ms_log = LogFactory.getLog(PSFileDeliveryHandler.class);
+    private static final Logger ms_log = LogManager.getLogger(PSFileDeliveryHandler.class);
 
    /**
     * Remove the single item specified by location. This method can be
