@@ -282,8 +282,13 @@
             color: #$outputColor.text;
           }
 
-          .perc-social-button i {
-            font-family: FontAwesome !important;
+          /*CMS-8196 : updated fontawesome needs different font families as per fab & fas classes. So updating css.*/
+          .perc-social-button i .fab{
+            font-family: 'Font Awesome 5 Brands' !important;
+          }
+
+		  .perc-social-button i .fas{
+            font-family: 'Font Awesome 5 Free' !important;
           }
 
           #if( $hideDesktop == "true" )##
@@ -430,8 +435,17 @@
               });
 
               // Creates links and buttons and appends to the button container
+              //CMS-8196 : updated fontawesome needs different class for mail/envelope icon so adding class dynamically.
+              var iframeClass="";
               jQuery.each(percSocial, function(index, value) {
-                $('.perc-social-button-container').append('<a href="" target="_blank" data-enablepush="" data-pushvalue="" ><button class="perc-social-button"><i class="fab fa-fw" aria-hidden="true"></i></button></a>');
+
+                if(value.buttonClass==='perc-email-social-button'){
+                   iframeClass="fas fa-fw";
+                 }else{
+                   iframeClass="fab fa-fw";
+                }
+
+                $('.perc-social-button-container').append('<a href="" target="_blank" data-enablepush="" data-pushvalue="" ><button class="perc-social-button"><i class="'+iframeClass+'" aria-hidden="true"></i></button></a>');
                 if( percButtonConfiguration.buttonType == 'share' ) {
                   $('.perc-social-button-container a').last().attr("href", value.shareLink);
                 }
