@@ -37,8 +37,8 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -273,6 +273,6 @@ public class PSSiteImportLogViewer extends HttpServlet  {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteImportLogViewer.class);    
+    private static final Logger log = LogManager.getLogger(PSSiteImportLogViewer.class);
     
 }

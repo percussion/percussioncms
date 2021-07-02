@@ -48,8 +48,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.util.WebUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -264,7 +264,7 @@ public class PSSecurityFilter implements Filter
    /**
     * log to use, never <code>null</code>.
     */
-   static Log ms_log = LogFactory.getLog(PSSecurityFilter.class);
+    private static final Logger ms_log = LogManager.getLogger(PSSecurityFilter.class);
 
    /**
     * Identify the configured login policy. This can be overridden by the filter

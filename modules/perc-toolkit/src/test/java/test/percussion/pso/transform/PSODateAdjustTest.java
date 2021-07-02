@@ -15,8 +15,8 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -29,7 +29,7 @@ import com.percussion.server.IPSRequestContext;
 
 public class PSODateAdjustTest
 {
-   Log log = LogFactory.getLog(PSODateAdjustTest.class); 
+   private static final Logger log = LogManager.getLogger(PSODateAdjustTest.class);
    
    Mockery context;
    PSODateAdjust cut; 

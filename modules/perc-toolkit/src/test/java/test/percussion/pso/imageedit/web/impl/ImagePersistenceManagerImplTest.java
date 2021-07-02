@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -42,7 +42,7 @@ import com.percussion.webservices.content.IPSContentWs;
 
 public class ImagePersistenceManagerImplTest
 {
-   private static Log log = LogFactory.getLog(ImagePersistenceManagerImplTest.class);
+   private static final Logger log = LogManager.getLogger(ImagePersistenceManagerImplTest.class);
    
    Mockery context;
    ImagePersistenceManagerImpl cut;

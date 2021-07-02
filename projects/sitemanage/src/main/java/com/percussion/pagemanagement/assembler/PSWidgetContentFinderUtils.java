@@ -336,6 +336,6 @@ public class PSWidgetContentFinderUtils
     /**
      * Logger for this class
      */
-    private static Logger log = LogManager.getLogger(PSWidgetContentFinderUtils.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetContentFinderUtils.class);
 
 }

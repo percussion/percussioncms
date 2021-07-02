@@ -1263,7 +1263,6 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
 #tabs-4 #perc-styleTabs .ui-tabs-nav
 {
     background:none repeat scroll 0 0 #E6E6E9;
-    height:54px;
     padding:0 0 0 16px;
 }
 
@@ -2545,7 +2544,6 @@ li.ui-tabs-active #perc-tab-content,#perc-tab-content:hover,#ui-state-active
     background-color:#E6E6E6;
     font-size:16px;
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 
@@ -2561,7 +2559,6 @@ li.ui-tabs-active #perc-tab-layout,#perc-tab-layout:hover,#ui-state-active
     background-color:#E6E6E6;
     font-size:16px;
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 
@@ -2577,7 +2574,6 @@ li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#ui-state-active
     background-color:#E6E6E6;
     font-size:16px;
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 

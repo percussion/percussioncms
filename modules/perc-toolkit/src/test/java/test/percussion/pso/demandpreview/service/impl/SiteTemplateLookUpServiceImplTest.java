@@ -33,7 +33,7 @@ import static org.junit.Assert.fail;
 
 public class SiteTemplateLookUpServiceImplTest
 {
-	private static Logger log = LogManager.getLogger(SiteTemplateLookUpServiceImplTest.class);
+	private static final Logger log = LogManager.getLogger(SiteTemplateLookUpServiceImplTest.class);
 	
 	Mockery context;
 	TestLookUpService lookUp;

@@ -27,6 +27,12 @@ import com.percussion.util.IOTools;
 import com.percussion.util.PSOsTool;
 import com.percussion.util.PSServerShutdownHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -53,15 +59,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.logging.log4j.LogManager;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * This class is used to execute a small set of commands on a remote server.
@@ -315,16 +312,8 @@ public class PSProcessDaemon extends Thread
          props.load(is);
          
          PropertyConfigurator.configure(props);
-         ms_logger = Logger.getLogger(PSProcessDaemon.class);
-         Level lvl = ms_logger.getEffectiveLevel();
-         log.info("Logging for system set to {} .", lvl.toString());
-         
-         //tell user where to change it
-         String msg = "Loaded properties from: " + location.getAbsolutePath();
-         if (lvl.equals(Level.OFF))
-            log.info(msg);
-         else
-            ms_logger.info(msg);
+
+         log.info("Loaded properties from: {}" , location.getAbsolutePath());
          
          PSProcessDaemon daemon = new PSProcessDaemon(props);
          if ( PSOsTool.isWindowsPlatform() )
@@ -334,12 +323,8 @@ public class PSProcessDaemon extends Thread
             sp.start();
          }
          
-         // Show something in case all logging is disabled
-         boolean b = ms_logger.isEnabledFor(Priority.INFO);
-         if (!b )
-         {
-            log.info("Rhythmyx Process Daemon is listening on port {} ...",props.getProperty("port"));
-         }
+
+         log.info("Process Daemon is listening on port {} ...",props.getProperty("port"));
          
          //wait for it to finish
          daemon.join();
@@ -1282,7 +1267,7 @@ public class PSProcessDaemon extends Thread
     * The log4j logger for this class. Initialized in <code>main</code>, then
     * never <code>null</code>.
     */
-   private static Logger ms_logger;
+   private static final Logger ms_logger = LogManager.getLogger(PSProcessDaemon.class);
    
    /**
     * This is used to signal a shutdown request has been scheduled.

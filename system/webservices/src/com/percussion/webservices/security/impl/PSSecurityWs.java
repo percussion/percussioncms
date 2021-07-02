@@ -48,7 +48,7 @@ import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.transaction.annotation.Transactional;
@@ -168,7 +168,7 @@ public class PSSecurityWs extends PSSecurityBaseWs implements IPSSecurityWs
             catch (RuntimeException e)
             {
                // just in case
-               LogFactory.getLog(getClass()).error(e);
+               LogManager.getLogger(getClass()).error(e);
             }
          }
       }

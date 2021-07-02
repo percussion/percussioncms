@@ -31,7 +31,8 @@ import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author dougrand
@@ -66,7 +67,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
          throw new IllegalArgumentException("rxdir must never be null");
       }
       
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       // Check the install log for warnings or errors
       l.info("Checking the installer log for warnings or errors");
       checkLogFile(rxdir);
@@ -111,7 +112,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
     */
    private void checkUpgradeLogs(File rxdir) throws IOException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       File upgrade = new File(rxdir, "upgrade");
 
       if (upgrade.exists() == false)
@@ -178,7 +179,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
     */
    private void checkLogFile(File rxdir) throws IOException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       File installlog = new File(rxdir, "rxconfig/Installer/install.log");
 
       if (installlog.exists() == false)

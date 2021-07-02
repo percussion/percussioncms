@@ -28,8 +28,8 @@ import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.service.IPSAsyncJobStatusRestService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -104,6 +104,6 @@ public class PSAsyncJobStatusRestService implements IPSAsyncJobStatusRestService
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSAsyncJobStatusRestService.class);
+    public static final Logger log = LogManager.getLogger(PSAsyncJobStatusRestService.class);
 
 }

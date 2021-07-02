@@ -35,8 +35,8 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteHelper;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -51,7 +51,7 @@ import java.util.List;
 public class PSDeliveryInfoService implements IPSDeliveryInfoService
 {
 
-    private static final Log log = LogFactory.getLog(PSDeliveryInfoService.class);
+    private static final Logger log = LogManager.getLogger(PSDeliveryInfoService.class);
 
     public static final String DTS_CONFIG_FILENAME="rxconfig/DeliveryServer/delivery-servers.xml";
 

@@ -53,7 +53,8 @@ import junit.framework.TestResult;
 import junit.textui.TestRunner;
 
 import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -152,8 +153,7 @@ public class PSJunitRequestHandler implements IPSLoadableRequestHandler
       
       // Appender to craft xml node's to display in the
       // result doc.
-      Logger l = Logger.getRootLogger();
-      l.addAppender(new XmlDocAppender());
+      Logger l = LogManager.getLogger();
       
       try
       {                           

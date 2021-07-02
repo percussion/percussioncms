@@ -31,8 +31,8 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -724,7 +724,7 @@ public class PSUserSessionManager extends Thread
     */
    private static volatile boolean ms_stopped = false;
 
-   private static Log log = LogFactory.getLog(PSUserSessionManager.class);
+   private static final Logger log = LogManager.getLogger(PSUserSessionManager.class);
 }
 
 

@@ -48,8 +48,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -84,8 +84,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSLegacyAutoSlotContentFinder.class);
+   private static final Logger ms_log = LogManager.getLogger(PSLegacyAutoSlotContentFinder.class);
    
    /**
     * These selectors and arguments should be removed before calling the 

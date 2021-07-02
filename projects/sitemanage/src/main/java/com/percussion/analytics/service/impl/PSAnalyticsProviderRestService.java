@@ -32,8 +32,8 @@ import com.percussion.share.data.PSGAEntries;
 import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ import java.io.IOException;
 @Component("analyticsProviderRestService")
 public class PSAnalyticsProviderRestService
 {
-    private static final Log log = LogFactory.getLog(PSAnalyticsProviderRestService.class);
+    private static final Logger log = LogManager.getLogger(PSAnalyticsProviderRestService.class);
 
     /**
      * @param providerService

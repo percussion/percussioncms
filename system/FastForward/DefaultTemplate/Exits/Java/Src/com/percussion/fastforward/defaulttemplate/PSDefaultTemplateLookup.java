@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author adamgent
@@ -147,5 +147,5 @@ public class PSDefaultTemplateLookup extends PSJexlUtilBase {
 		return template.getPublishWhen() == IPSAssemblyTemplate.PublishWhen.Default;
 	}
 
-	Logger log = Logger.getLogger(this.getClass());
+	Logger log = LogManager.getLogger(this.getClass());
 }

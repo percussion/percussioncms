@@ -28,8 +28,8 @@ import com.percussion.delivery.email.data.IPSEmailRequest;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
@@ -165,7 +165,7 @@ public class PSEmailHelper implements IPSEmailHelper
     /**
      * Log for this class.
      */
-    private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LogManager.getLogger(PSEmailHelper.class);
     
     
 }

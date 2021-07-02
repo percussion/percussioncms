@@ -30,7 +30,9 @@ import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.io.IOException;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Writes the postbody for a HTML form, using <code>multipart/form-data<code>
@@ -325,7 +327,7 @@ class PSMultipartWriter extends OutputStreamWriter
    /**
     * The logger for this class.
     */
-   private Logger m_Logger = Logger.getLogger(this.getClass());;
+   private static final Logger m_Logger = LogManager.getLogger(PSMultipartWriter.class);;
 
    /**
     * The multi-part form separator.

@@ -28,8 +28,8 @@ import com.percussion.server.PSServer;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.utils.jndi.PSJndiObjectLocator;
 import com.percussion.utils.servlet.PSServletUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -91,6 +91,6 @@ public class PSContextLoaderListener extends ContextLoaderListener {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log ms_log = LogFactory.getLog(PSContextLoaderListener.class);
+    private static final Logger ms_log = LogManager.getLogger(PSContextLoaderListener.class);
 
 }

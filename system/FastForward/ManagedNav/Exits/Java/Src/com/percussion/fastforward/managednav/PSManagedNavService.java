@@ -74,8 +74,8 @@ import java.util.Map.Entry;
 import javax.jcr.Node;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -1198,7 +1198,7 @@ public class PSManagedNavService implements IPSManagedNavService
    /**
     * Logger for this service.
     */
-   private static Log log = LogFactory.getLog(PSManagedNavService.class);
+   private static final Logger log = LogManager.getLogger(PSManagedNavService.class);
    
    /**
     * The dummy template ID, used for create AA relationship between navigation nodes

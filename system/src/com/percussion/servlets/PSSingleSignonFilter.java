@@ -45,8 +45,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A filter designed to redirect the requests to the percussion cm server login
@@ -228,7 +228,7 @@ public class PSSingleSignonFilter implements Filter
    /**
     * log to use, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSSingleSignonFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSingleSignonFilter.class);
 
    /**
     * Context name of Rhythmyx server application context

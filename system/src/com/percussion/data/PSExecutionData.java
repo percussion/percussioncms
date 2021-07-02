@@ -52,8 +52,8 @@ import java.util.Stack;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 
@@ -73,7 +73,7 @@ import org.w3c.dom.Document;
  */
 public class PSExecutionData 
 {
-   static Log ms_log = LogFactory.getLog(PSExecutionData.class);
+    private static final Logger ms_log = LogManager.getLogger(PSExecutionData.class);
    
    /**
     * Construct an execution object for this request.

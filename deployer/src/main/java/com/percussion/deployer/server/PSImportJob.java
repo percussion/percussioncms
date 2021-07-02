@@ -625,6 +625,7 @@ public class PSImportJob extends PSDeployJob
             log.info("Skipping package dependency entry for package {} with dependent {}, " +
                         "due to failure to find the package info object with that name.",
                         pkgInfo.getPackageDescriptorName(), pkgName);
+
             continue;
          }
          PSPkgDependency pkgDep = pkgService.createPkgDependency();

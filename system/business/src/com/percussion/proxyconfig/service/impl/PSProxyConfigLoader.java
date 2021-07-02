@@ -45,8 +45,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author LucasPiccoli
@@ -57,7 +57,7 @@ public class PSProxyConfigLoader
    /**
     * Logger for this class
     */
-   public static final Log log = LogFactory.getLog(PSProxyConfigLoader.class);
+    public static final Logger log = LogManager.getLogger(PSProxyConfigLoader.class);
    
    /**
     * List of all proxy configurations loaded from the file

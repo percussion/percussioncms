@@ -34,8 +34,8 @@ import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Class to touch files under web_resources that may have been "back-dated" by the 
@@ -45,7 +45,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSTouchFiles implements IPSStartupProcess
 {
-    private static final Log log = LogFactory.getLog(PSTouchFiles.class);
+    private static final Logger log = LogManager.getLogger(PSTouchFiles.class);
             
     private String dirNames = "";
     private String rootDir = "";

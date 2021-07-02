@@ -33,8 +33,8 @@ import com.percussion.pagemanagement.data.PSRegionTree;
 import com.percussion.pagemanagement.data.PSRegionTreeUtils;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -309,7 +309,7 @@ public abstract class PSAbstractMergedRegionTree {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 
     
 }

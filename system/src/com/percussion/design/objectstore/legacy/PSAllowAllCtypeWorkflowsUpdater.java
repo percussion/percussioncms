@@ -47,7 +47,8 @@ import java.util.List;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Updates the content editors workflow info object. For CM1, all workflows
@@ -145,8 +146,8 @@ public class PSAllowAllCtypeWorkflowsUpdater implements IPSComponentUpdater
                   }
                   catch (PSSecurityException e)
                   {
-                     Logger logger = Logger.getLogger(this.getClass());
-                     logger.error("Unable to save default acl for worflow " + wfGuid.getUUID(), e);
+                     Logger logger = LogManager.getLogger(this.getClass());
+                     logger.error("Unable to save default acl for workflow {}" , wfGuid.getUUID());
                   }                  
                }
             }

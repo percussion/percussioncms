@@ -59,22 +59,20 @@ import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.Node;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.Node;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * Functions for use by jexl to calculate locations in assembly. Note that these
@@ -798,7 +796,7 @@ public class PSLocationUtils extends PSJexlUtilBase
    /**
     * Logger for location utils
     */
-   Logger ms_log = Logger.getLogger(this.getClass());
+   Logger ms_log = LogManager.getLogger(this.getClass());
 
    /**
     * Calculate the base site path by calling the existing UDF

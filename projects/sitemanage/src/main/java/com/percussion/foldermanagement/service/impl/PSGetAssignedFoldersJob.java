@@ -28,8 +28,8 @@ import com.percussion.foldermanagement.data.PSGetAssignedFoldersJobStatus;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.impl.PSAsyncJob;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -50,7 +50,7 @@ public class PSGetAssignedFoldersJob extends PSAsyncJob
     private boolean includeFoldersWithDifferentWorkflow;
     PSGetAssignedFoldersJobStatus status;
     
-    private static final Log log = LogFactory.getLog(PSGetAssignedFoldersJob.class);
+    private static final Logger log = LogManager.getLogger(PSGetAssignedFoldersJob.class);
 
     
     @Override

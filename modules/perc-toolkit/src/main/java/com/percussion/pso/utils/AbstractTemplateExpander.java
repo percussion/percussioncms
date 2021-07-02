@@ -23,8 +23,8 @@ import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
@@ -62,7 +62,7 @@ import com.percussion.utils.guid.IPSGuid;
  */
 public abstract class AbstractTemplateExpander implements IPSTemplateExpander
 {
-   Log log = LogFactory.getLog(AbstractTemplateExpander.class);
+   private static final Logger log = LogManager.getLogger(AbstractTemplateExpander.class);
    
    
    private boolean NeedsContentNode = false; 

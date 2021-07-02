@@ -55,7 +55,7 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
     /**
      * Logger.
      */
-    private static Logger log = LogManager.getLogger(PSFtpsDeliveryHandler.class);
+    private static final Logger log = LogManager.getLogger(PSFtpsDeliveryHandler.class);
 
     private int bufferSize=0;
 

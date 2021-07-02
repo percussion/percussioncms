@@ -506,7 +506,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
         }
     }
     
-    private static Logger log = LogManager.getLogger(PSContentMigrationService.class);
+    private static final Logger log = LogManager.getLogger(PSContentMigrationService.class);
 
 
 }

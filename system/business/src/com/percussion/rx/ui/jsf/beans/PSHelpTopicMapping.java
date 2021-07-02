@@ -27,8 +27,8 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility class used to manage the mapping between the help topic to its
@@ -89,5 +89,5 @@ public class PSHelpTopicMapping
    /**
     * The logger
     */
-   private static Log ms_log = LogFactory.getLog(PSHelpTopicMapping.class);  
+   private static final Logger ms_log = LogManager.getLogger(PSHelpTopicMapping.class);  
 }

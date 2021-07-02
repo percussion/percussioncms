@@ -41,8 +41,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.STAXEventReader;
@@ -313,7 +313,7 @@ public class PSObjectRestClient extends PSRestClient
             /**
              * The log instance to use for this class, never <code>null</code>.
              */
-            private static final Log log = LogFactory.getLog(DataValidationRestClientException.class);
+            private static final Logger log = LogManager.getLogger(DataValidationRestClientException.class);
         }
     
     public static class DataRestClientException extends RestClientException {
@@ -405,7 +405,7 @@ public class PSObjectRestClient extends PSRestClient
         /**
          * The log instance to use for this class, never <code>null</code>.
          */
-        private static final Log log = LogFactory.getLog(DataRestClientException.class);
+        private static final Logger log = LogManager.getLogger(DataRestClientException.class);
         
     }
     

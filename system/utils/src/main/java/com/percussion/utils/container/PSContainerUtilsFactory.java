@@ -32,8 +32,8 @@ import com.percussion.utils.container.adapters.JettyInstallationPropertiesConfig
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,7 +50,7 @@ public class PSContainerUtilsFactory {
     /**
      * Logger
      */
-    private static Log ms_log = LogFactory.getLog(PSContainerUtilsFactory.class);
+    private static final Logger ms_log = LogManager.getLogger(PSContainerUtilsFactory.class);
 
     static {
 

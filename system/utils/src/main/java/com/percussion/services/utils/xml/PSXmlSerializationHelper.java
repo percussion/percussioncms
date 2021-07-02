@@ -39,8 +39,8 @@ import org.apache.commons.betwixt.strategy.NameMapper;
 import org.apache.commons.betwixt.strategy.PropertySuppressionStrategy;
 import org.apache.commons.betwixt.strategy.TypeBindingStrategy;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -66,7 +66,7 @@ public class PSXmlSerializationHelper
    /**
     * Static for logging
     */
-   static Log ms_log = LogFactory.getLog(PSXmlSerializationHelper.class);
+   private static final Logger ms_log = LogManager.getLogger(PSXmlSerializationHelper.class);
 
    /**
     * Static used for method lookup

@@ -39,8 +39,8 @@ import javax.servlet.http.HttpServletResponse;
 import nl.bitwalker.useragentutils.Browser;
 import nl.bitwalker.useragentutils.UserAgent;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * BrowserDetection Filter Detects which browser a user is running. If the
@@ -50,7 +50,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSBrowserDetect implements Filter
 {
-   static Log log = LogFactory.getLog(PSBrowserDetect.class);
+    private static final Logger log = LogManager.getLogger(PSBrowserDetect.class);
 
    private static final String cookieName = "unsupportedBrowserWarningSeen";
 

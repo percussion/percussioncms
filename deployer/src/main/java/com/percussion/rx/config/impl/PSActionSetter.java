@@ -39,7 +39,8 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -542,7 +543,7 @@ public class PSActionSetter extends PSSimplePropertySetter
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSActionSetter");
+   private static final Logger ms_logger = LogManager.getLogger("PSActionSetter");
 
    /**
     * Name of the action for logging purpose, initialized in apply property

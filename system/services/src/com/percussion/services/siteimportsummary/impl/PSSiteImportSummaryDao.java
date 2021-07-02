@@ -30,8 +30,8 @@ import com.percussion.services.siteimportsummary.data.PSSiteImportSummary;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSBaseBean;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -46,7 +46,7 @@ import java.util.List;
 @Transactional
 public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
 {
-   private static final Log log = LogFactory.getLog(PSSiteImportSummaryDao.class);
+   private static final Logger log = LogManager.getLogger(PSSiteImportSummaryDao.class);
    /**
     * Constant for the key used to generate summary ids.
     */

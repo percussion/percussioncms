@@ -41,8 +41,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.percussion.rx.delivery.IPSDeliveryErrors;
@@ -115,7 +115,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
    /**
     * Logger.
     */
-   static Log ms_log = LogFactory.getLog(PSBaseDeliveryHandler.class);
+    protected static final Logger ms_log = LogManager.getLogger(PSBaseDeliveryHandler.class);
    
    @Autowired
    private IPSDeliveryManager ms_deliveryManager;

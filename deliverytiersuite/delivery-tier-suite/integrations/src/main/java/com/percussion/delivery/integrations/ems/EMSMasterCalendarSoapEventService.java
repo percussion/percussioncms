@@ -65,7 +65,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	private String mcPassword;
 	private String mcEndpoint;
 	
-	private static Logger log = LogManager.getLogger(EMSMasterCalendarSoapEventService.class);
+	private static final Logger log = LogManager.getLogger(EMSMasterCalendarSoapEventService.class);
 	
 	public EMSMasterCalendarSoapEventService(String mcUserName, String mcPassword, String mcEndpoint){
 		this.mcUserName = mcUserName;

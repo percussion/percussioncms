@@ -40,8 +40,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -51,7 +51,7 @@ public class PSCategoryControlUtils {
 	
     private static volatile IPSCategoryService categoryService = null;
     
-	public static Log log = LogFactory.getLog(PSCategoryControlUtils.class);
+	public static final Logger log = LogManager.getLogger(PSCategoryControlUtils.class);
 	
 	public static PSCategory getCategories(String siteName, String rootPath, boolean includeDeleted, boolean includeNotSelectable) throws PSDataServiceException {
 		

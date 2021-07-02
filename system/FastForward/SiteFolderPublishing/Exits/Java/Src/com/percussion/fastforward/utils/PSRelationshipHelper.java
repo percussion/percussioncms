@@ -41,7 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 
 /**
@@ -820,6 +820,6 @@ public class PSRelationshipHelper
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger m_log = Logger.getLogger(getClass());
+   private Logger m_log = LogManager.getLogger(getClass());
 
 }

@@ -74,8 +74,8 @@ import javax.jcr.ValueFormatException;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The debug assembler outputs text/html that has the input binding data,
@@ -93,7 +93,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
    /**
     * Logger for the debug assembler
     */
-   private static Log ms_log = LogFactory.getLog(PSDebugAssembler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSDebugAssembler.class);
 
    /**
     * Counter used to create ids for the output document. The ids are used for

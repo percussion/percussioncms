@@ -30,22 +30,18 @@
 
 .ui-tabs-selected #perc-tab-category {
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 .ui-tabs-selected #perc-tab-users{
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 .ui-tabs-selected #perc-tab-roles{
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 .ui-tabs-selected #perc-tab-workflow{
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 

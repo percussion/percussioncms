@@ -34,7 +34,8 @@ import com.percussion.utils.guid.IPSGuid;
 import java.text.MessageFormat;
 import java.util.Collections;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSLocaleModel extends PSLimitedDesignModel
 {
@@ -99,6 +100,6 @@ public class PSLocaleModel extends PSLimitedDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSLocaleModel");
+   private static final Logger ms_logger = LogManager.getLogger("PSLocaleModel");
 
 }

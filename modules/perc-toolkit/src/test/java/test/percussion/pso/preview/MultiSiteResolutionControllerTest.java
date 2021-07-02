@@ -28,8 +28,8 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -55,7 +55,7 @@ import static org.junit.Assert.fail;
  */
 public class MultiSiteResolutionControllerTest
 {
-   Log log = LogFactory.getLog(MultiSiteResolutionControllerTest.class);
+   private static final Logger log = LogManager.getLogger(MultiSiteResolutionControllerTest.class);
    Mockery context; 
    MultiSiteResolutionController cut;
    MockHttpServletRequest req;

@@ -11,8 +11,8 @@ package test.percussion.pso.imageedit.services.cache.impl;
 
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +21,7 @@ import com.percussion.pso.imageedit.services.cache.impl.ImageCacheManagerImpl;
 
 public class ImageCacheManagerImplTest
 {
-   private static Log log = LogFactory.getLog(ImageCacheManagerImplTest.class);
+   private static final Logger log = LogManager.getLogger(ImageCacheManagerImplTest.class);
  
    TestableImageCacheManagerImpl cut; 
    @Before

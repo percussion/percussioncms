@@ -59,7 +59,7 @@ public class PSVelocityUtils
 	private static final String REPLACE = "replace";
 	private static final String AUTO_FIX_MACRO_FILES = "autoFixMacroFiles";
 
-	private static Logger log = LogManager.getLogger(PSVelocityUtils.class);
+	private static final Logger log = LogManager.getLogger(PSVelocityUtils.class);
 	private static Properties autocorrectPatterns;
 
    /**

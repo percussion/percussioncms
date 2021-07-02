@@ -25,8 +25,8 @@ package com.percussion.user.service.impl;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -63,5 +63,5 @@ public class PSDefaultPasswordEncryptionBeanTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSDefaultPasswordEncryptionBeanTest.class);
+    private static final Logger log = LogManager.getLogger(PSDefaultPasswordEncryptionBeanTest.class);
 }

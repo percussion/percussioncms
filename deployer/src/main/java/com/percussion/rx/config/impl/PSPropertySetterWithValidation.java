@@ -28,8 +28,8 @@ import com.percussion.rx.config.IPSPropertySetter;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.services.error.PSNotFoundException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,5 +99,5 @@ public class PSPropertySetterWithValidation extends PSSimplePropertySetter
    /**
     * Logger for this class.
     */
-   private static final Log ms_log = LogFactory.getLog("PSPropertySetterWithValidation");
+   private static final Logger ms_log = LogManager.getLogger("PSPropertySetterWithValidation");
 }

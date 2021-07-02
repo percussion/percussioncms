@@ -25,7 +25,8 @@ package com.percussion.data;
 
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -136,7 +137,7 @@ public class PSCachedStylesheet
             }
             if (m_ssTemplate == null)
             {
-               Logger l = Logger.getLogger(getClass());
+               Logger l = LogManager.getLogger(getClass());
                Document doc = null;
                try
                {

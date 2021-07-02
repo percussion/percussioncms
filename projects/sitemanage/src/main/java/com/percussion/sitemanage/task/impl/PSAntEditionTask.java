@@ -69,8 +69,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildEvent;
@@ -565,7 +565,7 @@ public class PSAntEditionTask implements IPSEditionTask
         
         private IPSPubServer pubServer;
 
-        private static final Log log = LogFactory.getLog("AntEditionTaskLogger");
+        private static final Logger log = LogManager.getLogger("AntEditionTaskLogger");
 
         public AntEditionTaskListener(String sitename, String editionName, String temporaytPath, IPSPubServer pubServer)
         {

@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
@@ -73,7 +73,7 @@ import java.util.Collections;
  */
 public class NodeService implements NodeServiceInf {
 
-   protected final Log logger = LogFactory.getLog(getClass());
+   protected static final Logger logger = LogManager.getLogger(NodeService.class);
    
    /////////////////////////////////////////////////////////
    
