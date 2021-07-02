@@ -35,7 +35,8 @@ import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.data.PSDateAdapter;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.xml.bind.JAXBException;
@@ -45,7 +46,7 @@ public class PSJAXBContextResolver implements ContextResolver<ObjectMapper> {
 
     private ObjectMapper objectMapper;
     private Class[] types = {PSCategory.class, PSCategoryNode.class, PSDateAdapter.class};
-    private static final Logger log = Logger.getLogger(PSJAXBContextResolver.class.getName());
+    private static final Logger log = LogManager.getLogger(PSJAXBContextResolver.class.getName());
 
     public PSJAXBContextResolver() throws JAXBException {
         //this.context =  new JSONJAXBContext(JSONConfiguration.natural().build(), types);

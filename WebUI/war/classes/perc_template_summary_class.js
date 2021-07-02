@@ -138,7 +138,7 @@
 		 * undefined.
 		 */		
 		this.setAssignedSites = function(siteIds){
-         if(siteIds == null || siteIds == 'undefined')
+         if(siteIds == null || typeof siteIds === 'undefined')
             siteIds = new Array();
          this.siteIds = siteIds;
       }

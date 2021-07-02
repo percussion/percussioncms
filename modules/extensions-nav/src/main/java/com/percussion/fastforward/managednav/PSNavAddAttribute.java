@@ -28,7 +28,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -88,7 +89,7 @@ public class PSNavAddAttribute extends PSDefaultExtension
          IPSResultDocumentProcessor
 {
 
-   private static Logger logger = Logger.getLogger(PSNavAddAttribute.class);
+   private static final Logger logger = LogManager.getLogger(PSNavAddAttribute.class);
 
    /**
     * This exit never modifies the stylesheet.
@@ -185,7 +186,7 @@ public class PSNavAddAttribute extends PSDefaultExtension
       /**
        * Debug logger for the inner class.
        */
-      Logger logger = Logger.getLogger(Worker.class);
+      Logger logger = LogManager.getLogger(Worker.class);
 
       /**
        * The callers request context.

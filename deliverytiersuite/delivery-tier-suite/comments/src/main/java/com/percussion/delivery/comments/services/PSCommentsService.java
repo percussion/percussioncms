@@ -37,8 +37,8 @@ import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -52,7 +52,7 @@ public class PSCommentsService implements IPSCommentsService
     /**
      * Logger for this class
      */
-    public static Log log = LogFactory.getLog(PSCommentsService.class);
+    public static final Logger log = LogManager.getLogger(PSCommentsService.class);
     
     private IPSCommentsDao dao;
 

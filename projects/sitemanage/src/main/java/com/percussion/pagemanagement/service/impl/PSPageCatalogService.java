@@ -61,8 +61,8 @@ import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -110,7 +110,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
     private Integer defaultWorkflowId = null;
     
     private static String CATALOG_FOLDERS = pathSeparator() + concatPath(SECTION_SYSTEM_FOLDER_NAME, PAGE_CATALOG);
-    private static Log log = LogFactory.getLog(PSPageCatalogService.class);
+    private static final Logger log = LogManager.getLogger(PSPageCatalogService.class);
     
     @Autowired
     public PSPageCatalogService(IPSFolderHelper folderHelper, IPSPageDao pageDao, IPSiteDao siteDao,

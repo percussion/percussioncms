@@ -68,8 +68,8 @@ import net.sf.cglib.core.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The type configuration is the heart of the legacy content repository. This is
@@ -119,7 +119,7 @@ public class PSTypeConfiguration implements NodeType, Serializable
    /**
     * A static logger
     */
-   private static Log ms_logger = LogFactory.getLog("PSTypeConfiguration");
+   private static final Logger ms_logger = LogManager.getLogger("PSTypeConfiguration");
 
    /**
     * Generate class names for classes generated that map tables using hibernate

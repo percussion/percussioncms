@@ -24,7 +24,8 @@
 
 package com.percussion.services.filestorage.data;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -42,7 +43,7 @@ import java.sql.Blob;
 public class PSBinaryData implements Serializable
 {
    
-   private static Logger ms_logger = Logger.getLogger(PSBinaryData.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSBinaryData.class);
    /**
     * 
     */

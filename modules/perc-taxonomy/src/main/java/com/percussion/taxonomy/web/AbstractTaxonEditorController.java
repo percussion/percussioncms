@@ -35,8 +35,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.taxonomy.domain.Attribute;
 import com.percussion.taxonomy.domain.Node;
@@ -61,7 +61,7 @@ public abstract class AbstractTaxonEditorController extends AbstractControllerWi
     private static final Logger log = LogManager.getLogger(AbstractTaxonEditorController.class);
 
     protected final boolean DEBUG = false;
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LogManager.getLogger(getClass());
     protected TaxonomyService taxonomyService;
     protected LanguageService languageService;
     protected NodeService nodeService;

@@ -37,8 +37,8 @@ import com.percussion.share.test.PSRestTestCase;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -61,7 +61,7 @@ public class PSPubServerServiceTest extends PSRestTestCase<PSPubServerServiceRes
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPubServerServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSPubServerServiceTest.class);
 
     @Override
     protected PSPubServerServiceRestClient getRestClient(String baseUrl)

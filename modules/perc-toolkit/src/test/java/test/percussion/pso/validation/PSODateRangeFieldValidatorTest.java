@@ -16,8 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -30,7 +30,7 @@ import com.percussion.server.IPSRequestContext;
 
 public class PSODateRangeFieldValidatorTest
 {
-   Log log = LogFactory.getLog(PSODateRangeFieldValidatorTest.class);
+   private static final Logger log = LogManager.getLogger(PSODateRangeFieldValidatorTest.class);
    
    Mockery context; 
    IPSRequestContext request;

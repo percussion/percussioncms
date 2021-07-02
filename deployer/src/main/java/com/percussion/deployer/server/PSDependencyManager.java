@@ -62,7 +62,8 @@ import com.percussion.util.PSIteratorUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.File;
@@ -2304,7 +2305,7 @@ public class PSDependencyManager
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger
+   private static final Logger ms_log = LogManager
          .getLogger("com.percussion.deployer.server.PSDependencyManager");
 
    /**

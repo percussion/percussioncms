@@ -41,8 +41,8 @@ import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author JaySeletz
@@ -50,7 +50,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSStartupProcessManager implements IPSNotificationListener, IPSStartupProcessManager
 {
-   private static final Log log = LogFactory.getLog(PSStartupProcessManager.class);
+   private static final Logger log = LogManager.getLogger(PSStartupProcessManager.class);
    
    List<IPSStartupProcess> m_startupProcesses = new ArrayList<IPSStartupProcess>();
    

@@ -29,8 +29,8 @@ import com.percussion.services.audit.IPSDesignObjectAuditService;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Automatically deletes old audit log entries on a daily basis as configured by
@@ -215,7 +215,7 @@ public class PSAuditLogReaper extends Thread
    /**
     * Logger for the reaper, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSAuditLogReaper.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAuditLogReaper.class);
    
    /**
     * Object for locking synchronized blocks.

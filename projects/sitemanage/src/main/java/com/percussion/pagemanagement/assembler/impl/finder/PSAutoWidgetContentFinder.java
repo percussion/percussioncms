@@ -27,8 +27,8 @@ package com.percussion.pagemanagement.assembler.impl.finder;
 import com.percussion.pagemanagement.assembler.PSWidgetInstance;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.impl.finder.PSAutoFinderUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -85,6 +85,6 @@ public class PSAutoWidgetContentFinder extends PSWidgetContentFinder
     /**
      * Log for this class.
      */
-    private static Log ms_logger = LogFactory.getLog(PSAutoWidgetContentFinder.class);
+    private static final Logger ms_logger = LogManager.getLogger(PSAutoWidgetContentFinder.class);
 
 }

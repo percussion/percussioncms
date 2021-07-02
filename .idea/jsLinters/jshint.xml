@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JSHintConfiguration" version="2.10.2" use-config-file="true" use-custom-config-file="true" custom-config-file-path="$PROJECT_DIR$/.jshintrc">
+  <component name="JSHintConfiguration" version="2.10.2" use-config-file="true" custom-config-file-path="$PROJECT_DIR$/modules/perc-jetty/target/distribution/base/webapps/Rhythmyx/cm/cui/components/twitter-bootstrap-3.0.0/js/.jshintrc">
     <option asi="false" />
     <option bitwise="true" />
     <option boss="false" />

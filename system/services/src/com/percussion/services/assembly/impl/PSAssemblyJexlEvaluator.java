@@ -30,8 +30,8 @@ import com.percussion.utils.jexl.PSJexlEvaluator;
 
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Override service implementation to load bound functions
@@ -40,7 +40,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSAssemblyJexlEvaluator extends PSServiceJexlEvaluatorBase
 {
-   private static Log ms_log1 = LogFactory.getLog(PSAssemblyJexlEvaluator.class);
+   private static final Logger ms_log1 = LogManager.getLogger(PSAssemblyJexlEvaluator.class);
    
    private static IPSScript ms_rx = null;
    private static IPSScript ms_user = null;

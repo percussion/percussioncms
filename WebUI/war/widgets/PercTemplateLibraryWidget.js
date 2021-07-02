@@ -214,7 +214,7 @@
 
         destroy: function()
         {
-            $.widget.prototype.apply(this, arguments);
+			this._destroy();
         }
     });
 

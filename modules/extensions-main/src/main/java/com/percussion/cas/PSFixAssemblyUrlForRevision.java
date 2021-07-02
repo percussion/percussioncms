@@ -37,7 +37,8 @@ import com.percussion.util.PSParseUrlQueryString;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -340,6 +341,6 @@ public class PSFixAssemblyUrlForRevision extends PSDefaultExtension
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger
+   private static final Logger ms_log = LogManager
          .getLogger(PSFixAssemblyUrlForRevision.class);
 }

@@ -39,7 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author dougrand
@@ -130,7 +131,7 @@ public class PSVerifyInstalledFiles implements IPSVerify
          throw new IllegalArgumentException("rxdir must never be null");
       }
 
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
 
       PSInstallation existing = new PSInstallation();
       generate(rxdir, existing);

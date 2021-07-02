@@ -30,8 +30,8 @@ import java.io.File;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *    This class will use a default encrypting scheme to
@@ -39,7 +39,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class DefaultPasswordFilter implements IPSPasswordFilter
 {
-   public static Log log = LogFactory.getLog(DefaultPasswordFilter.class); 
+   public static final Logger log = LogManager.getLogger(DefaultPasswordFilter.class);
    
    /* Main method used to test or encrypt from command line */
    public static void main(String[] args)

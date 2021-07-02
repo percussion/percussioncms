@@ -18,8 +18,8 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 
@@ -175,7 +175,7 @@ public class NodeUtils {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(NodeUtils.class);
+    private static final Logger log = LogManager.getLogger(NodeUtils.class);
 
 
 }

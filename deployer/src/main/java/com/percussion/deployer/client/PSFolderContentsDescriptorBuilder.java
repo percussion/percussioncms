@@ -33,7 +33,8 @@ import com.percussion.deployer.objectstore.PSDeployableElement;
 import com.percussion.deployer.objectstore.PSIdMap;
 import com.percussion.deployer.objectstore.PSIdMapping;
 import com.percussion.deployer.server.IPSJobHandle;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -758,7 +759,7 @@ public class PSFolderContentsDescriptorBuilder
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static final Logger ms_log = Logger
+   private static final Logger ms_log = LogManager
          .getLogger(PSFolderContentsDescriptorBuilder.class);
 
 }

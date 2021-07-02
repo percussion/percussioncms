@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class holds state in thread local storage for exception(s) that occur
@@ -49,7 +49,7 @@ public class PSTrackAssemblyError
    /**
     * Logger for the tracker
     */
-   static Log ms_log = LogFactory.getLog(PSTrackAssemblyError.class);
+    private static final Logger ms_log = LogManager.getLogger(PSTrackAssemblyError.class);
    
    /**
     * Data structure to hold problem descriptions

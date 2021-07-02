@@ -50,8 +50,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This exit assembles a page in the preview context and then extracts the html content.
@@ -173,5 +173,5 @@ public class PSExtractHtmlContent implements IPSUdfProcessor
     /**
      * Logger for this exit.
      */
-    public static Log log = LogFactory.getLog(PSExtractHtmlContent.class);
+    public static final Logger log = LogManager.getLogger(PSExtractHtmlContent.class);
 }

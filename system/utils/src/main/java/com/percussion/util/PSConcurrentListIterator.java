@@ -24,8 +24,8 @@
 
 package com.percussion.util;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ListIterator;
 import java.util.function.Consumer;
@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 public class PSConcurrentListIterator<T>  implements ListIterator<T> {
 
     private final ListIterator iterator;
-    private static Logger log = LogManager.getLogger(PSConcurrentListIterator.class);
+    private static final Logger log = LogManager.getLogger(PSConcurrentListIterator.class);
 
     public PSConcurrentListIterator( ListIterator<T> iterator )
     {

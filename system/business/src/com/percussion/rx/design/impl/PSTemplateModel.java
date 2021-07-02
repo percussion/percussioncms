@@ -387,6 +387,6 @@ public class PSTemplateModel extends PSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger log = LogManager.getLogger(PSTemplateModel.class);
+   private static final Logger log = LogManager.getLogger(PSTemplateModel.class);
 
 }

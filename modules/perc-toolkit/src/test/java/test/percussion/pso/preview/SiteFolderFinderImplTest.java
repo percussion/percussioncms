@@ -24,8 +24,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Property;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -55,7 +55,7 @@ import com.percussion.webservices.security.IPSSecurityWs;
  */
 public class SiteFolderFinderImplTest
 {
-   private static Log log = LogFactory.getLog(SiteFolderFinderImplTest.class);
+   private static final Logger log = LogManager.getLogger(SiteFolderFinderImplTest.class);
    
    Mockery context;
    SiteFolderFinderImpl cut;

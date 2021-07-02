@@ -12,8 +12,8 @@ package com.percussion.pso.workflow;
 import java.io.File;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSWorkFlowContext;
@@ -34,7 +34,7 @@ import com.percussion.server.IPSRequestContext;
 public class PSOSpringWorkflowActionDispatcher extends PSDefaultExtension
     implements IPSWorkflowAction 
 {
-    private static final Log log = LogFactory.getLog(PSOSpringWorkflowActionDispatcher.class);
+    private static final Logger log = LogManager.getLogger(PSOSpringWorkflowActionDispatcher.class);
     IPSOWFActionService asvc = null; 
     
     /**

@@ -27,17 +27,15 @@ import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.error.PSErrorManager;
 import com.percussion.log.PSLogError;
 import com.percussion.security.PSUserEntry;
+import org.apache.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.sql.SQLException;
-import java.util.Properties;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  *   The PSConsole offers a single point of reference for console output
@@ -162,7 +160,7 @@ public class PSConsole /* extends Thread */
       if (level == null)
          level = Level.INFO;
       
-      getLogger(subsystem).log(level, 
+      getLogger(subsystem).info(
          PSErrorManager.createMessage(errorCode, errorArgs));
    }
 
@@ -225,13 +223,13 @@ public class PSConsole /* extends Thread */
       
       Logger l = getLogger(subsystem);
       if (subMessages == null)
-         l.log(level, message);
+         l.info(message);
       else
       {
          String arr[] = new String[subMessages.length + 1];
          arr[0] = message;
          System.arraycopy(subMessages, 0, arr, 1, subMessages.length);
-         l.log(level, arr);
+         l.info( arr);
       }
    }
 
@@ -385,7 +383,7 @@ public class PSConsole /* extends Thread */
     * 
     * @return The logger, not <code>null</code>.
     */
-   private static Logger getLogger(String subsystem)
+   private static final Logger getLogger(String subsystem)
    {
       if (ms_rootLogger == null)
       { 
@@ -395,7 +393,7 @@ public class PSConsole /* extends Thread */
       if (!subsystem.startsWith("com.percussion."))
          subsystem = "com.percussion." + subsystem;
       
-      return Logger.getLogger(subsystem);
+      return LogManager.getLogger(subsystem);
    }
 
    /**
@@ -447,7 +445,7 @@ public class PSConsole /* extends Thread */
     * that there isn't a root logger before configuration, which allows an
     * external entity to not have its configuration overwritten.
     */
-   private static Logger ms_rootLogger = null;
+   private static final Logger ms_rootLogger = null;
 
    /**
     * This method makes sure that log4j is configured for use in the console.
@@ -456,24 +454,5 @@ public class PSConsole /* extends Thread */
     */
    private static synchronized void ensureLog4jConfiguration()
    {
-      ms_rootLogger = Logger.getRootLogger();
-      if (ms_rootLogger == null)
-      {
-         // Not configured, setup a minimal configuration here that
-         // logs to the console only. 
-         Properties props = new Properties();
-         props.setProperty("log4j.rootLogger","ALL, console");
-         props.setProperty("log4j.appender.console",
-                  "com.percussion.server.PSConsoleAppender");
-         props.setProperty("log4j.appender.console.layout",
-                  "com.percussion.server.PSConsoleLayout");
-         PropertyConfigurator.configure(props);
-         // Check that the configuration is workable
-         ms_rootLogger = Logger.getRootLogger();
-         if (ms_rootLogger == null)
-         {
-            throw new InternalError("Could not configure log4j logger");
-         }
-      }
    }   
 }

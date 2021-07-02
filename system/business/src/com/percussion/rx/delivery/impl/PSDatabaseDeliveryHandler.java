@@ -900,5 +900,5 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
    /**
     * Logger.
     */
-   private static Logger ms_log = LogManager.getLogger(PSDatabaseDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSDatabaseDeliveryHandler.class);
 }

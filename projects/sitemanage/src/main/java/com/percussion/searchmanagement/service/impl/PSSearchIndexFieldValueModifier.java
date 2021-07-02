@@ -45,8 +45,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -65,7 +65,7 @@ public class PSSearchIndexFieldValueModifier implements IPSFieldValueModifier, I
     private IPSIdMapper idMapper;
     
     
-    private static Log log = LogFactory.getLog(PSSearchIndexFieldValueModifier.class);
+    private static final Logger log = LogManager.getLogger(PSSearchIndexFieldValueModifier.class);
     
     @Autowired
     public PSSearchIndexFieldValueModifier(IPSFolderHelper folderHelper, IPSIdMapper idMapper, IPSNotificationService notificationService)

@@ -51,11 +51,27 @@ import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
 import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Appender;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.config.AppenderRef;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -66,28 +82,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Appender;
-
-import org.apache.log4j.Logger;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.FileAppender;
-import org.apache.logging.log4j.core.config.AppenderRef;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.LoggerConfig;
-
-
-import org.apache.logging.log4j.core.layout.PatternLayout;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 /**
  * Loadable request handler to update the global templates to propagate the
@@ -303,12 +297,11 @@ public class PSGlobalTemplateUpdateHandler
       PSRequest req = PSRequest.getContextForRequest();
       IPSRequestContext request = new PSRequestContext(req);
       
-      Logger logger = Logger.getLogger("com.percussion.globaltemplates");
+      Logger logger = LogManager.getLogger("com.percussion.globaltemplates");
       org.apache.logging.log4j.Logger logger1 = LogManager.getLogger("com.percussion.globaltemplates");
 
 
-      Appender wa = logger.getAppender(
-              "RXGLOBALTEMPLATES");
+      Appender wa = null;
 
       if(wa!=null)
       {
@@ -333,7 +326,7 @@ public class PSGlobalTemplateUpdateHandler
 
 
 
-      logger.info("Processing started at " + new Date().toString());
+      logger.info("Processing started at {}" , new Date());
       logger.info("Begin of Global template creation...");
       logger.info("");
 

@@ -66,8 +66,12 @@
     <link href="/cm/widgets/PercTooltip/PercTooltip.css" rel="stylesheet" type="text/css" />
 
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+    <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"</script>
+    <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
     <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js" ></script>
     <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
+
     <script src="/cm/plugins/perc_utils.js" ></script>
     <script src="/cm/widgets/PercSimpleMenu/PercSimpleMenu.js" ></script>
     <script src="/cm/widgets/PercTooltip/PercTooltip.js" ></script>
@@ -79,7 +83,7 @@
     <script >
         var loadingMsg = null;
         var miniMsg = null;
-        $(document).ready(function() {
+        $(function() {
                 miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
                 loadingMsg = miniMsg.createStaticMessage("Loading...");
         });
@@ -90,7 +94,7 @@
     </script>
 
     <script>
-        $(document).ready(function() {
+        $(function() {
 
             var prefs = new gadgets.Prefs();
             var site = prefs.getString("site");

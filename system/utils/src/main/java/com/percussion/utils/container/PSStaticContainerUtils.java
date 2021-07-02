@@ -42,11 +42,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import org.apache.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSStaticContainerUtils
 {
-   private static final Logger ms_log = Logger.getLogger(PSStaticContainerUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSStaticContainerUtils.class);
 
    public static Properties getProperties(File f)
    {

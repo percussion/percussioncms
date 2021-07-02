@@ -14,8 +14,8 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;
 
@@ -29,7 +29,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
   /**
    * Field logger.
    */
-  private static final Log logger = LogFactory.getLog(MethodCacheInterceptor.class);
+  private static final Logger logger = LogManager.getLogger(MethodCacheInterceptor.class);
 
   /**
    * Field cache.

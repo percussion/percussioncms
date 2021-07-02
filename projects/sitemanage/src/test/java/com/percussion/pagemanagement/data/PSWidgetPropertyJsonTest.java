@@ -27,8 +27,8 @@ import static com.percussion.share.dao.PSSerializerUtils.*;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 public class PSWidgetPropertyJsonTest
@@ -65,5 +65,5 @@ public class PSWidgetPropertyJsonTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetPropertyJsonTest.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetPropertyJsonTest.class);
 }

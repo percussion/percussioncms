@@ -491,7 +491,7 @@ public class PSConditionalEffect extends PSComponent
     * The logger of this class.
     */
 
-   private static Logger log = LogManager.getLogger(PSConditionalEffect.class);
+   private static final Logger log = LogManager.getLogger(PSConditionalEffect.class);
 
    /**
     * It maps context name (in lower case) to its related id that is defined in

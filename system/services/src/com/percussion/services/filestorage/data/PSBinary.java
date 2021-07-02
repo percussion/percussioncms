@@ -45,7 +45,8 @@ import javax.persistence.Version;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tika.metadata.Metadata;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
@@ -81,7 +82,7 @@ public class PSBinary implements Serializable
    /**
     * The logger for this class
     */
-   private static Logger ms_logger = Logger.getLogger(PSBinary.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSBinary.class);
 
    /**
     * Unique id for the binary, uses the internal next number table to generate

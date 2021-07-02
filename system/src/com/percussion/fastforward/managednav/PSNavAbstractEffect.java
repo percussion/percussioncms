@@ -23,7 +23,8 @@
  */
 package com.percussion.fastforward.managednav;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -138,7 +139,7 @@ public abstract class PSNavAbstractEffect extends PSDefaultExtension
    /**
     * Writes the log.
     */
-   protected Logger m_log = Logger.getLogger(PSNavAbstractEffect.class);
+   protected static final Logger m_log = LogManager.getLogger(PSNavAbstractEffect.class);
 
    /**
     * The exclusion flag is used to prevent item operations inside the effect

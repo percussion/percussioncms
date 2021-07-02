@@ -23,16 +23,6 @@
  */
 package com.percussion.webdav.method;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.w3c.dom.Element;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSDbComponent;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
@@ -56,6 +46,14 @@ import com.percussion.webdav.PSWebdavStatus;
 import com.percussion.webdav.error.IPSWebdavErrors;
 import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.webdav.objectstore.PSWebdavConfig;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.w3c.dom.Element;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Utilities to be used by WebDAV methods.
@@ -246,7 +244,7 @@ public class PSWebdavUtils
       }
       catch (PSCmsException e)
       {
-         Logger.getLogger(PSWebdavUtils.class).debug(e.getLocalizedMessage());
+         LogManager.getLogger(PSWebdavUtils.class).debug(e.getMessage());
          throw new PSWebdavException(e);
       }
    }

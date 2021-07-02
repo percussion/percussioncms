@@ -63,8 +63,8 @@ import com.percussion.workflow.mail.PSMailMessageContext;
 import com.percussion.workflow.model.PSMessagePackage;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.runtime.RuntimeInstance;
@@ -87,7 +87,7 @@ import java.util.*;
  */
 public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 {
-   private static final Logger m_log = Logger.getLogger(PSExitNotifyAssignees.class.getName());
+   private static final Logger m_log = LogManager.getLogger(PSExitNotifyAssignees.class.getName());
 
    /**
     * The fully qualified name of this extension.

@@ -33,8 +33,8 @@ import java.util.Map;
 import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.percussion.rx.delivery.IPSDeliveryHandler;
@@ -78,7 +78,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    /**
     * Logger used for delivery manager.
     */
-   private static Log ms_log = LogFactory.getLog(PSLocalDeliveryManager.class);
+   private static final Logger ms_log = LogManager.getLogger(PSLocalDeliveryManager.class);
 
    /**
     * A map joining the job id to a map of activated delivery handlers. Used to

@@ -33,8 +33,8 @@ import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.SimpleTypeConverter;
 
 import java.lang.reflect.Method;
@@ -742,7 +742,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSSimplePropertySetter");
+   private static final Logger ms_log = LogManager.getLogger("PSSimplePropertySetter");
    
    /**
     * This is used when creating a property definition in a default configure

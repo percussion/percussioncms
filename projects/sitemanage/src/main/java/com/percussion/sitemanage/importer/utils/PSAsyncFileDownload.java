@@ -35,8 +35,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 
@@ -47,7 +47,7 @@ public class PSAsyncFileDownload
     // ================= Begin Main Class ==========================================
     private boolean m_complete = false;
 
-    private Log m_log = LogFactory.getLog(PSPageImportQueue.class);
+    private static final Logger m_log = LogManager.getLogger(PSPageImportQueue.class);
 
     private List<PSPair<Boolean, String>> results = new ArrayList<>();
 

@@ -15,8 +15,8 @@ import java.io.ByteArrayInputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -31,7 +31,7 @@ import com.percussion.pso.imageedit.web.ImageUrlBuilder;
 
 public class BinaryImageControllerTest
 {
-   private static Log log = LogFactory.getLog(BinaryImageControllerTest.class); 
+   private static final Logger log = LogManager.getLogger(BinaryImageControllerTest.class);
    
    Mockery context;
    BinaryImageController cut; 

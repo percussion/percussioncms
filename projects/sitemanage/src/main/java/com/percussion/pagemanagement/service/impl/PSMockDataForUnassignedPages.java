@@ -35,8 +35,8 @@ import com.percussion.utils.types.PSPair;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Mock data factory for unassigned pages.
@@ -53,7 +53,7 @@ public class PSMockDataForUnassignedPages
     private int importedCount;
     private int totalCount;
     private int tryCount;
-    private static Log log = LogFactory.getLog(PSMockDataForUnassignedPages.class);
+    private static final Logger log = LogManager.getLogger(PSMockDataForUnassignedPages.class);
             
     public PSMockDataForUnassignedPages()
     {

@@ -41,7 +41,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Creates a dependency tree for migrating content to a specific target server.
@@ -759,7 +760,7 @@ public class PSFolderContentsDescriptorBuilder
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static final Logger ms_log = Logger
+   private static final Logger ms_log = LogManager
          .getLogger(PSFolderContentsDescriptorBuilder.class);
 
 }

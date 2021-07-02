@@ -9,8 +9,8 @@
  ******************************************************************************/
 package com.percussion.pso.restservice.model;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,7 +31,7 @@ public class DateValue implements Value {
 	/**
 	 * Logger for this class
 	 */
-	private static final Log log = LogFactory.getLog(DateValue.class);
+	private static final Logger log = LogManager.getLogger(DateValue.class);
 	/**
 	 * Field DATE_FORMAT.
 	 * (value is ""yyyy-MM-dd HH:mm:ss"")

@@ -41,8 +41,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.PSUiWsLocator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -66,7 +66,7 @@ public class PSContentTypeActionMenuHelper {
     private static PSContentTypeActionMenuHelper instance;
 
 
-    private static Log ms_log = LogFactory.getLog(PSContentTypeActionMenuHelper.class);
+    private static final Logger ms_log = LogManager.getLogger(PSContentTypeActionMenuHelper.class);
 
     public static final String SERVER_PROP_GROUP_CONTENTTYPES = "contentTypeGroupingInCX";
 

@@ -33,7 +33,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -251,6 +252,6 @@ private static final int DEFAULT_BUFFER_SIZE = 20480; // 20KB.
 	/**
 	* The logger
 	*/
-	private static Logger log = Logger.getLogger("PSTemplateInfo");
+	private static final Logger log = LogManager.getLogger("PSTemplateInfo");
    
 }

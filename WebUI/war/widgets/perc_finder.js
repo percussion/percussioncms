@@ -1705,6 +1705,7 @@ var assetPagination = null;
         function enableDisableFinderDroppables(enable){
 
             $(".mcol-listing").each(function(){
+                $(this).droppable();
                 $(this).droppable("option", "disabled", !enable);
             });
             $("#perc-finder-listview table").droppable("option", "disabled", !enable);

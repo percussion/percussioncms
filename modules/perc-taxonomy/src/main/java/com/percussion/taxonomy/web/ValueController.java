@@ -29,8 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.validation.BindException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.Collection;
 
 import java.util.Map;
@@ -43,7 +43,7 @@ import com.percussion.taxonomy.service.ValueService;
 @Controller
 public class ValueController {
 
-    protected final Log logger = LogFactory.getLog(getClass());
+    protected final Logger logger = LogManager.getLogger(getClass());
     private ValueService valueService;
 
     public ValueController() {

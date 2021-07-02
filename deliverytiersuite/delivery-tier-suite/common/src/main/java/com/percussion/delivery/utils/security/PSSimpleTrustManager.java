@@ -23,8 +23,8 @@
  */
 package com.percussion.delivery.utils.security;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -46,7 +46,7 @@ public class PSSimpleTrustManager implements X509TrustManager
     private X509TrustManager standardTrustManager = null;
 
     /** Log object for this class. */
-    private final Log LOG = LogFactory.getLog(PSSimpleTrustManager.class);
+   private static final Logger LOG = LogManager.getLogger(PSSimpleTrustManager.class);
 
     /**
      * Constructor for EasyX509TrustManager.

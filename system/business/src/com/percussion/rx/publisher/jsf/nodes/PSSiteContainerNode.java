@@ -39,8 +39,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This node is the primary container of site items for the design view as well
@@ -64,8 +64,8 @@ public class PSSiteContainerNode extends PSEditableNodeContainer
    /**
     * The logger for the site container node.
     */
-   private static final Log ms_log =
-         LogFactory.getLog(PSSiteContainerNode.class);
+   private static final Logger ms_log =
+         LogManager.getLogger(PSSiteContainerNode.class);
 
    /**
     * Ctor.

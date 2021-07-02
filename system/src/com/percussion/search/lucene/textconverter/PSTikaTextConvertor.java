@@ -39,8 +39,8 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.tika.config.TikaConfig;
 import org.apache.tika.exception.TikaException;
@@ -64,7 +64,7 @@ public class PSTikaTextConvertor implements IPSLuceneTextConverter
    /**
     * Reference to log for this class
     */
-   private final static Log ms_log = LogFactory.getLog(PSTikaTextConvertor.class);
+   private static final Logger ms_log = LogManager.getLogger(PSTikaTextConvertor.class);
    /**
     * Server property to set the write limit.  This is the maximum number of characters
     * to store in the String sent to the indexer.  This can be very large for a large document

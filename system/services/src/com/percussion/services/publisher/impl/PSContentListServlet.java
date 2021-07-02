@@ -88,7 +88,7 @@ public class PSContentListServlet extends HttpServlet
    /**
     * Logger for content list servlet
     */
-   private static Logger ms_log = LogManager.getLogger(PSContentListServlet.class);
+   private static final Logger ms_log = LogManager.getLogger(PSContentListServlet.class);
 
    /**
     * Date format used in content lists

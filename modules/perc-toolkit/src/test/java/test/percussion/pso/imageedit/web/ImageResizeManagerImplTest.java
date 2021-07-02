@@ -22,8 +22,8 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ import com.percussion.pso.imageedit.web.impl.ImageResizeManagerImpl;
 
 public class ImageResizeManagerImplTest
 {
-   Log log = LogFactory.getLog(ImageResizeManagerImplTest.class);
+   private static final Logger log = LogManager.getLogger(ImageResizeManagerImplTest.class);
    
    TestableImageResizeManager cut;
    

@@ -33,8 +33,8 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import org.apache.commons.logging.Log; 
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * <p>
@@ -63,7 +63,7 @@ public class EasyX509TrustManager implements X509TrustManager
     private X509TrustManager standardTrustManager = null;
 
     /** Log object for this class. */
-    private static final Log LOG = LogFactory.getLog(EasyX509TrustManager.class);
+    private static final Logger LOG = LogManager.getLogger(EasyX509TrustManager.class);
 
     /**
      * Constructor for EasyX509TrustManager.

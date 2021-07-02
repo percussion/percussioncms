@@ -55,8 +55,8 @@ import java.util.Map;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The backing bean for the test panel of the Location Scheme Editor.
@@ -68,7 +68,7 @@ public class PSSchemeJexlTestPanel
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSSchemeJexlTestPanel.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSchemeJexlTestPanel.class);
 
    /**
     * The backing bean for the site id. It may be <code>null</code> if has 

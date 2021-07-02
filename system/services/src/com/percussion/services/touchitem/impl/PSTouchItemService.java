@@ -61,7 +61,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * See {@link IPSTouchItemService}.
@@ -76,7 +77,7 @@ public class PSTouchItemService
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSTouchItemService.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTouchItemService.class);
    private IPSContentWs contentWs;
    private IPSGuidManager guidMgr;
    private IPSCmsObjectMgr cmsMgr;

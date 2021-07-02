@@ -38,8 +38,8 @@ import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +59,7 @@ public class PSThreadRequestUtils
    /**
     * Logger for this service.
     */
-   private static Log log = LogFactory.getLog(PSThreadRequestUtils.class);
+   private static final Logger log = LogManager.getLogger(PSThreadRequestUtils.class);
    
    public static PSRequest getPSRequest()
    {

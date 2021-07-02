@@ -70,8 +70,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This extension acts on all search result rows that have one or more of the
@@ -129,7 +129,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
    /**
     * Commons logger
     */
-   static Log ms_log = LogFactory.getLog(PSAddVariantSiteFolder.class);
+    private static final Logger ms_log = LogManager.getLogger(PSAddVariantSiteFolder.class);
    
    /*
     * (non-Javadoc)

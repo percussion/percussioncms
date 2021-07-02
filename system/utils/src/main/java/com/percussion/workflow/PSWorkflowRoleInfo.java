@@ -23,8 +23,8 @@
  */
 package com.percussion.workflow;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
@@ -150,7 +150,7 @@ public class PSWorkflowRoleInfo implements IWorkflowRoleInfo
    /**
     * Logger for this class.
     */
-   public static Log log = LogFactory.getLog(PSWorkflowRoleInfo.class);
+   public static final Logger log = LogManager.getLogger(PSWorkflowRoleInfo.class);
 
 
 }

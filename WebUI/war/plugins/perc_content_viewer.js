@@ -294,21 +294,21 @@ $.perc_content_viewer = function(options){
 
       var tabs = $('#perc-pageEditor-tabs');
       tabs.tabs('enable');
-      tabs.tabs( 'select', 0 );
+      tabs.tabs(  "option", "active", 0 );
 
       var dummy = false;
-      tabs.tabs('option', 'select', 
+      tabs.tabs( "option", "active",
          function(event) {
             if( dummy ) {
                dummy = false;
                return true;
             }
             if( ui.index === 0 ) {
-               confirm_if_dirty( function() { _switchToContent(); dummy = true; tabs.tabs('select', 0); }  );
+               confirm_if_dirty( function() { _switchToContent(); dummy = true; tabs.tabs( "option", "active", 0); }  );
                return false;
             }
             else {
-               confirm_if_dirty( function() { _switchToLayout(); dummy = true; tabs.tabs('select', 1); } );
+               confirm_if_dirty( function() { _switchToLayout(); dummy = true; tabs.tabs( "option", "active", 1); } );
                return false;
             }
          });
