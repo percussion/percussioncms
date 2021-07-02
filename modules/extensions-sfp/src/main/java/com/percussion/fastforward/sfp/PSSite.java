@@ -46,7 +46,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -320,5 +321,5 @@ public class PSSite
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSSite.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSite.class);
 }

@@ -45,8 +45,8 @@ import com.percussion.sitemanage.data.PSSitePublishResponse;
 import com.percussion.sitemanage.service.IPSSitePublishService;
 import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -134,6 +134,6 @@ public class PSAutoPublishItem extends PSDefaultExtension implements
 
    private IPSDataItemSummaryService itemSummaryService;
    
-   public static Log log = LogFactory.getLog(PSAutoPublishItem.class);
+   public static final Logger log = LogManager.getLogger(PSAutoPublishItem.class);
 
 }

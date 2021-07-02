@@ -54,7 +54,8 @@ import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,7 +87,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private IPSPubServerDao pubServerDao;
     private String targetRegion = Regions.DEFAULT_REGION.getName();
 
-   private static Logger m_log = Logger.getLogger(PSAmazonS3EditionTask.class.getName());
+   private static final Logger m_log = LogManager.getLogger(PSAmazonS3EditionTask.class.getName());
 
    @SuppressWarnings("unused")
    public void init(IPSExtensionDef def, File codeRoot) throws PSExtensionException

@@ -49,12 +49,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.DatatypeConverter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSJerseyRestClient {
 	
-	private static Log log = LogFactory.getLog(PSJerseyRestClient.class);
+	private static final Logger log = LogManager.getLogger(PSJerseyRestClient.class);
 	//private String contextUrl = "http://localhost:9992/Rhythmyx";
 	private static String baseUrl;
 	

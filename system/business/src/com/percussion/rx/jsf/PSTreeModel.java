@@ -33,8 +33,8 @@ import java.util.Map;
 
 import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.myfaces.trinidad.model.MenuModel;
 
 /**
@@ -81,7 +81,7 @@ public class PSTreeModel extends MenuModel
    /**
     * The logger for the tree model.
     */
-   private static final Log ms_log = LogFactory.getLog(PSTreeModel.class);
+   private static final Logger ms_log = LogManager.getLogger(PSTreeModel.class);
    
    /**
     * The current container, never <code>null</code> after construction.

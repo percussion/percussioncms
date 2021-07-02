@@ -29,7 +29,8 @@ import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is a proxy (or wrapper) class to a <code>Statement</code> object. It 
@@ -449,15 +450,7 @@ public class PSSQLStatement implements Statement
     * The logger used for this class, may be <code>null</code> if the log4j
     * has not been configured.
     */
-   private static Logger ms_log = null;
-   
-   static {
-      // set the logger if log4j has been configured
-      if (Logger.getRootLogger().getAllAppenders().hasMoreElements())
-      {
-         ms_log = Logger.getLogger(PSSQLStatement.class);
-      }
-   }
+   private static final Logger ms_log = LogManager.getLogger(PSSQLStatement.class);
 
    /**
     * All methods will be delegated to this object. Initialized by ctor,

@@ -42,8 +42,8 @@ import org.apache.catalina.Valve;
 import org.apache.catalina.connector.Request;
 import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A valve that performs redirection of requests for a specified context 
@@ -60,7 +60,7 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 
 	public static String PERC_VERSION_HEADER = "perc-version";
 	
-	private static Log log = LogFactory.getLog(PSMultiAppVersionRedirectorValve.class);
+	private static final Logger log = LogManager.getLogger(PSMultiAppVersionRedirectorValve.class);
 
 	//Contains a file system pointer to the mapping configuration file
 	private String mappingFile;

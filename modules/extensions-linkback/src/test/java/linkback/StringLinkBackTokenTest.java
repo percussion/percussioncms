@@ -25,8 +25,8 @@ package linkback;
 
 import com.percussion.soln.linkback.codec.impl.StringLinkBackTokenImpl;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class StringLinkBackTokenTest {
 
-    private static Log log = LogFactory.getLog(StringLinkBackTokenTest.class);
+    private static final Logger log = LogManager.getLogger(StringLinkBackTokenTest.class);
 
     @Test
     public final void testEncode() {

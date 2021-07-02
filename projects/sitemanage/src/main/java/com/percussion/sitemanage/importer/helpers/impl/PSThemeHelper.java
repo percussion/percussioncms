@@ -33,8 +33,8 @@ import com.percussion.theme.service.IPSThemeService;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -170,7 +170,7 @@ public class PSThemeHelper extends PSImportHelper
         }
     }
     
-    private static final Log log = LogFactory.getLog(PSThemeHelper.class);
+    private static final Logger log = LogManager.getLogger(PSThemeHelper.class);
     
     private IPSThemeService themeService;
     private String themesRootDirectory;

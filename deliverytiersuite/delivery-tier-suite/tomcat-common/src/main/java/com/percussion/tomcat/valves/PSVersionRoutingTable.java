@@ -30,6 +30,8 @@ import java.util.HashMap;
 
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Provides a basic data structure for indexing the routine table 
@@ -41,7 +43,7 @@ import org.apache.juli.logging.LogFactory;
 public class PSVersionRoutingTable {
 	
 	private HashMap<String, HashMap<String,String>> serviceContexts;
-	private static Log log = LogFactory.getLog(PSVersionRoutingTable.class);
+	private static final Logger log = LogManager.getLogger(PSVersionRoutingTable.class);
 	/**
 	 * @return the serviceContexts
 	 */

@@ -35,8 +35,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A Generic test utility class to clean up
@@ -251,6 +251,6 @@ public abstract class PSTestDataCleaner<ID>
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
     
 }

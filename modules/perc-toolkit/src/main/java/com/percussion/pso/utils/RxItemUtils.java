@@ -25,8 +25,8 @@ import java.util.List;
 import javax.activation.DataSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.IPSItemAccessor;
@@ -47,7 +47,7 @@ public class RxItemUtils
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(RxItemUtils.class);
+   private static final Logger log = LogManager.getLogger(RxItemUtils.class);
    
    
    /**

@@ -39,8 +39,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The backing beans for the container of scheduled tasks.
@@ -52,8 +52,8 @@ public class PSTaskContainerNode extends PSEditableNodeContainer
    /**
     * The logger for the site container node.
     */
-   private static final Log ms_log =
-         LogFactory.getLog(PSTaskContainerNode.class);
+   private static final Logger ms_log =
+         LogManager.getLogger(PSTaskContainerNode.class);
 
    /**
     * Constructor.

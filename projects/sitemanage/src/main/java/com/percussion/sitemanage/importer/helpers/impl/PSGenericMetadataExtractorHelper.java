@@ -41,8 +41,8 @@ import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Santiago M. Murchio
@@ -51,7 +51,7 @@ import org.apache.commons.logging.LogFactory;
 public abstract class PSGenericMetadataExtractorHelper extends PSImportHelper
 {
 
-    public static Log log = LogFactory.getLog(PSGenericMetadataExtractorHelper.class);
+    public static final Logger log = LogManager.getLogger(PSGenericMetadataExtractorHelper.class);
     
     protected static final String ADD_HTML_WIDGET = "Add HTML Widget to Template";
 

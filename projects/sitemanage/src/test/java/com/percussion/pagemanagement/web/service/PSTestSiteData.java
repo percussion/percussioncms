@@ -54,8 +54,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 
@@ -465,7 +465,7 @@ public class PSTestSiteData
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSTestSiteData.class);
+    private static final Logger log = LogManager.getLogger(PSTestSiteData.class);
 
     /**
      * Updates a section link and returns the result of the update.

@@ -1139,7 +1139,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
    /**
     * The logger for this class.
     */
-   private static Logger log = LogManager.getLogger("PSGenerateSearchQueryExit");
+   private static final Logger log = LogManager.getLogger("PSGenerateSearchQueryExit");
 
    /**
     * The fully qualified name of this extension. Intialized in the 

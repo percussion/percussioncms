@@ -36,8 +36,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
 import com.percussion.delivery.caching.data.PSInvalidateRequest;
 import com.percussion.delivery.caching.utils.PSJaxbUtils;
@@ -201,7 +201,7 @@ public class PSFlushPublicationCacheTask implements IPSEditionTask
    /**
     * Logger.
     */
-   private static final Log ms_log = LogFactory.getLog(PSFlushPublicationCacheTask.class);
+   private static final Logger ms_log = LogManager.getLogger(PSFlushPublicationCacheTask.class);
    
    /**
     * Default maximum number of urls to submit for page cache flushing.

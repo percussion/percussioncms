@@ -29,8 +29,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -44,7 +44,7 @@ import java.util.List;
 @Api(value = "/displayformats", description = "Display Format operations")
 public class DisplayFormatResource {
 
-    private Log log = LogFactory.getLog(DisplayFormatResource.class);
+    private static final Logger log = LogManager.getLogger(DisplayFormatResource.class);
 
     @Autowired
     private IDisplayFormatAdaptor adaptor;

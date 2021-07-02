@@ -695,7 +695,7 @@ public class PSAclService implements IPSAclService
     * Logger for this class.
     */
 
-   private static Logger ms_logger = LogManager.getLogger(PSAclService.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSAclService.class);
 
    @Override
    public Collection<IPSGuid> filterByCommunities(List<IPSGuid> objectIds, List<String> communityNames)

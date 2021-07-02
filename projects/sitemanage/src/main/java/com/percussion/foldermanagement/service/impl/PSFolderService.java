@@ -67,8 +67,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -86,7 +86,7 @@ public class PSFolderService implements IPSFolderService
 {
     private static final String ASSIGNMENT_IN_PROGRESS = "We are unable to process your request at this time.  A similar request has already been submitted and is still processing in the background.  Please try again later.";
     
-    private static final Log log = LogFactory.getLog(PSFolderService.class);
+    private static final Logger log = LogManager.getLogger(PSFolderService.class);
     
     private static AtomicInteger assignmentOperationCount = new AtomicInteger();
 

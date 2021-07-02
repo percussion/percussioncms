@@ -31,8 +31,8 @@ import com.percussion.utils.jndi.PSJndiObjectLocator;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.xml.PSEntityResolver;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -60,7 +60,7 @@ public class PSAppServlet extends HttpServlet
    /**
     * Logger to use, never <code>null</code>.
     */
-   static Log ms_log = LogFactory.getLog(PSAppServlet.class);
+    private static final Logger ms_log = LogManager.getLogger(PSAppServlet.class);
 
    /**
     * These parameters are placed in the per-thread log4j MDC context. This is

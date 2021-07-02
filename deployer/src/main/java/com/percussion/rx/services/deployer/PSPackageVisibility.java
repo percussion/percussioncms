@@ -46,8 +46,8 @@ import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.webservices.security.IPSSecurityDesignWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.acl.AclEntry;
 import java.security.acl.NotOwnerException;
@@ -503,5 +503,5 @@ public class PSPackageVisibility
    /**
     * Logger for the assembler.
     */
-   public static Log ms_log = LogFactory.getLog("PSPackageVisibility");
+   public static final Logger ms_log = LogManager.getLogger("PSPackageVisibility");
 }

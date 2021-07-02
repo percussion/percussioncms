@@ -34,8 +34,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Load the body object for the content repository
@@ -53,7 +53,7 @@ public class PSContentPropertyLoader implements IPSPropertyLoader, Serializable
    /**
     * Logger for property loader
     */
-   private static Log ms_log = LogFactory.getLog(PSContentPropertyLoader.class);
+   private static final Logger ms_log = LogManager.getLogger(PSContentPropertyLoader.class);
    
    /**
     * Contained data reference. Set on first reference or set is called.

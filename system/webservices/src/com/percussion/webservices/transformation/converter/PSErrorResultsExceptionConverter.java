@@ -65,7 +65,8 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Converts objects between the classes 
@@ -553,7 +554,7 @@ public class PSErrorResultsExceptionConverter extends PSConverter
    /**
     * the logger used by this class, never <code>null</code>.
     */
-   private static Logger m_log = Logger.getLogger(
+   private static final Logger m_log = LogManager.getLogger(
       PSErrorResultsExceptionConverter.class);
 }
 

@@ -105,8 +105,8 @@ import com.percussion.utils.timing.PSStopwatchStack;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -2108,5 +2108,5 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
    /**
     * Commons logger
     */
-   static Log ms_logger = LogFactory.getLog(PSSearchHandler.class);
+    private static final Logger ms_logger = LogManager.getLogger(PSSearchHandler.class);
 }

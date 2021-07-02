@@ -35,8 +35,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -112,7 +112,7 @@ public class PSEntityResolver implements EntityResolver
       }
       catch (IOException e)
       {
-         LogFactory.getLog(PSEntityResolver.class).warn(
+         LogManager.getLogger(PSEntityResolver.class).warn(
             "Failed to load resource file, local resolution of external URLs " +
             "will be disabled.", e);
       }
@@ -216,7 +216,7 @@ public class PSEntityResolver implements EntityResolver
          }
          else
          {
-            Logger logger = Logger.getLogger(PSEntityResolver.class);
+            Logger logger = LogManager.getLogger(PSEntityResolver.class);
             if (logger!=null)
                logger.error("entityFile doesn't exist! file: " +
                   entityFile.getAbsolutePath(),
@@ -280,7 +280,7 @@ public class PSEntityResolver implements EntityResolver
          {
             if (warnIfMissing)
             {
-               LogFactory.getLog(this.getClass()).warn(
+               LogManager.getLogger(this.getClass()).warn(
                   "Failed to load local resource for entity resolution: " + 
                   localResource);
             }
@@ -290,7 +290,7 @@ public class PSEntityResolver implements EntityResolver
       {
          if (warnIfMissing)
          {
-            LogFactory.getLog(this.getClass()).warn(
+            LogManager.getLogger(this.getClass()).warn(
                   "Failed to locate matching local resource for public id: " +
                   publicid);
          }
@@ -341,7 +341,7 @@ public class PSEntityResolver implements EntityResolver
             new Throwable("EntityResolver last setResolutionHome stack.");
       }
                
-      Logger logger = Logger.getLogger(PSEntityResolver.class);
+      Logger logger = LogManager.getLogger(PSEntityResolver.class);
       if (logger!=null)
          logger.info("Entity Resolution home set to:  " +
                dir.getAbsolutePath());

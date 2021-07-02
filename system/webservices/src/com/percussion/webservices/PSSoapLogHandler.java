@@ -27,8 +27,8 @@ package com.percussion.webservices;
 import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
  
 /**
  * Log soap request and responses to log4j see server-config.wsdd and client-config.wsdd
@@ -41,7 +41,7 @@ public class PSSoapLogHandler extends BasicHandler {
     */
    private static final long serialVersionUID = 1L;
    
-   private static final Log log =  LogFactory.getLog(PSSoapLogHandler.class);
+   private static final Logger log =  LogManager.getLogger(PSSoapLogHandler.class);
     @Override
     public void invoke(MessageContext mc) throws AxisFault {
         if (mc.getResponseMessage() != null && mc.getResponseMessage().getSOAPPartAsString() != null) {

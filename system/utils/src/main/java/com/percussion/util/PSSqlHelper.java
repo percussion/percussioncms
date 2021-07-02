@@ -30,8 +30,8 @@ import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.tools.IPSUtilsConstants;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.NamingException;
 import java.io.*;
@@ -2184,7 +2184,7 @@ public class PSSqlHelper
    /**
     * Logger for PSConnectionHelper.
     */
-   private static Log ms_log = LogFactory.getLog("PSSqlHelper");
+   private static final Logger ms_log = LogManager.getLogger("PSSqlHelper");
    
    /**
     * SQL State for sql exceptions which violate integrity constraints. A SQL

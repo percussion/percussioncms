@@ -25,8 +25,8 @@
 package com.percussion.sitemanage.importer.helpers.impl;
 
 import java.util.concurrent.ConcurrentHashMap;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 class PerformanceStats
 {
@@ -60,7 +60,7 @@ public class PSHelperPerformanceMonitor
 
     private static ConcurrentHashMap<String, PerformanceStats> performanceStats = new ConcurrentHashMap<>();
 
-    private static final Log log = LogFactory.getLog(PSHelperPerformanceMonitor.class);
+    private static final Logger log = LogManager.getLogger(PSHelperPerformanceMonitor.class);
 
     public static void updateStats(String identifier, long elapsedTime)
     {

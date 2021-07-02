@@ -52,7 +52,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -95,7 +96,7 @@ public abstract class PSWebServicesBaseHandler implements IPSPortActionHandler
       args[0] = action;
       args[1] = port;
       
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
 
       Method method = null;
       // process the specified request, this will set the data in

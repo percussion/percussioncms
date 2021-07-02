@@ -41,8 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -50,7 +50,7 @@ import org.springframework.stereotype.Component;
 @Lazy
 public class PSImportFromUrlJob extends PSAsyncJob
 {
-    private static final Log log = LogFactory.getLog(PSImportFromUrlJob.class);
+    private static final Logger log = LogManager.getLogger(PSImportFromUrlJob.class);
 
     private List<PSImportHelper> mandatoryHelpers;
 

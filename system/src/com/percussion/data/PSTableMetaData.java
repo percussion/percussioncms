@@ -33,7 +33,8 @@ import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.tools.PSPatternMatcher;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -744,7 +745,7 @@ public class PSTableMetaData implements IPSConnectionInfo
     *
     */
    
-   private static Logger ms_logger = Logger.getLogger(PSTableMetaData.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTableMetaData.class);
    
    private void loadStatsAndIndexInformation(DatabaseMetaData md) 
       throws SQLException

@@ -51,8 +51,8 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Utility class for publishing activities.
@@ -68,7 +68,7 @@ public class PSPublisherUtils
    /**
     * The logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog(PSPublisherUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPublisherUtils.class);
    
    
    /**

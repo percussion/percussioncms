@@ -26,8 +26,8 @@ package com.percussion.xml.serialization;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.util.PSCharSetsConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -236,7 +236,7 @@ public class PSObjectSerializer
    /**
     * Logger instance for this class. Never <code>null</code>.
     */
-   private Log m_logger = LogFactory.getLog(PSObjectSerializer.class);
+   private static final Logger m_logger = LogManager.getLogger(PSObjectSerializer.class);
 
    /**
     * Clones the supplied object by serializing to XML and then deserializing

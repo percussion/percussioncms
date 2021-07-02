@@ -42,8 +42,8 @@ import com.percussion.services.system.PSAssignmentTypeHelper;
 import com.percussion.util.PSCms;
 import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -1822,7 +1822,7 @@ public class PSWorkflowRoleInfoStatic {
    /**
     * Logger for this class.
     */
-   public static Log log = LogFactory.getLog(PSWorkflowRoleInfoStatic.class);
+   public static final Logger log = LogManager.getLogger(PSWorkflowRoleInfoStatic.class);
 
    /**
     * Key used to set and obtain the <CODE>PSWorkflowRoleInfo</CODE>

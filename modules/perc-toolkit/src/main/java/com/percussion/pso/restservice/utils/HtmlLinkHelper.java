@@ -9,8 +9,8 @@
  ******************************************************************************/
 package com.percussion.pso.restservice.utils;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -30,7 +30,7 @@ import java.net.URISyntaxException;
 public class HtmlLinkHelper {
 
 	
-	private static final Log log = LogFactory.getLog(HtmlLinkHelper.class);
+	private static final Logger log = LogManager.getLogger(HtmlLinkHelper.class);
 	
 	/***
 	 * Given the specified base url, will convert the supplied link from relative

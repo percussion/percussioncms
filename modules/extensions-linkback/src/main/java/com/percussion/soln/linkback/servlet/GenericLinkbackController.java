@@ -27,8 +27,8 @@ import com.percussion.soln.linkback.codec.LinkbackTokenCodec;
 import com.percussion.soln.linkback.codec.impl.StringLinkBackTokenImpl;
 import com.percussion.soln.linkback.utils.LinkbackUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -59,7 +59,7 @@ import static java.text.MessageFormat.format;
  */
 public class GenericLinkbackController extends AbstractController {
 
-    private static final Log log = LogFactory.getLog(GenericLinkbackController.class);
+    private static final Logger log = LogManager.getLogger(GenericLinkbackController.class);
 
     private String linkbackParameterName = LinkbackUtils.LINKBACK_PARAM_NAME;
 

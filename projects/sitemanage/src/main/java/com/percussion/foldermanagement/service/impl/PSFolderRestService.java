@@ -52,8 +52,8 @@ import javax.ws.rs.core.Response.Status;
 import com.percussion.share.data.PSLightWeightObjectList;
 import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -68,7 +68,7 @@ import org.springframework.stereotype.Component;
 @Component("folderRestService")
 public class PSFolderRestService
 {
-    private static final Log log = LogFactory.getLog(PSFolderRestService.class);
+    private static final Logger log = LogManager.getLogger(PSFolderRestService.class);
     
     private IPSFolderService folderService;
     

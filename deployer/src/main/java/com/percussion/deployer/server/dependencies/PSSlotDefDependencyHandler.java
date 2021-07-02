@@ -49,7 +49,8 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -785,7 +786,7 @@ public class PSSlotDefDependencyHandler extends PSDependencyHandler
    /**
     * logger 
     */
-   private Logger m_log = Logger.getLogger(this.getClass());
+   private static final Logger m_log = LogManager.getLogger(PSSlotDefDependencyHandler.class);
 
    
    /**

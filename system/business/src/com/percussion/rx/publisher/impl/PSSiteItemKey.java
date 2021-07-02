@@ -34,8 +34,8 @@ import com.percussion.util.IPSHtmlParameters;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A composite key that represent an unique group of {@link IPSSiteItem}
@@ -82,7 +82,7 @@ class PSSiteItemKey
    /**
     * Logger.
     */
-   private static final Log ms_log = LogFactory.getLog(PSSiteItemKey.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSiteItemKey.class);
 
    /**
     * Constructs an instance from an assembly item.

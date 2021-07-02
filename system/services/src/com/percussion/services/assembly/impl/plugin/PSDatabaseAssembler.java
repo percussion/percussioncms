@@ -66,8 +66,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The database assembly plugin produces an xml document that is appropriate for
@@ -146,7 +146,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSDatabaseAssembler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSDatabaseAssembler.class);
 
    /**
     * Encoding constant

@@ -29,8 +29,8 @@ import java.util.Set;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
@@ -129,7 +129,7 @@ public class TrashTask implements IPSTask {
 	/**
 	 * logger for this class.
 	 */
-	private static final Log log = LogFactory.getLog(TrashTask.class);
+	private static final Logger log = LogManager.getLogger(TrashTask.class);
 	/**
 	 * Field ORPHAN_ITEM_SQL.
 	 * (value is ""select contentid,communityid from contentstatus "

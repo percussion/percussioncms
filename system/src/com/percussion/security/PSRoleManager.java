@@ -1433,7 +1433,7 @@ public class PSRoleManager
    /**
     * The logger to use, never <code>null</code>.
     */
-   private static Logger log = LogManager.getLogger(PSRoleManager.class);
+   private static final Logger log = LogManager.getLogger(PSRoleManager.class);
    
    /**
     * The default value for including empty subjects (those with no attributes)

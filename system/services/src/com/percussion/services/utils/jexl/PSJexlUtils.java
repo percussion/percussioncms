@@ -26,7 +26,8 @@ package com.percussion.services.utils.jexl;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase;
 
@@ -65,6 +66,6 @@ public class PSJexlUtils {
      */
     private static Map<String,Object> ms_toolsMap = null;
 
-    private static final Logger log = Logger.getLogger(PSJexlUtils.class.getName());
+    private static final Logger log = LogManager.getLogger(PSJexlUtils.class.getName());
 
 }

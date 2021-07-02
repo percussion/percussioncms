@@ -56,8 +56,8 @@ import java.util.Iterator;
 import javax.jcr.ValueFormatException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Tools for String manipulation. Just basics for now
@@ -73,7 +73,7 @@ public class PSFileStorageTools extends PSJexlUtilBase
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSFileStorageTools.class);
+   private static final Logger log = LogManager.getLogger(PSFileStorageTools.class);
 
    /**
     * Default constructor.

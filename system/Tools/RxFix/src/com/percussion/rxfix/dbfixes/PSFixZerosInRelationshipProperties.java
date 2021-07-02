@@ -31,7 +31,8 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.percussion.rxfix.IPSFix;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.utils.jdbc.PSConnectionHelper;
@@ -43,7 +44,7 @@ import com.percussion.utils.jdbc.PSConnectionHelper;
  */
 public class PSFixZerosInRelationshipProperties extends PSFixDBBase implements IPSFix
 {
-   private static final Logger LOG = Logger.getLogger(PSFixZerosInRelationshipProperties.class.getName());
+   private static final Logger LOG = LogManager.getLogger(PSFixZerosInRelationshipProperties.class.getName());
 
    private static final String SQL_SELECT_SITE = "SELECT COUNT(*) FROM PSX_OBJECTRELATIONSHIP WHERE SITE_ID = 0";
    private static final String SQL_SELECT_FOLDER = "SELECT COUNT(*) FROM PSX_OBJECTRELATIONSHIP WHERE FOLDER_ID = 0";

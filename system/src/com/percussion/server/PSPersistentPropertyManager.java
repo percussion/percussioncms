@@ -27,8 +27,8 @@ import com.percussion.security.PSUserEntry;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.tools.PSPatternMatcher;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -719,7 +719,7 @@ public class PSPersistentPropertyManager
    /**
     * Logger for this class.
     */
-   private static final Log ms_log = LogFactory.getLog(PSPersistentPropertyManager.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPersistentPropertyManager.class);
    
    /**
     * Maintains a cache of merged <code> PSPersitentPropertyMeta</code>

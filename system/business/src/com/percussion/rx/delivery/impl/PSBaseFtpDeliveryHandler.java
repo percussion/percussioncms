@@ -41,8 +41,8 @@ import java.util.Iterator;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Base ftp delivery handler. This adds retry logic to the <code>login</code>
@@ -897,7 +897,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
    /**
     * Logger.
     */
-   private static Log ms_log = LogFactory.getLog(PSBaseFtpDeliveryHandler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSBaseFtpDeliveryHandler.class);
 
 
    @Override

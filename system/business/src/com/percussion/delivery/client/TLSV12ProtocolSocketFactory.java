@@ -36,8 +36,8 @@ import javax.net.ssl.SSLSocket;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
 
 import com.percussion.server.PSServer;
@@ -45,7 +45,7 @@ import com.percussion.server.PSServer;
 public class TLSV12ProtocolSocketFactory implements SecureProtocolSocketFactory
 {
 
-   public static Log log = LogFactory.getLog(TLSV12ProtocolSocketFactory.class);
+   public static final Logger log = LogManager.getLogger(TLSV12ProtocolSocketFactory.class);
    
    private final SecureProtocolSocketFactory base;
    private String enabledCiphers[];

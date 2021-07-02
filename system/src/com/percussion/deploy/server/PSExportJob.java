@@ -50,7 +50,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Document;
 
 /**
@@ -194,7 +194,7 @@ public class PSExportJob extends PSDeployJob
       {
          setStatusMessage("error: " + ex.getLocalizedMessage());
          setStatus(-1);
-         LogFactory.getLog(getClass()).error("Error creating MSM archive", 
+         LogManager.getLogger(getClass()).error("Error creating MSM archive", 
             ex);         
       }
       finally

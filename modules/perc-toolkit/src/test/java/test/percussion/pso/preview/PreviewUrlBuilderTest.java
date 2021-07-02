@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -37,7 +37,7 @@ import com.percussion.utils.guid.IPSGuid;
 
 public class PreviewUrlBuilderTest
 {
-   private static Log log = LogFactory.getLog(PreviewUrlBuilderTest.class); 
+   private static final Logger log = LogManager.getLogger(PreviewUrlBuilderTest.class);
    
    private PreviewUrlBuilder cut; 
    private Mockery context; 

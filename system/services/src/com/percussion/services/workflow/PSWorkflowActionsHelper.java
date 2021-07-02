@@ -56,8 +56,8 @@ import java.util.Set;
 
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This class provides help in calculating available workflow actions for one or
@@ -778,7 +778,7 @@ public class PSWorkflowActionsHelper
    /**
     * Commons logger, never <code>null</code>.
     */
-   static Log ms_logger = LogFactory.getLog(PSWorkflowActionsHelper.class);   
+    private static final Logger ms_logger = LogManager.getLogger(PSWorkflowActionsHelper.class);
    
    /**
     * Default properties to use for action, never <code>null</code>.

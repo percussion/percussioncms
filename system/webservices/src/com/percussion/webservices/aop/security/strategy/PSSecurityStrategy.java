@@ -53,8 +53,8 @@ import java.util.Set;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Base class for all classes implementing a specific security stragegy for 
@@ -145,7 +145,7 @@ public abstract class PSSecurityStrategy
          {
             // a bug
             String msg = "Failed to create security strategy";
-            LogFactory.getLog(PSSecurityStrategy.class).error(msg, e);
+            LogManager.getLogger(PSSecurityStrategy.class).error(msg, e);
             throw new RuntimeException(msg, e);
          }
          
@@ -874,7 +874,7 @@ public abstract class PSSecurityStrategy
    /**
     * Logger to use, never <code>null</code>.
     */
-   protected Log m_log = LogFactory.getLog(PSSecurityStrategy.class);
+   protected static final Logger m_log = LogManager.getLogger(PSSecurityStrategy.class);
    
    /**
     * List of defined strategy classes, never <code>null</code>, may be empty.

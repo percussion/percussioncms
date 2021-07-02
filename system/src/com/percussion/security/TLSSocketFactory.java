@@ -29,8 +29,8 @@ import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.jsse.provider.BouncyCastleJsseProvider;
 
@@ -50,7 +50,7 @@ public class TLSSocketFactory extends SSLSocketFactory implements ProtocolSocket
     /**
     * Logger for the reaper, never <code>null</code>.
     */
-    private static Log ms_log = LogFactory.getLog(TLSSocketFactory.class);
+    private static final Logger ms_log = LogManager.getLogger(TLSSocketFactory.class);
    
     private SSLSocketFactory internalSSLSocketFactory;
 

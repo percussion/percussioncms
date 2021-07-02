@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PSLikesService implements IPSLikesService
@@ -49,7 +49,7 @@ public class PSLikesService implements IPSLikesService
     /**
      * Logger for this class
      */
-    public static Log log = LogFactory.getLog(PSCommentsService.class);
+    public static final Logger log = LogManager.getLogger(PSCommentsService.class);
     
        
     @Autowired

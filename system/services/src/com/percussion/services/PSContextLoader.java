@@ -30,8 +30,8 @@ import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jndi.PSJndiObjectLocator;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.xml.PSEntityResolver;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
@@ -106,6 +106,6 @@ public class PSContextLoader extends ContextLoader
    /**
     * The log instance to use for this class, never <code>null</code>.
     */
-   private static final Log log = LogFactory.getLog(PSContextLoader.class);
+   private static final Logger log = LogManager.getLogger(PSContextLoader.class);
 
 }

@@ -48,7 +48,7 @@ import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.xml.sax.SAXException;
 
 import javax.security.auth.Subject;
@@ -211,7 +211,7 @@ public class PSRoleMgr implements IPSRoleMgr
          }
          catch (Exception e)
          {
-            LogFactory.getLog(PSRoleMgr.class).error("Error finding users: " + e.getLocalizedMessage(),e);
+            LogManager.getLogger(PSRoleMgr.class).error("Error finding users: " + e.getLocalizedMessage(),e);
             if(throwCatalogerExceptions)
                throw new PSSecurityCatalogException(e);
          }         

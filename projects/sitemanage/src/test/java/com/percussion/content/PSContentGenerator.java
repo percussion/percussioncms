@@ -96,7 +96,7 @@ import javax.xml.bind.Unmarshaller;
  */
 public class PSContentGenerator
 {
-    //private static final Log log = LogFactory.getLog(PSContentGenerator.class);
+    //private static final Logger log = LogManager.getLogger(PSContentGenerator.class);
 
     /* Connection info for cm1 server. Url should be of the form http://server:port */
     private String url;

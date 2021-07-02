@@ -31,8 +31,8 @@ import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionInfo;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -434,7 +434,7 @@ public class PSChoiceTableInfo extends PSComponent
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSChoiceTableInfo.class);
+   private static final Logger ms_log = LogManager.getLogger(PSChoiceTableInfo.class);
 
    /*
     * XML element and attribute names to represent the data of this class

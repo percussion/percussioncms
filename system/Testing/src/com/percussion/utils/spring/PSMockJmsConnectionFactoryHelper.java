@@ -27,8 +27,8 @@ import com.mockrunner.jms.DestinationManager;
 import com.mockrunner.mock.jms.JMSMockObjectFactory;
 import com.mockrunner.mock.jms.MockConnectionFactory;
 import com.percussion.utils.jndi.PSNamingContextHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jms.JMSException;
 import javax.jms.Queue;
@@ -50,8 +50,7 @@ public class PSMockJmsConnectionFactoryHelper
    /**
     * Logger used for publisher service
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSMockJmsConnectionFactoryHelper.class);
+   private static final Logger ms_log = LogManager.getLogger(PSMockJmsConnectionFactoryHelper.class);
 
    /**
     * Property binding for the initial JMS connection factory JNDI name.

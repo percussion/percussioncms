@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The site template expander adds the appropriate always publish page templates
@@ -53,6 +53,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSSiteTemplateExpander extends PSBaseTemplateExpander
 {
+   private static final Logger log = LogManager.getLogger(PSSiteTemplateExpander.class);
 
    private enum DefaultTemplateType {
       /**
@@ -67,7 +68,7 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
       /**
        * All publish when default templates should be chosen (default behavior)
        */
-      ALL;
+      ALL
    }
 
    /**
@@ -106,13 +107,9 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
                siteg);
       }
 
-      Log log = LogFactory.getLog(getClass()); 
-      if (log.isDebugEnabled())
-      {
          log.debug("Site template expander found "
             + site.getAssociatedTemplates().size()
             + " associated templates before filtering");
-      }
       for (IPSAssemblyTemplate t : site.getAssociatedTemplates())
       {
          if ((t.getOutputFormat().equals(OutputFormat.Page) || 
@@ -135,9 +132,7 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
       }
       if (log.isDebugEnabled())
       {
-         log.debug("Site template expander retained "
-            + candidates.size()
-            + " templates after filtering");
+         log.debug("Site template expander retained {} templates after filtering.",  candidates.size());
       }
       return candidates;
    }

@@ -36,6 +36,14 @@
 
 }
 
+.perc-prefs-dialog{
+    z-index : 500002;
+}
+
+.perc-prefs-dialog .ui-dialog-titlebar-close{
+    display : none;
+}
+
 #perc-form-container{
     width:690px;
     height: 700px;

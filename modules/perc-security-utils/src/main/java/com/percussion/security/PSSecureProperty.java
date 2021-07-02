@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
 public class PSSecureProperty
 {
    
-   private static Logger log = LogManager.getLogger(PSSecureProperty.class);
+   private static final Logger log = LogManager.getLogger(PSSecureProperty.class);
    
    private PSSecureProperty(){}
    

@@ -28,8 +28,8 @@ import java.util.List;
 
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -267,6 +267,6 @@ public class PSFolderHelperTest extends ServletTestCase
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSFolderHelperTest.class);
+    private static final Logger log = LogManager.getLogger(PSFolderHelperTest.class);
 
 }
