@@ -94,7 +94,7 @@
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.layout.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cmjslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
             </psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.metadata.js" type="script" mimetype="text/javascript">
