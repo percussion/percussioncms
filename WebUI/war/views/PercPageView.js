@@ -1244,7 +1244,7 @@
         {
             confirm_if_dirty(function()
             {
-                jQuery.perc_finder().launchPagePreview(currentPageId);
+                jQuery.perc_finder().launchPagePreview(currentPageId.data);
             });
         }
 
