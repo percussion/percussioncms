@@ -276,6 +276,7 @@
                 });
                 insideIframe(widget).droppable({
                     // only interact with iframe draggables
+                    scope: $.perc_iframe_scope,
                     tolerance : 'touch',
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
@@ -363,6 +364,7 @@
             }
 
             widget.droppable({
+                scope: $.perc_iframe_scope,
                 tolerance : 'touch',
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {
@@ -522,7 +524,7 @@
             root.contents().find("body")
                 .css("z-index","-1000")
                 .css("position","static")
-                .off("click").on("click", function() {
+                .off().on("click", function() {
                 widgetDecorator.unselectAll();
             });
             overlap = 0;

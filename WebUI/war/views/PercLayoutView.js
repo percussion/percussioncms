@@ -227,13 +227,13 @@ var layoutModel;
         });
 
         // populates Explore Regions tray and toggles it open/close
-        $("#perc-region-library-expander").off("click").on("click",function(){
+        $("#perc-region-library-expander").off().on("click",function(){
             $.fn.percRegionLibraryMaximizer(P);
             populateRegionLibrary();
         });
 
         // populates Orphan Assets tray and toggles it open/close
-        $("#perc-orphan-assets-expander").off("click").on("click",function(){
+        $("#perc-orphan-assets-expander").off().on("click",function(){
             $.fn.percOrphanAssetsMaximizer(P);
             populateOrphanAssets();
         });
@@ -310,7 +310,7 @@ var layoutModel;
         /**
          * Button or link that toggles region puff decoration
          */
-        $('.perc-dropdown-option-HideGuides').off("click").on("click", function() {
+        $('.perc-dropdown-option-HideGuides').off().on("click", function() {
             regionDecorator.visible( !regionDecorator.visible());
             widgetDecorator.visible( !widgetDecorator.visible());
             puff = !puff;
@@ -321,7 +321,7 @@ var layoutModel;
          * Save button invokes model to save itself which uses page or template manager services that
          * communicate with REST service to persiste the page or template
          */
-        $('#perc-save').off("click").on("click", function() {
+        $('#perc-save').off().on("click", function() {
             if(!layoutModel.isResponsiveBaseTemplate())
                 $.PercInspectionToolHandler.clearItoolMarkup();
             saveLayout();
@@ -383,7 +383,7 @@ var layoutModel;
         /**
          * Reload model and re-render if they cancel
          */
-        $('#perc-layout-cancel').off("click").on("click", function() {
+        $('#perc-layout-cancel').off().on("click", function() {
             cancel();
             if(!layoutModel.isResponsiveBaseTemplate())
                 $.PercInspectionToolHandler.cancelCallback();
@@ -533,7 +533,7 @@ var layoutModel;
             iframe.contents().find("body")
                 .css("z-index","-1000")
                 .css("position","static")
-                .off("click")
+                .off()
                 .on("click",function(event){
                     widgetDecorator.unselectAll();
                     regionDecorator.unselectAll();
@@ -628,7 +628,7 @@ var layoutModel;
 
             // you can drop a widget on the region and it will be added to the end
             region.droppable({
-                accept: '*',
+                accept: '.perc-widget-tool',
                 tolerance: 'touch',
                 greedy: true,
                 scope: 'default',
@@ -645,9 +645,10 @@ var layoutModel;
             // if the region already has widgets, then you can drop on the existing widgets themselves
             // the new widget will be added on top of the existing widget
             widgets.droppable({
-                accept: '*',
+                accept: '.perc-widget-tool',
                 tolerance: 'touch',
                 greedy: true,
+                scope: 'default',
                 drop: function(event,ui) {
                     widgetDrop(ui, $(this), region);
                 },
@@ -799,7 +800,7 @@ var layoutModel;
                 .addClass("perc-region-feedback")
                 .css({'position':'absolute'}).droppable({
                     scope: 'default',
-                    accept: '*',
+                    accept: '#region-tool',
                     tolerance: 'touch',
                     greedy: true,
                     hoverClass: 'perc-show-feedback',
@@ -1229,7 +1230,7 @@ var layoutModel;
                 deleteContentChoice.attr('disabled','disabled');
 
             // handle ok button of dialog
-            deleteRegionDialog.parent().find('.perc-ok').off("click").on("click", function() {
+            deleteRegionDialog.parent().find('.perc-ok').off().on("click", function() {
 
                 // if OK, then find out what their choice was to delete or not the content
                 var deleteContent = $('#perc-delete-content-choice:checked').length!==0;
@@ -1930,7 +1931,7 @@ var layoutModel;
             });
         }
 
-        $("#perc-error-alert").off("click").on("click",function(){
+        $("#perc-error-alert").off().on("click",function(){
             $.PercLayoutErrorDialog().openLayoutErrorDialog();
         });
 
