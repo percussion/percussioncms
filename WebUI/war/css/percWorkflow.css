@@ -28,6 +28,10 @@
    background:transparent url(../images/text/workflowTabs.png);*/
 }
 
+#perc-assign-workflow-wrapper{
+    max-height : 350px !important;
+}
+
 .ui-tabs-selected #perc-tab-category {
     margin-top: 0px !important;
     padding-top: 8px;
