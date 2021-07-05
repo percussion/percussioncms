@@ -142,7 +142,7 @@
         selectedWorkflowName = selectedWorkflow;
         $(dialog).remove();
         dialog = $('<div id="perc-assign-workflow-wrapper"></div>')
-            .css("maxHeight", "350px")
+            .css("max-height", "350px")
             .css("background-color", "white")
             .css("padding-top", "0px");
 
