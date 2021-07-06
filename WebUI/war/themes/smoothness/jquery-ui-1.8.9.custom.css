@@ -455,7 +455,7 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-datepicker table {
 	width: 100%;
-	font-size: .7em;
+	font-size: .6em;
 	border-collapse: collapse;
 	margin: 0 0 .4em;
 }
