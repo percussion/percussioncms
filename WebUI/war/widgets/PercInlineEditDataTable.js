@@ -230,7 +230,7 @@
             table.parent().append(labelHtml);
             addPlaceHolder();
                         
-            $(nCol).find("input").focus();
+            $(nCol).find("input").trigger("focus");
         }
         
         // Edit Cells
