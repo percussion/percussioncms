@@ -1484,7 +1484,7 @@ var assetPagination = null;
                                 nRef.document.title = nRef.document.title + I18N.message("perc.ui.finder@Revision") + revId + ")";
                             }, 1000); // There needs to be a delay for title to be ready
                         }
-                        nRef.trigger("focus");
+                        nRef.focus();
                     });
                 }
                 else {
