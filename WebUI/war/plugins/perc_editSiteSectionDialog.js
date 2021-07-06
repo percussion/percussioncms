@@ -49,7 +49,7 @@
                 "<label for='perc-page-title-link' class='perc-required-field'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Home page link text" ) + ":</label> <br/> " +
                 "<input type='text' tabindex='" + taborder + "' id='perc-page-title-link' class='required' name='page_title_link'/><br/> " +
                 "<label for='perc-site-desc'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Description" ) + ":</label> <br/> " +
-                "<textarea tabindex='" + taborder + "' id='perc-site-desc' name='site_desc'></textarea><br/> " +
+                "<textarea type='text' tabindex='" + taborder + "' id='perc-site-desc' name='site_desc'></textarea><br/> " +
                 "<label for='perc-site-navigation-cssclassnames'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Navigation class names") + ":</label> <br/> " +
                 "<input type='text' tabindex='" + taborder + "' id='perc-site-navigation-cssclassnames' maxlength='255' name='perc-site-navigation-cssclassnames'/> <br/>" +
                 "<label for='perc-site-pagefile-extention-default'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Default file extension") + ":</label> <br/> " +
@@ -332,7 +332,7 @@
                 debug: false,
                 submitHandler: function(form) {
                     dialog.remove();
-                    callback("ok", $(form).serializeArray());
+                    callback("ok", $(form,this).serializeArray());
                 }
             });
 
