@@ -171,7 +171,7 @@
                 templObj = utils.unxml( $.perc_schemata.template, $.xmlDOM(xml) );
                 root = P.regionsFromTree( templObj.Template.regionTree.rootRegion, templObj.Template.regionTree.regionWidgetAssociations, "template" );
                 eachRegion( function(){ regionIds[ this.regionId ] = true; } );
-                loadWidgetPrefs();
+                //loadWidgetPrefs();
 
                 // Load the CSS Data.
                 cssObj.themeName = templObj.Template.theme;
