@@ -206,7 +206,7 @@
             }
             else
             {
-                var rowNumber = oTable.row( nRow ).index();
+                var rowNumber = oTable.fnGetPosition( nRow );
                 placeHolderValue = config.percPlaceHolderValues[rowNumber][colNumber];
             }
             
@@ -248,7 +248,7 @@
                 }
                 else
                 {
-                    var rowNumber = oTable.row( nRow ).index();
+                    var rowNumber = oTable.fnGetPosition( nRow );
                     placeHolderValue = config.percPlaceHolderValues[rowNumber][i];
                 }
                 $(table).parent().append('<label class="visuallyhidden" for="inputEdition'+ i +'">Search:</label>');
@@ -288,7 +288,7 @@
                 oTable.fnUpdate( "<span>" + aData[i] + "</span>", nRow, i, false );
             }
 
-            oTable.draw();
+            oTable.fnDraw();
             $(nRow).append('<td><a class="perc-inline-edit-datatable-delete-row" href=""></a></td>');
         }
         
@@ -310,7 +310,7 @@
                 }
                 else
                 {
-                    var rowNumber = oTable.row( nRow ).index();
+                    var rowNumber = oTable.fnGetPosition( nRow );
                     placeHolderValue = config.percPlaceHolderValues[rowNumber][0];
                 }
                 placeHolderClass1 = "perc-placeholder";
@@ -326,7 +326,7 @@
                 }
                 else
                 {
-                    var rowNumber2 = oTable.row( nRow ).index();
+                    var rowNumber2 =  oTable.fnGetPosition( nRow );
                     placeHolderValue2 = config.percPlaceHolderValues[rowNumber2][1];
                 }
                 placeHolderClass2 = "perc-placeholder";
@@ -335,7 +335,7 @@
     
             oTable.fnUpdate( "<span class='" + placeHolderClass1 + "'>" + value1 + "</span>", nRow, 0, false );
             oTable.fnUpdate( "<span class='" + placeHolderClass2 + "'>" + value2 + "</span>", nRow, 1, false );
-            oTable.draw();
+            oTable.fnDraw();
             if (config.percDeleteRow)
             {
                 $(nRow).append('<td style="width:10px; max-width:10px"><a style="display:none;" class="perc-inline-edit-datatable-delete-row" href=""></a></td>');
@@ -364,7 +364,7 @@
                 }
                 else
                 {
-                    var rowNumber = oTable.row( nRow ).index();
+                    var rowNumber = oTable.fnGetPosition( nRow );
                     placeHolderValue = config.percPlaceHolderValues[rowNumber][colNumber];
                 }
                 placeHolderClass = "perc-placeholder";
@@ -372,7 +372,7 @@
             }
 
             oTable.fnUpdate( "<span class='" + placeHolderClass + "'>" + value + "</span>", nRow, colNumber, false );
-            oTable.draw();
+            oTable.fnDraw();
             var newRowsDefaultValues = config.percNewRowDefaultValues;
             if (jqInputs[0].value.trim() === newRowsDefaultValues[0])
             {
@@ -395,7 +395,7 @@
         function addColIds (nRow)
         {
             var jqTds = $('>td', nRow);
-            var rowNumber = oTable.row( nRow ).index();
+            var rowNumber = oTable.fnGetPosition( nRow );
             for ( var i = 0, iLen=jqTds.length ; i<iLen ; i++ ) {
                 $(jqTds[i]).attr("id", "perc-cell-" + rowNumber + "-" + i);
             }
@@ -518,7 +518,7 @@
                     
                     var newRowsDefaultValues = config.percNewRowDefaultValues;
 
-                    var aiNew = oTable.row().add( newRowsDefaultValues );
+                    var aiNew = oTable.fnAddData( newRowsDefaultValues );
 
             if ( nEditing !== null && nEditing !== nRow ) {
                 try
@@ -526,7 +526,7 @@
                     restoreRow( nEditing );
                 } catch(e){}
             }
-            var nRow = oTable.row.node( aiNew[0] );
+            var nRow = oTable.fnGetNodes( aiNew[0] );
             addColIds(nRow);
             editRow( nRow, isOnlyRow );
             nEditing = nRow;
@@ -542,7 +542,7 @@
         
         function deleteRow( nRow)
         {
-            oTable.row( nRow ).delete();
+            oTable.fnDeleteRow( nRow );
             if (oTable.fnGetData().length === 0)
             {
                addRow(true);
