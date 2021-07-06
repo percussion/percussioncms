@@ -310,7 +310,7 @@ var assetPagination = null;
             fixHeight();
             // refresh Architecture view
             if( $("#perc_site_map").length > 0 )   {
-                $("#perc_site_map").perc_site_map('layoutAll');
+                $("#perc_site_map",this).perc_site_map('layoutAll');
             }
         }
 
