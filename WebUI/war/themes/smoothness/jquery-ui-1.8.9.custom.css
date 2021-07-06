@@ -590,6 +590,7 @@ button.ui-button::-moz-focus-inner {
 	margin: .1em 0;
 	white-space: nowrap;
 	width: 90%;
+	height:100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
