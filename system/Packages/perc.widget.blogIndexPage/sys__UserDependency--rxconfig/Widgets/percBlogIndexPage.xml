@@ -590,7 +590,7 @@ $!{listAriaLabel}##
 #set($locale_lang = $localLanguageCountry.language)##
 #set($locale_country = $localLanguageCountry.country)##
 #set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
-#set($locale = $ctor.newInstance($locale_lang, $locale_country))##
+#set($locale = $ctor.newInstance('$locale_lang', '$locale_country'))##
 ##Setup Date Formatting
 #set($format_ctorOut = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.util.Locale')))##
 #set($formatterOut = $format_ctorOut.newInstance("$!{blogPostDateTimeFormat}",$locale))##
