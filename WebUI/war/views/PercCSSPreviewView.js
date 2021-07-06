@@ -52,7 +52,7 @@
          }
         ];
 	  
-	var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-region-selected', widgetMenu);
+	var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-region-active', widgetMenu);
 
 	initWidgetEditDialog();
 	populateWidgetDefs();

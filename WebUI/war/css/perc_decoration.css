@@ -97,7 +97,7 @@
 .perc-region-puff {border : 1px dashed #33C9ED; padding : 20px; position: relative;}
 .perc-widget-puff {border : 1px solid #E6E6E9; position: relative; z-index:1000;} /* Makign widget puff border zero to fix the split column issue. */
 
-.perc-widget-selected, .perc-region-selected {
+.perc-widget-active, .perc-region-active {
     background-color : #E6E6E9; 
     border:1px solid #CAF589;
 	z-index:1000;

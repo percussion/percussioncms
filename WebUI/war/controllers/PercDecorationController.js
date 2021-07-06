@@ -40,7 +40,7 @@
      * applied to allElements in that particular view, e.g., perc-widget-puff, perc-region-puff
      *
      * @param selectionClasses (String) space separated list of CSS classes to be
-     * applied to allElements when a widget or region is selected, e.g., perc-widget-selected, perc-region-selected
+     * applied to allElements when a widget or region is active, e.g., perc-widget-active, perc-region-active
      * 
      * @param menuItems (array of Objects) array of menus that decorate a the top right of a widget or region DIV
      * when you select it. Format is as follows:

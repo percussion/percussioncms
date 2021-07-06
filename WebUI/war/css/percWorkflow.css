@@ -22,7 +22,7 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-#perc-tab-users,li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover,#perc-tab-roles,li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover,#perc-tab-workflow,li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+#perc-tab-users,li.ui-tabs-active #perc-tab-users,#perc-tab-users:hover,#perc-tab-roles,li.ui-tabs-active #perc-tab-roles,#perc-tab-roles:hover,#perc-tab-workflow,li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 {
     /*width:115px;
    background:transparent url(../images/text/workflowTabs.png);*/
@@ -32,19 +32,19 @@
     max-height : 350px !important;
 }
 
-.ui-tabs-selected #perc-tab-category {
+.ui-tabs-active #perc-tab-category {
     margin-top: 0px !important;
     padding-top: 8px;
 }
-.ui-tabs-selected #perc-tab-users{
+.ui-tabs-active #perc-tab-users{
     margin-top: 0px !important;
     padding-top: 8px;
 }
-.ui-tabs-selected #perc-tab-roles{
+.ui-tabs-active #perc-tab-roles{
     margin-top: 0px !important;
     padding-top: 8px;
 }
-.ui-tabs-selected #perc-tab-workflow{
+.ui-tabs-active #perc-tab-workflow{
     margin-top: 0px !important;
     padding-top: 8px;
 }
@@ -116,28 +116,28 @@
     letter-spacing: 1px;
 }
 
-li.ui-tabs-selected #perc-tab-category,#perc-tab-category:hover
+li.ui-tabs-active #perc-tab-category,#perc-tab-category:hover
 {
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
 }
 
-li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 {
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
 }
 
-li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover
+li.ui-tabs-active #perc-tab-users,#perc-tab-users:hover
 {
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
 }
 
-li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
+li.ui-tabs-active #perc-tab-roles,#perc-tab-roles:hover
 {
     color:black;
     background-color:#E6E6E6;
@@ -179,22 +179,22 @@ li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
     background-position:0 -208px;
 }
 
-li.ui-tabs-selected #perc-tab-category,#perc-tab-category:hover
+li.ui-tabs-active #perc-tab-category,#perc-tab-category:hover
 {
     background-position:0 -108px;
 }
 
-li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover
+li.ui-tabs-active #perc-tab-users,#perc-tab-users:hover
 {
     background-position:0 -157px;
 }
 
-li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
+li.ui-tabs-active #perc-tab-roles,#perc-tab-roles:hover
 {
     background-position:0 -52px;
 }
 
-li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 {
     background-position:0 -260px;
 }
