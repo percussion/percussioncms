@@ -122,7 +122,7 @@ public class PSConcatWithIdAssemblyLocation implements IPSAssemblyLocation
          
          request.printTraceMessage("Location= " + location);
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          StringWriter writer = new StringWriter();
          PrintWriter printer = new PrintWriter(writer, true);
