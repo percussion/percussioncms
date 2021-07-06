@@ -266,10 +266,11 @@ public class PSImportJob extends PSDeployJob
          setStatusMessage("error: " + ex.getLocalizedMessage());
          ctx.setCurrentDependency(null);
          setStatus(-1);
-         LogManager.getLogger(getClass()).error(
-               "Error installing Deployer " + "package", ex);
-         if (storeException)
-             runException = ex;
+         log.error("Error installing Deployer package, Error: {}", ex.getMessage());
+         log.debug(ex.getMessage(), ex);
+         if (storeException) {
+            runException = ex;
+         }
       }
       finally
       {
@@ -443,12 +444,12 @@ public class PSImportJob extends PSDeployJob
             if (restoreEx != null)
                throw restoreEx;
          }
-         
+
+         ah.close();
       }
       // install the configure files if there is any. 
       installConfigFiles(archive, expDesc);
-      if(hasPkgs)
-         ah.close();
+
    }
    
    /**
@@ -463,8 +464,7 @@ public class PSImportJob extends PSDeployJob
          PSExportDescriptor expDesc) throws PSNotFoundException {
       if (isCancelled())
          return;
-      
-      ResourceBundle bundle = PSDeploymentManager.getBundle();
+
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
 
@@ -622,12 +622,10 @@ public class PSImportJob extends PSDeployJob
          PSPkgInfo depPkgInfo = pkgService.findPkgInfo(pkgName);
          if (depPkgInfo == null)
          {
-            LogManager.getLogger(getClass()).info(
-                  "Skipping package dependency " + "entry for package "
-                        + pkgInfo.getPackageDescriptorName()
-                        + " with dependent " + pkgName
-                        + ", due to failure to find the "
-                        + "package info object with that name.");
+            log.info("Skipping package dependency entry for package {} with dependent {}, " +
+                        "due to failure to find the package info object with that name.",
+                        pkgInfo.getPackageDescriptorName(), pkgName);
+
             continue;
          }
          PSPkgDependency pkgDep = pkgService.createPkgDependency();
@@ -719,6 +717,7 @@ public class PSImportJob extends PSDeployJob
       }
       catch (PSDeployException e)
       {
+         log.debug(e.getMessage(), e);
       }
    }
 

@@ -29,8 +29,8 @@ import com.percussion.rest.Status;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.*;
@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Api(value = "/preferences", description = "User Preference operations")
 public class PreferenceResource {
 
-    final static Logger log = LoggerFactory.getLogger(PreferenceResource.class);
+    final static Logger log = LogManager.getLogger(PreferenceResource.class);
 
     @Autowired
     IPreferenceAdaptor adaptor;

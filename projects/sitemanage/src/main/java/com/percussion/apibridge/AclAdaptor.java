@@ -41,8 +41,8 @@ import com.percussion.services.security.PSSecurityException;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -54,7 +54,7 @@ import java.util.List;
 @Lazy
 public class AclAdaptor implements IAclAdaptor {
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private Logger log = LogManager.getLogger(this.getClass());
 
     @Autowired
     private IPSAclService aclService;
