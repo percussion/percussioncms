@@ -53,7 +53,7 @@ import com.percussion.services.contentmgr.PSContentMgrLocator;
  */
 public class PSOQueryTools extends PSJexlUtilBase implements IPSJexlExpression
 {
-   private static final Logger log = LogManager.getLogger(PSOQueryTools.class); 
+   private static final Logger log = LogManager.getLogger(PSOQueryTools.class);
    
    private static IPSContentMgr cmgr = null;
    
@@ -89,14 +89,14 @@ public class PSOQueryTools extends PSJexlUtilBase implements IPSJexlExpression
    {
       
       initServices();
-      List<Map<String, Value>> results = new ArrayList<Map<String, Value>>();
+      List<Map<String, Value>> results = new ArrayList<>();
       QueryResult qres = performQuery(query, maxRows, params, locale);
       List<String> colNames = Arrays.<String>asList(qres.getColumnNames()); 
       RowIterator rows = qres.getRows();
       while(rows.hasNext())
       {
          Row row = rows.nextRow(); 
-         Map<String, Value> rowValues = new HashMap<String, Value>(); 
+         Map<String, Value> rowValues = new HashMap<>();
          for(String colName : colNames)
          {
             Value value = row.getValue(colName); 
@@ -144,8 +144,7 @@ public class PSOQueryTools extends PSJexlUtilBase implements IPSJexlExpression
          throw new IllegalArgumentException(emsg); 
       }      
       Query q = cmgr.createQuery(query, Query.SQL);
-      QueryResult qres = cmgr.executeQuery(q, maxRows, params, locale);
-      return qres;
+      return cmgr.executeQuery(q, maxRows, params, locale);
    }
          
    private static void initServices()
