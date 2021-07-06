@@ -190,7 +190,6 @@ IPSRequestPreProcessor {
       e.printStackTrace(new java.io.PrintWriter((java.io.Writer)stackWriter,
          true));
       request.printTraceMessage(stackWriter.toString());
-      System.out.println(stackWriter.toString());
       throw new PSExtensionProcessingException(this.getClass().getName(),e);
       }
 }
