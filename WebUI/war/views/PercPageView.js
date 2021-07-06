@@ -513,7 +513,7 @@
                                 $("<div />").css("overflow", "hidden").addClass("perc-asset-label").append(
                                     $("<nobr />").html(asset.title)))).css('cursor', 'pointer').data('assetId', asset.id).data('assetType', asset.type).data('assetFolderPaths', folderPaths).data('widgetId', asset.widgetId).off("click").on("click",
                             function(evt){
-                                selectOrphanAsset(evt);
+                                selectOrphanAsset(evt,this);
                             })
                     );
                 }
@@ -650,21 +650,21 @@
 
         function orphanAssetEdited() {}
 
-        function selectOrphanAsset(e)
+        function selectOrphanAsset(e,obj)
         {
-            if (e.shiftKey) $(this).toggleClass("perc-orphan-assets-selected");
+            if (e.shiftKey) $(obj).toggleClass("perc-orphan-assets-selected");
             else
             {
-                if ($(this).is(".perc-orphan-assets-selected")) clearSelection();
+                if ($(obj).is(".perc-orphan-assets-selected")) clearSelection();
                 else
                 {
                     clearSelection();
-                    $(this).toggleClass("perc-orphan-assets-selected");
+                    $(obj).toggleClass("perc-orphan-assets-selected");
                 }
             }
 
             // Manage button icons and events
-            var parent = $(this).parent();
+            var parent = $(obj).parent();
             var selected = $(parent).find(".perc-orphan-assets-selected");
             if (selected.length > 0)
             {
