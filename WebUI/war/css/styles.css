@@ -1751,7 +1751,7 @@ td.perc-table-cell-indented > input
     padding:10px;
 }
 
-#perc-region-library .perc-region-selected
+#perc-region-library .perc-region-active
 {
     background-color:#E6E6E9;
     border:medium none;

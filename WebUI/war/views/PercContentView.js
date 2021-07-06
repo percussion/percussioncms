@@ -179,7 +179,7 @@
             widgetMenu.push(promoteMenu);
         }
 
-        var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-selected', widgetMenu);
+        var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-active', widgetMenu);
 
         $('#show-hide-decorations').off("click").on("click", function(){
             widgetDecorator.visible( !widgetDecorator.visible());

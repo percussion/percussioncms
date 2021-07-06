@@ -210,9 +210,9 @@ var layoutModel;
         /**
          * Decorators that apply region puffs and selected CSS
          */
-        var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-selected', widgetMenu);
-        var regionDecorator = layoutModel.isTemplate() ? P.decorationController( allRegions, 'perc-region-puff', 'perc-region-selected', regionMenu)
-            : P.decorationController( allRegions, 'perc-region-puff', 'perc-region-selected', []);
+        var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-active', widgetMenu);
+        var regionDecorator = layoutModel.isTemplate() ? P.decorationController( allRegions, 'perc-region-puff', 'perc-region-active', regionMenu)
+            : P.decorationController( allRegions, 'perc-region-puff', 'perc-region-active', []);
 
 
         // let both decorators know about each other so that they can unselect each other
@@ -559,8 +559,8 @@ var layoutModel;
             // if region is clicked, also highlight the region-tool in "Explore Regions" tray
             iframe.contents().find(".perc-region").on("click",function(){
                 var regionId = "perc-re-" + $(this).attr("id");
-                $(".perc-region-library-tool").removeClass("perc-region-selected");
-                $(".perc-region-library-tool[name="+regionId+"]").addClass("perc-region-selected");
+                $(".perc-region-library-tool").removeClass("perc-region-active");
+                $(".perc-region-library-tool[name="+regionId+"]").addClass("perc-region-active");
             });
             iframe.contents().find(".sf-menu").superfish({
                 pathClass:  'current',
@@ -1615,15 +1615,15 @@ var layoutModel;
 
             // before the tray is populated, a region might have been selected in the layout below
             // get the regionId of the selected region if any and highlight it also in the tray when it opens
-            var selectedRegionId = "perc-re-" + iframe.contents().find(".perc-region-selected").attr("id");
-            $(".perc-region-library-tool[name="+selectedRegionId+"]").addClass("perc-region-selected");
+            var selectedRegionId = "perc-re-" + iframe.contents().find(".perc-region-active").attr("id");
+            $(".perc-region-library-tool[name="+selectedRegionId+"]").addClass("perc-region-active");
 
             // bind click events on each of the regions in the tray so that clicking on them highlitghts the region in the layout
             $(".perc-region-library-tool")
                 .on("click",function(){
                     var regionTool = $(this);
-                    $(".perc-region-library-tool").removeClass("perc-region-selected");
-                    regionTool.addClass("perc-region-selected");
+                    $(".perc-region-library-tool").removeClass("perc-region-active");
+                    regionTool.addClass("perc-region-active");
                     var regionId = String(regionTool.attr("name")).replace(/^perc-re-/, '');
                     var region = iframe.contents().find("#"+regionId);
                     region.trigger("click");
