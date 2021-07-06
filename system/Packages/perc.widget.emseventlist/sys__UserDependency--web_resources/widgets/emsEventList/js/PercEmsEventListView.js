@@ -90,6 +90,9 @@
 					
                     var listElem = $("<ul>").addClass("perc-list-main perc-emsevent-list");
 					var count = 1;
+					if( typeof result === 'string' ){
+						result = JSON.parse(result);
+					}
 					$.each(result, function(index, entry){
                         if(count<=settings.maxEvents){
 							listElem.append(createEntryHtml(settings, entry));
