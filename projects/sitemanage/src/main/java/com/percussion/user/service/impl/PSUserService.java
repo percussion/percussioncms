@@ -160,30 +160,30 @@ public class PSUserService implements IPSUserService
     // Used to get the email on the user
     private static final String EMAIL_ATTRIBUTE_NAME = "sys_email";
 
-    private IPSUserLoginDao userLoginDao;
+    private final IPSUserLoginDao userLoginDao;
 
-    private IPSPasswordFilter passwordFilter;
+    private final IPSPasswordFilter passwordFilter;
 
-    private IPSRoleMgr roleMgr;
+    private final IPSRoleMgr roleMgr;
 
-    private PSBackEndRoleManagerFacade backEndRoleMgr;
+    private final PSBackEndRoleManagerFacade backEndRoleMgr;
     
-    private IPSWorkflowService workflowService;
+    private final IPSWorkflowService workflowService;
     
-    private IPSSecurityWs securityWs;
+    private final IPSSecurityWs securityWs;
     
-    private IPSContentWs contentWs;
+    private final IPSContentWs contentWs;
     
-    private IPSIdMapper idMapper;
+    private final IPSIdMapper idMapper;
 
     private List<String> accessibilityRoles = null;
     
   
     private IPSSystemProperties systemProps;
     
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     
-    private IPSUtilityService utilityService;
+    private final IPSUtilityService utilityService;
     
     private static final String PERCUSSION_ADMIN_NAME = "PercussionAdmin";
     

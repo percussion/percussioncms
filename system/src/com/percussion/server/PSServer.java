@@ -1076,7 +1076,8 @@ public class PSServer {
       if (queryParams != null) {
          try
          {
-            HashMap params = new HashMap();
+            HashMap params = new HashMap<>();
+
             PSFormContentParser.parseParameterString( params, queryParams );
             clonedRequest.putAllParameters( params );
          } catch (PSRequestParsingException e)
