@@ -86,29 +86,7 @@
 
             // if we dont have a widget definition, get it from the REST service
             var self = this;
-            if(this.currentWidgetDefinition == null)
-            {
-                // use the REST client to retrieve the widget defintion for the widget type
-                // the client returns an object representing the widget definition
-                $.perc_widget_definition_client.restGetWidgetDefinition(widget.getWidgetDefinitionId(), function(restWidgetDefinition)
-                {
-                    if(restWidgetDefinition.getUserPrefDef() == null)
-                    {
-                        alert(I18N.message("perc.ui.layout.controller@Widget Properties"));
-                        return;
-                    }
-
-                    // the client parses the service response into a model
-                    self.widgetDefinitions[widget.getWidgetDefinitionId()] = restWidgetDefinition;
-                    self.currentWidgetDefinition = restWidgetDefinition;                    
-
-                    // override the default definition values with the widget values parsed when loading widgets from template or page object
-                    self.currentWidgetDefinition.setValuesFromWidgetProperties(widget.properties);
-                    // display dialog
-                    $('#perc-widget-edit').dialog('open');
-                });
-            }
-            else
+            if(this.currentWidgetDefinition != null)
             {
                 // override the default definition values with the widget values parsed when loading widgets from template or page object
                 self.currentWidgetDefinition.setValuesFromWidgetProperties(widget.properties);

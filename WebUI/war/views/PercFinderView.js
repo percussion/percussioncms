@@ -1418,10 +1418,9 @@
 
         function handlePageWorkflowDropdownAction(params)
         {
-            if((typeof params.class !== 'undefined') && params.class === jQuery.Event.class){
+            if(params.type === 'click'){
                 params = params.data;
             }
-
 
             var contentId = params.contentId;
             var itemType = params.itemType;
