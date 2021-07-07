@@ -87,9 +87,7 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
       String itemsXml = request.getParameter("ItemLocators");
       if (StringUtils.isBlank(itemsXml))
       {
-         log.warn("Missing ItemLocators parameter in the request. "
-               + "Skipping the execution of exit and returning unmodified "
-               + "result document.");
+         log.warn("Missing ItemLocators parameter in the request. Skipping the execution of exit and returning unmodified result document.");
          return resultDoc;
       }
       try

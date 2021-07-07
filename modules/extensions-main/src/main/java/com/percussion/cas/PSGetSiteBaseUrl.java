@@ -80,8 +80,7 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
       if (siteid == null || siteid.length() < 1)
       {
          //Site is not supplied return empty string.
-         log.warn("siteid is not supplied and not available in the request "
-               + "context. Returning empty string");
+         log.warn("siteid is not supplied and not available in the request context. Returning empty string");
          return "";
       }
       boolean modifyUrl = false;
