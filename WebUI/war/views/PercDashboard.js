@@ -622,6 +622,12 @@
         var left = titleBar.position().left;
         var menuX = titleBar[0].getBoundingClientRect().left + titleBar[0].getBoundingClientRect().width - menu.outerWidth(true);
         var menuY = top + titleBar.outerHeight();
+        // hide the menu if you hover away from it
+        menu.off().hover(function()
+        {}, function()
+        {
+            menu.hide();
+        });
         menu.css("top", menuY).css("left", menuX).css("display", "block");
         // update the menu items based on the current state of the gadget
         updateMinimizeExpandMenuItem(gadget);
@@ -661,14 +667,7 @@
         }
 
         // hide the menu if you are about to resize the finder
-        $(".ui-resizable-handle").on('hover',function(event)
-        {
-            menu.hide();
-        });
-
-        // hide the menu if you hover away from it
-        menu.off().on('hover',function(event)
-        {}, function()
+        $(".ui-resizable-handle").hover(function()
         {
             menu.hide();
         });
