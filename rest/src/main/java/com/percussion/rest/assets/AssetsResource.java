@@ -82,7 +82,7 @@ public class AssetsResource
     @Context
     private UriInfo uriInfo;
     
-    private Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
+    private final Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
 
     public static Logger log = LogManager.getLogger(AssetsResource.class);
 

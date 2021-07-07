@@ -226,7 +226,7 @@ public class PSDeliveryTierNewInstallDestinationModel extends RxIAModel
                      InstallUtil.isServerRunning(dirName))
                {
                   String errorText = "A Percussion Server is running in the "
-                     + "specified directory. Please stop the running server "
+                      + "specified directory. Please stop the running server "
                      + "and proceed with the installation";
                   setError(errorText); 
                   validationError("", errorText, "");
