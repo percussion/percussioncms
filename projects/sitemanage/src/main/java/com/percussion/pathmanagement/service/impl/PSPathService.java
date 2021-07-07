@@ -57,6 +57,7 @@ import com.percussion.ui.service.IPSUiService;
 import com.percussion.ui.service.impl.PSCm1ListViewHelper;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -264,6 +265,11 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             PSPathServiceException {
 
         try {
+            if(!PSSecurityUtility.isValidCMSPathString(path)){
+                log.warn("Invalid path provided: {}",path);
+                throw new WebApplicationException(404);
+            }
+
             log.debug("Attempting to find children for path: {}", path);
             log.debug(
                     "Parameters set for find children: startIndex={}; maxResults={}; child={}",
