@@ -119,6 +119,8 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
       }
       catch(Exception e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSExtensionProcessingException("sys_ceDependencyTree", e);
       }
       request.setParameters(htmlParams);
@@ -193,6 +195,8 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
       {
          PSXmlDocumentBuilder.addElement(
                parent.getOwnerDocument(), parent, "ExitError", e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
    }
 

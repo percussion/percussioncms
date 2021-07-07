@@ -161,7 +161,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                ms_className
                   + ": No sites are available with folder root, "
                   + "Site Folder Authtype filtering can not be done.";
-            ms_log.debug(msg);
+            log.debug(msg);
             request.printTraceMessage(msg);
             throw new PSExtensionProcessingException(0, msg);
          }
@@ -230,7 +230,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          String msg = "Removed linkurl : \nReason: " + CONTENTID
                + " attribute is missing." + "\nlinkurl: "
                + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return params;
       }
@@ -240,7 +240,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          String msg = "Removed linkurl : \nReason: " + VARIANTID
                + " attribute is missing." + "\nlinkurl: "
                + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return params;
       }
@@ -261,7 +261,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + IPSHtmlParameters.SYS_SITEID
                + " nor present in the request.\nlinkurl: "
                + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return params;
       }
@@ -283,7 +283,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          String msg = "Removed linkurl : \nReason: "
                + "Assembly url is missing from the linkurl element."
                + "\nlinkurl: " + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return params;
       }      
@@ -299,7 +299,8 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + " Error occurred while parsing the url for "
                + IPSHtmlParameters.SYS_REVISION + "\nlinkurl: "
                + PSXMLDomUtil.toString(linkurl) + "\nError:" + e.getMessage();
-         ms_log.debug(msg);
+         log.error(msg);
+         log.debug(e.getMessage(),e);
          request.printTraceMessage(msg);
          return params;
       }
@@ -311,7 +312,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + IPSHtmlParameters.SYS_REVISION
                + " is missing from the linkurl." + "\nlinkurl: "
                + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return params;
       }
@@ -348,7 +349,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
             ms_className
                + ": Unable to locate handler for request: "
                + LOOKUP_SITE_FOLDER_ROOT;
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -362,7 +363,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                ms_className
                   + ": No sites are registered, "
                   + "Site Folder Authtype filtering can not be done.";
-            ms_log.debug(msg);
+            log.debug(msg);
             request.printTraceMessage(msg);
             throw new PSExtensionProcessingException(0, msg);
          }
@@ -376,7 +377,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                String msg = "Folder root for the siteid " + siteid
                      + "is null or empty."
                      + "\n Skipping this site id from checking.";
-               ms_log.debug(msg);
+               log.debug(msg);
                request.printTraceMessage(msg);
                continue;
             }
@@ -391,7 +392,8 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + LOOKUP_SITE_FOLDER_ROOT
                + " error: "
                + e.getMessage();
-         ms_log.debug(msg);
+         log.error(msg);
+         log.debug(e.getMessage(),e);
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -474,7 +476,8 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + folderIdSet
                + " error: "
                + e1.getMessage();
-         ms_log.debug(msg);
+         log.error(msg);
+         log.debug(e1.getMessage(),e1);
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -524,7 +527,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          String msg = "Removed linkurl : \nReason: No "
                + "Site Folder site exists with the siteid " + siteid
                + "\nlinkurl: " + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return false;
       }
@@ -558,7 +561,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
             String msg = "Removed linkurl : \nReason: Item(" + contentId
                   + ") does not exist under the specified site(" + siteid
                   + ")." + "\nlinkurl: " + PSXMLDomUtil.toString(linkurl);
-            ms_log.debug(msg);
+            log.debug(msg);
             request.printTraceMessage(msg);
             return false;
          }
@@ -572,7 +575,8 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + contentId
                + "): \nError : "
                + e.getMessage();
-         ms_log.debug(msg);
+         log.error(msg);
+         log.debug(e.getMessage(),e);
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -637,7 +641,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          String msg = "Removed linkurl : \nReason: Specified folder("
                + folderId + ") does not exist." + "\nlinkurl: "
                + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return false;
       }
@@ -650,7 +654,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          String msg = "Removed linkurl : \nReason: Specified folder("
                + folderId + ") does not exist under the specified site("
                + siteId + ")." + "\nlinkurl: " + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return false;
       }
@@ -671,7 +675,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
             String msg = "Removed linkurl : \nReason: Item(" + contentId
                   + ") does not exist under the specified folder(" + folderId
                   + ")." + "\nlinkurl: " + PSXMLDomUtil.toString(linkurl);
-            ms_log.debug(msg);
+            log.debug(msg);
             request.printTraceMessage(msg);
             return false;
          }
@@ -682,7 +686,8 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + ": Error occurred while getting the folder relationship"
                + " between folder id (" + folderId + ") and content id ("
                + contentId + ") \nError : " + e.getMessage();
-         ms_log.debug(msg);
+         log.error(msg);
+         log.debug(e.getMessage(),e);
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -730,6 +735,8 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
       }
       catch (PSAssemblyException e1)
       {
+         log.error(e1.getMessage());
+         log.debug(e1.getMessage(),e1);
          throw new PSExtensionProcessingException("PSSiteFolderAuthTypeFilter", e1);
       }
       //This should not happen as we just came from the database with this 
@@ -739,7 +746,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
          String msg = "Removed linkurl : \nReason: "
                + "Variant info is missing for specified variantid(" + variantId
                + ")." + "\nlinkurl: " + PSXMLDomUtil.toString(linkurl);
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          return false;
       }
@@ -769,7 +776,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
             ms_className
                + ": Unable to locate handler for request: "
                + LOOKUP_VARIANTS_SITE_ITEM;
-         ms_log.debug(msg);
+         log.debug(msg);
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -784,7 +791,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                   + ") is not a publishable variant for the specified site("
                   + siteId + ")." + "\nlinkurl: "
                   + PSXMLDomUtil.toString(linkurl);
-            ms_log.debug(msg);
+            log.debug(msg);
             request.printTraceMessage(msg);
             return false;
          }
@@ -806,7 +813,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                   + ") is not a publishable variant for the specified site("
                   + siteId + ")." + "\nlinkurl: "
                   + PSXMLDomUtil.toString(linkurl);
-            ms_log.debug(msg);
+            log.debug(msg);
             request.printTraceMessage(msg);
             return false;
          }
@@ -821,7 +828,8 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + reqParams.toString()
                + " \nError: "
                + e.getMessage();
-         ms_log.debug(msg);
+         log.error(msg);
+         log.debug(e.getMessage(),e);
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -859,6 +867,6 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static final Logger ms_log = LogManager
+   private static final Logger log = LogManager
          .getLogger(PSSiteFolderAuthTypeFilter.class);
 }
