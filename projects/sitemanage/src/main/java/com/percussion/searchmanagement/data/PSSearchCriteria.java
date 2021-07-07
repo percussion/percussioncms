@@ -127,6 +127,17 @@ public class PSSearchCriteria
 
     public void setSortOrder(String sortOrder)
     {
+        if(StringUtils.isEmpty(sortOrder)){
+            sortOrder = "asc";
+        }else{
+            if(sortOrder.trim().equalsIgnoreCase("asc") ||
+                    sortOrder.trim().equalsIgnoreCase("desc")){
+                sortOrder = sortOrder.trim().toLowerCase();
+            }else{
+                sortOrder = "asc";
+            }
+        }
+
         this.sortOrder = sortOrder;
     }
 
