@@ -87,9 +87,7 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
       String itemsXml = request.getParameter("ItemLocators");
       if (StringUtils.isBlank(itemsXml))
       {
-         ms_log.warn("Missing ItemLocators parameter in the request. "
-               + "Skipping the execution of exit and returning unmodified "
-               + "result document.");
+         log.warn("Missing ItemLocators parameter in the request. Skipping the execution of exit and returning unmodified result document.");
          return resultDoc;
       }
       try
@@ -103,11 +101,13 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
       }
       catch (IOException e)
       {
-         ms_log.error(e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       catch (SAXException e)
       {
-         ms_log.error(e);
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
       }
       return resultDoc;
    }
@@ -137,7 +137,8 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
          }
          catch (PSUnknownNodeTypeException e)
          {
-            ms_log.error(e);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
       return locs;
@@ -192,5 +193,5 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSGetItemTypeIconPaths.class);
+   private static final Logger log = LogManager.getLogger(PSGetItemTypeIconPaths.class);
 }

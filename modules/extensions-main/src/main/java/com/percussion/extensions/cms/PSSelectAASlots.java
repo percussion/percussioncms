@@ -54,7 +54,7 @@ import org.w3c.dom.NodeList;
  */
 public class PSSelectAASlots implements IPSResultDocumentProcessor
 {
-   private static final Logger ms_log = LogManager.getLogger(PSSelectAASlots.class);
+   private static final Logger log = LogManager.getLogger(PSSelectAASlots.class);
 
    public boolean canModifyStyleSheet()
    {
@@ -102,7 +102,8 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
                   }
                   catch (PSAssemblyException e)
                   {
-                     ms_log.error("Problem loading finder", e);
+                     log.error("Problem loading finder, Error: {}", e);
+                     log.debug(e.getMessage(), e);
                   }
                }
                if (!good)
@@ -127,7 +128,9 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
       }
       catch (Exception e)
       {
-         ms_log.error("Problem while filtering slots", e);
+         log.error("Problem while filtering slots, Error: {}", e);
+         log.debug(e.getMessage(), e);
+
       }
 
       return resultDoc;

@@ -162,6 +162,6 @@ public class PSGetAadItemTypeIconPaths implements IPSResultDocumentProcessor
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSGetAadItemTypeIconPaths.class);
+   private static final Logger log = LogManager.getLogger(PSGetAadItemTypeIconPaths.class);
 
 }
