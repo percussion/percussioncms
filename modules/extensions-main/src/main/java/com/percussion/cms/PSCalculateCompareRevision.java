@@ -45,7 +45,7 @@ import org.apache.logging.log4j.Logger;
 public class PSCalculateCompareRevision implements IPSRequestPreProcessor
 {
    private static final String SYS_REVISION2 = "sys_revision2";
-   private static final Logger ms_log = LogManager.getLogger(PSCalculateCompareRevision.class);
+   private static final Logger log = LogManager.getLogger(PSCalculateCompareRevision.class);
 
    /**
     * Calculate the right revision to use for the second revision. Returns an
@@ -121,7 +121,8 @@ public class PSCalculateCompareRevision implements IPSRequestPreProcessor
       }
       catch(PSConversionException e)
       {
-         ms_log.error("Problem calculating revision for compare", e);
+         log.error("Problem calculating revision for compare, Error: {}", e.getMessage());
+         log.debug(e.getMessage(),e);
       }
    }
 
