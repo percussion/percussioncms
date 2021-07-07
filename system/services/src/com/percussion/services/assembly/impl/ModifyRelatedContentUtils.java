@@ -57,7 +57,7 @@ public class ModifyRelatedContentUtils {
      * Convenience method that calls {@link move(int, IPSRequestContext,
      * boolean) move(rid, request, true)}.
      */
-    static public void moveUp(int rid, IPSRequestContext request)
+    public static void moveUp(int rid, IPSRequestContext request)
             throws PSException
     {
         move(rid, request, true);
@@ -67,7 +67,7 @@ public class ModifyRelatedContentUtils {
      * Convenience method that calls {@link move(int, IPSRequestContext,
      * boolean) move(rid, request, false)}.
      */
-    static public void moveDown(int rid, IPSRequestContext request)
+    public static void moveDown(int rid, IPSRequestContext request)
             throws PSException
     {
         move(rid, request, false);
@@ -83,7 +83,7 @@ public class ModifyRelatedContentUtils {
      *    <code>false</code> to move down/left.
      * @throws PSException for any error.
      */
-    static public void move(int rid, IPSRequestContext request, boolean up)
+    public static void move(int rid, IPSRequestContext request, boolean up)
             throws PSException
     {
         PSRelationship relationship = getRelationship(rid, request);
@@ -232,7 +232,7 @@ public class ModifyRelatedContentUtils {
     /**
      * Convenience method that calls {@link getSlotType(int, request)}.
      */
-    static public PSSlotType getSlotType(String slotid, IPSRequestContext request)
+    public static PSSlotType getSlotType(String slotid, IPSRequestContext request)
             throws PSCmsException
     {
         try
@@ -256,7 +256,7 @@ public class ModifyRelatedContentUtils {
      *    was found for the supplied slotid.
      * @throws PSCmsException for any error looking up the slot types.
      */
-    static public PSSlotType getSlotType(int slotid, IPSRequestContext request)
+    public static PSSlotType getSlotType(int slotid, IPSRequestContext request)
             throws PSCmsException
     {
         IPSAssemblyService service = PSAssemblyServiceLocator
@@ -348,7 +348,7 @@ public class ModifyRelatedContentUtils {
      *    parent item, may be <code>null</code>.
      * @throws PSExtensionProcessingException for any error.
      */
-    static public Document getActiveItemInfo(IPSRequestContext request)
+    public static Document getActiveItemInfo(IPSRequestContext request)
             throws PSExtensionProcessingException
     {
         Document doc = null;
@@ -376,7 +376,7 @@ public class ModifyRelatedContentUtils {
      *    <code>null</code>.
      * @throws PSException for any error.
      */
-    static public void insertSlotItems(IPSRequestContext request)
+    public static void insertSlotItems(IPSRequestContext request)
             throws PSException
     {
         String contentid = null;
@@ -505,14 +505,14 @@ public class ModifyRelatedContentUtils {
      * @return the active assembly processor proxy, never <code>null</code>.
      * @throws PSCmsException for any errors creating the processor.
      */
-    static public PSActiveAssemblyProcessorProxy getAaProcessor(
+    public static PSActiveAssemblyProcessorProxy getAaProcessor(
             IPSRequestContext request) throws PSCmsException
     {
         return new PSActiveAssemblyProcessorProxy(
                 PSActiveAssemblyProcessorProxy.PROCTYPE_SERVERLOCAL, request);
     }
 
-    static public PSRelationshipSet getRelationships(int rid, IPSRequestContext request)
+    public static PSRelationshipSet getRelationships(int rid, IPSRequestContext request)
             throws PSCmsException
     {
         PSRelationshipFilter filter = new PSRelationshipFilter();
@@ -522,7 +522,7 @@ public class ModifyRelatedContentUtils {
         return processor.getRelationships(filter);
     }
 
-    static public PSRelationship getRelationship(int rid, IPSRequestContext request)
+    public static PSRelationship getRelationship(int rid, IPSRequestContext request)
             throws PSCmsException
     {
         PSRelationshipSet relationships = getRelationships(rid, request);
@@ -543,7 +543,7 @@ public class ModifyRelatedContentUtils {
      *    <code>null</code>.
      * @throws PSException for any error.
      */
-    static public void deleteSlotItem(int rid, IPSRequestContext request)
+    public static void deleteSlotItem(int rid, IPSRequestContext request)
             throws PSException
     {
         PSRelationshipSet relationships = getRelationships(rid, request);
@@ -566,7 +566,7 @@ public class ModifyRelatedContentUtils {
      *    <code>null</code>.
      * @throws PSException for any error.
      */
-    static public void modifySlotVariant(int rid, IPSRequestContext request)
+    public static void modifySlotVariant(int rid, IPSRequestContext request)
             throws PSException
     {
         PSRelationship relationship = getRelationship(rid, request);
@@ -628,7 +628,7 @@ public class ModifyRelatedContentUtils {
      * @return the relationship processor proxy, never <code>null</code>.
      * @throws PSCmsException for any errors creating the processor.
      */
-    static public PSRelationshipProcessor getRsProcessor() throws PSCmsException
+    public static PSRelationshipProcessor getRsProcessor() throws PSCmsException
     {
         return PSRelationshipProcessor.getInstance();
     }
@@ -637,37 +637,37 @@ public class ModifyRelatedContentUtils {
      * Name of the attribute of the item element representing the
      * contentid of the parent item.
      */
-    static private final String ATTR_CONTENTID = "contentid";
+    private static final String ATTR_CONTENTID = "contentid";
 
     /**
      * Name of the attribute of the item element representing the
      * revisionid of the parent item.
      */
-    static private final String ATTR_REVISION = "revision";
+    private static final String ATTR_REVISION = "revision";
     /**
      * HTML parameter representing the combination of item contentid
      * and variantid in the format 'contentid;variantid'.
      */
-    static public final String PARAM_CONIDVARID = "conidvarid";
+    public static final String PARAM_CONIDVARID = "conidvarid";
 
 
     /**
      * HTML parameter representing the new slotid to move the item.
      */
-    static private final String PARAM_NEWSLOTID = "newslotid";
+    private static final String PARAM_NEWSLOTID = "newslotid";
 
     /**
      * HTML parameter representing the new variantid for an item.
      */
-    static private final String PARAM_NEWVARIANTID = "newvariantid";
+    private static final String PARAM_NEWVARIANTID = "newvariantid";
 
     /**
      * HTML parameter representing the httpcaller return URL
      */
-    static public final String PARAM_HTTPCALLER = "httpcaller";
+    public static final String PARAM_HTTPCALLER = "httpcaller";
     /**
      * Constant for no variant found error message.
      */
-    static public final String ERROR_MSG_NO_VARIANT_FOUND =
+    public static final String ERROR_MSG_NO_VARIANT_FOUND =
             "No variant type found for variantid: ";
 }

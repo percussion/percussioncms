@@ -36,7 +36,7 @@ public interface IAclAdaptor {
     UserAccessLevel getUserAccessLevel(Guid objectGuid);
     UserAccessLevel calculateUserAccessLevel(String aclGuid);
     Acl createAcl(Guid objGuid, TypedPrincipal owner);
-    AclList loadAcls(GuidList aclGuids)throws PSSecurityException;;
+    AclList loadAcls(GuidList aclGuids)throws PSSecurityException;
     Acl loadAcl(Guid aclGuid) throws PSSecurityException;
     AclList loadAclsForObjects(GuidList objectGuids);
     Acl loadAclForObject(Guid objectGuid);
