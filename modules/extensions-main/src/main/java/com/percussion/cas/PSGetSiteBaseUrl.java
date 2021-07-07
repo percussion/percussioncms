@@ -30,6 +30,7 @@ import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.uicontext.PSContextMenu;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -79,8 +80,7 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
       if (siteid == null || siteid.length() < 1)
       {
          //Site is not supplied return empty string.
-         m_log.warn("siteid is not supplied and not available in the request "
-               + "context. Returning empty string");
+         log.warn("siteid is not supplied and not available in the request context. Returning empty string");
          return "";
       }
       boolean modifyUrl = false;
@@ -116,12 +116,16 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
       }
       catch (PSInternalRequestCallException e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          request.printTraceMessage(e.getMessage());
          throw new PSConversionException(e.getErrorCode(), e
                .getErrorArguments());
       }
       catch (PSNotFoundException e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          request.printTraceMessage(e.getMessage());
          throw new PSConversionException(e.getErrorCode(), e
                .getErrorArguments());
@@ -144,5 +148,6 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   Logger m_log = LogManager.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSGetSiteBaseUrl.class);
+
 }

@@ -211,8 +211,8 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
          } 
          catch (Exception e) 
          {
-            logErrorMessage("failed to process link: \n" + rel.toString()
-                     + "\n", e);
+            log.error("failed to process link: {}, Error: {}", rel.toString(), e.getMessage());
+            log.debug(e.getMessage(),e);
          }
       }
    }
