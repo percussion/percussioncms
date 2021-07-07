@@ -24,19 +24,35 @@
 
 package com.percussion.utils.security;
 
-import com.ibm.icu.text.Normalizer2;
-import com.ibm.icu.text.StringPrep;
-import com.ibm.icu.text.StringPrepParseException;
-import com.ibm.icu.text.UTF16;
 import org.junit.Test;
 
-import java.security.Security;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 public class PSSecurityUtilityTests {
 
+    @Test
+    public void testValidSQLObjectName(){
+        assertNotEquals("<script>alert('');</script>",
+                PSSecurityUtility.removeInvalidSQLObjectNameCharacters("<script>alert('');</script>"));
 
+        assertNotEquals("IN VALID;",
+                PSSecurityUtility.removeInvalidSQLObjectNameCharacters("IN VALID;"));
+
+        assertEquals("VALID",
+                PSSecurityUtility.removeInvalidSQLObjectNameCharacters("VALID"));
+
+        assertEquals("VAL_ID",
+                PSSecurityUtility.removeInvalidSQLObjectNameCharacters("VAL_ID"));
+
+
+        assertEquals("VAL1_ID",
+                PSSecurityUtility.removeInvalidSQLObjectNameCharacters("VAL1_ID"));
+
+        assertEquals("Њuni",
+                PSSecurityUtility.removeInvalidSQLObjectNameCharacters("Њuni"));
+
+    }
 
 }

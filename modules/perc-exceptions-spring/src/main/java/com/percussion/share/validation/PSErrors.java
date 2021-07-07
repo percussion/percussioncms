@@ -24,6 +24,7 @@
 package com.percussion.share.validation;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -107,7 +108,8 @@ public class PSErrors {
 
         
         public void setDefaultMessage(String defaultMessage) {
-            this.defaultMessage = defaultMessage;
+            this.defaultMessage = PSSecurityUtility.sanitizeStringForHTML(
+                    defaultMessage);
         }
 
         
@@ -117,7 +119,7 @@ public class PSErrors {
 
         
         public void setCode(String code) {
-            this.code = code;
+            this.code = PSSecurityUtility.sanitizeStringForHTML(code);
         }
         
         
