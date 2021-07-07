@@ -627,7 +627,7 @@ var gSelectTemp = null;
 				accept : '.perc-region, #region-tool, .perc-toolbar-item',
 				greedy : true,
 				tolerance : 'pointer',
-				over : function(event, ui)
+				activate : function(event, ui)
 				{
 					$(this).addClass('hovering');
 					self.hoveringRegion = $(this);

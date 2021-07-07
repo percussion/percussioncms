@@ -629,13 +629,13 @@ var layoutModel;
             // you can drop a widget on the region and it will be added to the end
             region.droppable({
                 accept: '.perc-widget-tool',
-                tolerance: 'touch',
+                tolerance: 'pointer',
                 greedy: true,
                 scope: 'default',
                 drop: function(event,ui) {
                     regionDrop(ui, region);
                 },
-                over : function(event, ui) {
+                activate : function(event, ui) {
                     regionOver(region);
                 },
                 out : function(event, ui) {
@@ -646,13 +646,13 @@ var layoutModel;
             // the new widget will be added on top of the existing widget
             widgets.droppable({
                 accept: '.perc-widget-tool',
-                tolerance: 'touch',
+                tolerance: 'pointer',
                 greedy: true,
                 scope: 'default',
                 drop: function(event,ui) {
                     widgetDrop(ui, $(this), region);
                 },
-                over: function(event, ui) {
+                activate: function(event, ui) {
                     widgetOver($(this), region);
                 },
                 out : function(event, ui) {
@@ -801,10 +801,10 @@ var layoutModel;
                 .css({'position':'absolute'}).droppable({
                     scope: 'default',
                     accept: '#region-tool',
-                    tolerance: 'touch',
+                    tolerance: 'pointer',
                     greedy: true,
                     hoverClass: 'perc-show-feedback',
-                    over : function(event, ui) {
+                    activate : function(event, ui) {
                         // provide feeback when hovering region tool over a region so that you know what region will be split
                         iframe.contents().find(".perc-region").removeClass("perc-hover-region-feedback");
                         // add feedback to this region, i.e., the parent of the feedback div that lights up
@@ -868,7 +868,7 @@ var layoutModel;
                 insideIframe( region ).sortable({
                     delay : 500,
                     containment : "parent", // we can only sort within the parent
-                    tolerance : "touch",
+                    tolerance : "pointer",
                     // we only sort direct children
                     items : "> .perc-horizontal > .perc-region",
                     axis : "x",             // we can only move left right
@@ -927,7 +927,7 @@ var layoutModel;
                     insideIframe( region ).sortable({
                         delay : 500,
                         containment : "parent",
-                        tolerance : "touch",
+                        tolerance : "pointer",
 
                         // only sort children
                         items : "> .perc-vertical > .perc-region",
@@ -958,7 +958,7 @@ var layoutModel;
                     dropOnEmpty: true,
                     placeholder: 'placeholder-widget',
                     items : "div.perc-widget:not('.perc-locked')",
-                    tolerance: 'touch',
+                    tolerance: 'pointer',
                     start : function(event,ui) {
                         // temporarily set overflow to visible so that we dont scroll if the content is too big
                         $(this).css("overflow","visible");
@@ -1082,7 +1082,7 @@ var layoutModel;
          */
         function getFixedNoAutoResize(activeRegion){
             var noautoresize = activeRegion.attr("noautoresize");
-            if(noautoresize !== undefined){
+            if(typeof noautoresize !== 'undefined'){
                 //remove the bad attribute
                 activeRegion.removeAttr("noautoresize");
                 activeRegion.attr("data-noautoresize",noautoresize);

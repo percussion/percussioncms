@@ -277,9 +277,9 @@
                 insideIframe(widget).droppable({
                     // only interact with iframe draggables
                     scope: $.perc_iframe_scope,
-                    tolerance : 'touch',
+                    tolerance : 'pointer',
                     // as you hover over the widget, update cursor and background
-                    over : function(evt, ui) {
+                    activate : function(evt, ui) {
 
                         var parentRegionId = $(this).parent().parent().attr("id");
 
@@ -365,9 +365,9 @@
 
             widget.droppable({
                 scope: $.perc_iframe_scope,
-                tolerance : 'touch',
+                tolerance : 'pointer',
                 // as you hover over the widget, update cursor and background
-                over : function(evt, ui) {
+                activate : function(evt, ui) {
                     var parentRegionId = $(this).parent().parent().attr("id");
 
                     overlap++;
