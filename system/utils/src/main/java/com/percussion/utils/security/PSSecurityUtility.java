@@ -26,6 +26,7 @@ package com.percussion.utils.security;
 
 import com.percussion.util.PSProperties;
 import com.percussion.utils.io.PathUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Properties;
 
@@ -415,8 +417,22 @@ public class PSSecurityUtility {
      * @return The sanitized string
      */
     public static String sanitizeStringForFileSystem(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
+        if(str == null)
+            return str;
+
+        //TODO: Implement me
+
+        return str;
+    }
+
+    public static boolean isValidCMSPathString(String path){
+      if(StringUtils.isEmpty(path))
+          return false;
+
+      if(StringUtils.containsAny(path, "[\"\\<>{}^()|[]"))
+          return false;
+      else
+          return true;
     }
 
     /**
@@ -430,13 +446,26 @@ public class PSSecurityUtility {
     }
 
     /**
-     * Sanitizes a user provided string for use in HTML
+     * Escapes a user provided string for use in HTML
      * @param str a user provided string
-     * @return The sanitized string
+     * @return The escaped string
      */
     public static String sanitizeStringForHTML(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
+
+       return  StringEscapeUtils.escapeHtml(str);
     }
 
+    /***
+     * Removes any characters from a given string that are not a valid SQL Object Name.
+     * Supports unicode strings.
+     *
+     * @param str
+     * @return A version of the string with any special characters removed.
+     */
+    public static String removeInvalidSQLObjectNameCharacters(String str){
+        if(str == null)
+            return null;
+
+        return str.replaceAll("[\\W_]+", "");
+    }
 }

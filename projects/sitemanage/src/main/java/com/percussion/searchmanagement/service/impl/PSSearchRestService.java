@@ -33,6 +33,7 @@ import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedItemPropertiesList;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.PSWebserviceUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.Contact;
@@ -40,6 +41,7 @@ import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.lucene.queryparser.flexible.standard.QueryParserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,6 +53,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Path("/search")
 @Component("searchRestService")
@@ -69,8 +72,8 @@ import java.util.List;
 public class PSSearchRestService
 {
     private static final String SEARCH_TYPE_MY_PAGES = "MyPages";
-    private IPSSearchService searchService;
-    private IPSItemService itemService;
+    private final IPSSearchService searchService;
+    private final IPSItemService itemService;
     private static final Logger log = LogManager.getLogger(PSSearchRestService.class);
 
     @Autowired
@@ -80,6 +83,43 @@ public class PSSearchRestService
         this.itemService = itemService;
     }
 
+    /***
+     * Sanitize any input for invalid characters / parameters
+     * @param criteria
+     */
+    protected void sanitizeCriteria(PSSearchCriteria criteria){
+
+        if(criteria!= null) {
+            String q = criteria.getQuery();
+
+            if (q != null) {
+                q = PSSecurityUtility.sanitizeStringForHTML(q);
+                q = QueryParserUtil.escape(q);
+
+                criteria.setQuery(q);
+            }
+
+
+            criteria.setSortColumn(
+                    PSSecurityUtility.removeInvalidSQLObjectNameCharacters(criteria.getSortColumn()));
+
+            criteria.setSearchType(
+                    PSSecurityUtility.removeInvalidSQLObjectNameCharacters(criteria.getSearchType()));
+
+            Map<String,String> fields = criteria.getSearchFields();
+            if(fields != null) {
+                for (String key : fields.keySet()) {
+                    fields.put(key,
+                            PSSecurityUtility.sanitizeStringForHTML(fields.get(key)));
+                }
+            }
+            if(criteria.getFolderPath() != null && !PSSecurityUtility.isValidCMSPathString(criteria.getFolderPath())){
+                criteria.setFolderPath(null);
+            }
+        }
+    }
+
+
     @POST
     @Path("/get")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -87,6 +127,9 @@ public class PSSearchRestService
     public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException
     {
         try {
+
+            sanitizeCriteria(criteria);
+
             PSPagedItemList itemList = new PSPagedItemList();
 
 
@@ -118,6 +161,8 @@ public class PSSearchRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPagedItemPropertiesList extendedSearch(PSSearchCriteria criteria) throws PSSearchServiceException
     {
+        sanitizeCriteria(criteria);
+
         PSPagedItemPropertiesList itemList;
         itemList = searchService.getExtendedSearchResults(criteria);
         return itemList;

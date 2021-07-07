@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -166,7 +167,7 @@ public class PSErrorCause
 
     public void setMessage(String message)
     {
-        this.message = message;
+        this.message = PSSecurityUtility.sanitizeStringForHTML(message);
     }
 
 
@@ -180,7 +181,7 @@ public class PSErrorCause
 
     public void setLocalizedMessage(String localizedMessage)
     {
-        this.localizedMessage = localizedMessage;
+        this.localizedMessage = PSSecurityUtility.sanitizeStringForHTML(localizedMessage);
     }
 
 
