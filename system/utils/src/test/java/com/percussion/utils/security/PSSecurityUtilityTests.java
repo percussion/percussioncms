@@ -29,6 +29,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PSSecurityUtilityTests {
 
@@ -54,6 +55,26 @@ public class PSSecurityUtilityTests {
         //assertEquals("Њuni",
                 //PSSecurityUtility.removeInvalidSQLObjectNameCharacters("Њuni"));
 
+    }
+
+    @Test
+    public void testValidNumericId(){
+        assertTrue(PSSecurityUtility.isValidNumericId("1234"));
+        assertFalse(PSSecurityUtility.isValidNumericId("<script>alert('12345');</script>"));
+    }
+
+    @Test
+    public void testValidGuidId(){
+        assertTrue(PSSecurityUtility.isValidGuidId("1234-99-89894"));
+        assertFalse(PSSecurityUtility.isValidGuidId("<script>alert('123-4444-45');</script>"));
+    }
+
+    @Test
+    public void testValidCMSPath(){
+        assertTrue(PSSecurityUtility.isValidCMSPathString("/Sites/HWMB/%22%3e%3cscript%3ealert%28595%29%3c%2fscript%3e"));
+        assertTrue(PSSecurityUtility.isValidCMSPathString("/Sites/www.mysite.com/mypage.html"));
+        assertFalse(PSSecurityUtility.isValidCMSPathString(
+                "/Sites/HWMB/<script>alert(595);</script>"));
     }
 
 }
