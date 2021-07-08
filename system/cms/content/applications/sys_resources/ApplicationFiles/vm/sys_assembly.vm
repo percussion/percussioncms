@@ -574,12 +574,14 @@ $__style
 #perc_displayText("$!perc.linkContext.site.siteAdditionalHeadContent")##
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery.js"))##
-#if($perc.isEditMode() || $perc.isPreviewMode())##
+#if($perc.isEditMode())##
 <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 #else##
 #if($perc.linkContext.site.overrideSystemJQuery==false)##
 #print_jquery("additionalHeadContent")##
+#else##
+<script src="/web_resources/cm/jslib/jquery.js"></script>
 #end##
 #end##
 #end##
