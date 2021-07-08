@@ -663,7 +663,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
     }
     
     @Override
-    public PSPage save(PSPage page) throws PSDataServiceException {
+    public PSPage save(PSPage page) throws PSDataServiceException, PSBeanValidationException {
         validate(page);
         
         boolean isExistingPage = page.getId() != null;

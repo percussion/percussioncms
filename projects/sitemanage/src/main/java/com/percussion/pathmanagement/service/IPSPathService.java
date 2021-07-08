@@ -143,7 +143,7 @@ public interface IPSPathService
      * @throws PSBeanValidationException If the item is not valid.
      */
     PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathServiceException,
-            PSDataServiceException;
+            PSDataServiceException, PSBeanValidationException;
     
     /**
      * Moves the specified item to the specified folder.

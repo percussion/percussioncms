@@ -353,7 +353,7 @@ public abstract class PSPathItemService implements IPSPathService
 
     }
 
-    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
+    public PSPathItem renameFolder(PSRenameFolderItem item) throws PSValidationException, PSPathServiceException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSBeanValidationException {
         PSBeanValidationException errors = PSBeanValidationUtils.validate(item);
         errors.throwIfInvalid();
 
