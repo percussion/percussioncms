@@ -90,7 +90,7 @@ var globalVar;
     	getTabLockData(function(lockinfo){
     		var user = lockinfo.userName;
 
-    		if(typeof user !== 'undefined' && user !== null && typeof $.PercNavigationManager.getUserName() != 'undefined' && user !== $.PercNavigationManager.getUserName()) {
+    		if(typeof user !== 'undefined' &&  user !== null  && user !== "" && typeof $.PercNavigationManager.getUserName() != 'undefined' && user !== $.PercNavigationManager.getUserName()) {
     			confirmDialog(I18N.message( "perc.ui.category.controller@Category tab is locked" ), user + " " + I18N.message( "perc.ui.category.controller@User working on categories" ), function(action){
 
     				if(action == "cancel") {
