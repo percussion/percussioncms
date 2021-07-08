@@ -574,12 +574,14 @@ $__style
 #perc_displayText("$!perc.linkContext.site.siteAdditionalHeadContent")##
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery.js"))##
-#if($perc.isEditMode() || $perc.isPreviewMode())##
+#if($perc.isEditMode())##
 <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 #else##
 #if($perc.linkContext.site.overrideSystemJQuery==false)##
 #print_jquery("additionalHeadContent")##
+#else##
+<script src="/web_resources/cm/jslib/jquery.js"></script>
 #end##
 #end##
 #end##
@@ -617,7 +619,7 @@ display:none;
 #if($perc.page.name && $sys.item.getProperty("rx:page_summary").String != "")##
 #set($summaryField=$sys.item.getProperty('rx:page_summary').String)##
 #set($summaryField2=$summaryField.replace("<!-- morelink -->",'<a class="perc-more-link"></a>'))##
-<div property="dcterms:abstract" style="display:none" datatype="rdf:XMLLiteral">$summaryField2</div>
+<div property='dcterms:abstract' style='display:none' datatype='rdf:XMLLiteral'>$summaryField2</div>
 #end##
 ##
 #print_jquery("afterBodyStart")##
@@ -637,9 +639,9 @@ display:none;
 #print_jqueryUI("beforeBodyClose")##
 #if ($perc.template.sourceTemplateName.startsWith("perc.resp") && $perc.linkContext.site.overrideSystemFoundation==false)##
 #if($perc.linkContext.mode == "PUBLISH")##
-<script defer src="/web_resources/cm/foundation/js/foundation.min.js"></script>
+<script defer src='/web_resources/cm/foundation/js/foundation.min.js'></script>
 #else##
-<script defer src="/Rhythmyx/web_resources/cm/foundation/js/foundation.min.js"></script>
+<script defer src='/Rhythmyx/web_resources/cm/foundation/js/foundation.min.js'></script>
 #end##
 #end##
 
@@ -651,9 +653,9 @@ display:none;
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery-ui.js"))##
 #if($perc.isEditMode())##
-<script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
+<script src='/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js'></script>
 #elseif ($perc.isPreviewMode() && ($perc.linkContext.site.overrideSystemJQueryUI==false) && ($jqueryUIwidget.size()==0) )##
-<script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
+<script src='/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js'></script>
 #else##
 #print_jqueryUI("additionalHeadContent")##
 #end##
