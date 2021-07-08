@@ -466,6 +466,14 @@ public class PSSecurityUtility {
         if(str == null)
             return null;
 
-        return str.replaceAll("[\\W_]+", "");
+        return str.replaceAll("[\\W]+", "");
+    }
+
+    public static boolean isValidGuidId(String id){
+        return id.matches("^[0-9-]*$");
+    }
+
+    public static boolean isValidNumericId(String id){
+        return StringUtils.isNumeric(id);
     }
 }
