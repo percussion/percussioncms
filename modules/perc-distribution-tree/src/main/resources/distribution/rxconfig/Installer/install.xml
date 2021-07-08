@@ -113,7 +113,7 @@
 
     <echo>development install=${DEVELOPMENT}</echo>
     <echo>clean.install=${clean.install}</echo>
-    <echo>base.dir=${basedir}</echo>
+    <echo>base.dir=${base.dir}</echo>
     <echo>install.src=${install.src}</echo>
     <echo>install.dir= ${install.dir}</echo>
     <echo>upgrade=${do.upgrade}</echo>
@@ -938,8 +938,8 @@
                             <exclude name="**/META-INF" />
                         </patternset>
                     </unzip>
-                    <echo>Updating updateExtensions 2 ...</echo>
-                    <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="${project.basedir}/modules/perc-distribution-tree/target/classes/distribution/Extensions/@{destDir}-ext.xml"/>
+                    <echo>Updating Add-On Extensions...</echo>
+                    <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="${install.dir}/Extensions/@{destDir}-ext.xml"/>
                     <PSExtensions installLocation="@{destDir}" />
                 </then>
                 <else>
