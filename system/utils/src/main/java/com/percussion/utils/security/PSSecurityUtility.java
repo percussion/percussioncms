@@ -426,6 +426,7 @@ public class PSSecurityUtility {
     }
 
     public static boolean isValidCMSPathString(String path){
+      //API seems coded such that an empty path is root.
       if(StringUtils.isEmpty(path))
           return true;
 
