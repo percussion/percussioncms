@@ -149,9 +149,9 @@ public class PSRecaptchaService {
 			wr.close();
 
 			int responseCode = con.getResponseCode();
-			log.debug("reCaptcha: \nSending 'POST' request to URL : " + url);
-			log.debug("reCaptcha: Post parameters : " + postParams);
-			log.debug("reCaptcha: Response Code : " + responseCode);
+			log.debug("reCaptcha: \nSending 'POST' request to URL : {}", url);
+			log.debug("reCaptcha: Post parameters : {}", postParams);
+			log.debug("reCaptcha: Response Code : {}", responseCode);
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					con.getInputStream()));

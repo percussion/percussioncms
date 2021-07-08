@@ -93,7 +93,8 @@ public class Category {
 		try {
 			this.custoffTime = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(custoffTime.replace("T", " " ));
 		} catch (ParseException e) {
-			log.error("Error setting CustoffTime with value " + custoffTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
+			log.error("Error setting CustoffTime with value {} and format: {}, Error: {}",custoffTime, IPSEMSEventService.TIME_FORMAT_STRING,e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 	}
 	public Integer getCutOffDays() {
