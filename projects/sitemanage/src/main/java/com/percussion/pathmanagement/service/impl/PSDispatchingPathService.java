@@ -269,7 +269,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * {@inheritDoc}
      */
     public PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathNotFoundServiceException,
-            PSPathServiceException, PSDataServiceException
+            PSPathServiceException, PSDataServiceException, PSBeanValidationException
     {
         checkRolesAllowed();
         
@@ -286,7 +286,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     }
 
     protected PSPathItem renameFolder(PathMatch pm, String name) throws PSPathNotFoundServiceException,
-            PSPathServiceException, PSDataServiceException {
+            PSPathServiceException, PSDataServiceException, PSBeanValidationException {
         return pm.renameFolder(name);
     }
     
@@ -1010,7 +1010,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return never <code>null</code>.
              */
-            public PSPathItem renameFolder(String name) throws PSPathServiceException, PSDataServiceException {
+            public PSPathItem renameFolder(String name) throws PSPathServiceException, PSDataServiceException, PSBeanValidationException {
                 notEmpty(name, "name may not be null or empty");
                 
                 PSRenameFolderItem folderItem = new PSRenameFolderItem();

@@ -424,7 +424,9 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
                     PSSiteCopyUtils.CAN_NOT_EDIT_FOLDER_NAME);
             PSPathItem folder = super.renameFolder(item);
             return folderHelper.setFolderAccessLevel(folder);
-        } catch (PSDataServiceException | PSNotFoundException e) {
+        }catch (PSBeanValidationException bve){
+            throw bve;
+        }catch (PSDataServiceException | PSNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
