@@ -110,7 +110,8 @@ public class Building {
 		try {
 			this.currentLocalTime = FastDateFormat.getInstance(IPSEMSEventService.DATETIME_FORMAT_STRING).parse(currentLocalTime.replace("T", " "));
 		} catch (ParseException e) {
-			log.error("Error setting CurrentLocalTime with value " + currentLocalTime + " and format: " + IPSEMSEventService.DATETIME_FORMAT_STRING,e);
+			log.error("Error setting CurrentLocalTime with value {} and format: {}, Error: {}",currentLocalTime, IPSEMSEventService.DATETIME_FORMAT_STRING,e.getMessage());
+			log.debug(e.getMessage(), e);
 		};
 	}
 	
