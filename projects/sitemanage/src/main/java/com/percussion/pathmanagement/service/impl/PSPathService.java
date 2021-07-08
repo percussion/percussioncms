@@ -56,7 +56,6 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSUiService;
 import com.percussion.ui.service.impl.PSCm1ListViewHelper;
 import com.percussion.user.service.IPSUserService;
-import com.percussion.utils.jsr170.PSPath;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.publishing.IPSPublishingWs;
@@ -79,7 +78,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.PathSegment;
 import java.util.List;
 
 
