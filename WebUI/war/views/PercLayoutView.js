@@ -1742,7 +1742,12 @@ var layoutModel;
                 currentWidgetId = widgetStacks[currentRegionId][0];
             if(currentWidgetId && currentRegionId) {
                 var widget = layout.find(".perc-widget[widgetid='"+currentWidgetId+"']");
-                highlightTopOfWidget(widget);
+                if(typeof widget === 'undefined' || typeof widget.offset() == 'undefined'){
+                    var region = layout.find("#"+currentRegionId);
+                    highlightRegionWidgetDrop(region);
+                }else{
+                    highlightTopOfWidget(widget);
+                }
             } else if(currentRegionId) {
                 var region = layout.find("#"+currentRegionId);
                 highlightRegionWidgetDrop(region);
