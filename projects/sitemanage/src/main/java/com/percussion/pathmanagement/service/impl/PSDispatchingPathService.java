@@ -142,7 +142,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      */
     protected PathMatch match(String path) throws PSPathNotFoundServiceException
     {
-        if (path == null) throw new PSPathNotFoundServiceException("Path cannont be null");
+        if (path == null) throw new PSPathNotFoundServiceException("Path cannot be null");
         PathMatch pm = pathMatcher.matchPath(path);
         if (pm == null) throw new PSPathNotFoundServiceException("Path not found: " + path);
         return pm;
