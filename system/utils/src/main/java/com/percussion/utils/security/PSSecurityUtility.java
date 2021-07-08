@@ -427,7 +427,7 @@ public class PSSecurityUtility {
 
     public static boolean isValidCMSPathString(String path){
       if(StringUtils.isEmpty(path))
-          return false;
+          return true;
 
       if(StringUtils.containsAny(path, "[\"\\<>{}^()|[]"))
           return false;
