@@ -23,41 +23,41 @@
  */
 
 /**
-* Site Summary Dialog
-*/
+ * Site Summary Dialog
+ */
 ;(function ($) {
-    
+
     "use strict";
-    
+
     var $content, order, minWidth, make3columnAt;
-    
+
     /** $content is the site summary dialog content container */
     $content = null;
-    
+
     /** order the missing assets sub-sections as follows */
     order = ['missing-page', 'missing-asset', 'missing-css'];
-    
+
     /** minWidth of dialog just in case we add resizable */
     minWidth = 700;
-    
+
     /** make3columnAt number of items to add a column */
     make3columnAt = 16;
-    
+
     // Public API
     $.PercSiteSummaryDialog = {
-      open: createDialogAndOpen
+        open: createDialogAndOpen
     };
-    
+
     /** get the site id of the current navigator context */
     function getSiteId () {
         return $.PercNavigationManager.getSiteName();
     }
-    
+
     /** attempt to localize code values */
-	function localize (key) {
+    function localize (key) {
         return I18N.message(key, key);
-	}
-    
+    }
+
     /** get localized text from templates otherwise use key itself */
     function heading (key) {
         var $el = $('[templates] .perc-site-summary-' + key).clone();
@@ -67,27 +67,27 @@
         }
         return $el;
     }
-    
+
     /** render the stats and adjust columns */
-	function displayStats (stats) {
-		var key, $div, $ui = $('<div></div>'), count = 0;
-		for (key in stats) {
-			$div = $('<table class="perc-stat"></table>').appendTo($ui);
-			$div = $('<tr></tr>').appendTo($div);
-			$('<td class="perc-stat-label"></td>').html(localize(key)).appendTo($div);
-			$('<td class="perc-stat-value"></td>').html(stats[key]).appendTo($div);
+    function displayStats (stats) {
+        var key, $div, $ui = $('<div></div>'), count = 0;
+        for (key in stats) {
+            $div = $('<table class="perc-stat"></table>').appendTo($ui);
+            $div = $('<tr></tr>').appendTo($div);
+            $('<td class="perc-stat-label"></td>').html(localize(key)).appendTo($div);
+            $('<td class="perc-stat-value"></td>').html(stats[key]).appendTo($div);
             count = count + 1;
-		}
+        }
         if (count > make3columnAt) {
             $ui.addClass('perc-3column');
         }
-		return $ui;
-	}
-    
+        return $ui;
+    }
+
     /** render the warnings and add sub-headings */
-	function displayWarnings (warnings) {
-		var i, key, warning, $div, $ui = $('<div>'), groups = {};
-		// group by type
+    function displayWarnings (warnings) {
+        var i, key, warning, $div, $ui = $('<div>'), groups = {};
+        // group by type
         if(typeof(warnings) !== 'undefined'){
             for (i = 0; i < warnings.length; i++) {
                 warning = warnings[i];
@@ -98,73 +98,73 @@
             }
         }
         // put groups in display order
-		for (i = 0; i < order.length; i++) {
-			$div = groups[order[i]];
-			if ($div && $div.length) {
+        for (i = 0; i < order.length; i++) {
+            $div = groups[order[i]];
+            if ($div && $div.length) {
                 heading(order[i]).appendTo($ui);
-				$div.appendTo($ui);
-				delete groups[order[i]];
-			}
-		}
-		// display any miscellaneous ones
-		for (key in groups) {
-			$div = groups[key];
-			if ($div && $div.length) {
+                $div.appendTo($ui);
+                delete groups[order[i]];
+            }
+        }
+        // display any miscellaneous ones
+        for (key in groups) {
+            $div = groups[key];
+            if ($div && $div.length) {
                 heading(key).appendTo($ui);
-				$div.appendTo($ui);
-			}
-		}
-		return $ui;
-	}
+                $div.appendTo($ui);
+            }
+        }
+        return $ui;
+    }
     /** render site summary abridged log message */
-	function displayAbridgedLogMessage (message) {
-		var $div = $('<div>');
-		if (message) {
-			$div.text(message);
-		}
-		return $div;
-	}
+    function displayAbridgedLogMessage (message) {
+        var $div = $('<div>');
+        if (message) {
+            $div.text(message);
+        }
+        return $div;
+    }
     /** given site summary data render the dialog sections */
     function renderSiteSummaryData (status, siteSummaryData) {
         var $ui;
-        
+
         // TODO: may want to account for status here, too
-        
+
         // render site statistics
         $ui = $content.find('.perc-site-summary-statistics .ui-widget-content').empty();
         displayStats(siteSummaryData.statistics).appendTo($ui);
 
         // render log truncated message at the top if exists other wise clear the perc-log-header class.
-		if (siteSummaryData.abridged_log_message) {
-			$ui = $content.find('.perc-site-summary-warnings .perc-log-top').empty().addClass("perc-log-header");
-			displayAbridgedLogMessage(siteSummaryData.abridged_log_message).appendTo($ui);
-		}
+        if (siteSummaryData.abridged_log_message) {
+            $ui = $content.find('.perc-site-summary-warnings .perc-log-top').empty().addClass("perc-log-header");
+            displayAbridgedLogMessage(siteSummaryData.abridged_log_message).appendTo($ui);
+        }
         else
         {
             $content.find('.perc-site-summary-warnings .perc-log-top').empty().removeClass("perc-log-header");
         }
 
-        // render site warning messages    
+        // render site warning messages
         $ui = $content.find('.perc-site-summary-warnings .perc-log').empty();
         displayWarnings(siteSummaryData.issues).appendTo($ui);
 
         // render log truncated message otherwise leave default end of file message
-		if (siteSummaryData.abridged_log_message) {
-			$ui = $content.find('.perc-site-summary-warnings .perc-log-footer').empty();
-			displayAbridgedLogMessage(siteSummaryData.abridged_log_message).appendTo($ui);
-		}
-		
+        if (siteSummaryData.abridged_log_message) {
+            $ui = $content.find('.perc-site-summary-warnings .perc-log-footer').empty();
+            displayAbridgedLogMessage(siteSummaryData.abridged_log_message).appendTo($ui);
+        }
+
     }
-    
+
     /** given site summary data, open dialog and display */
     function createDialogAndOpen(status, siteSummaryData) {
         if(!getSiteId())
         {
             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: I18N.message("perc.ui.site.summary.dialog@Select a Site")});
             return;
-        }        
+        }
         // handle error status
-        if(status === $.PercServiceUtils.STATUS_ERROR) { 
+        if(status === $.PercServiceUtils.STATUS_ERROR) {
             var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(siteSummaryData.request);
             $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
             return;
@@ -198,25 +198,25 @@
 
         $content.perc_dialog(percDialogObject);
     }
-    
+
     /** event listener for opening the site summary dialog */
     function onOpenDialog (event) {
         event.preventDefault();
         $.PercSiteSummaryService.getSiteSummaryData(getSiteId(), createDialogAndOpen);
     }
-    
+
     /** event listener for refreshing the site summary dialog */
     function onRefreshDialog (event) {
         event.preventDefault();
         $.PercSiteSummaryService.getSiteSummaryData(getSiteId(), renderSiteSummaryData);
     }
-    
+
     /** event listener for printing the site summary dialog */
     function onPrintDialog (event) {
         event.preventDefault();
         $content.printThis();
     }
-    
+
     /** event listener for toggling the site summary sections */
     function onToggleSection (event) {
         var $this = $(this), $parent = $this.parents('.perc-section:first'), $target;
@@ -228,25 +228,13 @@
             $this.removeClass('perc-section-closed').addClass('perc-section-open');
         }
     }
-    
+
     /** initialize the UI event listeners for this dialog */
     $(function () {
-        let body = $('body');
-        body.on('click', '.perc-site-summary h2 a', function(evt){
-            onToggleSection(evt);
-        });
-
-        body.on('click', '.perc-action-print', function(evt){
-            onPrintDialog(evt);
-        });
-
-        body.on('click', '.perc-action-refresh', function(evt){
-            onRefreshDialog(evt);
-        });
-
-        body.on('click', '.perc-site-summary-action.perc-open-dialog', function(evt){
-            onOpenDialog(evt);
-        });
+        $('body').on('click', '.perc-site-summary h2 a', onToggleSection);
+        $('body').on('click', '.perc-action-print', onPrintDialog);
+        $('body').on('click', '.perc-action-refresh', onRefreshDialog);
+        $('body').on('click', '.perc-site-summary-action.perc-open-dialog', onOpenDialog);
     });
 
 })(jQuery);
