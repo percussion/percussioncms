@@ -414,6 +414,8 @@
                         enumValues
                     ));
                 });
+            }else{
+                this.userPrefDef = new Object();
             }
         };
         
