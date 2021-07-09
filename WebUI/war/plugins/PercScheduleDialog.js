@@ -65,7 +65,7 @@
                 percButtons:{
                         "Save":{
                         click: function(){
-							    var startDate = $("#perc_publish_date").val();
+							    var startDate = $("#perc_publish_date_input").val();
 								var endDate = $("#perc_removal_date").val();								
 								var sendDates = {"ItemDates":{"itemId":itemId,"startDate":startDate,"endDate":endDate}};
                                 $.PercItemPublisherService.setScheduleDates(sendDates, function(status, results){
@@ -114,9 +114,10 @@
                                         $('<input/>').
                                         attr('type', 'text').
                                         css('width', '130px').
+                                        css('height', '20px').
                                         attr('readonly', 'readonly').
                                         addClass('perc-datetime-picker').
-                                        attr('id', 'perc_publish_date').
+                                        attr('id', 'perc_publish_date_input').
                                         attr('name', 'publish_date').
                                         val(result.publishDate)
                                     );
@@ -131,6 +132,7 @@
                                         $('<input/>').
                                         attr('type', 'text').
                                         css('width', '130px').
+                                        css('height', '15px').
                                         attr('readonly', 'readonly').
                                         addClass('perc-datetime-picker').
                                         attr('id', 'perc_removal_date').
@@ -152,7 +154,7 @@
         */
         function validateFields()
         {
-            var publishDate = parseDateTime($('#perc_publish_date').val());
+            var publishDate = parseDateTime($('#perc_publish_date_input').val());
             var removalDate = parseDateTime($('#perc_removal_date').val());
             var serverTime = new Date();//parseDateTime($.PercServiceUtils.getServerDatetime());
             if (publishDate !== "" && removalDate !==""){

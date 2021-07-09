@@ -427,7 +427,7 @@
             if (this._colonPos != -1) {
                 h = parseInt(dt.substr(this._colonPos - 2, 2), 10);
                 m = parseInt(dt.substr(this._colonPos + 1, 2), 10);
-                a = jQuery.trim(dt.substr(this._colonPos + 3, 3));
+                a = dt.substr(this._colonPos + 3, 3).trim();
             }
 
             a = a.toLowerCase();

@@ -956,8 +956,6 @@
             var pageName = callbackData.pageName;
             if (dialogFlag)
             {
-                $.PercScheduleDialog.open(itemId, pageName);
-                $(".ui-datepicker-trigger").trigger("click");
                 $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
                 $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
                 $("#perc-schedule-dialog-cancel").trigger("click");
