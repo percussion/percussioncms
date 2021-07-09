@@ -990,8 +990,9 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          }
          catch (RepositoryException e)
          {
-            log.error("Unable to get node for alt and title text with ID: " + assemblyItem.getId() + 
-                    " and error message:" + e);
+            log.error("Unable to get node for alt and title text with ID: {} and error message: {}",
+                    assemblyItem.getId(), e.getMessage());
+            log.debug(e.getMessage(), e);
          }
          
          return items;
