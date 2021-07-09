@@ -54,8 +54,10 @@
     <Get name="sessionHandler">
         <Get name="sessionCookieConfig">
             <Set name="httpOnly" type="boolean">true</Set>
-            <Set name="secure" type="boolean">true</Set>
-            <Set name="comment" type="java.lang.String">__SAME_SITE_NONE__</Set>
+            <!-- When configuring https set this to true -->
+            <Set name="secure" type="boolean">false</Set>
+            <!-- When configuring https set this to __SAME_SITE_NONE__ -->
+            <Set name="comment" type="java.lang.String">__SAME_SITE_STRICT__</Set>
         </Get>
     </Get>
     <Get name="errorHandler">
