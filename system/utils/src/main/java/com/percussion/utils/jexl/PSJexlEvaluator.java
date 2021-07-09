@@ -68,7 +68,7 @@ public class PSJexlEvaluator
     * Internal context which is modified after each call to
     * {@link #evaluate(String, JexlExpression)}
     */
-   private final Map<String,Object> m_vars =  new HashMap<>();
+   private Map<String,Object> m_vars =  new HashMap<>();
 
    /**
     * Create an evaluator with no prebound values
@@ -156,7 +156,7 @@ public class PSJexlEvaluator
       if (val == null)
       {
          if (required)
-            throw new IllegalStateException("No value for required expression {}" + var.toString());
+            throw new IllegalStateException("No value for required expression " + var.toString());
     
          return defaultval;
       } 
