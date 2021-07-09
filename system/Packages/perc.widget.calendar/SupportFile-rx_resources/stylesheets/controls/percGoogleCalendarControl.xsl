@@ -133,7 +133,7 @@
                 <ul>
                     <li><b>Generate a Google Calendar API key:</b>
                         <ul>
-                            <li>Navigate to the <a href="https://console.developers.google.com/" target="_blank" >Google Developer Console</a> and create a new project.</li>
+                            <li>Navigate to the <a href="https://console.developers.google.com/" target="_blank" rel="noopener noreferrer">Google Developer Console</a> and create a new project.</li>
                             <li>Enter the newly created project and select <b>Library</b> on the sidebar.</li>
                             <li>*Find &quot;Calendar API&quot; in the list and set it to ENABLE.</li>
                             <li>On the sidebar, select Credentials and choose <b>Create credentials &gt; API key</b> and then select &quot;Browser key&quot;</li>

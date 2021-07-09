@@ -41,7 +41,7 @@
                 errors.push({name:"name",message:"This is a required field, must start with a letter and must contain at least two characters."});
             else if($.inArray(nameVal.toUpperCase(),sqlWords) !== -1)
             {
-            	errors.push({name:"name",message: nameVal + " is a SQL Reserved Keyword. Please choose another value. See <a href='https://help.percussion.com/percussion-cm1/developers/widget-builder/widget-builder-reserved-field-names/index' title='Widget Builder Reserved Words' target='_blank'>the Help website</a> for a complete list of reserved keywords."});
+            	errors.push({name:"name",message: nameVal + " is a SQL Reserved Keyword. Please choose another value. See <a href='https://help.percussion.com/percussion-cm1/developers/widget-builder/widget-builder-reserved-field-names/index' title='Widget Builder Reserved Words' target='_blank' rel='noopener noreferrer'>the Help website</a> for a complete list of reserved keywords."});
             }
             else
             {

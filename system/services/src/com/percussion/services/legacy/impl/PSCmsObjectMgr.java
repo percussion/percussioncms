@@ -285,7 +285,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSActionMenu.class).addOrder(Order.asc("sortOrder")).list();
         } catch (Exception e) {
-            ms_log.warn("An error occurred while listing action menus:" + e.getMessage());
+            ms_log.warn("An error occurred while listing action menus: {}" , e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -297,7 +297,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSActionMenu.class).add(Restrictions.ilike("type",type)).addOrder(Order.asc("sortOrder")).list();
         }catch(Exception e) {
-            ms_log.warn("An error occurred while listing action menus:" + e.getMessage());
+            ms_log.warn("An error occurred while listing action menus by type: {}" , e.getMessage());
             return new ArrayList<>();
         }
    }
@@ -308,7 +308,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSUiContext.class).list();
         }catch(Exception e) {
-            ms_log.warn("An error occurred while listing UI Contexts:" + e.getMessage());
+            ms_log.warn("An error occurred while listing UI Contexts: {}" ,e.getMessage());
             return new ArrayList<>();
         }
    }
