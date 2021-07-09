@@ -172,6 +172,7 @@ public class PSMembershipAuthProvider extends  AbstractUserDetailsAuthentication
         {
             // log an error and then auth should fail
             logger.error("Error authenticating user " + userId, e);
+            logger.debug(e.getMessage(), e);
             throw new BadCredentialsException("");
         }
     }

@@ -181,7 +181,9 @@ public class PSCataloger
       }
       catch (PSServerLockException e) 
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
       
