@@ -53,8 +53,6 @@
     pageContext.setAttribute("locale",locale);
 
     String loginComplete = PSServer.getServerProps().getProperty("loginAutoComplete");
-    String userVal = "";
-    String passVal = "";
     String autoComplete = "";
         if(loginComplete != null && loginComplete.equalsIgnoreCase("off") ){
             autoComplete = "autocomplete='off'";
