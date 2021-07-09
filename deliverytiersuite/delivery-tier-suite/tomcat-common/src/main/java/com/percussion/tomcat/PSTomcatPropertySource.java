@@ -70,7 +70,7 @@ public class PSTomcatPropertySource implements org.apache.tomcat.util.Introspect
             logger.error("Unable to determine catalina.home!  Is the environment set?");
             catalinaBase="";
         }
-        logger.debug("Got catalina.home:" + catalinaBase);
+        logger.debug("Got catalina.home:{}", catalinaBase);
         Properties props = new Properties();
 
         Path p = Paths.get(catalinaBase, "conf/perc");
@@ -79,7 +79,7 @@ public class PSTomcatPropertySource implements org.apache.tomcat.util.Introspect
         try (FileInputStream fs = new FileInputStream(p.toFile())) {
             props.load(fs);
         } catch (IOException exception) {
-            logger.error("Error reading:" + p.toAbsolutePath() + " got error " + exception.getMessage());
+            logger.error("Error reading:{} got error {}", p.toAbsolutePath(), exception.getMessage());
         }
 
         return props;

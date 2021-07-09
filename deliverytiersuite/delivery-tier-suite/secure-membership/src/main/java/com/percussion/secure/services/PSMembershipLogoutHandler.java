@@ -99,7 +99,8 @@ public class PSMembershipLogoutHandler extends SimpleUrlLogoutSuccessHandler
         }
         catch (Exception e)
         {
-            logger.error("Error logging out of membership service", e);
+            logger.error("Error logging out of membership service {}", e);
+            logger.debug(e.getMessage(), e);
         }
 
         // now let superclass handle the redirect

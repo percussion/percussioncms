@@ -147,7 +147,7 @@ public class PSFolderContentsDescriptorBuilder
       pkg = getTopFolderElement();
       if (pkg == null)
       {
-         ms_log.error("failed to find top-level folder");
+         log.error("failed to find top-level folder");
       }
       else
       {
@@ -214,7 +214,7 @@ public class PSFolderContentsDescriptorBuilder
       while (i.hasNext() && pkg == null)
       {
          PSDeployableElement element = (PSDeployableElement) i.next();
-         ms_log.debug("considering " + element);
+         log.debug("considering " + element);
          if (m_sourceFolderId.startsWith(element.getDisplayName()))
          {
             pkg = element;
@@ -252,7 +252,7 @@ public class PSFolderContentsDescriptorBuilder
          }
          else if (processDependency(childDep))
          {
-            ms_log.debug("removing " + childDep);
+            log.debug("removing {}", childDep);
             i.remove();
             rememberRemoval(childDep);
 
@@ -342,7 +342,7 @@ public class PSFolderContentsDescriptorBuilder
       {
          if (isSelectedByPath(dep.getDependencyId()))
          {
-            ms_log.debug("entering folder " + dep.getDependencyId());
+            log.debug("entering folder {}", dep.getDependencyId());
             include(dep);
             loadChildren(dep);
          }
@@ -360,7 +360,7 @@ public class PSFolderContentsDescriptorBuilder
          // if all the children have been removed, remove the folder contents
          if (dep.getChildCount(false) == 0)
          {
-            ms_log.warn("all child items suppressed for " + dep);
+            log.warn("all child items suppressed for {}", dep);
             shouldRemove = true;
          }
       }
@@ -638,7 +638,7 @@ public class PSFolderContentsDescriptorBuilder
        * informative status messages.
        */
       m_includedCount++;
-      ms_log.debug("include #" + m_includedCount + ":" + dep + " "
+      log.debug("include #" + m_includedCount + ":" + dep + " "
             + dep.getDependencyId());
 
       m_included.put(dep.getKey(), dep);
@@ -657,7 +657,7 @@ public class PSFolderContentsDescriptorBuilder
       {
          if (!isIdMapped(dep))
          {
-            ms_log.debug("add to server: " + dep + " " + dep.getDependencyId());
+            log.debug("add to server: {}",dep, dep.getDependencyId());
 
             PSIdMapping idMapping = new PSIdMapping(dep.getDependencyId(), dep
                   .getDisplayName(), dep.getObjectType(), dep.getParentId(),
@@ -674,7 +674,7 @@ public class PSFolderContentsDescriptorBuilder
       if (m_job == null)
       {
          // without a job handle, just log the message
-         ms_log.info(message);
+         log.info(message);
       }
       else
       {
@@ -759,7 +759,7 @@ public class PSFolderContentsDescriptorBuilder
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static final Logger ms_log = LogManager
+   private static final Logger log = LogManager
          .getLogger(PSFolderContentsDescriptorBuilder.class);
 
 }

@@ -74,8 +74,8 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
     	if (schedulerSaveInterval != null) {
     		this.schedulerSaveInterval = schedulerSaveInterval;
     	}
-    	log.debug("Save Interval: " + schedulerSaveInterval);
-    	log.debug("Initial Delay: " + schedulerInitialDelay);
+    	log.debug("Save Interval: {}", schedulerSaveInterval);
+    	log.debug("Initial Delay: {}", schedulerInitialDelay);
     }
     
 	@Override
@@ -110,7 +110,8 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
 			log.debug("Visits size: " + inMemoryVisitMap.size());
 			visitDao.save(visits);
 		} catch (Exception e) {
-			log.error("Failed save to hit counts", e);
+			log.error("Failed save to hit counts, Error: {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 	}
 	
@@ -124,7 +125,8 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
             inMemoryCookieConsentMap.clear();
         }
         catch (Exception e) {
-            log.error("Error saving cookie consent entries.", e);
+            log.error("Error saving cookie consent entries. Error:{}", e.getMessage());
+			log.debug(e.getMessage(), e);
         }
     }
 	
@@ -208,7 +210,8 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
         try {
             visitDao.updatePostsAfterSiteRename(prevSiteName, newSiteName);
         } catch (Exception e) {
-            log.error("Error updating blog post visit updates after site rename.", e);
+            log.error("Error updating blog post visit updates after site rename. Error: {}", e.getMessage());
+			log.debug(e.getMessage(), e);
         }
     }
     
