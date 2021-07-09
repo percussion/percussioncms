@@ -51,15 +51,13 @@
 	}
     
     pageContext.setAttribute("locale",locale);
-    
+
     String loginComplete = PSServer.getServerProps().getProperty("loginAutoComplete");
     String userVal = "";
     String passVal = "";
     String autoComplete = "";
         if(loginComplete != null && loginComplete.equalsIgnoreCase("off") ){
-            userVal = "<input type=\'text\' name=\'username\' value=\'\' style=\'display: none\'/>";
-            passVal = "<input type=\'password\' name=\'password\' value=\'\' style=\'display: none\'/>" ;
-            autoComplete = "autocomplete=\'off\'";
+            autoComplete = "autocomplete='off'";
         }
      PSLocaleManager locManager = PSLocaleManager.getInstance();
 %>
@@ -67,7 +65,7 @@
 <html lang="<%=lang %>">
     <head>
         <title>${rxcomp:i18ntext('jsp_login@Percussion Login',locale)}</title> 	
-        <style type="text/css">
+        <style>
         body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
         .perc-login-logo {color: #121212; margin-top: 50px; margin-bottom: 50px;}
         #loginform .perc-form    { }
@@ -109,8 +107,6 @@
 			<div class='perc-form'> 
 			   <div class="form-group">
 			   <label for="perc-login-username" form="loginform">${rxcomp:i18ntext('jsp_login@User name',locale)}</label>
-				<%= userVal %>
-				<%= passVal %>
 				<input type="text" id="perc-login-username"  name="j_username"  value="<%= username %>" tabindex="1" class="form-control" <%= autoComplete %>/>
 				</div>
 				<div class="form-group">
@@ -134,25 +130,26 @@
 				</select>
 				</div>
 				<button type="submit" id="perc-login-button" form="loginform" class="btn btn-primary btn-default">${rxcomp:i18ntext('jsp_login@LoginButton',locale)}</button>
-				</form>
 			</div>
-			<div class="row">
-				<div class="col-sm-4">
-					<hr/>
-				</div>
-			</div>
-			<div class="row">
-			  <div id="perc-forgot-username" class="col-sm-4">
-			  <p>
-			  ${rxcomp:i18ntext('jsp_login@Forgot your username',locale)} <a href="#" title="${rxcomp:i18ntext('jsp_login@Forgot your username',locale)}">${rxcomp:i18ntext('general@click here',locale)}</a>
-			  </p>
-			  </div>
-			  <div id="perc-forgot-pass" class="col-sm-8">
-			  <p>
-			   ${rxcomp:i18ntext('jsp_login@Forgot your password',locale)} <a href="#" title="${rxcomp:i18ntext('jsp_login@Forgot your password',locale)}">${rxcomp:i18ntext('general@click here',locale)}</a>
-		      </p>
-			  </div>
-			</div>
+		</form>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<hr/>
+		</div>
+	</div>
+	<div class="row">
+	  <div id="perc-forgot-username" class="col-sm-4">
+	  <p>
+	  ${rxcomp:i18ntext('jsp_login@Forgot your username',locale)} <a href="#" title="${rxcomp:i18ntext('jsp_login@Forgot your username',locale)}">${rxcomp:i18ntext('general@click here',locale)}</a>
+	  </p>
+	  </div>
+	  <div id="perc-forgot-pass" class="col-sm-8">
+	  <p>
+	   ${rxcomp:i18ntext('jsp_login@Forgot your password',locale)} <a href="#" title="${rxcomp:i18ntext('jsp_login@Forgot your password',locale)}">${rxcomp:i18ntext('general@click here',locale)}</a>
+	  </p>
+	  </div>
+	</div>
 			<div class="row">
 			<div id="perc-register" class="span 12">
 			<p>Don't have a login?  Click the button below to request access from your System Administrator.</p> 
