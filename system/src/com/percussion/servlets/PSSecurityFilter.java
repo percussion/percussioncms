@@ -1704,14 +1704,18 @@ public class PSSecurityFilter implements Filter
       request = tmpReq;
              
       updateUserSession(request, response, true);
-      Cookie ssoCookie = new Cookie(IPSHtmlParameters.SYS_SESSIONID, 
-            initRequest(request, response).getUserSessionId());
-      //share across all web apps
-      ssoCookie.setPath("/");
-      ssoCookie.setSecure(true);
-      ssoCookie.setHttpOnly(true);
-      response.addCookie(ssoCookie);
 
+      String secure = "";
+      if("true".equalsIgnoreCase(PSServer.getProperty("requireHttps","false"))){
+         secure =  " Secure;";
+      }
+
+      String sameSite = " SameSite=";
+      //Create the pssessionid session
+      response.addHeader("Set-Cookie",IPSHtmlParameters.SYS_SESSIONID +
+              "=" + initRequest(request, response).getUserSessionId() +";"+
+              "Path=/;" + secure + " HttpOnly; SameSite=" +
+              PSServer.getProperty("sameSiteCookieMode","Strict"));
 
       return request;
    }
