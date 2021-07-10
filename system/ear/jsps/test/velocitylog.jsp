@@ -80,7 +80,7 @@
 </head>
 <body>
 <div style="background-color: white; margin: 10px; padding-top: 0px; padding: 10px">
-    <form method="POST">
+    <form method="GET">
         <p><img src="../sys_resources/images/banner_bkgd.jpg"></p>
         <input type="submit" name="refresh" value="Refresh">&nbsp;&nbsp;&nbsp;
         Hide warnings:<input type="checkbox" name="warning" <%= warning ? "checked" : "" %> value="on">
