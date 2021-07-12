@@ -114,7 +114,7 @@ public abstract class PSBaseJexlParserVisitor extends ParserVisitor
   
 
 
-private static final Logger ms_logger = LogManager
+private static final Logger log = LogManager
          .getLogger(PSBaseJexlParserVisitor.class);
 
 
@@ -125,7 +125,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTJexlScript arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTJexlScript");
+      log.debug("Visiting ASTJexlScript");
       return doVisit(arg0, arg1);
    }
 
@@ -136,7 +136,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTBlock arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTBlock");
+      log.debug("Visiting ASTBlock");
       return doVisit(arg0, arg1);
    }
 
@@ -147,7 +147,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTEmptyFunction arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTEmptyFunction");
+      log.debug("Visiting ASTEmptyFunction");
       return doVisit(arg0, arg1);
    }
 
@@ -158,7 +158,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTSizeFunction arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTSizeFunction");
+      log.debug("Visiting ASTSizeFunction");
       return doVisit(arg0, arg1);
    }
 
@@ -169,7 +169,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTIdentifier arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTIdentifier " + arg0.toString());
+      log.debug("Visiting ASTIdentifier {}", arg0.toString());
       return arg1;
    }
 
@@ -180,7 +180,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTAssignment arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTAssignment");
+      log.debug("Visiting ASTAssignment");
       return doVisit(arg0, arg1);
    }
 
@@ -191,7 +191,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTOrNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTOrNode");
+      log.debug("Visiting ASTOrNode");
       return doVisit(arg0, arg1);
    }
 
@@ -202,7 +202,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTAndNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTAndNode");
+      log.debug("Visiting ASTAndNode");
       return doVisit(arg0, arg1);
    }
 
@@ -213,7 +213,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTBitwiseOrNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTBitwiseOrNode");
+      log.debug("Visiting ASTBitwiseOrNode");
       return doVisit(arg0, arg1);
    }
 
@@ -224,7 +224,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTBitwiseXorNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTBitwiseXorNode");
+      log.debug("Visiting ASTBitwiseXorNode");
       return doVisit(arg0, arg1);
    }
 
@@ -235,7 +235,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTBitwiseAndNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTBitwiseAndNode");
+      log.debug("Visiting ASTBitwiseAndNode");
       return doVisit(arg0, arg1);
    }
 
@@ -246,7 +246,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTEQNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTEQNode");
+      log.debug("Visiting ASTEQNode");
       return doVisit(arg0, arg1);
    }
 
@@ -257,7 +257,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTNENode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTNENode");
+      log.debug("Visiting ASTNENode");
       return doVisit(arg0, arg1);
    }
 
@@ -268,7 +268,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTAddNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTAddNode");
+      log.debug("Visiting ASTAddNode");
       return doVisit(arg0, arg1);
    }
 
@@ -279,7 +279,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTLTNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTLTNode");
+      log.debug("Visiting ASTLTNode");
       return doVisit(arg0, arg1);
    }
 
@@ -290,7 +290,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTGTNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTGTNode");
+      log.debug("Visiting ASTGTNode");
       return doVisit(arg0, arg1);
    }
 
@@ -301,7 +301,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTLENode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTLENode");
+      log.debug("Visiting ASTLENode");
       return doVisit(arg0, arg1);
    }
 
@@ -312,7 +312,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTGENode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTGENode");
+      log.debug("Visiting ASTGENode");
       return doVisit(arg0, arg1);
    }
 
@@ -323,7 +323,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTMulNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTMulNode");
+      log.debug("Visiting ASTMulNode");
       return doVisit(arg0, arg1);
    }
 
@@ -334,7 +334,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTDivNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTDivNode");
+      log.debug("Visiting ASTDivNode");
       return doVisit(arg0, arg1);
    }
 
@@ -345,7 +345,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTModNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTModNode");
+      log.debug("Visiting ASTModNode");
       return doVisit(arg0, arg1);
    }
 
@@ -356,7 +356,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTUnaryMinusNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTUnaryMinusNode");
+      log.debug("Visiting ASTUnaryMinusNode");
       return doVisit(arg0, arg1);
    }
 
@@ -367,7 +367,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTBitwiseComplNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTBitwiseComplNode");
+      log.debug("Visiting ASTBitwiseComplNode");
       return doVisit(arg0, arg1);
    }
 
@@ -378,7 +378,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTNotNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTNotNode");
+      log.debug("Visiting ASTNotNode");
       return doVisit(arg0, arg1);
    }
 
@@ -389,7 +389,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTNullLiteral arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTNullLiteral");
+      log.debug("Visiting ASTNullLiteral");
       return arg1;
    }
 
@@ -400,7 +400,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTTrueNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTTrueNode");
+      log.debug("Visiting ASTTrueNode");
       return doVisit(arg0, arg1);
    }
 
@@ -411,7 +411,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTFalseNode arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTFalseNode");
+      log.debug("Visiting ASTFalseNode");
       return doVisit(arg0, arg1);
    }
 
@@ -422,7 +422,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTStringLiteral arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTStringLiteral(defaultImpl)");
+      log.debug("Visiting ASTStringLiteral(defaultImpl)");
       return null;
    }
    
@@ -433,7 +433,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTReferenceExpression arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTReferenceExpression");
+      log.debug("Visiting ASTReferenceExpression");
       return doVisit(arg0, arg1);
    }
 
@@ -444,7 +444,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTIfStatement arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTIfStatement");
+      log.debug("Visiting ASTIfStatement");
       return doVisit(arg0, arg1);
    }
 
@@ -455,7 +455,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTReference arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTReference");
+      log.debug("Visiting ASTReference");
       return doVisit(arg0, arg1);
    }
 
@@ -466,7 +466,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTWhileStatement arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTWhileStatement");
+      log.debug("Visiting ASTWhileStatement");
       return doVisit(arg0, arg1);
    }
 
@@ -477,7 +477,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTForeachStatement arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTForeachStatement");
+      log.debug("Visiting ASTForeachStatement");
       return doVisit(arg0, arg1);
    }
 
@@ -489,7 +489,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTArrayAccess arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTArrayAccess");
+      log.debug("Visiting ASTArrayAccess");
       return doVisit(arg0, arg1);
    }
 
@@ -500,7 +500,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTSizeMethod arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTSizeMethod");
+      log.debug("Visiting ASTSizeMethod");
       return doVisit(arg0, arg1);
    }
 
@@ -511,7 +511,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTMapLiteral arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTMapLiteralMethod");
+      log.debug("Visiting ASTMapLiteralMethod");
       return doVisit(arg0,arg1);
    }
    
@@ -522,7 +522,7 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTArrayLiteral arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTArrayLiteralMethod");
+      log.debug("Visiting ASTArrayLiteralMethod");
       return doVisit(arg0,arg1);
    }
    
@@ -533,214 +533,214 @@ private static final Logger ms_logger = LogManager
     */
    public Object visit(ASTMapEntry arg0, Object arg1)
    {
-      ms_logger.debug("Visiting ASTMapEntryMethod");
+      log.debug("Visiting ASTMapEntryMethod");
       return doVisit(arg0,arg1);
    }
    
    protected  Object visit(ASTBreak node, Object data)
    {
-       ms_logger.debug("Visiting ASTBreak");
+       log.debug("Visiting ASTBreak");
        return doVisit(node,data);
    }
 
 
    protected  Object visit(ASTReturnStatement node, Object data)
    {
-       ms_logger.debug("Visiting ASTReturnStatement");
+       log.debug("Visiting ASTReturnStatement");
        return doVisit(node,data);
    }
 
 
    protected  Object visit(ASTVar node, Object data)
    {
-       ms_logger.debug("Visiting ASTVar");
+       log.debug("Visiting ASTVar");
        return doVisit(node,data);
    }
  
 
    protected  Object visit(ASTTernaryNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTTernaryNode");
+       log.debug("Visiting ASTTernaryNode");
        return doVisit(node,data);
    }
 
 
    protected  Object visit(ASTERNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTERNode");
+       log.debug("Visiting ASTERNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTNRNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTNRNode");
+       log.debug("Visiting ASTNRNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSWNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSWNode");
+       log.debug("Visiting ASTSWNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTNSWNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTNSWNode");
+       log.debug("Visiting ASTNSWNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTEWNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTEWNode");
+       log.debug("Visiting ASTEWNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTNEWNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTNEWNode");
+       log.debug("Visiting ASTNEWNode");
        return doVisit(node,data);
    }
 
 
    protected  Object visit(ASTSubNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSubNode");
+       log.debug("Visiting ASTSubNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTNumberLiteral node, Object data)
    {
-       ms_logger.debug("Visiting ASTNumberLiteral");
+       log.debug("Visiting ASTNumberLiteral");
        return doVisit(node,data);
    }
 
 
    protected  Object visit(ASTSetLiteral node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetLiteral");
+       log.debug("Visiting ASTSetLiteral");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTExtendedLiteral node, Object data)
    {
-       ms_logger.debug("Visiting ASTExtendedLiteral");
+       log.debug("Visiting ASTExtendedLiteral");
        return doVisit(node,data);
    }
 
 
    protected  Object visit(ASTRangeNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTRangeNode");
+       log.debug("Visiting ASTRangeNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTEmptyMethod node, Object data)
    {
-       ms_logger.debug("Visiting ASTEmptyMethod");
+       log.debug("Visiting ASTEmptyMethod");
        return doVisit(node,data);
    }
 
 
    protected  Object visit(ASTFunctionNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTFunctionNode");
+       log.debug("Visiting ASTFunctionNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTMethodNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTMethodNode");
+       log.debug("Visiting ASTMethodNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTConstructorNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTConstructorNode");
+       log.debug("Visiting ASTConstructorNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTIdentifierAccess node, Object data)
    {
-       ms_logger.debug("Visiting ASTIdentifierAccess");
+       log.debug("Visiting ASTIdentifierAccess");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTArguments node, Object data)
    {
-       ms_logger.debug("Visiting ASTArguments");
+       log.debug("Visiting ASTArguments");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSetAddNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetAddNode");
+       log.debug("Visiting ASTSetAddNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSetSubNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetSubNode");
+       log.debug("Visiting ASTSetSubNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSetMultNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetMultNode");
+       log.debug("Visiting ASTSetMultNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSetDivNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetDivNode");
+       log.debug("Visiting ASTSetDivNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSetModNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetModNode");
+       log.debug("Visiting ASTSetModNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSetAndNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetAndNode");
+       log.debug("Visiting ASTSetAndNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTSetOrNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetOrNode");
+       log.debug("Visiting ASTSetOrNode");
        return doVisit(node,data);
    }
    
    protected  Object visit(ASTSetXorNode node, Object data)
    {
-       ms_logger.debug("Visiting ASTSetXorNode");
+       log.debug("Visiting ASTSetXorNode");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTJxltLiteral node, Object data)
    {
-       ms_logger.debug("Visiting ASTJxltLiteral");
+       log.debug("Visiting ASTJxltLiteral");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTAnnotation node, Object data)
    {
-       ms_logger.debug("Visiting ASTAnnotation");
+       log.debug("Visiting ASTAnnotation");
        return doVisit(node,data);
    }
 
    protected  Object visit(ASTAnnotatedStatement node, Object data)
    {
-       ms_logger.debug("Visiting ASTAnnotatedStatement");
+       log.debug("Visiting ASTAnnotatedStatement");
        return doVisit(node,data);
    }
    
    @Override
    protected Object visit(ASTContinue node, Object data)
    {
-       ms_logger.debug("Visiting ASTContinue");
+       log.debug("Visiting ASTContinue");
        return doVisit(node,data);
    }
    
