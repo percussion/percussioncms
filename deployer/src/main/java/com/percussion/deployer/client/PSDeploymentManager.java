@@ -263,6 +263,8 @@ public class PSDeploymentManager
       }
       catch (Exception e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSDeployException(
             IPSDeploymentErrors.UNEXPECTED_ERROR, e.toString());
       }
@@ -1422,6 +1424,8 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
@@ -1487,6 +1491,8 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
@@ -1551,6 +1557,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1623,6 +1631,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1811,6 +1821,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1973,7 +1985,9 @@ public class PSDeploymentManager
       catch (PSServerLockException e) 
       {
          // this is not expected, but helper method throws it
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
    }
