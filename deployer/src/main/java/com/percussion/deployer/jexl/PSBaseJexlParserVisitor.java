@@ -169,7 +169,7 @@ private static final Logger log = LogManager
     */
    public Object visit(ASTIdentifier arg0, Object arg1)
    {
-      log.debug("Visiting ASTIdentifier " + arg0.toString());
+      log.debug("Visiting ASTIdentifier {}", arg0.toString());
       return arg1;
    }
 
