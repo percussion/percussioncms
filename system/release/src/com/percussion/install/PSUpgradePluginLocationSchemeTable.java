@@ -29,19 +29,19 @@ import com.percussion.tablefactory.PSJdbcPlanBuilder;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.tablefactory.install.RxLogTables;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import com.percussion.tablefactory.install.RxLogTables;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 /**
  * Plugin class to modify RXLOCATIONSCHEMEPARAMS table.
  * Two new columns have been added to the above table, both are
@@ -63,6 +63,7 @@ public class PSUpgradePluginLocationSchemeTable implements IPSUpgradePlugin
    /**
     * Implements process method of IPSUpgardePlugin.
     */
+    @SuppressFBWarnings("HARD_CODE_PASSWORD")
     public PSPluginResponse process(IPSUpgradeModule config, Element elemData)
    {
       config.getLogStream().println("inside the process() of the plugin...");

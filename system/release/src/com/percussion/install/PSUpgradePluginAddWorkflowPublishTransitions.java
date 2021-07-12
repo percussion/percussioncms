@@ -26,6 +26,8 @@ package com.percussion.install;
 import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSSqlHelper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -35,8 +37,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.w3c.dom.Element;
 
 /**
  * Add publish, remove and resubmit transitions to the steps of the Default
@@ -140,6 +140,7 @@ public class PSUpgradePluginAddWorkflowPublishTransitions
     * 
     * @see com.percussion.install.IPSUpgradePlugin#process(com.percussion.install.IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, Element elemData)
    {
       logger = module.getLogStream();

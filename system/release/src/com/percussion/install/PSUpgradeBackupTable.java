@@ -34,6 +34,7 @@ import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.tools.DbUtils;
 import com.percussion.util.PSSQLStatement;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -59,6 +60,7 @@ public class PSUpgradeBackupTable implements IPSUpgradePlugin
     * does not have any valid "table" element, or if any "table" element is
     * invalid, or if config is <code>null</code>
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule config, Element elemData)
    {
       if (config == null)
