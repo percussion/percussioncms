@@ -24,6 +24,8 @@
 
 package com.percussion.HTTPClient;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +54,8 @@ class MD5InputStream extends FilterInputStream
      * @param is the input stream over which the md5 hash is to be calculated
      * @param verifier the HashVerifier to invoke when the stream is closed
      */
-    public MD5InputStream(InputStream is, HashVerifier verifier)
+    @SuppressFBWarnings("WEAK_MESSAGE_DIGEST_MD5")
+	public MD5InputStream(InputStream is, HashVerifier verifier)
     {
 	super(is);
 	this.verifier = verifier;

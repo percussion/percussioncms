@@ -24,13 +24,13 @@
 
 package com.percussion.legacy.security.deprecated;
 
-import com.percussion.security.PSAbstractEncryptor;
-
 import com.percussion.security.IPSEncryptor;
 import com.percussion.security.IPSKey;
 import com.percussion.security.IPSSecretKey;
+import com.percussion.security.PSAbstractEncryptor;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
@@ -257,6 +257,7 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
     *
     * @return The encrypted string, never <code>null</code>, may be empty.
     */
+   @SuppressFBWarnings("CIPHER_INTEGRITY")
    @Deprecated
    @Override
    public String encrypt(String str, String key)
@@ -295,6 +296,7 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
     * @param legacyDecryptor
      * @return The decrypted string, never <code>null</code>, may be empty.
     */
+   @SuppressFBWarnings("CIPHER_INTEGRITY")
    @Deprecated
    @Override
    public String decrypt(String str, String key, PSAbstractEncryptor legacyDecryptor)
