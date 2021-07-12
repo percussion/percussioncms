@@ -104,12 +104,12 @@ public class PSAssemblyServlet extends HttpServlet
    /**
     * The logger for this class
     */
-   private static final Logger ms_log = LogManager.getLogger(PSAssemblyServlet.class);
+   private static final Logger log = LogManager.getLogger(PSAssemblyServlet.class);
 
    /**
     * A preparsed expression for the inner template
     */
-   private IPSScript ms_inner_template = PSJexlEvaluator
+   private final IPSScript ms_inner_template = PSJexlEvaluator
          .createStaticExpression("$sys.innertemplate");
 
    /*
@@ -132,15 +132,15 @@ public class PSAssemblyServlet extends HttpServlet
       if (!StringUtils.isEmpty(reset) && reset.equalsIgnoreCase("true"))
          PSAAStubUtil.reset();
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Parameters to assembly:");
+         log.debug("Parameters to assembly:");
          Enumeration<String> names = request.getParameterNames();
          while (names.hasMoreElements())
          {
             String name = names.nextElement();
             String vals[] = request.getParameterValues(name);
-            ms_log.debug(name + ": " + PSStringUtils.arrayToString(vals));
+            log.debug("{}: {}", name, PSStringUtils.arrayToString(vals));
          }
       }
       PSStopwatch watch = new PSStopwatch();
@@ -239,16 +239,16 @@ public class PSAssemblyServlet extends HttpServlet
          if (PSServletUtils.isClientAbortException(e) ||
                cause.getMessage().startsWith("Software caused connection abort:") ||
                cause.getMessage().startsWith("Connection reset by peer:")) {
-            ms_log.debug("Client aborted connection", e);
+            log.debug("Client aborted connection", e);
             return; //Client closed connection, do not throw error   
          }
-         ms_log.error("Problem in assembly servlet", e);
+         log.error("Problem in assembly servlet", e);
          reportError(request, cause.getLocalizedMessage(), response);
       }
       finally
       {
          watch.stop();
-         ms_log.debug("Assembling item "
+         log.debug("Assembling item "
                + request.getParameter(IPSHtmlParameters.SYS_CONTENTID)
                + " template " + (template != null ? template : variantid)
                + " took " + watch.toString());
@@ -354,7 +354,7 @@ public class PSAssemblyServlet extends HttpServlet
       // Back to a string
       String output = builder.toString();
       // Bytes
-      byte outbytes[] = output.getBytes(charset.name());
+      byte[] outbytes = output.getBytes(charset.name());
 
       response.setContentType(result.getMimeType());
       response.setContentLength(outbytes.length);
@@ -492,8 +492,8 @@ public class PSAssemblyServlet extends HttpServlet
       /* Discard if the connection has closed */
       if (response.isCommitted())
       {
-         ms_log.error("Could not return error information "
-               + "because response is committed: " + string);
+         log.error("Could not return error information "
+               + "because response is committed: {}", string);
          return;
       }
 
@@ -516,7 +516,7 @@ public class PSAssemblyServlet extends HttpServlet
          {
             url = url + "?" + request.getQueryString();
          }
-         ms_log.error("Problem assembling item (" + id + "): " + string);
+         log.error("Problem assembling item ({}): {}", id, string);
          request.setAttribute("error", string);
          request.setAttribute("id", id);
          request.setAttribute("debugurl", url);
@@ -526,7 +526,8 @@ public class PSAssemblyServlet extends HttpServlet
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to report error: " + string, e);
+         log.error("Failed to report error: {}.  Error: {}", string, e.getMessage());
+         log.debug(e.getMessage(), e);
       }
    }
 }

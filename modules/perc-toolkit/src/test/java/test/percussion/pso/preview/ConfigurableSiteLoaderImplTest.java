@@ -77,7 +77,8 @@ public class ConfigurableSiteLoaderImplTest {
 			context.assertIsSatisfied(); 
 			
 		} catch (PSSiteManagerException e) {
-			log.error("Exception caught" + e, e); 
+			log.error("Exception caught {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 			fail("Exception"); 
 		} 
 	    
