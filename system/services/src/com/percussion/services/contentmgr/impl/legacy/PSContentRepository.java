@@ -173,7 +173,7 @@ public class PSContentRepository
 
             PSRequest req = PSRequest.getContextForRequest();
             PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
-            List<IPSGuid> rval = new ArrayList<>();
+            List<IPSGuid> rval;
 
             // Enumerate the folders and return the GUIDs of the matched
             // folders
