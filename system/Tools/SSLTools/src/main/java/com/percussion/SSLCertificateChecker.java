@@ -1,5 +1,6 @@
 package com.percussion;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -45,9 +46,10 @@ public class SSLCertificateChecker {
 
     private static final Logger log = LogManager.getLogger(SSLCertificateChecker.class.getName());
 
+    @edu.umd.cs.findbugs.annotations.SuppressFBWarnings("PATH_TRAVERSAL_IN")
     public static void main(String[] args)  {
         if (args.length <2){
-            System.out.println("Usage: PSSSLCertificateChecker [url or file containing urls] [warningDays] ");
+            log.info("Usage: PSSSLCertificateChecker [url or file containing urls] [warningDays] ");
             return;
         }
         SSLCertificateChecker sslChecker = new SSLCertificateChecker();
@@ -77,18 +79,20 @@ public class SSLCertificateChecker {
                     line = reader.readLine();
                 }
             } catch (IOException e) {
-                System.out.println("Invalid URL or File passed : " + urlStr);
+                log.error("Invalid URL or File passed : {}" , urlStr);
             }
 
         }
         if(!sslChecker.messagePostedFlag){
-            if(sslChecker.messageBuffer != null &&  sslChecker.messageBuffer.toString().trim().length() !=0) {
-                sslChecker. postSlackMessage();
+            if (sslChecker.messageBuffer == null || sslChecker.messageBuffer.toString().trim().length() == 0) {
+                return;
             }
+            sslChecker. postSlackMessage();
         }
     }
 
 
+    @SuppressFBWarnings("URLCONNECTION_SSRF_FD")
     private void checkCertificate(String urlStr, int warningDays) {
         URL url = null;
 
@@ -96,11 +100,11 @@ public class SSLCertificateChecker {
             URI uri = URI.create(urlStr);
             url = uri.toURL();
         }catch(MalformedURLException e){
-            System.out.println("Not a Valid URL : " + urlStr);
+            log.error("Not a Valid URL : {}" , urlStr);
             return;
         }
         if(url == null){
-            System.out.println("Not a valid URL : " + urlStr);
+            log.error("Not a valid URL : {}" , urlStr);
             return;
         }
         try {
@@ -122,7 +126,7 @@ public class SSLCertificateChecker {
             }
 
         }catch (IOException io){
-            System.out.println("Filed to Load Certificates for given URL : " + urlStr);
+            log.error("Failed to Load Certificates for given URL : {}" , urlStr);
         }
     }
 
@@ -145,9 +149,9 @@ public class SSLCertificateChecker {
             slackUserName = prop.getProperty("username");
 
         }catch (FileNotFoundException fnf){
-            System.out.println( "Slack Properties file not found");
+            log.error( "Slack Properties file not found");
         }catch (IOException io){
-            System.out.println("Failed to load Slack Properties File");
+            log.error("Failed to load Slack Properties File");
         }
     }
 
@@ -158,7 +162,7 @@ public class SSLCertificateChecker {
 
     private void sendSlackMessage(String message) {
 
-        System.out.println(message);
+        log.info("{}",message);
         if(messageBuffer == null) {
             messageBuffer = new StringBuffer(4000);
             messageBuffer.append(message);
