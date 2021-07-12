@@ -117,7 +117,7 @@
             <entry key="enablePagination" default="false"/>
             <entry key="auditLogConfigurationFile" default="perc-auditlog.properties"/>
             <entry key="enableAuditLogging" default="true"/>
-            <entry key="optimizePublishWithMD5Check" default="false"/>
+            <entry key="optimizePublishWithChecksum" default="false"/>
             <entry key="allowPurgeRevisionsScheduledTask" value="true" default="true"/>
             <entry key="enableSQLTool" default="false"/>
             <entry key="enableJCRTool" default="false"/>

@@ -40,6 +40,7 @@ import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.util.IOUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.publisher.IPSEditionTask;
@@ -50,7 +51,6 @@ import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -274,7 +274,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
             String key = generateKey(file);
             try(InputStream is = new FileInputStream(file)){
                localFilesMap.put(key,
-                     new PSPair<>(DigestUtils.md5Hex(IOUtils.toByteArray(is)), file));
+                     new PSPair<>(DigestUtils.sha3_256Hex(IOUtils.toByteArray(is)), file));
             }
          }
          else if (file.isDirectory())
@@ -314,7 +314,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    }
 
    /**
-    * Helper method that returns amazon s3 file keys along with md5hash.
+    * Helper method that returns amazon s3 file keys along with checksum.
     * @param client
     * @param bucketName
     * @return

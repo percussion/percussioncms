@@ -75,25 +75,17 @@ public class PSFileInfo implements Externalizable
       // Compute Digest
       if (file.canRead() && !excluded(relpath))
       {
-         MessageDigest md = MessageDigest.getInstance("MD5");
-         InputStream is = null;
-         try
+         MessageDigest md = MessageDigest.getInstance("SHA-256");
+
+         try(InputStream is = new FileInputStream(file))
          {
-            is = new FileInputStream(file);
-            byte buffer[] = new byte[8096];
+            byte[] buffer = new byte[8096];
             int count;
             while ((count = is.read(buffer)) >= 0)
             {
                md.update(buffer, 0, count);
             }
             m_digest = md.digest();
-         }
-         finally
-         {
-            //FB: NP_NULL_ON_SOME_PATH_EXCEPTION NC 1-17-16
-            if(is!=null){
-               is.close();
-            }
          }
       }
       else
@@ -116,20 +108,18 @@ public class PSFileInfo implements Externalizable
     */
    public String toString()
    {
-      StringBuffer dstr = new StringBuffer(32);
+      StringBuilder dstr = new StringBuilder(32);
       char hexDigits[] =
       {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
             'E', 'F'};
-      for (int i = 0; i < m_digest.length; i++)
-      {
-         byte b = m_digest[i];
+      for (byte b : m_digest) {
          byte h = (byte) ((b / 16) & 0xF);
          byte l = (byte) (b & 0xF);
          dstr.append(hexDigits[h]);
          dstr.append(hexDigits[l]);
 
       }
-      return m_path + " size: " + m_size + " bytes, MD5: " + dstr;
+      return m_path + " size: " + m_size + " bytes, SHA-256: " + dstr;
    }
 
    /**
@@ -142,7 +132,7 @@ public class PSFileInfo implements Externalizable
    {
       String checkpath = path.toLowerCase();
       return checkpath.endsWith(".exe") || checkpath.endsWith(".dll")
-            || checkpath.endsWith(".bin") || checkpath.indexOf(".so") > 0;
+            || checkpath.endsWith(".bin") || checkpath.indexOf(".so") > -1;
    }
 
    /**
