@@ -63,6 +63,8 @@ public class PSUpgradeSiteConfig extends PSAction {
                 for (File siteName : siteNames) {
                     try {
                         log.info("Adding Secure Site Config at for Site: " + siteName);
+                        //Delete the folder and recreate
+                        FileUtils.deleteDirectory(siteName);
                         FileUtils.copyDirectory(getSourceConfigurationFolder(), siteName, false);
                     } catch (IOException e) {
                         log.error("SiteConfigUpgrade Failed for Site" + siteName.toString() +" , Error: " + e.getMessage());
