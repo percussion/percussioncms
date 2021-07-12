@@ -280,7 +280,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             cats = hq.getResultList();
 
         } catch (Exception e) {
-            log.error("Query Failed : "+ query.toString(),e);
+            log.error("Query Failed : {}, Error: {}", query.toString(),e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return cats;
     }
@@ -601,7 +602,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         int useLimit=queryLimit;
         //All caller to set a query limit, but they can't allow higher than the server limit.
         if(rawQuery.getTotalMaxResults() > 0 && rawQuery.getTotalMaxResults() < queryLimit){
-            log.debug("Setting max query limit to client provided value :" + rawQuery.getTotalMaxResults());
+            log.debug("Setting max query limit to client provided value :{}", rawQuery.getTotalMaxResults());
             useLimit=rawQuery.getTotalMaxResults();
         }
 
@@ -724,7 +725,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
         catch (SQLException | RuntimeException e)
         {
-            log.error("There was an error getting jdbc driver name", e);
+            log.error("There was an error getting jdbc driver name Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
         return jdbcConnectionUrl;
