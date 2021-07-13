@@ -23,6 +23,9 @@
  */
 package com.percussion.security;
 
+import com.percussion.auditlog.PSActionOutcome;
+import com.percussion.auditlog.PSAuditLogService;
+import com.percussion.auditlog.PSUserManagementEvent;
 import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSProvider;
 import com.percussion.design.objectstore.PSSubject;
@@ -30,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.callback.CallbackHandler;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -79,6 +83,29 @@ public class PSBackEndTableProvider extends PSSecurityProvider
    }
 
    /**
+    * Write an event to the audit log on
+    * @param uid The user id
+    * @param action The activity taken
+    * @param activityMsg The action taken
+    */
+   private void auditlogUserActivity(String uid, PSUserManagementEvent.UserEventActions action, String activityMsg){
+
+        PSAuditLogService auditLogService = PSAuditLogService.getInstance();
+
+        HttpServletRequest httpRequest = PSThreadRequestUtils.getPSRequest().getServletRequest();
+
+        PSUserManagementEvent event = new PSUserManagementEvent(
+                httpRequest,
+                action,
+                PSActionOutcome.SUCCESS
+        );
+        event.setTargetUsername(uid);
+        event.setIniatorName("system");
+        event.setActivity(activityMsg);
+        auditLogService.logUserManagementEvent(event);
+
+   }
+   /**
     * Authenticate a user with the specified credentials. If a connection can
     * be made to the table and the uid can be found with the corresponding
     * password, the authentication is considered successful.
@@ -89,6 +116,9 @@ public class PSBackEndTableProvider extends PSSecurityProvider
       CallbackHandler callbackHandler)
       throws PSAuthenticationFailedException
    {
+
+
+
       // fail if null uid      
       if (uid == null)
       {
@@ -131,7 +161,7 @@ public class PSBackEndTableProvider extends PSSecurityProvider
             authenticationValid = PSPasswordHandler.checkHashedPassword(pw,password);
             if(!authenticationValid){
                //Check if it is encrypted with the legacy algorithm
-               encodedPw = filter.legacyEncrypt(pw).toString();
+               encodedPw = filter.legacyEncrypt(pw);
                if (!encodedPw.equals(password)){
                   authenticationValid = false;
                }else{
@@ -143,7 +173,13 @@ public class PSBackEndTableProvider extends PSSecurityProvider
                           filter.getAlgorithm());
 
                   //The password needs re-encrypted with the filters new algorithm.
-                  m_backendConnection.updateUserPassword(uid,filter.encrypt(password));
+                  m_backendConnection.updateUserPassword(uid,filter.encrypt(pw));
+                  auditlogUserActivity(uid,
+                          PSUserManagementEvent.UserEventActions.update,
+                          String.format("Security Update: Re-encrypting password for database user: {%s} from legacy algorithm {%s} to current algorithm {%s}",
+                          uid,
+                          filter.getLegacyAlgorithm(),
+                          filter.getAlgorithm()));
                }
             }
          }
@@ -158,13 +194,19 @@ public class PSBackEndTableProvider extends PSSecurityProvider
                authenticationValid = true;
 
                if(filter != null) {
-                  log.info("Security Update: Re-encrypting password for database user: {} from legacy algorithm {} to current algorithm {}",
+                  log.info("Security Update: Re-encrypting password for database user: {} from legacy algorithm: {} to current algorithm: {}",
                           uid,
                           filter.getLegacyAlgorithm(),
                           filter.getAlgorithm());
 
                   //The password needs re-encrypted with the filters new algorithm.
-                  m_backendConnection.updateUserPassword(uid, filter.encrypt(password));
+                  m_backendConnection.updateUserPassword(uid, filter.encrypt(pw));
+                  auditlogUserActivity(uid,
+                          PSUserManagementEvent.UserEventActions.update,
+                          String.format("Security Update: Re-encrypting password for database user: {%s} from legacy algorithm: {%s} to current algorithm: {%s}",
+                                  uid,
+                                  "Plain Text",
+                                  filter.getAlgorithm()));
                }
             }
          }
