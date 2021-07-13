@@ -129,7 +129,9 @@
                 !($.datepicker._inDialog && $.blockUI)) ||
                 ($target.hasClass($.datepicker.markerClassName) && $.datepicker._curInst != inst))
                 $('html').on("click",function (evt){
-                    $.datepicker._hideDatepicker(inst);
+                    if(typeof inst !== 'undefined'){
+                        $.datepicker._hideDatepicker(inst);
+                    }
                 })
         }
         return;
