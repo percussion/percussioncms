@@ -824,7 +824,7 @@ public class RxIAModel extends RxModel
       fieldName = fieldName.substring(0, 1).toUpperCase() +
       fieldName.substring(1);
       
-      StringBuffer readableName = new StringBuffer();
+      StringBuilder readableName = new StringBuilder();
       for (int i = 0; i < fieldName.length(); i++)
       {
          char ch = fieldName.charAt(i);

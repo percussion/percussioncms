@@ -403,7 +403,7 @@ public class PSJdbcUtils
          throw new
             IllegalArgumentException("serverName may not be null or empty");
       }
-      StringBuffer rval = new StringBuffer(40);
+      StringBuilder rval = new StringBuilder(40);
 
       rval.append("jdbc:");
 

@@ -62,7 +62,7 @@ public class PSUserAttributes extends HashMap
          {
             PSAttribute attribute = (PSAttribute) attributes.get(i);
 
-            StringBuffer valueBuffer = new StringBuffer();
+            StringBuilder valueBuffer = new StringBuilder();
             Iterator values = attribute.getValues().iterator();
             while (values.hasNext())
             {

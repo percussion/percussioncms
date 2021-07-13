@@ -25,7 +25,6 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlTreeWalker;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -120,7 +119,7 @@ public class PSLiteralSet extends PSCollectionComponent implements IPSReplacemen
    public String getValueText()
    {
       // Return a comma separated list of the value text from each element.
-      StringBuffer buf = new StringBuffer(4*size());
+      StringBuilder buf = new StringBuilder(4*size());
 
       if (size() > 0)
          buf.append(((PSLiteral)get(0)).getValueText());

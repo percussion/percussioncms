@@ -31,7 +31,6 @@ import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.search.PSSearchException;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
-
 import org.w3c.dom.Document;
 
 /**
@@ -202,7 +201,7 @@ public abstract class PSConsoleCommandSearchIndex extends PSConsoleCommand
       }
       
       PSItemDefManager mgr = PSItemDefManager.getInstance();
-      StringBuffer buf = new StringBuffer(100);
+      StringBuilder buf = new StringBuilder(100);
       for (int i = 0; i < successes.length; i++)
       {
          String name;

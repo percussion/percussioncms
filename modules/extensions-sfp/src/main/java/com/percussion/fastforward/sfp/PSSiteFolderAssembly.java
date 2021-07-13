@@ -149,7 +149,7 @@ public class PSSiteFolderAssembly extends PSDefaultExtension
       String originalSiteId = request.getParameter(
             IPSHtmlParameters.SYS_ORIGINALSITEID, "");
 
-      StringBuffer siteFolderPath = new StringBuffer();
+      StringBuilder siteFolderPath = new StringBuilder();
       log.debug("Site Folder Assembly - create location");
       try
       {

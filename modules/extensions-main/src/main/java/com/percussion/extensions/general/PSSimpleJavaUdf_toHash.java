@@ -69,7 +69,7 @@ public class PSSimpleJavaUdf_toHash extends PSSimpleJavaUdfExtension
       final char DELIM = '|';
 
       // concat all parameters together with a delimiter
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       for (int i = 0; i < params.length; i++)
       {
          Object o = params[i];

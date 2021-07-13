@@ -47,7 +47,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.net.ssl.*;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -134,7 +140,7 @@ public class PSSiteImporter
         addHeadElems.addAll(docHead.select("link"));
         addHeadElems.addAll(docHead.select("script"));
 
-        StringBuffer additionalHeadContent = new StringBuffer();
+        StringBuilder additionalHeadContent = new StringBuilder();
         for (Element element : addHeadElems)
         {
             additionalHeadContent.append(element.outerHtml());

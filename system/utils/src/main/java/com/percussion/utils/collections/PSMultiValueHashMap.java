@@ -125,7 +125,7 @@ public class PSMultiValueHashMap<K, V> {
     * Legacy method testing if some key maps into the specified value
     * in this table. This method is identical in functionality to
     * containsValue(java.lang.Object), and exists solely to ensure
-    * full compatibility with class Hashtable, which supported this
+    * full compatibility with class ConcurrentHashMap, which supported this
     * method prior to introduction of the Java Collections framework.
     * 
     * @param key

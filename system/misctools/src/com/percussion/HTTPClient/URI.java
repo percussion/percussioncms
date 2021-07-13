@@ -27,7 +27,7 @@ package com.percussion.HTTPClient;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.BitSet;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class represents a generic URI, as defined in RFC-2396.
@@ -80,9 +80,9 @@ public class URI
      */
     public static final boolean ENABLE_BACKWARDS_COMPATIBILITY = true;
 
-    protected static final Hashtable defaultPorts          = new Hashtable();
-    protected static final Hashtable usesGenericSyntax     = new Hashtable();
-    protected static final Hashtable usesSemiGenericSyntax = new Hashtable();
+    protected static final ConcurrentHashMap defaultPorts          = new ConcurrentHashMap();
+    protected static final ConcurrentHashMap usesGenericSyntax     = new ConcurrentHashMap();
+    protected static final ConcurrentHashMap usesSemiGenericSyntax = new ConcurrentHashMap();
 
     /* various character classes as defined in the draft */
     protected static final BitSet alphanumChar;
@@ -978,7 +978,7 @@ public class URI
 	else
 	    hostinfo = host;
 
-	StringBuffer file = new StringBuffer(100);
+	StringBuilder file = new StringBuilder(100);
 	assemblePath(file, true, true, false);
 
 	url = new URL(scheme, hostinfo, port, file.toString());
@@ -986,7 +986,7 @@ public class URI
     }
 
 
-    private final void assemblePath(StringBuffer buf, boolean printEmpty,
+    private final void assemblePath(StringBuilder buf, boolean printEmpty,
 				    boolean incFragment, boolean unescape)
     {
 	if ((path == null  ||  path.length() == 0)  &&  printEmpty)
@@ -1011,7 +1011,7 @@ public class URI
 
     private final String stringify(boolean unescape)
     {
-	StringBuffer uri = new StringBuffer(100);
+	StringBuilder uri = new StringBuilder(100);
 
 	if (scheme != null)
 	{

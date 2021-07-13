@@ -139,7 +139,7 @@ public class HttpHeaderElement
      */
     public String toString()
     {
-	StringBuffer buf = new StringBuffer();
+	StringBuilder buf = new StringBuilder();
 	appendTo(buf);
 	return buf.toString();
     }
@@ -150,10 +150,10 @@ public class HttpHeaderElement
      * more efficient version of <code>toString()</code> for assembling
      * multiple elements.
      *
-     * @param buf the StringBuffer to append this header to
+     * @param buf the StringBuilder to append this header to
      * @see #toString()
      */
-    public void appendTo(StringBuffer buf)
+    public void appendTo(StringBuilder buf)
     {
 	buf.append(name);
 

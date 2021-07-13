@@ -1572,7 +1572,7 @@ public class Codecs
 
 
    int          idx;
-   StringBuffer qbuf = new StringBuffer();
+   StringBuilder qbuf = new StringBuilder();
 
    for (idx = 0; idx < pairs.length; idx++)
    {

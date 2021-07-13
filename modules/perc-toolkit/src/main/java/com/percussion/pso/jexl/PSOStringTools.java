@@ -19,16 +19,6 @@
  */
 package com.percussion.pso.jexl;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Locale;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
@@ -36,6 +26,15 @@ import com.percussion.extension.PSJexlUtilBase;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.pso.utils.PathCleanupUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Locale;
 
 /**
  * Tools for String manipulation. Just basics for now
@@ -122,7 +121,7 @@ public class PSOStringTools extends PSJexlUtilBase implements IPSJexlExpression
        int size = body.length();
        int words = 0;
        boolean inWord = false;
-       StringBuffer parse = new StringBuffer(body);
+       StringBuilder parse = new StringBuilder(body);
        for(int i = 0; i < size; i++) {
            int code = parse.codePointAt(i);
            if (Character.isWhitespace(code) || code == 0x00a0) {

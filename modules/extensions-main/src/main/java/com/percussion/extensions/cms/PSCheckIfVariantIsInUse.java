@@ -25,9 +25,7 @@ package com.percussion.extensions.cms;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
-import com.percussion.cms.objectstore.PSProcessorProxy;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
@@ -73,7 +71,7 @@ public class PSCheckIfVariantIsInUse implements IPSRequestPreProcessor
          PSRelationshipSet results = rproc.getRelationships(filter);
          if (results.size() > 0)
          { 
-            StringBuffer ownerids = new StringBuffer();
+            StringBuilder ownerids = new StringBuilder();
             Iterator iter = results.iterator();
             int count = 0;
             while(iter.hasNext())

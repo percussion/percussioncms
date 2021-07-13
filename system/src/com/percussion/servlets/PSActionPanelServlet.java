@@ -26,7 +26,6 @@ package com.percussion.servlets;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
-import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -44,14 +43,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.assembly.IPSAssemblyWs;
 import com.percussion.webservices.assembly.PSAssemblyWsLocator;
 import com.percussion.webservices.assembly.data.PSAssemblyTemplateWs;
-
-import java.io.IOException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Properties;
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -59,9 +52,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.lang.StringUtils;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * This servlet is now misnamed. A better name would be PSLinkDispatchServlet.
@@ -406,7 +403,7 @@ public class PSActionPanelServlet extends HttpServlet
     */
    private String getTargetUrl(TargetType targetType, String contentid)
    {
-      StringBuffer url = new StringBuffer();
+      StringBuilder url = new StringBuilder();
       url.append("/Rhythmyx/");
       if (targetType == TargetType.ACTIVE_ASSEMBLY)
       {

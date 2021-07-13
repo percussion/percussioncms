@@ -24,7 +24,6 @@
 package com.percussion.test.http;
 
 import com.percussion.test.io.IOTools;
-import com.percussion.test.io.IOTools;
 import com.percussion.test.io.LogSink;
 import com.percussion.util.PSURLEncoder;
 import org.apache.logging.log4j.LogManager;
@@ -257,7 +256,7 @@ public class HttpInteractive implements LogSink
 
          if (!m_isFile)
          {
-            StringBuffer buff = new StringBuffer();
+            StringBuilder buff = new StringBuilder();
             System.err.println("Type the content below. End with a line containing only a .");
             while (true)
             {

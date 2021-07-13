@@ -27,8 +27,6 @@ import com.percussion.taxonomy.domain.Attribute_lang;
 import com.percussion.taxonomy.domain.Node;
 import com.percussion.taxonomy.domain.Value;
 
-
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -182,7 +180,7 @@ public class TaxNode
          testNode = testNode.getParent();
       }
       Collections.reverse(pathElements);
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       for (String path : pathElements) {
          sb.append(path);
          sb.append("/");

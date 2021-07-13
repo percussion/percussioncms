@@ -23,26 +23,24 @@
  */
 package com.percussion.search.lucene.textconverter;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-
-import net.htmlparser.jericho.Renderer;
-import net.htmlparser.jericho.Segment;
-import net.htmlparser.jericho.Source;
-
-import org.apache.commons.io.IOUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.search.lucene.PSSearchUtils;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import net.htmlparser.jericho.Renderer;
+import net.htmlparser.jericho.Segment;
+import net.htmlparser.jericho.Source;
+import org.apache.commons.io.IOUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 
 /**
  * Extracts the text from html and returns. Walks through all the nodes and gets
@@ -126,7 +124,7 @@ public class PSTextConverterHtml implements IPSLuceneTextConverter
       Document root = PSXmlDocumentBuilder.createXmlDocument(new StringReader(html), false);
       Element rawDoc = root.getDocumentElement();
 
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.setLength(0);
       PSSearchUtils.getNodeText(sb, rawDoc);
       

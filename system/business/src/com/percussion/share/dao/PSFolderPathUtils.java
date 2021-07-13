@@ -23,6 +23,15 @@
  */
 package com.percussion.share.dao;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.share.data.IPSFolderPath;
+import com.percussion.share.data.IPSItemSummary;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.StringUtils.removeEnd;
@@ -34,16 +43,6 @@ import static org.apache.commons.lang.StringUtils.substringBeforeLast;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.percussion.cms.IPSConstants;
-import com.percussion.share.data.IPSFolderPath;
-import com.percussion.share.data.IPSItemSummary;
 
 /**
  * 
@@ -390,7 +389,7 @@ public class PSFolderPathUtils
     
     private static String repeat(String pattern, int count) {
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (int i=0; i < count; i++)
 
         buffer.append(pattern);

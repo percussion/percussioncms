@@ -116,7 +116,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       PSDisplayMapper dispMapper =
             pipe.getMapper().getUIDefinition().getDisplayMapper();
 
-      StringBuffer result = new StringBuffer(100); // arbitrary size
+      StringBuilder result = new StringBuilder(100); // arbitrary size
       initializeRequestResources( app, ce, dispMapper, 0,
             PSQueryCommandHandler.ROOT_PARENT_PAGE_ID, m_pageInfo, result );
 
@@ -427,7 +427,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     * exception will be thrown if an existing page info object can't be found.
     * <p>This method uses the same algorithm as {@link
     * #initializeRequestResources(PSApplication, PSContentEditor,
-    * PSDisplayMapper,int,int,HashMap,StringBuffer) initializeRequestResources}
+    * PSDisplayMapper,int,int,HashMap,StringBuilder) initializeRequestResources}
     * for calculating page ids.
     *
     * @param ce The definition of the entire editor. It is used read only.
@@ -604,7 +604,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
     */
    private int initializeRequestResources( PSApplication app,
          PSContentEditor ce, PSDisplayMapper dispMapper, int recursionDepth,
-         int pageId, HashMap pageInfoMap, StringBuffer resultDatasetName )
+         int pageId, HashMap pageInfoMap, StringBuilder resultDatasetName )
       throws PSSystemValidationException
    {
       PSContentEditorPipe pipe = (PSContentEditorPipe) ce.getPipe();
@@ -659,7 +659,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
 
       int nextPageId = pageId + 1;
       Iterator mappings = dispMapper.iterator();
-      StringBuffer resultName = new StringBuffer(100);
+      StringBuilder resultName = new StringBuilder(100);
       while ( mappings.hasNext())
       {
          PSDisplayMapping mapping = (PSDisplayMapping) mappings.next();

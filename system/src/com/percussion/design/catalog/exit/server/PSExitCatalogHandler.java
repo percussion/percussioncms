@@ -26,7 +26,7 @@ package com.percussion.design.catalog.exit.server;
 
 import com.percussion.extension.IPSExtensionManager;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSExitCatalogHandler class processes extension
@@ -62,7 +62,7 @@ public class PSExitCatalogHandler
        * some day, convert this to use JDK 1.2 package info instead of
        * hardcoded classes
        */
-      m_catalogHandlers = new Hashtable();
+      m_catalogHandlers = new ConcurrentHashMap();
 
       // These two handlers are in com.percussion.design.catalog.exit.server !!!
       addHandler(new PSExtensionHandlerCatalogHandler( mgr ));

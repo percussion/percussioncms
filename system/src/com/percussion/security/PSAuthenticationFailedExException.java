@@ -72,7 +72,7 @@ public class PSAuthenticationFailedExException extends
             "Must provide at least 1 security provider." );
       }
 
-      StringBuffer msg = new StringBuffer(255);
+      StringBuilder msg = new StringBuilder(255);
       while ( failedSPExceptions.hasNext())
       {
          PSAuthenticationFailedException e =

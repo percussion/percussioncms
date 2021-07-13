@@ -302,7 +302,7 @@ public class PSConsole /* extends Thread */
           * This will get all messages from the entire exception tree and
           * append them to the message string, each one on a new line.
           */
-         StringBuffer buf = new StringBuffer(250); // arbitrary size
+         StringBuilder buf = new StringBuilder(250); // arbitrary size
          SQLException next = ((SQLException) t).getNextException();
          while (next != null)
          {

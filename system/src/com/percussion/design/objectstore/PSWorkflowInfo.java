@@ -25,15 +25,14 @@ package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.Validate;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.Validate;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Represents which workflows a content editor's items are allowed to enter.
@@ -140,7 +139,7 @@ public class PSWorkflowInfo extends PSComponent
     */
    private String getValuesAsCSV()
    {
-      StringBuffer values = new StringBuffer();
+      StringBuilder values = new StringBuilder();
       for ( Iterator i = getValues(); i.hasNext(); )
       {
          Integer workflowId = (Integer) i.next();

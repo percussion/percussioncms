@@ -483,7 +483,7 @@ public class PSWebdavUtils
             // walk two paths until first difference, take the rest
             String[] patternPaths = pattern.replace('\\', '/').split("/");
             String[] reqPaths = requestPath.replace('\\', '/').split("/");
-            StringBuffer reqBuf = new StringBuffer();
+            StringBuilder reqBuf = new StringBuilder();
             
             for (int i = 0; i < reqPaths.length; i++)
             {

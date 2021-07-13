@@ -35,8 +35,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Hashtable;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Singleton used to manage all DebugLogHandlers and the output stream used by
@@ -261,7 +261,7 @@ public class PSDebugManager
     */
    private PSDebugManager()
    {
-      m_logHandlers = new Hashtable();
+      m_logHandlers = new ConcurrentHashMap();
    }
 
 
@@ -288,7 +288,7 @@ public class PSDebugManager
    /**
     * The list of currently registered DebugLogHandlers.
     */
-   private Hashtable m_logHandlers = null;
+   private ConcurrentHashMap m_logHandlers = null;
 
    /**
     * The resource bundle used for logging messages.  <code>null</code> until

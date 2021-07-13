@@ -29,6 +29,8 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -39,9 +41,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Exception class to used to report general exceptions, or may be subclassed
@@ -440,7 +439,7 @@ public class PSDeployException extends Exception
       if ( null == e )
          return "";
          
-      StringBuffer errorText   = new StringBuffer();
+      StringBuilder errorText   = new StringBuilder();
 
       int errNo = 1;
       final int maxErrors = 20;

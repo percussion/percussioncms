@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
  * of Rhythmyx server.
  *
  * @author Andriy Palamarchuk
- * @todo use generics, StringBuffer when backwards compatibility
+ * @todo use generics, StringBuilder when backwards compatibility
  * with 1.4 is not required anymore. (Andriy) 
  */
 public class PSRxInstallerBot
@@ -692,7 +692,7 @@ public class PSRxInstallerBot
     */
    String parseConfiguration(final Properties properties)
    {
-      final StringBuffer message = new StringBuffer();
+      final StringBuilder message = new StringBuilder();
       checkForUnrecognizedKeys(properties, message);
       checkForMissingKeys(properties, message);
       if (message.length() == 0)
@@ -707,7 +707,7 @@ public class PSRxInstallerBot
     * @param properties the installation configuration.
     * @param message buffer to add validation error messages to.
     */
-   void parseValues(final Properties properties, final StringBuffer message)
+   void parseValues(final Properties properties, final StringBuilder message)
    {
       setLogFile(properties.getProperty(LOG_FILE_PROP));
       setLaunchInstallerCommand(
@@ -754,7 +754,7 @@ public class PSRxInstallerBot
    /**
     * Reads value of property {@link #RHYTHMYX_PORT_PROP}.
     */
-   private void readRhythmyxPort(Properties properties, StringBuffer message)
+   private void readRhythmyxPort(Properties properties, StringBuilder message)
    {
       if (isNewInstallation())
       {
@@ -794,7 +794,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void validateBooleanProperty(final Properties properties,
-         final String propertyName, StringBuffer message)
+         final String propertyName, StringBuilder message)
    {
       final String value = properties.getProperty(propertyName);
       if (!value.equalsIgnoreCase(Boolean.TRUE.toString()) &&
@@ -816,7 +816,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void validatePortNumber(final Properties properties,
-         final String propertyName, StringBuffer message)
+         final String propertyName, StringBuilder message)
    {
       final String value = properties.getProperty(propertyName);
       if (!StringUtils.isNumeric(value))
@@ -835,7 +835,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readFastForward(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       validateBooleanProperty(properties, INSTALL_FASTFORWARD_PROP, message);
       setInstallFastForward(Boolean.valueOf(
@@ -855,7 +855,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readDeleteExistingInstallation(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       validateBooleanProperty(
             properties, DELETE_EXISTING_INSTALLATION_PROP, message);
@@ -875,7 +875,7 @@ public class PSRxInstallerBot
     * @param properties the configuration parameters
     * @param message buffer to add validation error messages to.
     */
-   private void readTimeoutProperty(Properties properties, StringBuffer message)
+   private void readTimeoutProperty(Properties properties, StringBuilder message)
    {
       final String value =
             properties.getProperty(INSTALLER_TIMEOUT_IN_SEC_PROP);
@@ -901,7 +901,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readInstallationTypeProperty(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       final String str = properties.getProperty(INSTALLATION_TYPE); 
       if (!str.equals(INSTALLATION_TYPE_NEW)
@@ -923,7 +923,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void readInstallationDirectoryProperty(final Properties properties,
-         final StringBuffer message)
+         final StringBuilder message)
    {
       final String dirStr = properties.getProperty(INSTALLATION_DIR_PROP); 
       final File dir = new File(dirStr);
@@ -946,7 +946,7 @@ public class PSRxInstallerBot
     * @param message buffer to add validation error messages to.
     */
    private void propertyMustNotBeBlank(final Properties properties,
-         final StringBuffer message, final String propertyName)
+         final StringBuilder message, final String propertyName)
    {
       if (StringUtils.isBlank(properties.getProperty(propertyName)))
       {
@@ -963,7 +963,7 @@ public class PSRxInstallerBot
     * @param properties the configuration parameters
     * @param message buffer to add validation error messages to.
     */
-   private void checkForMissingKeys(Properties properties, StringBuffer message)
+   private void checkForMissingKeys(Properties properties, StringBuilder message)
    {
       final Set<String> missingKeys =
             new HashSet<String>(CONFIGURATION_PROPERTY_NAMES);
@@ -985,7 +985,7 @@ public class PSRxInstallerBot
     */
    @SuppressWarnings("unchecked")
    private void checkForUnrecognizedKeys(final Properties properties,
-         StringBuffer message)
+         StringBuilder message)
    {
       final Set<String> unrecognizedKeys = new HashSet(properties.keySet());
       unrecognizedKeys.removeAll(CONFIGURATION_PROPERTY_NAMES);

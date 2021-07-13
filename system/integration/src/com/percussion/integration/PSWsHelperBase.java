@@ -265,7 +265,7 @@ public abstract class PSWsHelperBase
    public String getActionPageLink(int contentid, String sessionid)
    {
       // Construct an absolute URL for the same machine
-      StringBuffer link = new StringBuffer();
+      StringBuilder link = new StringBuilder();
       link.append("<a onclick=\"showActionPage('");
       String root = getRhythmyxRoot();
       if (!root.startsWith("/"))
@@ -302,7 +302,7 @@ public abstract class PSWsHelperBase
    public String getAbsRxRoot()
    {
       String rxroot = getRhythmyxRoot();
-      StringBuffer rval = new StringBuffer();
+      StringBuilder rval = new StringBuilder();
       if (rxroot.startsWith("/") == false)
       {
          rval.append("/");

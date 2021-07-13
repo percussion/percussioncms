@@ -271,7 +271,7 @@ public class PSStateRolesContext implements IPSStateRolesContext
     */
    public String toString()
    {
-       StringBuffer buf = new StringBuffer();
+       StringBuilder buf = new StringBuilder();
        buf.append("\nPSContentAdhocUsersContext:");
        if (m_StateRoleIDs.isEmpty())
        {

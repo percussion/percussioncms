@@ -94,7 +94,7 @@ public class MethodCacheInterceptor implements MethodInterceptor, InitializingBe
   private String getCacheKey(String targetName,
                              String methodName,
                              Object[] arguments) {
-    StringBuffer sb = new StringBuffer();
+    StringBuilder sb = new StringBuilder();
     sb.append(targetName)
       .append('.').append(methodName);
     if ((arguments != null) && (arguments.length != 0)) {

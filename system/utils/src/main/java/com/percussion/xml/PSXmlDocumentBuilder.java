@@ -1367,8 +1367,8 @@ public class PSXmlDocumentBuilder {
             return inStr;
         }
 
-        StringBuffer inBuf = new StringBuffer(inStr);
-        StringBuffer normBuf = new StringBuffer();
+        StringBuilder inBuf = new StringBuilder(inStr);
+        StringBuilder normBuf = new StringBuilder();
 
         // walk the input looking for our match
         for (int i = 0; i < inBuf.length(); i++) {

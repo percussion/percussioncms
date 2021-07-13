@@ -330,7 +330,7 @@ public class QATestResults implements Serializable
       out.write("\r\nPasses: " + m_numPasses);
       if ( null != m_cpuUsage )
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          buf.append( "\r\nCpu(" );
          buf.append( m_cpuUsage.getAllCpuTicks().length );
          buf.append( " samples): avg=" );

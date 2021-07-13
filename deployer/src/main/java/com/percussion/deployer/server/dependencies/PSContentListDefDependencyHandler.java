@@ -683,7 +683,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
          PSImportCtx ctx) throws PSDeployException
    {      
       String url = cList.getUrl();
-      StringBuffer base = new StringBuffer();
+      StringBuilder base = new StringBuilder();
       Map params = PSDeployComponentUtils.parseParams(url, base);
 
       if (!params.isEmpty())

@@ -23,10 +23,6 @@
  */
 package com.percussion.services.filestorage.impl;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import com.percussion.design.objectstore.PSFile;
 import com.percussion.server.PSServer;
 import com.percussion.services.filestorage.IPSFileDigestService;
 import com.percussion.services.filestorage.IPSFileStorageService;
@@ -40,12 +36,31 @@ import com.percussion.services.filestorage.data.PSHashedColumn;
 import com.percussion.services.filestorage.data.PSMeta;
 import com.percussion.services.filestorage.error.PSFileStorageException;
 import com.percussion.util.PSPurgableTempFile;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tika.Tika;
+import org.apache.tika.config.TikaConfig;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.io.TikaInputStream;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.mime.MediaType;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -59,28 +74,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.tika.Tika;
-import org.apache.tika.config.TikaConfig;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.io.TikaInputStream;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.mime.MediaType;
-import org.apache.tika.mime.MimeTypeException;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.parser.ParseContext;
-import org.apache.tika.parser.Parser;
-import org.hibernate.Hibernate;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.transaction.annotation.Transactional;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * @author stephenbolton
@@ -355,7 +350,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
     * encoding as well as the original file name.
     * 
     * @param file
-    * @param meta
     * @return
     */
    private PSMeta populateTempFileMeta(File file)
@@ -583,7 +577,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
    /**
     * Extracts the text from the specified input stream and updates the
     * specified tika metadata accordingly. The stream is closed by this method.
-    * If an error occurs, a {@link #PARSE_ERROR} property will be added to the
+    * If an error occurs, a  property will be added to the
     * metadata with a value which contains the error.
     * 
     * @param input stream.
@@ -1168,7 +1162,6 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
       /**
        * Loads in a file containing an sha1 hash and return the hash value
        * @param testfile
-       * @param sha1FileString
        * @return
        * @throws IOException 
        */

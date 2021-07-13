@@ -570,7 +570,7 @@ public class PSMembershipService implements IPSMembershipService
      */
     private String getResetEmailBodyMessage(String userEmail, String redirectLink)
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("A password reset has been requested for the following account:");
         sb.append("\r\n");
         sb.append(userEmail);
@@ -598,7 +598,7 @@ public class PSMembershipService implements IPSMembershipService
      */
     private String getConfirmationEmailBodyMessage(String userEmail, String redirectLink, String customerSite)
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("Welcome and thank you for registering with us.");
         sb.append("\r\n\n");
         sb.append("To complete the registration process and activate your account, simply visit the link below:");

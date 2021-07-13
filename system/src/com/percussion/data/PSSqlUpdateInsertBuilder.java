@@ -28,8 +28,8 @@ import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.error.PSIllegalArgumentException;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -72,7 +72,7 @@ public class PSSqlUpdateInsertBuilder extends PSSqlUpdateBuilder
     * @throws  PSIllegalArgumentException  if this exception is thrown
     *          by any of the superclass' methods
     */
-   PSUpdateStatement generate(List logins, Hashtable connKeys)
+   PSUpdateStatement generate(List logins, ConcurrentHashMap connKeys)
       throws PSIllegalArgumentException
    {
       HashMap dtHash = new HashMap();

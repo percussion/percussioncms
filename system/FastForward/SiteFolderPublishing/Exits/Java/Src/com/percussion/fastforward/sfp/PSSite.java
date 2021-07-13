@@ -231,7 +231,7 @@ public class PSSite
       List siteFolderList)
       throws PSCmsException
    {
-      StringBuffer path = new StringBuffer();
+      StringBuilder path = new StringBuilder();
       ListIterator it = siteFolderList.listIterator();
       while (it.hasNext())
       {
@@ -264,7 +264,7 @@ public class PSSite
    public static String renderSiteFolderPathLocators(List siteFolderList)
          throws PSCmsException
    {
-      StringBuffer path = new StringBuffer();
+      StringBuilder path = new StringBuilder();
       ListIterator it = siteFolderList.listIterator();
       PSLocator loc;
       while (it.hasNext())
