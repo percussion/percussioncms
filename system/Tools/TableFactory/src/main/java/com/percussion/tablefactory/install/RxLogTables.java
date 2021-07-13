@@ -124,7 +124,7 @@ public class RxLogTables
       Statement stmt = PSSQLStatement.getStatement(conn);
       if (!(hasTable(targetMeta, schema, PSLogDatabase.TABLE_PSLOG)))
       {
-         StringBuffer buf = new StringBuffer(512);
+         StringBuilder buf = new StringBuilder(512);
          buf.append("CREATE TABLE ");
          buf.append(PSSqlHelper.qualifyTableName(PSLogDatabase.TABLE_PSLOG,
                                                  db,
@@ -156,7 +156,7 @@ public class RxLogTables
 
       if (!(hasTable(targetMeta, schema, PSLogDatabase.TABLE_PSLOGDAT)))
       {
-         StringBuffer buf = new StringBuffer(512);
+         StringBuilder buf = new StringBuilder(512);
          buf.append("CREATE TABLE ");
          buf.append(PSSqlHelper.qualifyTableName(PSLogDatabase.TABLE_PSLOGDAT,
                                                  db,

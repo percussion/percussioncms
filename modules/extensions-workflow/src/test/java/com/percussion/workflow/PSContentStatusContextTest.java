@@ -174,7 +174,7 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
 
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:");
       buf.append("   -w, -workflowid        workflow ID");
       buf.append("   -c, -contentid         content ID");

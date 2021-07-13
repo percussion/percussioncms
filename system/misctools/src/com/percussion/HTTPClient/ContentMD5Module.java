@@ -164,7 +164,7 @@ class VerifyMD5 implements HashVerifier
      */
     private static String hex(byte[] buf)
     {
-	StringBuffer str = new StringBuffer(buf.length*3);
+	StringBuilder str = new StringBuilder(buf.length*3);
 	for (int idx=0; idx<buf.length; idx++)
 	{
 	    str.append(Character.forDigit((buf[idx] >>> 4) & 15, 16));

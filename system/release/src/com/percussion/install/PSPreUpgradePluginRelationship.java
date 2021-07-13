@@ -30,18 +30,16 @@ import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * This plugin is used to validate relationship data before upgrade from
@@ -169,7 +167,7 @@ public class PSPreUpgradePluginRelationship implements IPSUpgradePlugin
       // in the properties table, but not specified in the configuration
       
       // build the name IN clause
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       Iterator pnamesIt = pnames.iterator();
       while (pnamesIt.hasNext())
       {
@@ -198,7 +196,7 @@ public class PSPreUpgradePluginRelationship implements IPSUpgradePlugin
       
       if (!unknownNames.isEmpty())
       {
-         StringBuffer msgBuffer = new StringBuffer();
+         StringBuilder msgBuffer = new StringBuilder();
          msgBuffer.append("Relationship config '" + config.getName() + 
                "' contains unknown properties. This warning may be ignored if " 
                + "the unknown properties are not used; otherwise they must be " 

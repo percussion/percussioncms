@@ -40,7 +40,6 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSQLStatement;
-import com.percussion.util.PSSqlHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -161,7 +160,7 @@ public class PSNavSlotContents
     */
    private String buildSlotInList()
    {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("(");
       Iterator it = m_slotMap.keySet().iterator();
       boolean first = true;
@@ -647,7 +646,7 @@ public class PSNavSlotContents
     */
    private String getQualifiedTables(String[][] tables)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       for (int i = 0; i < tables.length; i++)
       {
          if (i > 0)

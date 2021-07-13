@@ -25,16 +25,14 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Basic global subject testing, including simple to/from Xml
@@ -167,7 +165,7 @@ public class PSGlobalSubjectTest extends TestCase
       didThrow = false;
       try
       {
-         StringBuffer name = new StringBuffer();
+         StringBuilder name = new StringBuilder();
          for (int i = 0; i <= PSSubject.SUBJECT_MAX_NAME_LEN; i++)
             name.append('a');
 
@@ -225,7 +223,7 @@ public class PSGlobalSubjectTest extends TestCase
       }
       assertTrue(didThrow);
 
-      StringBuffer name = new StringBuffer();
+      StringBuilder name = new StringBuilder();
       for (int i = 0; i <= PSSubject.SUBJECT_MAX_NAME_LEN; i++)
          name.append('a');
       didThrow = false;

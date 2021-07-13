@@ -173,7 +173,6 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1066,7 +1065,7 @@ public class PSServer {
          }
       }
       // buildRequestFileURL
-      StringBuffer requestURL = new StringBuffer();
+      StringBuilder requestURL = new StringBuilder();
       requestURL.append( PSServer.makeRequestRoot(null) );
       requestURL.append( "/" );
       requestURL.append( appName );
@@ -2275,9 +2274,9 @@ public class PSServer {
       PSConsole.printInfoMsg("Server",
             IPSServerErrors.REQ_HANDLER_INIT, (Object[])null);
 
-      ms_RequestHandlers      = new Hashtable<String,IPSRequestHandler>();
-      ms_rootedRequestHandlers      = new Hashtable<String,IPSRequestHandler>();
-      ms_requestHandlerTypes = new Hashtable<IPSRequestHandler,List<String>>();
+      ms_RequestHandlers      = new ConcurrentHashMap<String,IPSRequestHandler>();
+      ms_rootedRequestHandlers      = new ConcurrentHashMap<String,IPSRequestHandler>();
+      ms_requestHandlerTypes = new ConcurrentHashMap<IPSRequestHandler,List<String>>();
       IPSRequestHandler handler;
 
       if (ms_srvConfig != null)
@@ -2941,8 +2940,8 @@ public class PSServer {
       if (ms_RequestHandlers != null) {
          Set<IPSRequestHandler> stoppedHandlers =
             new HashSet<IPSRequestHandler>();
-         Hashtable<String, IPSRequestHandler> reqHandlers = 
-            new Hashtable<String, IPSRequestHandler>();
+         ConcurrentHashMap<String, IPSRequestHandler> reqHandlers = 
+            new ConcurrentHashMap<String, IPSRequestHandler>();
          reqHandlers.putAll(ms_RequestHandlers);
          for (Enumeration<IPSRequestHandler> e = reqHandlers.elements();
             e.hasMoreElements(); )
@@ -4384,13 +4383,13 @@ public class PSServer {
    private static int                     ms_WhatsUp              = INITED_NONE;
    private static PSProperties            ms_objectStoreProps     = null;
    private static PSProperties            ms_serverProps          = new PSProperties();
-   static Hashtable<String,IPSRequestHandler> ms_RequestHandlers      = null;
+   static ConcurrentHashMap<String,IPSRequestHandler> ms_RequestHandlers      = null;
 
    /**
     * List of request handlers that will process requests based on the request
     * root of the URL.
     */
-   private static Hashtable<String,IPSRequestHandler> ms_rootedRequestHandlers
+   private static ConcurrentHashMap<String,IPSRequestHandler> ms_rootedRequestHandlers
       = null;
    protected static PSConsole             ms_console              = null;
 
@@ -4469,8 +4468,8 @@ public class PSServer {
     * List of request handlers and what types of request methods they can handle
     * (i.e. GET or POST) - all types should be uppercased.
     */
-   private static Hashtable<IPSRequestHandler,List<String>>
-      ms_requestHandlerTypes = new Hashtable<IPSRequestHandler,List<String>>();
+   private static ConcurrentHashMap<IPSRequestHandler,List<String>>
+      ms_requestHandlerTypes = new ConcurrentHashMap<IPSRequestHandler,List<String>>();
 
 
    /**

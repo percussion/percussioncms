@@ -124,7 +124,7 @@ public class PSHolidays
             null, false);
       if (ir == null)
       {
-         StringBuffer error = new StringBuffer();
+         StringBuilder error = new StringBuilder();
          error
                .append("Catalog of holidays failed, beacause the query resource '");
          error.append(HOLIDAY_CATALOGER);
@@ -139,7 +139,7 @@ public class PSHolidays
          }
          catch (PSInternalRequestCallException e)
          {
-            StringBuffer error = new StringBuffer();
+            StringBuilder error = new StringBuilder();
             error.append("Catalog of holidays failed ");
             error
                   .append("because an error occurred during the internal request: ");

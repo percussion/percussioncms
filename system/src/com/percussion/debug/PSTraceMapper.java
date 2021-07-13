@@ -71,7 +71,7 @@ public class PSTraceMapper extends PSTraceMessage
     */
    protected String getMessageBody(Object source)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       // check the inputs
       Object[] args = (Object[])source;

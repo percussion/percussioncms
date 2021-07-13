@@ -32,18 +32,16 @@ import com.percussion.util.PSIteratorUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import javax.naming.NamingException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * The PSFunctionCall class defines mappings to database functions.
@@ -281,7 +279,7 @@ public class PSFunctionCall
     */
    private String getText(boolean displayText)
    {
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       buffer.append(m_dbFuncName);
       buffer.append("(");
       Iterator it = m_params.iterator();

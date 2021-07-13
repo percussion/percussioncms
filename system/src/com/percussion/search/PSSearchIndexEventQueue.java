@@ -76,7 +76,11 @@ import com.percussion.util.PSStopwatch;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
+import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -88,12 +92,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.jcr.RepositoryException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
 
 /**
  * Persisted queue for events which require reindexing. All events are queued
@@ -1131,7 +1129,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
             if (engine.isTraceEnabled() && m_logger.isInfoEnabled())
             {
-               StringBuffer buf = new StringBuffer();
+               StringBuilder buf = new StringBuilder();
                buf.append("Update index: \n");
                buf.append(PSXmlDocumentBuilder.toString(key.toXml(PSXmlDocumentBuilder.createXmlDocument())));
                buf.append(fragment);
@@ -1332,7 +1330,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
          {
             if (engine.isTraceEnabled() && m_logger.isInfoEnabled())
             {
-               StringBuffer buf = new StringBuffer();
+               StringBuilder buf = new StringBuilder();
                buf.append("delete from index: \n");
                Document doc = PSXmlDocumentBuilder.createXmlDocument();
                buf.append(PSXmlDocumentBuilder.toString(contentType.toXml(doc)));
@@ -1352,7 +1350,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
                if (engine.isTraceEnabled() && m_logger.isInfoEnabled())
                {
-                  StringBuffer buf = new StringBuffer();
+                  StringBuilder buf = new StringBuilder();
                   buf.append("delete from index: \n");
                   Document doc = PSXmlDocumentBuilder.createXmlDocument();
                   buf.append(PSXmlDocumentBuilder.toString(contentType.toXml(doc)));

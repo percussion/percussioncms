@@ -47,6 +47,7 @@ import com.percussion.server.PSServer;
 import com.percussion.util.PSCharSetsConstants;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -57,11 +58,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.SortedSet;
-
-import org.w3c.dom.Document;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -342,7 +341,7 @@ public class PSQueryCacher
 
          default:    // this is XML or TEXT
             // for all requests, we need to get at least the XML key
-            StringBuffer buf = null;
+            StringBuilder buf = null;
             try {
                buf = getKeyBuffer(data);
                addReplacementValuesToKeyBuffer(buf, data, m_keysForXmlDocument);
@@ -703,7 +702,7 @@ public class PSQueryCacher
       }
    }
 
-   private PSCachedEntry getEntryFromCache(Hashtable cache, String key)
+   private PSCachedEntry getEntryFromCache(ConcurrentHashMap cache, String key)
       throws PSCacheEntryAgedException
    {
       PSCachedEntry entry = (PSCachedEntry)cache.get(key);
@@ -712,7 +711,7 @@ public class PSQueryCacher
             // remove the entry from the cache
             PSCachedEntry rmEntry = null;
             synchronized (cache) {
-               // we remove from the hashtable by locking it and
+               // we remove from the ConcurrentHashMap by locking it and
                // verifying a new entry wasn't put in the old entries
                // place during our check of its age
                rmEntry = (PSCachedEntry)cache.remove(key);
@@ -777,7 +776,7 @@ public class PSQueryCacher
    private String getCachedXmlDocumentKey(PSExecutionData data)
       throws com.percussion.data.PSDataExtractionException
    {
-      StringBuffer buf = getKeyBuffer(data);
+      StringBuilder buf = getKeyBuffer(data);
       addReplacementValuesToKeyBuffer(buf, data, m_keysForXmlDocument);
       return buf.toString();
    }
@@ -788,7 +787,7 @@ public class PSQueryCacher
    private String getCachedResultPageKey(PSExecutionData data)
       throws com.percussion.data.PSDataExtractionException
    {
-      StringBuffer buf = getKeyBuffer(data);
+      StringBuilder buf = getKeyBuffer(data);
       addReplacementValuesToKeyBuffer(buf, data, m_keysForXmlDocument);
 
       if (m_keysForResultPage.size() != 0) {
@@ -806,9 +805,9 @@ public class PSQueryCacher
     * request. It stores the request page name in the returned buffer. The
     * caller must add all parameter values.
     */
-   private StringBuffer getKeyBuffer(PSExecutionData data)
+   private StringBuilder getKeyBuffer(PSExecutionData data)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append('[');
       buf.append(data.getRequest().getRequestPage());
       buf.append(']');
@@ -819,7 +818,7 @@ public class PSQueryCacher
     * Append the parameter values to the specified key buffer.
     */
    private void addReplacementValuesToKeyBuffer(
-      StringBuffer buf, PSExecutionData data, java.util.List params)
+      StringBuilder buf, PSExecutionData data, java.util.List params)
       throws com.percussion.data.PSDataExtractionException
    {
       Object o;
@@ -837,7 +836,7 @@ public class PSQueryCacher
     * Add an entry to the specified hash.
     */
    private void addEntryToCache(
-      Hashtable entryHash, String entryKey, PSCachedEntry entry)
+      ConcurrentHashMap entryHash, String entryKey, PSCachedEntry entry)
    {
       /* calculate the size of this entry to see if we've exceeded the
        * max cache size. If so, we need a smart way to move entries out of
@@ -857,7 +856,7 @@ public class PSQueryCacher
             while (iterator.hasNext()) {
                PSCachedEntry rmEntry = (PSCachedEntry)iterator.next();
 
-               /* need to figure out which Hashtable this is in and
+               /* need to figure out which ConcurrentHashMap this is in and
                 * remove it.
                 */
                synchronized (m_xmlCache) {
@@ -1006,8 +1005,8 @@ public class PSQueryCacher
    private int            m_cacheType;
    private int            m_intervalMinutes      = 0;
    private int            m_ageTimeOfDay         = 0;
-   private Hashtable      m_xmlCache            = new Hashtable();
-   private Hashtable      m_pageCache            = new Hashtable();
+   private ConcurrentHashMap      m_xmlCache            = new ConcurrentHashMap();
+   private ConcurrentHashMap      m_pageCache            = new ConcurrentHashMap();
    private SortedSet      m_cacheSortByDate      = new java.util.TreeSet();
 
    private Object         m_cacheSizeSync      = new Object();

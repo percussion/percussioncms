@@ -126,8 +126,8 @@ public class PSSqlHelperTest extends TestCase
       assertTrue(driver + " couldn't parse table from " + qName + ".",
             null != tableName && tableName.equals(expectedTable));
 
-      StringBuffer originBuf = new StringBuffer();
-      StringBuffer catBuf = new StringBuffer();
+      StringBuilder originBuf = new StringBuilder();
+      StringBuilder catBuf = new StringBuilder();
       tableName = PSSqlHelper.parseTableName( driver, qName, originBuf, catBuf);
       assertTrue(driver + " couldn't parse table from " + qName + ".",
             null != tableName && tableName.equals(expectedTable));

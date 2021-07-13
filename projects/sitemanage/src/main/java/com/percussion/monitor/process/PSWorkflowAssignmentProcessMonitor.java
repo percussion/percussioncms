@@ -28,8 +28,8 @@ import com.percussion.monitor.service.PSMonitorService;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
-import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.services.notification.PSNotificationServiceLocator;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -66,7 +66,7 @@ public class PSWorkflowAssignmentProcessMonitor implements IPSNotificationListen
         int folderCount = curFolderCount.get();
         int itemCount = curItemCount.get();
         
-        StringBuffer buf;
+        StringBuilder buf;
         
         if (itemCount > 0 || folderCount <= 0)
         {
@@ -80,9 +80,9 @@ public class PSWorkflowAssignmentProcessMonitor implements IPSNotificationListen
         monitor.setMessage(buf.toString());
     }
 
-    private static StringBuffer getFolderStatusMessage(int folderCount)
+    private static StringBuilder getFolderStatusMessage(int folderCount)
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append(folderCount);
         if (folderCount == 1)
         {
@@ -96,9 +96,9 @@ public class PSWorkflowAssignmentProcessMonitor implements IPSNotificationListen
         return buf;
     }
 
-    private static StringBuffer getItemStatusMessage(int itemCount)
+    private static StringBuilder getItemStatusMessage(int itemCount)
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if (itemCount == 0)
         {

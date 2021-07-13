@@ -33,7 +33,15 @@ import com.percussion.extension.IPSExtension;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.server.PSServer;
+import org.apache.commons.lang.StringUtils;
 
+import javax.naming.CompoundName;
+import javax.naming.Context;
+import javax.naming.InvalidNameException;
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -43,16 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.naming.CompoundName;
-import javax.naming.Context;
-import javax.naming.InvalidNameException;
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.directory.SearchControls;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This class provides utility functions used for JNDI operations.
@@ -594,7 +592,7 @@ public class PSJndiUtils
       if (name == null || name.trim().length() == 0)
          throw new IllegalArgumentException("name may not be null or empty");
 
-      StringBuffer newBuf = new StringBuffer(name.length());
+      StringBuilder newBuf = new StringBuilder(name.length());
       for (int i=0; i < name.length(); i++)
       {
          // see if this is a backslash escaping the next char
@@ -766,7 +764,7 @@ public class PSJndiUtils
       if (filterPattern == null)
          throw new IllegalArgumentException("filterPattern cannot be null");
          
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       if (filterPattern != null)
       {
          buf.append("(|");

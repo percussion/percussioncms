@@ -138,8 +138,8 @@ public class PSFileSystemStatement implements Statement {
          throw new SQLException(e.getMessage());
       }
 
-      PSResultSet result = new PSResultSet(m_results, m_columnNames, m_metaData);
-      return result;
+      return new PSResultSet(m_results, m_columnNames, m_metaData);
+
    }
  
    /**
@@ -895,7 +895,7 @@ public class PSFileSystemStatement implements Statement {
               m_fileColumns[i].add(buf.toString());
               break;
            case FileList.LENGTH:
-              m_fileColumns[i].add(new Long(f.length()));
+              m_fileColumns[i].add(f.length());
               break;
            case FileList.CONTENTS:
            default:

@@ -631,7 +631,7 @@ public class PSMailMessage implements IPSMailErrors
    private String         m_charEncoding = PSCharSets.rxJavaEnc();
 
    // the body can be in one of two formats, a string or an input stream
-   private StringBuffer   m_bodyBuf = new StringBuffer();
+   private StringBuilder   m_bodyBuf = new StringBuilder();
    private InputStream   m_bodyIn = null;
 }
 

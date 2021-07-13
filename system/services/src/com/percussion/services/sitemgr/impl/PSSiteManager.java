@@ -885,7 +885,7 @@ public class PSSiteManager
             (PSLegacyGuid) folderId, rootId, site, processor);
 
       // get the publishing path from 'siteFolderPath'
-      StringBuffer pathBuff = new StringBuffer();
+      StringBuilder pathBuff = new StringBuilder();
       String publishName;
       for (PSLocator f : siteFolderPath)
       {
@@ -1349,7 +1349,7 @@ public class PSSiteManager
          assoc.entrySet())
       {
          PSPair<IPSGuid, String> k = entry.getKey();
-         StringBuffer buffer = new StringBuffer();
+         StringBuilder buffer = new StringBuilder();
          for (IPSGuid g : entry.getValue())
          {
             buffer.append(String.valueOf(g.getUUID()) + ", ");

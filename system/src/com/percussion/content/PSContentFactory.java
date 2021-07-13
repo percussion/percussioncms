@@ -135,7 +135,7 @@ public abstract class PSContentFactory
       String line = r.readLine();
       while (line != null)
       {
-         log.info(line);
+         log.info("{}",line);
          line = r.readLine();
       }
    }
@@ -155,7 +155,6 @@ public abstract class PSContentFactory
     */
    @SuppressWarnings("deprecation")
    public static InputStream bufferStream(InputStream in)
-      throws IOException
    {
       if (in == null)
          throw new IllegalArgumentException("in cannot be null");

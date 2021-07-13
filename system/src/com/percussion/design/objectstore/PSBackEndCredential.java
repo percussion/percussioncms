@@ -462,7 +462,7 @@ public class PSBackEndCredential extends PSComponent
    
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(100);
+      StringBuilder buf = new StringBuilder(100);
         buf.append(m_alias + ": " + m_dataSource);
       
       if (m_comment != null && m_comment.length() > 0)

@@ -24,10 +24,6 @@
 
 package com.percussion.data;
 
-import static com.percussion.util.PSSqlHelper.isMysql;
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
-import static org.apache.commons.lang.StringUtils.isEmpty;
-
 import com.percussion.design.objectstore.IPSBackEndMapping;
 import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.design.objectstore.PSBackEndColumn;
@@ -39,8 +35,12 @@ import com.percussion.error.PSIllegalArgumentException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static com.percussion.util.PSSqlHelper.isMysql;
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 
 
@@ -159,11 +159,11 @@ public class PSSqlUpdateBuilder extends PSSqlBuilder
      * @param logins a list of logins, one per connection index in the values
      * contained within <code>connKeys</code>, must never be <code>null</code>
      * 
-     * @param connKeys a hashtable that associates opaque keys representing
+     * @param connKeys a ConcurrentHashMap that associates opaque keys representing
      * a specific database and server, and indecies into the <code>logins</code>
      * list passed to this method, must never be <code>null</code>
     */
-   PSUpdateStatement generate(java.util.List logins, Hashtable connKeys)
+   PSUpdateStatement generate(java.util.List logins, ConcurrentHashMap connKeys)
       throws PSIllegalArgumentException
    {
      HashMap dtHash = new HashMap();
@@ -185,7 +185,7 @@ public class PSSqlUpdateBuilder extends PSSqlBuilder
     * @param logins a list of logins, one per connection index in the values
     * contained within <code>connKeys</code>, must never be <code>null</code>
     * 
-    * @param connKeys a hashtable that associates opaque keys representing
+    * @param connKeys a ConcurrentHashMap that associates opaque keys representing
     * a specific database and server, and indecies into the <code>logins</code>
     * list passed to this method, must never be <code>null</code>
     *
@@ -195,7 +195,7 @@ public class PSSqlUpdateBuilder extends PSSqlBuilder
     *          one table defined, any argument is invalid or the connection
     *          key is undefined.
     */
-   int validateBuilderConnection(HashMap dtHash, Hashtable connKeys, List logins)
+   int validateBuilderConnection(HashMap dtHash, ConcurrentHashMap connKeys, List logins)
       throws PSIllegalArgumentException
    {
       int size = m_Tables.size();

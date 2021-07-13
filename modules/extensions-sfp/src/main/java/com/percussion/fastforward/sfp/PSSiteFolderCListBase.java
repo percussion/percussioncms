@@ -37,6 +37,11 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,12 +49,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * The base class used for generating Rhythmyx content list XML for all content
@@ -401,7 +400,7 @@ public abstract class PSSiteFolderCListBase
                   fnLst.add(fn);
                   temp = temp.substring(0, temp.lastIndexOf("/"));
                }
-               StringBuffer folderPathBuf = new StringBuffer();
+               StringBuilder folderPathBuf = new StringBuilder();
                for (int i = fnLst.size() - 1; i >= 0; i--)
                {
                   folderPathBuf.append("/");
@@ -659,7 +658,7 @@ public abstract class PSSiteFolderCListBase
       if (m_publishableContentValidValues.indexOf("'") >= 0)
          return m_publishableContentValidValues; // no need to convert
 
-      StringBuffer values = new StringBuffer();
+      StringBuilder values = new StringBuilder();
 
       StringTokenizer tokenizer = new StringTokenizer(
             m_publishableContentValidValues, ",");

@@ -24,6 +24,8 @@
 package com.percussion.webservices.security.impl;
 
 import com.percussion.design.objectstore.PSRole;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -54,8 +56,6 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
@@ -328,7 +328,7 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
       catch (PSErrorResultsException e)
       {
          // collect all error messages into one string
-         StringBuffer message = new StringBuffer();
+         StringBuilder message = new StringBuilder();
          for (Object value : e.getErrors().values())
          {
             if (value != null)

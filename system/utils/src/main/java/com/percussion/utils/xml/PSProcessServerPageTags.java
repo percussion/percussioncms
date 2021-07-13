@@ -24,17 +24,6 @@
 package com.percussion.utils.xml;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
-
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -43,6 +32,15 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class provides all functionality to handle server page code for the
@@ -91,7 +89,7 @@ public class PSProcessServerPageTags extends Object
       while (m_htmlSource.indexOf(m_keyPrefix) != -1)
          m_keyPrefix += counter;
 
-      m_htmlTarget = new StringBuffer(m_htmlSource.length());
+      m_htmlTarget = new StringBuilder(m_htmlSource.length());
 
       m_current = 0;
       m_lastClose = 0;
@@ -121,7 +119,7 @@ public class PSProcessServerPageTags extends Object
     */
    public String postProcess(String xslSource)
    {
-      StringBuffer xslTarget = new StringBuffer(xslSource);
+      StringBuilder xslTarget = new StringBuilder(xslSource);
       Vector<String> topElements = new Vector<String>();
 
       String key = "";
@@ -200,7 +198,7 @@ public class PSProcessServerPageTags extends Object
             return ms_strXslTextBegin + temp + ms_strXslTextEnd;
       }
 
-      StringBuffer escapedBlock = new StringBuffer(codeBlock);
+      StringBuilder escapedBlock = new StringBuilder(codeBlock);
       escapedBlock.replace(0, 1, "&lt;");
       int length = escapedBlock.length();
       escapedBlock.replace(length-1, length, "&gt;");
@@ -525,12 +523,12 @@ public class PSProcessServerPageTags extends Object
     * This is the hash table which will be used to store the removed server
     * page code.
     */
-   private Hashtable m_codeMap = new Hashtable<>();
+   private ConcurrentHashMap m_codeMap = new ConcurrentHashMap<>();
    /**
     * This is the hash table which will be used to store the enable/disable
     * escape information. The keys correspond to the keys in the code map.
     */
-   private Hashtable m_escapeMap = new Hashtable<>();
+   private ConcurrentHashMap m_escapeMap = new ConcurrentHashMap<>();
    /**
     * The key prefix used to mark removed server page code.
     */
@@ -562,7 +560,7 @@ public class PSProcessServerPageTags extends Object
    /**
     * The target HTML string to which we build the result to.
     */
-   private StringBuffer m_htmlTarget = null;
+   private StringBuilder m_htmlTarget = null;
    /**
     * The current index of the state machine.
     */

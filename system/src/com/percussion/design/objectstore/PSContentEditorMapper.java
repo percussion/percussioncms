@@ -1492,7 +1492,7 @@ public class PSContentEditorMapper extends PSComponent
       // see if any shared excludes were not found in an included group
       if (tmpExcludes.size() > 0)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          Iterator excludes = tmpExcludes.iterator();
          if (excludes.hasNext())
             buf.append((String)excludes.next());
@@ -1657,7 +1657,7 @@ public class PSContentEditorMapper extends PSComponent
 
       if(!notFound.isEmpty())
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          excludes = notFound.iterator();
          if (excludes.hasNext())
             buf.append((String)excludes.next());

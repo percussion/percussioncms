@@ -24,8 +24,8 @@
 
 package com.percussion.tablefactory;
 
-import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.collections.PSIteratorUtils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -713,7 +713,7 @@ public class PSJdbcTableMetaData
                // -include them if they are Unique keys, but change their
                //  name to match what the was given in the SQL statement
                //  which created them.
-               StringBuffer nameBuffer = new StringBuffer(name);
+               StringBuilder nameBuffer = new StringBuilder(name);
                if (PSSqlHelper.handleBackingIndex(nameBuffer, md))
                   continue;
                name = nameBuffer.toString(); // update name of index

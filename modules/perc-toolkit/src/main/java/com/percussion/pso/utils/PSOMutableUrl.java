@@ -13,11 +13,11 @@
  */
 package com.percussion.pso.utils;
 
+import com.percussion.server.PSRequestParsingException;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.percussion.server.PSRequestParsingException;
 
 /**
  * A URL that can be modified. Methods for changing the root as well as 
@@ -103,7 +103,7 @@ public class PSOMutableUrl
    @SuppressWarnings("unchecked")
    public String toString()
    {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append(m_base);
       
       char sep = QUERY_SEP; 

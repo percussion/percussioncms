@@ -49,7 +49,7 @@ public class PSXmlEncoder implements Encoder
    {
       if(arg0 != null) {
          String input = (String) arg0;
-         StringBuffer rval = new StringBuffer((int) (input.length() * 1.5));
+         StringBuilder rval = new StringBuilder((int) (input.length() * 1.5));
          for (int i = 0; i < input.length(); i++) {
             char ch = input.charAt(i);
             switch (ch) {

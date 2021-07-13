@@ -178,7 +178,7 @@ public class PSJarFilter
    private static String expand(String line, Map environment)
       throws IOException
    {
-      StringBuffer output = new StringBuffer(line.length());
+      StringBuilder output = new StringBuilder(line.length());
       int len = line.length();
       int lenm1 = len - 1;
 

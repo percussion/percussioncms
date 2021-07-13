@@ -28,12 +28,6 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.io.BufferedReader;
-import java.net.URL;
-import java.util.Hashtable;
-import java.util.Vector;
-
 import org.apache.soap.Body;
 import org.apache.soap.Envelope;
 import org.apache.soap.Header;
@@ -43,6 +37,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
+
+import java.io.BufferedReader;
+import java.net.URL;
+import java.util.Hashtable;
+import java.util.Vector;
 
 
 /**
@@ -201,7 +200,7 @@ public class PSWebServiceAgent
          sessionId.appendChild(value);
          root.appendChild(sessionId);
       }
-      else if (m_user != null & m_password != null)
+      else if (m_user != null && m_password != null)
       {
          Element user = headerDoc.createElement(EL_USER_NAME);
          Text val1 = headerDoc.createTextNode(m_user);
@@ -274,7 +273,6 @@ public class PSWebServiceAgent
     * @return The 1st element of the responsed (or received) envelope body, 
     *    never <code>null</code>.
     *
-    * @throws PSWebServiceException if an error occurs.
     */
    public Element sendEnvelope(Envelope msgEnv, String respElName)
       throws PSCmsException
@@ -426,7 +424,7 @@ public class PSWebServiceAgent
     *
     * @return The URL of the web services.
     *
-    * @throws MalformedURLException if an error occurs.
+    * @throws java.net.MalformedURLException if an error occurs.
     */
    private URL getURL() throws java.net.MalformedURLException
    {
@@ -473,7 +471,7 @@ public class PSWebServiceAgent
    private String m_sessionId = null;
 
    /**
-    * The hashtable of headers to be sent with the request. It may be <code>
+    * The ConcurrentHashMap of headers to be sent with the request. It may be <code>
     * null</code> to indicate no headers to be sent.
     */
    private Hashtable m_headers = null;

@@ -26,17 +26,14 @@ package com.percussion.data;
 
 import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSBackEndTable;
-import com.percussion.design.objectstore.PSServerConfiguration;
-import com.percussion.server.PSServer;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
-
-import javax.naming.NamingException;
 
 /**
  * The PSSqlBuilder class is used to build SQL SELECT statements.
@@ -153,7 +150,7 @@ public abstract class PSSqlBuilder
                 detail = PSConnectionHelper.getConnectionDetail(login);
             DatabaseMetaData meta = conn.getMetaData();
 
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             String catalog = detail.getDatabase();
             boolean addedCatalog = false;
             if ((catalog != null) && (catalog.length() != 0)) {

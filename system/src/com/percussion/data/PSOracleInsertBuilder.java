@@ -29,7 +29,7 @@ import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.error.PSIllegalArgumentException;
 
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -83,7 +83,7 @@ public class PSOracleInsertBuilder extends PSOracleUpdateBuilder
     * @throws PSIllegalArgumentException If there are multiple tables 
     * or a PSDataExtractionException occurs.
     */
-   PSUpdateStatement generate(java.util.List logins, Hashtable connKeys)
+   PSUpdateStatement generate(java.util.List logins, ConcurrentHashMap connKeys)
       throws PSIllegalArgumentException
    {
       HashMap dtHash = new HashMap();

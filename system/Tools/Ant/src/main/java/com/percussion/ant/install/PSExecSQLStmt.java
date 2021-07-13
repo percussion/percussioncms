@@ -478,7 +478,7 @@ public class PSExecSQLStmt extends PSAction
     */
    private String qualifyTableNames(String strStmt, PSJdbcDbmsDef dbmsDef)
    {
-      StringBuffer strBuffer = new StringBuffer();
+      StringBuilder strBuffer = new StringBuilder();
       StringTokenizer stok = new StringTokenizer(strStmt);
 
       while (stok.hasMoreTokens())
@@ -517,7 +517,7 @@ public class PSExecSQLStmt extends PSAction
     */
    private String qualifyViewNames(String strStmt, PSJdbcDbmsDef dbmsDef)
    {
-      StringBuffer strBuffer = new StringBuffer();
+      StringBuilder strBuffer = new StringBuilder();
       StringTokenizer stok = new StringTokenizer(strStmt);
 
       while (stok.hasMoreTokens())

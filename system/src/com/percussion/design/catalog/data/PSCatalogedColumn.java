@@ -150,7 +150,7 @@ public class PSCatalogedColumn
     */
    public String toString()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Column[");
       buf.append(m_name);
       buf.append(" type=");

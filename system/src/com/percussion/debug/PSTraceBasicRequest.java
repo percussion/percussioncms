@@ -24,11 +24,7 @@
 
 package com.percussion.debug;
 
-import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSRequest;
-
-import java.util.HashMap;
-
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -67,7 +63,7 @@ public class PSTraceBasicRequest extends PSTraceMessage
     */
    protected String getMessageBody(Object source)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       PSRequest request = (PSRequest)source;
 
       // add the request type

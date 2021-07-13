@@ -112,8 +112,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         List<Object[]> cats = new ArrayList<>();
         List<PSCriteriaElement> entryCrit = new ArrayList<>();
         List<PSCriteriaElement> propsCrit = new ArrayList<>();
-        StringBuffer Q3 = null;
-        StringBuffer Q4 = null;
+        StringBuilder Q3 = null;
+        StringBuilder Q4 = null;
 
 
         /**
@@ -151,14 +151,14 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
 
 
-        StringBuffer Q4WhereClause = null;
+        StringBuilder Q4WhereClause = null;
         String clauseTemplate = " e.{0} {1} :{2}";
         int paramIndex = 0;
         Map<String, Object> paramValues = new HashMap<String, Object>();
         Map<String, PSCriteriaElement.OPERATION_TYPE> paramOps = new HashMap<String, PSCriteriaElement.OPERATION_TYPE>();
         for (PSCriteriaElement ce : entryCrit) {
             if (Q4WhereClause == null) {
-                Q4WhereClause = new StringBuffer(" WHERE ");
+                Q4WhereClause = new StringBuilder(" WHERE ");
             }else{
                 Q4WhereClause.append(" AND ");
             }
@@ -168,17 +168,17 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             paramOps.put(replParam, ce.getOperationType());
         }
         if(Q4WhereClause != null) {
-            Q4 = new StringBuffer(" select distinct e.id from PSDbMetadataEntry e ");
+            Q4 = new StringBuilder(" select distinct e.id from PSDbMetadataEntry e ");
             Q4.append(Q4WhereClause);
         }
 
-        StringBuffer Q3WhereCaluse = null;
+        StringBuilder Q3WhereCaluse = null;
         clauseTemplate = " lower(p.name) = lower(:{3}) and p.{0} {1} :{2}";
 
         for (PSCriteriaElement ce : propsCrit)
         {
             if (Q3WhereCaluse == null) {
-                Q3WhereCaluse = new StringBuffer("WHERE ( ");
+                Q3WhereCaluse = new StringBuilder("WHERE ( ");
             } else {
                 Q3WhereCaluse.append(" OR ");
             }
@@ -226,21 +226,21 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
             paramOps.put(valueParam, ce.getOperationType());
         }
         if(Q3WhereCaluse != null) {
-            Q3 = new StringBuffer(" select distinct p.entry.id from PSDbMetadataProperty p " );
+            Q3 = new StringBuilder(" select distinct p.entry.id from PSDbMetadataProperty p " );
             Q3.append(Q3WhereCaluse).append(" )");
             if(Q4 != null) {
                 Q3.append(" and p.entry.id in( ").append(Q4).append(" ) ");
             }
         }
 
-        StringBuffer Q2 = new StringBuffer("select distinct p2.entry.id from PSDbMetadataProperty p2 where p2.entry.id in( ");
+        StringBuilder Q2 = new StringBuilder("select distinct p2.entry.id from PSDbMetadataProperty p2 where p2.entry.id in( ");
         if(Q3 != null) {
             Q2.append(Q3).append(" )");
         }else if(Q4 != null){
             Q2.append(Q4).append(" )");
         }
 
-        StringBuffer Q1 = new StringBuffer( "SELECT distinct count(p4.entry.id), p4.name ,p4.stringvalue from PSDbMetadataProperty p4" +
+        StringBuilder Q1 = new StringBuilder( "SELECT distinct count(p4.entry.id), p4.name ,p4.stringvalue from PSDbMetadataProperty p4" +
                 " where p4.entry.id in (").append(Q2).append( " )").append("AND p4.name = 'perc:category'  GROUP BY p4.name, p4.stringvalue  ORDER BY p4.stringvalue");
 
 

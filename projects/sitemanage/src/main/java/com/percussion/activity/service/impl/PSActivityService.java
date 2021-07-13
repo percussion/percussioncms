@@ -562,7 +562,7 @@ public class PSActivityService implements IPSActivityService
     
     private String createJCRQuery(String path, Collection<String> contentTypes)
     {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         if (contentTypes == null || contentTypes.isEmpty())
         {
             buffer.append("nt:base");

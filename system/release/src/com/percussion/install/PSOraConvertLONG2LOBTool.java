@@ -797,7 +797,7 @@ public class PSOraConvertLONG2LOBTool
          FROM "VITALY"."RXLONG_BAK"
          */
 
-         StringBuffer buf = new StringBuffer(512);
+         StringBuilder buf = new StringBuilder(512);
          buf.append("INSERT INTO \"");
          buf.append(m_owner);
          buf.append("\".\"");
@@ -875,7 +875,7 @@ public class PSOraConvertLONG2LOBTool
          FROM "VITALY"."RXLONG"
          */
 
-         StringBuffer buf = new StringBuffer(512);
+         StringBuilder buf = new StringBuilder(512);
          buf.append("INSERT INTO \"");
          buf.append(backupTable.getOwner());
          buf.append("\".\"");
@@ -1010,7 +1010,7 @@ public class PSOraConvertLONG2LOBTool
          if (owner==null || new_table_name==null)
             throw new IllegalArgumentException("owner==null || new_table_name==null");
 
-         StringBuffer buf = new StringBuffer(512);
+         StringBuilder buf = new StringBuilder(512);
          buf.append("CREATE TABLE \"");
          buf.append(owner);
          buf.append("\".\"");
@@ -1511,7 +1511,7 @@ public class PSOraConvertLONG2LOBTool
       if (wrapColumn >= message.length())
          return message; //no need to wrap it
 
-      StringBuffer buf = new StringBuffer(message.length());
+      StringBuilder buf = new StringBuilder(message.length());
       int col = 0;
 
       for (int i = 0; i < message.length(); i++)

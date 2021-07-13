@@ -176,7 +176,7 @@ public class PSURLEncoder
    {
       final char[] chars = data.toCharArray();
       final int len = chars.length;
-      StringBuffer sbuf = new StringBuffer(len + len);
+      StringBuilder sbuf = new StringBuilder(len + len);
       for (int i = 0; i < len; i++)
       {
          final int ch = chars[i];

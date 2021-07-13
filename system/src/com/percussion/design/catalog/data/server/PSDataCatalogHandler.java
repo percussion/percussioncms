@@ -24,7 +24,7 @@
 
 package com.percussion.design.catalog.data.server;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -56,7 +56,7 @@ public class PSDataCatalogHandler
        * some day, convert this to use JDK 1.2 package info instead of
        * hardcoded classes
        */
-      m_catalogHandlers = new Hashtable();
+      m_catalogHandlers = new ConcurrentHashMap();
       addHandler(new PSColumnCatalogHandler());
       addHandler(new PSDatasourceCatalogHandler());
       addHandler(new PSForeignKeyCatalogHandler());

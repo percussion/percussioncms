@@ -66,7 +66,7 @@ public class PSTraceExitProc extends PSTraceMessage
     */
    protected String getMessageBody(java.lang.Object source)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       Object[] args = (Object[])source;
 

@@ -56,7 +56,7 @@ public class PSDeployServerJobControl  implements IPSDeployJobControl
    public int getStatus() 
       throws PSDeployException
    {
-      StringBuffer statusMsg = new StringBuffer();
+      StringBuilder statusMsg = new StringBuilder();
       int status;
 
       try
@@ -131,5 +131,5 @@ public class PSDeployServerJobControl  implements IPSDeployJobControl
     * manager with the last call to the {@link #getStatus() getStatus} method.
     * Gets modified with each call to <code>getStatus()</code> method.
     */
-   private StringBuffer m_statusMsg = null;
+   private StringBuilder m_statusMsg = null;
 }

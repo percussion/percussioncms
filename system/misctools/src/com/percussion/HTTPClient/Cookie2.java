@@ -94,7 +94,7 @@ public class Cookie2 extends Cookie
 
 	if (port_list != null  &&  port_list.length > 0)
 	{
-	    StringBuffer tmp = new StringBuffer();
+	    StringBuilder tmp = new StringBuilder();
 	    tmp.append(port_list[0]);
 	    for (int idx=1; idx<port_list.length; idx++)
 	    {
@@ -483,7 +483,7 @@ public class Cookie2 extends Cookie
 
     protected String toExternalForm()
     {
-	StringBuffer cookie = new StringBuffer();
+	StringBuilder cookie = new StringBuilder();
 
 	if (version == 1)
 	{
@@ -536,7 +536,7 @@ public class Cookie2 extends Cookie
      */
     public String toString()
     {
-	StringBuffer res = new StringBuffer(name.length() + value.length() + 50);
+	StringBuilder res = new StringBuilder(name.length() + value.length() + 50);
 	res.append(name).append('=').append(value);
 
 	if (version == 1)

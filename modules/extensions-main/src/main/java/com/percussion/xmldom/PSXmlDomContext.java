@@ -316,7 +316,7 @@ public class PSXmlDomContext
    public void handleException(Exception e, boolean throwException)
          throws PSExtensionProcessingException
    {
-      StringBuffer estr = new StringBuffer("Unexpected exception in ");
+      StringBuilder estr = new StringBuilder("Unexpected exception in ");
       estr.append(m_function).append("\n");
       estr.append(e.toString()).append("\n");
       estr.append(e.getMessage().toString()).append("\n");

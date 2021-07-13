@@ -23,7 +23,7 @@
  */
 package com.percussion.util;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * An inheritance-aware mapping of classes to objects. The object
@@ -38,7 +38,7 @@ public class PSMapClassToObject
 {
    public PSMapClassToObject()
    {
-      m_hash = new Hashtable();
+      m_hash = new ConcurrentHashMap();
    }
 
    /** 
@@ -151,5 +151,5 @@ public class PSMapClassToObject
       return m_hash.elements();
    }
 
-   private Hashtable m_hash;
+   private ConcurrentHashMap m_hash;
 }

@@ -54,6 +54,10 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.server.PSServerLockException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,11 +68,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Client-side manager for all deployment requests to the Rhythmyx server.
@@ -1573,7 +1572,7 @@ public class PSDeploymentManager
     * <code>null</code>.
     * @throws PSDeployException if there is an error retrieving the status.
     */
-   int getJobStatus(int jobId, StringBuffer messageBuffer)
+   int getJobStatus(int jobId, StringBuilder messageBuffer)
       throws PSDeployException
    {
       if (messageBuffer == null)

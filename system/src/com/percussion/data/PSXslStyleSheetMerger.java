@@ -27,16 +27,12 @@ package com.percussion.data;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.util.PSStopwatch;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.ProcessingInstruction;
+import org.xml.sax.SAXParseException;
 
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Templates;
@@ -46,13 +42,15 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.ProcessingInstruction;
-import org.xml.sax.SAXParseException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSXslStyleSheetMerger class implements XSL support for the
@@ -126,7 +124,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          throw new IllegalArgumentException(
             "The Style Sheet to merge should not be null");
 
-      Hashtable ssCache = null;
+      ConcurrentHashMap ssCache = null;
 
       // see if params are passed
       boolean hasParams = false;
@@ -143,7 +141,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
 
       PSCachedStylesheet cachedSS = null;
       Templates ssTemplate = null;
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
 
       try
       {
@@ -338,7 +336,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       if (listener == null)
          throw new IllegalArgumentException( "ErrorListener may not be null" );
 
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
 
       if (listener.numErrors() > 0)
          errorMsg.append( getErrorMessages( listener.errors() ) );
@@ -364,7 +362,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       if (errors == null)
          throw new IllegalArgumentException("errors may not be null");
 
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
       while(errors.hasNext())
       {
          TransformerException e = (TransformerException)errors.next();
@@ -446,7 +444,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
    private static String getExceptionContextData(Exception e, URL url)
       throws IOException
    {
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
       int errorLine = 0;
 
       if(e instanceof TransformerException)
@@ -487,7 +485,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
     * @throws IOException reading source file in which exception occurred.
     */
    private static void getExceptionContextData(
-      StringBuffer buf, BufferedReader source, int errorLine)
+      StringBuilder buf, BufferedReader source, int errorLine)
       throws IOException
    {
       if (errorLine > 0)

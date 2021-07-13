@@ -165,7 +165,7 @@ public PSNavException(int code, Object[] arrayArgs, Throwable cause){
     * The message buffer for this exception.
     */
    @Deprecated
-   StringBuffer m_msg = new StringBuffer();
+   StringBuilder m_msg = new StringBuilder();
 
 }
 

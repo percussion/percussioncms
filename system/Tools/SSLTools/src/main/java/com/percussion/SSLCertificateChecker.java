@@ -42,7 +42,7 @@ public class SSLCertificateChecker {
     private  String slackChannel;
     private  String slackUserName;
     private  boolean messagePostedFlag = false;
-    private StringBuffer  messageBuffer = null;
+    private StringBuilder  messageBuffer = null;
 
     private static final Logger log = LogManager.getLogger(SSLCertificateChecker.class.getName());
 
@@ -164,7 +164,7 @@ public class SSLCertificateChecker {
 
         log.info("{}",message);
         if(messageBuffer == null) {
-            messageBuffer = new StringBuffer(4000);
+            messageBuffer = new StringBuilder(4000);
             messageBuffer.append(message);
         }else if (messageBuffer.length() < 2000) {
             messageBuffer.append(System.getProperty("line.separator"));

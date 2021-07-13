@@ -560,7 +560,7 @@ public class Cookie implements Serializable
      */
     public String toString()
     {
-	StringBuffer res = new StringBuffer(name.length() + value.length() + 30);
+	StringBuilder res = new StringBuilder(name.length() + value.length() + 30);
 	res.append(name).append('=').append(value);
 	if (expires != null)  res.append("; expires=").append(expires);
 	if (path != null)     res.append("; path=").append(path);
