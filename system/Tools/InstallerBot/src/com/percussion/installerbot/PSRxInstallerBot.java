@@ -23,6 +23,7 @@
  */
 package com.percussion.installerbot;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 
@@ -57,8 +58,7 @@ public class PSRxInstallerBot
    /**
     * Standalone invocation entry point.
     */
-   public static void main(String[] args)
-   {
+   public static void main(String[] args) throws InterruptedException {
       final int result = INSTANCE.run(args);
       INSTANCE.exit(result);
    }
@@ -77,8 +77,7 @@ public class PSRxInstallerBot
     * @param args command-line arguments as received by {@link #main(String[])}.
     * @return value to be returned by the program to OS on exit.
     */
-   public int run(String[] args)
-   {
+   public int run(String[] args) throws InterruptedException {
       if (args.length != EXPECTED_COMMAND_LINE_ARGS_COUNT)
       {
          m_out.println("Unexpected number of arguments. "
@@ -117,8 +116,7 @@ public class PSRxInstallerBot
     * @throws PSConsoleAppDriverException on installation session failure.
     */
    int configureAndRunInstaller(final Properties properties)
-         throws PSConsoleAppDriverException
-   {
+           throws PSConsoleAppDriverException, InterruptedException {
       final String message;
       message = parseConfiguration(properties);
       if (message != null) {
@@ -132,6 +130,7 @@ public class PSRxInstallerBot
    /**
     * Prints exception description to program output. 
     */
+   @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
    private void printExceptionError(final Exception e)
    {
       m_out.println("Installation error");
@@ -146,6 +145,7 @@ public class PSRxInstallerBot
     * @throws FileNotFoundException if file not found.
     * @throws IOException on file reading failure.
     */
+   @SuppressFBWarnings("PATH_TRAVERSAL_IN")
    Properties loadProperties(final String propertiesFileName) throws IOException
    {
       final Properties properties = new Properties();
@@ -197,8 +197,7 @@ public class PSRxInstallerBot
     * Launches and runs installation process. The bot should be configured.
     * @throws PSConsoleAppDriverException on installation failure.
     */
-   void runInstaller() throws PSConsoleAppDriverException
-   {
+   void runInstaller() throws PSConsoleAppDriverException, InterruptedException {
       m_driver.launchApplication(
             getLaunchInstallerCommand(), getInstallerTimeoutInSeconds());
       try {
@@ -268,16 +267,8 @@ public class PSRxInstallerBot
     * it bombs out later.
     * Ideally needs to be further researched.
     */
-   protected void sleepOverExpectJBug()
-   {
-      try
-      {
+   protected void sleepOverExpectJBug() throws InterruptedException {
          Thread.sleep(SHORT_WAIT * MILISECONDS_IN_SEC);
-      }
-      catch (InterruptedException ignore)
-      {
-         ignore.printStackTrace();
-      }
    }
 
    /**
@@ -754,8 +745,8 @@ public class PSRxInstallerBot
       readFastForward(properties, message);
 
       validateBooleanProperty(properties, INSTALL_DB_PUBLISHER_PROP, message);
-      setInstallDbPublisher(Boolean.valueOf(
-            properties.getProperty(INSTALL_DB_PUBLISHER_PROP)).booleanValue());
+      setInstallDbPublisher(Boolean.parseBoolean(
+            properties.getProperty(INSTALL_DB_PUBLISHER_PROP)));
       
       readDeleteExistingInstallation(properties, message);
    }
@@ -778,7 +769,7 @@ public class PSRxInstallerBot
    private Set<String> getMandatoryProperties()
    {
       final Set<String> mandatoryProperties =
-            new HashSet<String>(CONFIGURATION_PROPERTY_NAMES);
+            new HashSet<>(CONFIGURATION_PROPERTY_NAMES);
       mandatoryProperties.remove(DB_DATABASE_PROP);
       if (isUpdateInstallation())
       {

@@ -26,6 +26,8 @@ package com.percussion.install;
 import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSSqlHelper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -33,8 +35,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.w3c.dom.Element;
 
 /**
  * Upgrade plugin that changes the assignment type from Reader to Assignee of 
@@ -88,6 +88,7 @@ public class PSUpgradePluginUpdateWorkflowAssignmentType implements IPSUpgradePl
     * com.percussion.install.IPSUpgradePlugin#process(com.percussion.install
     * .IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, Element elemData)
    {
       logger = module.getLogStream();

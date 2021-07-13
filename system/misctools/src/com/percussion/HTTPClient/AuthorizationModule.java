@@ -34,6 +34,7 @@ import java.util.Hashtable;
  * request returns with an appropriate status (401 or 407) then the
  * necessary info is sought from the AuthenticationInfo class.
  *
+ * @deprecated As of 8.0.0 - use Commons HTTP client instead
  * @version	0.3-3  06/05/2001
  * @author	Ronald Tschalär
  */

@@ -68,7 +68,7 @@ public class PSJexlEvaluator
     * Internal context which is modified after each call to
     * {@link #evaluate(String, JexlExpression)}
     */
-   private Map<String,Object> m_vars =  new HashMap<String,Object>();
+   private Map<String,Object> m_vars =  new HashMap<>();
 
    /**
     * Create an evaluator with no prebound values

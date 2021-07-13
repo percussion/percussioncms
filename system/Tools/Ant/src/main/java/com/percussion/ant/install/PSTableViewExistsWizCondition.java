@@ -26,21 +26,21 @@ package com.percussion.ant.install;
 
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableSchema;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.tools.ant.taskdefs.condition.Condition;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.util.Properties;
-
-import org.apache.tools.ant.taskdefs.condition.Condition;
 
 /**
  * PSTableViewExistsWizCondition is a condition which will return
@@ -93,6 +93,7 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
     * <code>objectName</code> already exists in the database,
     * <code>false</code> otherwise.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    private boolean checkExists()
    {
 

@@ -27,18 +27,25 @@
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
-
-<!-- Import all neccesary packages to send and recieve sql queries and updates.
-Import PS Admin Security-->
 <%
+    String isEnabled = PSServer.getServerProps().getProperty("enableLogTool");
+
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
     String fullrolestr = PSRoleUtilities.getUserRoles();
 
-    if (fullrolestr.contains("Admin") == false)
+    if (!fullrolestr.contains("Admin"))
         response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
                 + "/ui/RxNotAuthorized.jsp"));
 
 %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 
     <title>
@@ -190,7 +197,7 @@ Import PS Admin Security-->
 <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 <script src="/cm/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.js"></script>
 <script>
-    $(document).ready(function () {
+    $(function () {
         var row;
         var rownum;
         $("#DefaultJNDIReplacer").on("click", function (e) {

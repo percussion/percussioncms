@@ -25,13 +25,13 @@ package com.percussion.install;
 
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This plugin is used to update the relationships user defined properties.
@@ -51,6 +51,7 @@ public class PSUpgradePluginRelationshipProperties
     * com.percussion.install.IPSUpgradePlugin#process(com.percussion.install
     * .IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public PSPluginResponse process(IPSUpgradeModule module, Element elemData)
    {

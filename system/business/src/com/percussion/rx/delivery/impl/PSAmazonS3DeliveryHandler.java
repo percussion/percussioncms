@@ -39,6 +39,7 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.util.Base64;
+import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
@@ -48,7 +49,6 @@ import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -62,7 +62,11 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.ws.rs.client.ClientBuilder.newClient;
@@ -190,32 +194,33 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
                 jobTransferManagers.put(jobId, tm);
             }
             if (item.getFile() != null) {
-                String md5CheckSum = "";
+                String checksum = "";
                 try (InputStream is = new FileInputStream(item.getFile())) {
-                    md5CheckSum = calculateMD5Checksum(is);
-                    //reading server.properties to check if MD5 check needs to be done or not, default is false
-                    if (PSServer.getServerProps().getProperty("optimizePublishWithMD5Check", "false").equalsIgnoreCase("true")) {
-                        boolean MD5ValueChanged = true;
-                        ms_log.debug("local md5CheckSum value ->" + md5CheckSum);
+                    checksum = calculateChecksum(is);
+                    //reading server.properties to check if checksum check needs to be done or not, default is false
+                    if (PSServer.getServerProps().getProperty("optimizePublishWithChecksum", "false").equalsIgnoreCase("true")) {
+                        boolean checksumValueChanged = true;
+                        ms_log.debug("local CheckSum value -> {}" , checksum);
                         try {
                             GetObjectMetadataRequest mreq = new GetObjectMetadataRequest(bucketName, key);
                             ObjectMetadata retrieved_metadata = s3Client.getObjectMetadata(mreq);
                             if (retrieved_metadata != null) {
-                                String s3MD5CheckSum = retrieved_metadata.getUserMetaDataOf("Perc-Content-MD5");
-                                ms_log.debug("S3 md5  property -> " + s3MD5CheckSum);
-                                if (md5CheckSum != null && md5CheckSum.equalsIgnoreCase(s3MD5CheckSum)) {
-                                    MD5ValueChanged = false;
+                                String s3CheckSum = retrieved_metadata.getUserMetaDataOf("Perc-Content-Checksum");
+                                ms_log.debug("S3 Checksum  property -> {}" , s3CheckSum);
+                                if (checksum != null && checksum.equalsIgnoreCase(s3CheckSum)) {
+                                    checksumValueChanged = false;
                                 }
                             }
 
                         } catch (Exception e) {
-                            ms_log.error("this bucket does not exist on amazon s3 server " + e);
+                            ms_log.error("this bucket does not exist on amazon s3 server {}" ,e.getMessage());
+                            ms_log.debug(e);
                         }
-                        if (MD5ValueChanged) {
-                            copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), md5CheckSum);
+                        if (checksumValueChanged) {
+                            copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), checksum);
                         }
                     } else {
-                        copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), md5CheckSum);
+                        copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), checksum);
                     }
                 }
             }else{
@@ -256,22 +261,23 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         }
     }
     /**
-     * calculate the md5 checksum of provided InputStream
+     * calculate the checksum of provided InputStream
      *
      * @param originalInputStream the result data stream, should not be null. The input stream should
      * be closed by the caller.
      *
-     * @return return the md5 value
+     * @return return the checksum value
      */
 
-    public String calculateMD5Checksum(InputStream originalInputStream)
+    public String calculateChecksum(InputStream originalInputStream)
     {
         String result="";
         try {
             byte[] byteArray = IOUtils.toByteArray(originalInputStream);
-            result = Base64.encodeAsString(DigestUtils.md5(byteArray));
+            result = Base64.encodeAsString(DigestUtils.sha3_256(byteArray));
         }catch(Exception e){
-            ms_log.error("Exception occurred while calculateMD5Checksum -- > "+e);
+            ms_log.error("Exception occurred while calculateChecksum -- > {}", e.getMessage());
+            ms_log.debug(e);
         }
         return result;
     }
@@ -293,14 +299,14 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 
     }
 
-    private void copyToAmazonDirect(TransferManager tm, String bucketName, String key, File file, String mimeType, long contentLength,String md5CheckSum) throws IOException, InterruptedException {
+    private void copyToAmazonDirect(TransferManager tm, String bucketName, String key, File file, String mimeType, long contentLength,String checksum) throws IOException, InterruptedException {
 
         ObjectMetadata metadata = new ObjectMetadata();
         try(InputStream fileInputStream = new FileInputStream(file)){
             metadata.setContentType(mimeType);
             metadata.setContentLength(contentLength);
             metadata.setCacheControl("max-age=20");
-            metadata.addUserMetadata("Perc-Content-MD5", md5CheckSum);
+            metadata.addUserMetadata("Perc-Content-Checksum", checksum);
             Upload myUpload = tm.upload(new PutObjectRequest(bucketName, key, fileInputStream, metadata));
             myUpload.waitForCompletion();
         }
@@ -309,7 +315,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 
     public static boolean isEC2Instance(){
         if(isEC2Instance != null){
-            return isEC2Instance.booleanValue();
+            return isEC2Instance;
         }
         try {
             Client client = newClient();

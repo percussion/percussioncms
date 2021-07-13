@@ -27,13 +27,20 @@ package com.percussion.ant.install;
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
 import com.percussion.install.RxInstallerProperties;
-import com.percussion.tablefactory.*;
-import com.percussion.util.PSProperties;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import com.percussion.tablefactory.PSJdbcDataTypeMap;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcTableData;
+import com.percussion.tablefactory.PSJdbcTableDataCollection;
+import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
+import com.percussion.util.PSProperties;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.tools.ant.BuildException;
 import org.w3c.dom.Document;
 
@@ -42,7 +49,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Iterator;
 
 
@@ -83,6 +89,7 @@ import java.util.Iterator;
 public class PSTableAction extends PSAction
 {
    // see base class
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute()
    {

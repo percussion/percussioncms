@@ -29,6 +29,7 @@
     <Set name="contextPath">/</Set>
     <Set name="war"><SystemProperty name="jetty.base"/>/webapps/Rhythmyx
     </Set>
+
     <Set name="baseResource">
         <!-- Support multi static resource paths -->
         <New class="org.eclipse.jetty.util.resource.ResourceCollection">
@@ -53,9 +54,12 @@
     <Get name="sessionHandler">
         <Get name="sessionCookieConfig">
             <Set name="httpOnly" type="boolean">true</Set>
+            <!-- When configuring https set this to true -->
+            <Set name="secure" type="boolean">false</Set>
+            <!-- When configuring https set this to __SAME_SITE_NONE__ -->
+            <Set name="comment" type="java.lang.String">__SAME_SITE_STRICT__</Set>
         </Get>
     </Get>
-
     <Get name="errorHandler">
         <Call name="addErrorPage">
             <Arg type="int">400</Arg>

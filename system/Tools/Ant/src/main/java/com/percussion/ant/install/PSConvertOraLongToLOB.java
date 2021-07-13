@@ -24,11 +24,12 @@
 
 package com.percussion.ant.install;
 
-import com.percussion.install.PSOraConvertLONG2LOBTool;
-import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.install.PSLogger;
+import com.percussion.install.PSOraConvertLONG2LOBTool;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.utils.jdbc.PSJdbcUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -70,6 +71,7 @@ import java.util.Properties;
 public class PSConvertOraLongToLOB extends PSAction
 {
    // see base class
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute()
    {
@@ -90,6 +92,7 @@ public class PSConvertOraLongToLOB extends PSAction
          in = new FileInputStream(f);
          Properties props = new Properties();
          props.load(in);
+
          props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
          PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
 

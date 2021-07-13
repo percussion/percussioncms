@@ -129,7 +129,7 @@
                 !($.datepicker._inDialog && $.blockUI)) ||
                 ($target.hasClass($.datepicker.markerClassName) && $.datepicker._curInst != inst))
                 $('html').on("click",function (evt){
-                    $.datepicker._hideDatepicker();
+                    $.datepicker._hideDatepicker(inst);
                 })
         }
         return;
@@ -169,10 +169,9 @@
         _hideDatepickerOrg.apply(this,[input, duration]);
 
         // Hide the timepicker if enabled
-        if (showTime) {
+        if (showTime && this._datepickerShowing === false) {
             $.timepicker.hide();
         }
-
     };
 
     /**

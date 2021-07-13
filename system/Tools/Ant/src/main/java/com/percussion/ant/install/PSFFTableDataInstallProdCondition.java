@@ -24,22 +24,20 @@
 
 package com.percussion.ant.install;
 
+import com.percussion.install.RxFileManager;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.install.RxLogTables;
+import com.percussion.util.PSSqlHelper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.tools.ant.taskdefs.condition.Condition;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
-
-import org.apache.tools.ant.taskdefs.condition.Condition;
-
-import com.percussion.install.RxFileManager;
-import com.percussion.tablefactory.install.RxLogTables;
-import com.percussion.tablefactory.PSJdbcDbmsDef;
-import com.percussion.util.PSSqlHelper;
 
 /**
  * If FastForward tables have been installed with data, then this condition
@@ -75,6 +73,7 @@ implements Condition
    /* (non-Javadoc)
     * @see org.apache.tools.ant.taskdefs.condition.Condition#eval()
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public boolean eval()
    {
       boolean isFFTableDataInstall = false;

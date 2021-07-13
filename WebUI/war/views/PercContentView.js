@@ -86,11 +86,11 @@
                     else if(model.isTemplate() || model.isLandingPage())
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") || (model.isPage() && model.isLandingPage() && wDef === "percTitle")) {
+                        if((model.isTemplate() && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") || (model.isPage() && model.isLandingPage() && wDef === "percTitle")) {
                             imgSrc = '/cm/images/icons/editor/editInactive';
                         }
                     }
-                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
+                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                     {
                         imgSrc += "Middle";
                     }
@@ -108,7 +108,7 @@
                     if(model.getWidgetContentTypes(elem.attr('widgetid')) !== "" )
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") ||
+                        if((model.isTemplate() && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") ||
                             (model.isPage() && model.isLandingPage() && wDef === "percTitle"))
                         {
                             return;
@@ -135,7 +135,7 @@
                         var assetInfo = model.getAssetDropCriteria()[elem.attr('widgetid')];
                         var assetId = assetInfo && !assetInfo.locked?elem.attr('assetid'):"";
                         var wDef = elem.attr('widgetdefid');
-                        if(assetId && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
+                        if(assetId && typeof model.getWidgetPrefs(wDef) !== 'undefined'&& model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                         {
                             imgSrc = '/cm/images/icons/editor/promote';
                         }

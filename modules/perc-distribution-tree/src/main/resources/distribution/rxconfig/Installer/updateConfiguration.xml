@@ -103,7 +103,7 @@
             <entry key="importPageMax" default="-1"/>
             <entry key="importTimeOut" default="30"/>
             <entry key="assignmentTypeCalculationFilterCommunityRoles" default="false"/>
-            <entry key="loginAutoComplete" default="on"/>
+            <entry key="loginAutoComplete" default="off"/>
             <entry key="sendErrorStackToClient" default="false"/>
             <entry key="disableCrossSiteRequestForgeryCheck" default="false"/>
             <entry key="clientSessionWarning" default="5"/>
@@ -116,9 +116,14 @@
             <entry key="proxyPort" default="9992"/>
             <entry key="enablePagination" default="false"/>
             <entry key="auditLogConfigurationFile" default="perc-auditlog.properties"/>
-            <entry key="enableAuditLogging" default="false"/>
-            <entry key="optimizePublishWithMD5Check" default="false"/>
+            <entry key="enableAuditLogging" default="true"/>
+            <entry key="optimizePublishWithChecksum" default="false"/>
             <entry key="allowPurgeRevisionsScheduledTask" value="true" default="true"/>
+            <entry key="enableSQLTool" default="false"/>
+            <entry key="enableJCRTool" default="false"/>
+            <entry key="enableLogTool" default="false"/>
+            <entry key="sameSiteCookieMode" default="Strict"/>
+
         </propertyfile>
 
 
