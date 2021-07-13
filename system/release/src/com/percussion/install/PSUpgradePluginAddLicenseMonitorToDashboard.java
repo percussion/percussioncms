@@ -24,7 +24,10 @@
 package com.percussion.install;
 
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
+import javax.sql.rowset.serial.SerialClob;
 import java.io.PrintStream;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -35,10 +38,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.sql.rowset.serial.SerialClob;
-
-import org.w3c.dom.Element;
 
 /**
  * Adds the License Monitor gadget to the Dashboard of each Admin user
@@ -71,6 +70,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
     * com.percussion.install.IPSUpgradePlugin#process(com.percussion.install
     * .IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, @SuppressWarnings("unused") Element elemData)
    {
       logger = module.getLogStream();

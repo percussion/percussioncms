@@ -26,6 +26,8 @@ package com.percussion.install;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.util.PSSQLStatement;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,8 +36,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-
-import org.w3c.dom.Element;
 
 /**
  * While upgrading the community views related data from RXSYSCOMPONENTRELATIONS
@@ -60,6 +60,7 @@ public class PSUpgradePluginCommunityViewRelation implements IPSUpgradePlugin
     * @param elemData data element of plugin.
     * @return <code>null</code>.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule config, Element elemData)
    {
       config.getLogStream().println(

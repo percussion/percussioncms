@@ -30,7 +30,10 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang.StringUtils;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -40,10 +43,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This class wraps the backend connection functionality required for backend
@@ -142,6 +141,7 @@ public class PSBackEndConnection
     * @return all connection properties with the property name as
     *    key and the description as property value, never <code>null</code>.
     */
+   @SuppressFBWarnings({"HARD_CODE_PASSWORD", "HARD_CODE_PASSWORD"})
    public static Properties getConnectionProperties()
    {
       Properties props = new Properties();

@@ -25,6 +25,8 @@ package com.percussion.install;
 
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSSqlHelper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -32,8 +34,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.w3c.dom.Element;
 
 /**
  * Adds the default Display Format columns to be used by List View services (uiService)
@@ -56,6 +56,7 @@ public class PSUpgradePluginAddDefaultDisplayFormatValues implements IPSUpgradeP
    /* (non-Javadoc)
     * @see com.percussion.install.IPSUpgradePlugin#process(com.percussion.install.IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, @SuppressWarnings("unused") Element elemData)
    {
       logger = module.getLogStream();

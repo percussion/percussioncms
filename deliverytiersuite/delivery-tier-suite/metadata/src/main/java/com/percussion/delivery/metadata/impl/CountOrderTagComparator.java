@@ -51,7 +51,7 @@ public class CountOrderTagComparator implements Comparator<JSONObject>
         catch (JSONException e)
         {
             log.error(e.getMessage());
-            log.debug(e);
+            log.debug(e.getMessage(), e);
         }
         return returnCompare;
     }

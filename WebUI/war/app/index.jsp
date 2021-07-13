@@ -287,10 +287,7 @@
 
     private void setCookie(HttpServletResponse response, String cookieName, String cookieValue)
     {
-        //System.out.println("[dispatcher.jsp] set cookie: " + cookieName + " = " + cookieValue);
-
-        Cookie cookie = new Cookie(cookieName, cookieValue);
-        response.addCookie(cookie);
+        response.addHeader("Set-Cookie", cookieName + "=" + cookieValue + "; SameSite=strict");
     }
 
 

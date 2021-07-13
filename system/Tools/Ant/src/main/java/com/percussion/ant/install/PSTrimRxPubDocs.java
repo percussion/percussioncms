@@ -25,18 +25,18 @@
 package com.percussion.ant.install;
 
 import com.percussion.install.IPSUpgradeModule;
-import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.install.PSLogger;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.util.PSProperties;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 
 /**
@@ -71,6 +71,7 @@ import java.sql.Statement;
 public class PSTrimRxPubDocs extends PSAction
 {
    // see base class
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute()
    {

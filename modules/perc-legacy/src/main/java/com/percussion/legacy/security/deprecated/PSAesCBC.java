@@ -25,12 +25,15 @@
 package com.percussion.legacy.security.deprecated;
 
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
+@SuppressFBWarnings("CIPHER_INTEGRITY")
 @Deprecated
 public class PSAesCBC
 {
@@ -60,6 +63,8 @@ public class PSAesCBC
      * @return The resultant String of encrypted text
      * @throws Exception
      */
+    //Suppressing warnings as the class is deprecated.
+    @SuppressFBWarnings({"PADDING_ORACLE", "CIPHER_INTEGRITY", "STATIC_IV"})
     @Deprecated
     public String encrypt(String plainText, String encryptionKey)
             throws Exception {
@@ -92,6 +97,7 @@ public class PSAesCBC
      * @return The resultant String of decrypted and decoded text.
      * @throws Exception
      */
+    @SuppressFBWarnings("PADDING_ORACLE")
     @Deprecated
     public String decrypt(String secretText, String encryptionKey)
             throws Exception {

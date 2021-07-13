@@ -287,7 +287,7 @@
         $.PercContentPreSubmitHandlers.clearHandlers();
 
         // Bind the frame load to execute different methods based on whether the frame is loaded initially or through form submit.
-        $("#edit-widget-content-frame").load(function()
+        $("#edit-widget-content-frame").on("load",function()
         {
             if(initialized == false){
                 initialized = true;

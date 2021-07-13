@@ -1,43 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" 
-    import="com.percussion.services.contentmgr.IPSContentMgr"
-    import="com.percussion.services.contentmgr.PSContentMgrLocator"
+    import="javax.jcr.query.Query"
+    import="javax.jcr.query.QueryResult"
+    import="javax.jcr.query.RowIterator"
+    import="javax.jcr.query.Row"
+    import="javax.jcr.Value"
+    import="com.percussion.services.contentmgr.IPSContentMgr, com.percussion.services.contentmgr.PSContentMgrLocator"
+    import="java.util.Map, java.util.HashMap"
     import="org.jsoup.Jsoup"
     import="org.jsoup.safety.Whitelist"
     import="org.owasp.encoder.Encode"
-    import="javax.jcr.Value, javax.jcr.query.Query"
-    import="javax.jcr.query.QueryResult, javax.jcr.query.Row"
-    import="javax.jcr.query.RowIterator"
-	import="java.util.HashMap"
-	import="java.util.Map"
-    
+	import="com.percussion.server.PSServer"
+	import="com.percussion.services.utils.jspel.*"
     %>
-<%--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  --%>
+	<%
+String fullrolestr = PSRoleUtilities.getUserRoles();
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+String isEnabled = PSServer.getServerProps().getProperty("enableJCRTool");
+
+if(isEnabled == null)
+   isEnabled="false";
+
+if(isEnabled.equalsIgnoreCase("false")){
+   	response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+   	      	+ "/ui/RxNotAuthorized.jsp"));
+}
+
+if (!fullrolestr.contains("Admin"))
+   	response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+      	+ "/ui/RxNotAuthorized.jsp"));
+
+%>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JCR Query Debugger</title>
@@ -66,7 +61,8 @@ Parameters
          
          %>
       
-<table title="Query Parameters" border="1"> 
+<table title="Query Parameters" style="border-width:1px;">
+   <caption>Query Parameters</caption>
 <thead>
 <tr><th>Name</th><th>Value</th></tr>
 </thead>

@@ -77,6 +77,7 @@ import com.percussion.extension.PSDatabaseFunctionManager;
 import com.percussion.extension.PSExtensionManager;
 import com.percussion.i18n.PSTmxResourceBundle;
 import com.percussion.install.InstallUtil;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.log.PSLogHandler;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerStop;
@@ -88,22 +89,22 @@ import com.percussion.search.PSSearchAdmin;
 import com.percussion.search.PSSearchEngine;
 import com.percussion.search.PSSearchException;
 import com.percussion.search.PSSearchIndexEventQueue;
+import com.percussion.security.IPSDecryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
 import com.percussion.security.PSAclHandler;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptionKeyFactory;
+import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSEntry;
 import com.percussion.security.PSRoleManager;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
-import com.percussion.security.IPSDecryptor;
-import com.percussion.security.IPSKey;
-import com.percussion.security.IPSSecretKey;
-import com.percussion.security.PSEncryptionKeyFactory;
 import com.percussion.server.cache.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.content.PSFormContentParser;
@@ -128,14 +129,14 @@ import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.serialization.PSObjectSerializer;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.log4j.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -682,13 +683,14 @@ public class PSServer {
       }
    }
 
+   @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
    public static String stackToString(Throwable t)
    {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
       t.printStackTrace(pw);
-      String sStackTrace = t.getMessage() + " Stack=:/n"+sw.toString(); // stack trace as a string
-      return sStackTrace;
+      return  t.getMessage() + " Stack=:/n"+ sw; // stack trace as a string
+
    }
 
    /**

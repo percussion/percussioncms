@@ -104,11 +104,7 @@ public class ActionMenuResource {
     @POST
     @ApiOperation("Accepts an object with an array of contentid's and assignment types and returns the allowed menus")
     public ActionMenuList getAllowedTransitions(AllowedWorkflowTransitionsRequest request){
-        ActionMenuList ret = null;
-
-
-
-        return ret;
+        return null;
     }
 
 
