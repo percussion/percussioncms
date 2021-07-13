@@ -26,7 +26,10 @@ package com.percussion.security;
 import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSProvider;
 import com.percussion.design.objectstore.PSSubject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.security.auth.callback.CallbackHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,8 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import javax.security.auth.callback.CallbackHandler;
-
 /**
  * The PSBackEndTableProvider class uses a JDBC (back-end) table as a user
  * directory. The user's name and password are stored in the table, which are
@@ -45,6 +46,9 @@ import javax.security.auth.callback.CallbackHandler;
  */
 public class PSBackEndTableProvider extends PSSecurityProvider
 {
+
+   private static final Logger log = LogManager.getLogger(PSBackEndTableProvider.class);
+
    /**
     * Construct an instance of this provider.  If a password filter class
     *    is specified in the properties, then it is assumed it will be 
@@ -122,11 +126,48 @@ public class PSBackEndTableProvider extends PSSecurityProvider
          // check that the password matches
          IPSPasswordFilter filter = m_backendConnection.getPasswordFilter();
          String encodedPw  = pw;
-         if (filter != null)
-            encodedPw = filter.encrypt(pw).toString();
-         if (!encodedPw.equals(password))
-            throw new PSAuthenticationFailedException(
-               SP_NAME, m_spInstance, uid);
+         boolean authenticationValid = false;
+         if (filter != null) {
+            authenticationValid = PSPasswordHandler.checkHashedPassword(pw,password);
+            if(!authenticationValid){
+               //Check if it is encrypted with the legacy algorithm
+               encodedPw = filter.legacyEncrypt(pw).toString();
+               if (!encodedPw.equals(password)){
+                  authenticationValid = false;
+               }else{
+                  authenticationValid = true;
+
+                  log.info("Security Update: Re-encrypting password for database user: {} from legacy algorithm {} to current algorithm {}",
+                          uid,
+                          filter.getLegacyAlgorithm(),
+                          filter.getAlgorithm());
+
+                  //The password needs re-encrypted with the filters new algorithm.
+                  m_backendConnection.updateUserPassword(uid,filter.encrypt(password));
+               }
+            }
+         }
+
+
+         if (!authenticationValid) {
+            //Clear text password
+            if (!pw.equals(password)) {
+               throw new PSAuthenticationFailedException(
+                       SP_NAME, m_spInstance, uid);
+            }else{
+               authenticationValid = true;
+
+               if(filter != null) {
+                  log.info("Security Update: Re-encrypting password for database user: {} from legacy algorithm {} to current algorithm {}",
+                          uid,
+                          filter.getLegacyAlgorithm(),
+                          filter.getAlgorithm());
+
+                  //The password needs re-encrypted with the filters new algorithm.
+                  m_backendConnection.updateUserPassword(uid, filter.encrypt(password));
+               }
+            }
+         }
 
          // get user attributes
          PSSubject subject = m_dirCataloger.getAttributes(uid, null);
@@ -138,7 +179,7 @@ public class PSBackEndTableProvider extends PSSecurityProvider
          return new PSUserEntry(uid, 0, null, attributeValues, PSUserEntry
             .createSignature(uid, pw));
          }
-      catch (SQLException e)
+      catch (SQLException | PSEncryptionException e)
          {
          throw new PSAuthenticationFailedException(
             SP_NAME, m_spInstance, uid, e.toString());
