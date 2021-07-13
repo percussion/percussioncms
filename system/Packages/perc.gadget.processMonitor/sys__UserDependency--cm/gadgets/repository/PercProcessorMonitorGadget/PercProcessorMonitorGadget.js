@@ -28,7 +28,7 @@
      * Renders the process monitor status. This is a common code for both gadget and popup dialog.
      */
     $.renderProcessMonitor = function(percJQuery, isGadget){
-        $("head").append(" <link href=\"/cm/css/FontAwesome/css/font-awesome.min.css\" rel=\"stylesheet\" type=\"text/css\" />").append("<link href=\"/cm/gadgets/repository/PercProcessorMonitorGadget/PercProcessorMonitorGadget.css\" rel=\"stylesheet\" type=\"text/css\" />");
+        $("head").append(" <link href=\"/cm/css/fontawesome/css/all.css\" rel=\"stylesheet\" type=\"text/css\" />").append("<link href=\"/cm/gadgets/repository/PercProcessorMonitorGadget/PercProcessorMonitorGadget.css\" rel=\"stylesheet\" type=\"text/css\" />");
         $("body").empty();
         var initialHtml = "<div id=\"perc-process-monitor-gadget\">" +
             "<div id=\"perc-process-monitor-actions\"><span id=\"perc-process-monitor-status-refresh\" title=\"" + I18N.message("perc.ui.gadgets.processmonitor@Refresh Background Process") + "\">&nbsp;</span><span id=\"perc-process-monitor-popout\"><i " + "class=\"icon-external-link\"></i></span></div>" +
