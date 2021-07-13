@@ -644,7 +644,7 @@ public class PSProcessDaemon extends Thread
       try
       {
          ms_logger.info(
-            "Started Rhythmyx processor daemon, listening on port " + m_port);
+            "Started Rhythmyx processor daemon, listening on port {}" , m_port);
          serverSock = new ServerSocket(m_port);
          serverSock.setSoTimeout(5000);
          

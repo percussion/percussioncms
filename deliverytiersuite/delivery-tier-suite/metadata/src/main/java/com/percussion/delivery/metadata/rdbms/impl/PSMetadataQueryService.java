@@ -28,7 +28,6 @@ import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.data.PSMetadataQuery;
 import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
 import com.percussion.delivery.metadata.error.PSMalformedMetadataQueryException;
-import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
 import com.percussion.delivery.metadata.impl.PSMetadataQueryServiceHelper;
 import com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
@@ -38,18 +37,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.internal.SessionImpl;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.xml.bind.DatatypeConverter;
 import java.sql.Connection;
@@ -250,12 +245,12 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
 
         String hql = Q1.toString();
-        log.debug(hql.toString());
+        log.debug("{}",hql);
 
         try(Session session = getSession()){
 
             Query hq = session.createQuery(hql);
-            log.debug(hq.toString());
+            log.debug("{}",hq);
             for (String key : paramValues.keySet())
             {
                 Object value = paramValues.get(key);
