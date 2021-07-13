@@ -72,9 +72,8 @@ import java.util.Set;
 /**
  * Core relationship effect processing is performed by this class. This class
  * is typically instantiated by any command handler or processor that needs 
- * processing relationship effects, for example, {@link com.percussion.cms.
- * objectstore.server.PSRelationshipDbProcessor}, {@link com.percussion.cms.
- * handlers.PSWorkflowCommandHandler}. This class is not thread safe and hence
+ * processing relationship effects, for example, {@link com.percussion.cms.objectstore.server.PSRelationshipDbProcessor},
+ * {@link com.percussion.cms.handlers.PSWorkflowCommandHandler}. This class is not thread safe and hence
  * each thread must instantiate a new object of this class.
  */
 public class PSRelationshipEffectProcessor

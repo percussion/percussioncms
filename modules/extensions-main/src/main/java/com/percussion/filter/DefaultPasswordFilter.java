@@ -25,17 +25,19 @@ package com.percussion.filter;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.security.IPSPasswordFilter;
-
-import java.io.File;
-
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSPasswordHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
+
 /**
  *    This class will use a default encrypting scheme to
- *    encrypt passwords for various Rhythmyx security providers.
+ *    encrypt passwords for various Percussion security providers.
  */
 public class DefaultPasswordFilter implements IPSPasswordFilter
 {
@@ -46,9 +48,8 @@ public class DefaultPasswordFilter implements IPSPasswordFilter
    {
       DefaultPasswordFilter filter = new DefaultPasswordFilter();
 
-      for (int i = 0; i < args.length; i++)
-      {
-         System.out.println(args[i]+"-->"+filter.encrypt(args[i]));
+      for (String arg : args) {
+         log.info("{} --> {}" ,arg , filter.encrypt(arg));
       }
    }
 
@@ -74,8 +75,16 @@ public class DefaultPasswordFilter implements IPSPasswordFilter
       {
          return StringUtils.EMPTY; 
       }
-     return DigestUtils.shaHex(password.trim());
+      try {
+         return PSPasswordHandler.getHashedPassword(password.trim());
+      } catch (PSEncryptionException e) {
+         throw new IllegalArgumentException(e);
+      }
+   }
 
+   @Override
+   public String getAlgorithm() {
+      return PSPasswordHandler.ALGORITHM;
    }
 
    public void init(IPSExtensionDef def, File f)
@@ -83,4 +92,28 @@ public class DefaultPasswordFilter implements IPSPasswordFilter
    }
 
 
+   /***
+    * Will encrypt the password using the hashing / encryption
+    * routine used in the previous version of the software.
+    *
+    * This is to allow Security Providers to re-encrypt passwords
+    * on login after a security update.
+    *
+    * @param password
+    * @return
+    */
+   @Override
+   @Deprecated
+   public String legacyEncrypt(String password) {
+      if(StringUtils.isBlank(password))
+      {
+         return StringUtils.EMPTY;
+      }
+      return DigestUtils.shaHex(password.trim());
+   }
+
+   @Override
+   public String getLegacyAlgorithm() {
+      return "SHA-1";
+   }
 }

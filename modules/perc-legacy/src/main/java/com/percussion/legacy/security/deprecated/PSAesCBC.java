@@ -30,6 +30,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -75,7 +76,7 @@ public class PSAesCBC
         
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
 
-        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("ISO-8859-1"),
+        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes(StandardCharsets.ISO_8859_1),
                 "AES");
 
         cipher.init(Cipher.ENCRYPT_MODE, key,
@@ -106,17 +107,17 @@ public class PSAesCBC
         if(isBlank(encryptionKey))
             encryptionKey = "";
         
-        final byte[] cipherText = secretText.getBytes("ISO-8859-1");
+        final byte[] cipherText = secretText.getBytes(StandardCharsets.ISO_8859_1);
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
 
-        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("ISO-8859-1"),
+        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes(StandardCharsets.ISO_8859_1),
                 "AES");
 
         cipher.init(Cipher.DECRYPT_MODE, key,
                 new IvParameterSpec(InitialVector));
 
-        return new String(cipher.doFinal(cipherText),"ISO-8859-1");
+        return new String(cipher.doFinal(cipherText), StandardCharsets.ISO_8859_1);
     }
 
 }
