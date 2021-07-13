@@ -570,7 +570,7 @@
                              if(self.val() == "none")
                                 $("input[id='perc_ga_apikey_" + site + "']").css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
                              else
-                                $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                                 $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                           }
                           else
                           {
@@ -642,7 +642,7 @@
                    var selectedClass = (hasSelection && temp['key'] == selectedProfileId) ? ' perc-selected' : '';
                    var selected = (hasSelection && temp['key'] == selectedProfileId) ? ' selected="selected"' : '';
                    if (selected != ""){
-                      $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                      $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                    }
                    opt = '<option title="' + temp['value'] + '" class="perc-ga-profile-list-option'
                       + selectedClass + '" value="' + temp['key'] + '"' + selected + '>' + temp['value'] + '</option>';
