@@ -119,7 +119,7 @@
         var $target = $(event.target);
 
         if (($target.parents('#' + $.timepicker._mainDivId).length == 0)) {
-            let inst = $.datepicker._getInst($target[0]);
+            var inst = $.datepicker._getInst($target[0]);
 
             if (($target[0].id != $.datepicker._mainDivId &&
                 $target.parents('#' + $.datepicker._mainDivId).length == 0 &&
