@@ -485,7 +485,7 @@
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
         <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
         <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
-        <antcall target="renameCamelCasedFontAwsomeFolder"  inheritall="true" inheritrefs="true"/>
+        <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
     </target>
 
     <target name="upgradeSiteConfig">
@@ -493,23 +493,16 @@
         <PSUpgradeSiteConfig rootDir="${install.dir}" />
     </target>
 
-    <target name="renameCamelCasedFontAwsomeFolder">
+    <target name="replaceOldFontAwesome">
         <if>
         <available file="${install.dir}/web_resources/cm/css/FontAwesome/" type="dir" />
-            <then>
-                <echo>Camel cased FonTAwesome folder found...</echo>
-                <echo>Renaming Font Awesome Folder....</echo>
-                <mkdir dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
-                <move todir="${install.dir}/web_resources/cm/css/tempFontAwesome/">
-                    <fileset dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
-                </move>
-                <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
-                <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
-                <move todir="${install.dir}/web_resources/cm/css/fontawesome/">
-                    <fileset dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
-                </move>
-                <delete dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
-            </then>
+        <then>
+            <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
+            <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
+            <copy todir="${install.dir}/web_resources/cm/css/fontawesome/">
+                <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome" includes="**/*" />
+            </copy>
+        </then>
         </if>
     </target>
 

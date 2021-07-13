@@ -65,9 +65,9 @@
 		</touch>
 
 		<if>
-			<available file="${perc.site.web_resources}/cm/css/FontAwesome/" type="dir" />
+			<available file="${perc.site.web_resources}/cm/css/fontawesome/" type="dir" />
 			<then>
-				<delete dir="${perc.site.web_resources}/cm/css/FontAwesome/"/>
+				<delete dir="${perc.site.web_resources}/cm/css/fontawesome/"/>
 			</then>
 		</if>
 
