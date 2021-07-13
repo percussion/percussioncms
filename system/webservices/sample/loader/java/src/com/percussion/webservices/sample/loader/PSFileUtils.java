@@ -104,7 +104,7 @@ public class PSFileUtils
     */
    public static String getElementData(Node node)
    {
-      StringBuffer ret = new StringBuffer();
+      StringBuilder ret = new StringBuilder();
 
       if (node != null)
       {

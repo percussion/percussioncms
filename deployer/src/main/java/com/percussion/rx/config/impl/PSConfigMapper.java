@@ -512,7 +512,7 @@ public class PSConfigMapper
          return r;
       
       boolean replaced = false;
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       // take the part before PREFIX
       int i = origValue.indexOf(PREFIX);
       if (i == -1)

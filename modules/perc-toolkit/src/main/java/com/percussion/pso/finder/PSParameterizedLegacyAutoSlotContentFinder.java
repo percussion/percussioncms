@@ -9,18 +9,12 @@
  ******************************************************************************/
 package com.percussion.pso.finder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-//import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-//import java.util.TreeSet;
-import javax.jcr.RepositoryException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.pso.utils.SimplifyParameters;
-import com.percussion.server.*;
+import com.percussion.server.PSInternalRequest;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSSlotContentFinder;
 import com.percussion.services.assembly.IPSTemplateSlot;
@@ -35,7 +29,16 @@ import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.jcr.RepositoryException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
   * This class is a rewrite of the out of the box Legacy "finder".  That version did not 
@@ -72,7 +75,7 @@ public class PSParameterizedLegacyAutoSlotContentFinder extends PSBaseSlotConten
   resourceArgs.putAll(SimplifyParameters.simplifyMap(params)); 
   
   
-//  StringBuffer url = new StringBuffer( resource );
+//  StringBuilder url = new StringBuilder( resource );
 //  
 //  if( params != null ) {
 //   if( !params.isEmpty( ) ) {

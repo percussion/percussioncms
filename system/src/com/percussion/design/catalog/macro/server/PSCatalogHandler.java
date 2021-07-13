@@ -25,7 +25,7 @@ package com.percussion.design.catalog.macro.server;
 
 import com.percussion.design.catalog.PSCatalogRequestHandler;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class processes macro related catalog requests for the Rhythmyx 
@@ -40,7 +40,7 @@ public class PSCatalogHandler extends PSCatalogRequestHandler
     */
    public PSCatalogHandler()
    {
-      m_catalogHandlers = new Hashtable();
+      m_catalogHandlers = new ConcurrentHashMap();
       addHandler(new PSMacroCatalogHandler());
    }
 

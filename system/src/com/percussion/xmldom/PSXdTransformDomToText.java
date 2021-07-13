@@ -35,24 +35,22 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.server.PSServer;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
+import com.percussion.xml.PSStylesheetCacheManager;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import com.percussion.xml.PSStylesheetCacheManager;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
 
 
 /**
@@ -311,7 +309,7 @@ public class PSXdTransformDomToText extends PSDefaultExtension implements
       catch (TransformerConfigurationException e)
       {
          // there is an error with the XSLT stylesheet
-         StringBuffer errorMsg = new StringBuffer(e.toString());
+         StringBuilder errorMsg = new StringBuilder(e.toString());
          errorMsg.append("\r\n");
          PSStylesheetCacheManager.
             appendErrorMessages(errorMsg, styleCached.getErrorListener());

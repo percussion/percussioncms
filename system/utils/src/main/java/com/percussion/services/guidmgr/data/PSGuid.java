@@ -25,7 +25,6 @@ package com.percussion.services.guidmgr.data;
 
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.utils.guid.IPSGuid;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -306,7 +305,7 @@ public class PSGuid extends Number implements IPSGuid
       int type = getType();
       long uuid = getUUID();
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append(Long.toString(hostid)).append("-").append(
             Integer.toString(type)).append("-").append(Long.toString(uuid));
       return buf.toString();
@@ -322,7 +321,7 @@ public class PSGuid extends Number implements IPSGuid
       long hostid = getHostId();
       long uuid = getUUID();
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append(Long.toString(hostid)).append("-").append(Long.toString(uuid));
       return buf.toString();
    }

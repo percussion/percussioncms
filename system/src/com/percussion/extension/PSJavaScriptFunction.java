@@ -106,7 +106,7 @@ class PSJavaScriptFunction implements ErrorReporter
 
       String digestedString = digestString(myKey + functionText);
 
-      /* first check the hashtable to see if we've got one already */
+      /* first check the ConcurrentHashMap to see if we've got one already */
       synchronized (compiledFunctions) {
          if (compiledFunctions.containsKey(myKey)) {
             String digestedDef =  digestedFunctionDefs.get(myKey);

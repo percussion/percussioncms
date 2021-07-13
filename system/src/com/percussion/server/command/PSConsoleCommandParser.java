@@ -29,7 +29,7 @@ import com.percussion.server.IPSServerErrors;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -162,7 +162,7 @@ public class PSConsoleCommandParser
                cmdArgs = cmdArgs.substring(1, cmdArgs.length());
          }
 
-         // get the object stored for this command from our hashtable.
+         // get the object stored for this command from our ConcurrentHashMap.
          // it may be the IPSConsoleCommand to use or a String containing
          // the valid subcommands for this command
          // our hash table of cmd name/classes
@@ -241,11 +241,11 @@ public class PSConsoleCommandParser
     *
     * Search for the key "" to get the list of valid base commands.
     */
-   private final static Hashtable ms_cmdSet;
+   private final static ConcurrentHashMap ms_cmdSet;
    static
    {
-      // and this is the hashtable containing the sub commands
-      ms_cmdSet = new Hashtable();
+      // and this is the ConcurrentHashMap containing the sub commands
+      ms_cmdSet = new ConcurrentHashMap();
 
       // in case they use an invalid base command, store the base list
       ms_cmdSet.put("", "start, restart, stop, show, log, trace, flush, "

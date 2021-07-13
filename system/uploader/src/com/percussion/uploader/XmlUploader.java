@@ -30,16 +30,21 @@ import com.percussion.HTTPClient.HTTPResponse;
 import com.percussion.HTTPClient.ModuleException;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
-
-import com.percussion.tools.PSHttpRequest;
-import com.percussion.util.IOTools;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.tools.PSHttpRequest;
+import com.percussion.util.IOTools;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -62,13 +67,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * When run as a program, this class takes a set of XML files and sends them to
@@ -472,7 +470,7 @@ public class XmlUploader
     */
    private String getResourceUrl()
    {
-      StringBuffer urlBuf = new StringBuffer(m_requestUrl);
+      StringBuilder urlBuf = new StringBuilder(m_requestUrl);
 
       // add the html parameter "DBActionType" if not present in the URL
       String actionType = m_properties.getProperty( Utils.RX_ACTIONTYPE_KEY,
@@ -493,7 +491,7 @@ public class XmlUploader
                bAddActionType = false;
       }
 
-      StringBuffer appendBuf = new StringBuffer();
+      StringBuilder appendBuf = new StringBuilder();
       if (bAddActionType)
          appendBuf.append(htmlActionParam + "=" + actionType);
 

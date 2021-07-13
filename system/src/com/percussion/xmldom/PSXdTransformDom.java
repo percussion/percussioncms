@@ -37,7 +37,15 @@ import com.percussion.server.PSRequestValidationException;
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSStylesheetCacheManager;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,16 +54,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 /**
  * A Rhythmyx extension that applies an XSL Stylesheet to a temporary
@@ -336,7 +334,7 @@ public class PSXdTransformDom extends PSDefaultExtension implements
       catch (TransformerConfigurationException e)
       {
          // there is an error with the XSLT stylesheet
-         StringBuffer errorMsg = new StringBuffer(e.toString());
+         StringBuilder errorMsg = new StringBuilder(e.toString());
          errorMsg.append("\r\n");
          PSStylesheetCacheManager.
                appendErrorMessages(errorMsg, styleCached.getErrorListener());

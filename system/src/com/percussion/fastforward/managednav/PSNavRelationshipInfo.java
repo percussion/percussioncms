@@ -91,7 +91,7 @@ public class PSNavRelationshipInfo
     */
    public String toString()
    {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("Relationship ");
       sb.append(m_rel.getConfig().getLabel());
       sb.append("\nOwner ");

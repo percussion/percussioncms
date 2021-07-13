@@ -130,7 +130,7 @@ public class PSOParseUrlQueryString
    private static String urlDecode(String str)
       throws PSRequestParsingException
    {
-      StringBuffer newStr = new StringBuffer( str.length() );
+      StringBuilder newStr = new StringBuilder( str.length() );
       int iSrc = 0;
       int iDst = 0;
       char ch;
@@ -189,7 +189,7 @@ public class PSOParseUrlQueryString
    {
       if (null == query)
          return null;
-      StringBuffer buf = new StringBuffer( query );
+      StringBuilder buf = new StringBuilder( query );
       boolean done = false;
       int len = AMPERSAND_ENTITY.length();
       int nextPos = 0;  // position in search string of next entity

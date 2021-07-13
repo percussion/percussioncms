@@ -28,7 +28,6 @@ package com.percussion.deploy.server;
 import com.percussion.cms.IPSConstants;
 import com.percussion.deploy.error.IPSDeploymentErrors;
 import com.percussion.deploy.error.PSDeployException;
-//import com.percussion.deploy.jexl.PSDeployJexlUtils;
 import com.percussion.deploy.objectstore.PSApplicationIDTypeMapping;
 import com.percussion.deploy.objectstore.PSDeployComponentUtils;
 import com.percussion.deploy.objectstore.PSIdMap;
@@ -98,16 +97,14 @@ import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcRowData;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSUrlUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Handles discovery and transformations of literal ids specified in
@@ -583,7 +580,7 @@ public class PSAppTransformer
                // in this case, need to work on the target value as other params
                // in it may have been modified aleady, and these can be 
                // identified by their name.
-               StringBuffer base = new StringBuffer();
+               StringBuilder base = new StringBuilder();
                Map paramMap = PSDeployComponentUtils.parseParams(
                   tgtCol.getValue(), base);
                
@@ -2947,7 +2944,7 @@ public class PSAppTransformer
          index = bVal.indexOf(oldVal, index);
          if (index > 0)
          {
-            StringBuffer newBindVal = new StringBuffer(bVal.length());
+            StringBuilder newBindVal = new StringBuilder(bVal.length());
             String before = bVal.substring(0, index);
             String after = bVal.substring(index + oldVal.length());
             newBindVal.append(before);

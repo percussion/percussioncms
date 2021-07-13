@@ -168,7 +168,7 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
    @Deprecated
    private static String rot13(String val)
    {
-      StringBuffer buf = new StringBuffer(val);
+      StringBuilder buf = new StringBuilder(val);
       for (int i = 0; i < buf.length(); i++)
       {
          buf.setCharAt(i, rot13(buf.charAt(i)));

@@ -63,7 +63,7 @@ public class PSLineBreaker
       /* The 2nd part of the size below is the estimated # of lines times the
          number of chars in the newline. The 10 is padding so we allocate more
          space than needed.*/
-      StringBuffer buf = new StringBuffer(
+      StringBuilder buf = new StringBuilder(
             line.length() + (line.length() / maxLen + 10) * newLine.length());
 
       while ( breaker.hasNext())

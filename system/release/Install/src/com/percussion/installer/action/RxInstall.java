@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -322,7 +322,7 @@ public class RxInstall extends RxIAAction implements BuildListener
          ms_currentTasks = 0;
          ms_overallPercent += ms_currentPercent;
          
-         Hashtable targets = proj.getTargets();
+         ConcurrentHashMap targets = proj.getTargets();
          Set targetKeys = targets.keySet();
          Iterator targetKeyIter = targetKeys.iterator();
          while (targetKeyIter.hasNext())

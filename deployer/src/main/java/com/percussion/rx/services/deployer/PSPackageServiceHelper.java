@@ -368,7 +368,7 @@ public class PSPackageServiceHelper
       if (strList == null || strList.isEmpty())
          return "";
 
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       for (String str : strList)
       {
          if (result.length() > 0)

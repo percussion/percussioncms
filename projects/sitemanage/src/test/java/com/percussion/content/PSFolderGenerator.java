@@ -61,7 +61,7 @@ public class PSFolderGenerator extends PSGenerator<PSPathServiceRestClient>
             path = path.substring(1);
         StringTokenizer toker = new StringTokenizer(path, "/");
         int parts = toker.countTokens();
-        StringBuffer partialPath = new StringBuffer(100);
+        StringBuilder partialPath = new StringBuilder(100);
         PSPathItem result = null;
         for (int i = 0; i < parts; i++)
         {

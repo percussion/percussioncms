@@ -16,12 +16,11 @@
 
 package com.ibm.cadf.model;
 
-import java.text.MessageFormat;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.ibm.cadf.Messages;
 import com.ibm.cadf.exception.CADFException;
+import org.apache.commons.lang3.StringUtils;
+
+import java.text.MessageFormat;
 
 public class Attachment extends com.ibm.cadf.model.CADFType
 {
@@ -90,7 +89,7 @@ public class Attachment extends com.ibm.cadf.model.CADFType
         // Validation to ensure Attachment required attributes are set.
 
         boolean missingMandatoryField = false;
-        StringBuffer missingMadatoryFields = new StringBuffer();
+        StringBuilder missingMadatoryFields = new StringBuilder();
         if (StringUtils.isEmpty(contentType))
         {
             missingMandatoryField = true;

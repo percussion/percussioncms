@@ -26,7 +26,7 @@ package com.percussion.HTTPClient;
 
 import java.io.IOException;
 import java.net.ProtocolException;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -40,10 +40,10 @@ import java.util.Hashtable;
 public class RedirectionModule implements HTTPClientModule
 {
     /** a list of permanent redirections (301) */
-    private static Hashtable perm_redir_cntxt_list = new Hashtable();
+    private static ConcurrentHashMap perm_redir_cntxt_list = new ConcurrentHashMap();
 
     /** a list of deferred redirections (used with Response.retryRequest()) */
-    private static Hashtable deferred_redir_list = new Hashtable();
+    private static ConcurrentHashMap deferred_redir_list = new ConcurrentHashMap();
 
     /** the level of redirection */
     private int level;
@@ -114,7 +114,7 @@ public class RedirectionModule implements HTTPClientModule
 
 	// handle permanent redirections
 
-	Hashtable perm_redir_list = Util.getList(perm_redir_cntxt_list,
+	ConcurrentHashMap perm_redir_list = Util.getList(perm_redir_cntxt_list,
 					    req.getConnection().getContext());
 	if ((new_loc = (URI) perm_redir_list.get(cur_loc)) != null)
 	{
@@ -490,7 +490,7 @@ public class RedirectionModule implements HTTPClientModule
 
 	if (!cur_loc.equals(new_loc))
 	{
-	    Hashtable perm_redir_list =
+	    ConcurrentHashMap perm_redir_list =
 			Util.getList(perm_redir_cntxt_list, con.getContext());
 	    perm_redir_list.put(cur_loc, new_loc);
 	}

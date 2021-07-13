@@ -30,7 +30,6 @@ import au.id.jericho.lib.html.OutputDocument;
 import au.id.jericho.lib.html.Source;
 import au.id.jericho.lib.html.StartTag;
 import au.id.jericho.lib.html.StringOutputSegment;
-
 import com.percussion.design.objectstore.IPSReplacementValue;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSDataSet;
@@ -43,8 +42,9 @@ import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
-import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.tools.PSPatternMatcher;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,8 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import org.w3c.dom.Element;
 
 /**
  * Plugin to modify the database table "RXSLOTTYPE", HTML source files, XSL
@@ -566,8 +564,8 @@ public class PSUpgradeDbAndHtmlAndXslFilesForSlotNames implements
       Source source = new Source(IOTools.getFileContent(file));
       OutputDocument outputDocument = new OutputDocument(source);
       source.setLogWriter(new OutputStreamWriter(logStream));
-      StringBuffer sbOld = new StringBuffer();
-      StringBuffer sbNew = new StringBuffer();
+      StringBuilder sbOld = new StringBuilder();
+      StringBuilder sbNew = new StringBuilder();
       List allStartTags = source.findAllStartTags();
       for (Iterator i = allStartTags.iterator(); i.hasNext();)
       {

@@ -26,7 +26,7 @@ package com.percussion.design.catalog.file.server;
 
 import com.percussion.design.catalog.PSCatalogRequestHandler;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @version 1.0
@@ -47,7 +47,7 @@ public class PSFileCatalogHandler extends PSCatalogRequestHandler
        * some day, convert this to use JDK 1.2 package info instead of
        * hardcoded classes
        */
-      m_catalogHandlers = new Hashtable();
+      m_catalogHandlers = new ConcurrentHashMap();
       addHandler(new PSColumnCatalogHandler());
    }
    

@@ -88,7 +88,7 @@ public class RequestStats
 
    public String toXMLString()
    {
-      StringBuffer buf = new StringBuffer(300);
+      StringBuilder buf = new StringBuilder(300);
       buf.append("<HttpRequestStats>\n");
       buf.append("<ResponseTime>\n");
       buf.append("<Total>" + m_totalRespTime + "</Total>\n");

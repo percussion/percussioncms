@@ -25,7 +25,7 @@
 package com.percussion.HTTPClient;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <P>This class checks whether a sequence of requests is idempotent. This
@@ -79,7 +79,7 @@ class IdempotentSequence
 
     /** trigger analysis of threads */
     private boolean   analysis_done = false;
-    private Hashtable threads = new Hashtable();
+    private ConcurrentHashMap threads = new ConcurrentHashMap();
 
 
     // Constructors

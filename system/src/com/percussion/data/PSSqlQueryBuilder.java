@@ -43,9 +43,9 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -227,14 +227,14 @@ public class PSSqlQueryBuilder extends PSSqlBuilder
     * @param logins a list of logins, one per connection index in the values
     * contained within <code>connKeys</code>, must never be <code>null</code>
     * 
-    * @param connKeys a hashtable that associates opaque keys representing
+    * @param connKeys a ConcurrentHashMap that associates opaque keys representing
     * a specific database and server, and indecies into the <code>logins</code>
     * list passed to this method, must never be <code>null</code>
     *
     * @return   PSQueryStatement A statement that will execute
     * the query, will never return <code>null</code>
     */
-   PSQueryStatement generate(List logins, Hashtable connKeys)
+   PSQueryStatement generate(List logins, ConcurrentHashMap connKeys)
    {
       int tableCount = m_Tables.size();
       if (tableCount == 0) {

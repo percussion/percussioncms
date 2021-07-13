@@ -148,7 +148,7 @@ public class PSTemplateSlotSetter extends PSPropertySetterWithValidation
       if (commons.isEmpty())
          return Collections.emptyList();
       
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       buffer
             .append("the following pairs of Content Type / Template associations are already configured: ");
       for (PSPair<String, String> pair : curAssoc)

@@ -24,9 +24,6 @@
 
 package com.percussion.tools;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -38,6 +35,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.io.Writer;
 
 public class PrintNode
 {
@@ -280,7 +280,7 @@ public class PrintNode
 		char[] chars = input.toCharArray();
 		int len = chars.length;
 
-		StringBuffer buf = new StringBuffer((int)(chars.length * 1.5));
+		StringBuilder buf = new StringBuilder((int)(chars.length * 1.5));
 
 		char c;
 

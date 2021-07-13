@@ -24,7 +24,7 @@
 package com.percussion.integration;
 
 import java.net.Socket;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.Cookie;
 
@@ -43,18 +43,18 @@ public class PSAxisSocketFactory extends DefaultSocketFactory
    /**
     * @param attributes
     */
-   public PSAxisSocketFactory(Hashtable attributes)
+   public PSAxisSocketFactory(ConcurrentHashMap attributes)
    {
       super(attributes);
    }
    
    /* (non-Javadoc)
-    * @see org.apache.axis.components.net.SocketFactory#create(java.lang.String, int, java.lang.StringBuffer, org.apache.axis.components.net.BooleanHolder)
+    * @see org.apache.axis.components.net.SocketFactory#create(java.lang.String, int, java.lang.StringBuilder, org.apache.axis.components.net.BooleanHolder)
     */
    public Socket create(
       String host,
       int port,
-      StringBuffer otherHeaders,
+      StringBuilder otherHeaders,
       BooleanHolder useFullURL)
       throws Exception
    {

@@ -37,7 +37,7 @@ public abstract class HTMLNode implements Node
 {
    public HTMLNode()
    {
-      m_value = new StringBuffer();
+      m_value = new StringBuilder();
       m_children = new HTMLNodeList();
    }
 
@@ -430,7 +430,7 @@ public abstract class HTMLNode implements Node
    }  
 
    protected String m_name;
-   protected StringBuffer m_value;
+   protected StringBuilder m_value;
    protected HTMLNode m_parent;
    protected HTMLNodeList m_children;
    protected HTMLNode m_prevSib;

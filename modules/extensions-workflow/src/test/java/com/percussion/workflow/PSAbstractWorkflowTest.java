@@ -194,7 +194,7 @@ public abstract class PSAbstractWorkflowTest
    public String HelpMessage()
    {
       // commented out line below shows how to include additional options
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:\n");
 //    buf.append("   -w, -workflowid    workflow ID\n");
       buf.append("   -h, -help          help\n");
@@ -236,7 +236,7 @@ public abstract class PSAbstractWorkflowTest
       {
           return "";
       }
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append((calendar.get(calendar.MONTH) + 1)+ "/" );
       buf.append(calendar.get(calendar.DAY_OF_MONTH)  + "/");
       buf.append(calendar.get(calendar.YEAR) + " ");

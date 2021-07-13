@@ -23,6 +23,10 @@
  */
 package com.percussion.utils.timing;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.aspectj.lang.ProceedingJoinPoint;
+
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,10 +34,6 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.aspectj.lang.ProceedingJoinPoint;
 
 /**
  * Stopwatch handler that creates stopwatches on a thread-based stack. This
@@ -216,7 +216,7 @@ public class PSStopwatchStack
    {
       DecimalFormat dec = new DecimalFormat("###,###,###.##");
       SortedSet<String> sortedKeys = new TreeSet<String>(m_statistics.keySet());
-      StringBuffer buf = new StringBuffer(80);
+      StringBuilder buf = new StringBuilder(80);
       Iterator<String> kiter = sortedKeys.iterator();
       while (kiter.hasNext())
       {

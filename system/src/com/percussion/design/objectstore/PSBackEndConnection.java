@@ -680,7 +680,7 @@ public class PSBackEndConnection extends PSComponent
 
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(100);
+      StringBuilder buf = new StringBuilder(100);
       buf.append("Back end connection to ");
       buf.append(m_server);
       buf.append(" over ");

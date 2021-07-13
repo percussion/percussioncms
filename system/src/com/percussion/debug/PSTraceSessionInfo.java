@@ -29,7 +29,6 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSUserSessionManager;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
 import org.w3c.dom.Element;
 
 /**
@@ -93,7 +92,7 @@ public class PSTraceSessionInfo extends PSTraceMessage
       PSRequest request = (PSRequest)args[1];
 
       //construct the message
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       if (!traceSession)
       {

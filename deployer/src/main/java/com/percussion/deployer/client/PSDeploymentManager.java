@@ -2076,7 +2076,7 @@ public class PSDeploymentManager
     * <code>null</code>.
     * @throws PSDeployException if there is an error retrieving the status.
     */
-   int getJobStatus(int jobId, StringBuffer messageBuffer)
+   int getJobStatus(int jobId, StringBuilder messageBuffer)
       throws PSDeployException
    {
       if (messageBuffer == null)

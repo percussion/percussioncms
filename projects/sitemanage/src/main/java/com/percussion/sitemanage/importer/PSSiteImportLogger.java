@@ -25,14 +25,13 @@ package com.percussion.sitemanage.importer;
 
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * @author JaySeletz
@@ -42,7 +41,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
 {
     private PSLogObjectType objectType;
     
-    private StringBuffer log;
+    private StringBuilder log;
     
 
     /**
@@ -66,7 +65,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
     {
         Validate.notNull(objectType);
         this.objectType = objectType;
-        log = new StringBuffer();
+        log = new StringBuilder();
     }
     
     @Override

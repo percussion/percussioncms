@@ -23,7 +23,11 @@
  */
 package com.percussion.ant;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * A simple utility class to read makefiles.
@@ -60,7 +64,7 @@ public class PSMakefileReader
    public String readLine()
       throws IOException
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       int res = readLogicalLine(buf);
       if (res < 0)
          return null;
@@ -81,7 +85,7 @@ public class PSMakefileReader
     * @return   int The number of physical lines read. If less than
     * 0, it means that the end of file was reached.
     */
-   protected int readLogicalLine(StringBuffer buf)
+   protected int readLogicalLine(StringBuilder buf)
       throws IOException
    {
       int numLines = 0;

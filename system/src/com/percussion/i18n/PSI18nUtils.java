@@ -238,7 +238,7 @@ public class PSI18nUtils implements IPSI18nUtils {
       if (mnemonic != null && mnemonic.trim().length() > 0)
       {
          char mnemonicchar = Character.toLowerCase(mnemonic.charAt(0));
-         StringBuffer htmlstring = new StringBuffer(localestring.length() + 6);
+         StringBuilder htmlstring = new StringBuilder(localestring.length() + 6);
          for(int i = 0; i < localestring.length(); i++)
          {
             char ch = localestring.charAt(i);
@@ -541,7 +541,7 @@ public class PSI18nUtils implements IPSI18nUtils {
    @SuppressWarnings("unchecked")
    static public String makeLookupKey(List subkeys)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       if(subkeys == null || subkeys.size() < 1)
          return buf.toString();
       //Make sure to remove all null/empty keys out of the list

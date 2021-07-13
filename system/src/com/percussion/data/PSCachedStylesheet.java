@@ -269,7 +269,7 @@ public class PSCachedStylesheet
                found = (content.toLowerCase().indexOf("charset=") != -1);
                if(found)
                {
-                  StringBuffer sb = new StringBuffer();
+                  StringBuilder sb = new StringBuilder();
                   StringTokenizer st = 
                      new StringTokenizer(
                         elem.getAttribute("content"), "; ", true);

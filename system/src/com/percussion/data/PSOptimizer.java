@@ -30,16 +30,14 @@ import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSDataSet;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.util.PSCollection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -193,7 +191,7 @@ public abstract class PSOptimizer
     * @param logins A list of logins. The list must not be <code>null</code>
     * and may contain logins from an earlier call. New logins will be added
     * to the list.
-    * @param connKeys A {@link java.util.Hashtable} of connection keys, which
+    * @param connKeys A {@link java.util.ConcurrentHashMap} of connection keys, which
     * must not be <code>null</code> and which will be filled with the server
     * keys and identifying integers.
     * @param joins A collection of joins, may be <code>null</code>
@@ -202,7 +200,7 @@ public abstract class PSOptimizer
     */
    protected static int createLoginPlan(
       PSApplicationHandler ah, PSCollection beTables,
-      List logins, Hashtable connKeys, PSCollection joins)
+      List logins, ConcurrentHashMap connKeys, PSCollection joins)
       throws java.sql.SQLException
    {
       if (ah == null)

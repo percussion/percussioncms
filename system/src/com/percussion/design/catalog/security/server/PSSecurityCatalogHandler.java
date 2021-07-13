@@ -24,7 +24,7 @@
 
 package com.percussion.design.catalog.security.server;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -54,7 +54,7 @@ public class PSSecurityCatalogHandler
        * some day, convert this to use JDK 1.2 package info instead of
        * hardcoded classes
        */
-      m_catalogHandlers = new Hashtable();
+      m_catalogHandlers = new ConcurrentHashMap();
       addHandler(new PSCatalogerCatalogHandler());
       addHandler(new PSProviderCatalogHandler());
       addHandler(new PSServerCatalogHandler());

@@ -30,13 +30,12 @@ import com.percussion.util.PSRandomAccessInputStream;
 import com.percussion.util.PSRandomAccessOutputStream;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * The PSFileLogWriter class implements logging to a file.
@@ -409,7 +408,7 @@ public class PSFileLogWriter implements IPSLogWriter
         {
         org.xml.sax.SAXParseException se = (org.xml.sax.SAXParseException)saxErr;
 
-        StringBuffer errorMsg = new StringBuffer();
+        StringBuilder errorMsg = new StringBuilder();
 
         errorMsg.append(
         PSXmlContentParser.getSaxExceptionContextMessage(se));

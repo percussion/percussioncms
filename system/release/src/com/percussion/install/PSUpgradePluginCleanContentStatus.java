@@ -167,7 +167,7 @@ public class PSUpgradePluginCleanContentStatus implements IPSUpgradePlugin
    {
       log("Checking for null and non-text titles so they can be modified.");
 
-      StringBuffer csModifiedRows = new StringBuffer();
+      StringBuilder csModifiedRows = new StringBuilder();
       PSJdbcTableData csData = csSchema.getTableData();
       Document doc = PSXmlDocumentBuilder.createXmlDocument();
 

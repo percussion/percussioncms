@@ -163,7 +163,7 @@ public class PSTransitionsContextTest extends PSAbstractWorkflowTest
 
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:\n");
       buf.append("   -w, -workflowid        workflow ID\n");
       buf.append("   -t, -transitionid      transition ID\n");

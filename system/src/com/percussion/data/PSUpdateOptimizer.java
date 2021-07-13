@@ -37,11 +37,10 @@ import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.util.PSCollection;
 
+import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Hashtable;
-
-import javax.naming.NamingException;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -161,7 +160,7 @@ public class PSUpdateOptimizer extends PSOptimizer
 
       // create the login plan for the back-ends
       ArrayList logins = new ArrayList();
-      Hashtable connKeys = new Hashtable();
+      ConcurrentHashMap connKeys = new ConcurrentHashMap();
       createLoginPlan(ah, beTables, logins, connKeys, null);
 
       // now create the builder map (keyed on back-end table)

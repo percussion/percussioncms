@@ -79,5 +79,5 @@ public class HTMLCDATA extends HTMLText implements CDATASection
       m_data.append( data );
    }
 
-   private StringBuffer m_data = new StringBuffer();
+   private StringBuilder m_data = new StringBuilder();
 }

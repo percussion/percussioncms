@@ -23,12 +23,12 @@
  */
 package com.percussion.webservices;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Utility class with helper methods to lookup and format web service error
@@ -50,7 +50,7 @@ public class PSWebserviceErrors
       if (t == null)
          return StringUtils.EMPTY;
       Throwable next = t;
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       while (next != null && next != next.getCause())
       {
          String msg = next.getLocalizedMessage();

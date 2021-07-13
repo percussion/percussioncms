@@ -29,13 +29,11 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-
-import java.sql.SQLException;
-import java.util.Locale;
+import org.apache.commons.lang.StringUtils;
 
 import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
+import java.sql.SQLException;
+import java.util.Locale;
 
 
 /**
@@ -417,7 +415,7 @@ public class PSSqlException extends java.sql.SQLException
 
    public static String toString(SQLException e)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       if (null != e)
       {
          buf.append(e.getClass().getName());
@@ -446,7 +444,7 @@ public class PSSqlException extends java.sql.SQLException
       if ( null == e )
          return "";
 
-      StringBuffer errorText   = new StringBuffer();
+      StringBuilder errorText   = new StringBuilder();
 
       int errNo = 1;
       final int maxErrors = 20;

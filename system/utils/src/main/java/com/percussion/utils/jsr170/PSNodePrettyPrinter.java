@@ -44,7 +44,7 @@ public class PSNodePrettyPrinter
    
    public static String toString(Node n, int indentation) throws RepositoryException
    {
-      StringBuffer b = new StringBuffer();
+      StringBuilder b = new StringBuilder();
       for(int i = 0; i < indentation; i++)
       {
          b.append(" ");
@@ -71,7 +71,7 @@ public class PSNodePrettyPrinter
    
    public static String toString(Property p, int indentation) throws RepositoryException
    {
-      StringBuffer b = new StringBuffer();
+      StringBuilder b = new StringBuilder();
       for(int i = 0; i < indentation; i++)
       {
          b.append(" ");

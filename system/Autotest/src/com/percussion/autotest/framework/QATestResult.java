@@ -62,7 +62,7 @@ class QATestResult implements Serializable, Comparable
 
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(256);
+      StringBuilder buf = new StringBuilder(256);
       buf.append(m_status);
       buf.append('\t');
       buf.append(m_requestType);

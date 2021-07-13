@@ -375,7 +375,7 @@ public class PSDeployComponentUtils
     * of <code>String</code> values.  Never <code>null</code>, may
     * be empty.
     */
-   public static Map parseParams(String url, StringBuffer base)
+   public static Map parseParams(String url, StringBuilder base)
    {
       if (url == null)
          throw new IllegalArgumentException("url may not be null");
