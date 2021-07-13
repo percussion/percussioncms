@@ -32,15 +32,6 @@ import com.percussion.util.PSCollection;
 import com.percussion.util.PSDocVersionConverter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Level;
 import org.apache.xerces.dom.ParentNode;
@@ -48,6 +39,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSApplication class is used to manipulate an E2 application's
@@ -589,7 +588,7 @@ public class PSApplication implements IPSDocument
          PSAclEntry.AACE_DESIGN_UPDATE |
          PSAclEntry.AACE_DESIGN_MODIFY_ACL;
 
-      Hashtable names = new Hashtable();
+      ConcurrentHashMap names = new ConcurrentHashMap();
       boolean hasFullDesign = false;
       PSAclEntry ace;
       String key;

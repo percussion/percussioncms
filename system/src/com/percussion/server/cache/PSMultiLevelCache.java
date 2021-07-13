@@ -25,10 +25,10 @@
 package com.percussion.server.cache;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides caching of items using a key set.  The key mechanism is hierarchical 
@@ -173,7 +173,7 @@ public class PSMultiLevelCache
                   Map itemMap = (Map)cacheMap.get(keys[i]);
                   if (itemMap == null)
                   {
-                     itemMap = new Hashtable();
+                     itemMap = new ConcurrentHashMap();
                      cacheMap.put(keys[i], itemMap);
                   }
                   PSCacheItem oldItem = (PSCacheItem)itemMap.put(type, 
@@ -202,7 +202,7 @@ public class PSMultiLevelCache
                else 
                {
                   // no entry at this level, so add a map for this key
-                  nextMap = new Hashtable();
+                  nextMap = new ConcurrentHashMap();
                   synchronized(cacheMap)
                   {
                      cacheMap.put(keys[i], nextMap);
@@ -596,7 +596,7 @@ public class PSMultiLevelCache
     * item or another Map depending on the keysize, etc.  Never 
     * <code>null</code>.
     */
-   private Map m_cache = new Hashtable();
+   private Map m_cache = new ConcurrentHashMap();
    
    /**
     * List of <code>IPSCacheAccessedListener</code> objects that should be

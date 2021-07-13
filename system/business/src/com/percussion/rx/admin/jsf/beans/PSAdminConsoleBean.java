@@ -31,12 +31,11 @@ import com.percussion.server.command.PSConsoleCommandException;
 import com.percussion.server.command.PSConsoleCommandParser;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
 
 import java.io.IOException;
 import java.io.StringWriter;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
 
 /**
  * Backs Rhythmyx Command Console UI.
@@ -252,5 +251,5 @@ public class PSAdminConsoleBean extends PSLockableNode
     * Results of the commands.
     * @see #isAppend()
     */
-   private final StringBuffer m_result = new StringBuffer();
+   private final StringBuilder m_result = new StringBuilder();
 }

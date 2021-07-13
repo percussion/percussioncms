@@ -23,6 +23,9 @@
  */
 package com.percussion.process;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,11 +33,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * A wrapper around the Java <code>Process</code> class that adds output 
@@ -57,7 +55,7 @@ public class PSProcessAction implements Runnable
          "-console"
       };
       Process p = r.exec(params);
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       OutputReader stdout = new OutputReader(p.getInputStream(), buf, "stdout");
       int done = 2;
       OutputStream stdin = p.getOutputStream();
@@ -74,11 +72,11 @@ public class PSProcessAction implements Runnable
       
    }
 
-   public static void getNextInput(StringBuffer buf)
+   public static void getNextInput(StringBuilder buf)
       throws Exception
    {
       boolean done = false;
-      StringBuffer local = new StringBuffer();
+      StringBuilder local = new StringBuilder();
       while (!done)
       {
          String frag;
@@ -276,7 +274,7 @@ public class PSProcessAction implements Runnable
     * 
     * @throws IllegalStateException if the process has not been started.
     */
-   private String getOutput(Thread reader, StringBuffer content)
+   private String getOutput(Thread reader, StringBuilder content)
    {
       if (m_status.getStatus() == PSProcessStatus.PROCESS_NOT_STARTED)
          throw new IllegalStateException("Process not running.");
@@ -362,7 +360,7 @@ public class PSProcessAction implements Runnable
     */
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(1000);
+      StringBuilder buf = new StringBuilder(1000);
       for (int i = 0; i < m_cmdArray.length; i++)
       {
          buf.append(m_cmdArray[i]);
@@ -428,14 +426,14 @@ public class PSProcessAction implements Runnable
     * reads it until it is read by a call to {@link #getStdOutText()}. Never 
     * <code>null</code>. All accesses must be synchronized. 
     */
-   private StringBuffer m_stdOutBuf = new StringBuffer();
+   private StringBuilder m_stdOutBuf = new StringBuilder();
 
    /**
     * String buffer to store output from the process from the time the thread
     * reads it until it is read by a call to {@link #getStdErrText()}. Never 
     * <code>null</code>. All accesses must be synchronized. 
     */
-   private StringBuffer m_stdErrBuf = new StringBuffer();
+   private StringBuilder m_stdErrBuf = new StringBuilder();
    
    /**
     * Holds the execution thread for this process. Never <code>null</code>
@@ -465,7 +463,7 @@ class OutputReader extends Thread
     * @param name Use as the name for this thread. If <code>null</code> or
     * empty, "Input Reader" is used.
     */
-   public OutputReader(InputStream source, StringBuffer buf, String name)
+   public OutputReader(InputStream source, StringBuilder buf, String name)
    {
       if ( null == source)
       {
@@ -511,7 +509,7 @@ class OutputReader extends Thread
                   if ((m_buffer.length() + count) > BUFFERING_COUNT)
                   {
                      int x = (m_buffer.length()+count)-BUFFERING_COUNT; 
-                     m_buffer = new StringBuffer(m_buffer.substring(x,
+                     m_buffer = new StringBuilder(m_buffer.substring(x,
                            m_buffer.length()));
                   }
                   m_buffer.append(new String(buffer, 0, count));
@@ -546,7 +544,7 @@ class OutputReader extends Thread
     * The <code>buf</code> parameter supplied in ctor. Never 
     * <code>null</code> after construction.
     */
-   private StringBuffer m_buffer;
+   private StringBuilder m_buffer;
    
    private final Object m_lock = new Object();
    

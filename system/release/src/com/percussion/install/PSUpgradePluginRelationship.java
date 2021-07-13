@@ -877,7 +877,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
                m_dbProps.getProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY),
                m_dbProps.getProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY));
       
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("CREATE VIEW " + qualViewName + " AS SELECT RL.RID AS SYSID, " 
          + "RL.OWNER_ID AS CONTENTID, RL.OWNER_REVISION AS REVISIONID, "
          + "RL.DEPENDENT_ID AS ITEMCONTENTID, '' AS ITEMDESCRIPTION, "
@@ -910,7 +910,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
    private String getSelectConfigName(PSRelationshipConfigSet configSet,
          Map nameMap)
    {
-      StringBuffer caseBuf = new StringBuffer();
+      StringBuilder caseBuf = new StringBuilder();
       boolean hasMismatchName = false;
       caseBuf.append("CASE RN.CONFIG_NAME ");
       String cname;

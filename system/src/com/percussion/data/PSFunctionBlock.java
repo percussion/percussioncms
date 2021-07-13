@@ -135,14 +135,14 @@ public class PSFunctionBlock extends PSStatementBlock
    /**
     * See {@link IPSStatementBlock#hasStaticSql()} for details.
     */
-   public void buildStatement(StringBuffer buf, PSExecutionData data)
+   public void buildStatement(StringBuilder buf, PSExecutionData data)
       throws PSDataExtractionException
    {
       // if we're doing omit when null, check if we have any null values
       if (shouldThisBeOmitted(data))
          return;
 
-      StringBuffer tmpBuf = new StringBuffer();
+      StringBuilder tmpBuf = new StringBuilder();
       for (int i = 0; i < m_blocks.size(); i++)
       {
          Object cur = m_blocks.get(i);

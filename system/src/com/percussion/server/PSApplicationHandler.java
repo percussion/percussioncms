@@ -99,10 +99,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSApplicationHandler class is used to handle requests for a given
@@ -673,7 +673,7 @@ public class PSApplicationHandler implements IPSRootedHandler
       if (newURL == null)  // some FILE URLs use the file as host ?!
          newURL = url.getHost();
 
-      StringBuffer buf = new StringBuffer(
+      StringBuilder buf = new StringBuilder(
          newURL.length() + fullRequestRoot.length());
 
       int pos = newURL.indexOf(fullRequestRoot);
@@ -777,7 +777,7 @@ public class PSApplicationHandler implements IPSRootedHandler
        */
       checkForParentPath(newURL);
 
-      StringBuffer buf = new StringBuffer(
+      StringBuilder buf = new StringBuilder(
          newURL.length() + requestRoot.length() + "file:".length());
       buf.append("file:");
 
@@ -1468,7 +1468,7 @@ public class PSApplicationHandler implements IPSRootedHandler
 
             if (matchingHandlers > 1)
             {
-               java.util.Hashtable info = new java.util.Hashtable();
+               ConcurrentHashMap info = new ConcurrentHashMap();
                info.put(PSLogMultipleHandlers.PROP_SESS_ID,
                   request.getUserSessionId());
                info.put(PSLogMultipleHandlers.PROP_DATASET_NAMES,
@@ -1813,13 +1813,13 @@ public class PSApplicationHandler implements IPSRootedHandler
    }
 
    /**
-    * Used to obtain the Hashtable containing all cached stylesheets used by the
+    * Used to obtain the ConcurrentHashMap containing all cached stylesheets used by the
     * app.
     * 
-    * @return a hashtable containing stylesheets cached using a URL object that
+    * @return a ConcurrentHashMap containing stylesheets cached using a URL object that
     * identifies the stylesheet as a key.
     */
-   public Hashtable getStylesheetCache()
+   public ConcurrentHashMap getStylesheetCache()
    {
       return m_ssCache;
    }
@@ -2191,7 +2191,7 @@ public class PSApplicationHandler implements IPSRootedHandler
     * using dataSetName as the key, and the handler
     * instance as the value.
     */
-   private Hashtable m_dataHandlers = new Hashtable();
+   private ConcurrentHashMap m_dataHandlers = new ConcurrentHashMap();
 
    /**
     * A mapping from request page names to data handlers objects. The
@@ -2199,7 +2199,7 @@ public class PSApplicationHandler implements IPSRootedHandler
     * the handler instance as the value. For instance, the handler for
     * the "Stock" data set may have "stock.xml" as its key.
     */
-   private Hashtable m_dataHandlerMap = new Hashtable();
+   private ConcurrentHashMap m_dataHandlerMap = new ConcurrentHashMap();
 
    /**
     * The log handler for this application.  this handler also handles
@@ -2272,7 +2272,7 @@ public class PSApplicationHandler implements IPSRootedHandler
     * application is restarted, the cache is cleared and any new version of
     * underlying stylesheets are then used.
     */
-   private Hashtable m_ssCache = new Hashtable();
+   private ConcurrentHashMap m_ssCache = new ConcurrentHashMap();
 
    private static final String REQUEST_TYPE_UNKNOWN_STRING   = "-unknown-";
    private static final String REQUEST_TYPE_QUERY_STRING     = "query";

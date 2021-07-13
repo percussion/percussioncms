@@ -30,6 +30,7 @@ import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,8 +42,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.naming.NamingException;
 
 /**
  * This fix removes relationship slots that are no longer referenced. Any given
@@ -171,7 +170,7 @@ public class PSFixOrphanedSlots extends PSFixDBBase implements IPSFix
             union.addAll(variantslots);
 
             // Create the query to find orphaned slots
-            StringBuffer valuelist = new StringBuffer(40);
+            StringBuilder valuelist = new StringBuilder(40);
             Iterator iter = union.iterator();
             while (iter.hasNext())
             {

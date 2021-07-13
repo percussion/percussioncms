@@ -26,7 +26,13 @@ package com.percussion.security;
 import com.percussion.design.objectstore.PSAuthentication;
 import com.percussion.design.objectstore.PSDirectory;
 import com.percussion.error.PSRuntimeException;
+import org.apache.commons.lang.StringUtils;
 
+import javax.naming.CommunicationException;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -34,14 +40,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import javax.naming.CommunicationException;
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Common base class for security providers which use JNDI (including

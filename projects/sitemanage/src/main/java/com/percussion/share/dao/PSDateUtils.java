@@ -94,7 +94,7 @@ public class PSDateUtils
             }
 
 
-            StringBuffer format = new StringBuffer(date); 
+            StringBuilder format = new StringBuilder(date);
             if (format.length() > 2 && ":".equals(String.valueOf(format.charAt(format.length() - 3))) )
             {
                 format.deleteCharAt(format.length() - 3);

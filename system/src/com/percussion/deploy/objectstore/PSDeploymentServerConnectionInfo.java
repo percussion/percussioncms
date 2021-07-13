@@ -26,7 +26,6 @@ package com.percussion.deploy.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -105,7 +104,7 @@ public class PSDeploymentServerConnectionInfo implements IPSDeployComponent
    // see base class for javadoc
    public int hashCode()
    {
-      StringBuffer fieldMashup = new StringBuffer();
+      StringBuilder fieldMashup = new StringBuilder();
       fieldMashup.append(m_server).append("|");
       fieldMashup.append(m_port).append("|");
       fieldMashup.append(m_userid).append("|");

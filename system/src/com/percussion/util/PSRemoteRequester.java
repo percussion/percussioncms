@@ -37,7 +37,15 @@ import com.percussion.HTTPClient.RedirectionModule;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -51,16 +59,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * This class simplifies making a request to a Rhythmyx application or resource
@@ -906,7 +904,7 @@ public class PSRemoteRequester implements IPSRemoteRequesterEx
             return con.Post(urlResource, data, hdrs);
          }
       };
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
 
 
 

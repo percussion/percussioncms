@@ -24,8 +24,6 @@
 
 package com.percussion.hooks.webservices;
 
-import java.util.Vector;
-
 import org.apache.soap.Body;
 import org.apache.soap.Constants;
 import org.apache.soap.Envelope;
@@ -33,6 +31,8 @@ import org.apache.soap.SOAPException;
 import org.apache.soap.rpc.SOAPContext;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.util.Vector;
 
 /**
  * This class defines the actions associated with the Miscellaneous group
@@ -236,7 +236,7 @@ public class PSWSMiscellaneous extends PSWebServices
 
    private String getElementData(Node node)
    {
-      StringBuffer ret = new StringBuffer();
+      StringBuilder ret = new StringBuilder();
 
       if (node != null)
       {

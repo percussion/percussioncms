@@ -23,23 +23,20 @@
  */
 package com.percussion.services.security.loginmods.impl;
 
-import java.util.List;
-
 import com.percussion.data.PSUserContextExtractor;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityProviderPool;
-import com.percussion.security.PSUserAttributes;
 import com.percussion.security.PSUserEntry;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.loginmods.IPSLoginMgr;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.List;
 
 /**
  * Implementation class for login manager
@@ -57,7 +54,7 @@ public class PSLoginMgr implements IPSLoginMgr
 
       PSUserEntry userEntry = null;
       PSSecurityProvider[] providers = PSSecurityProviderPool.getAllProviders();
-      StringBuffer errMsg = new StringBuffer();
+      StringBuilder errMsg = new StringBuilder();
       for (int i = 0; i < providers.length; i++)
       {
          try

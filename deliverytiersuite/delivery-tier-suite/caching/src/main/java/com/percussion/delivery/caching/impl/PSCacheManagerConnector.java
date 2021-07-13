@@ -53,8 +53,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -73,8 +73,8 @@ public class PSCacheManagerConnector implements IPSServiceDataChangeListener
     private int interRequestWait = 30;
     private int maxWait = 360;
     
-    // Map tasks to cache regions. Hashtable because thread safe
-    Hashtable<String, FlushTask> tasks = new Hashtable<>();
+    // Map tasks to cache regions. ConcurrentHashMap because thread safe
+    ConcurrentHashMap<String, FlushTask> tasks = new ConcurrentHashMap<>();
     private final String PERC_CACHING_MANAGER_CONFIG = "/perc-caching/manager/config";
     Set<String> cacheRegions;
     

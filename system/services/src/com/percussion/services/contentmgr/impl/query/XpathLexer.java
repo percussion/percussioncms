@@ -72,14 +72,14 @@ public class XpathLexer extends antlr.CharScanner
       caseSensitiveLiterals = false;
       setCaseSensitive(false);
       literals = new Hashtable();
-      literals.put(new ANTLRHashString("element", this), new Integer(4));
-      literals.put(new ANTLRHashString("or", this), new Integer(14));
-      literals.put(new ANTLRHashString("descending", this), new Integer(27));
-      literals.put(new ANTLRHashString("by", this), new Integer(25));
-      literals.put(new ANTLRHashString("and", this), new Integer(13));
-      literals.put(new ANTLRHashString("not", this), new Integer(10));
-      literals.put(new ANTLRHashString("ascending", this), new Integer(26));
-      literals.put(new ANTLRHashString("order", this), new Integer(24));
+      literals.put(new ANTLRHashString("element", this), 4);
+      literals.put(new ANTLRHashString("or", this), 14);
+      literals.put(new ANTLRHashString("descending", this), 27);
+      literals.put(new ANTLRHashString("by", this), 25);
+      literals.put(new ANTLRHashString("and", this), 13);
+      literals.put(new ANTLRHashString("not", this), 10);
+      literals.put(new ANTLRHashString("ascending", this), 26);
+      literals.put(new ANTLRHashString("order", this), 24);
    }
 
    public Token nextToken() throws TokenStreamException

@@ -26,15 +26,6 @@
  */
 package com.percussion.tomcat.valves;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Properties;
-
-import javax.servlet.ServletException;
-
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
@@ -44,6 +35,16 @@ import org.apache.catalina.connector.Response;
 import org.apache.catalina.valves.ValveBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Properties;
+
+import static javax.servlet.http.HttpServletResponse.SC_MOVED_PERMANENTLY;
 
 /**
  * A valve that performs redirection of requests for a specified context 
@@ -174,7 +175,7 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 				context="/"+context;
 			
 			//Make sure we don't re-route if the context is the same as the target. 
-			if(context != null && !context.equals(request.getContextPath())){
+			if(!context.equals(request.getContextPath())){
 					
 	            StringBuffer sbUrl = request.getRequestURL ();
 	            String sQueryString = request.getQueryString ();
@@ -187,7 +188,7 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 	            
 	            String sUrl = sbUrl.toString().replace(request.getContextPath(), context);
 	            
-	            response.setStatus (Response.SC_MOVED_PERMANENTLY);
+	            response.setStatus (SC_MOVED_PERMANENTLY);
 	            response.setHeader ("Location",
 	            response.encodeRedirectURL (sUrl));
                 return;  

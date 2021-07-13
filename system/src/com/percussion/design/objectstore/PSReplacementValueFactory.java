@@ -24,14 +24,14 @@
 
 package com.percussion.design.objectstore;
 
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Element;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Hashtable;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Element;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class is used to help build replacement value objects without prior
@@ -325,7 +325,7 @@ public abstract class PSReplacementValueFactory
     * Maps from lowercased XML node name (String) to the proper replacement
     * value class (Class).
     */
-   private static Hashtable ms_rvClasses = new Hashtable();
+   private static ConcurrentHashMap ms_rvClasses = new ConcurrentHashMap();
 
    static
    {

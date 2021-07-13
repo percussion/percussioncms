@@ -97,7 +97,7 @@ public class PSSqlInList extends ArrayList implements List
             return "('')";
       }
       Iterator it = this.iterator();
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       boolean first = true;
       sb.append("(");
       while (it.hasNext())

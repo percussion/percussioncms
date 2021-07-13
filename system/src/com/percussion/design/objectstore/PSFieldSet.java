@@ -25,6 +25,10 @@ package com.percussion.design.objectstore;
 
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,11 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Implementation for the PSXFieldSet DTD in BasicObjects.dtd.
@@ -341,9 +340,9 @@ public class PSFieldSet extends PSComponent
    }
 
    /**
-    * Add the provided field to this hashtable.
+    * Add the provided field to this ConcurrentHashMap.
     *
-    * @param field the field to add to this hashtable, not <code>null</code>,
+    * @param field the field to add to this ConcurrentHashMap, not <code>null</code>,
     *    must contain a valid name.
     * @return the previous value if there was one, <code>null</code>
     *    otherwise
@@ -362,9 +361,9 @@ public class PSFieldSet extends PSComponent
    }
 
    /**
-    * Add the provided field set to this hashtable.
+    * Add the provided field set to this ConcurrentHashMap.
     *
-    * @param fieldSet the field set to add to this hashtable, not
+    * @param fieldSet the field set to add to this ConcurrentHashMap, not
     *    <code>null</code>, must contain a valid name.
     * @return the previous value if there was one, <code>null</code>
     *    otherwise.
@@ -407,7 +406,7 @@ public class PSFieldSet extends PSComponent
    }
 
    /**
-    * Checks if the hashtable contains an object for the provided name.
+    * Checks if the ConcurrentHashMap contains an object for the provided name.
     *
     * @param name the name of the object we are looking for, might be
     *    <code>null</code> or empty.

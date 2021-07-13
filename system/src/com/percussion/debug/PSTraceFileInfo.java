@@ -74,7 +74,7 @@ public class PSTraceFileInfo extends PSTraceMessage
    protected String getMessageBody(java.lang.Object source)
    {
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       PSRequest request = (PSRequest)source;
 
       Map<String,Object> params = request.getParameters();

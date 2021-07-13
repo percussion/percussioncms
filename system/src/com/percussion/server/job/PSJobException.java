@@ -419,7 +419,7 @@ public class PSJobException extends Exception
       if ( null == e )
          return "";
          
-      StringBuffer errorText   = new StringBuffer();
+      StringBuilder errorText   = new StringBuilder();
 
       int errNo = 1;
       final int maxErrors = 20;

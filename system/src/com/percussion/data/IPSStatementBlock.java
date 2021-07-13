@@ -91,7 +91,7 @@ public interface IPSStatementBlock
     *
     * @param   data         the run-time context info for this request
     */
-   public void buildStatement(StringBuffer buf, PSExecutionData data)
+   public void buildStatement(StringBuilder buf, PSExecutionData data)
       throws PSDataExtractionException;
 
    /**

@@ -33,9 +33,17 @@ import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSRoleManager;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.server.PSServer;
-import com.percussion.services.schedule.*;
+import com.percussion.services.schedule.IPSSchedulingService;
+import com.percussion.services.schedule.IPSTask;
+import com.percussion.services.schedule.IPSTaskResult;
+import com.percussion.services.schedule.PSSchedulingException;
 import com.percussion.services.schedule.PSSchedulingException.Error;
-import com.percussion.services.schedule.data.*;
+import com.percussion.services.schedule.PSSchedulingServiceLocator;
+import com.percussion.services.schedule.data.PSNotificationTemplate;
+import com.percussion.services.schedule.data.PSNotifyWhen;
+import com.percussion.services.schedule.data.PSScheduledTask;
+import com.percussion.services.schedule.data.PSScheduledTaskLog;
+import com.percussion.services.schedule.data.PSTaskResult;
 import com.percussion.services.system.IPSSystemService;
 import com.percussion.services.system.PSSystemServiceLocator;
 import com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase;
@@ -57,7 +65,11 @@ import org.quartz.Scheduler;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.StringWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Adapts Rhythmyx scheduler tasks {@link IPSTask} to the Quartz job interface,
@@ -413,7 +425,7 @@ public class PSTaskAdapter implements Job
       if (StringUtils.isBlank(addresses))
          return null;
       
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       boolean isFirst = true;
       for (final String s : addresses.split(","))
       {
@@ -463,7 +475,7 @@ public class PSTaskAdapter implements Job
       if (StringUtils.isBlank(roleName))
          return null;
       
-      StringBuffer emails = new StringBuffer();
+      StringBuilder emails = new StringBuilder();
       boolean isFirst = true;
       PSRoleManager rmgr = PSRoleManager.getInstance();
       Set<PSSubject> users = rmgr.getSubjects(roleName, null);

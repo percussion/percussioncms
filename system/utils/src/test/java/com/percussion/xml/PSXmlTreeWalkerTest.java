@@ -386,7 +386,7 @@ public class PSXmlTreeWalkerTest extends TestCase
 
       public String toXmlString()
       {
-         StringBuffer buf = new StringBuffer("<Book>\n\t<title>");
+         StringBuilder buf = new StringBuilder("<Book>\n\t<title>");
          buf.append(m_title);
          buf.append("</title>\n");
          buf.append("\t<isbn>");

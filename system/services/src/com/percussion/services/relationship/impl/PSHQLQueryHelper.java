@@ -30,6 +30,8 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipPropertyData;
 import com.percussion.services.relationship.data.PSRelationshipData;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,9 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 /**
  * A helper class used for building HQL from a given relationship filter.
@@ -504,7 +503,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     * @param qryBuffer the buffer used to append the query string, assumed
     *    not <code>null</code>.
     */
-   private void appendSelectJoinOwnerId(StringBuffer qryBuffer)
+   private void appendSelectJoinOwnerId(StringBuilder qryBuffer)
    {
       qryBuffer.append(SELECT_FROM_R_AND_C);
       if (joinPropertiesTable())
@@ -522,7 +521,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     * @param qryBuffer the buffer used to append the query string, assumed
     *    not <code>null</code>.
     */
-   private void appendSelectJoinDependentId(StringBuffer qryBuffer)
+   private void appendSelectJoinDependentId(StringBuilder qryBuffer)
    {
       qryBuffer.append(SELECT_FROM_R_AND_C);
       if (joinPropertiesTable())
@@ -748,7 +747,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     * The query string buffer, used to create HQL, never <code>null</code>,
     * may be empty.
     */
-   private StringBuffer m_qryBuffer = new StringBuffer();
+   private StringBuilder m_qryBuffer = new StringBuilder();
 
    /**
     * The parameter list, used to record the parameter names for the HQL,

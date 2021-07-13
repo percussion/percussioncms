@@ -40,7 +40,7 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDateTime>
         String dateInStringFormat= "";
         try{
             dateInStringFormat = arg0.getText();
-            StringBuffer date = new StringBuffer();
+            StringBuilder date = new StringBuilder();
             for(String doubledigit : dateInStringFormat.split("\\.")[0].split(":")){
                 if(doubledigit.length()==1){
                     doubledigit = "0"+doubledigit;

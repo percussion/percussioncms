@@ -24,14 +24,13 @@
 package com.percussion.rxverify.data;
 
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.io.Serializable;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * @author dougrand
@@ -177,7 +176,7 @@ public class PSColumnInfo implements Serializable
     */
    public String toString()
    {
-      StringBuffer rval = new StringBuffer();
+      StringBuilder rval = new StringBuilder();
       
       rval.append("Column ");
       rval.append(m_name);

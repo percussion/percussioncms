@@ -23,33 +23,21 @@
  */
 package com.percussion.HTTPClient;
 
-import java.awt.Button;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.Panel;
-import java.awt.TextArea;
-import java.awt.TextField;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ProtocolException;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -91,7 +79,7 @@ import java.util.Vector;
 public class CookieModule implements HTTPClientModule
 {
     /** the list of known cookies */
-    private static Hashtable cookie_cntxt_list = new Hashtable();
+    private static ConcurrentHashMap cookie_cntxt_list = new ConcurrentHashMap();
 
     /** the file to use for persistent cookie storage */
     private static File cookie_jar = null;
@@ -139,7 +127,7 @@ public class CookieModule implements HTTPClientModule
 			try (ObjectInputStream ois =
 						 new ObjectInputStream(new FileInputStream(cookie_jar))) {
 				cookie_cntxt_list.put(HTTPConnection.getDefaultContext(),
-						(Hashtable) ois.readObject());
+						(ConcurrentHashMap) ois.readObject());
 			} catch (IOException | ClassNotFoundException e) {
 				cookie_jar = null;
 			}
@@ -151,7 +139,7 @@ public class CookieModule implements HTTPClientModule
 	if (cookie_jar != null  &&  (!cookie_jar.exists()  ||
 	     cookie_jar.isFile()  &&  cookie_jar.canWrite()))
 	{
-	    Hashtable cookie_list = new Hashtable();
+	    ConcurrentHashMap cookie_list = new ConcurrentHashMap();
 	    Enumeration e = Util.getList(cookie_cntxt_list,
 					    HTTPConnection.getDefaultContext())
 				   .elements();
@@ -278,7 +266,7 @@ public class CookieModule implements HTTPClientModule
 
 	synchronized (cookie_cntxt_list)
 	{
-	    Hashtable cookie_list =
+	    ConcurrentHashMap cookie_list =
 		Util.getList(cookie_cntxt_list, req.getConnection().getContext());
 	    if (cookie_list.size() == 0)
 		return REQ_CONTINUE;   // no need to create a lot of objects
@@ -329,7 +317,7 @@ public class CookieModule implements HTTPClientModule
 
 	if (!names.isEmpty())
 	{
-	    StringBuffer value = new StringBuffer();
+	    StringBuilder value = new StringBuilder();
 
 	    if (version > 0)
 		value.append("$Version=\"" + version + "\"; ");
@@ -452,7 +440,7 @@ public class CookieModule implements HTTPClientModule
 
 	synchronized (cookie_cntxt_list)
 	{
-	    Hashtable cookie_list =
+	    ConcurrentHashMap cookie_list =
 		    Util.getList(cookie_cntxt_list, req.getConnection().getContext());
       
 	    for (int idx=0; idx<cookies.length; idx++)
@@ -520,7 +508,7 @@ public class CookieModule implements HTTPClientModule
 	    Enumeration cntxt_list = cookie_cntxt_list.elements();
 	    while (cntxt_list.hasMoreElements())
 	    {
-		Hashtable cntxt = (Hashtable) cntxt_list.nextElement();
+		ConcurrentHashMap cntxt = (ConcurrentHashMap) cntxt_list.nextElement();
 		synchronized (cntxt)
 		{
 		    cookies = Util.resizeArray(cookies, idx+cntxt.size());
@@ -546,7 +534,7 @@ public class CookieModule implements HTTPClientModule
     {
 	synchronized (cookie_cntxt_list)
 	{
-	    Hashtable cookie_list = Util.getList(cookie_cntxt_list, context);
+	    ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, context);
 
 	    Cookie[] cookies = new Cookie[cookie_list.size()];
 	    int idx = 0;
@@ -572,7 +560,7 @@ public class CookieModule implements HTTPClientModule
     {
       synchronized (cookie_cntxt_list)
       {
-         Hashtable cookie_list = Util.getList(cookie_cntxt_list, HTTPConnection
+         ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, HTTPConnection
                .getDefaultContext());
          cookie_list.put(cookie, cookie);
       }
@@ -593,7 +581,7 @@ public class CookieModule implements HTTPClientModule
     {
        synchronized (cookie_cntxt_list)
        {
-          Hashtable cookie_list = Util.getList(cookie_cntxt_list, context);
+          ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, context);
           cookie_list.put(cookie, cookie);
        }
     }
@@ -611,7 +599,7 @@ public class CookieModule implements HTTPClientModule
     {
        synchronized (cookie_cntxt_list)
        {
-          Hashtable cookie_list = Util.getList(cookie_cntxt_list, HTTPConnection
+          ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, HTTPConnection
                 .getDefaultContext());
           cookie_list.remove(cookie);
        }
@@ -631,7 +619,7 @@ public class CookieModule implements HTTPClientModule
     {
        synchronized (cookie_cntxt_list)
        {
-          Hashtable cookie_list = Util.getList(cookie_cntxt_list, context);
+          ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, context);
           cookie_list.remove(cookie);
        }
     }
@@ -1055,7 +1043,7 @@ class BasicCookieBox extends Frame
 		left_panel.add(ports_label, 2);
 		((GridLayout) right_panel.getLayout()).setRows(5);
 		int[] ports = cookie2.getPorts();
-		StringBuffer plist = new StringBuffer();
+		StringBuilder plist = new StringBuilder();
 		plist.append(ports[0]);
 		for (int idx=1; idx<ports.length; idx++)
 		{

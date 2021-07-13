@@ -23,6 +23,8 @@
  */
 package com.percussion.install;
 
+import org.w3c.dom.Element;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,8 +34,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-
-import org.w3c.dom.Element;
 
 /**
  * Upgrade plugin that will add Ektron ewebeditpro related XSL
@@ -109,7 +109,7 @@ public class PSUpgradePluginAddEktronToXSL implements IPSUpgradePlugin
       final String XSLFile, final String templateFile)
       throws IOException
    {
-      final StringBuffer sb = new StringBuffer(getFileContents(XSLFile));
+      final StringBuilder sb = new StringBuilder(getFileContents(XSLFile));
       final String template = getWEPTemplate(templateFile);
       final String marker = "</xsl:template>";
       int pos = sb.lastIndexOf(marker) + marker.length();
@@ -132,7 +132,7 @@ public class PSUpgradePluginAddEktronToXSL implements IPSUpgradePlugin
    {
       int pos = 0;
       int idx = 0;
-      final StringBuffer sb = new StringBuffer(getFileContents(XSLFile));
+      final StringBuilder sb = new StringBuilder(getFileContents(XSLFile));
       while((pos = sb.indexOf(token, idx)) != -1)
       {
          sb.replace(pos, pos + token.length(), replacement);

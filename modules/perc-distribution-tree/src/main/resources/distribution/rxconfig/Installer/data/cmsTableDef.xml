@@ -317,7 +317,7 @@
             </column>
             <column name="SESSIONID">
                 <jdbctype>CHAR</jdbctype>
-                <size>40</size>
+                <size>255</size>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="ACTOR">

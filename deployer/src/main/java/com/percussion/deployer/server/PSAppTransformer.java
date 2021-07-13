@@ -582,7 +582,7 @@ public class PSAppTransformer
                // in this case, need to work on the target value as other params
                // in it may have been modified aleady, and these can be 
                // identified by their name.
-               StringBuffer base = new StringBuffer();
+               StringBuilder base = new StringBuilder();
                Map paramMap = PSDeployComponentUtils.parseParams(
                   tgtCol.getValue(), base);
                
@@ -2944,7 +2944,7 @@ public class PSAppTransformer
          index = bVal.indexOf(oldVal, index);
          if (index > 0)
          {
-            StringBuffer newBindVal = new StringBuffer(bVal.length());
+            StringBuilder newBindVal = new StringBuilder(bVal.length());
             String before = bVal.substring(0, index);
             String after = bVal.substring(index + oldVal.length());
             newBindVal.append(before);
