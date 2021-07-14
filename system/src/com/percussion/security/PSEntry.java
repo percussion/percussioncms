@@ -38,7 +38,7 @@ import org.w3c.dom.Element;
  * information, their entry table is checked in the ACL. Each entry in the
  * security provider's entry table is then asked to compare the credentials
  * to the entries definition. Since entries may contain wild cards, etc.
- * a sequential approach must be taken rather than a hashtable search, etc.
+ * a sequential approach must be taken rather than a ConcurrentHashMap search, etc.
  *
  * @author      Tas Giakouminakis
  * @version      1.0

@@ -26,7 +26,7 @@ package com.percussion.design.catalog.function.server;
 
 import com.percussion.design.catalog.PSCatalogRequestHandler;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class processes database functions related catalog requests for the
@@ -44,7 +44,7 @@ public class PSFunctionCatalogHandler extends PSCatalogRequestHandler
     */
    public PSFunctionCatalogHandler()
    {
-      m_catalogHandlers = new Hashtable();
+      m_catalogHandlers = new ConcurrentHashMap();
       addHandler(new PSDatabaseFunctionCatalogHandler());
    }
 

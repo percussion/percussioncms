@@ -25,7 +25,6 @@ package com.percussion.workflow;
 
 import com.percussion.server.PSRequestContext;
 import com.percussion.utils.testing.IntegrationTest;
-import org.junit.experimental.categories.Categories;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -299,7 +298,7 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
 
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:");
       buf.append("   -w, -workflowid        workflow ID");
       buf.append("   -c, -contentid         content ID");

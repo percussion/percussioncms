@@ -35,7 +35,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Properties;
 
@@ -476,5 +476,55 @@ public class PSSecurityUtility {
 
     public static boolean isValidNumericId(String id){
         return StringUtils.isNumeric(id);
+    }
+
+    public static String escapeLDAPQueryString(final String in){
+        StringBuilder s = new StringBuilder();
+
+        for (int i=0; i< in.length(); i++) {
+
+            char c = in.charAt(i);
+
+            if (c == '*') {
+                // escape asterisk
+                s.append("\\2a");
+            }
+            else if (c == '(') {
+                // escape left parenthesis
+                s.append("\\28");
+            }
+            else if (c == ')') {
+                // escape right parenthesis
+                s.append("\\29");
+            }
+            else if (c == '\\') {
+                // escape backslash
+                s.append("\\5c");
+            }
+            else if (c == '\u0000') {
+                // escape NULL char
+                s.append("\\00");
+            }
+            else if (c <= 0x7f) {
+                // regular 1-byte UTF-8 char
+                s.append(String.valueOf(c));
+            }
+            else if (c >= 0x080) {
+
+                // higher-order 2, 3 and 4-byte UTF-8 chars
+
+                byte[] utf8bytes = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
+
+                for (byte b: utf8bytes)
+                    s.append(String.format("\\%02x", b));
+
+            }
+        }
+
+        return s.toString();
+    }
+
+    public static String escapeLDAPConnectionString(String str){
+        return str;
     }
 }

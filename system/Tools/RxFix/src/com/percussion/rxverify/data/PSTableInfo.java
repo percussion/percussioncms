@@ -23,10 +23,10 @@
  */
 package com.percussion.rxverify.data;
 
-import java.io.Serializable;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.io.Serializable;
 
 /**
  * @author dougrand
@@ -81,7 +81,7 @@ public class PSTableInfo implements Serializable
     */
    public String toString()
    {
-      StringBuffer rval = new StringBuffer();
+      StringBuilder rval = new StringBuilder();
       
       rval.append("Table ");
       rval.append(m_name);

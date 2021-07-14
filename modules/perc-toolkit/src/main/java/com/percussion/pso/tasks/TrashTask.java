@@ -5,33 +5,6 @@
  */
 package com.percussion.pso.tasks;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -95,6 +68,31 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.workflow.PSWorkFlowUtils;
 import com.percussion.workflow.PSWorkflowRoleInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.naming.NamingException;
+import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  *  * This is used to execute move and cleanup items using a trash folder and state
@@ -805,19 +803,9 @@ public class TrashTask implements IPSTask {
 					.prepareExtension(wfHistoryRef, null);
 			transParams = new Object[] { String.valueOf(contentid), userName };
 			wfHistoryProc.processResultDocument(transParams, ctx, null);
-			} catch (PSAuthorizationException e) {
+			} catch (PSAuthorizationException | PSRequestValidationException | PSParameterMismatchException | PSExtensionProcessingException | PSNotFoundException | PSExtensionException e) {
 				throw new FatalTaskException(e);
-			} catch (PSRequestValidationException e) {
-				throw new FatalTaskException(e);
-			} catch (PSParameterMismatchException e) {
-				throw new FatalTaskException(e);
-			} catch (PSExtensionProcessingException e) {
-				throw new FatalTaskException(e);
-			} catch (PSNotFoundException e) {
-				throw new FatalTaskException(e);
-			} catch (PSExtensionException e) {
-				throw new FatalTaskException(e);
-			} 
+			}
 			// Evict component summary cache for item
 			final IPSCacheAccess cache = PSCacheAccessLocator.getCacheAccess();
 			cache.evict(contentid, "PSComponentSummary");

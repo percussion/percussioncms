@@ -402,7 +402,7 @@ public class PSLogHandler
    private PSJdbcTableData getLogSummariesTableData(String tgtServer)
       throws PSDeployException
    {
-      StringBuffer sArchiveIds = new StringBuffer(0);
+      StringBuilder sArchiveIds = new StringBuilder(0);
 
       // get a list of archive summary id from archive log summary table first.
       PSJdbcSelectFilter filter = new PSJdbcSelectFilter(ALS_TGT_SERVER_NAME,

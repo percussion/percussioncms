@@ -110,7 +110,7 @@ public class PSErrorException extends PSException
     */
    protected static String getMessageText(PSLogError err)
    {
-      StringBuffer errorMsgs = new StringBuffer();
+      StringBuilder errorMsgs = new StringBuilder();
       if (err != null)
       {
          PSLogSubMessage[] msgs = err.getSubMessages();

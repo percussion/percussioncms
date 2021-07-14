@@ -234,7 +234,7 @@ public class PSItem
     */
    private String formatHeader(int fieldIndex, String label, int sortColumn)
    {
-      StringBuffer headerElement = new StringBuffer(40);
+      StringBuilder headerElement = new StringBuilder(40);
       headerElement.append("<a onclick='sortOn(this, ");
       headerElement.append(fieldIndex);
       headerElement.append(")' style='cursor: hand'>");

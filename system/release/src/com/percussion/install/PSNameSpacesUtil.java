@@ -50,7 +50,7 @@ public class PSNameSpacesUtil
     */
    public static String removeWhitespacesFromName(final String name, Set names)
    {
-      final StringBuffer buf = new StringBuffer();
+      final StringBuilder buf = new StringBuilder();
       for (int i = 0; i < name.length(); i++)
       {
          final char ch = name.charAt(i);

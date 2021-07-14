@@ -29,6 +29,10 @@ import com.percussion.cms.IPSCmsErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,11 +41,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 
 /**
@@ -588,7 +587,7 @@ public class PSKey implements IPSCmsComponent, Serializable
     */
    private String arrayToString(String[] definition)
    {
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
 
       for (int i=0; i < definition.length; i++)
       {
@@ -685,7 +684,7 @@ public class PSKey implements IPSCmsComponent, Serializable
     */
    public String toString()
    {
-      StringBuffer rval = new StringBuffer(80);
+      StringBuilder rval = new StringBuilder(80);
       rval.append("<PSKey ");
       for(int i = 0; i < m_definition.length; i++)
       {

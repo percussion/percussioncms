@@ -27,7 +27,6 @@ import com.percussion.utils.testing.IntegrationTest;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * The PSTransitionNotificationsContextTestclass is a test class for the class
@@ -126,7 +125,7 @@ public class PSTransitionNotificationsContextTest
    
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:\n");
       buf.append("   -w, -workflowid        workflow ID\n");
       buf.append("   -t, -transitionid      transition ID\n");

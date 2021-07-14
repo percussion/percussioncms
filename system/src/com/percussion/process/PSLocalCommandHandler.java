@@ -24,6 +24,9 @@
 package com.percussion.process;
 
 import com.percussion.util.IOTools;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,10 +40,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.xml.sax.SAXException;
 
 /**
  * This class is the local implementation of the interface being implemented.
@@ -255,7 +254,7 @@ public class PSLocalCommandHandler implements IPSCommandHandler
          int shortWait = 
                wait < LOGGING_INTERVAL_MILLIS ? wait : LOGGING_INTERVAL_MILLIS;
          int waitLeft = wait;
-         StringBuffer consoleBuf = new StringBuffer(1000);
+         StringBuilder consoleBuf = new StringBuilder(1000);
          do
          {
             if (waitLeft > 0)

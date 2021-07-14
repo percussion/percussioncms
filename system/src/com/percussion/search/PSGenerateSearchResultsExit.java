@@ -608,7 +608,7 @@ public class PSGenerateSearchResultsExit extends PSDefaultExtension
                           browserFeatures.trim().length() == 0)
                           browserFeatures = DEFAULT_BROWSER_WINDOW_FEATURES;
                        
-                       StringBuffer script = new StringBuffer();
+                       StringBuilder script = new StringBuilder();
                        script.append("javascript:window.open('");
                        script.append(baseAssemblyUrl);
                        script.append(

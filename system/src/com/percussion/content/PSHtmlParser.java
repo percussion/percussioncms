@@ -25,16 +25,6 @@ package com.percussion.content;
 
 
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Stack;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -44,6 +34,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Stack;
 
 /**
  * PSHtmlParser is a DOM-compliant HTML parser that yields
@@ -123,7 +122,7 @@ public class PSHtmlParser
 
    public void maintainLiteralBuffer()
    {
-      m_literalBuf = new StringBuffer();
+      m_literalBuf = new StringBuilder();
    }
    
    public String getLiteralBuffer()
@@ -186,7 +185,7 @@ public class PSHtmlParser
       /*  Class  no longer exists
       catch (sun.io.MalformedInputException e)
       {
-         StringBuffer msg = new StringBuffer(100);
+         StringBuilder msg = new StringBuilder(100);
          msg.append("Malformed character code. Perhaps the document specifies the wrong charset.");
          String superMsg = e.getMessage();
          if (superMsg != null)
@@ -678,7 +677,7 @@ public class PSHtmlParser
    private boolean lookAheadForCDATA()
    {
       char[] charBuffer = new char[ms_strCdataHead.length()];
-      StringBuffer sbHead = new StringBuffer();
+      StringBuilder sbHead = new StringBuilder();
 
       try
       {
@@ -856,7 +855,7 @@ public class PSHtmlParser
    public void illegalToken(char c)
       throws HTMLException
    {
-      StringBuffer buf = new StringBuffer(20);
+      StringBuilder buf = new StringBuilder(20);
       buf.append("Invalid token '");
       buf.append(c);
       buf.append("' (" + (int)c + ")");
@@ -1641,16 +1640,16 @@ public class PSHtmlParser
    private static final String ms_strCdataHead = new String("CDATA[");
 
    // the current "scratch buffers" for accumulating different content
-   private StringBuffer m_text = new StringBuffer();     // text data
-   private StringBuffer m_tagName  = new StringBuffer(); // a tag name
-   private StringBuffer m_attrName = new StringBuffer(); // an attribute name
-   private StringBuffer m_attrVal  = new StringBuffer(); // an attribute value
-   private StringBuffer m_comment  = new StringBuffer(); // a comment
-   private StringBuffer m_procInstr= new StringBuffer(); // processing instruction
-   private StringBuffer m_cdata = new StringBuffer(); // CDATA source
+   private StringBuilder m_text = new StringBuilder();     // text data
+   private StringBuilder m_tagName  = new StringBuilder(); // a tag name
+   private StringBuilder m_attrName = new StringBuilder(); // an attribute name
+   private StringBuilder m_attrVal  = new StringBuilder(); // an attribute value
+   private StringBuilder m_comment  = new StringBuilder(); // a comment
+   private StringBuilder m_procInstr= new StringBuilder(); // processing instruction
+   private StringBuilder m_cdata = new StringBuilder(); // CDATA source
 
    // this is non-null if the caller wants us to maintain a literal buffer
-   private StringBuffer m_literalBuf = null;
+   private StringBuilder m_literalBuf = null;
 
    private String m_curAtName = null;
  

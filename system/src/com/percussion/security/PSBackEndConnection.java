@@ -32,6 +32,8 @@ import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -50,6 +52,7 @@ import java.util.Properties;
  */
 public class PSBackEndConnection
 {
+   private static final Logger log = LogManager.getLogger(PSBackEndConnection.class);
    /**
     * Construct a backend connection for the supplied properties.
     *
@@ -270,6 +273,7 @@ public class PSBackEndConnection
          String tableName = PSSqlHelper.qualifyTableName(
             m_table, detail.getDatabase(), detail.getOrigin(), 
             detail.getDriver());
+
          m_preparedStatement = prepareStatement(m_columns, m_uidColumn, 
             tableName);         
       }
@@ -322,7 +326,7 @@ public class PSBackEndConnection
 
       String comma = ",";
       boolean firstIn = true;
-      StringBuffer buff = new StringBuffer();
+      StringBuilder buff = new StringBuilder();
       buff.append ("SELECT");
 
       Iterator cols = columns.iterator();
@@ -412,7 +416,7 @@ public class PSBackEndConnection
       
       String comma = ",";
 
-      StringBuffer buff = new StringBuffer();
+      StringBuilder buff = new StringBuilder();
       buff.append ("SELECT " + m_uidColumn);
 
       if (attributeNames != null)
@@ -483,6 +487,53 @@ public class PSBackEndConnection
       return m_userAttributes.keySet().iterator();
    }
 
+
+   /**
+    * Updates the backend table for the specified username with the supplied password.
+    * @param uid The user id
+    * @param password The encrypted password.
+    */
+   public void updateUserPassword(String uid, String password) throws SQLException {
+
+      PSConnectionDetail detail;
+
+      try
+      {
+         PSConnectionInfo connInfo = new PSConnectionInfo(m_datasource);
+         detail = PSConnectionHelper.getConnectionDetail(connInfo);
+      }
+      catch (NamingException e)
+      {
+         throw new SQLException(e.getMessage());
+      }
+
+      String tableName = PSSqlHelper.qualifyTableName(
+              m_table, detail.getDatabase(), detail.getOrigin(),
+              detail.getDriver());
+
+      String sql = preparePwUpdateStatement( m_uidColumn, m_pwColumn,
+              tableName);
+
+      try(Connection connection = getDbConnection()) {
+         PreparedStatement stmt = PSPreparedStatement.getPreparedStatement(connection
+                 , sql);
+
+         stmt.setString(1,password);
+         stmt.setString(2, uid);
+         int ret = stmt.executeUpdate();
+         log.info("{} user password(s) updated.", ret);
+         stmt.close();
+      }
+   }
+
+   private String preparePwUpdateStatement(String uidColumn, String pwColumn, String tableName) {
+
+      StringBuilder buff = new StringBuilder();
+      buff.append ("UPDATE ").append(tableName).append(" SET ").append(pwColumn)
+              .append(" = ? WHERE ").append(uidColumn).append("=?");
+      return buff.toString();
+   }
+
    /**
     * The property key to store the system credential string if a system
     * credential is used.
@@ -526,7 +577,7 @@ public class PSBackEndConnection
     * encrypt a provided password to compare it against an already encrypted 
     * stored password.
     * 
-    * @see {@link IPSPasswordFilter.encrypt(String)}
+    * @see {@link IPSPasswordFilter#encrypt(String)}
     */
    public static final String PROPS_PW_FILTER = "passwordFilter";
 

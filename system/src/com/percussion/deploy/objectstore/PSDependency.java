@@ -28,6 +28,8 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,9 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Base class for dependency objects.  Provides all common dependency
@@ -453,7 +452,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
     */
    public String printDependencyTree()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       
       printDependencyTree(buf, new ArrayList(), "");
       
@@ -471,7 +470,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
     * @param prefix Used to indent for each level of the tree, assumed not 
     * <code>null</code>, may be empty.
     */
-   private void printDependencyTree(StringBuffer buf, List processed, 
+   private void printDependencyTree(StringBuilder buf, List processed,
       String prefix)
    {
       Iterator checkedDeps = processed.iterator();

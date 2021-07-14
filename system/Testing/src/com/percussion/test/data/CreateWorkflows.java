@@ -25,14 +25,13 @@ package com.percussion.test.data;
 
 import com.percussion.util.PSRemoteRequester;
 import com.percussion.utils.xml.PSXmlUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateWorkflows
 {
@@ -99,7 +98,7 @@ public class CreateWorkflows
       String data = PSXmlUtils.getElementData(elem, "editstate", true);
       String key = "workflowid=";
       int pos = data.indexOf(key) + key.length();
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       for (int i = pos; i < data.length(); i++)
       {
          char c = data.charAt(i);

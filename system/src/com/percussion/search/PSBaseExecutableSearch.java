@@ -38,7 +38,11 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSStringOperation;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,12 +53,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * The utility class to hold search criteria, build search request and execute
@@ -332,7 +330,7 @@ public abstract class PSBaseExecutableSearch implements IPSExecutableSearch
       if (m_contentTypeIdList != null && ! m_contentTypeIdList.isEmpty())
       {
          List searchFields = new ArrayList(searchParams.getSearchFields());
-         StringBuffer list = new StringBuffer(80);
+         StringBuilder list = new StringBuilder(80);
          Iterator iter = m_contentTypeIdList.iterator();
          while (iter.hasNext())
          {

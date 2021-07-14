@@ -55,7 +55,7 @@ class MD5
      */
     public static final String toHex(byte hash[])
     {
-	StringBuffer buf = new StringBuffer(hash.length * 2);
+	StringBuilder buf = new StringBuilder(hash.length * 2);
 
 	for (int idx=0; idx<hash.length; idx++)
 	    buf.append(hex[(hash[idx] >> 4) & 0x0f]).append(hex[hash[idx] & 0x0f]);

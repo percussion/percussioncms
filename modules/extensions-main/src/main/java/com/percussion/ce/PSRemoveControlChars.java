@@ -90,7 +90,7 @@ public class PSRemoveControlChars implements IPSRequestPreProcessor
       boolean isModified = false;
       if(s == null)
          return null;
-      StringBuffer sb = new StringBuffer(s);      
+      StringBuilder sb = new StringBuilder(s);
       for(int i = 0; i < sb.length(); i++)
       {
          char ch = sb.charAt(i);

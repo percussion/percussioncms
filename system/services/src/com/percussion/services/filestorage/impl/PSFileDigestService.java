@@ -23,8 +23,6 @@
  */
 package com.percussion.services.filestorage.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.services.filestorage.IPSFileDigestService;
 
 import java.io.IOException;
@@ -32,12 +30,14 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import static org.apache.commons.lang.Validate.notNull;
+
 public class PSFileDigestService implements IPSFileDigestService
 {
    /**
     * See {@link #getAlgorithm()}, {@link #setAlgorithm(String)}.
     */
-   private String algorithm = "SHA-1";
+   private String algorithm = "SHA-256";
 
    public String createChecksum(InputStream fis)
          throws NoSuchAlgorithmException, IOException
@@ -62,7 +62,7 @@ public class PSFileDigestService implements IPSFileDigestService
 
          byte messageDigest[] = digest.digest();
 
-         StringBuffer hexString = new StringBuffer();
+         StringBuilder hexString = new StringBuilder();
 
          for (int i = 0; i < messageDigest.length; i++)
          {

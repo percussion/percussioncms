@@ -305,7 +305,7 @@ public class PSConvertCustomSearchOperator extends PSDefaultExtension
    private String convert(IPSRequestContext req, String opVal, Object[] values, 
       String beColName, String dataType, String connector, String dateFormat)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       
       buf.append(" ");
       if (connector.length() > 0)
@@ -400,7 +400,7 @@ public class PSConvertCustomSearchOperator extends PSDefaultExtension
    private String formatMultiValues(String beColName, Object[] vals, 
       String[] ops)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       for (int i = 0; i < vals.length && i < ops.length; i++)
       {
          if (i > 0)

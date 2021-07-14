@@ -23,19 +23,17 @@
  */
 package com.percussion.utils.string;
 
-import static org.apache.commons.lang.Validate.*;
+import com.percussion.utils.jsr170.PSPath;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
-
-import com.percussion.utils.jsr170.PSPath;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Useful string utilities
@@ -608,7 +606,7 @@ public class PSStringUtils
       if (validateContentTypeName(name) == null)
          return name;
       
-      StringBuffer nameBuff = new StringBuffer();
+      StringBuilder nameBuff = new StringBuilder();
       for (int i = 0; i < name.length(); i++)
       {
          final char ch = name.charAt(i);

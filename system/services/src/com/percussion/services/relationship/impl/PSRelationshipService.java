@@ -46,7 +46,14 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is the Hibernate implementation of the <code>IPSRelationshipService</code>.
@@ -540,7 +547,7 @@ public class PSRelationshipService
       int count;
 
 
-      StringBuffer sqlBuffer = new StringBuffer();
+      StringBuilder sqlBuffer = new StringBuilder();
 
       // delete from {@link IPSConstants#PSX_RELATIONSHIPPROPERTIES}
       sqlBuffer.append("delete from PSRelationshipPropertyData p where p.m_rid = :rid");
@@ -549,7 +556,7 @@ public class PSRelationshipService
       sql.executeUpdate();
 
       // delete from IPSConstants#PSX_RELATIONSHIPS
-      sqlBuffer = new StringBuffer();
+      sqlBuffer = new StringBuilder();
       sqlBuffer.append("delete from PSRelationshipData r where r.rid = :rid");
       sql = sess.createQuery(sqlBuffer.toString());
       sql.setParameter("rid", new Integer(rid));
@@ -640,7 +647,7 @@ public class PSRelationshipService
       Collection<PSRelationshipPropertyData> rels = null;
       Session sess = sessionFactory.getCurrentSession();
 
-      StringBuffer qryBuffer = new StringBuffer();
+      StringBuilder qryBuffer = new StringBuilder();
       qryBuffer.append("select r from PSRelationshipPropertyData r where ")
               .append("r.m_rid = :rid");
 

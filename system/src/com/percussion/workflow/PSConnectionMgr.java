@@ -310,7 +310,7 @@ public class PSConnectionMgr
       }
       
       sIdentifier = fixIdentifierCase(sIdentifier);
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       boolean bAddedCatalog = false;
       String sCatalog = null;

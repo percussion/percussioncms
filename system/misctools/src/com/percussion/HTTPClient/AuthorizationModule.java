@@ -25,7 +25,7 @@ package com.percussion.HTTPClient;
 
 import java.io.IOException;
 import java.net.ProtocolException;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -43,11 +43,11 @@ class AuthorizationModule implements HTTPClientModule
 {
     /** This holds the current Proxy-Authorization-Info for each
         HTTPConnection */
-    private static Hashtable proxy_cntxt_list = new Hashtable();
+    private static ConcurrentHashMap proxy_cntxt_list = new ConcurrentHashMap();
 
     /** a list of deferred authorization retries (used with
 	Response.retryRequest()) */
-    private static Hashtable deferred_auth_list = new Hashtable();
+    private static ConcurrentHashMap deferred_auth_list = new ConcurrentHashMap();
 
     /** counters for challenge and auth-info lists */
     private int	auth_lst_idx,
@@ -148,7 +148,7 @@ class AuthorizationModule implements HTTPClientModule
 		    break;
 		}
 	    }
-	    Hashtable proxy_auth_list = Util.getList(proxy_cntxt_list,
+	    ConcurrentHashMap proxy_auth_list = Util.getList(proxy_cntxt_list,
 						     con.getContext());
 	    guess = (AuthorizationInfo) proxy_auth_list.get(
 				    con.getProxyHost()+":"+con.getProxyPort());

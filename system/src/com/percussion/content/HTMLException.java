@@ -45,7 +45,7 @@ public class HTMLException extends DOMException
    public String getMessage()
    {
       String msg = super.getMessage();
-      StringBuffer buf = new StringBuffer(msg.length() + 35);
+      StringBuilder buf = new StringBuilder(msg.length() + 35);
       buf.append("HTML parse error on line ");
       buf.append(getLineNumber());
       buf.append(": ");

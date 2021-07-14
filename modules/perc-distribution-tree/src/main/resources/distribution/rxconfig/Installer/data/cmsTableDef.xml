@@ -316,8 +316,8 @@
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="SESSIONID">
-                <jdbctype>CHAR</jdbctype>
-                <size>40</size>
+                <jdbctype>VARCHAR</jdbctype>
+                <size>255</size>
                 <allowsnull>yes</allowsnull>
             </column>
             <column name="ACTOR">

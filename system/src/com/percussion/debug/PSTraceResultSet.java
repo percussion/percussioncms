@@ -88,7 +88,7 @@ public class PSTraceResultSet extends PSTraceMessage
     */
    private String printResultSet(Object[] args)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       // get the column info
       String[] cols = (String[])args[0];
@@ -212,7 +212,7 @@ public class PSTraceResultSet extends PSTraceMessage
     * @param addChar the character to repeat
     * @param len the number of chars to add
     */
-   private void addChars(StringBuffer buf, char addChar, int len)
+   private void addChars(StringBuilder buf, char addChar, int len)
    {
       for (int i = 0; i < len; i++)
          buf.append(addChar);
@@ -243,7 +243,7 @@ public class PSTraceResultSet extends PSTraceMessage
       else
       {
          // pad out to desired length
-         StringBuffer buf = new StringBuffer(len);
+         StringBuilder buf = new StringBuilder(len);
          buf.append(source);
          addChars(buf, addChar, len - strLen);
          result = new String(buf);

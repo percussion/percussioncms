@@ -23,7 +23,6 @@
  */
 package com.percussion.install;
 
-import com.percussion.tablefactory.PSJdbcDbmsDef;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.w3c.dom.Element;
 
@@ -38,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.PWD_ENCRYPTED_PROPERTY;
 
 /**
  * Adds the License Monitor gadget to the Dashboard of each Admin user
@@ -79,7 +80,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
       try
       {
          m_dbProps = RxUpgrade.getRxRepositoryProps();
-         m_dbProps.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         m_dbProps.setProperty(PWD_ENCRYPTED_PROPERTY, "Y");
          conn = RxUpgrade.getJdbcConnection();
          conn.setAutoCommit(false);
 
@@ -227,7 +228,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
       
       while (matcher.find())
       {
-          matcher.appendReplacement(result, "\"col\":1,\"row\":" + String.valueOf(Integer.parseInt(matcher.group(1)) + 1));
+          matcher.appendReplacement(result, "\"col\":1,\"row\":" + (Integer.parseInt(matcher.group(1)) + 1));
       }
       matcher.appendTail(result);
       
@@ -275,7 +276,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
    /**
     * Creates the JSON string of the new gadget.
     * @param instanceId the instanceId that the new gadget will have
-    * @param String JSON representation of the new gadget
+    * @return String JSON representation of the new gadget
     */
    private String getNewGadgetJSON(int instanceId)
    {

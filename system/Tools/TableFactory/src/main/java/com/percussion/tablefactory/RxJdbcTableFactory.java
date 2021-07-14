@@ -814,7 +814,7 @@ public class RxJdbcTableFactory
 
       identifier = fixIdentifierCase(identifier);
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       boolean addedCatalog = false;
       String catalog = null;
@@ -1054,7 +1054,7 @@ public class RxJdbcTableFactory
 
       public String getSelectStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          buf.append("SELECT * FROM ");
          buf.append(m_qualifiedName);
          return buf.toString();
@@ -1062,7 +1062,7 @@ public class RxJdbcTableFactory
 
       public String getAddColumnStatement(RxColumns addColumn)
       {
-          StringBuffer buf = new StringBuffer();
+          StringBuilder buf = new StringBuilder();
 
          buf.append("ALTER TABLE ");
          buf.append(m_qualifiedName);
@@ -1076,7 +1076,7 @@ public class RxJdbcTableFactory
 
       public String getInsertStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("INSERT INTO ");
          buf.append(m_qualifiedName);
@@ -1105,7 +1105,7 @@ public class RxJdbcTableFactory
 
       public String getCreateTableStatement(boolean includePrimaryKey)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          String fullDbName = new String();
 
          buf.append("CREATE TABLE ");
@@ -1151,7 +1151,7 @@ public class RxJdbcTableFactory
 
       public String getCopyTableStatement(RxTables rxTable, String strBackupTable)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
           String strFullSource = new String();
           String strFullTarget = new String();
           if(cDB.getDataBase()== null && cDB.getSchema()!=null)
@@ -1197,7 +1197,7 @@ public class RxJdbcTableFactory
 
       public String getCreateTableStatement(RxTables rxTable)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          String fullDbName = new String();
 
          buf.append("CREATE TABLE ");
@@ -1230,7 +1230,7 @@ public class RxJdbcTableFactory
 
       public String getAddPrimaryKeyStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("ALTER TABLE ");
          buf.append(m_qualifiedName);
@@ -1251,7 +1251,7 @@ public class RxJdbcTableFactory
       public String getAddPrimaryKeyStatement(Vector vKeys, RxTables rxTable)
          throws SQLException
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          String qualifiedName = "";
           if(cDB.getDataBase()== null && cDB.getSchema()!=null)
@@ -1294,7 +1294,7 @@ public class RxJdbcTableFactory
       {
          int size = m_fKey.size();
          String[] stmts = new String[size];
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          for (int i = 0; i < size; i++)
          {
@@ -4512,7 +4512,7 @@ System.out.println("NULL Values not allowed as Update Key");
 
       public String getColumnDef()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append(m_name);
          buf.append(" ");
@@ -4584,7 +4584,7 @@ System.out.println("NULL Values not allowed as Update Key");
 
       public String getCreateIndexStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("CREATE INDEX ");
          buf.append(m_qualifiedName);

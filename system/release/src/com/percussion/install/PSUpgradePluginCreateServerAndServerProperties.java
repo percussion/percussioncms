@@ -543,6 +543,7 @@ public class PSUpgradePluginCreateServerAndServerProperties
     * 
     * @return a map with server properties initialized.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    private static Map<String, String> initializeProperties()
    {
       Map<String, String> result = new HashMap<>();

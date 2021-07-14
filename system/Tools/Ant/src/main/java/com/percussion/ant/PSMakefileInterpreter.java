@@ -23,10 +23,10 @@
  */
 package com.percussion.ant;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PSMakefileInterpreter
 {
@@ -108,7 +108,7 @@ public class PSMakefileInterpreter
 
    protected String expandMacros(String line)
    {
-      StringBuffer buf = new StringBuffer(line);
+      StringBuilder buf = new StringBuilder(line);
       for (int pos = 0; pos < buf.length(); pos++)
       {
          char c = buf.charAt(pos);

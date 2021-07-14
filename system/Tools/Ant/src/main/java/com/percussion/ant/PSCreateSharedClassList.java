@@ -23,6 +23,9 @@
  */
 package com.percussion.ant;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,9 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
 
 /**
  * Creates the xml list of shared classes that will be put into
@@ -284,7 +284,7 @@ public class PSCreateSharedClassList extends Task
    /**
     * The string buffer used to build up the xml file.
     */
-   private StringBuffer m_buffer = new StringBuffer();
+   private StringBuilder m_buffer = new StringBuilder();
    
    public final static String PACKAGE_NMK = "package.nmk";
    public final static String PACKAGE_MACRO = "PACKAGE";

@@ -136,7 +136,7 @@ public class RevisionData {
      * Returns string representation of this object
      */
     public String toString() {
-        StringBuffer sb = new StringBuffer(100);
+        StringBuilder sb = new StringBuilder(100);
         sb.append("keepMinNumberOfRevs=").append(keepMinNumberOfRevs).append("; ");
         sb.append("keepRevsYoungerThanDays=").append(keepRevsYoungerThanDays).append("; ");
         sb.append("deleteRevsAboveCount=").append(deleteRevsAboveCount).append("; ");

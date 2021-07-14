@@ -25,6 +25,13 @@ package com.percussion.util;
 
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,14 +45,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 /**
  * This class is used to handle the communications between an applet client
@@ -130,7 +129,7 @@ public class PSHttpConnection
       String boundaryUsed = "--" + boundary;
       String endBoundary = boundaryUsed + "--\r\n\r\n";
 
-      StringBuffer data = new StringBuffer(100);
+      StringBuilder data = new StringBuilder(100);
       if (! paramMap.isEmpty())
       {
          Iterator i = paramMap.keySet().iterator();
@@ -204,7 +203,7 @@ public class PSHttpConnection
       String boundaryUsed = "--" + boundary;
       String endBoundary = boundaryUsed + "--\r\n\r\n";
 
-      StringBuffer data = new StringBuffer(100);
+      StringBuilder data = new StringBuilder(100);
       data.append(boundaryUsed + "\r\n");
 
       data.append(prefix + "\"\r\n\r\n");

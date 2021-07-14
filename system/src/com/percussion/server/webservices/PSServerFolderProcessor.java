@@ -1814,7 +1814,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
     */
    private String formatSummaryNames(Iterator summaries)
    {
-      StringBuffer names = new StringBuffer("");
+      StringBuilder names = new StringBuilder("");
 
       while (summaries.hasNext())
       {
@@ -5292,7 +5292,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
          if (!duplicateChildren.isEmpty())
          {
             PSFolder targetFolder = loadFolder(target);
-            StringBuffer skippedItems = new StringBuffer();
+            StringBuilder skippedItems = new StringBuilder();
             Iterator duplicates = duplicateChildren.iterator();
             while (duplicates.hasNext())
             {

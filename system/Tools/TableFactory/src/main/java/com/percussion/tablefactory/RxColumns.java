@@ -61,7 +61,7 @@ public class RxColumns
   int     getColAction(){return colAction;}
   public String getColumnDef()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       buf.append(colName);
       buf.append(" ");

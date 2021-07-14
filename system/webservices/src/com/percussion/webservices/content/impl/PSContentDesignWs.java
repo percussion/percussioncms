@@ -211,7 +211,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
           PSContentEditorHandler.addHiddenFieldsView(ctEditor, viewName);
       }
       
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       buffer.append(node.getQueryRequest());
       buffer.append("?");
       if(readonly)

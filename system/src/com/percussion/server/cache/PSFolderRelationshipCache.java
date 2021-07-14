@@ -53,7 +53,6 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -266,7 +265,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       log.debug("Pre loading folder relationships for folder cache");
       try
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("SELECT r.RID, r.OWNER_ID, r.DEPENDENT_ID, r.CONFIG_ID FROM ");
          buf.append(PSSqlHelper.qualifyTableName(IPSConstants.PSX_RELATIONSHIPS));
@@ -342,7 +341,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       
       try
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          List<PSRelationshipConfig> aAConfigs = PSRelationshipCommandHandler.getConfigurationSet().getConfigListByCategory(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
          Map<Integer,PSRelationshipConfig> configIdMap = new HashMap<>();
@@ -568,14 +567,14 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       IPSItemEntry item;
       for (List<PSLocator> locs : locators)
       {
-         StringBuffer buffer = new StringBuffer();
+         StringBuilder buffer = new StringBuilder();
          for (PSLocator loc : locs)
          {
             item = getItem(Integer.valueOf(loc.getId()));
             if (item == null)
             {
                log.info("Cannot find item with content id, {} , but it exist in folder relationship.", loc.getId());
-               buffer = new StringBuffer(); // a broken path, reset the buffer
+               buffer = new StringBuilder(); // a broken path, reset the buffer
                break;
             }
             else

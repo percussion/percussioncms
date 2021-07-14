@@ -512,7 +512,7 @@ public class PSDtdParser
          throw new IllegalArgumentException("xis may not be null");
 
       //make a copy of the input stream
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       int read = 0;
       byte[] buf = new byte[1024];
       InputStream is = xis.getByteStream();
