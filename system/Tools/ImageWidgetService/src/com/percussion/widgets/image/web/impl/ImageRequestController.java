@@ -58,7 +58,7 @@ package com.percussion.widgets.image.web.impl;
         		response.sendError(400, emsg);
         		return null;
           }
-        	log.debug("Image key is " + imageKey);
+        	log.debug("Image key is {}", imageKey);
         	if (!this.imageCacheManager.hasImage(imageKey))
           {
         		String emsg = "The image was not found";

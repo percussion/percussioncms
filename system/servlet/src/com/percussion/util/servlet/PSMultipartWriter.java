@@ -97,7 +97,7 @@ class PSMultipartWriter extends OutputStreamWriter
     */
    public int getOutputStreamSize()
    {
-      m_Logger.debug("Output Stream size: " + m_bos.size());
+      log.debug("Output Stream size: {}", m_bos.size());
       return m_bos.size();
    }
 
@@ -127,7 +127,7 @@ class PSMultipartWriter extends OutputStreamWriter
       if (sep == null || sep.trim().length() == 0)
          throw new IllegalArgumentException("sep may not be null or empty");
 
-      m_Logger.debug("Separator is:" + sep);
+      log.debug("Separator is: {}", sep);
       m_separator = sep;
    }
 
@@ -159,7 +159,7 @@ class PSMultipartWriter extends OutputStreamWriter
       if (fvalue == null)
          throw new IllegalArgumentException("fvalue may not be empty.");
 
-      m_Logger.debug("writing field " + fname + " value " + fvalue);
+      log.debug("writing field {} value {}", fname, fvalue);
       writeln("--" + m_separator);
       writeln("Content-Disposition: form-data; name=\"" + fname + "\"");
       writeln("");
@@ -196,7 +196,7 @@ class PSMultipartWriter extends OutputStreamWriter
       if (mimeType == null || mimeType.trim().length() == 0)
          throw new IllegalArgumentException("mimeType may not be null or empty");
 
-      m_Logger.debug("writing field " + fldname + " file " + filename);
+      log.debug("writing field {} file {}", fldname, filename);
 
       File f = new File(filename);
       if (f == null)
@@ -265,7 +265,7 @@ class PSMultipartWriter extends OutputStreamWriter
       if (binaryData == null)
          throw new IllegalArgumentException("binaryData may not be null");
 
-      m_Logger.debug("writing field " + fldname);
+      log.debug("writing field {}", fldname);
       String ctype;
       if (encoding != null && encoding.length() > 0)
       {
@@ -301,7 +301,7 @@ class PSMultipartWriter extends OutputStreamWriter
     **/
    public void addEndMarker() throws IOException
    {
-      m_Logger.debug("writing end marker");
+      log.debug("writing end marker");
       writeln("--" + m_separator + "--");
       super.flush();
       m_bos.flush();
@@ -311,7 +311,7 @@ class PSMultipartWriter extends OutputStreamWriter
     * The NEW_LINE marker for HTTP is always <code>CR-LFM</code>, even if the platform
     * default is <code>LF</code> only, as it is on most Unix platforms.
     **/
-   public final static String NEW_LINE = "\r\n";
+   public static final String NEW_LINE = "\r\n";
 
    /**
     * Collects the output as bytes, initialized by ctor, never <code>null</code>
@@ -327,7 +327,7 @@ class PSMultipartWriter extends OutputStreamWriter
    /**
     * The logger for this class.
     */
-   private static final Logger m_Logger = LogManager.getLogger(PSMultipartWriter.class);;
+   private static final Logger log = LogManager.getLogger(PSMultipartWriter.class);
 
    /**
     * The multi-part form separator.
