@@ -1,3 +1,5 @@
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -27,7 +29,7 @@
     <div id="percPublishLogsContainer" class="container">
         <div class="row">
             <div class="col-lg-12">
-                <form id="percPublishLogsForm">
+                <csrf:form id="percPublishLogsForm">
                     <div class="form-row">
                         <div class="form-group col-sm">
                             <label for="percReportDays"><i18n:message key="perc.ui.publish.title@Date Range"/></label>
@@ -58,7 +60,7 @@
                             <button aria-label='<i18n:message key="perc.ui.perc.pub.reports@Delete Logs"/>' type="button" id="percDeleteServerLogs" class="btn btn-sm btn-block perc-btn-inverse"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
-                </form>
+                </csrf:form>
             </div>
         </div>
         <div class="row">

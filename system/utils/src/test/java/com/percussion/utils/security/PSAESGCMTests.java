@@ -22,8 +22,14 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.security;
+package com.percussion.utils.security;
 
+import com.percussion.security.IPSDecryptor;
+import com.percussion.security.IPSEncryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptionKeyFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;

@@ -1,13 +1,12 @@
 <%@ page session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"  %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 
+<%@page import="com.percussion.pso.imageedit.data.MasterImageMetaData"%>
+<%@page import="com.percussion.pso.imageedit.data.UserSessionData"%>
 <%@page import="com.percussion.pso.imageedit.web.ImageUrlBuilder"%>
-<%@page import="com.percussion.pso.imageedit.data.*"%>
-<%@page import="java.util.Set"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="org.apache.commons.lang.StringUtils"%>
-<%@page import="java.util.Collection"%>
 
 <%
 	ImageUrlBuilder iub = ((ImageUrlBuilder)request.getAttribute("ImageUrlBuilder"));
@@ -39,7 +38,7 @@
 	    <p><img src="/Rhythmyx/sys_resources/images/banner_bkgd.jpg"></p>	
 		<h2>Confirmation</h2>
 		<div>
-		<form method="POST">
+		<csrf:form method="POST">
 		<fieldset id="modes">
 		   <legend>Commands</legend>
 		   <p>		   
@@ -59,7 +58,7 @@
 		</p>
 		</fieldset>
 		<input type="hidden" id="action" name="action" value="" /> 
-		</form>
+		</csrf:form>
 		<p>Look through the details of the image below and decide if you wish to confirm the creation of this item in Rhythmyx.</p>
 		<p>
 		<div class="imageContainer">

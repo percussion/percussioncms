@@ -1415,6 +1415,23 @@
             <version>${project.parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard</artifactId>
+        </dependency>
+
+        <!-- Stateful web application support -->
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard-extension-session</artifactId>
+        </dependency>
+
+        <!-- JSP TAG support -->
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard-jsp-tags</artifactId>
+        </dependency>
+
     </dependencies>
     <distributionManagement>
         <snapshotRepository>

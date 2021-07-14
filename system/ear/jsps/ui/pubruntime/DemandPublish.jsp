@@ -3,6 +3,9 @@
    pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
    prefix="rxcomp"%>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -85,8 +88,8 @@ pageContext.setAttribute("edition", edition);
       <td id="_status_failed" class="datacell1font">&nbsp;</td>
    </tr>
    </table>
-   <form>
+   <csrf:form>
       <input id="requestid" name="requestid" type="hidden" value="${requestid}" />
-   </form>
+   </csrf:form>
 </body>
 </html>

@@ -1,3 +1,6 @@
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -208,7 +211,7 @@
 
 <!-- This template contains the server properties form (v2 layout) -->
 <script id="templateServerPropertiesForm" type="text/x-handlebars-template">
-    <form id="percServerPropertiesForm">
+    <csrf:form id="percServerPropertiesForm">
         <section id="percServerPropertiesCommonTarget"></section>
         <section id="percServerPropertiesFileFTPTarget"></section>
         <section id="percServerPropertiesFileFTPSTarget"></section>
@@ -220,7 +223,7 @@
         <section id="percServerPropertiesDatabaseMYSQLTarget"></section>
         <section id="percServerPropertiesDatabaseOracleTarget"></section>
         <section id="percServerPropertiesOptionalTarget"></section>
-    </form>
+    </csrf:form>
 </script>
 
 <!-- This template contains the common properties for each configuration -->

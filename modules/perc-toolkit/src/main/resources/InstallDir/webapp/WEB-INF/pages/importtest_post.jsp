@@ -9,6 +9,8 @@
 		 import="com.percussion.services.guidmgr.IPSGuidManager, com.percussion.services.guidmgr.PSGuidManagerLocator, com.percussion.services.guidmgr.PSGuidUtils, com.percussion.services.legacy.IPSCmsObjectMgr, com.percussion.services.legacy.PSCmsObjectMgrLocator, com.percussion.utils.guid.IPSGuid, com.percussion.webservices.content.IPSContentWs, com.percussion.webservices.content.PSContentWsLocator, com.percussion.webservices.security.IPSSecurityWs, com.percussion.webservices.security.PSSecurityWsLocator, javax.servlet.jsp.JspWriter"
 		 import="java.util.List"
 %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 
 	<%!
 	//initialize variables used in the JSP page
@@ -77,11 +79,11 @@
 </tr>
 </tbody></table>
 <h1>REST Import Service</h1>
-	<form id="form" action="/Rhythmyx/services/Content/import/cvaSyndicationImport" method="post">
+	<csrf:form id="form" action="/Rhythmyx/services/Content/import/cvaSyndicationImport" method="post">
 		<!--  CMS IMPORT URL:<br/><textarea rows="2" cols="80" NAME="post_url" id="post_url" ></textarea><br>  -->
 		FEED URL:<br/>
 		<textarea rows="2" cols="80" name="body" id="body"></textarea><br/>
 		<input type="submit"></input>
-	</form>
+	</csrf:form>
 </body>
 </html>

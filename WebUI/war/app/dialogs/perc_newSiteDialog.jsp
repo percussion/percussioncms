@@ -5,6 +5,8 @@
 <%@ page import="com.percussion.sitemanage.service.impl.PSSiteDataService" %>
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 
 <%--
   ~     Percussion CMS
@@ -65,7 +67,7 @@
 <i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
 <span style="position: relative; float: right; margin-top: -28px;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span>
 <div id="perc_newSiteDialog" >
-    <form id="perc_newSiteDialogForm" method="get" action="">      
+    <csrf:form id="perc_newSiteDialogForm" method="get" action="">
         <div class="ui-layout-center">
             <div id="perc_wizard_step1" class="perc_wizard_step">
 
@@ -122,5 +124,5 @@
         <div class="ui-layout-south">
             <div id="perc_newSiteDialogButtons" style="z-index: 100;"></div>
         </div>
-    </form>  
+    </csrf:form>
 </div>

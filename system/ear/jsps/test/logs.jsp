@@ -1,8 +1,10 @@
 <%@ page import="com.percussion.server.PSServer, com.percussion.services.utils.jspel.PSRoleUtilities, java.io.BufferedReader, java.io.FileNotFoundException"
          import="java.io.FileReader"
-
 %>
-
+<%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
 <%--
   ~     Percussion CMS
@@ -28,7 +30,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
 <%
-    String isEnabled = PSServer.getServerProps().getProperty("enableLogTool");
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
     if(isEnabled == null)
         isEnabled="false";
