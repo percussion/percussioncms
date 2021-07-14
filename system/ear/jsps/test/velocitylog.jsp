@@ -3,8 +3,8 @@
         import="java.util.Date"
         import="com.percussion.services.utils.jspel.*"
         import="com.percussion.i18n.*"
+        import="java.nio.charset.StandardCharsets"
 %>
-<%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
@@ -102,7 +102,7 @@
 </head>
 <body>
 <div style="background-color: white; margin: 10px; padding: 10px">
-    <csrf:form method="GET" action="#">
+    <csrf:form method="GET" action="/test/velocitylog.jsp">
         <p><img src="../sys_resources/images/banner_bkgd.jpg"></p>
         <input type="submit" id=refresh" name="refresh" value="Refresh">&nbsp;&nbsp;&nbsp;
         <label for="warning">Hide warnings:</label><input type="checkbox" id="warning" name="warning" <%= warning ? "checked" : "" %> value="on"/>

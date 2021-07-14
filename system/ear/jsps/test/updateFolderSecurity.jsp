@@ -12,9 +12,9 @@
     import="com.percussion.cms.objectstore.PSObjectAclEntry, com.percussion.cms.objectstore.IPSDbComponent, com.percussion.cms.objectstore.PSObjectAcl, com.percussion.cms.objectstore.PSFolder"
     import="java.util.Map, java.util.Set, java.util.Collections, java.util.Map.Entry, java.util.Iterator, java.util.HashMap, java.util.Arrays, java.util.ArrayList, java.util.List, org.apache.commons.lang.StringUtils, javax.servlet.jsp.JspWriter"
     import="org.apache.log4j.Logger"
+    import="com.percussion.services.utils.jspel.PSRoleUtilities"
+    import="com.percussion.server.PSServer"
     %>
-<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
-<%@ page import="com.percussion.server.PSServer" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
@@ -240,7 +240,7 @@
 <p>
 Use this page to update community and security of a folder and its descendant folders
 </p>
-<csrf:form method="POST">
+<csrf:form method="POST" action="/test/updateFolderSecurity.jsp">
 
 <%
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);

@@ -11,12 +11,10 @@
     import="com.percussion.cms.PSCmsException, com.percussion.webservices.PSErrorResultsException, com.percussion.services.security.data.PSCommunity"
     import="com.percussion.cms.objectstore.PSObjectAclEntry, com.percussion.cms.objectstore.IPSDbComponent, com.percussion.cms.objectstore.PSObjectAcl, com.percussion.cms.objectstore.PSFolder"
     import="java.util.Map, java.util.Set, java.util.Collections, java.util.Map.Entry, java.util.Iterator, java.util.HashMap, java.util.Arrays, java.util.ArrayList, java.util.List, org.apache.commons.lang.StringUtils, javax.servlet.jsp.JspWriter"
-    
+    import="com.percussion.i18n.PSI18nUtils"
+    import="com.percussion.services.utils.jspel.PSRoleUtilities"
+    import="com.percussion.server.PSServer"
     %>
-<%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
-<%@ page import="com.percussion.server.PSServer" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
@@ -260,7 +258,7 @@
 <p>
 Use this page to update item community
 </p>
-<csrf:form method="POST">
+<csrf:form method="POST" action="/test/setItemCommunity.jsp">
 
 <%
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
