@@ -198,7 +198,7 @@
                         <div class="col-12 perc-password-form-container">
                             <span class="perc-dialog-title"><i18n:message key="perc.ui.change.pw@Change Password" /></span>
                             <hr class="perc-divider-white mb-5">
-                            <csrf:form>
+                            <csrf:form method="post" action="navigationTemplates.jsp">
                                 <div class="form-group">
                                     <label for="percNewPassword"><i18n:message key="perc.ui.change.pw@Enter New Password" /></label>
                                     <input name="password" type="password" class="form-control perc-change-password-field" id="percNewPassword" placeholder='<i18n:message key="perc.ui.change.pw@Enter New Password" />'>

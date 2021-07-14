@@ -144,7 +144,7 @@
 <p>
 
 <div id="controls">
-	<csrf:form name="formAction" id="formAction" method="post">
+	<csrf:form name="formAction" id="formAction" method="post" action="sizeimage.jsp">
 	<fieldset id="modes">
 		<legend>Commands</legend>
 			<input name="file_path" id="file_path" value="" type="hidden">

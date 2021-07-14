@@ -110,7 +110,7 @@
         </div>
         <div id="perc-users-details">
 
-            <csrf:form autocomplete="off">
+            <csrf:form autocomplete="off" method="post" action="percUsers.jsp">
 				<span style="float:left;" class="perc-required-label">
 				  <label>
 					<i18n:message key="perc.ui.general@Denotes Required Field" />
