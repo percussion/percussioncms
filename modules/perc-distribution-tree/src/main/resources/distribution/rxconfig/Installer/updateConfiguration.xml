@@ -125,6 +125,7 @@
                 <entry key="optimizePublishWithMD5Check" operation="del"/>
                 <entry key="enableSQLTool" operation="del"/>
                 <entry key="enableJCRTool" operation="del"/>
+                <entry key="enableLogTool" operation="del"/>
             </propertyfile>
 
 
