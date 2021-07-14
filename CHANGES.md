@@ -1,6 +1,16 @@
-# API Change Log
+
+# Change Log
 
 This file documents changes that have been made to API's / public interfaces.
+
+## Design / Development Changes
+### Test / Debug Tools
+The Test / Debug tools have been disabled by default, and will all require user membership in the Admin role when enabled for all tool scripts. 
+To re-enable Test / Debug tools, change the enableDebugTools=false property in the rxconfig/Server/server.properties file to true and restart the CMS instance. 
+
+The tools are accessible from the /test url.
+
+This was a security change.
 
 ## Java API Changes
 
@@ -29,3 +39,12 @@ As password hashes are not intended to be reversible, the system performs the fo
 
 Post upgrade, the DefaultPasswordFilter will be used for the PSBackendTable provider by default.  This can be changed using the rxconfig/Server/config.xml file or the Server Admin tool. 
 
+## Obsolete Server Properties
+
+The following properties have been replaced by the enableDebugTools property:
+
+* enableLogTool
+* enableSQLTool
+* enableJCRTool
+
+The optimizePublishWithMD5Check property has been replaced by the optimizePublishWithChecksum property as MD5 has been deprecated and has ben replaced by SHA-256.
