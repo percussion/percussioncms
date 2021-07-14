@@ -134,7 +134,7 @@ if(request.getParameter("dbquery")!= null){
 }
 
 %>
-<csrf:form method="POST" role="form">
+<csrf:form method="POST" role="form" action="/test/sql.jsp">
 <div class="well well-lg">
       <button type="button" id="DefaultJNDIReplacer" class="btn btn-default">Default</button>
 

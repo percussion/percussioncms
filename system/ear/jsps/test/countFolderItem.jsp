@@ -10,11 +10,9 @@
     import="com.percussion.webservices.security.IPSSecurityWs, com.percussion.webservices.security.PSSecurityWsLocator, org.apache.commons.lang.StringUtils, javax.jcr.Value, javax.jcr.query.QueryResult"
     import="javax.jcr.query.Row, javax.jcr.query.RowIterator, javax.servlet.jsp.JspWriter"
     import="java.util.*,com.percussion.server.PSServer"
-
+    import="com.percussion.services.utils.jspel.PSRoleUtilities"
+    import="com.percussion.i18n.PSI18nUtils"
 %>
-<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
-<%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%
@@ -224,7 +222,7 @@ table#results th{
 <h1>Count Items</h1>
 <h2>Use this page to count sub folders and content items under a given folder</h2>
 <h4>example: //Sites/EnterpriseInvestments/InvestmentAdvice</h4>
-<csrf:form method="POST">
+<csrf:form method="POST" action="/test/countFolderItem.jsp">
 <%
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
          String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
