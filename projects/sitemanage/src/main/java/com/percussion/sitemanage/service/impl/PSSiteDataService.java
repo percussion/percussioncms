@@ -1556,8 +1556,7 @@ import static org.apache.commons.lang.Validate.notNull;
     private boolean isValidSiteName(String siteName)
     {
         siteName = StringUtils.defaultString(siteName);
-        return siteName.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$");
-
+        return siteName.matches("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$");
     }
 
     private boolean isReservedSiteName(String siteName)
