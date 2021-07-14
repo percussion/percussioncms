@@ -143,6 +143,8 @@ public class PSPurgableTempFile extends File implements AutoCloseable
                tempFile = createTempFile(prefix, suffix, dir);
             } catch (IOException ex)
             {
+               log.error(ex.getMessage());
+               log.debug(ex.getMessage(), ex);
                throw new IllegalArgumentException("Cannot create tempfile in dir "+dir.getCanonicalPath(), ex);
             }
          }

@@ -786,7 +786,7 @@ public class PSSqlHelper
          }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException e)
       {
-            ms_log.debug("reflection to call "+JBOSS_WRAPPED_CLASS+".getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment",e);
+            log.debug("reflection to call "+JBOSS_WRAPPED_CLASS+".getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment",e);
       }
 
    }
@@ -2138,15 +2138,16 @@ public class PSSqlHelper
          ms_isOracle = PSSqlHelper.isOracle(connDetail.getDriver());
          
          if (ms_isOracle)
-            ms_log.debug("The repository is an Oracle database, driver is " + connDetail.getDriver());
+            log.debug("The repository is an Oracle database, driver is {}", connDetail.getDriver());
          else
-            ms_log.debug("The repository is not an Oracle database, driver is " + connDetail.getDriver());
+            log.debug("The repository is not an Oracle database, driver is {}", connDetail.getDriver());
          
          return ms_isOracle;
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to determine database type", e);
+         log.error("Failed to determine database type, Errror: {}", e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new RuntimeException("Failed to determine database type", e);
       }
    }
@@ -2176,7 +2177,8 @@ public class PSSqlHelper
                }
             }
          } catch (SQLException e) {
-            ms_log.warn("Error listing database tables: " + e.getMessage());
+            log.warn("Error listing database tables: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
          }
       }
 
@@ -2199,7 +2201,7 @@ public class PSSqlHelper
    /**
     * Logger for PSConnectionHelper.
     */
-   private static final Logger ms_log = LogManager.getLogger("PSSqlHelper");
+   private static final Logger log = LogManager.getLogger("PSSqlHelper");
    
    /**
     * SQL State for sql exceptions which violate integrity constraints. A SQL
