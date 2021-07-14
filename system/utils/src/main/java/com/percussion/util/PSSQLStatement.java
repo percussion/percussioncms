@@ -392,7 +392,7 @@ public class PSSQLStatement implements Statement
    protected void logElapsedTime()
    {
       m_timer.stop();
-      ms_log.debug("SQL[" + m_currSQLExeCount + "]: " + m_timer.toString());
+      log.debug("SQL[" + m_currSQLExeCount + "]: " + m_timer.toString());
    }
    
    /**
@@ -407,8 +407,8 @@ public class PSSQLStatement implements Statement
       m_timer.start();
       m_currSQLExeCount = ++ms_sqlExeCount; 
       
-      ms_log.debug("SQL[" + m_currSQLExeCount + "]: \n" + m_sqlStatement);
-      ms_log.debug("\n" + m_additionalLogInfo.toString());
+      log.debug("SQL[" + m_currSQLExeCount + "]: \n" + m_sqlStatement);
+      log.debug("\n" + m_additionalLogInfo.toString());
       m_additionalLogInfo = new StringBuilder(); // flush the buffer
    }
    
@@ -431,7 +431,7 @@ public class PSSQLStatement implements Statement
     */
    protected static boolean isLogEnabled()
    {
-      return (ms_log != null && ms_log.isDebugEnabled());
+      return (log != null && log.isDebugEnabled());
    }
 
    /**
@@ -450,7 +450,7 @@ public class PSSQLStatement implements Statement
     * The logger used for this class, may be <code>null</code> if the log4j
     * has not been configured.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSSQLStatement.class);
+   private static final Logger log = LogManager.getLogger(PSSQLStatement.class);
 
    /**
     * All methods will be delegated to this object. Initialized by ctor,
