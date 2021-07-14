@@ -11,10 +11,9 @@
     import="org.jsoup.safety.Whitelist"
     import="org.owasp.encoder.Encode"
 	import="com.percussion.server.PSServer"
-	import="com.percussion.services.utils.jspel.*"
+    import="com.percussion.services.utils.jspel.*"
+    import="com.percussion.i18n.PSI18nUtils"
     %>
-<%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 	<%
