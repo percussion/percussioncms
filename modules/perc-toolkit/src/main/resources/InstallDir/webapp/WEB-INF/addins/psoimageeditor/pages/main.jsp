@@ -3,28 +3,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="str" uri="http://jakarta.apache.org/taglibs/string-1.1" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@page import="com.percussion.pso.imageedit.services.ImageSizeDefinitionManagerLocator"%>
-<%@page import="com.percussion.pso.imageedit.services.ImageSizeDefinitionManager"%>
-<%@page import="java.util.List"%>
-<%@page import="com.percussion.pso.imageedit.data.ImageSizeDefinition"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="com.percussion.pso.imageedit.data.ImageBean"%>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
+<%@page import="com.percussion.pso.imageedit.data.MasterImageMetaData"%>
+<%@page import="com.percussion.pso.imageedit.data.UserSessionData"%>
+<%@page import="com.percussion.pso.imageedit.web.ImageUrlBuilder"%>
+<%@page import="org.apache.commons.logging.Log"%>
+<%@page import="org.apache.commons.logging.LogFactory"%>
 <%
 	ImageUrlBuilder iub = ((ImageUrlBuilder)request.getAttribute("ImageUrlBuilder"));
 	UserSessionData usd = (UserSessionData)request.getSession().getAttribute("userData");
 	MasterImageMetaData mimd = usd.getMimd();
 	
 %>
-<%@page import="com.percussion.pso.imageedit.web.ImageUrlBuilder"%>
-<%@page import="com.percussion.pso.imageedit.data.UserSessionData"%>
-<%@page import="com.percussion.pso.imageedit.data.MasterImageMetaData"%>
-<%@page import="org.apache.commons.lang.StringUtils"%>
-<%@page import="com.percussion.pso.imageedit.data.ImageMetaData"%>
-<%@page import="com.percussion.pso.imageedit.data.SizedImageMetaData"%>
-
-<%@page import="org.apache.commons.logging.Log"%>
-<%@page import="org.apache.commons.logging.LogFactory"%>
-<%@page import="java.util.Enumeration"%>
 
 
 <% 
@@ -33,20 +25,21 @@
     //ImageEditorTools.logRequestAttributes(request,"main.jsp"); 
 %>
 
-<%@page import="com.percussion.pso.imageedit.services.jexl.ImageEditorTools"%>
 <html>
-	<head>
-		<title>Image Editor</title>
-		<link rel="stylesheet" href="/Rhythmyx/sys_resources/css/menupage.css" type="text/css" />
-		<link rel="stylesheet" href="/Rhythmyx/rx_resources/addins/psoimageeditor/css/image_editor_forms.css" type="text/css" />
-		<link href="/Rhythmyx/rx_resources/addins/psoimageeditor/css/image_editor_general.css" type="text/css" rel="stylesheet" />
-		 		
-		<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/jquery.js"></script>
-		<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/form.js"></script>
-		<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/psoimageeditor.js"></script>
-		<script>
-		    
-		    var dirtyFlag = ${dirtyFlag}; 
+<head>
+	<title>Image Editor</title>
+	<link rel="stylesheet" href="/Rhythmyx/sys_resources/css/menupage.css" type="text/css"/>
+	<link rel="stylesheet" href="/Rhythmyx/rx_resources/addins/psoimageeditor/css/image_editor_forms.css"
+		  type="text/css"/>
+	<link href="/Rhythmyx/rx_resources/addins/psoimageeditor/css/image_editor_general.css" type="text/css"
+		  rel="stylesheet"/>
+
+	<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/jquery.js"></script>
+	<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/form.js"></script>
+	<script type="text/javascript" src="/Rhythmyx/rx_resources/addins/psoimageeditor/js/psoimageeditor.js"></script>
+	<script>
+
+		var dirtyFlag = ${dirtyFlag};
 		    
 		    $(document).ready(
 		        function()
@@ -158,7 +151,7 @@
         </spring:hasBindErrors>
         
                
-		<form method="POST" enctype="multipart/form-data">
+		<csrf:form method="POST" enctype="multipart/form-data">
 		<fieldset id="modes">
 		<legend>Commands</legend>
 			<input name="file_path" id="file_path" value="" type="hidden">
@@ -296,6 +289,6 @@
 			</fieldset>
 			<p></p>
 			
-		</form>
+		</csrf:form>
 	</body>
 </html>

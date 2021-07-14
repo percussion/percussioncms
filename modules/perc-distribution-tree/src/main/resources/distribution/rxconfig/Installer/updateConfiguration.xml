@@ -73,58 +73,60 @@
         </propertyfile>
 
         <echo>Updating server.properties file</echo>
-        <propertyfile file="${install.dir}/rxconfig/Server/server.properties" >
-            <entry key="maxUsersAllowed" default="0"/>
-            <entry key="compressOutput" value="false"/>
-            <entry key="AUTO_MANAGE_LOCAL_PATHS" value="true"/>
-            <entry key="enabledCiphers" value="TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,LS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_DSS_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_DSS_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_DSS_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_DSS_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384,TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,TLS_DHE_DSS_WITH_AES_256_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_DSS_WITH_AES_256_CBC_SHA"/>
-            <entry key="isWidgetBuilderActive" value="true"/>
-            <entry key="publishNonPageMetadata" default="true"/>
-            <entry key="requireContentSecurityPolicy" value="true" default="true"/>
-            <entry key="contentSecurityPolicy" value="default-src * data: blob: http: https: *.percussion.com *.percussion.marketing *.percussion.services ; img-src * 'self' data: blob: http: https: 'unsafe-inline' 'unsafe-eval'; font-src * 'unsafe-inline' 'unsafe-eval' data: blob: https:; script-src * 'unsafe-inline' 'unsafe-eval' *.siteimprove.net data: blob:; style-src * 'unsafe-inline' 'unsafe-eval' data: blob:; frame-src * 'self' data: blob: https: *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; frame-ancestors * 'self'  ;"/>
-            <entry key="requireStrictTransportSecurity" default="false"/>
-            <entry key="stricttransportsecuritymaxage" default="300"/>
-            <entry key="requireXFrameOptions" value="false" default="false"/>
-            <entry key="xFrameOptions" default="SAMEORIGIN"/>
-            <entry key="requireXXSSProtection" default="true"/>
-            <entry key="xXSSProtection" default="1; mode=block"/>
-            <entry key="requireXContentTypeOptions" default="true"/>
-            <entry key="xContentTypeOptions" default="nosniff"/>
-            <entry key="requireCacheControl" default="true"/>
-            <entry key="cacheControl" default="no-cache='Set-Cookie, Set-Cookie2',must-revalidate"/>
-            <entry key="autotuneCachePercentage" default="60"/>
-            <entry key="brokenManagedLinkBehavior" default="deadLink"/>
-            <entry key="caseSensitiveUrl" default="true"/>
-            <entry key="communities_enabled" value="no" default="no"/>
-            <entry key="forceSockets" default="true"/>
-            <entry key="requireUniqueFieldNames" default="true"/>
-            <entry key="responseCloseDelay" default="10"/>
-            <entry key="catalogPageMax" default="-1"/>
-            <entry key="importPageMax" default="-1"/>
-            <entry key="importTimeOut" default="30"/>
-            <entry key="assignmentTypeCalculationFilterCommunityRoles" default="false"/>
-            <entry key="loginAutoComplete" default="off"/>
-            <entry key="sendErrorStackToClient" default="false"/>
-            <entry key="disableCrossSiteRequestForgeryCheck" default="false"/>
-            <entry key="clientSessionWarning" default="5"/>
-            <entry key="useXMLAssemblerCache" default="false"/>
-            <entry key="requireHTTPS" default="false"/>
-            <entry key="imageThumbnailWidth" default="50"/>
-            <entry key="publicCmsHostname" default=""/>
-            <entry key="requestBehindProxy" default="false"/>
-            <entry key="proxyScheme" default="http"/>
-            <entry key="proxyPort" default="9992"/>
-            <entry key="enablePagination" default="false"/>
-            <entry key="auditLogConfigurationFile" default="perc-auditlog.properties"/>
-            <entry key="enableAuditLogging" default="true"/>
-            <entry key="optimizePublishWithChecksum" default="false"/>
-            <entry key="allowPurgeRevisionsScheduledTask" value="true" default="true"/>
-            <entry key="enableSQLTool" default="false"/>
-            <entry key="enableJCRTool" default="false"/>
-            <entry key="enableLogTool" default="false"/>
-            <entry key="sameSiteCookieMode" default="Strict"/>
-
-        </propertyfile>
+            <propertyfile file="${install.dir}/rxconfig/Server/server.properties" >
+                <entry key="maxUsersAllowed" default="0"/>
+                <entry key="compressOutput" value="false"/>
+                <entry key="AUTO_MANAGE_LOCAL_PATHS" value="true"/>
+                <entry key="enabledCiphers" value="TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,LS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_DSS_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_DSS_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_DSS_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_DHE_DSS_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384,TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,TLS_DHE_DSS_WITH_AES_256_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_DSS_WITH_AES_256_CBC_SHA"/>
+                <entry key="isWidgetBuilderActive" value="true"/>
+                <entry key="publishNonPageMetadata" default="true"/>
+                <entry key="requireContentSecurityPolicy" value="true" default="true"/>
+                <entry key="contentSecurityPolicy" value="default-src * data: blob: http: https: *.percussion.com *.percussion.marketing *.percussion.services ; img-src * 'self' data: blob: http: https: 'unsafe-inline' 'unsafe-eval'; font-src * 'unsafe-inline' 'unsafe-eval' data: blob: https:; script-src * 'unsafe-inline' 'unsafe-eval' *.siteimprove.net data: blob:; style-src * 'unsafe-inline' 'unsafe-eval' data: blob:; frame-src * 'self' data: blob: https: *.percussion.com *.percussion.marketing *.percussion.services 'unsafe-inline' 'unsafe-eval'; frame-ancestors * 'self'  ;"/>
+                <entry key="requireStrictTransportSecurity" default="false"/>
+                <entry key="stricttransportsecuritymaxage" default="300"/>
+                <entry key="requireXFrameOptions" value="false" default="false"/>
+                <entry key="xFrameOptions" default="SAMEORIGIN"/>
+                <entry key="requireXXSSProtection" default="true"/>
+                <entry key="xXSSProtection" default="1; mode=block"/>
+                <entry key="requireXContentTypeOptions" default="true"/>
+                <entry key="xContentTypeOptions" default="nosniff"/>
+                <entry key="requireCacheControl" default="true"/>
+                <entry key="cacheControl" default="no-cache='Set-Cookie, Set-Cookie2',must-revalidate"/>
+                <entry key="autotuneCachePercentage" default="60"/>
+                <entry key="brokenManagedLinkBehavior" default="deadLink"/>
+                <entry key="caseSensitiveUrl" default="true"/>
+                <entry key="communities_enabled" value="no" default="no"/>
+                <entry key="forceSockets" default="true"/>
+                <entry key="requireUniqueFieldNames" default="true"/>
+                <entry key="responseCloseDelay" default="10"/>
+                <entry key="catalogPageMax" default="-1"/>
+                <entry key="importPageMax" default="-1"/>
+                <entry key="importTimeOut" default="30"/>
+                <entry key="assignmentTypeCalculationFilterCommunityRoles" default="false"/>
+                <entry key="loginAutoComplete" default="off"/>
+                <entry key="sendErrorStackToClient" default="false"/>
+                <entry key="disableCrossSiteRequestForgeryCheck" default="false"/>
+                <entry key="clientSessionWarning" default="5"/>
+                <entry key="useXMLAssemblerCache" default="false"/>
+                <entry key="requireHTTPS" default="false"/>
+                <entry key="imageThumbnailWidth" default="50"/>
+                <entry key="publicCmsHostname" default=""/>
+                <entry key="requestBehindProxy" default="false"/>
+                <entry key="proxyScheme" default="http"/>
+                <entry key="proxyPort" default="9992"/>
+                <entry key="enablePagination" default="false"/>
+                <entry key="auditLogConfigurationFile" default="perc-auditlog.properties"/>
+                <entry key="enableAuditLogging" default="true"/>
+                <entry key="optimizePublishWithChecksum" default="false"/>
+                <entry key="allowPurgeRevisionsScheduledTask" value="true" default="true"/>
+                <entry key="enableDebugTools" default="false"/>
+                <entry key="sameSiteCookieMode" default="Strict"/>
+                <!-- Properties to remove if present -->
+                <entry key="optimizePublishWithMD5Check" operation="del"/>
+                <entry key="enableSQLTool" operation="del"/>
+                <entry key="enableJCRTool" operation="del"/>
+                <entry key="enableLogTool" operation="del"/>
+            </propertyfile>
 
 
 

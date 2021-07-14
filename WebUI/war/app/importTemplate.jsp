@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -54,6 +56,8 @@
             <link rel="stylesheet" type="text/css" href="../cssMin/perc_admin.packed.min.css" />
             <link rel="stylesheet" type="text/css" href="../css/layout.css" />
             <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+        <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+        <script src="/JavaScriptServlet"></script>
             <%@include file="includes/common_js.jsp" %>
 
               <script>
@@ -67,7 +71,7 @@
               </script>
     </head>
     <body style = "margin:0; background-color:#E6E6E9">
-        <form id="perc-import-template-form" encType="multipart/form-data"  method="post" name="perc-import-template-form" style = "margin-bottom:0px">
+        <csrf:form id="perc-import-template-form" encType="multipart/form-data"  method="post" name="perc-import-template-form" style = "margin-bottom:0px">
             <div id = "perc-import-label" style = "margin-top:-4px">
                 <label style = "font-size:11px; font-family:Verdana,serif; font-weight:normal"><i18n:message key = "perc.ui.import.template@File Name"/></label>
             </div>
@@ -80,6 +84,6 @@
             <%if(status != null){%>
                 <div id="per-import-message" class="perc-import-upload-error"><%=message%></div>
             <%}%>
-        </form>
+        </csrf:form>
     </body>
 </html>

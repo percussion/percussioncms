@@ -719,5 +719,20 @@
           <version>1.0.2</version>
           <scope>test</scope>
       </dependency>
+      <dependency>
+          <groupId>org.owasp</groupId>
+          <artifactId>csrfguard</artifactId>
+      </dependency>
+      <!-- Stateful web application support -->
+      <dependency>
+          <groupId>org.owasp</groupId>
+          <artifactId>csrfguard-extension-session</artifactId>
+      </dependency>
+
+      <!-- JSP TAG support -->
+      <dependency>
+          <groupId>org.owasp</groupId>
+          <artifactId>csrfguard-jsp-tags</artifactId>
+      </dependency>
   </dependencies>
 </project>

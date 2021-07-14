@@ -9,7 +9,29 @@
     import="com.percussion.utils.guid.IPSGuid, com.percussion.utils.request.PSRequestInfo, com.percussion.webservices.content.IPSContentWs, com.percussion.webservices.content.PSContentWsLocator"
     import="com.percussion.webservices.security.IPSSecurityWs, com.percussion.webservices.security.PSSecurityWsLocator, org.apache.commons.lang.StringUtils, javax.jcr.Value, javax.jcr.query.QueryResult"
     import="javax.jcr.query.Row, javax.jcr.query.RowIterator, javax.servlet.jsp.JspWriter"
-    import="java.util.*"
+    import="java.util.*,com.percussion.server.PSServer"
+
+%>
+<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
+<%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
+
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
+    String fullrolestr = PSRoleUtilities.getUserRoles();
+
+    if (!fullrolestr.contains("Admin"))
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
 
 %>
 <%--
@@ -202,7 +224,7 @@ table#results th{
 <h1>Count Items</h1>
 <h2>Use this page to count sub folders and content items under a given folder</h2>
 <h4>example: //Sites/EnterpriseInvestments/InvestmentAdvice</h4>
-<form method="POST"> 
+<csrf:form method="POST">
 <%
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
          String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
@@ -227,7 +249,7 @@ table#results th{
          
 %>
 <p><input type="text" name="folderpath" size="80" value="<%=lastquery%>" /><input type="submit" name="execute" value="execute" label="Execute" /></p>
-</form>
+</csrf:form>
 <%if (request.getMethod().equals("POST")
                && request.getParameter("execute").equals("execute"))
   {

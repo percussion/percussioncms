@@ -1,5 +1,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
-
+<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities,com.percussion.server.PSServer,com.percussion.i18n.PSI18nUtils" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -23,7 +25,23 @@
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
+<%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
+    String fullrolestr = PSRoleUtilities.getUserRoles();
+
+    if (!fullrolestr.contains("Admin"))
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+
+%>
 <html>
 	<head>
 		<title>Debugging and testing pages</title>

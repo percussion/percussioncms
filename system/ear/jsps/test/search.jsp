@@ -13,10 +13,14 @@
 	import="com.percussion.server.PSServer"
 	import="com.percussion.services.utils.jspel.*"
     %>
+<%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 	<%
 String fullrolestr = PSRoleUtilities.getUserRoles();
 
-String isEnabled = PSServer.getServerProps().getProperty("enableJCRTool");
+String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
 if(isEnabled == null)
    isEnabled="false";
@@ -46,7 +50,7 @@ if (!fullrolestr.contains("Admin"))
 <p>
 Use this page to debug JSR-170 SQL-like queries
 </p>
-<form method="POST"> 
+<csrf:form method="POST">
 Parameters
 <br>
 <%
@@ -98,7 +102,7 @@ Parameters
 </textarea>
 <br/>
 <input type="submit" name="execute" value="execute" label="Execute" /> 
-</form>
+</csrf:form>
 <p>
 <%if (request.getMethod().equals("POST")
                && request.getParameter("execute").equals("execute"))

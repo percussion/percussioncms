@@ -1,11 +1,13 @@
-<%@page import="java.util.List"%>
-<%@page import="java.util.Iterator"%>
 <%@page import="com.percussion.pso.preview.SiteFolderLocation"%>
-<%@page import="com.percussion.pso.preview.SiteFolderFinderImpl"%>
+<%@page import="org.apache.commons.lang.StringUtils"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
 <html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
-<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <jsp:useBean id="preview" class="com.percussion.pso.preview.SiteFolderFinderImpl" scope="request"/> 
 
 <head><title>Preview Tester Page</title> 
@@ -17,12 +19,12 @@ String cid = StringUtils.defaultString(request.getParameter("sys_contentid"));
 String fid = StringUtils.defaultString(request.getParameter("sys_folderid")); 
 String sid = StringUtils.defaultString(request.getParameter("sys_siteid")); 
 %>
-<form method="POST"> 
+<csrf:form method="POST">
 <p>Content ID:<input name="sys_contentid" type="text" value="<%=cid%>" /> </p>
 <p>Folder ID:<input name="sys_folderid" type="text" value="<%=fid%>"/> </p>
 <p>Site ID:<input name="sys_siteid" type="text" value="<%=sid%>" /> </p>
 <p><input name="submit" type="submit" value="submit" /> </p>
-</form>
+</csrf:form>
 <%
 if(StringUtils.isNotBlank(cid))  
 {

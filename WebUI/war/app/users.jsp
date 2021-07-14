@@ -3,6 +3,8 @@
 <%@ page import="com.percussion.utils.service.impl.PSUtilityService" %>
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -71,8 +73,8 @@
     <!-- Themes never should be concatenated or packed -->
     <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
     <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
-    <script
-            src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale %>"></script>
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+    <script src="/JavaScriptServlet"></script>
 
     <% if (isDebug) { %>
     <!-- CSS Includes -->
@@ -206,7 +208,7 @@
             </div>
             <div id="perc-users-details">
                 <div id="perc-users-info">
-                    <form autocomplete="off">
+                    <csrf:form autocomplete="off">
                         <div id="perc-users-edit-user-button" title=<i18n:message key = "perc.ui.users@Edit User Details"/>></div>
                         <div id="perc-users-username-label"><i18n:message key = "perc.ui.workflow@Name"/><br/>
                             <input id="perc-users-username-field" autocomplete="nope"/>
@@ -228,7 +230,7 @@
                         <div id="perc-users-email-label"><i18n:message key = "perc.ui.users@Email"/><br/>
                             <input id="perc-users-email-field" maxlength="250"/>
                         </div>
-                    </form>
+                    </csrf:form>
                 </div>
                 <div id="perc-users-roles-editor">
                     <div id="perc-users-available-roles">
