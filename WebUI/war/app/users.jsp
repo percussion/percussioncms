@@ -208,7 +208,7 @@
             </div>
             <div id="perc-users-details">
                 <div id="perc-users-info">
-                    <csrf:form autocomplete="off">
+                    <csrf:form autocomplete="off" action="users.jsp" method="post">
                         <div id="perc-users-edit-user-button" title=<i18n:message key = "perc.ui.users@Edit User Details"/>></div>
                         <div id="perc-users-username-label"><i18n:message key = "perc.ui.workflow@Name"/><br/>
                             <input id="perc-users-username-field" autocomplete="nope"/>
