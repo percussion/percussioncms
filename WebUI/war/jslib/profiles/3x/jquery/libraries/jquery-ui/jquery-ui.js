@@ -19418,7 +19418,8 @@ $.widget( "ui.tooltip", {
 			.attr( {
 				role: "log",
 				"aria-live": "assertive",
-				"aria-relevant": "additions"
+				"aria-relevant": "additions",
+				"style":"display:none;"
 			} )
 			.appendTo( this.document[ 0 ].body );
 		this._addClass( this.liveRegion, null, "ui-helper-hidden-accessible" );
