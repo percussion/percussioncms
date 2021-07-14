@@ -80,6 +80,7 @@ import com.percussion.share.service.PSAbstractDataService;
 import com.percussion.share.service.PSSiteCopyUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.validation.PSValidationErrors;
@@ -845,7 +846,7 @@ import static org.apache.commons.lang.Validate.notNull;
         }
     }
 
-    public PSSite save(PSSite site) throws PSDataServiceException {
+    public PSSite save(PSSite site) throws PSDataServiceException, PSParametersValidationException {
         PSSiteCopyUtils.throwCopySiteMessageIfSameTargetName(site.getName(), "save",
                 PSSiteCopyUtils.CAN_NOT_CREATE_SAME_COPIED_SITE_NAME);
         validateNewSite(site);
