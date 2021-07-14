@@ -158,7 +158,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while deleting form : {}, Error: {}", e.getLocalizedMessage(), e.getMessage());
+            log.error("Exception occurred while deleting form, Error: {}", e.getMessage());
             log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -442,7 +442,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 try {
                     formService.save(form);
                 } catch (IllegalArgumentException e) {
-                    log.error("Exception occurred while saving a form : {}, Error: {}", e.getLocalizedMessage(), e.getMessage());
+                    log.error("Exception occurred while saving a form, Error: {}", e.getMessage());
                     log.debug(e.getMessage(), e);
 
                     WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
@@ -465,7 +465,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception ex)
         {
-            log.error("Exception occurred during form creation : {} Error: {}", ex.getMessage(),ex.getMessage());
+            log.error("Exception occurred during form creation, Error: {}", ex.getMessage());
             log.debug(ex.getMessage(), ex);
             WebApplicationException webEx = new WebApplicationException(ex, Response.serverError().build());
             handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
@@ -524,7 +524,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Cannot email form data, unexpected error: {}, Error: {}", e.getMessage());
+            log.error("Cannot email form data, unexpected error, Error: {}", e.getMessage());
             log.debug(e.getMessage(), e);
         }
     }
@@ -572,7 +572,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting form summaries : {}, Error: {}", e.getLocalizedMessage(), e.getMessage());
+            log.error("Exception occurred while getting form summaries, Error: {}", e.getMessage());
             log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -608,7 +608,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting all form summaries : {}, Error: {}", e.getLocalizedMessage(), e.getMessage());
+            log.error("Exception occurred while getting all form summaries, Error: {}", e.getMessage());
             log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -635,12 +635,9 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             forms = formService.findFormsByName(formName);
 
             if(log.isDebugEnabled()){
-                log.debug("Forms by name(" + formName + ") : " + forms.toString());
+                log.debug("Forms by name({}) : {}", formName, forms.toString());
             }
-            else{
-                log.debug("Forms by name(" + formName + ") : " + forms.toString());
-
-            }
+            
 
             formService.markAsExported(forms);
 
@@ -650,7 +647,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while exporting the form : {}, Error: {}", e.getLocalizedMessage(), e.getMessage());
+            log.error("Exception occurred while exporting the form, Error: {}", e.getMessage());
             log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
