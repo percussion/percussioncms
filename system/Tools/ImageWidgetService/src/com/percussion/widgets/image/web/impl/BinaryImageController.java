@@ -57,7 +57,7 @@ package com.percussion.widgets.image.web.impl;
         {
         initServices();
         String uri = request.getRequestURI();
-        log.debug("uri is " + uri);
+        log.debug("uri is {}", uri);
         String imageKey = extractKey(uri);
         if (StringUtils.isBlank(imageKey))
           {
@@ -66,7 +66,7 @@ package com.percussion.widgets.image.web.impl;
           response.sendError(400, emsg);
           return null;
           }
-        log.debug("Image key is " + imageKey);
+        log.debug("Image key is {}", imageKey);
         if (!this.cacheManager.hasImage(imageKey))
           {
           String emsg = "The image was not found";
@@ -80,7 +80,7 @@ package com.percussion.widgets.image.web.impl;
         int sz = Long.valueOf(data.getSize()).intValue();
         if (sz > 0)
           {
-          log.debug("image size is " + sz);
+          log.debug("image size is {}", sz);
           response.setContentLength(sz);
           response.setStatus(200);
           try(ServletOutputStream ostream = response.getOutputStream()) {
