@@ -74,6 +74,7 @@
                                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: results});
                                     }else
                                     {
+                                        $.datepicker._hideDatepicker();
                                         dialog.remove();
                                     }
 								});
@@ -83,6 +84,7 @@
                     },
                     "Cancel":{
                        click: function(){
+                           $.datepicker._hideDatepicker();
                             dialog.remove();
                         },
                         id: "perc-schedule-dialog-cancel"

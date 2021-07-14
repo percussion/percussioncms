@@ -199,15 +199,7 @@
 
             // In this case, "this" represents the menu entry
             var state_enabled = evt.target.classList.contains("ui-enabled");
-            if (entriesListenedLeft === 1 && entriesDisabled === menuEntries.length - 1)
-            {
-                // If there only 1 entry left to trigger the event, and the previous ones were
-                // all disabled, then its states determines the state of the button
-                enableButton(state_enabled);
-                entriesListenedLeft = menuEntries.length;
-                entriesDisabled = 0;
-            }
-            else if (entriesListenedLeft === 1 && entriesDisabled < menuEntries.length - 1)
+            if (entriesListenedLeft === 1 && entriesDisabled < menuEntries.length )
             {
                 enableButton(true);
                 entriesListenedLeft = menuEntries.length;
