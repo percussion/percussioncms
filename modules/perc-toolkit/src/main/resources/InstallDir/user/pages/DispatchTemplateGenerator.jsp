@@ -295,7 +295,7 @@ private String getSiteList(IPSSiteManager siteSvc , Logger logger, JspWriter out
 	json = json + "]}";
 	return json;
 } %>
-<csrf:form method="post">
+<csrf:form method="post" action="DispatchTemplateGenerator.jsp">
 	<label for="sitelist">Select A Site:</label><select name="sitelist" id="sitelist">
 	</select>
 	<br />

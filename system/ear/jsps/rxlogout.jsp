@@ -70,7 +70,7 @@
             <tr>
                 <td align="center">
                     <div class='perc-login'>
-                        <csrf:form id="loginform" name="loginform" method="post" enctype="multipart/form-data">
+                        <form id="loginform" name="loginform" method="post" enctype="multipart/form-data">
                             <div class='perc-login-logo'><img src="/sys_resources/images/percussion-logo.png" alt="${rxcomp:i18ntext('general@Percussion Logo Alt',locale)}" title="${rxcomp:i18ntext('general@Percussion Logo Title',locale)}"/></div>
                             <table class='perc-form'> 
                                 <tr>
@@ -80,7 +80,7 @@
                                     </td>
                                 </tr>   
                             </table>
-                        </csrf:form>
+                        </form>
                     </div>
                 </td>
             </tr>

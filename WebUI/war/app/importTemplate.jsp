@@ -71,7 +71,7 @@
               </script>
     </head>
     <body style = "margin:0; background-color:#E6E6E9">
-        <csrf:form id="perc-import-template-form" encType="multipart/form-data"  method="post" name="perc-import-template-form" style = "margin-bottom:0px">
+        <csrf:form id="perc-import-template-form" encType="multipart/form-data"  method="post" name="perc-import-template-form" style = "margin-bottom:0px" action="importTemplate.jsp">
             <div id = "perc-import-label" style = "margin-top:-4px">
                 <label style = "font-size:11px; font-family:Verdana,serif; font-weight:normal"><i18n:message key = "perc.ui.import.template@File Name"/></label>
             </div>

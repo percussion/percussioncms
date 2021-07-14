@@ -19,7 +19,7 @@ String cid = StringUtils.defaultString(request.getParameter("sys_contentid"));
 String fid = StringUtils.defaultString(request.getParameter("sys_folderid")); 
 String sid = StringUtils.defaultString(request.getParameter("sys_siteid")); 
 %>
-<csrf:form method="POST">
+<csrf:form method="POST" action="PreviewTest.jsp">
 <p>Content ID:<input name="sys_contentid" type="text" value="<%=cid%>" /> </p>
 <p>Folder ID:<input name="sys_folderid" type="text" value="<%=fid%>"/> </p>
 <p>Site ID:<input name="sys_siteid" type="text" value="<%=sid%>" /> </p>

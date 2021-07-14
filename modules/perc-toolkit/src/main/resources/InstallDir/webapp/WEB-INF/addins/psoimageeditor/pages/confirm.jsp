@@ -38,7 +38,7 @@
 	    <p><img src="/Rhythmyx/sys_resources/images/banner_bkgd.jpg"></p>	
 		<h2>Confirmation</h2>
 		<div>
-		<csrf:form method="POST">
+		<csrf:form method="POST" action="confirm.jsp">
 		<fieldset id="modes">
 		   <legend>Commands</legend>
 		   <p>		   

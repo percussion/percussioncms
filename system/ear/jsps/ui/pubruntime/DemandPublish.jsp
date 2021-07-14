@@ -88,8 +88,8 @@ pageContext.setAttribute("edition", edition);
       <td id="_status_failed" class="datacell1font">&nbsp;</td>
    </tr>
    </table>
-   <csrf:form>
+   <form>
       <input id="requestid" name="requestid" type="hidden" value="${requestid}" />
-   </csrf:form>
+   </form>
 </body>
 </html>
