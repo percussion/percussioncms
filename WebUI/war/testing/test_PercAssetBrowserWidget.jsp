@@ -1,3 +1,7 @@
+<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -24,16 +28,16 @@
 
 <html>
 <head>
-<script src="/Rhythmyx/tmx/tmx.jsp?mode=js&prefix=perc.ui.&sys_lang="en-us"></script>
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&prefix=perc.ui.&sys_lang="en-us"></script>
+    <script src="/JavaScriptServlet"></script>
 
 <%@include file="../app/includes/common_js.jsp"%>
-<!--script src="../jslib/jquery-1.3.2.js"></script-->
 
 <script src="../plugins/perc_path_manager.js"></script>
 <script src="../widgets/PercContentBrowserWidget.js"></script>
 
 <script>
-	$(document).ready(function()
+	$(function()
 	{
 		$.PercAssetBrowserWidget
 		({

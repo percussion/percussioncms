@@ -9,6 +9,8 @@
          import="org.owasp.encoder.Encode"
          import="com.percussion.server.PSServer"
 %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
 <%--
   ~     Percussion CMS
@@ -49,7 +51,7 @@ private String sanitizeForHtml(String input){
 <%
 String fullrolestr = PSRoleUtilities.getUserRoles();
 
-String isEnabled = PSServer.getServerProps().getProperty("enableSQLTool");
+String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
     if(isEnabled == null)
         isEnabled="false";
@@ -132,7 +134,7 @@ if(request.getParameter("dbquery")!= null){
 }
 
 %>
-<form action="" method="POST" role="form">
+<csrf:form method="POST" role="form">
 <div class="well well-lg">
       <button type="button" id="DefaultJNDIReplacer" class="btn btn-default">Default</button>
 
@@ -157,7 +159,7 @@ if(request.getParameter("dbquery")!= null){
 	<!-- The submission button. -->
 	<button type="submit" href="" class="btn btn-primary">Submit</button>
   </div>
-</form>
+</csrf:form>
 </div>
 
 <!-- Another container to keep the page looking good -->

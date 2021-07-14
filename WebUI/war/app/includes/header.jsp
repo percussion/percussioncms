@@ -5,6 +5,8 @@
 <%@page import="java.text.MessageFormat" %>
 <%@page import="java.util.Calendar" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%
     String locale= PSRoleUtilities.getUserCurrentLocale();
     String lang="en";

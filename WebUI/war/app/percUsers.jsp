@@ -1,4 +1,6 @@
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ page import=" com.percussion.utils.PSSpringBeanProvider" %>
 <%@ page import="com.percussion.utils.service.impl.PSUtilityService" %>
@@ -108,7 +110,7 @@
         </div>
         <div id="perc-users-details">
 
-            <form autocomplete="off">
+            <csrf:form autocomplete="off">
 				<span style="float:left;" class="perc-required-label">
 				  <label>
 					<i18n:message key="perc.ui.general@Denotes Required Field" />
@@ -156,7 +158,7 @@
                         </select>
                     </div>
                 </div>
-            </form>
+            </csrf:form>
         </div>
     </div>
 </div>
