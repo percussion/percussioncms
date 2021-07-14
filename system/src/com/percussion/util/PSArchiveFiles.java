@@ -24,8 +24,6 @@
 
 package com.percussion.util;
 
-import org.apache.tools.ant.taskdefs.Zip;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -433,7 +431,7 @@ public class PSArchiveFiles
       for(Enumeration files=archiveFile.entries(); files.hasMoreElements(); )
       {
          ZipEntry entry = (ZipEntry)files.nextElement();
-         StringBuffer errorBuf = new StringBuffer();
+         StringBuilder errorBuf = new StringBuilder();
 
          // Check whether the directory exists for this file. If not, create it.
          String dir = "";

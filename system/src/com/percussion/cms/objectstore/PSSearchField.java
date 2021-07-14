@@ -31,13 +31,12 @@ import com.percussion.util.PSStringOperation;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 
 /**
@@ -172,7 +171,7 @@ public class PSSearchField extends PSDbComponent
       if (m_values.size() > 0)
       {
          Iterator iter = m_values.iterator();
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          boolean haveValue = false;
          while (iter.hasNext())
          {
@@ -895,7 +894,7 @@ public class PSSearchField extends PSDbComponent
    {
       int nHash = super.hashCode();
 
-      StringBuffer buf = new StringBuffer(m_strDescription.toLowerCase()
+      StringBuilder buf = new StringBuilder(m_strDescription.toLowerCase()
             + m_strFieldType + m_strFieldName.toLowerCase() + m_strOperator
             + m_sequence + m_extOperator);
       Iterator iter = m_values.iterator();

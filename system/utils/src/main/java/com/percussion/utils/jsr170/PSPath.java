@@ -66,7 +66,7 @@ public final class PSPath
       @Override
       public String toString()
       {
-         StringBuffer b = new StringBuffer();
+         StringBuilder b = new StringBuilder();
          b.append(mi_name);
          if (mi_index >= 0)
          {

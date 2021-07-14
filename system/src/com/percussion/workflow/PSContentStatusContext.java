@@ -491,7 +491,7 @@ public class PSContentStatusContext implements IPSContentStatusContext
          return this.toString();
       }
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       try
       {
          buf.append("\nPSContentStatusContext:");
@@ -576,7 +576,7 @@ public class PSContentStatusContext implements IPSContentStatusContext
     */
    public String toString()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       try
       {
          buf.append("\nPSContentStatusContext:");

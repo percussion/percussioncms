@@ -563,7 +563,7 @@ public class QABackEndWriter implements IQAWriter
 
       // Must first get Driver, then connect to avoid deadlocks
       Class.forName(m_dbDriverClassName);
-      StringBuffer rval = new StringBuffer(40);
+      StringBuilder rval = new StringBuilder(40);
       rval.append("jdbc:");
       if (driver.equalsIgnoreCase("asa"))
       {
@@ -624,7 +624,7 @@ public class QABackEndWriter implements IQAWriter
     */
    private String getInsertStatement(String table, String[] fields)
    {
-      StringBuffer stmt = new StringBuffer();
+      StringBuilder stmt = new StringBuilder();
       stmt.append("INSERT INTO ");
       stmt.append(table);
       stmt.append("(");
@@ -667,7 +667,7 @@ public class QABackEndWriter implements IQAWriter
       if ( null == e )
          return "";
          
-      StringBuffer errorText   = new StringBuffer();
+      StringBuilder errorText   = new StringBuilder();
 
       int errNo = 1;
       final int maxErrors = 20;

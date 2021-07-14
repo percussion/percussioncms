@@ -23,12 +23,12 @@
  */
 package com.percussion.extension;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * A simple, immutable class used to refer uniquely to an extension by its
@@ -210,7 +210,7 @@ public class PSExtensionRef implements Serializable
     */ 
    public String getFQN()
    {
-      StringBuffer fqn = new StringBuffer();
+      StringBuilder fqn = new StringBuilder();
       fqn.append( getHandlerName() );
       fqn.append( "/" );
       fqn.append( getContext() );
@@ -346,7 +346,7 @@ public class PSExtensionRef implements Serializable
    {
       // break up into slash-separated components, each of which
       // must be a valid extension name
-      StringBuffer buf = new StringBuffer(context.length());
+      StringBuilder buf = new StringBuilder(context.length());
       StringTokenizer toker = new StringTokenizer(context, "/");
       while (toker.hasMoreTokens())
       {

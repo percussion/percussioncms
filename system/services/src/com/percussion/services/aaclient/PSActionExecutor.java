@@ -273,7 +273,7 @@ public class PSActionExecutor implements IPSWidgetHandler
       boolean editrc, boolean forDialog) throws Exception
    {
       PSAssemblerUtils autils = new PSAssemblerUtils();
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       for (int i = 0; i < results.size(); i++)
       {
          IPSAssemblyResult result = results.get(i);

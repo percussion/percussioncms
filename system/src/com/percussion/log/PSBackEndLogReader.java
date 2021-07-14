@@ -31,6 +31,7 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,9 +39,6 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Properties;
-
-import javax.naming.NamingException;
 
 /**
  * The PSBackEndLogReader class implements reading log entries from
@@ -235,7 +233,7 @@ public class PSBackEndLogReader implements IPSLogReader
 
       String andClause = " WHERE ";
 
-      StringBuffer queryString = new StringBuffer(100);
+      StringBuilder queryString = new StringBuilder(100);
       queryString.append( "SELECT L." ).append( PSLogDatabase.COL_LOG_APPL );
       queryString.append( ", L." ).append( PSLogDatabase.COL_LOG_TYPE );
       queryString.append( ", D." ).append( PSLogDatabase.COL_LOG_ID_HIGH );
@@ -391,7 +389,7 @@ public class PSBackEndLogReader implements IPSLogReader
             String logData = "";
 
             ArrayList subMessages = new ArrayList();
-            StringBuffer dataBuffer = new StringBuffer();
+            StringBuilder dataBuffer = new StringBuilder();
             int numRows = 0;
             boolean doWrite = false;
 

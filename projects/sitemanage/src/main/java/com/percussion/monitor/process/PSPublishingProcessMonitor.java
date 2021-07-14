@@ -68,7 +68,7 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
             count = jobIds.size();
         }
         
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if (count == 0)
         {

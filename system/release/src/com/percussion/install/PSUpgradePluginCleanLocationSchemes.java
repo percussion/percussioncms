@@ -194,8 +194,8 @@ public class PSUpgradePluginCleanLocationSchemes implements IPSUpgradePlugin
       List schemeKeys = new ArrayList();
       List lsDeleteData = new ArrayList();
       List paramsDeleteData = new ArrayList();
-      StringBuffer lsDeletedRows = new StringBuffer();
-      StringBuffer paramsDeletedRows = new StringBuffer();
+      StringBuilder lsDeletedRows = new StringBuilder();
+      StringBuilder paramsDeletedRows = new StringBuilder();
       PSJdbcTableData lsData = lsSchema.getTableData();
       PSJdbcTableData paramsData = paramsSchema.getTableData();
       Document doc = PSXmlDocumentBuilder.createXmlDocument();

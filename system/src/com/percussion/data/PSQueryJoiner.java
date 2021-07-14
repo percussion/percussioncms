@@ -200,7 +200,7 @@ public abstract class PSQueryJoiner implements IPSExecutionStep
 
    public java.lang.String toString()
    {
-      StringBuffer buf = new StringBuffer(128);
+      StringBuilder buf = new StringBuilder(128);
 
       switch (m_joinType) {
          case FULL_OUTER_JOIN:

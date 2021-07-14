@@ -29,8 +29,8 @@ import com.percussion.error.PSIllegalArgumentException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -70,7 +70,7 @@ public class PSOracleUpdateInsertBuilder extends PSOracleUpdateBuilder
     * @throws PSIllegalArgumentException If there are multiple tables 
     * or a PSDataExtractionException occurs.
     */
-   PSUpdateStatement generate(List logins, Hashtable connKeys)
+   PSUpdateStatement generate(List logins, ConcurrentHashMap connKeys)
       throws PSIllegalArgumentException
    {
       HashMap dtHash = new HashMap();

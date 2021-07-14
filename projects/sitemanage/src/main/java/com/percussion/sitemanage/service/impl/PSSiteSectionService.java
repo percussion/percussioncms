@@ -1707,7 +1707,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         id = resetRevision(id);
         if (!StringUtils.isEmpty(parentDisplayPath))
         {
-            StringBuffer path = new StringBuffer(parentDisplayPath);
+            StringBuilder path = new StringBuilder(parentDisplayPath);
             section.setDisplayTitlePath(path.append("/").append(section.getTitle()).toString());
         }
         

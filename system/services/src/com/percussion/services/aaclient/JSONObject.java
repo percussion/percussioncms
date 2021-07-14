@@ -23,11 +23,11 @@
  */
 package com.percussion.services.aaclient;
 
+import org.json.simple.ItemList;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.json.simple.ItemList;
 
 /**
  * @author FangYidong<fangyidong@yahoo.com.cn>
@@ -46,7 +46,7 @@ public class JSONObject extends LinkedHashMap{
     }
     
     public static String toString(String key,Object value){
-        StringBuffer sb=new StringBuffer();
+        StringBuilder sb=new StringBuilder();
         
         sb.append("\"");
         sb.append(escape(key));
@@ -74,7 +74,7 @@ public class JSONObject extends LinkedHashMap{
     public static String escape(String s){
         if(s==null)
             return null;
-        StringBuffer sb=new StringBuffer();
+        StringBuilder sb=new StringBuilder();
         for(int i=0;i<s.length();i++){
             char ch=s.charAt(i);
             switch(ch){

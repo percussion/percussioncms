@@ -129,7 +129,7 @@ public class CachingSiteLoaderImpl implements InitializingBean, SiteLoader
       CachingSiteLoaderImpl.siteMgr = siteMgr;
    }
    
-   protected List<IPSSite> getAllSites() {
+   protected synchronized List<IPSSite> getAllSites() {
 		return allSites;
 	}
 

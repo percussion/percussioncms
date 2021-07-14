@@ -221,7 +221,7 @@ public class PSStatementBlock implements IPSStatementBlock
     *
     * @param   data         the run-time context info for this request
     */
-   public void buildStatement(StringBuffer buf, PSExecutionData data)
+   public void buildStatement(StringBuilder buf, PSExecutionData data)
       throws PSDataExtractionException
    {
       // if we're doing omit when null, check if we have any null values
@@ -249,7 +249,7 @@ public class PSStatementBlock implements IPSStatementBlock
    public String buildStatement(PSExecutionData data)
       throws PSDataExtractionException
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buildStatement(buf, data);
       return buf.toString();
    }

@@ -23,12 +23,12 @@
  */
 package com.percussion.services.utils.jsf;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This converter takes a string that is meant to be a fully qualified Rx path
@@ -64,7 +64,7 @@ public class PSNormalizePath implements Converter
       {
          slashes++;
       }
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       int start = 0;
       if (slashes > 2)
          start = slashes - 2;

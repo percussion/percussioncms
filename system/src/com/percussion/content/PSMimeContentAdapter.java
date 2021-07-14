@@ -256,7 +256,7 @@ public class PSMimeContentAdapter implements IPSMimeContent
    @Override
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(50);
+      StringBuilder buf = new StringBuilder(50);
       buf.append("MIME Content\n");
       if (m_mimeType != null)
       {

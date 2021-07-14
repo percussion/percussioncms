@@ -158,7 +158,7 @@ public abstract class PSStatement implements IPSExecutionStep {
       if ((m_sqlString != null) && !forceRebuild)
          s = m_sqlString;
       else {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          for (int i = 0; i < m_blocks.length; i++) {
             m_blocks[i].buildStatement(buf, data);
          }

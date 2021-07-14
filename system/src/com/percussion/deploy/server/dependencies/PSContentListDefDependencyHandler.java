@@ -55,6 +55,9 @@ import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.publisher.data.PSContentList;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.collections.IterableMap;
+import org.apache.commons.collections.MapIterator;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,10 +65,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.collections.IterableMap;
-import org.apache.commons.collections.MapIterator;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Class to handle packaging and deploying a ContentList definition.
@@ -1015,7 +1014,7 @@ public class PSContentListDefDependencyHandler extends PSDependencyHandler
    {      
       PSIdMap idMap = ctx.getCurrentIdMap();
       String url = cList.getUrl();
-      StringBuffer base = new StringBuffer();
+      StringBuilder base = new StringBuilder();
       Map params = PSDeployComponentUtils.parseParams(url, base);
 
       if (!params.isEmpty())

@@ -38,6 +38,9 @@ import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.IPSXmlErrors;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,10 +50,6 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * This class works directly with ContentExplorer PSOptionManager, this
@@ -190,7 +189,7 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
       m_defaultLocalOptionMap = new HashMap();
 
 
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("rx_resources");
       sb.append(File.separator);
       sb.append("css");

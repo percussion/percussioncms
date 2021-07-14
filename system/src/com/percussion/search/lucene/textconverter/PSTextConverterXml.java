@@ -28,15 +28,12 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.search.lucene.PSSearchUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Extracts the text from xml and returns. Walks through all the nodes and gets
@@ -55,7 +52,7 @@ public class PSTextConverterXml implements IPSLuceneTextConverter
       try
       {
          Document doc = PSXmlDocumentBuilder.createXmlDocument(is, false);
-         StringBuffer sb = new StringBuffer();
+         StringBuilder sb = new StringBuilder();
          PSSearchUtils.getNodeText(sb,doc.getDocumentElement());
          resultText = sb.toString();
       }

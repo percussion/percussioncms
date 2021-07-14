@@ -190,7 +190,7 @@ public class PSXmlObjectStoreLockManager
     * the lock cannot be obtained. A value of < 0 means that this
     * call will block until the lock is acquired.
     *
-    * @param   lockResults The manager will fill out this results object
+    * @param   lockedResults The manager will fill out this results object
     * with detailed information about the lock acquisition attempt if
     * <CODE>lockResults</CODE> is not <CODE>null</CODE>. If it is
     * <CODE>null</CODE>, no detailed information will be filled out.

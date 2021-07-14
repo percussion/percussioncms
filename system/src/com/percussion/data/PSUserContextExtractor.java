@@ -515,7 +515,7 @@ public class PSUserContextExtractor extends PSDataExtractor
 
 
                      // build the "IN" string
-                     StringBuffer buf = new StringBuffer();
+                     StringBuilder buf = new StringBuilder();
                      Iterator values = members.iterator();
                      while (values.hasNext())
                      {

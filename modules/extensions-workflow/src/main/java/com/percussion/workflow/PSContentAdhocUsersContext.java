@@ -599,7 +599,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     */
    public String toString()
    {
-       StringBuffer buf = new StringBuffer();
+       StringBuilder buf = new StringBuilder();
        buf.append("\nPSContentAdhocUsersContext:");
        if (!m_userNameToAdhocNormalRoleIDMap.isEmpty())
        {

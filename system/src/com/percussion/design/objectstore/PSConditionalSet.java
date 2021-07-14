@@ -88,7 +88,7 @@ public class PSConditionalSet extends PSCollection
       if(this.isEmpty())
          return "";
 
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       Iterator it = this.iterator();
       PSConditional cond = null;
       String openPara = "";

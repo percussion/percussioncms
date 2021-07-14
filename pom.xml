@@ -195,7 +195,7 @@
        <commons.compress.version>1.20</commons.compress.version>
        <solr.version>8.5.0</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
-       <hikari.version>3.4.1</hikari.version>
+       <hikari.version>4.0.3</hikari.version>
        <commons-email.version>1.5</commons-email.version>
        <commons.codec.version>1.14</commons.codec.version>
        <tinymce.version>4.9.10</tinymce.version>

@@ -34,15 +34,14 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Represents a single display format object defined by the system.
@@ -450,7 +449,7 @@ public class PSDisplayFormat extends PSVersionableDbComponent implements
     */
    public String getInvalidFolderFieldNames()
    {
-      StringBuffer names = new StringBuffer();
+      StringBuilder names = new StringBuilder();
       for (int i= 0; i<ms_invalidFolderFields.length; i++)
       {
          names.append(ms_invalidFolderFields[i]);

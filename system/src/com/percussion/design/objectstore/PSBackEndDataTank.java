@@ -29,8 +29,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.Hashtable;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -203,7 +203,7 @@ public class PSBackEndDataTank extends PSComponent
     // check if we have 1+ tables
       if ( (size = tables.size()) > 1)
     {
-         Hashtable tableHash = new Hashtable();
+         ConcurrentHashMap tableHash = new ConcurrentHashMap();
          PSBackEndTable table;
 
 

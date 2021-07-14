@@ -26,9 +26,8 @@
 {
     /*
      * On document ready calls the render function, editor or read only.
-     * FIXME
      */
-    $(document).ready(function(){
+    $(function(){
 
       //listens for dropdown changes and in addition to disabling unrelated inputs, will also uncheck enable option for disabled rows
       $("#perc-social-button-type").on("change",function(){

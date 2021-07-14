@@ -42,7 +42,7 @@ public class GuidList extends ArrayList<Guid> {
 
     @Override
     public String toString(){
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         forEach(guid->sb.append(" ").append(guid.getStringValue()));
         return sb.toString();
     }

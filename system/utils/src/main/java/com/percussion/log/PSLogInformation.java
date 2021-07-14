@@ -28,7 +28,6 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 
 import java.util.Date;
-import java.util.Locale;
 
 
 /**
@@ -116,7 +115,7 @@ public abstract class PSLogInformation {
     */
    public String toXMLString()
    {
-      StringBuffer buf = new StringBuffer(100);
+      StringBuilder buf = new StringBuilder(100);
       toXMLString(buf);
       return buf.toString();
    }
@@ -137,7 +136,7 @@ public abstract class PSLogInformation {
     *            &lt;/data&gt;<BR>
     *      &lt;/PSXLogMessage&gt;
     */
-   public void toXMLString(StringBuffer buf)
+   public void toXMLString(StringBuilder buf)
    {
       com.percussion.util.PSDateFormatISO8601 dateFmt =
          new com.percussion.util.PSDateFormatISO8601();
@@ -168,7 +167,7 @@ public abstract class PSLogInformation {
 
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(100);
+      StringBuilder buf = new StringBuilder(100);
       buf.append("Message Type: " + m_type);
       buf.append("\nTime: " + m_time);
       buf.append("\nAppID: " + m_applId);
@@ -197,7 +196,7 @@ public abstract class PSLogInformation {
     */
    public String getSubMessageText()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       PSLogSubMessage[] msgs = getSubMessages();
       if (msgs != null)
       {

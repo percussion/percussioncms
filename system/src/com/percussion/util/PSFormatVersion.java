@@ -205,7 +205,7 @@ public class PSFormatVersion
   //////////////////////////////////////////////////////////////////////////////
   public String getVersionString()
   {
-     StringBuffer sb = new StringBuffer();
+     StringBuilder sb = new StringBuilder();
      String exportString = "";
 
      try

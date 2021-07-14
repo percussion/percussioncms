@@ -23,9 +23,56 @@
  */
 package com.percussion.cms.handlers;
 
-import com.percussion.cms.*;
-import com.percussion.data.*;
-import com.percussion.design.objectstore.*;
+import com.percussion.cms.IPSConstants;
+import com.percussion.cms.PSApplicationBuilder;
+import com.percussion.cms.PSChildDeletePlanBuilder;
+import com.percussion.cms.PSChildInsertPlanBuilder;
+import com.percussion.cms.PSChoiceBuilder;
+import com.percussion.cms.PSCmsException;
+import com.percussion.cms.PSDeletePlanBuilder;
+import com.percussion.cms.PSDisplayFieldElementBuilder;
+import com.percussion.cms.PSEditorChangeEvent;
+import com.percussion.cms.PSEditorDocumentBuilder;
+import com.percussion.cms.PSEditorDocumentContext;
+import com.percussion.cms.PSInlineLinkField;
+import com.percussion.cms.PSInsertPlanBuilder;
+import com.percussion.cms.PSModifyPlan;
+import com.percussion.cms.PSModifyPlanBuilder;
+import com.percussion.cms.PSModifyPlanSet;
+import com.percussion.cms.PSSequenceUpdatePlanBuilder;
+import com.percussion.cms.PSSimpleChildDeletePlanBuilder;
+import com.percussion.cms.PSSimpleChildInsertPlanBuilder;
+import com.percussion.cms.PSSingleValueBuilder;
+import com.percussion.cms.PSUpdatePlanBuilder;
+import com.percussion.data.IPSDataErrors;
+import com.percussion.data.IPSInternalResultHandler;
+import com.percussion.data.PSConditionalEvaluator;
+import com.percussion.data.PSConversionException;
+import com.percussion.data.PSDataExtractionException;
+import com.percussion.data.PSErrorCollector;
+import com.percussion.data.PSExecutionData;
+import com.percussion.data.PSExtensionRunner;
+import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.data.PSViewEvaluator;
+import com.percussion.design.objectstore.PSApplication;
+import com.percussion.design.objectstore.PSBackEndColumn;
+import com.percussion.design.objectstore.PSBackEndTable;
+import com.percussion.design.objectstore.PSContentEditor;
+import com.percussion.design.objectstore.PSContentEditorPipe;
+import com.percussion.design.objectstore.PSDataMapper;
+import com.percussion.design.objectstore.PSDataMapping;
+import com.percussion.design.objectstore.PSDataSet;
+import com.percussion.design.objectstore.PSDisplayMapper;
+import com.percussion.design.objectstore.PSDisplayMapping;
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldSet;
+import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.design.objectstore.PSSortedColumn;
+import com.percussion.design.objectstore.PSSystemValidationException;
+import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSEvaluationException;
@@ -34,14 +81,26 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.server.*;
+import com.percussion.server.IPSServerErrors;
+import com.percussion.server.PSApplicationHandler;
+import com.percussion.server.PSConsole;
+import com.percussion.server.PSPageCache;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSRequestValidationException;
+import com.percussion.server.PSServer;
+import com.percussion.server.PSUserSession;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -49,8 +108,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * This class encapsulates behavior required to handle all Modify related
@@ -150,7 +216,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
       }
       catch (SQLException e)
       {
-         StringBuffer buf = new StringBuffer(250);
+         StringBuilder buf = new StringBuilder(250);
          buf.append( System.getProperty( "line.separator" ));
          buf.append( e.getLocalizedMessage());
          SQLException next = e.getNextException();

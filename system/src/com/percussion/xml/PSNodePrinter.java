@@ -26,10 +26,6 @@ package com.percussion.xml;
 
 
 import com.percussion.utils.xml.PSSaxHelper;
-
-import java.io.IOException;
-import java.io.Writer;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.CharacterData;
@@ -41,6 +37,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  * This class is separated from PSXmlTreeWaker.java to fix a specific bug for
@@ -225,7 +224,7 @@ public class PSNodePrinter
             if(name.toLowerCase().startsWith("xsl:"))
                printNode(fChild);
             
-            StringBuffer script = new StringBuffer(80);
+            StringBuilder script = new StringBuilder(80);
             NodeList nodes = eNode.getChildNodes();
             int len = nodes.getLength();
             for(int i = 0; i < len; i++)

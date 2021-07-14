@@ -72,19 +72,19 @@ public class SqlLexer extends antlr.CharScanner
       caseSensitiveLiterals = false;
       setCaseSensitive(false);
       literals = new Hashtable();
-      literals.put(new ANTLRHashString("select", this), new Integer(4));
-      literals.put(new ANTLRHashString("null", this), new Integer(16));
-      literals.put(new ANTLRHashString("like", this), new Integer(28));
-      literals.put(new ANTLRHashString("asc", this), new Integer(31));
-      literals.put(new ANTLRHashString("or", this), new Integer(10));
-      literals.put(new ANTLRHashString("from", this), new Integer(5));
-      literals.put(new ANTLRHashString("desc", this), new Integer(32));
-      literals.put(new ANTLRHashString("by", this), new Integer(30));
-      literals.put(new ANTLRHashString("and", this), new Integer(11));
-      literals.put(new ANTLRHashString("not", this), new Integer(15));
-      literals.put(new ANTLRHashString("is", this), new Integer(14));
-      literals.put(new ANTLRHashString("order", this), new Integer(29));
-      literals.put(new ANTLRHashString("where", this), new Integer(6));
+      literals.put(new ANTLRHashString("select", this), 4);
+      literals.put(new ANTLRHashString("null", this), 16);
+      literals.put(new ANTLRHashString("like", this), 28);
+      literals.put(new ANTLRHashString("asc", this), 31);
+      literals.put(new ANTLRHashString("or", this), 10);
+      literals.put(new ANTLRHashString("from", this), 5);
+      literals.put(new ANTLRHashString("desc", this), 32);
+      literals.put(new ANTLRHashString("by", this), 30);
+      literals.put(new ANTLRHashString("and", this), 11);
+      literals.put(new ANTLRHashString("not", this), 15);
+      literals.put(new ANTLRHashString("is", this), 14);
+      literals.put(new ANTLRHashString("order", this), 29);
+      literals.put(new ANTLRHashString("where", this), 6);
    }
 
    public Token nextToken() throws TokenStreamException

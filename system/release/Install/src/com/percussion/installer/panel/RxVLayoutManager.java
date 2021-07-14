@@ -14,7 +14,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
     RxVLayoutManager is a LayoutManager that arranges components in a vertical
@@ -542,8 +542,8 @@ public class RxVLayoutManager implements LayoutManager
    private int m_defaultCodes[] = { CODE_CENTER, CODE_CENTER, 0, 0 };
    private int m_orientation = VERTICAL;
    private int m_margin = 1;
-   private Hashtable<Component, int[]> m_codeTable =
-      new Hashtable<>();
+   private ConcurrentHashMap<Component, int[]> m_codeTable =
+      new ConcurrentHashMap<>();
 
    /* Layout codes */
    private static final int CODE_CENTER = 0;

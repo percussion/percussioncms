@@ -103,7 +103,7 @@ import java.util.StringTokenizer;
  * Integers should and will be written using Java's {@link 
  * DataOutputStream#writeInt(int)} method.
  * </pre>
- * If using the {@link #sendCommand(String, int, String, List, StringBuffer)
+ * If using the {@link #sendCommand(String, int, String, List, StringBuilder)
  * sendCommand} method, the parameters for all commands should be 
  * <code>String</code>, except <code>CMD_SAVE_BINARY_FILE</code>, which should
  * be an <code>InputStream</code> for the data. 
@@ -493,7 +493,7 @@ public class PSProcessDaemon extends Thread
     * @throws Exception If any problems during communication.
     */
    public static int sendCommand(String server, int port, String cmdName, 
-         List params, StringBuffer result)
+         List params, StringBuilder result)
       throws IOException
    {
       if (null == server || server.trim().length() == 0)
@@ -644,7 +644,7 @@ public class PSProcessDaemon extends Thread
       try
       {
          ms_logger.info(
-            "Started Rhythmyx processor daemon, listening on port " + m_port);
+            "Started Rhythmyx processor daemon, listening on port {}" , m_port);
          serverSock = new ServerSocket(m_port);
          serverSock.setSoTimeout(5000);
          
@@ -976,7 +976,7 @@ public class PSProcessDaemon extends Thread
       private String handleRm(List params)
          throws Exception
       {
-         StringBuffer validateResult = new StringBuffer(1000);
+         StringBuilder validateResult = new StringBuilder(1000);
          File path = validatePath((byte[])params.get(0));
          PSLocalCommandHandler.doRemoveFileSystemObject(path);
          return "";
@@ -997,7 +997,7 @@ public class PSProcessDaemon extends Thread
       private String handleCheckFSObject(List params)
          throws Exception
       {
-         StringBuffer validateResult = new StringBuffer(1000);
+         StringBuilder validateResult = new StringBuilder(1000);
          File path = validatePath((byte[])params.get(0));
          return path.exists() ? "1" : "0";
       }
@@ -1017,7 +1017,7 @@ public class PSProcessDaemon extends Thread
       private String handleMkdir(List params)
          throws Exception
       {
-         StringBuffer validateResult = new StringBuffer(1000);
+         StringBuilder validateResult = new StringBuilder(1000);
          File dirs = validatePath((byte[])params.get(0));
          PSLocalCommandHandler.doMakeDirectories(dirs);
          return "";

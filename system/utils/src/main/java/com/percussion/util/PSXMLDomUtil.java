@@ -27,7 +27,11 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.xml.PSXmlUtil;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -166,7 +170,7 @@ public class PSXMLDomUtil
     */
    public static String getElementData(Node node)
    {
-      StringBuffer ret = new StringBuffer();
+      StringBuilder ret = new StringBuilder();
 
       if (node != null)
       {
@@ -521,7 +525,7 @@ public class PSXMLDomUtil
       if (str == null)
          throw new IllegalArgumentException("makeXmlName, null is not allowed");
 
-      StringBuffer buf = new StringBuffer(str.length());
+      StringBuilder buf = new StringBuilder(str.length());
 
       if (str.length() == 0)
       {

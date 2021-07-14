@@ -24,29 +24,14 @@
 
 package com.percussion.pagemanagement.service.impl;
 
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-
-import com.percussion.pagemanagement.data.PSTemplateSummary;
-import com.percussion.pagemanagement.data.PSWidgetItem;
-import com.percussion.share.data.IPSFolderPath;
-import com.percussion.sitemanage.importer.utils.PSManagedTagsUtils;
-
 import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.sitemanage.data.PSPageContent;
-import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.helpers.IPSImportHelper;
+import com.percussion.sitemanage.importer.utils.PSManagedTagsUtils;
 import com.percussion.utils.types.PSPair;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -115,8 +100,8 @@ public class PSPageManagementUtils
         Element docBody = pageContent.getSourceDocument().body();
         Elements bodyElems = docBody.children();
 
-        StringBuffer afterBodyStart = extractAfterBodyStartContent(bodyElems, logger);
-        StringBuffer beforeBodyClose = extractBeforeBodyClose(bodyElems, logger);
+        StringBuilder afterBodyStart = extractAfterBodyStartContent(bodyElems, logger);
+        StringBuilder beforeBodyClose = extractBeforeBodyClose(bodyElems, logger);
 
         pageContent.setAfterBodyStart(StringEscapeUtils.unescapeHtml(afterBodyStart.toString()));
         pageContent.setBeforeBodyClose(StringEscapeUtils.unescapeHtml(beforeBodyClose.toString()));
@@ -130,9 +115,9 @@ public class PSPageManagementUtils
      *            body. Assumed not <code>null</code>.
      * @param logger {@link IPSSiteImportLogger} to use. Assumed not
      *            <code>null</code>.
-     * @return {@link StringBuffer}, never <code>null</code> but may be empty.
+     * @return {@link StringBuilder}, never <code>null</code> but may be empty.
      */
-    private static StringBuffer extractBeforeBodyClose(Elements bodyElems, IPSSiteImportLogger logger)
+    private static StringBuilder extractBeforeBodyClose(Elements bodyElems, IPSSiteImportLogger logger)
     {
         Elements beforeBodyCloseElems = new Elements();
         for (int i = bodyElems.size(); i > 0; i--)
@@ -143,7 +128,7 @@ public class PSPageManagementUtils
             beforeBodyCloseElems.add(element);
         }
 
-        StringBuffer beforeBodyClose = new StringBuffer();
+        StringBuilder beforeBodyClose = new StringBuilder();
         for (int j = beforeBodyCloseElems.size(); j > 0; j--)
         {
             Element element = beforeBodyCloseElems.get(j - 1);
@@ -169,11 +154,11 @@ public class PSPageManagementUtils
      *            body. Assumed not <code>null</code>.
      * @param logger {@link IPSSiteImportLogger} to use. Assumed not
      *            <code>null</code>.
-     * @return {@link StringBuffer}, never <code>null</code> but may be empty.
+     * @return {@link StringBuilder}, never <code>null</code> but may be empty.
      */
-    private static StringBuffer extractAfterBodyStartContent(Elements bodyElems, IPSSiteImportLogger logger)
+    private static StringBuilder extractAfterBodyStartContent(Elements bodyElems, IPSSiteImportLogger logger)
     {
-        StringBuffer afterBodyStart = new StringBuffer();
+        StringBuilder afterBodyStart = new StringBuilder();
         for (Element element : bodyElems)
         {
             if (!element.tagName().equalsIgnoreCase("script"))

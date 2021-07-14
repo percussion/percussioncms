@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -21,34 +21,27 @@
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
-package com.percussion.design.catalog.macro.server;
 
-import com.percussion.design.catalog.PSCatalogRequestHandler;
+package com.percussion.security;
 
-import java.util.concurrent.ConcurrentHashMap;
-
-/**
- * This class processes macro related catalog requests for the Rhythmyx 
- * server.
+/***
+ * Provides an interface for Password Filters to use when upgrading
+ * encryption algorithms used in Password hashing.
  *
- * @see com.percussion.server.IPSRequestHandler
  */
-public class PSCatalogHandler extends PSCatalogRequestHandler
-{
-   /**
-    * Construct the macro catalog handler.
-    */
-   public PSCatalogHandler()
-   {
-      m_catalogHandlers = new ConcurrentHashMap();
-      addHandler(new PSMacroCatalogHandler());
-   }
+public interface IPSPasswordFilterUpgrade {
 
-   /**
-    * Shutdown the request handler, freeing any associated resources.
-    */
-   public void shutdown()
-   {
-      /* nothing to do here */
-   }
+    /***
+     * Will encrypt the password using the hashing / encryption
+     * routine used in the previous version of the software.
+     *
+     * This is to allow Security Providers to re-encrypt passwords
+     * on login after a security update.
+     *
+     * @param password
+     * @return
+     */
+    String legacyEncrypt(String password);
+
+    String getLegacyAlgorithm();
 }

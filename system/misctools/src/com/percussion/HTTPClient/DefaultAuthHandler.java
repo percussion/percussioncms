@@ -29,7 +29,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -1127,7 +1131,7 @@ public class DefaultAuthHandler implements AuthorizationHandler, GlobalConstants
      */
     static String hex(byte[] buf)
     {
-	StringBuffer str = new StringBuffer(buf.length*3);
+	StringBuilder str = new StringBuilder(buf.length*3);
 	for (int idx=0; idx<buf.length; idx++)
 	{
 	    str.append(Character.forDigit((buf[idx] >> 4) & 15, 16));

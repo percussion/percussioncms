@@ -142,7 +142,7 @@ public class PSContentApprovalsContext implements IPSContentApprovalsContext
     */
    public String toString()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("\nPSContentApprovalsContext: \n" +
                  "Workflow ID =     " + m_nWorkflowID  + "\n" +
                  "Transition ID =   " + m_nContentID + "\n" +

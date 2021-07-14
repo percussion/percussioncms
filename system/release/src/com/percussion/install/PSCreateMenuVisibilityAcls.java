@@ -23,6 +23,7 @@
  */
 package com.percussion.install;
 
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.IPSAcl;
@@ -38,8 +39,10 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Element;
 
+import javax.naming.NamingException;
 import java.io.PrintStream;
 import java.security.acl.NotOwnerException;
 import java.sql.Connection;
@@ -50,11 +53,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Element;
 
 /**
  * This plugin scans all menu actions (RXMENUACTION). For each menu action it
@@ -106,7 +104,7 @@ public class PSCreateMenuVisibilityAcls extends PSSpringUpgradePluginBase
    public PSPluginResponse process(IPSUpgradeModule config, Element elemData)
    {
       m_config = config;
-      StringBuffer problems = new StringBuffer();
+      StringBuilder problems = new StringBuilder();
       PrintStream logger = getLogger();
       
       Connection c = null;

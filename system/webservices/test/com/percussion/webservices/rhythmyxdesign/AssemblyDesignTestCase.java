@@ -1019,7 +1019,7 @@ public class AssemblyDesignTestCase extends PSAssemblyTestBase
 
          // update and save again
          testcreate.setDescription(testcreate.getDescription() + " - changed");
-         StringBuffer template = new StringBuffer("Line 1");
+         StringBuilder template = new StringBuilder("Line 1");
          template.append("\n");
          template.append("Line 2");
          template.append("\n");

@@ -93,7 +93,7 @@ public abstract class PSTraceMessage implements IPSTraceMessage
       BufferedWriter buf = new BufferedWriter(target);
 
       // format header
-      StringBuffer header = new StringBuffer();
+      StringBuilder header = new StringBuilder();
       header.append(NEW_LINE);
 
       // add the timestamp
