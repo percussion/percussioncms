@@ -103,7 +103,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
 
         if(log.isDebugEnabled()){
-            log.debug("Criteria in the service is :" + criteria.toJSON());
+            log.debug("Criteria in the service is : {}", criteria.toJSON());
         }
         try
         {
@@ -111,7 +111,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting comments! : " + e.getLocalizedMessage());
+            log.error("Exception occurred while getting comments!, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -132,7 +133,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             throw new IllegalArgumentException("criteria cannot be null.");
         }
         if(log.isDebugEnabled()){
-            log.debug("Criteria in the service is :" + criteria.toJSON());
+            log.debug("Criteria in the service is :{}", criteria.toJSON());
         }
         try
         {
@@ -140,7 +141,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting comments as moderator! : " + e.getLocalizedMessage());
+            log.error("Exception occurred while getting comments as moderator!, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -231,7 +233,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (IllegalArgumentException e)
         {
-            log.error("Illegal Argument Exception! : " + e.getLocalizedMessage());
+            log.error("Illegal Argument Exception!, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PSBadRequestException(e.getLocalizedMessage());
         }
     }
@@ -272,7 +275,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (NumberFormatException e)
         {
-            log.error("Number Format Exception! - Invalid " + paramName + " parameter supplied : " + e.getLocalizedMessage());
+            log.error("Number Format Exception! - Invalid {} parameter supplied, Error: {}", paramName, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new IllegalArgumentException("Invalid " + paramName + " parameter supplied");
         }
 
@@ -319,7 +323,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             }
             catch (NumberFormatException ignore)
             {
-                log.error("Number Format Exception! " + ignore.getLocalizedMessage());
+                log.error("Number Format Exception!, Error: {}", ignore.getMessage());
+                log.debug(ignore.getMessage(), ignore);
             }
         }
         int start = -1;
@@ -331,7 +336,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             }
             catch (NumberFormatException ignore)
             {
-                log.error("Number Format Exception! " + ignore.getLocalizedMessage());
+                log.error("Number Format Exception!, Error: {}", ignore.getMessage());
+                log.debug(ignore.getMessage(), ignore);
             }
         }
         try
@@ -340,7 +346,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting pages with comments : " + e.getLocalizedMessage());
+            log.error("Exception occurred while getting pages with comments, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -384,14 +391,15 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             try {
                 loc = new URI(referer);
             } catch (URISyntaxException e) {
-                log.error("Error creating redirect in Honeypot detection with message: " + e.getMessage());
+                log.error("Error creating redirect in Honeypot detection with message, Error: {}", e.getMessage());
+                log.debug(e.getMessage(), e);
                 throw new WebApplicationException(e, Response.serverError().build());
             }
             return Response.seeOther(loc).build();
         }
 
         if(log.isDebugEnabled()){
-            log.debug("Http Header in the service is :" + headers.getRequestHeaders());
+            log.debug("Http Header in the service is : {}", headers.getRequestHeaders());
         }
 
         if(tags != null && tags.size() > 0)
@@ -411,13 +419,15 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             }
             URI loc = new URI(referer + "?lastCommentId="+ newComment.getId());
             if(log.isDebugEnabled()){
-                log.debug("URI obtained is :" + loc.toString());
+                log.debug("URI obtained is : {}", loc.toString());
             }
+
             return Response.seeOther(loc).build();
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while adding comment : " + e.getLocalizedMessage());
+            log.error("Exception occurred while adding comment, Error: {}", e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
 
@@ -438,7 +448,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception ex)
         {
-            log.error("Exception occurred while deleting : " + ex.getLocalizedMessage());
+            log.error("Exception occurred while deleting, Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
@@ -458,7 +469,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception ex)
         {
-            log.error("Exception occurred while approving comments : " + ex.getLocalizedMessage());
+            log.error("Exception occurred while approving comments, Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
@@ -478,7 +490,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception ex)
         {
-            log.error("Exception occurred while rejecting comments : " + ex.getLocalizedMessage());
+            log.error("Exception occurred while rejecting comments, Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(),ex);
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
@@ -497,14 +510,15 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             String site = (String)data.get("site");
             String state = (String)data.get("state");
             if(log.isDebugEnabled()){
-                log.debug("Site in the map data is : " + site + " and state in the map data is : " + state);
+                log.debug("Site in the map data is : {} and state in the map data is : {}", site, state);
             }
 
             commentService.setDefaultModerationState(site, APPROVAL_STATE.valueOf(state));
         }
         catch(Exception ex)
         {
-            log.error("Exception occurred while setting default moderation state : " + ex.getLocalizedMessage());
+            log.error("Exception occurred while setting default moderation state, Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(),ex);
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
@@ -523,7 +537,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch(Exception ex)
         {
-            log.error("Exception occurred while getting default moderation state : " + ex.getLocalizedMessage());
+            log.error("Exception occurred while getting default moderation state, Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(),ex);
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
@@ -556,7 +571,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
 
         String version = super.getVersion();
 
-        log.info("getVersion() from PSCommentsRestService ..." + version);
+        log.info("getVersion() from PSCommentsRestService ...{}", version);
 
         return version;
     }
@@ -567,10 +582,10 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      */
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.info("Attempting to update comments for site name: " + prevSiteName);
+        log.info("Attempting to update comments for site name: {}", prevSiteName);
         boolean result = commentService.updateCommentsForRenameSite(prevSiteName, newSiteName);
         if (!result) {
-            log.error("Error updating comments for site: " + prevSiteName);
+            log.error("Error updating comments for site: {}", prevSiteName);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.status(Response.Status.NO_CONTENT).build();
