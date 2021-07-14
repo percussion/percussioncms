@@ -13,6 +13,12 @@
     import="java.util.Map, java.util.Set, java.util.Collections, java.util.Map.Entry, java.util.Iterator, java.util.HashMap, java.util.Arrays, java.util.ArrayList, java.util.List, org.apache.commons.lang.StringUtils, javax.servlet.jsp.JspWriter"
     
     %>
+<%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
+<%@ page import="com.percussion.server.PSServer" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -36,7 +42,23 @@
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
+<%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
+    String fullrolestr = PSRoleUtilities.getUserRoles();
+
+    if (!fullrolestr.contains("Admin"))
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -240,7 +262,7 @@
 <p>
 Use this page to update item community
 </p>
-<form method="POST"> 
+<csrf:form method="POST">
 
 <%
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
@@ -317,7 +339,7 @@ Community ID
 </textarea>
 <br/>
 <input type="submit" name="execute" value="execute" label="Execute" /> 
-</form>
+</csrf:form>
 <p>
 <%if (request.getMethod().equals("POST")
                && request.getParameter("execute").equals("execute"))

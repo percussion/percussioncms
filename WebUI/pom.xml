@@ -1318,5 +1318,9 @@
 
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard</artifactId>
+        </dependency>
     </dependencies>
 </project>

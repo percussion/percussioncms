@@ -212,6 +212,7 @@
        <velocity.version>2.3</velocity.version>
        <velocity.tools.version>3.1</velocity.tools.version>
        <saxon.version>6.5.3</saxon.version>
+       <owasp.csrfguard.version>4.0.0</owasp.csrfguard.version>
        <eclipse-manifest-location>META-INF</eclipse-manifest-location>
     </properties>
 
@@ -1968,6 +1969,27 @@
                 <artifactId>esapi</artifactId>
                 <version>2.1.0.1</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.owasp</groupId>
+                <artifactId>csrfguard</artifactId>
+                <version>${owasp.csrfguard.version}</version>
+            </dependency>
+
+            <!-- Stateful web application support -->
+            <dependency>
+                <groupId>org.owasp</groupId>
+                <artifactId>csrfguard-extension-session</artifactId>
+                <version>${owasp.csrfguard.version}</version>
+            </dependency>
+
+            <!-- JSP TAG support -->
+            <dependency>
+                <groupId>org.owasp</groupId>
+                <artifactId>csrfguard-jsp-tags</artifactId>
+                <version>${owasp.csrfguard.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>nl.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>

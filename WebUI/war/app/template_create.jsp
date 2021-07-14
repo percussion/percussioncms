@@ -1,5 +1,7 @@
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.ui.PSI18NTranslationKeyValues" %>
 <%--
@@ -80,11 +82,11 @@
         </div> 
         <div class="perc-panel-pages-list">    
         </div>
-        <form class="perc-template-pages-controls" action="#">
+        <csrf:form class="perc-template-pages-controls" action="#">
             <div class="previous-disabled" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>        
             <input type="text" autocomplete="off" name="perc-template-pages-controls-jump" class="perc-jump">
             <div class="next" style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>
-        </form>
+        </csrf:form>
         <div class="perc-panel-page-range"><i18n:message key = "perc.ui.template.create@Items"/><span class="perc-panel-page-group-range"></span></div>
         <div class="perc-panel-total-item"><i18n:message key = "perc.ui.template.create@Total Items"/><span class="perc-panel-total"></span></div>
     </div>

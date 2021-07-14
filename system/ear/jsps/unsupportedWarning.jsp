@@ -1,6 +1,8 @@
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="java.util.*" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components" prefix="rxcomp"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -53,7 +55,8 @@
 			<link rel="stylesheet" type="text/css" href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/>
     <script
             src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=en-us"></script>
-    <script src="/cm/cui/components/jquery/dist/jquery.min.js"></script>
+        <script src="/JavaScriptServlet"></script>
+        <script src="/cm/cui/components/jquery/dist/jquery.min.js"></script>
     <script src="/cm/cui/components/twitter-bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
     </head>
     <body>

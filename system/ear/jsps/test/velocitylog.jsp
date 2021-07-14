@@ -1,6 +1,12 @@
 <%@page import="com.percussion.server.PSServer,java.io.*,java.text.ParseException,java.text.SimpleDateFormat" pageEncoding="UTF-8"
         contentType="text/html; charset=UTF-8"
-        import="java.util.Date" %>
+        import="java.util.Date"
+        import="com.percussion.services.utils.jspel.*"
+        import="com.percussion.i18n.*"
+%>
+<%@ page import="java.nio.charset.StandardCharsets" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -24,7 +30,23 @@
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
+<%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
+    String fullrolestr = PSRoleUtilities.getUserRoles();
+
+    if (!fullrolestr.contains("Admin"))
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+
+%>
 <%
     String refresh = request.getParameter("refresh");
     String warningstr = request.getParameter("warning");
@@ -44,7 +66,7 @@
     File velocityLog = new File(txtFilePath, "velocity.log");
     String logdata = null;
     if (velocityLog.exists()) {
-        Reader r = new InputStreamReader(new FileInputStream(velocityLog), "UTF8");
+        Reader r = new InputStreamReader(new FileInputStream(velocityLog), StandardCharsets.UTF_8);
         BufferedReader br = new BufferedReader(r);
         StringBuilder b = new StringBuilder();
         String line;
@@ -79,15 +101,15 @@
     <link href="../rx_resources/css/en-us/templates.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div style="background-color: white; margin: 10px; padding-top: 0px; padding: 10px">
-    <form method="GET">
+<div style="background-color: white; margin: 10px; padding: 10px">
+    <csrf:form method="GET" action="#">
         <p><img src="../sys_resources/images/banner_bkgd.jpg"></p>
-        <input type="submit" name="refresh" value="Refresh">&nbsp;&nbsp;&nbsp;
-        Hide warnings:<input type="checkbox" name="warning" <%= warning ? "checked" : "" %> value="on">
+        <input type="submit" id=refresh" name="refresh" value="Refresh">&nbsp;&nbsp;&nbsp;
+        <label for="warning">Hide warnings:</label><input type="checkbox" id="warning" name="warning" <%= warning ? "checked" : "" %> value="on"/>
         <h3>Velocity log after <%= dfmt.format(limit) %>
         </h3>
         <%= logdata %>
-    </form>
+    </csrf:form>
 </div>
 </body>
 </html>

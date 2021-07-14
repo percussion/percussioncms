@@ -37,6 +37,8 @@
 
 
    <!-- anonymous requests -->
+   <path authType="anonymous">/cm/app/pageNotFound.jsp</path>
+   <path authType="anonymous">/JavaScriptServlet</path>
    <path authType="anonymous">/v8/security/session</path>
    <path authType="anonymous">/v8/system/sites</path>
    <path authType="anonymous">/tmx/tmx.jsp</path>
