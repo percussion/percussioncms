@@ -11,8 +11,9 @@ import="javax.sql.DataSource"
 import="java.sql.Connection"
 import="java.sql.ResultSet"
 import="java.sql.SQLException, java.sql.Statement"
-import="com.percussion.i18n.PSI18nUtils"%>
-<%@ page import="com.percussion.server.PSServer" %>
+import="com.percussion.i18n.PSI18nUtils"
+import="com.percussion.server.PSServer"
+%>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%
