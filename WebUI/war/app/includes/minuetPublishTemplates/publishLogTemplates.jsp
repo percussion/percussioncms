@@ -29,7 +29,7 @@
     <div id="percPublishLogsContainer" class="container">
         <div class="row">
             <div class="col-lg-12">
-                <csrf:form id="percPublishLogsForm">
+                <csrf:form id="percPublishLogsForm" action="publishLogTemplates.jsp" method="post">
                     <div class="form-row">
                         <div class="form-group col-sm">
                             <label for="percReportDays"><i18n:message key="perc.ui.publish.title@Date Range"/></label>

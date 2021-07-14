@@ -211,7 +211,7 @@
 
 <!-- This template contains the server properties form (v2 layout) -->
 <script id="templateServerPropertiesForm" type="text/x-handlebars-template">
-    <csrf:form id="percServerPropertiesForm">
+    <csrf:form id="percServerPropertiesForm" action="publishTemplates.jsp" method="post">
         <section id="percServerPropertiesCommonTarget"></section>
         <section id="percServerPropertiesFileFTPTarget"></section>
         <section id="percServerPropertiesFileFTPSTarget"></section>

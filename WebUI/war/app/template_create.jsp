@@ -1,9 +1,9 @@
-<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
+<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities"
+         import="com.percussion.i18n.PSI18nUtils"
+         import="com.percussion.i18n.ui.PSI18NTranslationKeyValues"
+%>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
-
-<%@ page import="com.percussion.i18n.PSI18nUtils" %>
-<%@ page import="com.percussion.i18n.ui.PSI18NTranslationKeyValues" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -82,7 +82,7 @@
         </div> 
         <div class="perc-panel-pages-list">    
         </div>
-        <csrf:form class="perc-template-pages-controls" action="#">
+        <csrf:form class="perc-template-pages-controls" method="post" action="template_create.jsp">
             <div class="previous-disabled" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>        
             <input type="text" autocomplete="off" name="perc-template-pages-controls-jump" class="perc-jump">
             <div class="next" style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>

@@ -151,7 +151,7 @@
         </spring:hasBindErrors>
         
                
-		<csrf:form method="POST" enctype="multipart/form-data">
+		<csrf:form method="POST" enctype="multipart/form-data" action="main.jsp">
 		<fieldset id="modes">
 		<legend>Commands</legend>
 			<input name="file_path" id="file_path" value="" type="hidden">

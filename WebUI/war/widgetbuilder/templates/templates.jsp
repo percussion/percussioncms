@@ -34,7 +34,7 @@
 
 	<!-- Template for General tab of widget builder -->
     <script type="text/template" id="perc-widget-general-tab-template">
-        <csrf:form name="perc-widget-general-tab-form">
+        <csrf:form name="perc-widget-general-tab-form" action="templates.jsp" method="post">
             <div type="sys_normal">
                 <label accesskey="" for="widgetname" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Name"/>:</label><br/>
                 <input id="widgetname" <@- widgetname != ''?'readonly=readonly':'' @> <@- widgetname != ''?'class=perc-disabled-input':'class="datadisplay"' @> type="text" name="widgetname" size="50" maxlength="100" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- widgetname @>"/>
@@ -84,7 +84,7 @@
 
     <!-- Template for field editor dialog of widget builder -->
     <script type="text/template" id="perc-widget-field-editor-template">
-        <csrf:form name="perc-widget-field-editor-form">
+        <csrf:form name="perc-widget-field-editor-form" action="templates.jsp" method="post">
             <div type="sys_normal">
                 <label accesskey="" for="name" class="perc-required-field"><i18n:message key="perc.ui.widget.builder@Name"/>:</label><br/>
                 <input id="name" <@- name != ''?'readonly=readonly':'' @> <@- name != ''?'class=perc-disabled-input':'class="datadisplay"' @> type="text" name="name" size="50" maxlength="50" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- name @>">
@@ -119,7 +119,7 @@
 
 	<!-- Template for display tab of widget builder -->
     <script type="text/template" id="perc-widget-display-editor-template">
-        <csrf:form name="perc-widget-display-tab-form">
+        <csrf:form name="perc-widget-display-tab-form" action="templates.jsp" method="post">
             <div type="sys_normal">
                 <textarea name="widgetHtml" wrap="soft" class="datadisplay" rows="25" cols="110"><@- widgetHtml @></textarea>
                 <br/>
@@ -129,7 +129,7 @@
 
     <!-- Template for display tab of widget builder -->
     <script type="text/template" id="perc-widget-resource-item-editor-template">
-        <csrf:form>
+        <csrf:form action="templates.jsp" method="post">
             <div type="sys_normal" class="perc-widget-resource">
                 <input type="text" class="datadisplay perc-resource-entry-field" size="50" maxlength="255" style="height: 15px; padding-top: 3px; padding-bottom: 5px;" value="<@- name @>"><span class="perc-resource-delete perc-font-icon resource-tab-button-background icon-remove fas fa-times" title='<i18n:message key="perc.ui.widget.builder@Remove Resource"/>'></span>
                 <br/>
