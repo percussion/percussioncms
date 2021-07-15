@@ -11,10 +11,11 @@
     import="com.percussion.cms.PSCmsException, com.percussion.webservices.PSErrorResultsException"
     import="com.percussion.cms.objectstore.PSObjectAclEntry, com.percussion.cms.objectstore.IPSDbComponent, com.percussion.cms.objectstore.PSObjectAcl, com.percussion.cms.objectstore.PSFolder"
     import="java.util.Map, java.util.Set, java.util.Collections, java.util.Map.Entry, java.util.Iterator, java.util.HashMap, java.util.Arrays, java.util.ArrayList, java.util.List, org.apache.commons.lang.StringUtils, javax.servlet.jsp.JspWriter"
-    import="org.apache.log4j.Logger"
+    import="org.apache.logging.log4j.Logger"
     import="com.percussion.services.utils.jspel.PSRoleUtilities"
     import="com.percussion.server.PSServer"
     %>
+<%@ page import="org.apache.logging.log4j.LogManager" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
@@ -78,7 +79,7 @@
    PSServerFolderProcessor folderProcessor = getFolderProcessor(); 
    IPSSecurityWs securityWs = PSSecurityWsLocator.getSecurityWebservice();
    Map pmap = new HashMap(); 
-   Logger logger = Logger.getLogger("UpdateFolderSecurity");
+   Logger logger = LogManager.getLogger("UpdateFolderSecurity");
 %>
 <%! 
 	/**
@@ -91,13 +92,13 @@
 		outputFolderPermission(folderIds, virtualPerm, rolePerms, out);
 		int communityId = getCommunityId(communityIdString, out);
 		
-		logger.info("Updating " + folderIds.length + " Folders ...");
+		logger.info("Updating {} Folders ...",folderIds.length);
 		for (int i=0; i < folderIds.length; i++)
 		{
 		   PSLocator id = folderIds[i];
 		   setFolderPermission(id, communityId, virtualPerm, rolePerms, out);
 		   
-		   logger.info("Updated Folder[" + i + "] ID: " + id.getId());
+		   logger.info("Updated Folder[{}] ID: {}",i,  id.getId());
 		}
 	}
 

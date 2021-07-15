@@ -187,4 +187,10 @@ public interface IPSSearchErrors
     * </TABLE>
     */
    public static final int HTML_SEARCH_MISSING_PARAMETER = 16053;
+
+   /**
+    * Use getInstance() to instead of new instance on this class
+    */
+   public static final int USE_GET_INSTANCE = 16054;
+
 }
