@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,9 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -39,9 +42,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Exception class to used to report general exceptions, or may be subclassed
@@ -288,6 +288,7 @@ public class PSJobException extends Exception
     * 
     * @throws IllegalArgumentException if <code>t</code> is <code>null</code>.
     */
+   @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
    public static String getStackTraceAsString(Throwable t)
    {
       if (t == null)
@@ -418,7 +419,7 @@ public class PSJobException extends Exception
       if ( null == e )
          return "";
          
-      StringBuffer errorText   = new StringBuffer();
+      StringBuilder errorText   = new StringBuilder();
 
       int errNo = 1;
       final int maxErrors = 20;

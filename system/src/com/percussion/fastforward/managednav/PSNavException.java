@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -165,7 +165,7 @@ public PSNavException(int code, Object[] arrayArgs, Throwable cause){
     * The message buffer for this exception.
     */
    @Deprecated
-   StringBuffer m_msg = new StringBuffer();
+   StringBuilder m_msg = new StringBuilder();
 
 }
 

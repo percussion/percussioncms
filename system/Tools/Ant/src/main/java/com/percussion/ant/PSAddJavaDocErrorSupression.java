@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.ant;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
 
 /**
  * Task to get around a bug that when viewed via eclipse a 
@@ -62,7 +62,7 @@ public class PSAddJavaDocErrorSupression extends Task
       {
          System.out.println("Adding error suppression to: " + 
             new File(m_dir, INDEX_HTML_FILE).getAbsolutePath());
-         StringBuffer contents = getContents();
+         StringBuilder contents = getContents();
          int idx = indexOfIgnoreCase(contents, "</TITLE>");
          if(idx != -1)
          {
@@ -83,7 +83,7 @@ public class PSAddJavaDocErrorSupression extends Task
     * @param str assumed not <code>null</code>.
     * @return the index position or -1 if not found.
     */
-   private int indexOfIgnoreCase(StringBuffer sb, String str)
+   private int indexOfIgnoreCase(StringBuilder sb, String str)
    {
       String buffer = sb.toString().toLowerCase();
       return buffer.indexOf(str.toLowerCase());
@@ -91,14 +91,14 @@ public class PSAddJavaDocErrorSupression extends Task
    
    /**
     * Retrieves the contents of the index html file as a
-    * <code>StringBuffer</code>.
+    * <code>StringBuilder</code>.
     * @return never <code>null</code>.
     * @throws IOException on any error.
     */
-   private StringBuffer getContents()
+   private StringBuilder getContents()
       throws IOException
    {
-      final StringBuffer sb = new StringBuffer();
+      final StringBuilder sb = new StringBuilder();
       FileInputStream fis = null;
       try
       {
@@ -124,7 +124,7 @@ public class PSAddJavaDocErrorSupression extends Task
     * @param contents assumed not <code>null</code>.
     * @throws IOException upon any error.
     */
-   private void saveFile(final StringBuffer contents)
+   private void saveFile(final StringBuilder contents)
       throws IOException
    {
       FileOutputStream fos = null;

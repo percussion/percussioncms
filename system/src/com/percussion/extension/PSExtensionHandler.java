@@ -17,11 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extension;
+
+import com.percussion.content.IPSMimeContent;
+import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.log.PSLogHandler;
+import com.percussion.log.PSLogServerWarning;
+import com.percussion.log.PSLogSubMessage;
+import com.percussion.server.PSServer;
+import com.percussion.util.IOTools;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -36,14 +44,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.percussion.content.IPSMimeContent;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.log.PSLogHandler;
-import com.percussion.log.PSLogServerWarning;
-import com.percussion.log.PSLogSubMessage;
-import com.percussion.server.PSServer;
-import com.percussion.util.IOTools;
 
 /**
  * The base class for handling all extensions.
@@ -1117,7 +1117,7 @@ public abstract class PSExtensionHandler implements IPSExtensionHandler
       if (m_logHandler == null)
       {
          PSLogSubMessage[] messages = warning.getSubMessages();
-         StringBuffer strMessage = new StringBuffer("");
+         StringBuilder strMessage = new StringBuilder("");
          for (int i=0; i<messages.length; i++)
             strMessage.append(messages[i].getText());
          System.out.println(strMessage.toString());

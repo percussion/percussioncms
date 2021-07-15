@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -56,8 +56,20 @@
      */
     var TYPE_PUT = "PUT";
 
+    var csrf_token = $('meta[name="csrf-token"]').attr('content');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS)$/.test(method));
+    }
+
     $.ajaxSetup({
-        timeout: 300000
+        timeout: 300000,
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("anti-csrf-token", csrf_token);
+            }
+        }
     });
 
     function joinURL(firstPart, secondPart){

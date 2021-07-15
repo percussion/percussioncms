@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -68,7 +68,7 @@ public class PSXmlDocumentBuilderTest extends TestCase
    protected void internalTestBooks(boolean withDtd)
       throws IOException, org.xml.sax.SAXException
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       
       if (withDtd)
          buf.append(ms_bookListDtd);
@@ -307,7 +307,7 @@ public class PSXmlDocumentBuilderTest extends TestCase
 
       public String toXmlString()
       {
-         StringBuffer buf = new StringBuffer("<Book>\n\t<title>");
+         StringBuilder buf = new StringBuilder("<Book>\n\t<title>");
          buf.append(PSXmlTreeWalker.convertToXmlEntities(m_title));
          buf.append("</title>\n");
          buf.append("\t<isbn>");

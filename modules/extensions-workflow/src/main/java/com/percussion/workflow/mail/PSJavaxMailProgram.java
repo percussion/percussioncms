@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,10 +25,7 @@
 package com.percussion.workflow.mail;
 
 import com.percussion.extension.IPSExtensionErrors;
-
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import org.apache.commons.lang.StringUtils;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -37,8 +34,9 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 /**
  * This is the default implementation of the Mail Program interface
@@ -102,12 +100,7 @@ public class PSJavaxMailProgram implements IPSMailProgram
          msg.setText(messageContext.getBody());
 
          Transport.send(msg);
-      }
-      catch (AddressException e)
-      {
-         throw new PSMailException(e);
-      }
-      catch (MessagingException e)
+      } catch (MessagingException e)
       {
          throw new PSMailException(e);
       }

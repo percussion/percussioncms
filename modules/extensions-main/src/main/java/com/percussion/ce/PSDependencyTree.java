@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -119,6 +119,8 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
       }
       catch(Exception e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          throw new PSExtensionProcessingException("sys_ceDependencyTree", e);
       }
       request.setParameters(htmlParams);
@@ -193,6 +195,8 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
       {
          PSXmlDocumentBuilder.addElement(
                parent.getOwnerDocument(), parent, "ExitError", e.getMessage());
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
       }
    }
 

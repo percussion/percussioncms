@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,9 +34,10 @@ import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSValidateSession;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -231,9 +232,10 @@ public abstract class PSCatalogRequestHandler implements IPSRequestHandler,
    protected void addHandler(IPSCatalogRequestHandler rh)
    {
       String[] reqTypes = rh.getSupportedRequestTypes();
-      
-      for (int i = 0; i < reqTypes.length; i++)
-         m_catalogHandlers.put(reqTypes[i], rh);
+
+      for (String reqType : reqTypes){
+         m_catalogHandlers.put(reqType, rh);
+      }
    }
 
 
@@ -241,5 +243,5 @@ public abstract class PSCatalogRequestHandler implements IPSRequestHandler,
     * We keep a hash of XML document types and their appropriate catalog
     * handler for fast execution of the request
     */
-   protected java.util.Hashtable      m_catalogHandlers = null;
+   protected ConcurrentHashMap m_catalogHandlers = null;
 }

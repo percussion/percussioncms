@@ -17,25 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.process;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class represents a process definition. This can be used to obtain
@@ -511,7 +511,7 @@ public class PSProcessDef
     * <code>null</code>, entries are added by calls to 
     * {@link #createResolver(PSResolvableValue)}.
     */
-   private static Map ms_resolvers = new Hashtable();
+   private static Map ms_resolvers = new ConcurrentHashMap();
 
    /**
     * Constant for the default resolver class.

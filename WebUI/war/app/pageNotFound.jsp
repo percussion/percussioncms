@@ -1,5 +1,7 @@
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 
 <%--
   ~     Percussion CMS
@@ -20,7 +22,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -51,6 +53,8 @@
     <head>
         <title><i18n:message key = "perc.ui.page.not.found@Page Not Found Error"/></title>
         <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
+        <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+        <script src="/JavaScriptServlet"></script>
         <style>
         body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
         .perc-login-logo { font-size: 48px; color: #121212; margin-top: 160px; margin-bottom: 100px;}

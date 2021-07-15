@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -129,7 +129,7 @@ class PSTableStatistics
       // then query it ourselves using select count
       if (m_cardinality < 0)
       {
-         StringBuffer qryBuf = new StringBuffer(30);
+         StringBuilder qryBuf = new StringBuilder(30);
          qryBuf.append("SELECT COUNT(*) FROM ");
          String tableName = m_table.getTable();
          
@@ -260,7 +260,7 @@ class PSTableStatistics
    public String getColumnListString(String[] cols)
    {
       // avg col name length (on traditional systems) is around 10, so ....
-      StringBuffer columnBuf = new StringBuffer(cols.length * 10);
+      StringBuilder columnBuf = new StringBuilder(cols.length * 10);
       columnBuf.append(cols[0]);
       for (int i = 1; i < cols.length; i++)
       {
@@ -308,8 +308,8 @@ class PSTableStatistics
          {
             // build the select count statement, which should look like:
             // SELECT COUNT(DISTINCT colA, colB, colC) FROM orig.table
-            StringBuffer queryStringBuf
-               = new StringBuffer(columnList.length() + 50);
+            StringBuilder queryStringBuf
+               = new StringBuilder(columnList.length() + 50);
 
             queryStringBuf.append("SELECT COUNT( DISTINCT ");
             queryStringBuf.append(columnList);
@@ -343,7 +343,7 @@ class PSTableStatistics
                card = rs.getInt(1);
             }
 
-            // store the results in the hashtable for future use
+            // store the results in the ConcurrentHashMap for future use
             cardinality = new Integer(card);
             m_uniqueCounts.put(columnList, cardinality);
          }

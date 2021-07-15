@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -959,7 +959,7 @@ public class PSAssemblyService implements IPSAssemblyService
                template = loadUnmodifiableTemplate(idstr);
                if (template == null)
                {
-                  log.error("Template could not be loaded for id " + idstr);
+                  log.error("Template could not be loaded for id {}", idstr);
                }
             }
             else if (StringUtils.isNotBlank(templatename) && !StringUtils.isNumeric(templatename))
@@ -970,7 +970,7 @@ public class PSAssemblyService implements IPSAssemblyService
                template = findTemplateByNameAndType(templatename, ctypeguid);
                if (template == null)
                {
-                  log.error("Template could not be loaded for name " + templatename + " and type " + ctypeguid);
+                  log.error("Template could not be loaded for name {} and type {}", templatename, ctypeguid);
                }
             }
             item.setTemplate(template);
@@ -1028,8 +1028,8 @@ public class PSAssemblyService implements IPSAssemblyService
 
                 String message = "Problem when evaluating expression : " + exp.getOwnerType() + " : " + exp.getOwnerName();
 
-               log.debug("ERROR ProcessBinding: " + debugMessage, e);
-                log.error("ERROR ProcessBinding: " + message);
+               log.debug("ERROR ProcessBinding: {} Error: {}", debugMessage, e.getMessage(), e);
+               log.error("ERROR ProcessBinding: {} Error: {}", message, e.getMessage());
 
                throw new RuntimeException(message, e);
             }
@@ -1776,7 +1776,7 @@ public class PSAssemblyService implements IPSAssemblyService
 
          Criteria c = session.createCriteria(PSAssemblyTemplate.class);
          c.add(Restrictions.eq("outputFormat", OutputFormat.Global.ordinal()));
-         rval = new HashSet(c.list());
+         rval = new HashSet<>(c.list());
          for (IPSAssemblyTemplate template : rval)
          {
             forceSlotLoad(template);
@@ -2362,14 +2362,14 @@ public class PSAssemblyService implements IPSAssemblyService
    /**
     * The file extension used for XSL files.
     */
-   private final static String XSL_EXTENSION = ".xsl";
+   private static final String XSL_EXTENSION = ".xsl";
 
    /**
     * The extension appended to the file name for the root template name.
     */
-   private final static String ROOT_EXTENSION = "_root";
+   private static final String ROOT_EXTENSION = "_root";
 
    // private XML constants
-   private final static String NAME_ATTR = "name";
+   private static final String NAME_ATTR = "name";
 
 }

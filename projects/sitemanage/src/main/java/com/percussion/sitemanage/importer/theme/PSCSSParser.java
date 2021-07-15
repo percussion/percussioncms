@@ -17,25 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.theme;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,7 +42,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.io.IOUtils;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Parser class that will read css files and update paths to a new location
@@ -164,7 +162,7 @@ public class PSCSSParser
     /**
      * Parse css embedded in html header.
      * 
-     * @param cssUrl the base url. Never <code>null</code>
+     * @param urlBase the base url. Never <code>null</code>
      * @param cssText the inline css from the html header. Never
      *            <code>null</code>
      * @return a {@link PSPair}<{@link Map}<{@link String}, {@link String}>}>
@@ -212,7 +210,6 @@ public class PSCSSParser
      * @param cssText the css file content to be parsed. Never <code>null</code>
      * @return a {@link Map}<{@link String}, {@link String}> object containing
      *         images to be downloaded.
-     * @throws IOException
      */
     private Map<String, String> process(String cssFile, String cssText, PSURLConverter urlConverter)
     {
@@ -322,9 +319,7 @@ public class PSCSSParser
 
     /**
      * Updates the url path if it belongs to a import tag.
-     * 
-     * @param quote
-     * @param importMatcher
+     *
      */
     private String updateImports(String quote, String resourceUrl, PSURLConverter urlConverter)
     {
@@ -389,7 +384,7 @@ public class PSCSSParser
     }
 
     /**
-     * @param convertToThemeLinkForCss
+     * @param importPath
      * @return
      */
     private String getImportStatement(String importPath)
@@ -444,7 +439,7 @@ public class PSCSSParser
     }
 
     /**
-     * Set fileDownloader. Mostly used by unit test. {@link PSCSSParserTest}
+     * Set fileDownloader. Mostly used by unit test.
      * 
      * @param fileDownloader, assumed never <code>null</code>
      */

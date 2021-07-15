@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.ant;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PSMakefileInterpreter
 {
@@ -108,7 +108,7 @@ public class PSMakefileInterpreter
 
    protected String expandMacros(String line)
    {
-      StringBuffer buf = new StringBuffer(line);
+      StringBuilder buf = new StringBuilder(line);
       for (int pos = 0; pos < buf.length(); pos++)
       {
          char c = buf.charAt(pos);

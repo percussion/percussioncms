@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,12 +34,6 @@ import com.percussion.design.objectstore.PSSubject;
 import com.percussion.error.PSRuntimeException;
 import com.percussion.server.PSServer;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-
 import javax.naming.Context;
 import javax.naming.Name;
 import javax.naming.NameParser;
@@ -50,6 +44,11 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.security.auth.callback.CallbackHandler;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This class uses a directory server as an authentication proxy, meaning
@@ -336,7 +335,7 @@ public class PSDirectoryConnProvider extends PSJndiProvider
     *    <code>null</code>.
     * @param scope the sope in which to search,  assumed to be one of
     *    <code>SearchControls.xxx_SCOPE</code>.
-    * @param the authentication used for the currently processed directory, 
+    * @param authentication the authentication used for the currently processed directory,
     *    assumed not <code>null</code>.
     * @param directory the directory used for the authentication, assumed not
     *    <code>null</code>.

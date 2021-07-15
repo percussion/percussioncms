@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,10 +26,9 @@ package com.percussion.extension;
 
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSURLEncoder;
+import org.w3c.dom.Document;
 
 import java.io.File;
-
-import org.w3c.dom.Document;
 
 
 
@@ -172,7 +171,7 @@ public class PSSetCookieExtension implements IPSResultDocumentProcessor
            * We store name as the key, so value is simply <value>[;....]
            */
          String cookieName = params[0].toString();
-         StringBuffer cookieValue = new StringBuffer();
+         StringBuilder cookieValue = new StringBuilder();
 
          // start with the value
          cookieValue.append(PSURLEncoder.encodeQuery(params[1].toString()));

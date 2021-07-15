@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -245,7 +245,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
       String folderPath;
       if (appendFolderName)
       {
-         StringBuffer folderPathBuf = new StringBuffer();
+         StringBuilder folderPathBuf = new StringBuilder();
          folderPathBuf.append(parentFolderPath);
          folderPathBuf.append(m_folderProcessor.getPubFileName(folderId));
          folderPathBuf.append(PSSite.SITE_PATH_SEPARATOR);
@@ -349,7 +349,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
 
       // generate the content items by groups, each group contains up to
       // "maxIdLength" items.
-      StringBuffer idBuffer = new StringBuffer();
+      StringBuilder idBuffer = new StringBuilder();
       Iterator ids = siteItems.keySet().iterator();
       Integer id;
       int collected = 0;
@@ -369,7 +369,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
             generateContentItems(location_context, idBuffer.toString(),
                   siteItems);
             // reset for the next round
-            idBuffer = new StringBuffer();
+            idBuffer = new StringBuilder();
             collected = 0;
          }
       }

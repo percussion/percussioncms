@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -93,7 +93,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			soap = svc.getServiceSoap();
 			
 		} catch (MalformedURLException e) {
-			log.error("Unable to configure EMS API Soap Client.", e);
+			log.error("Unable to configure EMS API Soap Client. {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 	
 		
@@ -105,7 +106,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			String xml = soap.getStatuses(userName, password);
 			
 			if(checkForErrors(xml)){
-				log.error("getStatues Service returned the following errors:" + xml);
+				log.error("getStatues Service returned the following errors:{}", xml);
 			}else{
 				statuses = parseStatusXML(xml);
 			}
@@ -125,7 +126,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing Statuses:" +xml, e1);
+			log.error("Error parsing Statuses: {} Error: {}",xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -151,9 +153,11 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		return ret;
 	}
@@ -189,7 +193,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			date = format.parse(query.getStartDate());
 		} catch (ParseException e) {
-			log.error(String.format("Error processing start date: {0}",query.getStartDate()), e);
+			log.error(String.format("Error processing start date: {}, Error: {}",query.getStartDate()), e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 
 		GregorianCalendar cal = new GregorianCalendar();
@@ -199,13 +204,15 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			startDate =  DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 		} catch (DatatypeConfigurationException e1) {
-			log.error(String.format("Error processing gregorian start date: {0}",query.getStartDate()), e1);
+			log.error(String.format("Error processing gregorian start date: {}, Error: {}",query.getStartDate()), e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		}
 
 		try {
 			date = format.parse(query.getEndDate());
 		} catch (ParseException e) {
-			log.error(String.format("Error processing end date: {0}",query.getEndDate()), e);
+			log.error("Error processing end date: {}, Error: {}",query.getEndDate(), e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		cal.setTime(date);
 	
@@ -213,13 +220,14 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			endDate =  DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 		} catch (DatatypeConfigurationException e) {
-			log.error(String.format("Error processing gregorian end date: {0}",query.getEndDate()), e);
+			log.error("Error processing gregorian end date: {}, Error: {}",query.getEndDate(), e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 
 		String xml = soap.getBookings(userName, password, startDate, endDate, buildings, statuses, eventTypes, groups,false);
 		
 		if(checkForErrors(xml)){
-			log.error("Bookings service returned the following errors:" + xml);
+			log.error("Bookings service returned the following errors:{}", xml);
 			return ret;
 		}
 		
@@ -239,7 +247,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing Buildings:" + xml,e1);
+			log.error("Error parsing Buildings:{}, Error: {}", xml,e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -355,9 +364,11 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			}
 		
 		} catch (SAXException e) {
-			log.error("Error parsing bookings:", e);
+			log.error("Error parsing bookings:{}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (IOException e) {
-			log.error("Error parsing bookings:", e);
+			log.error("Error parsing bookings:{}", e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		return ret;
 	}
@@ -368,7 +379,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			String xml = soap.getEventTypes(userName, password);
 			
 			if(checkForErrors(xml)){
-				log.error("getEventTypes Service returned the following errors:" + xml);
+				log.error("getEventTypes Service returned the following errors:{}", xml);
 			}else{
 				eventTypes = parseEventTypeXML(xml);
 			}
@@ -391,7 +402,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			String xml = soap.getBuildings(userName, password);
 			
 			if(checkForErrors(xml)){
-				log.error("Buildings service returned the following errors:" + xml);
+				log.error("Buildings service returned the following errors:{}", xml);
 			}else{
 				buildings = parseBuildingXML(xml);
 			}
@@ -408,7 +419,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error configuring XML parser for :" + xml,e1);
+			log.error("Error configuring XML parser for :{}, Error: {}", xml,e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			 /* <Data>
@@ -448,9 +460,11 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {} Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (IOException e) {
-			log.error("Error parsing response " + xml,e);
+			log.error("Error parsing response {} Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		return ret;
 	}
@@ -460,7 +474,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		if(groupTypes == null){
 			String xml = soap.getGroupTypes(userName, password);
 			if(checkForErrors(xml)){
-				log.error("Group Types service returned the following errors:" + xml);
+				log.error("Group Types service returned the following errors:{}", xml);
 			}else{
 				groupTypes = parseGroupXML(xml);
 			}
@@ -477,7 +491,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsiing Group Types:" + xml, e1);
+			log.error("Error parsiing Group Types:{} {}", xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -503,9 +518,11 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (IOException e) {
-			log.error("Error parsing response " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		return ret;
 	}
@@ -519,7 +536,8 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing Event Types:" +xml, e1);
+			log.error("Error parsing Event Types:: {}, Error: {}", xml,e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -545,9 +563,11 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response:: {}, Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: : {}, Error: {}", xml,e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 		return ret;
 	}

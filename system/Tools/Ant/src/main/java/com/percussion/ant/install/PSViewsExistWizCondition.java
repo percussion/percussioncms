@@ -17,27 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.ant.install;
 
-import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.install.PSLogger;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.tablefactory.install.RxLogTables;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.tools.ant.taskdefs.condition.Condition;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.apache.tools.ant.taskdefs.condition.Condition;
 
 
 /**
@@ -92,6 +92,7 @@ public class PSViewsExistWizCondition extends PSAction implements Condition
     * <code>RX_VIEWS</code> already exist in the database,
     * <code>false</code> otherwise.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    private boolean checkExists()
    {
       FileInputStream in = null;

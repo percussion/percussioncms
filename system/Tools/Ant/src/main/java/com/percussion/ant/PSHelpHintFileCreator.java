@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -206,7 +206,7 @@ public class PSHelpHintFileCreator
          System.out.println("Creating help hint entry for: " + theKey);
          final Map<String, String> attribs =
                Collections.singletonMap(ATTR_KEY, theKey); 
-         StringBuffer sb = new StringBuffer();
+         StringBuilder sb = new StringBuilder();
          sb.append(INDENT);
          sb.append(makeStartTag(ELEM_HINT, attribs, false));
          sb.append(NEWLINE);
@@ -245,7 +245,7 @@ public class PSHelpHintFileCreator
          Attribute attr = attrs.get(ATTR_SOURCE);
          String value = attr.getValue();
          m_images.put(value, "1");
-         StringBuffer sb = new StringBuffer();
+         StringBuilder sb = new StringBuilder();
          sb.append(ATTR_SOURCE);
          sb.append("=");
          sb.append(QUOTE);
@@ -277,7 +277,7 @@ public class PSHelpHintFileCreator
          String value = attr.getValue();
          if(value.trim().startsWith("http://"))
             continue;
-         StringBuffer sb = new StringBuffer();
+         StringBuilder sb = new StringBuilder();
          sb.append(ATTR_HREF);
          sb.append("=");
          sb.append(QUOTE);
@@ -405,7 +405,7 @@ public class PSHelpHintFileCreator
       FileInputStream is = null;
       try
       {
-         StringBuffer sb = new StringBuffer();
+         StringBuilder sb = new StringBuilder();
          is = new FileInputStream(helpFile);
          int cursor = -1;
          while((cursor = is.read()) != -1)
@@ -430,7 +430,7 @@ public class PSHelpHintFileCreator
     */
    private String makeTag(String name, Map<String, String> attribs, String type)
    {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("<");
       if(type.equals("close"))
          sb.append("/");

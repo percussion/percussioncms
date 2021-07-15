@@ -17,18 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.utils.jsf;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This converter takes a string that is meant to be a fully qualified Rx path
@@ -64,7 +64,7 @@ public class PSNormalizePath implements Converter
       {
          slashes++;
       }
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       int start = 0;
       if (slashes > 2)
          start = slashes - 2;

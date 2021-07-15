@@ -1,20 +1,5 @@
 package com.percussion.pso.relationshipbuilder.exit;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import com.percussion.cms.handlers.PSContentEditorHandler;
 import com.percussion.cms.handlers.PSEditCommandHandler;
 import com.percussion.cms.handlers.PSModifyCommandHandler;
@@ -29,6 +14,20 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class is shared code between the several exits that are provided for
@@ -402,27 +401,27 @@ public class PSExtensionHelper
    }
    
    public static String convertToFieldValue(Collection<Integer> ids) {
-       StringBuffer idsStringBuffer = new StringBuffer();
+       StringBuilder idsStringBuilder = new StringBuilder();
        if (ids != null && ids.size() > 0)
        {
-          idsStringBuffer.append("");
+          idsStringBuilder.append("");
           Iterator<Integer> iter = ids.iterator();
           while (iter.hasNext())
           {
              int id = iter.next();
-             idsStringBuffer.append("" + id);
+             idsStringBuilder.append("" + id);
              if (iter.hasNext())
              {
-                idsStringBuffer.append(ARRAY_DELIMETER);
+                idsStringBuilder.append(ARRAY_DELIMETER);
              }
           }
        }
        else
        {
-        idsStringBuffer.append(DEFAULT_OUTPUT);
+        idsStringBuilder.append(DEFAULT_OUTPUT);
        }
 
-       return idsStringBuffer.toString();
+       return idsStringBuilder.toString();
    }
    
    /**

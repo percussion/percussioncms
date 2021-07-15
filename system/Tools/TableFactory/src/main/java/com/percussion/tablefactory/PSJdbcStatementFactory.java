@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,14 +34,12 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.SecureRandom;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 
 /**
@@ -80,7 +78,7 @@ public class PSJdbcStatementFactory
       if (tableSchema == null)
          throw new IllegalArgumentException("tableSchema may not be null");
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       String fullName = PSSqlHelper.qualifyTableName(tableSchema.getName(),
          dbmsDef.getDataBase(), dbmsDef.getSchema(), dbmsDef.getDriver());
@@ -399,13 +397,13 @@ public class PSJdbcStatementFactory
          targetTableSchema.getName(), dbmsDef.getDataBase(),
          dbmsDef.getSchema(), dbmsDef.getDriver());
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("INSERT INTO ");
       buf.append(strFullTarget);
       buf.append(" (");
 
       // add columns from target, saving values for binding as we go
-      StringBuffer valueBuf = new StringBuffer();
+      StringBuilder valueBuf = new StringBuilder();
       boolean firstTime = true;
       PSCollection values = new PSCollection(PSJdbcStatementColumn.class);
       Iterator targetColumns = targetTableSchema.getColumns();
@@ -513,7 +511,7 @@ public class PSJdbcStatementFactory
          throw new IllegalArgumentException("tableSchema may not be null");
 
       // build sql statement
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       String fullName = PSSqlHelper.qualifyTableName(tableSchema.getName(),
          dbmsDef.getDataBase(), dbmsDef.getSchema(), dbmsDef.getDriver());
 
@@ -739,13 +737,13 @@ public class PSJdbcStatementFactory
 
       boolean isDBOracle = isDBOracle(dbmsDef);
       
-      StringBuffer selLobString = new StringBuffer("SELECT ");
+      StringBuilder selLobString = new StringBuilder("SELECT ");
       List lobTypes = new ArrayList();
       List lobValues = new ArrayList();
       List lobValuesEncoding = new ArrayList();
 
-      StringBuffer buf = new StringBuffer();
-      StringBuffer valueBuf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
+      StringBuilder valueBuf = new StringBuilder();
       PSCollection values = new PSCollection(PSJdbcStatementColumn.class);
 
       buf.append("INSERT INTO ");
@@ -934,16 +932,16 @@ public class PSJdbcStatementFactory
          dbmsDef.getDataBase(), dbmsDef.getSchema(), dbmsDef.getDriver());
 
       boolean isDBOracle = isDBOracle(dbmsDef);
-      StringBuffer selLobString = new StringBuffer("SELECT ");
+      StringBuilder selLobString = new StringBuilder("SELECT ");
       List lobTypes = new ArrayList();
       List lobValues = new ArrayList();
       List lobValuesEncoding = new ArrayList();
       boolean isDummyUpdate = true;
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       PSCollection values = new PSCollection(PSJdbcStatementColumn.class);
-      StringBuffer keyBuf = new StringBuffer();
-      StringBuffer keyColBuf = new StringBuffer();
+      StringBuilder keyBuf = new StringBuilder();
+      StringBuilder keyColBuf = new StringBuilder();
       PSCollection keyValues = new PSCollection(PSJdbcStatementColumn.class);
 
       buf.append("UPDATE ");
@@ -1113,7 +1111,7 @@ public class PSJdbcStatementFactory
       String fullName = PSSqlHelper.qualifyTableName(tableSchema.getName(),
          dbmsDef.getDataBase(), dbmsDef.getSchema(), dbmsDef.getDriver());
 
-      StringBuffer keyBuf = new StringBuffer();
+      StringBuilder keyBuf = new StringBuilder();
       PSCollection keyValues = new PSCollection(PSJdbcStatementColumn.class);
 
       keyBuf.append("DELETE FROM ");
@@ -1201,13 +1199,13 @@ public class PSJdbcStatementFactory
    private static String getPrimaryKeyConstraint(PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchema tableSchema)
    {
-      StringBuffer buf = null;
+      StringBuilder buf = null;
 
       PSJdbcPrimaryKey pKey = tableSchema.getPrimaryKey();
 
       if (pKey != null)
       {
-         buf = new StringBuffer();
+         buf = new StringBuilder();
          String pkName = getQualifiedPkName(tableSchema.getName(),
             pKey.getName(), dbmsDef);
 
@@ -1258,14 +1256,14 @@ public class PSJdbcStatementFactory
    public static String getForeignKeyConstraint(PSJdbcDbmsDef dbmsDef,
                                                 PSJdbcTableSchema schema, PSJdbcTableSchema newSchema)
    {
-      StringBuffer buf = null;
+      StringBuilder buf = null;
 
       List<PSJdbcForeignKey> fKeys = schema.getForeignKeys();
       String newTable = newSchema==null? null : newSchema.getName();
       for (PSJdbcForeignKey fKey : fKeys) {
       if (fKey != null)
       {
-         buf = new StringBuffer();
+         buf = new StringBuilder();
 
          Iterator tables = fKey.getTables();
          int i = 1;
@@ -1328,8 +1326,8 @@ public class PSJdbcStatementFactory
       String fkName, Iterator cols)
    {
       // first build list of internal and external columns
-      StringBuffer intBuf = new StringBuffer();
-      StringBuffer extBuf = new StringBuffer();
+      StringBuilder intBuf = new StringBuilder();
+      StringBuilder extBuf = new StringBuilder();
       String tableName = null;
 
       boolean firstTime = true;
@@ -1352,7 +1350,7 @@ public class PSJdbcStatementFactory
       }
 
       String driver = dbmsDef.getDriver();
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       // omit constraint name if too long for backend
       if (fkName.length() <=
          PSSqlHelper.getMaxConstraintNameLength(driver))
@@ -1391,11 +1389,11 @@ public class PSJdbcStatementFactory
    private static String getUniqueConstraints(PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchema tableSchema)
    {
-      StringBuffer buf = null;
+      StringBuilder buf = null;
 
       Iterator indexes = tableSchema.getIndexes(PSJdbcIndex.TYPE_UNIQUE);
       if (indexes.hasNext())
-         buf = new StringBuffer();
+         buf = new StringBuilder();
 
       boolean firstTime = true;
       while (indexes.hasNext())
@@ -1427,7 +1425,7 @@ public class PSJdbcStatementFactory
    private static String getUniqueConstraint(PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchema tableSchema, PSJdbcIndex index)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       String constraintName = getQualifiedIndexName(tableSchema.getName(), index.getName(), dbmsDef);
 
          buf.append("CONSTRAINT ");
@@ -1516,7 +1514,7 @@ public class PSJdbcStatementFactory
    private static String getQualifiedIndexName(String tableName,
       String indexName, PSJdbcDbmsDef dbmsDef)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       if ( isDBOracle(dbmsDef) )
       {
          buf.append(dbmsDef.getSchema());
@@ -1559,7 +1557,7 @@ public class PSJdbcStatementFactory
    private static PSJdbcSqlStatement getAddComponentStatement(String tableName,
       String componentDef)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       buf.append("ALTER TABLE ");
       buf.append(tableName);
@@ -1583,7 +1581,7 @@ public class PSJdbcStatementFactory
    private static PSJdbcSqlStatement getDropComponentStatement(String tableName,
       String columnName)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       buf.append("ALTER TABLE ");
       buf.append(tableName);
@@ -1737,7 +1735,7 @@ public class PSJdbcStatementFactory
       String constraintName = getQualifiedIndexName(tableSchema.getName(), 
          index.getName(), dbmsDef);
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("CREATE INDEX ");
       buf.append(constraintName);
       buf.append(" ON ");

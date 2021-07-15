@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -95,6 +95,19 @@
             <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
             </fileset>
         </copy>
+
+        <!-- TinyMCE config -->
+        <copy todir="${assembly-directory}/rx_resources" overwrite="false" verbose="true">
+            <fileset dir="${basedir}/../perc-tinymce/target/classes/META-INF/resources/rx_resources">
+            </fileset>
+        </copy>
+
+        <!-- TinyMCE config -->
+        <copy todir="${assembly-directory}/sys_resources" overwrite="true" verbose="true" force="true">
+            <fileset dir="${basedir}/../perc-tinymce/target/classes/META-INF/resources/sys_resources">
+            </fileset>
+        </copy>
+
         <copy todir="${assembly-directory}/rx_resources">
             <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
             </fileset>

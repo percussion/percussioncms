@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,7 +27,13 @@ import com.percussion.cms.IPSEditorChangeListener;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.handlers.PSContentEditorHandler;
-import com.percussion.cms.objectstore.*;
+import com.percussion.cms.objectstore.IPSFolderProcessor;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSCoreItem;
+import com.percussion.cms.objectstore.PSInvalidContentTypeException;
+import com.percussion.cms.objectstore.PSItemChild;
+import com.percussion.cms.objectstore.PSItemDefinition;
+import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.server.IPSItemDefElementProcessor;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSContentEditorSystemDef;
@@ -40,8 +46,18 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.services.contentmgr.*;
-import com.percussion.services.contentmgr.data.*;
+import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.contentmgr.IPSContentPropertyConstants;
+import com.percussion.services.contentmgr.IPSNodeDefinition;
+import com.percussion.services.contentmgr.PSContentMgrConfig;
+import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.contentmgr.PSContentMgrOption;
+import com.percussion.services.contentmgr.data.PSContentNode;
+import com.percussion.services.contentmgr.data.PSNodeDefinition;
+import com.percussion.services.contentmgr.data.PSQuery;
+import com.percussion.services.contentmgr.data.PSQueryResult;
+import com.percussion.services.contentmgr.data.PSRow;
+import com.percussion.services.contentmgr.data.PSRowComparator;
 import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.services.contentmgr.impl.IPSTypeKey;
 import com.percussion.services.contentmgr.impl.PSContentInternalLocator;
@@ -53,7 +69,11 @@ import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
-import com.percussion.services.contentmgr.impl.query.visitors.*;
+import com.percussion.services.contentmgr.impl.query.visitors.PSQueryNodeVisitor;
+import com.percussion.services.contentmgr.impl.query.visitors.PSQueryPropertyLimiter;
+import com.percussion.services.contentmgr.impl.query.visitors.PSQueryPropertyType;
+import com.percussion.services.contentmgr.impl.query.visitors.PSQueryTransformer;
+import com.percussion.services.contentmgr.impl.query.visitors.PSQueryWhereBuilder;
 import com.percussion.services.datasource.PSDatasourceMgrLocator;
 import com.percussion.services.datasource.UpperCaseNamingStrategy;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -95,7 +115,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PreDestroy;
-import javax.jcr.*;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.InvalidQueryException;
@@ -108,7 +133,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static com.percussion.services.utils.orm.PSDataCollectionHelper.clearIdSet;
@@ -173,7 +209,7 @@ public class PSContentRepository
 
             PSRequest req = PSRequest.getContextForRequest();
             PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
-            List<IPSGuid> rval = new ArrayList<>();
+            List<IPSGuid> rval;
 
             // Enumerate the folders and return the GUIDs of the matched
             // folders
@@ -970,7 +1006,7 @@ public class PSContentRepository
         int revision = guid.getRevision();
         for (PSTypeConfiguration child : config.getChildren())
         {
-            StringBuffer query = new StringBuffer();
+            StringBuilder query = new StringBuilder();
             query.append("from ");
             query.append(child.getImplementingClasses().get(0)
                     .getImplementingClass().getName());
@@ -2006,7 +2042,7 @@ public class PSContentRepository
         String sort = psquery.getSortClause(type, wherebuilder.getInuse());
 
         // Create the query string
-        StringBuffer querystr = new StringBuffer();
+        StringBuilder querystr = new StringBuilder();
 
         querystr.append("select ");
         querystr.append(projection);
@@ -2345,7 +2381,7 @@ public class PSContentRepository
                     PSLegacyCompositeId id = new PSLegacyCompositeId((PSLegacyGuid)
                             cn.getGuid());
 
-                    StringBuffer query = new StringBuffer();
+                    StringBuilder query = new StringBuilder();
                     query.append("Select ");
 
                     for (String field : columnNames) {
@@ -2377,7 +2413,7 @@ public class PSContentRepository
 
             } else {
                 PSLegacyGuid pg = (PSLegacyGuid) parent.getGuid();
-                StringBuffer query = new StringBuffer();
+                StringBuilder query = new StringBuilder();
                 query.append("from ");
                 query.append(ic.getName());
                 query.append(" where sys_contentid = :cid " +

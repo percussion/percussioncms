@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -115,7 +115,7 @@ public class PSRgs2Xml
    private static String transform(String line)
    {
       line = line.trim();
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       
       if(line.length() == 0)
          return "\n";
@@ -223,7 +223,7 @@ public class PSRgs2Xml
       if(s == null)
          return "";
       List types = new ArrayList();
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       int pos = 0;
       int arrayDimensions = 0;
       String current = "";
@@ -278,7 +278,7 @@ public class PSRgs2Xml
    {
       if(path == null)
          return path;
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       StringTokenizer st = new StringTokenizer(path, "\\/");
       while(st.hasMoreTokens())
       {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,13 +40,26 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
-import com.percussion.tablefactory.*;
+import com.percussion.tablefactory.PSJdbcColumnData;
+import com.percussion.tablefactory.PSJdbcDataTypeMap;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcRowData;
+import com.percussion.tablefactory.PSJdbcSelectFilter;
+import com.percussion.tablefactory.PSJdbcTableData;
+import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
+import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
+import com.percussion.tablefactory.PSJdbcUpdateKey;
 import com.percussion.util.PSEntrySet;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.utils.container.IPSJndiDatasource;
-import com.percussion.utils.jdbc.*;
+import com.percussion.utils.jdbc.IPSConnectionInfo;
+import com.percussion.utils.jdbc.IPSDatasourceConfig;
+import com.percussion.utils.jdbc.IPSDatasourceResolver;
+import com.percussion.utils.jdbc.PSConnectionDetail;
+import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -55,9 +68,23 @@ import javax.naming.NamingException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * Singleton class to provide common database read/write functionality.
@@ -959,7 +986,7 @@ public class PSDbmsHelper
       if (idCol == null || idCol.trim().length() == 0)
          throw new IllegalArgumentException("idCol may not be null or empty");
          
-      StringBuffer sIds = new StringBuffer(0);
+      StringBuilder sIds = new StringBuilder(0);
       
       while ( ids.hasNext() )
       {

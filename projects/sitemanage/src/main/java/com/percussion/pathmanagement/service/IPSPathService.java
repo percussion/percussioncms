@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -143,7 +143,7 @@ public interface IPSPathService
      * @throws PSBeanValidationException If the item is not valid.
      */
     PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathServiceException,
-            PSDataServiceException;
+            PSDataServiceException, PSBeanValidationException;
     
     /**
      * Moves the specified item to the specified folder.

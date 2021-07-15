@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,8 +52,8 @@ public class PSOutputEscaping {
          throw new IllegalArgumentException(
             "escaped string may not be null or empty");
 
-      StringBuffer outBuf = new StringBuffer();
-      StringBuffer remainder = new StringBuffer(escaped);
+      StringBuilder outBuf = new StringBuilder();
+      StringBuilder remainder = new StringBuilder(escaped);
       while(remainder.length() > 0)
          {
          int ampPos = remainder.toString().indexOf("&");
@@ -129,7 +129,7 @@ public class PSOutputEscaping {
       if ((str == null) || (str.trim().length() == 0))
           throw new IllegalArgumentException(
              "String may not be null or empty");
-      StringBuffer out = new StringBuffer();
+      StringBuilder out = new StringBuilder();
       String current = null;
       for(int i = 0; i < str.length(); i++)
       {

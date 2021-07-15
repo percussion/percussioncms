@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,11 @@
 package com.percussion.tablefactory;
 
 import com.percussion.tablefactory.tools.PSCatalogTableData;
-import com.percussion.util.*;
+import com.percussion.util.PSBase64Encoder;
+import com.percussion.util.PSLogger;
+import com.percussion.util.PSProperties;
+import com.percussion.util.PSSQLStatement;
+import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.xml.PSXmlNormalizingReader;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -40,14 +44,32 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
 *  This class is used to install and upgrade tables via Jdbc.
@@ -1840,18 +1862,17 @@ public class PSJdbcTableFactory
       MessageDigest md=null;
       try
       {
-         md = MessageDigest.getInstance("MD5");
+         md = MessageDigest.getInstance("SHA-256");
          }
          catch (NoSuchAlgorithmException e)
          {
             log.error(e.getMessage());
             log.debug(e.getMessage(), e);
          }
-         
-         FileOutputStream outputStream = null;
-         try
+
+         try(FileOutputStream outputStream = new FileOutputStream(temp))
          {
-            outputStream = new FileOutputStream(temp);
+
             byte[] dataBytes = new byte[4096];
   
             int nread = 0;
@@ -1861,18 +1882,12 @@ public class PSJdbcTableFactory
                 
             }
             byte[] mdbytes = md.digest();
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < mdbytes.length; i++) {
-                sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+            StringBuilder sb = new StringBuilder();
+            for (byte mdbyte : mdbytes) {
+               sb.append(Integer.toString((mdbyte & 0xff) + 0x100, 16).substring(1));
             }
             hash = sb.toString();
             outputStream.flush();
-         }
-         finally
-         {
-            if (outputStream != null) {
-               outputStream.close();
-            }
          }
   
        File newName = new File(getBinaryDataFolder(dbmsDef) +"/" + hash);

@@ -17,14 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.utils.paging;
 
-import java.util.Hashtable;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Provides a generic implementation of a Ranged Page object.
@@ -57,9 +57,9 @@ public class PSDefaultRangedPage implements IPSRangedPage
     /***
      * The map of sort fields with sort directions
      */
-    private Hashtable<String,PSRangedPageSortDirection> sortFields = new Hashtable<>();
+    private ConcurrentHashMap<String,PSRangedPageSortDirection> sortFields = new ConcurrentHashMap<>();
     
-    private Hashtable<String,Object> pageFields = new Hashtable<>();
+    private ConcurrentHashMap<String,Object> pageFields = new ConcurrentHashMap<>();
 
     private int pageSize = DEFAULT_PAGE_SIZE;
     
@@ -83,7 +83,7 @@ public class PSDefaultRangedPage implements IPSRangedPage
     public void setSortFields(Map<String, PSRangedPageSortDirection> fields)
     {
            if(fields!=null){
-               this.sortFields = (Hashtable<String, PSRangedPageSortDirection>) fields;
+               this.sortFields = (ConcurrentHashMap<String, PSRangedPageSortDirection>) fields;
            }               
     }
 
@@ -105,7 +105,7 @@ public class PSDefaultRangedPage implements IPSRangedPage
         if(fields==null)
             throw new IllegalArgumentException("Field list may not be null");
         else
-            this.pageFields = (Hashtable<String, Object>) fields;
+            this.pageFields = (ConcurrentHashMap<String, Object>) fields;
     }
 
     /* (non-Javadoc)
@@ -158,9 +158,9 @@ public class PSDefaultRangedPage implements IPSRangedPage
     
     public PSDefaultRangedPage(IPSRangedPage page){
         this.direction = page.getDirection();
-        this.pageFields = (Hashtable<String, Object>) page.getPageFields();
+        this.pageFields = (ConcurrentHashMap<String, Object>) page.getPageFields();
         this.pageSize = page.getPageSize();
-        this.sortFields = (Hashtable<String, PSRangedPageSortDirection>) page.getSortFields();
+        this.sortFields = (ConcurrentHashMap<String, PSRangedPageSortDirection>) page.getSortFields();
     }
 
     /* (non-Javadoc)

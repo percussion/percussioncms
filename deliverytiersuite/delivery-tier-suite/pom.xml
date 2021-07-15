@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -131,7 +131,7 @@
         <oracle.version>12.1.0.1</oracle.version>
         <sqlserver.version>9.2.1.jre8</sqlserver.version>
         <slf4j.version>1.7.29</slf4j.version>
-        <hikaricp.version>4.0.2</hikaricp.version>
+        <hikaricp.version>4.0.3</hikaricp.version>
         <jersey.version>2.33</jersey.version>
         <jaxrs.version>2.1.1</jaxrs.version>
        <junit.version>4.12</junit.version>

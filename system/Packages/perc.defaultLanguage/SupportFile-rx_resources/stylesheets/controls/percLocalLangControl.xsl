@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -127,8 +127,8 @@
     Tips:
     <ul>
         <li>Always choose language and country when you want search engines to return search results only in that region.</li>
-        <li>Site Names should match the <a href="https://support.google.com/webmasters/answer/44231?hl=en" target="_blank">Preferred Domain Name</a> for the site.</li> 
-        <li>Click here for more information: <a href="https://support.google.com/webmasters/answer/189077?hl=en" target="_blank">rel=alternate href-lang=x</a></li>
+        <li>Site Names should match the <a href="https://support.google.com/webmasters/answer/44231?hl=en" target="_blank" rel="noopener noreferrer">Preferred Domain Name</a> for the site.</li>
+        <li>Click here for more information: <a href="https://support.google.com/webmasters/answer/189077?hl=en" target="_blank" rel="noopener noreferrer">rel=alternate href-lang=x</a></li>
     </ul>
 </div>
 <div id="perc-local-lang-editor" class="perc-local-lang-editor">

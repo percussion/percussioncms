@@ -17,17 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.jsf.nodes;
-
-import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.RX_PREFIX;
-import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.SYS_CONTEXT;
-import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.TOOLS_PREFIX;
-import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.USER_CONTEXT;
-import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.USER_PREFIX;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionMethod;
@@ -42,6 +36,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.RX_PREFIX;
+import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.SYS_CONTEXT;
+import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.TOOLS_PREFIX;
+import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.USER_CONTEXT;
+import static com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase.USER_PREFIX;
 
 /**
  * A convenient class to get a list of predefined JEXL methods and variables
@@ -212,7 +212,7 @@ public class PSJexlMethodsForScheme
 
          // collecting parameter names in the format of (p1, p2, ...)
          Iterator<PSExtensionMethodParam> piter = method.getParameters();
-         StringBuffer paramNames = new StringBuffer();
+         StringBuilder paramNames = new StringBuilder();
          paramNames.append('(');
          boolean isFirstParam = true;
          while (piter.hasNext())

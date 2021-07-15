@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -461,7 +461,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
     */
    public String printDependencyTree()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       
       printDependencyTree(buf, new ArrayList(), "");
       
@@ -479,7 +479,7 @@ public abstract class PSDependency implements IPSDeployComponent, Comparable
     * @param prefix Used to indent for each level of the tree, assumed not 
     * <code>null</code>, may be empty.
     */
-   private void printDependencyTree(StringBuffer buf, List processed, 
+   private void printDependencyTree(StringBuilder buf, List processed,
       String prefix)
    {
       Iterator checkedDeps = processed.iterator();

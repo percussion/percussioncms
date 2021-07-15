@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -103,7 +103,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
    /**
     * Commons logging logger for this class
     */
-   private static final Logger ms_log = LogManager.getLogger(PSGeneratePubLocation.class);
+   private static final Logger log = LogManager.getLogger(PSGeneratePubLocation.class);
 
    /**
     * Overwrite the base class to save the extension definition used to report
@@ -343,13 +343,12 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       }
       catch (PSExtensionException e)
       {
-         ms_log.error("Problem while generating a publishing "
-               + "location for template " + variantid + " and contentid "
-               + contentid, e);
+         log.error("Problem while generating a publishing, location for template {} and contentid {} Error: {}",variantid, contentid, e.getMessage());
+         log.debug(e.getMessage(),e);
       }
       catch (Throwable e)
       {
-         ms_log.error("Problem while generating a publishing "
+         log.error("Problem while generating a publishing "
                + "location for template " + variantid + " and contentid "
                + contentid, PSExceptionHelper.findRootCause(e, true));
       }
@@ -582,7 +581,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
             PSExtensionException extExc = new PSExtensionException(
                   IPSExtensionErrors.SCHEME_CANT_BE_FOUND, sme, args);
             
-            ms_log.error(extExc.getLocalizedMessage(), sme);
+            log.error(extExc.getLocalizedMessage(), sme);
             
             throw extExc;
          }
@@ -800,7 +799,7 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
             }
             catch (SQLException e)
             {
-               ms_log.error(e);
+               log.error(e);
             }
          }
       }

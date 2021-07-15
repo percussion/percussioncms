@@ -17,13 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.jsr170;
 
 
+import com.percussion.utils.io.PSReaderInputStream;
+
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.ValueFormatException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,14 +36,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
-
-import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
-import javax.jcr.ValueFormatException;
-
-import org.apache.commons.io.IOUtils;
-
-import com.percussion.utils.io.PSReaderInputStream;
 
 /**
  * Value implementation for binary or large text data.
@@ -92,7 +89,7 @@ public class PSInputStreamValue extends PSBaseValue<InputStream>
             throw new IllegalStateException("May not read from stream twice");
 
          try( Reader  r = new InputStreamReader(m_value, StandardCharsets.UTF_8)){
-            StringBuffer b = new StringBuffer();
+            StringBuilder b = new StringBuilder();
             char buf[] = new char[1024];
             int len;
             while((len = r.read(buf)) > 0)

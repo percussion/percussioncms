@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -1413,6 +1413,23 @@
             <groupId>com.percussion</groupId>
             <artifactId>perc-exceptions-spring</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard</artifactId>
+        </dependency>
+
+        <!-- Stateful web application support -->
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard-extension-session</artifactId>
+        </dependency>
+
+        <!-- JSP TAG support -->
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard-jsp-tags</artifactId>
         </dependency>
 
     </dependencies>

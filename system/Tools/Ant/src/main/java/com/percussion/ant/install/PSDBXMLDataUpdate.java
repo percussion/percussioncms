@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,12 +25,30 @@
 package com.percussion.ant.install;
 
 import com.percussion.install.PSLogger;
+import com.percussion.tablefactory.PSJdbcColumnData;
+import com.percussion.tablefactory.PSJdbcDataTypeMap;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcExecutionPlan;
+import com.percussion.tablefactory.PSJdbcExecutionStep;
+import com.percussion.tablefactory.PSJdbcRowData;
+import com.percussion.tablefactory.PSJdbcSelectFilter;
+import com.percussion.tablefactory.PSJdbcStatementFactory;
+import com.percussion.tablefactory.PSJdbcTableData;
+import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.install.RxLogTables;
-import com.percussion.tablefactory.*;
 import com.percussion.tablefactory.tools.DbUtils;
 import com.percussion.util.IOTools;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.util.Iterator;
 import java.util.List;
@@ -75,6 +93,7 @@ import java.util.Properties;
 public class PSDBXMLDataUpdate extends PSXMLFileUpdate
 {
    // see base class
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute()
    {

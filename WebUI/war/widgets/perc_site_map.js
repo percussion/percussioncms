@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -1203,12 +1203,12 @@
                                 'id' : sectionID,
                                 'title' : fields.section_name,
                                 'folderName' : fields.page_url,
-                                'target' : fields.perc-section-target,
-                                'folderPermission':{'accessLevel':fields.perc-section-folder-permission,
+                                'target' : fields['perc-section-target'],
+                                'folderPermission':{'accessLevel':fields['perc-section-folder-permission'],
                                     'writePrincipals':writePrincipals},
                                 'requiresLogin': fields.requiresLogin,
-                                'allowAccessTo':fields.perc-group-name-allowed,
-                                'cssClassNames':fields.perc-section-navigation-cssclassnames
+                                'allowAccessTo':fields['perc-group-name-allowed'],
+                                'cssClassNames':fields['perc-section-navigation-cssclassnames']
                             }};
                         $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                         $.Perc_SectionServiceClient.edit(editSectionObj, function(status, data) {

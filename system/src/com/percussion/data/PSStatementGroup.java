@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -228,7 +228,7 @@ public class PSStatementGroup implements IPSStatementBlock
     * @param   data         the run-time context info for this request
     */
    public void buildStatement(
-      java.lang.StringBuffer buf, PSExecutionData data)
+      java.lang.StringBuilder buf, PSExecutionData data)
       throws com.percussion.data.PSDataExtractionException
    {
       // get current size in case we need to remove the entire block
@@ -293,7 +293,7 @@ public class PSStatementGroup implements IPSStatementBlock
    public java.lang.String buildStatement(PSExecutionData data)
       throws com.percussion.data.PSDataExtractionException
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buildStatement(buf, data);
       return buf.toString();
    }

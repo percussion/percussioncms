@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,17 +32,16 @@ import com.percussion.design.objectstore.PSRelationshipTest;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -280,7 +279,7 @@ public class PSContentItemDependencyTreeTest
     */
    public String toString(List list)
    {
-      StringBuffer buf = new StringBuffer("result(");
+      StringBuilder buf = new StringBuilder("result(");
       for (int i=0; i<list.size(); i++)
       {
          String[] values = (String[]) list.get(i);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -885,7 +885,7 @@ public class PSSiteManager
             (PSLegacyGuid) folderId, rootId, site, processor);
 
       // get the publishing path from 'siteFolderPath'
-      StringBuffer pathBuff = new StringBuffer();
+      StringBuilder pathBuff = new StringBuilder();
       String publishName;
       for (PSLocator f : siteFolderPath)
       {
@@ -1349,7 +1349,7 @@ public class PSSiteManager
          assoc.entrySet())
       {
          PSPair<IPSGuid, String> k = entry.getKey();
-         StringBuffer buffer = new StringBuffer();
+         StringBuilder buffer = new StringBuilder();
          for (IPSGuid g : entry.getValue())
          {
             buffer.append(String.valueOf(g.getUUID()) + ", ");

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,7 +33,11 @@ import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSEncryptProperties;
 import com.percussion.security.PSEncryptor;
-import com.percussion.server.*;
+import com.percussion.server.IPSInternalRequest;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.IPSServerErrors;
+import com.percussion.server.PSConsole;
+import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -56,10 +60,20 @@ import com.percussion.utils.string.PSStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import javax.naming.NamingException;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -67,7 +81,18 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * This class is a place holder for several global constants or variables that
@@ -1322,7 +1347,7 @@ public class PSWorkFlowUtils
       {
           return "";
       }
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append((calendar.get(Calendar.MONTH) + 1)+ "/" );
       buf.append(calendar.get(Calendar.DAY_OF_MONTH)  + "/");
       buf.append(calendar.get(Calendar.YEAR) + " ");
@@ -1963,16 +1988,16 @@ public class PSWorkFlowUtils
 
       // To get delimiters between the substrings, put in the first substring
       // and thereafter append delimeter + substring.
-      StringBuffer delimitedStringBuffer =
-            new StringBuffer(toStringHandleNull(iter.next(), stringForNull));
+      StringBuilder delimitedStringBuilder =
+            new StringBuilder(toStringHandleNull(iter.next(), stringForNull));
 
       while (iter.hasNext())
       {
-         delimitedStringBuffer.append(delimeter +
+         delimitedStringBuilder.append(delimeter +
                                       toStringHandleNull(iter.next(),
                                                          stringForNull));
       }
-      return delimitedStringBuffer.toString();
+      return delimitedStringBuilder.toString();
    }
 
    /**

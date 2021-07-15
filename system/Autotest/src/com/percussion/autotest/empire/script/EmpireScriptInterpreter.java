@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -497,7 +497,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
        */
       BufferedReader reader = new BufferedReader(
          new InputStreamReader(in, charSet));
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       String line = reader.readLine();
       while (line != null)
       {
@@ -921,7 +921,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
             Iterator exceptions = mgr.process();
             if (exceptions.hasNext())
             {
-               StringBuffer buf = new StringBuffer();
+               StringBuilder buf = new StringBuilder();
                while (exceptions.hasNext())
                {
                   Exception e = (Exception) exceptions.next();
@@ -1398,7 +1398,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
       QAPerformanceStats stats = new QAPerformanceStats();
 
       //Initilize the test case and proceed if it is not skipped.
-      StringBuffer test_id = new StringBuffer();
+      StringBuilder test_id = new StringBuilder();
       if(!initializeTest("SOAP", requestElem, test_id)) //skipped so return
          return;
       //Get the test id.
@@ -1541,7 +1541,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
       // create stats up front to record CPU utilization
       QAPerformanceStats stats = new QAPerformanceStats();
 
-      StringBuffer test_id = new StringBuffer();
+      StringBuilder test_id = new StringBuilder();
       if(!initializeTest(requestType, requestElem, test_id)) //skipped so return
          return;
       //Get the test id.
@@ -1911,12 +1911,12 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
     * <code>true</code>
     */
    private boolean initializeTest(String requestType, Element requestElem,
-      StringBuffer testID)
+      StringBuilder testID)
    {
       SimpleDateFormat formatter =
             new SimpleDateFormat( "HH:mm:ss MMM dd, yyyy" );
       log("Started processing " + requestType + " request at " +
-         formatter.format( new Date(), new StringBuffer(),
+         formatter.format( new Date(), new StringBuilder(),
          new FieldPosition(0)));
       String href = getAttribute(requestElem, REQ_URL_REF_ATTR);
       log(requestElem.getNodeName() + " : " + href);
@@ -2132,7 +2132,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
       {
          final String newLine = System.getProperty("line.separator");
 
-         StringBuffer message = new StringBuffer();
+         StringBuilder message = new StringBuilder();
          message.append( newLine );
          message.append( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
          message.append( newLine );
@@ -2180,7 +2180,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
       {
          final String newLine = System.getProperty("line.separator");
 
-         StringBuffer message = new StringBuffer();
+         StringBuilder message = new StringBuilder();
          message.append( newLine );
          message.append( ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" );
          message.append( newLine );
@@ -2714,7 +2714,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
       try
       {
          StringTokenizer lineTok = new StringTokenizer(message, "\r\n");
-         StringBuffer msgBuf = new StringBuffer(message.length());
+         StringBuilder msgBuf = new StringBuilder(message.length());
          /* Add the thread id because PageExecBlocks run multiple threads
             simultaneously. */
          String id = Thread.currentThread().getName();
@@ -2752,7 +2752,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
 
    public String getValue(Element node, boolean doMacros)
    {
-      StringBuffer ret = new StringBuffer();
+      StringBuilder ret = new StringBuilder();
       Node text;
 
       for (text = node.getFirstChild();
@@ -2802,7 +2802,7 @@ public class EmpireScriptInterpreter implements Runnable, LogSink,
       if (source == null)
          return null;
 
-      StringBuffer buf = new StringBuffer(source);
+      StringBuilder buf = new StringBuilder(source);
       for (int pos = 0; pos < buf.length(); pos++)
       {
          char c = buf.charAt(pos);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -110,7 +110,8 @@ public class Building {
 		try {
 			this.currentLocalTime = FastDateFormat.getInstance(IPSEMSEventService.DATETIME_FORMAT_STRING).parse(currentLocalTime.replace("T", " "));
 		} catch (ParseException e) {
-			log.error("Error setting CurrentLocalTime with value " + currentLocalTime + " and format: " + IPSEMSEventService.DATETIME_FORMAT_STRING,e);
+			log.error("Error setting CurrentLocalTime with value {} and format: {}, Error: {}",currentLocalTime, IPSEMSEventService.DATETIME_FORMAT_STRING,e.getMessage());
+			log.debug(e.getMessage(), e);
 		};
 	}
 	

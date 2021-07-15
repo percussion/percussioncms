@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -381,7 +381,7 @@ public class PSSystemWs extends PSSystemBaseWs implements IPSSystemWs
       // such as in WB, where a new dialog is shown to choose a locale
       if (locale == null || locale.getStatus() != PSLocale.STATUS_ACTIVE)
       {
-         StringBuffer msgSfx = new StringBuffer(1024);
+         StringBuilder msgSfx = new StringBuilder(1024);
          msgSfx.append(" Valid locales:<");
          List<PSLocale> locList = mgr.findAllLocales();
          Iterator<PSLocale> it = locList.iterator();

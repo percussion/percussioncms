@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -71,7 +71,7 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    private static final Logger MS_LOG = LogManager.getLogger(PSCookieConsentDao.class);
+    private static final Logger log = LogManager.getLogger(PSCookieConsentDao.class);
 
 
     @Override
@@ -99,7 +99,8 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             }
         }
         catch (Exception e) {
-            MS_LOG.error("Error when saving cookie consent entry.", e);
+            log.error("Error when saving cookie consent entry. Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -122,7 +123,8 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             }
         }
         catch (Exception e) {
-            MS_LOG.error("Error retrieving list of cookie consent entries from database.", e);
+            log.error("Error retrieving list of cookie consent entries from database. Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
 
         return consents;
@@ -147,7 +149,7 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             }
         }
         catch (Exception e) {
-            MS_LOG.error("Error retrieving list of cookie consent entries from database.", e);
+            log.error("Error retrieving list of cookie consent entries from database. Error: {}", e.getMessage());
         }
 
         return consents;
@@ -251,6 +253,9 @@ public class PSCookieConsentDao implements IPSCookieConsentDao {
             return results;
         }
         catch (Exception e) {
+
+            log.error("Error getting cookie consent entries for site: {} Error: {}", siteName, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new Exception("Error getting cookie consent entries for site: " + siteName, e);
         }
     }

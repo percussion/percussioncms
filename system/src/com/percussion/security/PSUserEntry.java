@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,15 +26,14 @@ package com.percussion.security;
 
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSXMLDomUtil;
+import org.apache.commons.lang.ArrayUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Iterator;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * The PSUserEntry class defines the implementation of a user entry
@@ -260,7 +259,7 @@ public class PSUserEntry extends PSEntry
          md.update((userId + ":" + pw).getBytes(PSCharSets.rxJavaEnc()));
          byte[] digest = md.digest();
 
-         StringBuffer buf = new StringBuffer(digest.length * 2);
+         StringBuilder buf = new StringBuilder(digest.length * 2);
          String sTemp;
          for (int i = 0; i < digest.length; i++) {
             sTemp = Integer.toHexString(digest[i]);

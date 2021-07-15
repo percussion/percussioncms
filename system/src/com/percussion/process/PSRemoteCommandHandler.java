@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.process;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -33,8 +34,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Document;
 
 
 /**
@@ -98,7 +97,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
          PSXmlDocumentBuilder.replaceRoot(request, new PSProcessRequest(
                procName, wait, terminate, extraParams).toXml(request));
          
-         StringBuffer result = new StringBuffer();
+         StringBuilder result = new StringBuilder();
          List params = new ArrayList();
          params.add(PSXmlDocumentBuilder.toString(request));
          PSProcessDaemon.sendCommand(m_server, m_port,
@@ -125,7 +124,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
       Document resultDoc = null;
       try
       {
-         StringBuffer result = new StringBuffer();
+         StringBuilder result = new StringBuilder();
          List params = new ArrayList();
          params.add(String.valueOf(handle));
          params.add(String.valueOf(wait));
@@ -153,7 +152,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
       }
       try
       {
-         StringBuffer result = new StringBuffer();
+         StringBuilder result = new StringBuilder();
          List params = new ArrayList();
          String virtualPath = convertPath(path);
          params.add(virtualPath);
@@ -179,7 +178,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
       }
       try
       {
-         StringBuffer result = new StringBuffer();
+         StringBuilder result = new StringBuilder();
          List params = new ArrayList();
          String virtualPath = convertPath(path);
          params.add(virtualPath);
@@ -204,7 +203,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
       }
       try
       {
-         StringBuffer result = new StringBuffer();
+         StringBuilder result = new StringBuilder();
          List params = new ArrayList();
          String virtualPath = convertPath(path);
          params.add(virtualPath);
@@ -227,7 +226,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
       {
          throw new IllegalArgumentException("path cannot be null");
       }
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       List params = new ArrayList();
       String virtualPath = convertPath(path);
       params.add(virtualPath);
@@ -248,7 +247,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
       {
          throw new IllegalArgumentException("path cannot be null");
       }
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       List params = new ArrayList();
       String virtualPath = convertPath(path);
       params.add(virtualPath);
@@ -269,7 +268,7 @@ public class PSRemoteCommandHandler implements IPSCommandHandler
       {
          throw new IllegalArgumentException("path cannot be null");
       }
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       List params = new ArrayList();
       String virtualPath = convertPath(path);
       params.add(virtualPath);

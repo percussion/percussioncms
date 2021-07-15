@@ -32,11 +32,11 @@ public class PSOEmailUtils {
 	 */
 	 private static List<InternetAddress> splitEmailAddresses(final String list) throws AddressException{
 			
-		 ArrayList<InternetAddress> ret = new ArrayList<InternetAddress>();
+		 ArrayList<InternetAddress> ret = new ArrayList<>();
 		 
 		 if(list.contains(","))
          {
-        	 String to_addresses[] = list.split(",");
+        	 String[] to_addresses = list.split(",");
          
         	 for(String email : to_addresses){
         		 ret.add(new InternetAddress(email));

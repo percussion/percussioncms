@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -200,7 +200,7 @@ public abstract class PSQueryJoiner implements IPSExecutionStep
 
    public java.lang.String toString()
    {
-      StringBuffer buf = new StringBuffer(128);
+      StringBuilder buf = new StringBuilder(128);
 
       switch (m_joinType) {
          case FULL_OUTER_JOIN:

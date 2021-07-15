@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,15 +52,14 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.server.PSServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
 
 /**
  * PSExtensionRunners are used by the com.percussion.data package to
@@ -622,7 +621,7 @@ public class PSExtensionRunner
    private String getExceptionInfo(Object[] args, IPSEffect effect, 
          int executeMethod)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Problem while processing effect: ");
       buf.append(effect.getClass().getName());
       buf.append("\nargs: ");

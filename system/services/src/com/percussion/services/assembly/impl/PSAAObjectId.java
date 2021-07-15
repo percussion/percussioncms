@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -255,7 +255,7 @@ public class PSAAObjectId
             // relationshipid required
             temp = parseParam(allParams, IPSHtmlParameters.SYS_RELATIONSHIPID,
                   null, true);
-            params.put(IPSHtmlParameters.SYS_RELATIONSHIPID, temp.toString());
+            params.put(IPSHtmlParameters.SYS_RELATIONSHIPID, temp);
             // slotid required
             int snslotid = PSAssemblyServiceLocator.getAssemblyService()
             .findSlotByName(name).getGUID().getUUID();
@@ -484,7 +484,7 @@ public class PSAAObjectId
       {
          temp = parseParam(params, IPSHtmlParameters.SYS_VARIANTID, null, true);
       }
-      id.put(IPSHtmlParameters.SYS_VARIANTID, temp.toString());
+      id.put(IPSHtmlParameters.SYS_VARIANTID, temp);
 
       // Optional params
       // Parent Content Id

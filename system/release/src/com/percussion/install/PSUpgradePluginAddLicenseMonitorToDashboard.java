@@ -17,14 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.install;
 
-import com.percussion.tablefactory.PSJdbcDbmsDef;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
+import javax.sql.rowset.serial.SerialClob;
 import java.io.PrintStream;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -36,9 +38,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.sql.rowset.serial.SerialClob;
-
-import org.w3c.dom.Element;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.PWD_ENCRYPTED_PROPERTY;
 
 /**
  * Adds the License Monitor gadget to the Dashboard of each Admin user
@@ -71,6 +71,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
     * com.percussion.install.IPSUpgradePlugin#process(com.percussion.install
     * .IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, @SuppressWarnings("unused") Element elemData)
    {
       logger = module.getLogStream();
@@ -79,7 +80,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
       try
       {
          m_dbProps = RxUpgrade.getRxRepositoryProps();
-         m_dbProps.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         m_dbProps.setProperty(PWD_ENCRYPTED_PROPERTY, "Y");
          conn = RxUpgrade.getJdbcConnection();
          conn.setAutoCommit(false);
 
@@ -227,7 +228,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
       
       while (matcher.find())
       {
-          matcher.appendReplacement(result, "\"col\":1,\"row\":" + String.valueOf(Integer.parseInt(matcher.group(1)) + 1));
+          matcher.appendReplacement(result, "\"col\":1,\"row\":" + (Integer.parseInt(matcher.group(1)) + 1));
       }
       matcher.appendTail(result);
       
@@ -275,7 +276,7 @@ public class PSUpgradePluginAddLicenseMonitorToDashboard implements IPSUpgradePl
    /**
     * Creates the JSON string of the new gadget.
     * @param instanceId the instanceId that the new gadget will have
-    * @param String JSON representation of the new gadget
+    * @return String JSON representation of the new gadget
     */
    private String getNewGadgetJSON(int instanceId)
    {

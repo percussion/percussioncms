@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -51,7 +51,7 @@ public class PSMailMessageTest
    public void testBodyTextRandom() throws Exception
    {
       // append a really long line and make sure it gets broken properly
-      StringBuffer line = new StringBuffer(8400);
+      StringBuilder line = new StringBuilder(8400);
       SecureRandom rand = new SecureRandom();
       for (int i = 0; i < 8400; i++)
       {
@@ -99,7 +99,7 @@ public class PSMailMessageTest
    public void testBodyText() throws java.io.IOException
    {
       // append a really long line and make sure it gets broken properly
-      StringBuffer line = new StringBuffer(8400);
+      StringBuilder line = new StringBuilder(8400);
       for (int i = 0; i < 8400; i++)
       {
          line.append('a');
@@ -124,7 +124,7 @@ public class PSMailMessageTest
    @Test
    public void testBodyTextWithLines() throws java.io.IOException
    {
-      StringBuffer line = new StringBuffer(100);
+      StringBuilder line = new StringBuilder(100);
       String content = "This is some text right here, baby!";
       for (int i = 0; i < 100; i++)
       {
@@ -194,7 +194,7 @@ public class PSMailMessageTest
    {
       System.err.println("\n\n\n");
       String content = "123456789*";
-      StringBuffer contentBuf = new StringBuffer(998);
+      StringBuilder contentBuf = new StringBuilder(998);
       for (int i = 0; i < 99; i++)
       {
          contentBuf.append(content);

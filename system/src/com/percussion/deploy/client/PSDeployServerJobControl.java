@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -56,7 +56,7 @@ public class PSDeployServerJobControl  implements IPSDeployJobControl
    public int getStatus() 
       throws PSDeployException
    {
-      StringBuffer statusMsg = new StringBuffer();
+      StringBuilder statusMsg = new StringBuilder();
       int status;
 
       try
@@ -131,5 +131,5 @@ public class PSDeployServerJobControl  implements IPSDeployJobControl
     * manager with the last call to the {@link #getStatus() getStatus} method.
     * Gets modified with each call to <code>getStatus()</code> method.
     */
-   private StringBuffer m_statusMsg = null;
+   private StringBuilder m_statusMsg = null;
 }

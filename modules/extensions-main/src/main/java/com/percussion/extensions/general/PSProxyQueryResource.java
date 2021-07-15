@@ -17,24 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.extensions.general;
 
-import static com.percussion.xml.PSXmlDocumentBuilder.createXmlDocument;
-import static java.util.Arrays.asList;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.PSDefaultExtension;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extensions.utils.PSExtensionParamsHelper;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSServer;
+import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -54,14 +51,17 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.percussion.extension.IPSResultDocumentProcessor;
-import com.percussion.extension.PSDefaultExtension;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.extensions.utils.PSExtensionParamsHelper;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.PSServer;
-import com.percussion.utils.request.PSRequestInfo;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_JSESSIONID;
+import static com.percussion.xml.PSXmlDocumentBuilder.createXmlDocument;
+import static java.util.Arrays.asList;
 
 /**
  * This exit allows you to make an internal request to an external resource.
@@ -144,14 +144,14 @@ public class PSProxyQueryResource extends PSDefaultExtension
                
                //This is an internal request so pass the jsessionid
                String sessionid = (String) PSRequestInfo
-                     .getRequestInfo(PSRequestInfo.KEY_JSESSIONID);
+                     .getRequestInfo(KEY_JSESSIONID);
                
                uri.setPath(uri.getPath() + ";jsessionid=" + sessionid);
                
             }
             catch (URIException e)
             {
-               log.error("Error parsing supplied url:" + url, e);
+               log.error("Error parsing supplied url: {} Error: {}" ,url, e.getMessage());
                throw new RuntimeException("Error parsing supplied url:" + url,e);
             }
        }else
@@ -164,14 +164,14 @@ public class PSProxyQueryResource extends PSDefaultExtension
           }
           catch (URIException e)
           {
-             log.error("Error parsing supplied url:" + url, e);
+             log.error("Error parsing supplied url: {} Error: {}" , url, e.getMessage());
              throw new RuntimeException("Error parsing supplied url:" + url,e);
           }
        }
        
         
         String repr = "url = " + url + " user = " + user + " password = " + password;
-        log.debug("Trying to get document with: " + repr);
+        log.debug("Trying to get document with: {}" , repr);
         
         HttpClient client = new HttpClient();
         
@@ -196,7 +196,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
          }
          catch (URIException e1)
          {
-            log.error("Failed to parse url as a valid URI: " + url);
+            log.error("Failed to parse url as a valid URI: {}" , url);
             throw new RuntimeException(e1);
          }
         try {
@@ -204,7 +204,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
            int statusCode = client.executeMethod(method);
 
            if (statusCode != HttpStatus.SC_OK) {
-             log.error("Remote request to url: " + url + " failed with status code: " + statusCode);
+             log.error("Remote request to url: {} failed with status code: {}" ,url, statusCode);
              throw new RuntimeException("Remote request to url: " + url + " failed with status code: " + statusCode);
            }
 
@@ -223,12 +223,12 @@ public class PSProxyQueryResource extends PSDefaultExtension
           }
         }catch (HttpException e)
         {
-           log.error("Fatal protocol violation: " + e);
+           log.error("Fatal protocol violation: {}" , e.getMessage());
            throw new Exception("Fatal protocol violation: " + e.getMessage(),e);
         }
         catch (IOException e)
         {
-          log.error("Fatal transport error: " + e);
+          log.error("Fatal transport error: {}" , e.getMessage());
           throw new Exception("Fatal transport error: " + e.getMessage(),e);
         }
         finally

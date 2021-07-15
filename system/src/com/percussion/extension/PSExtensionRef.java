@@ -17,18 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extension;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.StringTokenizer;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * A simple, immutable class used to refer uniquely to an extension by its
@@ -210,7 +210,7 @@ public class PSExtensionRef implements Serializable
     */ 
    public String getFQN()
    {
-      StringBuffer fqn = new StringBuffer();
+      StringBuilder fqn = new StringBuilder();
       fqn.append( getHandlerName() );
       fqn.append( "/" );
       fqn.append( getContext() );
@@ -346,7 +346,7 @@ public class PSExtensionRef implements Serializable
    {
       // break up into slash-separated components, each of which
       // must be a valid extension name
-      StringBuffer buf = new StringBuffer(context.length());
+      StringBuilder buf = new StringBuilder(context.length());
       StringTokenizer toker = new StringTokenizer(context, "/");
       while (toker.hasMoreTokens())
       {

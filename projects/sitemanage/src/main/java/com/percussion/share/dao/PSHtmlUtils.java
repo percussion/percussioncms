@@ -17,43 +17,40 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.dao;
 
-import static com.percussion.xml.PSXmlDocumentBuilder.FLAG_ALLOW_NULL;
-import static com.percussion.xml.PSXmlDocumentBuilder.FLAG_OMIT_DOC_TYPE;
-import static com.percussion.xml.PSXmlDocumentBuilder.FLAG_OMIT_XML_DECL;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.share.service.exception.PSExtractHTMLException;
 import com.percussion.util.PSTidyUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.util.List;
-import java.util.Set;
-
+import net.htmlparser.jericho.Attribute;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.OutputDocument;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 import net.htmlparser.jericho.Tag;
-import net.htmlparser.jericho.Attribute;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import se.fishtank.css.selectors.NodeSelectorException;
 import se.fishtank.css.selectors.dom.DOMNodeSelector;
+
+import java.util.List;
+import java.util.Set;
+
+import static com.percussion.xml.PSXmlDocumentBuilder.FLAG_ALLOW_NULL;
+import static com.percussion.xml.PSXmlDocumentBuilder.FLAG_OMIT_DOC_TYPE;
+import static com.percussion.xml.PSXmlDocumentBuilder.FLAG_OMIT_XML_DECL;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Utility class to apply tidy to HTML and/or extract content from HTML string.
@@ -301,7 +298,7 @@ public class PSHtmlUtils
      */
     private static String convertNodesToString(Set<Node> nodes, boolean outerHTML)
     {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (Node node : nodes)
         {
             String s = convertNodeToString(node, outerHTML);
@@ -326,7 +323,7 @@ public class PSHtmlUtils
         if (outerHTML)
             return PSXmlDocumentBuilder.toString(node, XML_TO_STRING_FLAGS);
         
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         NodeList nodes = node.getChildNodes();
         int len = nodes.getLength();
         for (int i=0; i < len; i++)

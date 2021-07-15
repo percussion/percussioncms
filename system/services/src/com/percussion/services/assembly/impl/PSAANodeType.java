@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -51,7 +51,7 @@ public enum PSAANodeType
     * @param iconUrl The icon URL for the node, may be <code>null</code> or
     * empty.
     */
-   private PSAANodeType(int ord, String iconUrl)
+   PSAANodeType(int ord, String iconUrl)
    {
       if (ord > Short.MAX_VALUE)
       {
@@ -94,7 +94,7 @@ public enum PSAANodeType
    public static PSAANodeType valueOf(int s)
       throws IllegalArgumentException
    {
-      PSAANodeType types[] = values();
+      PSAANodeType[] types = values();
       for (int i = 0; i < types.length; i++)
       {
          if (types[i].getOrdinal() == s)
@@ -106,7 +106,7 @@ public enum PSAANodeType
    /**
     * Ordinal value, initialized in the ctor, and never modified.
     */
-   private short mi_ordinal;
+   private final short mi_ordinal;
 
    /**
     * Key value, initialized for legacy types in the ctor, never modified, may

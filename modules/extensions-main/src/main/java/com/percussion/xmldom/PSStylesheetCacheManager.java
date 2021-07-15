@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,7 +27,11 @@ package com.percussion.xmldom;
 import com.percussion.data.PSCachedStylesheet;
 import com.percussion.data.PSTransformErrorListener;
 import com.percussion.extension.PSExtensionProcessingException;
+import org.xml.sax.SAXParseException;
 
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -35,15 +39,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-
-import org.xml.sax.SAXParseException;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Caches stylesheets as PSCachedStylesheet in a Map keyed by URL
@@ -61,10 +59,10 @@ public class PSStylesheetCacheManager
 
    /**
     * the Stylesheet cache is a keyed table that contains
-    * javax.xml.transform.Templates objects.  Hashtable is used
+    * javax.xml.transform.Templates objects.  ConcurrentHashMap is used
     * rather than HashMap because it is synchronized.
     **/
-   static Map ms_cache = new Hashtable();
+   static Map ms_cache = new ConcurrentHashMap();
 
    /**
     * get a stylesheet from the cache by URL.  If the stylesheet does not
@@ -131,7 +129,7 @@ public class PSStylesheetCacheManager
    }
 
    /**
-    * Traverses an Iterator, printing each object to a StringBuffer.  If the
+    * Traverses an Iterator, printing each object to a StringBuilder.  If the
     * object is a TransformerException, print additional information.
     *
     * @param   buf    where to append the strings; modified by this method;
@@ -169,7 +167,7 @@ public class PSStylesheetCacheManager
 
    /**
     * Extract errors from an PSTransformErrorListener and append them to a
-    * StringBuffer, then clear the errors from the listener.
+    * StringBuilder, then clear the errors from the listener.
     *
     * @param   buf      where to append the strings; modified by this method;
     *    if null, return quietly.

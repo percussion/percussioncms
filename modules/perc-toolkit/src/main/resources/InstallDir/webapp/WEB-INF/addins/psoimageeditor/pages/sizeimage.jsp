@@ -1,19 +1,21 @@
 <%@ page session="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<%@page import="com.percussion.pso.imageedit.services.jexl.ImageEditorTools"%>
 <%@page import="org.apache.commons.logging.Log"%>
 <%@page import="org.apache.commons.logging.LogFactory"%>
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-<!--
-	Dynamically replace the following:
-		- Name of the image in the JSP variable
-		- Image width in JSP variable
-		- Image height in JSP variable
--->
-<%
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<!--
+        Dynamically replace the following:
+            - Name of the image in the JSP variable
+            - Image width in JSP variable
+            - Image height in JSP variable
+    -->
+	<%
 	//Get the basics first
 	Log log = LogFactory.getLog(getClass()); 
 	
@@ -142,7 +144,7 @@
 <p>
 
 <div id="controls">
-	<form name="formAction" id="formAction" method="post">
+	<csrf:form name="formAction" id="formAction" method="post" action="sizeimage.jsp">
 	<fieldset id="modes">
 		<legend>Commands</legend>
 			<input name="file_path" id="file_path" value="" type="hidden">
@@ -192,7 +194,7 @@
 	<input type="hidden" id="openImed" name="openImed" value="" />
 	<input type="hidden" id="pageid" name="_page" value="${page}" />
 		   
-	</form>
+	</csrf:form>
 </div>
 <div id="imageArea">
     <div style="width: ${displayImage.width}px; height: ${displayImage.height};" id="imageContainer">

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -58,10 +58,10 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSQueryOptimizer class is used internally by the E2 server to
@@ -204,7 +204,7 @@ public class PSQueryOptimizer extends PSOptimizer
    {
       Vector               steps = new Vector();
       Vector               logins = new Vector();
-      Hashtable            connKeys = new Hashtable();
+      ConcurrentHashMap            connKeys = new ConcurrentHashMap();
       IPSExecutionStep[]   curSteps;
       IPSExecutionStep[]   ret = null;
       int                  loginCount = 0;
@@ -275,7 +275,7 @@ public class PSQueryOptimizer extends PSOptimizer
     * @param ds the data set this statement is being built for,
     * assumed not <code>null</code>
     *
-    * @param connKeys a hashtable containing the connection key to use
+    * @param connKeys a ConcurrentHashMap containing the connection key to use
     * where the key is opaque and the value is the connection key, 
     * assumed never be <code>null</code>
     *
@@ -299,7 +299,7 @@ public class PSQueryOptimizer extends PSOptimizer
     */
    private static IPSExecutionStep[] createStatements(
       PSApplicationHandler ah, PSDataSet ds,
-      List logins, Hashtable connKeys, PSBackEndDataTank backEnds,
+      List logins, ConcurrentHashMap connKeys, PSBackEndDataTank backEnds,
       PSDataMapper cols, PSDataSelector sel
       )
       throws java.sql.SQLException,
@@ -513,7 +513,7 @@ public class PSQueryOptimizer extends PSOptimizer
     */
    private static IPSExecutionStep[] createJoinPlan(
       PSApplicationHandler ah, PSDataSet ds,
-      List logins, Hashtable connKeys, PSBackEndDataTank backEnds,
+      List logins, ConcurrentHashMap connKeys, PSBackEndDataTank backEnds,
       PSCollection beTables, PSDataMapper cols, PSDataSelector sel
       )
       throws java.sql.SQLException,

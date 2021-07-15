@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,10 +32,10 @@ import com.percussion.error.PSIllegalArgumentException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSOracleUpdateBuilder class is used to build SQL UPDATE statements.
@@ -433,7 +433,7 @@ public class PSOracleUpdateBuilder extends PSSqlUpdateBuilder
     *          one table defined, any argument is invalid or the connection
     *          key is undefined.
     */
-   int validateBuilderConnection(HashMap dtHash, Hashtable connKeys, List logins)
+   int validateBuilderConnection(HashMap dtHash, ConcurrentHashMap connKeys, List logins)
       throws PSIllegalArgumentException
    {
       int connKey = super.validateBuilderConnection(dtHash, connKeys, logins);
@@ -468,7 +468,7 @@ public class PSOracleUpdateBuilder extends PSSqlUpdateBuilder
     * @throws PSIllegalArgumentException If there are multiple tables 
     * or a PSDataExtractionException occurs.
     */
-   PSUpdateStatement generate(java.util.List logins, Hashtable connKeys)
+   PSUpdateStatement generate(java.util.List logins, ConcurrentHashMap connKeys)
       throws PSIllegalArgumentException
    {
       HashMap dtHash = new HashMap();

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -50,7 +50,7 @@ public class PSNameSpacesUtil
     */
    public static String removeWhitespacesFromName(final String name, Set names)
    {
-      final StringBuffer buf = new StringBuffer();
+      final StringBuilder buf = new StringBuilder();
       for (int i = 0; i < name.length(); i++)
       {
          final char ch = name.charAt(i);

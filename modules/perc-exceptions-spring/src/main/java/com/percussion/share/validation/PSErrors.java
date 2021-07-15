@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.validation;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -107,7 +108,8 @@ public class PSErrors {
 
         
         public void setDefaultMessage(String defaultMessage) {
-            this.defaultMessage = defaultMessage;
+            this.defaultMessage = PSSecurityUtility.sanitizeStringForHTML(
+                    defaultMessage);
         }
 
         
@@ -117,7 +119,7 @@ public class PSErrors {
 
         
         public void setCode(String code) {
-            this.code = code;
+            this.code = PSSecurityUtility.sanitizeStringForHTML(code);
         }
         
         

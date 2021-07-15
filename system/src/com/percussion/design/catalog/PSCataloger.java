@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,11 +31,11 @@ import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import java.util.Hashtable;
-
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 
 
@@ -314,7 +314,7 @@ public class PSCataloger
             reqCategory + "-" + reqType);
       }
       else {
-         m_Handlers = new Hashtable();
+         m_Handlers = new ConcurrentHashMap();
       }
 
       if (handler == null) {
@@ -353,6 +353,6 @@ public class PSCataloger
 
    private PSDesignerConnection      m_conn;
 
-   private volatile static Hashtable         m_Handlers = null;
+   private volatile static ConcurrentHashMap         m_Handlers = null;
 }
 

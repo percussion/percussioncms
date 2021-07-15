@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,10 +25,9 @@
 package com.percussion.debug;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.text.MessageFormat;
-
-import org.w3c.dom.Document;
 
 /**
  * Used to generate trace message for Post Exit XML Trace message type (0x1000).
@@ -72,7 +71,7 @@ public class PSTracePostExitXml extends PSTraceMessage
    protected String getMessageBody(Object source)
    {
       Object[] args = (Object[])source;
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       // handle two cases for inputs
       if (args.length == 1)

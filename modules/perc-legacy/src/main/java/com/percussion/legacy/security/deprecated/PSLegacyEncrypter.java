@@ -17,20 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.legacy.security.deprecated;
 
-import com.percussion.security.PSAbstractEncryptor;
-
 import com.percussion.security.IPSEncryptor;
 import com.percussion.security.IPSKey;
 import com.percussion.security.IPSSecretKey;
+import com.percussion.security.PSAbstractEncryptor;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
@@ -168,7 +168,7 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
    @Deprecated
    private static String rot13(String val)
    {
-      StringBuffer buf = new StringBuffer(val);
+      StringBuilder buf = new StringBuilder(val);
       for (int i = 0; i < buf.length(); i++)
       {
          buf.setCharAt(i, rot13(buf.charAt(i)));
@@ -257,6 +257,7 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
     *
     * @return The encrypted string, never <code>null</code>, may be empty.
     */
+   @SuppressFBWarnings("CIPHER_INTEGRITY")
    @Deprecated
    @Override
    public String encrypt(String str, String key)
@@ -295,6 +296,7 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
     * @param legacyDecryptor
      * @return The decrypted string, never <code>null</code>, may be empty.
     */
+   @SuppressFBWarnings("CIPHER_INTEGRITY")
    @Deprecated
    @Override
    public String decrypt(String str, String key, PSAbstractEncryptor legacyDecryptor)

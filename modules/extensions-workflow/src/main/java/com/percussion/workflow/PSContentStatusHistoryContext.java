@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -476,7 +476,7 @@ public class PSContentStatusHistoryContext
     * Sets the descriptive comment for this transition in the content status
     * history entry.
     *
-    * @param   commentText the descriptive comment the transition
+    * @param   transitionComment the descriptive comment the transition
     *                      May be <CODE>null</CODE>.
     *                      May not be more than 255 characters.
     */
@@ -673,7 +673,7 @@ public class PSContentStatusHistoryContext
     */
    public String toString()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       try
       {
          buf.append("\nPSContentStatusHistoryContext: ");

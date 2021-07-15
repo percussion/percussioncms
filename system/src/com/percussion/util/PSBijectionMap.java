@@ -17,17 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- *   A one-to-one object map (or bijection) backed by two hashtables
+ *   A one-to-one object map (or bijection) backed by two ConcurrentHashMaps
  *   for time efficiency purposes. Like all hash tables, there is at most
  *   one value for a given key. However, unlike hash tables, this class
  *   guarantees that there is at most one key for a given value.
@@ -36,8 +36,8 @@ public class PSBijectionMap
 {
    public PSBijectionMap(int initialCapacity)
    {
-      m_values = new Hashtable(initialCapacity);
-      m_keys = new Hashtable(initialCapacity);
+      m_values = new ConcurrentHashMap(initialCapacity);
+      m_keys = new ConcurrentHashMap(initialCapacity);
    }
 
    public void put(Object key, Object value)
@@ -120,6 +120,6 @@ public class PSBijectionMap
       return m_keys.elements();
    }
 
-   private Hashtable m_values;
-   private Hashtable m_keys;
+   private ConcurrentHashMap m_values;
+   private ConcurrentHashMap m_keys;
 }

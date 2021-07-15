@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -772,7 +772,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
     */
    private String getMacroFiles(String sysDir, String localDir)
    {
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       getMacroFiles(buffer, sysDir);
       getMacroFiles(buffer, localDir);
 
@@ -810,7 +810,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
     * @param location the directory that contains the velocity macros, assumed
     * not <code>null</code>.
     */
-   private void getMacroFiles(StringBuffer buffer, String location)
+   private void getMacroFiles(StringBuilder buffer, String location)
    {
       FileFilter filter = new VMFileFilter();
       File dir = new File(location);

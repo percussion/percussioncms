@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,7 +39,7 @@ public class PSURIEncoder
     */
    public static String unescape(String s)
    {
-      StringBuffer sbuf = new StringBuffer () ;
+      StringBuilder sbuf = new StringBuilder () ;
       int l  = s.length() ;
       int ch = -1 ;
       int b, sumb = 0;
@@ -114,7 +114,7 @@ public class PSURIEncoder
     */
    public static String escape(String s)
    {
-      StringBuffer sbuf = new StringBuffer();
+      StringBuilder sbuf = new StringBuilder();
       int len = s.length();
       for (int i = 0; i < len; i++)
       {

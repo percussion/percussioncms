@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -234,7 +234,7 @@ public class PSItem
     */
    private String formatHeader(int fieldIndex, String label, int sortColumn)
    {
-      StringBuffer headerElement = new StringBuffer(40);
+      StringBuilder headerElement = new StringBuilder(40);
       headerElement.append("<a onclick='sortOn(this, ");
       headerElement.append(fieldIndex);
       headerElement.append(")' style='cursor: hand'>");

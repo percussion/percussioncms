@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -50,8 +50,8 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
-import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSIteratorUtils;
@@ -60,11 +60,11 @@ import com.percussion.utils.guid.IPSGuid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -411,7 +411,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
       }
 
       // now build the composite key
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       // add protocol
       buf.append(request.getServletRequest().getScheme());
@@ -1127,7 +1127,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * <code>removeResource()</code>.
        */
       private Map<PSDataSetKey, PSResourceCacheSettings> m_settingsMap = 
-         new Hashtable<>();
+         new ConcurrentHashMap<>();
 
       /**
        * Map of table names to list of dataset keys, never <code>null</code>,
@@ -1149,7 +1149,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * <code>removeResource()</code>.
        */
       private Map<PSDataSetKey, String> m_resourceMap = 
-         new Hashtable<>();
+         new ConcurrentHashMap<>();
 
       /**
        * Map of child resource (page) names to list of parent datasets, where

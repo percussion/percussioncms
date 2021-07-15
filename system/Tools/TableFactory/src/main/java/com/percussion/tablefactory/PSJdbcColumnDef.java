@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,11 +27,10 @@ package com.percussion.tablefactory;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.sql.Types;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.sql.Types;
 
 /**
  * This class is used to represent a column definition in a table schema, and
@@ -802,7 +801,7 @@ public class PSJdbcColumnDef extends PSJdbcTableComponent
       if (dbmsDef == null)
          throw new IllegalArgumentException("dbmsDef may not be null");
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       buf.append(getName());
       buf.append(" ");

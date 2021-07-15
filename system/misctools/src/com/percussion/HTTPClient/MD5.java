@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.HTTPClient;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -53,7 +55,7 @@ class MD5
      */
     public static final String toHex(byte hash[])
     {
-	StringBuffer buf = new StringBuffer(hash.length * 2);
+	StringBuilder buf = new StringBuilder(hash.length * 2);
 
 	for (int idx=0; idx<hash.length; idx++)
 	    buf.append(hex[(hash[idx] >> 4) & 0x0f]).append(hex[hash[idx] & 0x0f]);
@@ -67,7 +69,8 @@ class MD5
      * @param input the data to be digested.
      * @return the md5-digested input
      */
-    public static final byte[] digest(byte[] input)
+    @SuppressFBWarnings("WEAK_MESSAGE_DIGEST_MD5")
+	public static final byte[] digest(byte[] input)
     {
 	try
 	{
@@ -87,6 +90,8 @@ class MD5
      * @param input2 the second part of the data to be digested.
      * @return the md5-digested input
      */
+    @SuppressFBWarnings("WEAK_MESSAGE_DIGEST_MD5")
+	@Deprecated
     public static final byte[] digest(byte[] input1, byte[] input2)
     {
 	try

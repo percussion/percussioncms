@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -86,11 +86,11 @@
                     else if(model.isTemplate() || model.isLandingPage())
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") || (model.isPage() && model.isLandingPage() && wDef === "percTitle")) {
+                        if((model.isTemplate() && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") || (model.isPage() && model.isLandingPage() && wDef === "percTitle")) {
                             imgSrc = '/cm/images/icons/editor/editInactive';
                         }
                     }
-                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
+                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                     {
                         imgSrc += "Middle";
                     }
@@ -108,7 +108,7 @@
                     if(model.getWidgetContentTypes(elem.attr('widgetid')) !== "" )
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") ||
+                        if((model.isTemplate() && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") ||
                             (model.isPage() && model.isLandingPage() && wDef === "percTitle"))
                         {
                             return;
@@ -135,7 +135,7 @@
                         var assetInfo = model.getAssetDropCriteria()[elem.attr('widgetid')];
                         var assetId = assetInfo && !assetInfo.locked?elem.attr('assetid'):"";
                         var wDef = elem.attr('widgetdefid');
-                        if(assetId && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
+                        if(assetId && typeof model.getWidgetPrefs(wDef) !== 'undefined'&& model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                         {
                             imgSrc = '/cm/images/icons/editor/promote';
                         }
@@ -277,9 +277,9 @@
                 insideIframe(widget).droppable({
                     // only interact with iframe draggables
                     scope: $.perc_iframe_scope,
-                    tolerance : 'touch',
+                    tolerance : 'pointer',
                     // as you hover over the widget, update cursor and background
-                    over : function(evt, ui) {
+                    activate : function(evt, ui) {
 
                         var parentRegionId = $(this).parent().parent().attr("id");
 
@@ -365,9 +365,9 @@
 
             widget.droppable({
                 scope: $.perc_iframe_scope,
-                tolerance : 'touch',
+                tolerance : 'pointer',
                 // as you hover over the widget, update cursor and background
-                over : function(evt, ui) {
+                activate : function(evt, ui) {
                     var parentRegionId = $(this).parent().parent().attr("id");
 
                     overlap++;

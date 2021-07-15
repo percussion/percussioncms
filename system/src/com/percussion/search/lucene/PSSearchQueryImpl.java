@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,24 +27,24 @@ import com.percussion.cms.objectstore.PSContentType;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.search.IPSSearchErrors;
 import com.percussion.search.PSSearchException;
 import com.percussion.search.PSSearchQuery;
 import com.percussion.search.PSSearchResult;
 import com.percussion.search.lucene.analyzer.PSLuceneAnalyzerFactory;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -54,6 +54,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
+import javax.annotation.concurrent.ThreadSafe;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -65,28 +66,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+@ThreadSafe
 public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
 {
 
-   private static volatile PSSearchQueryImpl instance = null;
+   private static PSSearchQueryImpl instance = null;
 
    /**
     *
     */
-   public static PSSearchQueryImpl getInstance(){
+   public static synchronized PSSearchQueryImpl getInstance() throws PSSearchException {
       if(instance == null){
-         synchronized (PSSearchQueryImpl.class) {
-            if (instance == null) instance = new PSSearchQueryImpl();
-         }
-
+               instance = new PSSearchQueryImpl();
       }
       return instance;
    }
 
-   private PSSearchQueryImpl(){
-      //Prevent form the reflection api.
+   private PSSearchQueryImpl() throws PSSearchException {
+      //Prevent from the reflection api.
       if (instance != null){
-         throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
+         throw new PSSearchException(IPSSearchErrors.USE_GET_INSTANCE);
       }
    }
 
@@ -101,13 +100,13 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
    public List performSearch(Collection ctypeIds, String globalQuery,
          Map fieldQueries, Map controlProps) throws PSSearchException
    {
-      List<PSSearchResult> searchResults = new ArrayList<PSSearchResult>();
+      List<PSSearchResult> searchResults = new ArrayList<>();
       // Return empty results if we do not have any thing to search for.
       if (StringUtils.isBlank(globalQuery) && fieldQueries == null)
          return searchResults;
 
       // normalize the param names of the control props
-      Map props = normalizeMap(controlProps);
+      Map<String,String> props = normalizeMap(controlProps);
       // set to null to catch incorrect (future) uses below
       controlProps = null;
 
@@ -116,17 +115,16 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
       int maxResults = getIntProp(props, QUERYPROP_MAXRESULTS, -1, 1,
             Integer.MAX_VALUE);
 
-      List<String> processedIds = new ArrayList<String>();
-      MultiReader mr = null;
-      try
+      List<String> processedIds = new ArrayList<>();
+
+      try(MultiReader mr = prepareMultiSearcher(ctypeIds))
       {
-         mr = prepareMultiSearcher(ctypeIds);
          if(mr==null)
          {
             String msg = "Failed to create the index searcher";
             if(!ctypeIds.isEmpty())
             {
-               msg += " for the given content types " + ctypeIds.toString();
+               msg += " for the given content types " + ctypeIds;
             }
             msg+=". The content might not have been indexed yet." +
                   " Returning empty results.";
@@ -172,15 +170,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
          throw new PSSearchException(
                IPSLuceneErrors.SEARCH_QUERY_PARSEEXCEPTION, e);
       }
-      finally
-         {
-            try {
-               if (mr != null)
-                  mr.close();
-            } catch (IOException ignore) {
-            }
 
-         }
       return searchResults;
    }
 
@@ -266,7 +256,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
       throws PSSearchException
    {
       MultiReader searcher = null;
-      List<IndexReader > isList = new ArrayList<IndexReader>();
+      List<IndexReader> isList = new ArrayList<>();
       try
       {
          Collection<PSKey> cTypeKeys = ctypeIds;
@@ -275,7 +265,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
          {
             PSItemDefManager itemMgr = PSItemDefManager.getInstance();
             long[] allCtypeIds = itemMgr.getAllContentTypeIds(PSItemDefManager.COMMUNITY_ANY);
-            cTypeKeys = new ArrayList<PSKey>();
+            cTypeKeys = new ArrayList<>();
             for (long ctypeId : allCtypeIds)
             {
                 PSKey cTypeKey = PSContentType.createKey((int) ctypeId);
@@ -294,7 +284,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
                IndexReader ir = getIndexReader(ctype.getPart());
                if(ir == null)
                {
-                  ms_log.debug(MessageFormat.format(msg,args));
+                  ms_log.debug("{}",MessageFormat.format(msg,args));
                   continue;
                }
                isList.add(ir);
@@ -306,7 +296,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
          }
 
          if(!isList.isEmpty())
-            searcher = new MultiReader((IndexReader[])isList.toArray(new IndexReader[isList
+            searcher = new MultiReader(isList.toArray(new IndexReader[isList
                   .size()]));
       }
       catch (IOException e)
@@ -326,20 +316,21 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
     * @return The index searcher associated with the content type id or
     * <code>null</code>, if no directory exists with that content type id.
     * @throws PSSearchException in case of io or index corrupted exceptions.
-    * @throws IOException 
-    * @throws CorruptIndexException 
     */
+   @SuppressFBWarnings({"PATH_TRAVERSAL_IN"})
    private IndexReader getIndexReader(String ctypeId)
-      throws CorruptIndexException, IOException
-   {
+           throws IOException, PSSearchException {
 
+         if(!StringUtils.isNumeric(ctypeId))
+            throw new PSSearchException(IPSSearchErrors.INVALID_INDEX_CONTENTTYPE);
 
          File f = new File(PSSearchEngineImpl.getLuceneIndexRootPath() + ctypeId);
          if (!f.exists() || !f.isDirectory()) {
             // Not having a index folder for a given content type is not an error
             // Log it
-            ms_log.debug("No index directory exists for the supplied "
-                    + "content type id " + ctypeId + ". Ignoring it in search.");
+            ms_log.debug(
+                    "No index directory exists for the supplied content type id {}. Ignoring it in search.",
+                    ctypeId);
             return null;
          }
 
@@ -357,16 +348,13 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
     * @return A 'copy' of the supplied map with keys lowercased, never <code>
     * null</code>.
     */
-   private Map normalizeMap(Map src)
+   private Map<String,String> normalizeMap(Map<String, String> src)
    {
-      Map map = new HashMap();
+      Map<String,String> map = new HashMap<>();
       if (null != src)
       {
-         Iterator propIter = src.keySet().iterator();
-         while (propIter.hasNext())
-         {
-            Object o = propIter.next();
-            map.put(((String) o).toLowerCase(), src.get(o));
+         for (String o : src.keySet()) {
+            map.put(( o).toLowerCase(), src.get(o));
          }
       }
       return map;

@@ -17,15 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.cms.objectstore.server;
 
-import com.percussion.cms.*;
+import com.percussion.cms.IPSCmsErrors;
+import com.percussion.cms.IPSConstants;
+import com.percussion.cms.PSApplicationBuilder;
+import com.percussion.cms.PSCmsException;
+import com.percussion.cms.PSRelationshipChangeEvent;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
-import com.percussion.cms.objectstore.*;
+import com.percussion.cms.objectstore.PSCmsObject;
+import com.percussion.cms.objectstore.PSComponentSummaries;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.cms.objectstore.PSObjectPermissions;
+import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
@@ -36,8 +45,16 @@ import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.server.*;
-import com.percussion.server.cache.*;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSExecutionDataLight;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSServer;
+import com.percussion.server.cache.IPSCacheHandler;
+import com.percussion.server.cache.PSAssemblerCacheHandler;
+import com.percussion.server.cache.PSCacheManager;
+import com.percussion.server.cache.PSFolderRelationshipCache;
+import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.impl.nav.PSRelationshipSortOrderComparator;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -54,7 +71,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * This class encapsulates all backend operations to create, modify, delete and
@@ -1979,7 +2004,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          Collections.reverse(parents);
          
          // construct the folder path from the "parents" locators
-         StringBuffer buffer = new StringBuffer();
+         StringBuilder buffer = new StringBuilder();
          for (PSLocator loc : parents)
          {
             PSComponentSummary summary = cms.loadComponentSummary(loc.getId());

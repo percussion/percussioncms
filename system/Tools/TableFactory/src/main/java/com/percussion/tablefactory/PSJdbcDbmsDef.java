@@ -17,22 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.tablefactory;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.container.*;
+import com.percussion.utils.container.IPSContainerUtils;
+import com.percussion.utils.container.IPSJdbcDbmsDefConstants;
+import com.percussion.utils.container.IPSJndiDatasource;
+import com.percussion.utils.container.PSContainerUtilsFactory;
+import com.percussion.utils.container.PSMissingApplicationPolicyException;
+import com.percussion.utils.container.PSSecureCredentials;
 import com.percussion.utils.container.jboss.PSJbossProperties;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.utils.jdbc.*;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.jdbc.IPSConnectionInfo;
+import com.percussion.utils.jdbc.IPSDatasourceConfig;
+import com.percussion.utils.jdbc.PSConnectionDetail;
+import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,13 +51,20 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.MissingResourceException;
+import java.util.Properties;
 
 /**
  * Defines all information required to connect to a dbms and process a
@@ -225,6 +241,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
     * @throws PSMissingApplicationPolicyException if an error occurs loading
     * jndi datasources
     */
+   @SuppressFBWarnings({"HARD_CODE_PASSWORD", "HARD_CODE_PASSWORD"})
    public static Properties loadRxRepositoryProperties(String rxRoot)
       throws FileNotFoundException, PSInvalidXmlException, SAXException,
       IOException, PSMissingApplicationPolicyException
@@ -910,7 +927,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
    @Deprecated
    private static String rot13(String val)
    {
-      StringBuffer buf = new StringBuffer(val);
+      StringBuilder buf = new StringBuilder(val);
       for (int i = 0; i < buf.length(); i++)
       {
          buf.setCharAt(i, rot13(buf.charAt(i)));

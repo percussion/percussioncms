@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,8 +26,6 @@ package com.percussion.taxonomy.jexl;
 import com.percussion.taxonomy.domain.Attribute_lang;
 import com.percussion.taxonomy.domain.Node;
 import com.percussion.taxonomy.domain.Value;
-
-
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -182,7 +180,7 @@ public class TaxNode
          testNode = testNode.getParent();
       }
       Collections.reverse(pathElements);
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       for (String path : pathElements) {
          sb.append(path);
          sb.append("/");

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -49,7 +49,7 @@ public class PSXmlEncoder implements Encoder
    {
       if(arg0 != null) {
          String input = (String) arg0;
-         StringBuffer rval = new StringBuffer((int) (input.length() * 1.5));
+         StringBuilder rval = new StringBuilder((int) (input.length() * 1.5));
          for (int i = 0; i < input.length(); i++) {
             char ch = input.charAt(i);
             switch (ch) {

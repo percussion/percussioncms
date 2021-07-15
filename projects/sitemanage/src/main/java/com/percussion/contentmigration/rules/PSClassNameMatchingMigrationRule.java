@@ -17,20 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.contentmigration.rules;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * Find a content match based on the class name of an element. If multiple
@@ -146,8 +146,8 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
     private Elements findMatches(Document targetDoc, Set<String> classNames)
     {
         Elements found = new Elements();
-        //FB: SBSC_USE_STRINGBUFFER_CONCATENATION NC 1-17-16
-        StringBuffer buffer = new StringBuffer();
+        //FB: SBSC_USE_StringBuilder_CONCATENATION NC 1-17-16
+        StringBuilder buffer = new StringBuilder();
         for (String className : classNames)
         {
             buffer.append(".").append(className);

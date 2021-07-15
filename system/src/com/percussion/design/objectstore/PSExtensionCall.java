@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,8 @@ import com.percussion.extension.PSExtensionRef;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +36,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * The PSExtensionCall class defines the framework for calling an
@@ -144,7 +143,7 @@ public class PSExtensionCall extends PSComponent
     */
    public String toString()
    {
-      StringBuffer function = new StringBuffer();
+      StringBuilder function = new StringBuilder();
       PSExtensionParamValue[] params = getParamValues();
       function.append( getExtensionRef().getExtensionName() );
       function.append( "(" );

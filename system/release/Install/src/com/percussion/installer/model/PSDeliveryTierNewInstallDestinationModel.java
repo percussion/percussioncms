@@ -225,9 +225,7 @@ public class PSDeliveryTierNewInstallDestinationModel extends RxIAModel
                if (RxStandAloneFlag.isStandalone() &&
                      InstallUtil.isServerRunning(dirName))
                {
-                  String errorText = "A Percussion Server is running in the "
-                     + "specified directory. Please stop the running server "
-                     + "and proceed with the installation";
+                  String errorText = "A Percussion Server is running in the specified directory. Please stop the running server and proceed with the installation";
                   setError(errorText); 
                   validationError("", errorText, "");
                   return false;

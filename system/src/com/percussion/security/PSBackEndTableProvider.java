@@ -17,16 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.security;
 
+import com.percussion.auditlog.PSActionOutcome;
+import com.percussion.auditlog.PSAuditLogService;
+import com.percussion.auditlog.PSUserManagementEvent;
 import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSProvider;
 import com.percussion.design.objectstore.PSSubject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.security.auth.callback.CallbackHandler;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,8 +43,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import javax.security.auth.callback.CallbackHandler;
-
 /**
  * The PSBackEndTableProvider class uses a JDBC (back-end) table as a user
  * directory. The user's name and password are stored in the table, which are
@@ -45,6 +50,9 @@ import javax.security.auth.callback.CallbackHandler;
  */
 public class PSBackEndTableProvider extends PSSecurityProvider
 {
+
+   private static final Logger log = LogManager.getLogger(PSBackEndTableProvider.class);
+
    /**
     * Construct an instance of this provider.  If a password filter class
     *    is specified in the properties, then it is assumed it will be 
@@ -75,6 +83,29 @@ public class PSBackEndTableProvider extends PSSecurityProvider
    }
 
    /**
+    * Write an event to the audit log on
+    * @param uid The user id
+    * @param action The activity taken
+    * @param activityMsg The action taken
+    */
+   private void auditlogUserActivity(String uid, PSUserManagementEvent.UserEventActions action, String activityMsg){
+
+        PSAuditLogService auditLogService = PSAuditLogService.getInstance();
+
+        HttpServletRequest httpRequest = PSThreadRequestUtils.getPSRequest().getServletRequest();
+
+        PSUserManagementEvent event = new PSUserManagementEvent(
+                httpRequest,
+                action,
+                PSActionOutcome.SUCCESS
+        );
+        event.setTargetUsername(uid);
+        event.setIniatorName("system");
+        event.setActivity(activityMsg);
+        auditLogService.logUserManagementEvent(event);
+
+   }
+   /**
     * Authenticate a user with the specified credentials. If a connection can
     * be made to the table and the uid can be found with the corresponding
     * password, the authentication is considered successful.
@@ -85,6 +116,9 @@ public class PSBackEndTableProvider extends PSSecurityProvider
       CallbackHandler callbackHandler)
       throws PSAuthenticationFailedException
    {
+
+
+
       // fail if null uid      
       if (uid == null)
       {
@@ -122,11 +156,60 @@ public class PSBackEndTableProvider extends PSSecurityProvider
          // check that the password matches
          IPSPasswordFilter filter = m_backendConnection.getPasswordFilter();
          String encodedPw  = pw;
-         if (filter != null)
-            encodedPw = filter.encrypt(pw).toString();
-         if (!encodedPw.equals(password))
-            throw new PSAuthenticationFailedException(
-               SP_NAME, m_spInstance, uid);
+         boolean authenticationValid = false;
+         if (filter != null) {
+            authenticationValid = PSPasswordHandler.checkHashedPassword(pw,password);
+            if(!authenticationValid){
+               //Check if it is encrypted with the legacy algorithm
+               encodedPw = filter.legacyEncrypt(pw);
+               if (!encodedPw.equals(password)){
+                  authenticationValid = false;
+               }else{
+                  authenticationValid = true;
+
+                  log.info("Security Update: Re-encrypting password for database user: {} from legacy algorithm {} to current algorithm {}",
+                          uid,
+                          filter.getLegacyAlgorithm(),
+                          filter.getAlgorithm());
+
+                  //The password needs re-encrypted with the filters new algorithm.
+                  m_backendConnection.updateUserPassword(uid,filter.encrypt(pw));
+                  auditlogUserActivity(uid,
+                          PSUserManagementEvent.UserEventActions.update,
+                          String.format("Security Update: Re-encrypting password for database user: {%s} from legacy algorithm {%s} to current algorithm {%s}",
+                          uid,
+                          filter.getLegacyAlgorithm(),
+                          filter.getAlgorithm()));
+               }
+            }
+         }
+
+
+         if (!authenticationValid) {
+            //Clear text password
+            if (!pw.equals(password)) {
+               throw new PSAuthenticationFailedException(
+                       SP_NAME, m_spInstance, uid);
+            }else{
+               authenticationValid = true;
+
+               if(filter != null) {
+                  log.info("Security Update: Re-encrypting password for database user: {} from legacy algorithm: {} to current algorithm: {}",
+                          uid,
+                          filter.getLegacyAlgorithm(),
+                          filter.getAlgorithm());
+
+                  //The password needs re-encrypted with the filters new algorithm.
+                  m_backendConnection.updateUserPassword(uid, filter.encrypt(pw));
+                  auditlogUserActivity(uid,
+                          PSUserManagementEvent.UserEventActions.update,
+                          String.format("Security Update: Re-encrypting password for database user: {%s} from legacy algorithm: {%s} to current algorithm: {%s}",
+                                  uid,
+                                  "Plain Text",
+                                  filter.getAlgorithm()));
+               }
+            }
+         }
 
          // get user attributes
          PSSubject subject = m_dirCataloger.getAttributes(uid, null);
@@ -138,7 +221,7 @@ public class PSBackEndTableProvider extends PSSecurityProvider
          return new PSUserEntry(uid, 0, null, attributeValues, PSUserEntry
             .createSignature(uid, pw));
          }
-      catch (SQLException e)
+      catch (SQLException | PSEncryptionException e)
          {
          throw new PSAuthenticationFailedException(
             SP_NAME, m_spInstance, uid, e.toString());

@@ -10,30 +10,29 @@ import="javax.servlet.jsp.JspWriter"
 import="javax.sql.DataSource"
 import="java.sql.Connection"
 import="java.sql.ResultSet"
-import="java.sql.SQLException, java.sql.Statement" %><%--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  --%>
+import="java.sql.SQLException, java.sql.Statement"
+import="com.percussion.i18n.PSI18nUtils"
+import="com.percussion.server.PSServer"
+%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%
+	String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
+	if(isEnabled == null)
+		isEnabled="false";
+
+	if(isEnabled.equalsIgnoreCase("false")){
+		response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+				+ "/ui/RxNotAuthorized.jsp"));
+	}
+	String fullrolestr = PSRoleUtilities.getUserRoles();
+
+	if (!fullrolestr.contains("Admin"))
+		response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+				+ "/ui/RxNotAuthorized.jsp"));
+
+%>
 <%!
 public void writeToFile(JspWriter out, IPSContentMgr mgr, String query) throws Exception {
 	query = query.substring(0,query.length()-4);

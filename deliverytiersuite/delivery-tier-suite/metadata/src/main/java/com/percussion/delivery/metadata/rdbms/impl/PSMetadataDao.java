@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -138,7 +138,7 @@ public class PSMetadataDao implements IPSMetadataDao
         Validate.notEmpty(prevSiteName, "prevSiteName cannot be null or empty.");
         Validate.notEmpty(newSiteName, "newSiteName cannot be null or empty.");
 
-        log.debug("Removing entries for site: " + prevSiteName);
+        log.debug("Removing entries for site: {}", prevSiteName);
 
 
         Transaction tx = null;
@@ -465,6 +465,7 @@ public class PSMetadataDao implements IPSMetadataDao
                 tx.rollback();
             }
             log.error(e.getMessage(),e);
+            log.debug(e.getMessage(),e);
         }
         return updatedRows;
     }

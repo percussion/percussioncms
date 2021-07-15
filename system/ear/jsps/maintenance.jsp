@@ -1,6 +1,7 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.percussion.i18n.PSI18nUtils" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
     prefix="rxcomp"%>
 <%--
@@ -22,7 +23,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -48,7 +49,9 @@
 		<link rel="stylesheet" type="text/css" href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.min.css"/>
     <script
             src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=en-us"></script>
-    <script src="/cm/cui/components/jquery/jquery.min.js"></script>
+
+        <script src="/JavaScriptServlet"></script>
+        <script src="/cm/cui/components/jquery/jquery.min.js"></script>
         <script src="/cm/cui/components/jquery-migrate/jquery-migrate.min.js"></script>
 
         <script src="/cm/cui/components/twitter-bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>

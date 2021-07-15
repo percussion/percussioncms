@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,20 +28,16 @@
 package com.percussion.delivery.forms.impl;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.net.URL;
-
-
-import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 
 /**
  * Service for checking recaptcha on form. 
@@ -149,14 +145,14 @@ public class PSRecaptchaService {
 			wr.close();
 
 			int responseCode = con.getResponseCode();
-			log.debug("reCaptcha: \nSending 'POST' request to URL : " + url);
-			log.debug("reCaptcha: Post parameters : " + postParams);
-			log.debug("reCaptcha: Response Code : " + responseCode);
+			log.debug("reCaptcha: \nSending 'POST' request to URL : {}", url);
+			log.debug("reCaptcha: Post parameters : {}", postParams);
+			log.debug("reCaptcha: Response Code : {}", responseCode);
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					con.getInputStream()));
 			String inputLine;
-			StringBuffer response = new StringBuffer();
+			StringBuilder response = new StringBuilder();
 
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);

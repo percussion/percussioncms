@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -124,7 +124,7 @@ public class RxLogTables
       Statement stmt = PSSQLStatement.getStatement(conn);
       if (!(hasTable(targetMeta, schema, PSLogDatabase.TABLE_PSLOG)))
       {
-         StringBuffer buf = new StringBuffer(512);
+         StringBuilder buf = new StringBuilder(512);
          buf.append("CREATE TABLE ");
          buf.append(PSSqlHelper.qualifyTableName(PSLogDatabase.TABLE_PSLOG,
                                                  db,
@@ -156,7 +156,7 @@ public class RxLogTables
 
       if (!(hasTable(targetMeta, schema, PSLogDatabase.TABLE_PSLOGDAT)))
       {
-         StringBuffer buf = new StringBuffer(512);
+         StringBuilder buf = new StringBuilder(512);
          buf.append("CREATE TABLE ");
          buf.append(PSSqlHelper.qualifyTableName(PSLogDatabase.TABLE_PSLOGDAT,
                                                  db,

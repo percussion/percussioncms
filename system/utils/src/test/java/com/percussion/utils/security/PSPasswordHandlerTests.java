@@ -17,32 +17,37 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.security;
+package com.percussion.utils.security;
 
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSPasswordHandler;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- * @todo Fix it... files on Linux buildServer
+ * @todo Fix it... fails on Linux buildServer
  */
 @Ignore
 public class PSPasswordHandlerTests {
 
-
+    private static String savedEncPass;
 
     @Test
-    public void testPasswordHandler() throws PSEncryptionException {
+    public void testPasswordHandler() throws PSEncryptionException,InterruptedException {
         String encodedPw = PSPasswordHandler.getHashedPassword("HEY WHADAYA DOIN' WITH YOUR LIFE HEY WHADAYA DOIN' WITH YOUR LIFE");
+        savedEncPass = encodedPw;
 
-        System.out.println("Encoded:" + encodedPw);
-        System.out.println("Encoded Length:" + encodedPw.length());
+       System.out.println("Encoded:" + encodedPw);
+       System.out.println("Encoded Length:" + encodedPw.length());
         assertNotNull(encodedPw);
 
         assertTrue(PSPasswordHandler.checkHashedPassword("HEY WHADAYA DOIN' WITH YOUR LIFE HEY WHADAYA DOIN' WITH YOUR LIFE",encodedPw));
@@ -52,13 +57,19 @@ public class PSPasswordHandlerTests {
         try {
             assertFalse(PSPasswordHandler.checkHashedPassword(null, encodedPw));
         }catch(IllegalArgumentException e){
-            System.out.println("Null check passed.");
+           System.out.println("Null check passed.");
         }
 
         try {
             assertFalse(PSPasswordHandler.checkHashedPassword("test", null));
         }catch(IllegalArgumentException e){
-              System.out.println("Null check passed.");
+           System.out.println("Null check passed.");
          }
+    }
+
+    @Test
+    public void testSecondTime() throws PSEncryptionException {
+        assertTrue(PSPasswordHandler.checkHashedPassword("HEY WHADAYA DOIN' WITH YOUR LIFE HEY WHADAYA DOIN' WITH YOUR LIFE","h5ihvAb3oi2/uTS2jeA1GEnPE0zRs4N6viD0wE1AI6FDCU9FR5ccnryu6P820VEqDDBTQTYxPSRQTm1E6McklzOIsT/Us1YmJw8PfJ7QXd7G2GctJcmoIoUIllXScHtp8zdqHw9/MPDzpyjJ/s5lmsgPHxX55/Acl6XHRU+B9fCo0U13su7mtgxNVElsNnRf"));
+
     }
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -256,7 +256,7 @@ public class PSMimeContentAdapter implements IPSMimeContent
    @Override
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(50);
+      StringBuilder buf = new StringBuilder(50);
       buf.append("MIME Content\n");
       if (m_mimeType != null)
       {

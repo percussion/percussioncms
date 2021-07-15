@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -80,6 +80,7 @@ import com.percussion.share.service.PSAbstractDataService;
 import com.percussion.share.service.PSSiteCopyUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.validation.PSValidationErrors;
@@ -845,7 +846,7 @@ import static org.apache.commons.lang.Validate.notNull;
         }
     }
 
-    public PSSite save(PSSite site) throws PSDataServiceException {
+    public PSSite save(PSSite site) throws PSDataServiceException, PSParametersValidationException {
         PSSiteCopyUtils.throwCopySiteMessageIfSameTargetName(site.getName(), "save",
                 PSSiteCopyUtils.CAN_NOT_CREATE_SAME_COPIED_SITE_NAME);
         validateNewSite(site);
@@ -1556,7 +1557,6 @@ import static org.apache.commons.lang.Validate.notNull;
     {
         siteName = StringUtils.defaultString(siteName);
         return siteName.matches("^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$");
-
     }
 
     private boolean isReservedSiteName(String siteName)

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -1492,7 +1492,7 @@ public class PSContentEditorMapper extends PSComponent
       // see if any shared excludes were not found in an included group
       if (tmpExcludes.size() > 0)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          Iterator excludes = tmpExcludes.iterator();
          if (excludes.hasNext())
             buf.append((String)excludes.next());
@@ -1657,7 +1657,7 @@ public class PSContentEditorMapper extends PSComponent
 
       if(!notFound.isEmpty())
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          excludes = notFound.iterator();
          if (excludes.hasNext())
             buf.append((String)excludes.next());

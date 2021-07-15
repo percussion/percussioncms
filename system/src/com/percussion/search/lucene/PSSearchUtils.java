@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,15 +30,14 @@ import com.percussion.design.objectstore.PSContentEditorMapper;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.search.PSSearchKey;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 /**
@@ -52,13 +51,13 @@ public class PSSearchUtils
 
    /**
     * A utility method to get the node text. Gets the text from the nodes
-    * recursively and appends the data to the supplied StringBuffer.
+    * recursively and appends the data to the supplied StringBuilder.
     * 
-    * @param sb Object of StringBuffer must not be <code>null</code>.
+    * @param sb Object of StringBuilder must not be <code>null</code>.
     * @param node Node from which text needs to be extracted. Must not be
     * <code>null</code>.
     */
-   public static void getNodeText(StringBuffer sb, Node node)
+   public static void getNodeText(StringBuilder sb, Node node)
    {
       if(sb == null)
          throw new IllegalArgumentException("sb must not be null");

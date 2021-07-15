@@ -18,7 +18,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -287,7 +287,7 @@
         $.PercContentPreSubmitHandlers.clearHandlers();
 
         // Bind the frame load to execute different methods based on whether the frame is loaded initially or through form submit.
-        $("#edit-widget-content-frame").load(function()
+        $("#edit-widget-content-frame").on("load",function()
         {
             if(initialized == false){
                 initialized = true;

@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.taxonomy.web;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.springframework.util.CollectionUtils.isEmpty;
 
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.taxonomy.TaxonomySecurityHelper;
@@ -44,7 +41,14 @@ import com.percussion.taxonomy.service.Node_statusService;
 import com.percussion.taxonomy.service.TaxonomyService;
 import com.percussion.taxonomy.service.ValueService;
 import com.percussion.taxonomy.service.VisibilityService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,14 +56,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.servlet.ModelAndView;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Controller
 public class TaxonomyController extends AbstractControllerWithSecurityChecks
@@ -404,7 +402,7 @@ public class TaxonomyController extends AbstractControllerWithSecurityChecks
 
    private String taxonomyInUseWarning(Map<String, List<String>> contentTypeToFields)
    {
-      StringBuffer buffer = new StringBuffer();
+      StringBuilder buffer = new StringBuilder();
       buffer.append("The following conent-type [fields], ");
       for (String ctype : contentTypeToFields.keySet())
       {

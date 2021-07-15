@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -429,8 +429,7 @@
                         gadgetArray = new Array(results.DashboardConfig.gadgets.length);
                         gadgets.container.addSetTitleListener(_afterSetTitle);
                         renderGadgets(results.DashboardConfig.gadgets);
-
-                        $(document).off("click").on("click","#perc-dashboard-restore-menu",function()
+                        $("#perc-dashboard-restore-menu").off().on('click',function()
                         {
                             restore();
                         });
@@ -473,7 +472,7 @@
                             dontShowAgainAction: function(){},
                             success: function()
                             {
-                                $('#perc-finder-new-site').trigger("click");
+                                $('#perc-finder-new-site').trigger('click');
                             }
                         });
 
@@ -587,11 +586,13 @@
         var title = $gadget.find(".gadgets-gadget-title");
         var titleButtons = $gadget.find(".gadgets-gadget-title-button-bar");
         titleButtons.css("float", "right");
-        var gadgetMenuButton = $("<img src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").on("click",function(event)
+        var gadgetMenuButton = $("<img src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").on('click',function(event)
         {
             event.stopPropagation();
-            showMenu(self, titleBar, event);
+            showMenu(self, titleBar,event);
         });
+
+
         titleButtons.append(gadgetMenuButton);
 
         // fixf the width of columns
@@ -604,7 +605,7 @@
         });
     }
 
-    function showMenu(gadget, titleBar)
+    function showMenu(gadget,titleBar, evt)
     {
         // grab all the elements we need
         menu = $("#perc-gadget-menu");
@@ -612,54 +613,50 @@
         menuExpand = $("#perc-gadget-menu-expand");
         menuConfig = $("#perc-gadget-menu-config");
         menuRemove = $("#perc-gadget-menu-remove");
-
         menuButton = $("#perc-gadget-menu-button");
         var instanceId = gadget.attr("instanceId");
         var gInstance = gadgets.container.getGadget(instanceId);
         var hasPrefs = gInstance.hasPrefs;
         // move the menu to the current gadget so that it shows right under the gadget's titlebar
-        var top = titleBar.position().top + $(".perc-dashboard-container").scrollTop();
+        var top = titleBar.position().top;
         var left = titleBar.position().left;
-        var menuX = titleBar[0].getBoundingClientRect().left + titleBar[0].getBoundingClientRect().width + $(window)['scrollLeft']()-menu.outerWidth(true);
+        var menuX = titleBar[0].getBoundingClientRect().left + titleBar[0].getBoundingClientRect().width - menu.outerWidth(true);
         var menuY = top + titleBar.outerHeight();
+        // hide the menu if you hover away from it
+        menu.off().hover(function()
+        {}, function()
+        {
+            menu.hide();
+        });
         menu.css("top", menuY).css("left", menuX).css("display", "block");
-
         // update the menu items based on the current state of the gadget
         updateMinimizeExpandMenuItem(gadget);
-
-        //CMS-8086 : The click event was being bound multiple times resulting in multiple firings of click events in case we clicked different menu items on different gadgets.
-        //Need to de register the already registered click event while showing the menu up.
-        $(document).off("click");
-
         // handle maximize menu item
-        $(document).on("click","#perc-gadget-menu-minimize",function(eventObject )
+        menuMinimize.off().on('click',function(evt)
         {
             minimizeGadget(gadget);
             menu.hide();
         });
 
         // handle remove menu item
-        $(document).on("click","#perc-gadget-menu-remove", function(eventObject )
+        menuRemove.off().on('click',function(evt)
         {
-            menu.hide(); //Hide the menu after clicking.
             var instanceId = gadget.attr("instanceId");
             removeGadget(instanceId);
         });
 
         // handle expand menu item
-        $(document).on("click", "#perc-gadget-menu-expand",function(eventObject )
+        menuExpand.off().on('click',function(evt)
         {
             expandGadget(gadget);
             menu.hide();
         });
 
         // handle edit settings
-        $(document).on("click","#perc-gadget-menu-config", function(eventObject )
+        menuConfig.off().on('click',function(evt)
         {
-            menu.hide();
             handlePrefs(instanceId);
         });
-
         if (hasPrefs)
         {
             menuConfig.show();
@@ -670,18 +667,10 @@
         }
 
         // hide the menu if you are about to resize the finder
-        $(document).on("hover",".ui-resizable-handle",function(eventObject )
+        $(".ui-resizable-handle").hover(function()
         {
             menu.hide();
         });
-
-        // hide the menu if you hover away from it
-        $(document).on("mouseleave","#perc-gadget-menu",function(eventObject )
-        {
-            menu.hide();
-        });
-
-
     }
 
     // check display attribute of gadget content
@@ -1054,7 +1043,7 @@
         dashboardContainer = $(".perc-dashboard-container");
 
         expandGadgetTray();
-        $(document).off("change",".perc-gadget-type", function()
+        $('.perc-gadget-type').off().on('change',function()
         {
             loadGadgetListing(function()
             {
@@ -1064,18 +1053,14 @@
                 });
             });
         });
-
-        $(document).on("change",".perc-gadget-category",function(evt){
-            filterGadgetLibrary(evt);
-        });
-
+        $('.perc-gadget-category').off().on('change',filterGadgetLibrary);
         populateTrayGadgets(function()
         {
             collapseGadgetTray();
             fixBottomHeight();
         });
 
-        gadgetTrayExpander.on("click",function()
+        gadgetTrayExpander.on('click',function()
         {
             toggleGadgetTray();
             fixBottomHeight();

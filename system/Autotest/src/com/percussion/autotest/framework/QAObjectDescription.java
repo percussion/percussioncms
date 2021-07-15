@@ -8,7 +8,7 @@
 package com.percussion.autotest.framework;
 
 import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class QAObjectDescription
     implements Serializable
@@ -20,7 +20,7 @@ public class QAObjectDescription
         this(name, type, scope, null);
     }
 
-    public QAObjectDescription(String name, QAObjectType type, int scope, Hashtable params)
+    public QAObjectDescription(String name, QAObjectType type, int scope, ConcurrentHashMap params)
         throws IllegalArgumentException
     {
         if(name == null)
@@ -69,5 +69,5 @@ public class QAObjectDescription
     private String m_name;
     private QAObjectType m_type;
     private int m_scope;
-    private Hashtable m_params;
+    private ConcurrentHashMap m_params;
 }

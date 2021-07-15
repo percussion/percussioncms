@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,12 @@ import com.percussion.error.PSBeansException;
 import com.percussion.i18n.PSTmxUnit;
 import com.percussion.util.IPSRemoteRequester;
 import com.percussion.util.PSXMLDomUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -35,13 +41,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 /**
  * This class is used to access key and values generated from the Rhythmyx
@@ -144,7 +143,7 @@ public class PSI18NTranslationKeyValues
          keyEl.setAttribute(ATTR_KEY, (String)me.getKey());
          if (unit.getMnemonic() != 0)
          {
-            StringBuffer buf = new StringBuffer(1);
+            StringBuilder buf = new StringBuilder(1);
             buf.append(Integer.toString(unit.getMnemonic()));
             keyEl.setAttribute(ATTR_MNEMONIC, buf.toString());
          }

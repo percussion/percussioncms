@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -93,7 +93,8 @@ public class Category {
 		try {
 			this.custoffTime = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(custoffTime.replace("T", " " ));
 		} catch (ParseException e) {
-			log.error("Error setting CustoffTime with value " + custoffTime + " and format: " + IPSEMSEventService.TIME_FORMAT_STRING,e);
+			log.error("Error setting CustoffTime with value {} and format: {}, Error: {}",custoffTime, IPSEMSEventService.TIME_FORMAT_STRING,e.getMessage());
+			log.debug(e.getMessage(), e);
 		}
 	}
 	public Integer getCutOffDays() {

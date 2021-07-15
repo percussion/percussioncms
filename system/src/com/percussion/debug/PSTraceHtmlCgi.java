@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,7 +28,12 @@ import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSRequest;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Used to generate trace messages for Html paramenters and Cgi varibles.
@@ -121,7 +126,7 @@ public class PSTraceHtmlCgi extends PSTraceMessage
 
    /**
     * Formats the output for the name-value pairs found in the map
-    * @param buf the StringBuffer to append to
+    * @param buf the StringBuilder to append to
     * @param map the HashMap containing String keys and String values
     */
    private void logMap(StringBuilder buf, Map<String,Object> map)

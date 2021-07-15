@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,24 +33,22 @@ import com.percussion.taxonomy.web.xmlGeneration.Attr;
 import com.percussion.taxonomy.web.xmlGeneration.Item;
 import com.percussion.taxonomy.web.xmlGeneration.RootTag;
 import com.percussion.taxonomy.web.xmlGeneration.Value;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.simpleframework.xml.core.Persister;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
-import org.springframework.web.servlet.ModelAndView;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AbstractXMLProviderController extends AbstractControllerWithSecurityChecks {
 
@@ -85,7 +83,7 @@ public class AbstractXMLProviderController extends AbstractControllerWithSecurit
 		
     	boolean exclude_disabled = (request.getParameter("exclude_disabled")!=null && request.getParameter("exclude_disabled").equals("true"));		
 		
-    	Hashtable<Integer, Hashtable<String,Collection<String>>> titles_hashtable = buildTitlesHashtable(tp.getTaxID(),langID);
+    	ConcurrentHashMap<Integer, ConcurrentHashMap<String,Collection<String>>> titles_ConcurrentHashMap = buildTitlesConcurrentHashMap(tp.getTaxID(),langID);
 		
 		
 		List<Object[]> the_nodes = null;
@@ -160,7 +158,7 @@ public class AbstractXMLProviderController extends AbstractControllerWithSecurit
 				attributes = new ArrayList();
 			}
 
-			String title = buildTitle(titles_hashtable.get(nodeID), attributes, langID, tripletPlusTwo, tp.getForJEXL(), exclude_disabled);
+			String title = buildTitle(titles_ConcurrentHashMap.get(nodeID), attributes, langID, tripletPlusTwo, tp.getForJEXL(), exclude_disabled);
 
 			String xml_link = null;
 			String xml_onclick = null;
@@ -258,19 +256,19 @@ public class AbstractXMLProviderController extends AbstractControllerWithSecurit
 		return ret;
 	}
 
-	protected Hashtable<Integer, Hashtable<String,Collection<String>>> buildTitlesHashtable(int taxID, int langID) {
+	protected ConcurrentHashMap<Integer, ConcurrentHashMap<String,Collection<String>>> buildTitlesConcurrentHashMap(int taxID, int langID) {
 		// build titles
 		ArrayList<Object[]> raw_titles = new ArrayList(nodeService.getTitlesForNodes(taxID, langID));
-		Hashtable<Integer, Hashtable<String,Collection<String>>> titles_hashtable = new Hashtable<Integer, Hashtable<String,Collection<String>>>();
+		ConcurrentHashMap<Integer, ConcurrentHashMap<String,Collection<String>>> titles_ConcurrentHashMap = new ConcurrentHashMap<Integer, ConcurrentHashMap<String,Collection<String>>>();
 		for (Object[] title : (Collection<Object[]>) raw_titles){
 			Integer key = (Integer) title[0]; // node_id
 			String name = (String) title[1]; // attr name
 			String value = (String) title[2]; // attr value
-			Hashtable<String,Collection<String>> title_pairs = null;
-			if (titles_hashtable.containsKey(key)){
-				title_pairs = titles_hashtable.get(key);
+			ConcurrentHashMap<String,Collection<String>> title_pairs = null;
+			if (titles_ConcurrentHashMap.containsKey(key)){
+				title_pairs = titles_ConcurrentHashMap.get(key);
 			}else{
-				title_pairs = new Hashtable<String,Collection<String>>();
+				title_pairs = new ConcurrentHashMap<String,Collection<String>>();
 			}
 			Collection<String> values = null;
 			if (title_pairs.containsKey(name)){
@@ -280,13 +278,13 @@ public class AbstractXMLProviderController extends AbstractControllerWithSecurit
 			}
 			values.add(value);
 			title_pairs.put(name,values);
-			titles_hashtable.put(key,title_pairs);
+			titles_ConcurrentHashMap.put(key,title_pairs);
 		}
-		return titles_hashtable;
+		return titles_ConcurrentHashMap;
 	}
 	
 	
-	protected String buildTitle(Hashtable<String,Collection<String>> title_pairs, ArrayList<Attr> attributes, int langID, Object[] tripletPlusTwo, boolean is_for_jexl, boolean exclude_disabled){
+	protected String buildTitle(ConcurrentHashMap<String,Collection<String>> title_pairs, ArrayList<Attr> attributes, int langID, Object[] tripletPlusTwo, boolean is_for_jexl, boolean exclude_disabled){
 		
 		ArrayList<String> title_string_array = new ArrayList<String>();
 

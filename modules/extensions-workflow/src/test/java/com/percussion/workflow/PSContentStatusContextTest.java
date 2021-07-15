@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -174,7 +174,7 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
 
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:");
       buf.append("   -w, -workflowid        workflow ID");
       buf.append("   -c, -contentid         content ID");

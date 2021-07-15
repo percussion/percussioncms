@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,18 +26,7 @@ package com.percussion.security;
 import com.percussion.design.objectstore.PSJndiGroupProviderInstance;
 import com.percussion.design.objectstore.PSJndiObjectClass;
 import com.percussion.services.security.PSTypedPrincipal;
-
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 import javax.naming.CompoundName;
 import javax.naming.InvalidNameException;
@@ -49,8 +38,17 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Provides support for cataloging groups for a {@link PSJndiProvider}.  Also
@@ -585,7 +583,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
    private Collection<IPSTypedPrincipal> getDynamicUsers(String searchUrl) 
       throws NamingException
    {
-      StringBuffer baseBuf = new StringBuffer();
+      StringBuilder baseBuf = new StringBuilder();
       String filter = parseSearchUrl(searchUrl, baseBuf);
       String base = baseBuf.toString();
 
@@ -1097,7 +1095,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
    private boolean isUserInDynamicList(String user, String searchUrl)
       throws NamingException
    {
-      StringBuffer baseBuf = new StringBuffer();
+      StringBuilder baseBuf = new StringBuilder();
       String filter = parseSearchUrl(searchUrl, baseBuf);
       String base = baseBuf.toString();
 
@@ -1157,7 +1155,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
     */
    private List getDynamicGroupMembers(String searchUrl) throws NamingException
    {
-      StringBuffer baseBuf = new StringBuffer();
+      StringBuilder baseBuf = new StringBuilder();
       String filter = parseSearchUrl(searchUrl, baseBuf);
       String base = baseBuf.toString();
 
@@ -1294,7 +1292,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
    {
       if (m_groupsSearchFilter == null)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          Iterator ocs = m_groupProviderInstance.getObjectClassesNames();
          while (ocs.hasNext())
          {
@@ -1345,7 +1343,7 @@ public class PSJndiGroupProvider implements IPSGroupProvider
 
    /**
     * Parses an LDAP url, returning the query filter portion, and also appending
-    * the base portion to the supplied StringBuffer.  For example, if the url
+    * the base portion to the supplied StringBuilder.  For example, if the url
     * is <p>
     * <code>ldap:///ou=percussion,c=us ??sub?(cn=m*)</code>
     *
@@ -1356,14 +1354,14 @@ public class PSJndiGroupProvider implements IPSGroupProvider
     *</code>
     *
     * @param url The url to parse, assumed not <code>null</code> or empty.
-    * @param baseBuffer The StringBuffer onto which the base is appended.
+    * @param baseBuffer The StringBuilder onto which the base is appended.
     * Assumed not <code>null</code>.  If no base is supplied, nothing is
     * appended.
     *
     * @return The filter portion of the url, never <code>null</code>, may be
     * empty if no filter is supplied.
     */
-   private static String parseSearchUrl(String url, StringBuffer baseBuffer)
+   private static String parseSearchUrl(String url, StringBuilder baseBuffer)
    {
       String filter = "";
       String delim = "??sub?";

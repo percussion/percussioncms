@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -61,7 +61,7 @@ public class PSFolderGenerator extends PSGenerator<PSPathServiceRestClient>
             path = path.substring(1);
         StringTokenizer toker = new StringTokenizer(path, "/");
         int parts = toker.countTokens();
-        StringBuffer partialPath = new StringBuffer(100);
+        StringBuilder partialPath = new StringBuilder(100);
         PSPathItem result = null;
         for (int i = 0; i < parts; i++)
         {

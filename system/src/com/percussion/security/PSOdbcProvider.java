@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,9 +26,8 @@ package com.percussion.security;
 
 import com.percussion.util.PSSqlHelper;
 
-import java.util.Properties;
-
 import javax.security.auth.callback.CallbackHandler;
+import java.util.Properties;
 
 /**
  * The PSOdbcProvider class uses ODBC's login facility
@@ -43,7 +42,6 @@ public class PSOdbcProvider extends PSSecurityProvider
    /**
     * Construct an instance of this provider.
     *
-    * @param   dsn      the DSN to use for authenticating users
     */
    public PSOdbcProvider(Properties props, String providerInstance)
    {

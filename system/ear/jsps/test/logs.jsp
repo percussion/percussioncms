@@ -1,8 +1,11 @@
 <%@ page import="com.percussion.server.PSServer, com.percussion.services.utils.jspel.PSRoleUtilities, java.io.BufferedReader, java.io.FileNotFoundException"
          import="java.io.FileReader"
-
+         import="com.percussion.i18n.PSI18nUtils"
+         contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"
 %>
-
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
 <%--
   ~     Percussion CMS
@@ -23,22 +26,29 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
-
-<!-- Import all neccesary packages to send and recieve sql queries and updates.
-Import PS Admin Security-->
 <%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
+
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
     String fullrolestr = PSRoleUtilities.getUserRoles();
 
-    if (fullrolestr.contains("Admin") == false)
+    if (!fullrolestr.contains("Admin"))
         response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
                 + "/ui/RxNotAuthorized.jsp"));
 
 %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 
     <title>
@@ -190,7 +200,7 @@ Import PS Admin Security-->
 <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
 <script src="/cm/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.js"></script>
 <script>
-    $(document).ready(function () {
+    $(function () {
         var row;
         var rownum;
         $("#DefaultJNDIReplacer").on("click", function (e) {

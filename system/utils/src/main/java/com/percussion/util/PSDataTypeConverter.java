@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -292,7 +292,7 @@ public class PSDataTypeConverter
     * @param myText a given string to be parsed. May not be <code>null</code>.
     * 
     * @param patternUsed If successfully parsed, the pattern used will be
-    * appended on the supplied StringBuffer. If myText cannot be parsed, the
+    * appended on the supplied StringBuilder. If myText cannot be parsed, the
     * buffer is not modified. May be <code>null</code> if the pattern need not
     * be returned.
     * 
@@ -360,8 +360,8 @@ public class PSDataTypeConverter
    /**
     * Get a recognized date format for the supplied String.  Calls {@link
     * #parseStringToDate(String, StringBuilder)} passing the supplied text and
-    * an empty StringBuffer, and returns the result contained in the
-    * StringBuffer.
+    * an empty StringBuilder, and returns the result contained in the
+    * StringBuilder.
     *
     * @param text A given string to be parsed.  May not be <code>null</code>.
     *

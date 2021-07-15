@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -47,7 +47,7 @@ public class PSFileSystemStatementTest
 
    public static void main(String[] args)
    {
-      StringBuffer buf = new StringBuffer(args.length * 10);
+      StringBuilder buf = new StringBuilder(args.length * 10);
       for (int i = 0; i < args.length; i++)
       {
          buf.append(args[i]);

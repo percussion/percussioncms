@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,8 +29,13 @@ import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.error.PSErrorManager;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
-import com.percussion.util.*;
+import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSBaseHttpUtils;
+import com.percussion.util.PSCharSets;
+import com.percussion.util.PSCharSetsConstants;
+import com.percussion.util.PSCountWriter;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -43,8 +48,6 @@ import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
-
-import org.w3c.dom.Document;
 
 /**
  * The PSResponse class hides the details of the HTTP protocol, allowing
@@ -298,7 +301,7 @@ public class PSResponse extends PSBaseResponse
                                  String domain, java.util.Date expires,
                                  boolean secure)
    {
-      StringBuffer cookieValue = new StringBuffer();
+      StringBuilder cookieValue = new StringBuilder();
 
       cookieValue.append((value == null) ? "" : value);
       if (path != null)
@@ -764,8 +767,8 @@ public class PSResponse extends PSBaseResponse
    /**
     * Special xml response needed for WebImageFx
     */
-   private static final StringBuffer ms_wifxResponse =
-      new StringBuffer();
+   private static final StringBuilder ms_wifxResponse =
+      new StringBuilder();
       
    static
    {   

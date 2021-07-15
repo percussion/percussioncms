@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -53,9 +53,8 @@ import com.percussion.server.PSServer;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSURLEncoder;
 
-import java.util.ArrayList;
-
 import javax.servlet.ServletRequest;
+import java.util.ArrayList;
 
 /**
  * The PSRequestLinkGenerator class takes the current request context, adds
@@ -319,7 +318,7 @@ public class PSRequestLinkGenerator extends PSDataExtractor
       throws com.percussion.data.PSDataExtractionException
    {
       PSRequest request = data.getRequest();
-      StringBuffer buf = new StringBuffer(128);
+      StringBuilder buf = new StringBuilder(128);
       boolean hasQueryString = false;
       ServletRequest req = request.getServletRequest();
       

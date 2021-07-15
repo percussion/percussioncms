@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -211,8 +211,8 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
          } 
          catch (Exception e) 
          {
-            logErrorMessage("failed to process link: \n" + rel.toString()
-                     + "\n", e);
+            log.error("failed to process link: {}, Error: {}", rel.toString(), e.getMessage());
+            log.debug(e.getMessage(),e);
          }
       }
    }

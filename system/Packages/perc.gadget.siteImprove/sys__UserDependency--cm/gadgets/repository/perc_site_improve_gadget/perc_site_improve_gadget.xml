@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -109,7 +109,7 @@
 						If you wish to try out Siteimprove, click this link:
 					</p>
 					<div>
-						<a href="https://www.percussion.com/partners/siteimprove/" target="_blank">Try out Siteimprove!</a>
+						<a href="https://www.percussion.com/partners/siteimprove/" target="_blank" rel="noopener noreferrer">Try out Siteimprove!</a>
 					</div>
 				</div>
 				<br/>

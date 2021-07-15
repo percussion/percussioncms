@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,6 +36,7 @@ import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.utils.container.IPSJdbcDbmsDefConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -88,6 +89,7 @@ public class PSExportDatabase extends PSAction
 {
     private static final String ERROR = "ERROR :";
    // see base class
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute()
    {

@@ -17,24 +17,40 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.install;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSFilenameFilter;
 import com.percussion.util.PSProperties;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.security.PSEncryptor;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -51,22 +67,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import static com.percussion.utils.container.IPSJdbcDbmsDefConstants.PWD_ENCRYPTED_PROPERTY;
 
 /**
  * This class is the main class for upgrade process and its process method is
@@ -919,25 +920,18 @@ public class RxUpgrade
     * @throws FileNotFoundException if cannot find the properties file 
     *   described above file. 
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public static Properties getRxRepositoryProps()
          throws FileNotFoundException, IOException
    {
       Properties repprops = new Properties();
       String path = getRxRoot() + "rxconfig/Installer/rxrepository.properties";
-      FileInputStream fin = null;
-      
-      try
-      {
-         fin = new FileInputStream(new File(path));
+
+      try(FileInputStream fin = new FileInputStream(new File(path));){
+
          repprops.load(fin);
-         repprops.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         repprops.setProperty(PWD_ENCRYPTED_PROPERTY, "Y");
       }
-      finally
-      {
-         if (fin != null)
-            fin.close();
-      }
-      
       return repprops;
    }
    

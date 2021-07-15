@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -123,7 +123,7 @@ public class PSUrlUtils
       else if (anchorPos >= 0)
          baseUrl = baseUrl.substring(0, anchorPos);
 
-      StringBuffer finalUrl = new StringBuffer();
+      StringBuilder finalUrl = new StringBuilder();
       if (parsedProtocol != null && parsedProtocol.length() > 0)
       {
          finalUrl.append(parsedProtocol);
@@ -600,7 +600,7 @@ public class PSUrlUtils
 
 
       // should have all the pieces, put it together
-      StringBuffer finalUrl = new StringBuffer();
+      StringBuilder finalUrl = new StringBuilder();
       boolean isSecure = wasHttps && allowHttps;
       if (parsedProtocol != null && parsedProtocol.equalsIgnoreCase(
             SECURE_PROTOCOL))

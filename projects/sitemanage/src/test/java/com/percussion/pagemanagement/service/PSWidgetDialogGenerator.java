@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -43,6 +43,12 @@ import com.percussion.server.PSServer;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.util.PSProperties;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -53,13 +59,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 /**
  * When this unit test is run, three .java files may be generated for each widget currently registered in the running
@@ -201,7 +200,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateDialog(String className, String methods, String folderName)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         if (StringUtils.isNotBlank(methods))
         {
@@ -215,7 +214,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateWidgetSmokeTest(PSWidgetDialogGenerationInfo widgetGenerationInfo)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         String methods = generateWidgetSmokeTestMethods(widgetGenerationInfo);
         
@@ -231,7 +230,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateWidgetSmokeTestMethods(PSWidgetDialogGenerationInfo widgetGenerationInfo)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         strBuffer.append(generateWidgetTestCaseImplementationMethods(widgetGenerationInfo.getWidgetDefinition()));
         strBuffer.append(generateLayoutDialogTests(widgetGenerationInfo));
@@ -243,7 +242,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateWidgetTestCaseImplementationMethods(PSWidgetDefinition widgetDef)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         String className = getDialogClassName(widgetDef, TEST_SUFFIX);
         
@@ -278,7 +277,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
      */
     private String generateDialogTests(String comment, String dialogClassName, String methodPrefix, String paramName, Object[] widgetsAndCode)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         strBuffer.append("    /*\n");
         strBuffer.append("     * ");
@@ -358,7 +357,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateAssertChanges(List<String[]> widgetFieldsAndValues, String dialogVariableName)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         String fieldName;
         String fieldValue;
         
@@ -451,7 +450,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private Object[] generateMakeChanges(List<String[]> widgetFieldsInfo, String dialogVariableName)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         List<String[]> widgetFieldsAndValues = new ArrayList<String[]>();
         String fieldName, fieldType, control, variableType;
         
@@ -566,7 +565,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     @SuppressWarnings("unchecked")
     private String generateContentMethods(PSWidgetDefinition widgetDef)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
         String ctName = widgetDef.getWidgetPrefs().getContenttypeName();
@@ -611,7 +610,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateLayoutMethods(PSWidgetDefinition widgetDef)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         for (PSWidgetDefinition.UserPref userPref : widgetDef.getUserPref())
         {
@@ -623,7 +622,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateStyleMethods(PSWidgetDefinition widgetDef)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         for (PSWidgetDefinition.CssPref cssPref : widgetDef.getCssPref())
         {
@@ -676,7 +675,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     private String generateMethods(String name, String displayName, String type, String control,
             List<EnumValue> enumValues)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         if (control == null || isSupportedControl(control))
         {
@@ -731,7 +730,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateCopyrightNote(String className)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         
@@ -759,7 +758,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
      */
     private String generateClassHeader(String name, String folderName)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         strBuffer.append(generateCopyrightNote(name));
 
@@ -780,7 +779,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateSmokeTestClassHeader(PSWidgetDialogGenerationInfo widgetGenerationInfo)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         PSWidgetDefinition widgetDef = widgetGenerationInfo.getWidgetDefinition();
         
@@ -964,7 +963,7 @@ public class PSWidgetDialogGenerator extends PSServletTestCase
     
     private String generateEnum(String name, List<EnumValue> prefValues)
     {
-        StringBuffer strBuffer = new StringBuffer();
+        StringBuilder strBuffer = new StringBuilder();
         
         strBuffer.append("    public enum " + name + "\n");
         strBuffer.append("    {\n");

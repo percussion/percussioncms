@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -54,6 +54,7 @@ import com.percussion.server.IPSServerErrors;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSMapPair;
 import com.percussion.util.PSSqlHelper;
+import org.w3c.dom.Document;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -65,8 +66,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-
-import org.w3c.dom.Document;
 
 /**
  * This class defines a row editor, which is one of the editor types that make
@@ -880,7 +879,7 @@ public class PSRowEditorDocumentBuilder extends PSModifyDocumentBuilder
             String tmpOrigin = null;
             if ( null != tmpTableName && tmpTableName.trim().length() > 0 )
             {
-               StringBuffer originBuf = new StringBuffer();
+               StringBuilder originBuf = new StringBuilder();
                tmpTableName = PSSqlHelper.parseTableName( driver, tmpTableName,
                      originBuf, null );
                if ( originBuf.length() > 0 )
