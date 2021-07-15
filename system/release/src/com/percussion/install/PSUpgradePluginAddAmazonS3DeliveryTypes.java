@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,19 +26,17 @@ package com.percussion.install;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.util.PSSqlHelper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import org.w3c.dom.Element;
 
 /**
  * Upgrade plugin to add amazon_s3 and amazon_s3_only delivery types to PSX_DELIVERY_TYPE table.
@@ -72,6 +70,7 @@ public class PSUpgradePluginAddAmazonS3DeliveryTypes implements IPSUpgradePlugin
     * com.percussion.install.IPSUpgradePlugin#process(com.percussion.install
     * .IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, Element elemData)
    {
       logger = module.getLogStream();

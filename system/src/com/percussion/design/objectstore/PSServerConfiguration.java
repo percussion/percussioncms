@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,18 +31,17 @@ import com.percussion.server.PSUserSessionManager;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSServerConfiguration class is used to manipulate an E2 server's
@@ -261,7 +260,7 @@ public class PSServerConfiguration implements IPSDocument
 
       int adminAccess =   PSAclEntry.SACE_ADMINISTER_SERVER;
 
-      Hashtable names = new Hashtable();
+      ConcurrentHashMap names = new ConcurrentHashMap();
       boolean hasAdminAccess = false;
       PSAclEntry ace;
       String key;

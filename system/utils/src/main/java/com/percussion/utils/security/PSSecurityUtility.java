@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.utils.security;
 
 import com.percussion.util.PSProperties;
 import com.percussion.utils.io.PathUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Properties;
 
@@ -415,8 +417,23 @@ public class PSSecurityUtility {
      * @return The sanitized string
      */
     public static String sanitizeStringForFileSystem(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
+        if(str == null)
+            return str;
+
+        //TODO: Implement me
+
+        return str;
+    }
+
+    public static boolean isValidCMSPathString(String path){
+      //API seems coded such that an empty path is root.
+      if(StringUtils.isEmpty(path))
+          return true;
+
+      if(StringUtils.containsAny(path, "[\"\\<>{}^()|[]"))
+          return false;
+      else
+          return true;
     }
 
     /**
@@ -430,13 +447,84 @@ public class PSSecurityUtility {
     }
 
     /**
-     * Sanitizes a user provided string for use in HTML
+     * Escapes a user provided string for use in HTML
      * @param str a user provided string
-     * @return The sanitized string
+     * @return The escaped string
      */
     public static String sanitizeStringForHTML(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
+
+       return  StringEscapeUtils.escapeHtml(str);
     }
 
+    /***
+     * Removes any characters from a given string that are not a valid SQL Object Name.
+     * Supports unicode strings.
+     *
+     * @param str
+     * @return A version of the string with any special characters removed.
+     */
+    public static String removeInvalidSQLObjectNameCharacters(String str){
+        if(str == null)
+            return null;
+
+        return str.replaceAll("[\\W]+", "");
+    }
+
+    public static boolean isValidGuidId(String id){
+        return id.matches("^[0-9-]*$");
+    }
+
+    public static boolean isValidNumericId(String id){
+        return StringUtils.isNumeric(id);
+    }
+
+    public static String escapeLDAPQueryString(final String in){
+        StringBuilder s = new StringBuilder();
+
+        for (int i=0; i< in.length(); i++) {
+
+            char c = in.charAt(i);
+
+            if (c == '*') {
+                // escape asterisk
+                s.append("\\2a");
+            }
+            else if (c == '(') {
+                // escape left parenthesis
+                s.append("\\28");
+            }
+            else if (c == ')') {
+                // escape right parenthesis
+                s.append("\\29");
+            }
+            else if (c == '\\') {
+                // escape backslash
+                s.append("\\5c");
+            }
+            else if (c == '\u0000') {
+                // escape NULL char
+                s.append("\\00");
+            }
+            else if (c <= 0x7f) {
+                // regular 1-byte UTF-8 char
+                s.append(String.valueOf(c));
+            }
+            else if (c >= 0x080) {
+
+                // higher-order 2, 3 and 4-byte UTF-8 chars
+
+                byte[] utf8bytes = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
+
+                for (byte b: utf8bytes)
+                    s.append(String.format("\\%02x", b));
+
+            }
+        }
+
+        return s.toString();
+    }
+
+    public static String escapeLDAPConnectionString(String str){
+        return str;
+    }
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,16 +29,15 @@ import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSDataTypeConverter;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * Represents the collection of holidays entered into Mitre's Rhythmyx
@@ -138,7 +137,7 @@ public class PSHolidays
             null, false);
       if (ir == null)
       {
-         StringBuffer error = new StringBuffer();
+         StringBuilder error = new StringBuilder();
          error
                .append("Catalog of holidays failed, beacause the query resource '");
          error.append(HOLIDAY_CATALOGER);
@@ -153,7 +152,7 @@ public class PSHolidays
          }
          catch (PSInternalRequestCallException e)
          {
-            StringBuffer error = new StringBuffer();
+            StringBuilder error = new StringBuilder();
             error.append("Catalog of holidays failed ");
             error
                   .append("because an error occurred during the internal request: ");

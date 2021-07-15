@@ -17,20 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.ant.install;
 
-import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.install.PSLogger;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcExecutionStep;
 import com.percussion.tablefactory.PSJdbcStatementFactory;
+import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.tablefactory.tools.DbUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -73,6 +74,7 @@ import java.util.Properties;
 public class PSCreateTableBackupAction extends PSAction
 {
    // see base class
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute()
    {

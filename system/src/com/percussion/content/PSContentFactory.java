@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -135,7 +135,7 @@ public abstract class PSContentFactory
       String line = r.readLine();
       while (line != null)
       {
-         log.info(line);
+         log.info("{}",line);
          line = r.readLine();
       }
    }
@@ -155,7 +155,6 @@ public abstract class PSContentFactory
     */
    @SuppressWarnings("deprecation")
    public static InputStream bufferStream(InputStream in)
-      throws IOException
    {
       if (in == null)
          throw new IllegalArgumentException("in cannot be null");

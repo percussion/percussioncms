@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -142,7 +142,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      */
     protected PathMatch match(String path) throws PSPathNotFoundServiceException
     {
-        if (path == null) throw new PSPathNotFoundServiceException("Path cannont be null");
+        if (path == null) throw new PSPathNotFoundServiceException("Path cannot be null");
         PathMatch pm = pathMatcher.matchPath(path);
         if (pm == null) throw new PSPathNotFoundServiceException("Path not found: " + path);
         return pm;
@@ -269,7 +269,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
      * {@inheritDoc}
      */
     public PSPathItem renameFolder(PSRenameFolderItem item) throws PSPathNotFoundServiceException,
-            PSPathServiceException, PSDataServiceException
+            PSPathServiceException, PSDataServiceException, PSBeanValidationException
     {
         checkRolesAllowed();
         
@@ -286,7 +286,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
     }
 
     protected PSPathItem renameFolder(PathMatch pm, String name) throws PSPathNotFoundServiceException,
-            PSPathServiceException, PSDataServiceException {
+            PSPathServiceException, PSDataServiceException, PSBeanValidationException {
         return pm.renameFolder(name);
     }
     
@@ -1010,7 +1010,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
              * 
              * @return never <code>null</code>.
              */
-            public PSPathItem renameFolder(String name) throws PSPathServiceException, PSDataServiceException {
+            public PSPathItem renameFolder(String name) throws PSPathServiceException, PSDataServiceException, PSBeanValidationException {
                 notEmpty(name, "name may not be null or empty");
                 
                 PSRenameFolderItem folderItem = new PSRenameFolderItem();

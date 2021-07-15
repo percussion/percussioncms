@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -65,9 +65,9 @@
 		</touch>
 
 		<if>
-			<available file="${perc.site.web_resources}/cm/css/FontAwesome/" type="dir" />
+			<available file="${perc.site.web_resources}/cm/css/fontawesome/" type="dir" />
 			<then>
-				<delete dir="${perc.site.web_resources}/cm/css/FontAwesome/"/>
+				<delete dir="${perc.site.web_resources}/cm/css/fontawesome/"/>
 			</then>
 		</if>
 

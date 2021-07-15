@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,16 +27,15 @@ package com.percussion.util;
 import com.percussion.conn.PSDesignerConnection;
 import com.percussion.server.PSRemoteConsole;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Properties;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
 
 /**
  * RemoteConsole is a java program that executes a remote console command using
@@ -227,7 +226,7 @@ public class RemoteConsole
          {
             if (args[4].startsWith("\""))
             {
-               StringBuffer cmdBuf = new StringBuffer();
+               StringBuilder cmdBuf = new StringBuilder();
                logArg = parseCommand(args, 4, cmdBuf) + 1;
                cmd = cmdBuf.toString();
             }
@@ -372,7 +371,7 @@ public class RemoteConsole
     * @return The index of the last argument that is part of the command.  If
     * array is empty, <code>-1</code> is returned.
     */
-   private static int parseCommand(String[] args, int start, StringBuffer cmd)
+   private static int parseCommand(String[] args, int start, StringBuilder cmd)
    {
       int end = args.length - 1;
       for (int i = start; i < args.length; i++)

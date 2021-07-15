@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,7 +30,6 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
-import com.percussion.design.objectstore.PSAttributeValue;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.role.service.IPSRoleService;
@@ -607,10 +606,7 @@ public class PSUserService implements IPSUserService
             rvalue.setRoles(currentUser.getRoles());
             rvalue.setProviderType(provider);
             rvalue.setPassword(null);
-//            if (provider.equals(PSUserProviderType.INTERNAL)) {
-//                backEndRoleMgr.setSubjectEmail(user.getName(), user.getEmail());
-//                rvalue.setEmail(user.getEmail());
-//            }
+
         }
 
         return rvalue;

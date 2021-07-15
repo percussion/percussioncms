@@ -1,10 +1,16 @@
-<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities, org.jsoup.Jsoup, org.jsoup.safety.Whitelist, org.owasp.encoder.Encode"
-import="javax.naming.Context"
-import="javax.naming.InitialContext"
-import="javax.naming.NamingException"
-import="javax.sql.DataSource"
-import="java.sql.*"
+<%@ page import="java.sql.*, javax.sql.*, java.io.*, javax.naming.*"
+         import="com.percussion.services.utils.jspel.*"
+         import="com.percussion.i18n.*"
+         import="java.net.URLEncoder"
+         import="org.apache.commons.lang.*"
+         import="com.percussion.rx.ui.jsf.beans.PSTopNavigation"
+         import="org.jsoup.Jsoup"
+         import="org.jsoup.safety.Whitelist"
+         import="org.owasp.encoder.Encode"
+         import="com.percussion.server.PSServer"
 %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
 <%--
   ~     Percussion CMS
@@ -25,7 +31,7 @@ import="java.sql.*"
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -42,18 +48,26 @@ private String sanitizeForHtml(String input){
 
 %>
 
-
-<!-- 	Import all neccesary packages to send and recieve sql queries and updates.
-		Import PSO Admin Security-->
 <%
 String fullrolestr = PSRoleUtilities.getUserRoles();
 
-if (fullrolestr.contains("Admin") == false)
+String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
+
+    if(isEnabled == null)
+        isEnabled="false";
+
+if(isEnabled.equalsIgnoreCase("false")){
+   	response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+   	      	+ "/ui/RxNotAuthorized.jsp"));
+}
+
+if (!fullrolestr.contains("Admin"))
    	response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
       	+ "/ui/RxNotAuthorized.jsp"));
 
 %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 
 <title>
@@ -66,7 +80,7 @@ SQL Execution
 </head>
 <body>
 
-<style type="text/css">
+<style>
 	textarea.form-control
 	{   
 		overflow-y: scroll; 
@@ -76,8 +90,8 @@ SQL Execution
     top: -25px;
     float:right;
     border-top: none;
-    border-top-right-radius: 0px;
-    border-top-left-radius: 0px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
     
 
   }
@@ -120,9 +134,7 @@ if(request.getParameter("dbquery")!= null){
 }
 
 %>
-<!-- THIS FORM CANNOT REDIRECT, thats why its action is a pound. We will be posting to the server and getting back the sql.  -->
-<form action="" method="POST" role="form">
-	<legend>DB Access</legend>
+<csrf:form method="POST" role="form" action="/test/sql.jsp">
 <div class="well well-lg">
       <button type="button" id="DefaultJNDIReplacer" class="btn btn-default">Default</button>
 
@@ -147,7 +159,7 @@ if(request.getParameter("dbquery")!= null){
 	<!-- The submission button. -->
 	<button type="submit" href="" class="btn btn-primary">Submit</button>
   </div>
-</form>
+</csrf:form>
 </div>
 
 <!-- Another container to keep the page looking good -->
@@ -256,11 +268,11 @@ for (int i = 1; i < columnCount + 1; i++ ) {
 }
 %>
 </body>
-<script src="/cm/cui/components/jquery/jquery.min.js"></script>
-<script src="/cm/cui/components/jquery-migrate/jquery-migrate.min.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 <script src="/rx_resources/js/bootstrap/3.3.4/bootstrap.min.js"></script>
 <script>
-$(document).ready(function(){
+$(function(){
 
   $("#DefaultJNDIReplacer").on("click", function(e) {
     e.preventDefault();

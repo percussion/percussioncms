@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,11 +30,11 @@ import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.BitSet;
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -222,14 +222,14 @@ public class Util
      * @param cntxt_list the list of lists indexed by context
      * @param cntxt the context
      */
-    final static Hashtable getList(Hashtable cntxt_list, Object cntxt)
+    final static ConcurrentHashMap getList(ConcurrentHashMap cntxt_list, Object cntxt)
     {
 	synchronized (cntxt_list)
 	{
-	    Hashtable list = (Hashtable) cntxt_list.get(cntxt);
+	    ConcurrentHashMap list = (ConcurrentHashMap) cntxt_list.get(cntxt);
 	    if (list == null)
 	    {
-		list = new Hashtable();
+		list = new ConcurrentHashMap();
 		cntxt_list.put(cntxt, list);
 	    }
 
@@ -744,7 +744,7 @@ public class Util
      */
     public final static String assembleHeader(Vector pheader)
     {
-	StringBuffer hdr = new StringBuffer(200);
+	StringBuilder hdr = new StringBuilder(200);
 	int len = pheader.size();
 
 	for (int idx=0; idx<len; idx++)

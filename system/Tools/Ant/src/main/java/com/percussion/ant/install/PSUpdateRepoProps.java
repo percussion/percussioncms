@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@
 package com.percussion.ant.install;
 
 import com.percussion.install.PSLogger;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.IPSContainerUtils;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSContainerUtilsFactory;
@@ -32,7 +33,7 @@ import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.security.PSEncryptor;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.File;
 import java.io.PrintWriter;
@@ -73,6 +74,7 @@ import java.util.Properties;
  */
 public class PSUpdateRepoProps extends PSAction
 {
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public void execute()
    {
        File root = new File(getRootDir());

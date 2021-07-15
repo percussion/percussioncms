@@ -1,4 +1,6 @@
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ page import=" com.percussion.utils.PSSpringBeanProvider" %>
 <%@ page import="com.percussion.utils.service.impl.PSUtilityService" %>
@@ -21,7 +23,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -107,15 +109,17 @@
             </div>
         </div>
         <div id="perc-users-details">
-            <form autocomplete="off">
+
+            <csrf:form autocomplete="off" method="post" action="percUsers.jsp">
+				<span style="float:left;" class="perc-required-label">
+				  <label>
+					<i18n:message key="perc.ui.general@Denotes Required Field" />
+				  </label>
+				</span><br />
                 <!--  fake fields are a workaround for chrome/opera autofill getting the wrong fields -->
                 <input id="username" style="display:none" type="text" name="fakeusernameremembered">
                 <input id="password" style="display:none" type="password" name="fakepasswordremembered">
-                <span class="perc-required-label">
-          <label>
-            <i18n:message key="perc.ui.general@Denotes Required Field" />
-          </label>
-        </span>
+
                 <div id="perc-users-info">
                     <div id="perc-users-edit-user-button" title="<i18n:message key='perc.ui.users@Edit User Details' />"></div>
                     <div id="perc-users-username-label">
@@ -138,7 +142,7 @@
                             <input id="perc-users-email-field" maxlength="250" />
                         </div><br />
                     </div>
-					 <div id="perc-users-available-roles">
+                    <div id="perc-users-available-roles">
                         <div id="perc-users-available-roles-label"><i18n:message key = "perc.ui.users@Available Roles"/></div>
                         <select size="5"></select>
                     </div>
@@ -154,7 +158,7 @@
                         </select>
                     </div>
                 </div>
-            </form>
+            </csrf:form>
         </div>
     </div>
 </div>

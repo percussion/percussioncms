@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -1367,8 +1367,8 @@ public class PSXmlDocumentBuilder {
             return inStr;
         }
 
-        StringBuffer inBuf = new StringBuffer(inStr);
-        StringBuffer normBuf = new StringBuffer();
+        StringBuilder inBuf = new StringBuilder(inStr);
+        StringBuilder normBuf = new StringBuilder();
 
         // walk the input looking for our match
         for (int i = 0; i < inBuf.length(); i++) {

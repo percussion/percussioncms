@@ -17,19 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.ant.install;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSProperties;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -93,6 +94,7 @@ public class PSMakeLasagna extends Task
    }
    
    // see base class
+   @SuppressFBWarnings({"HARD_CODE_PASSWORD", "HARD_CODE_PASSWORD"})
    @Override
    public void execute() throws BuildException
    {

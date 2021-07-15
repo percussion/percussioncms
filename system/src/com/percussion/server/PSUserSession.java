@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,15 +26,10 @@ package com.percussion.server;
 import com.percussion.data.IPSDataErrors;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.i18n.PSLocale;
-import com.percussion.security.IPSEncryptor;
-import com.percussion.security.IPSKey;
-import com.percussion.security.IPSSecretKey;
 import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptionKeyFactory;
 import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSRoleEntry;
 import com.percussion.security.PSUserEntry;
-import com.percussion.security.ToDoVulnerability;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -44,12 +39,9 @@ import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSSecurityException;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSBase64Encoder;
 import com.percussion.util.PSCharSets;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,8 +50,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -261,12 +251,12 @@ public class PSUserSession
 
       try
       {
-         MessageDigest md = MessageDigest.getInstance("SHA-1");
+         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
          md.update(sessIdStr.getBytes(PSCharSets.rxJavaEnc()));
          byte[] digest = md.digest();
 
-         StringBuffer buf = new StringBuffer(digest.length * 2);
+         StringBuilder buf = new StringBuilder(digest.length * 2);
          for (int i = 0; i < digest.length; i++)
          {
             String sTemp = Integer.toHexString(digest[i]);
@@ -920,91 +910,6 @@ public class PSUserSession
    public boolean isAnonymous()
    {
       return !hasAuthenticatedUserEntries();
-   }
-
-   /* Pasta time!
-   */
-   @ToDoVulnerability
-   @Deprecated
-   private static String makeLasagna(String uid, String str)
-   {
-      if ((str == null) || (str.equals("")))
-         return "";
-
-      try {
-         IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.DES_ALGORITHM);
-         byte[] encrData = str.getBytes(PSCharSets.rxJavaEnc());
-
-         if ((key != null) && (key instanceof IPSSecretKey))
-         {
-            IPSSecretKey secretKey = (IPSSecretKey)key;
-
-            int partone = PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).OLD_SECURITY_KEY().hashCode();
-            int parttwo;
-            if (uid == null || uid.equals("")) {
-               parttwo = PSLegacyEncrypter.getInstance(
-                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-               ).OLD_SECURITY_KEY2().hashCode();
-            }
-            else
-               parttwo = uid.hashCode();
-
-            partone /= 7;
-            parttwo /= 13;
-
-            long time = new Date().getTime();
-            byte[] baInner = new byte[8];
-            for (int i = 0; i < 8; i++)
-               baInner[i] = (byte)((time >> i) & 0xFF);
-            baInner[0] = (byte)(8 - (encrData.length % 8));
-
-            secretKey.setSecret(baInner);
-
-            IPSEncryptor encr = secretKey.getEncryptor();
-            ByteArrayOutputStream bOut = new ByteArrayOutputStream();
-            encr.encrypt(new ByteArrayInputStream(encrData), bOut);
-            encrData = bOut.toByteArray();
-            int innerDataLength = encrData.length;
-
-            for (int i = 0; i < 8; i++)
-               baInner[i] ^= (byte) ((1 << i) & innerDataLength);
-
-            byte[] outerData = new byte[baInner.length + innerDataLength];
-
-            System.arraycopy(baInner, 0, outerData, 0, 4);
-            System.arraycopy(encrData, 0, outerData, 4, innerDataLength);
-            System.arraycopy(baInner, 4, outerData, innerDataLength + 4, 4);
-
-            byte[] baOuter = new byte[8];
-            for (int i = 0; i < 4; i++)
-               baOuter[i] = (byte)((partone >> i) & 0xFF);
-            for (int i = 4; i < 8; i++)
-               baOuter[i] = (byte)((parttwo >> (i-4)) & 0xFF);
-
-            secretKey.setSecret(baOuter);
-            bOut = new ByteArrayOutputStream();
-            encr.encrypt(new ByteArrayInputStream(outerData), bOut);
-
-            encrData = bOut.toByteArray();
-            bOut.close();
-         }
-
-         /* Base 64 encode and return ... */
-         ByteArrayOutputStream bOut2 = null;
-         try {
-            bOut2 = new ByteArrayOutputStream();
-            PSBase64Encoder.encode(
-               new ByteArrayInputStream(encrData), bOut2);
-            return bOut2.toString();
-         } catch (Exception e) {
-            bOut2.close();
-            return null;
-         }
-      } catch (Exception e) {
-         return null;
-      }
    }
 
    /**

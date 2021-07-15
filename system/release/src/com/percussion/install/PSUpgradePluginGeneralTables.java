@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,6 +33,10 @@ import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,10 +45,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * This is a general plugin class implements IPSUpgradePlugin.
@@ -65,6 +65,7 @@ public class PSUpgradePluginGeneralTables implements IPSUpgradePlugin
     * @param elemData data element of plugin.
     * @return <code>null</code>.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule config, Element elemData)
    {
       config.getLogStream().println(

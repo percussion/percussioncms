@@ -17,12 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.ant.install;
+
+import com.percussion.install.PSLogger;
+import com.percussion.util.PSOsTool;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,9 +33,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
-
-import com.percussion.install.PSLogger;
-import com.percussion.util.PSOsTool;
 
 /**
  * This task can be used to create the sample scheduled publishing script.
@@ -120,7 +120,7 @@ public class PSCreateScheduledPublishingScript extends PSAction
            PSLogger.logInfo("CreateScheduledPublishing: Failed to create " +
                               "file:[" + fileName + "]. ");
         }
-        StringBuffer cpBuf = new StringBuffer(MAX_PATH_LENGTH);
+        StringBuilder cpBuf = new StringBuilder(MAX_PATH_LENGTH);
         /**
          * First add the windows and unix's common path
          */

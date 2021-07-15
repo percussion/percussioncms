@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -60,6 +60,10 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -78,14 +82,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
-
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 
 /**
@@ -105,6 +104,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
     * 
     * @param dbProps the database properties, never <code>null</code>.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public void setDbProperties(Properties dbProps)
    {
       m_dbProps = dbProps;
@@ -214,6 +214,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
     * @param module IPSUpgradeModule object. may not be <code>null<code>.
     * @param elemData data element of plugin.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, Element elemData)
    {
       PrintStream logger = module.getLogStream();
@@ -876,7 +877,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
                m_dbProps.getProperty(PSJdbcDbmsDef.DB_SCHEMA_PROPERTY),
                m_dbProps.getProperty(PSJdbcDbmsDef.DB_DRIVER_NAME_PROPERTY));
       
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("CREATE VIEW " + qualViewName + " AS SELECT RL.RID AS SYSID, " 
          + "RL.OWNER_ID AS CONTENTID, RL.OWNER_REVISION AS REVISIONID, "
          + "RL.DEPENDENT_ID AS ITEMCONTENTID, '' AS ITEMDESCRIPTION, "
@@ -909,7 +910,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
    private String getSelectConfigName(PSRelationshipConfigSet configSet,
          Map nameMap)
    {
-      StringBuffer caseBuf = new StringBuffer();
+      StringBuilder caseBuf = new StringBuilder();
       boolean hasMismatchName = false;
       caseBuf.append("CASE RN.CONFIG_NAME ");
       String cname;

@@ -17,11 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
+
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
@@ -37,14 +38,13 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
-
-import java.io.File;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-
 import com.percussion.share.service.exception.PSDataServiceException;
 import org.w3c.dom.Document;
+
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 /**
  * The PSExecuteWorkflowActions class implements extension handling for the
  * workflow action extensions (Extensions that implement
@@ -79,7 +79,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
       if (!m_extensionInitialized)
       {
        ms_extensionMgr = PSServer.getExtensionManager(null);
-       m_wfActionExtensions = new Hashtable();
+       m_wfActionExtensions = new ConcurrentHashMap();
        m_extensionInitialized = true;
        m_fullExtensionName = extensionDef.getRef().toString();
       }
@@ -315,8 +315,8 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
    /**
     * The map from the full extension name to the executable extension workflow
     * action extension that implements <CODE>IPSWorkflowAction<\CODE>. Shared
-    * by multiple threads and HashTable is used instead of HashMap.
+    * by multiple threads and ConcurrentHashMap is used instead of HashMap.
     * .
     */
-   private Hashtable m_wfActionExtensions;
+   private ConcurrentHashMap m_wfActionExtensions;
 }

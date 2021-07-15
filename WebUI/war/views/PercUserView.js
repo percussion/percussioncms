@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -320,7 +320,7 @@
            
             $("#perc-users-username-field")
                 .addClass("perc-users-password-field-view-user")
-                .attr("readonly","readonly");
+                .prop("readonly",true);
             $("#perc-users-edit-user-button").show();
         }
         
@@ -456,7 +456,7 @@
                 });
            $("#perc-users-email-field")
                 .removeClass("perc-users-password-field-view-user")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .on("change", function() {
                     dirtyController.setDirty(true, "user");
                 });
@@ -468,7 +468,7 @@
         function showNewUserEditor() {
             $("#perc-users-username-field")
                 .removeClass("perc-users-password-field-view-user")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .val("")
                 .trigger("focus")
                 .on("change",function() {
@@ -478,7 +478,7 @@
             showPasswordEditor(true);
             $("#perc-users-email-field")
                 .removeClass("perc-users-password-field-view-user")
-                .removeAttr("readonly")
+                .prop("readonly",false)
                 .val("")
                 .on("change",function() {
                     dirtyController.setDirty(true, "user");
@@ -588,10 +588,10 @@
             
             $("#perc-users-username-field")
                 .addClass("perc-users-password-field-view-user")
-                .attr("readonly","readonly");
+                .prop("readonly",true);
             $("#perc-users-email-field")
                 .addClass("perc-users-password-field-view-user")
-                .attr("readonly","readonly")
+                .prop("readonly",true)
             if ($("#perc-users-email-field").val() == ""){
                 $("#perc-users-email-label").hide();
             }else{

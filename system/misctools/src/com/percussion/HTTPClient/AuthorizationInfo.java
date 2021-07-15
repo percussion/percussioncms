@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,8 +26,8 @@ package com.percussion.HTTPClient;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -85,7 +85,7 @@ public class AuthorizationInfo implements Cloneable
     // class fields
 
     /** Holds the list of lists of authorization info structures */
-    private static Hashtable     CntxtList = new Hashtable();
+    private static ConcurrentHashMap     CntxtList = new ConcurrentHashMap();
 
     /** A pointer to the handler to be called when we need authorization info */
     private static AuthorizationHandler
@@ -93,7 +93,7 @@ public class AuthorizationInfo implements Cloneable
 
     static
     {
-	CntxtList.put(HTTPConnection.getDefaultContext(), new Hashtable());
+	CntxtList.put(HTTPConnection.getDefaultContext(), new ConcurrentHashMap());
     }
 
 
@@ -293,7 +293,7 @@ public class AuthorizationInfo implements Cloneable
 						String scheme, String realm,
 						Object context)
     {
-	Hashtable AuthList = Util.getList(CntxtList, context);
+	ConcurrentHashMap AuthList = Util.getList(CntxtList, context);
 
 	AuthorizationInfo auth_info =
 	    new AuthorizationInfo(host, port, scheme, realm, (NVPair[]) null,
@@ -356,7 +356,7 @@ public class AuthorizationInfo implements Cloneable
 				    RoResponse resp, boolean query_auth_h)
 	throws AuthSchemeNotImplException, IOException
     {
-	Hashtable AuthList;
+	ConcurrentHashMap AuthList;
 	if (req != null)
 	    AuthList = Util.getList(CntxtList, req.getConnection().getContext());
 	else
@@ -422,7 +422,7 @@ public class AuthorizationInfo implements Cloneable
     public static synchronized void addAuthorization(AuthorizationInfo auth_info,
 					Object context)
     {
-	Hashtable AuthList = Util.getList(CntxtList, context);
+	ConcurrentHashMap AuthList = Util.getList(CntxtList, context);
 
 	// merge path list
 	AuthorizationInfo old_info =
@@ -631,7 +631,7 @@ public class AuthorizationInfo implements Cloneable
     public static synchronized void removeAuthorization(AuthorizationInfo auth_info,
 					   Object context)
     {
-	Hashtable AuthList = Util.getList(CntxtList, context);
+	ConcurrentHashMap AuthList = Util.getList(CntxtList, context);
 	AuthList.remove(auth_info);
     }
 
@@ -693,7 +693,7 @@ public class AuthorizationInfo implements Cloneable
 
 	// First search for an exact match
 
-	Hashtable AuthList =
+	ConcurrentHashMap AuthList =
 		    Util.getList(CntxtList, req.getConnection().getContext());
 	Enumeration list = AuthList.elements();
 	while (list.hasMoreElements())
@@ -1112,7 +1112,7 @@ public class AuthorizationInfo implements Cloneable
      */
     public String toString()
     {
-	StringBuffer field = new StringBuffer(100);
+	StringBuilder field = new StringBuilder(100);
 
 	field.append(scheme);
 	field.append(" ");

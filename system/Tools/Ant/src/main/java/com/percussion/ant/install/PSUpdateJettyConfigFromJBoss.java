@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,6 +35,7 @@ import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
 import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSJdbcUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -99,6 +100,7 @@ public class PSUpdateJettyConfigFromJBoss extends PSAction
         return repositoryLocation;
     }
 
+    @SuppressFBWarnings({"HARD_CODE_PASSWORD", "HARD_CODE_PASSWORD"})
     public void updateInstallOrUpgradeDatasource(IPSJndiDatasource dataSource, IPSDatasourceConfig config ){
         Properties props = null;
         PSJdbcDbmsDef dbmsDef = null;

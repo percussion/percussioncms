@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -137,7 +137,7 @@ public class PSParseUrlQueryString
    }
    private static String urlDecode(String str) throws PSRequestParsingException
    {
-      StringBuffer newStr = new StringBuffer(str.length());
+      StringBuilder newStr = new StringBuilder(str.length());
       int iSrc = 0;
       int iDst = 0;
       char ch;
@@ -190,7 +190,7 @@ public class PSParseUrlQueryString
    {
       if (null == query)
          return null;
-      StringBuffer buf = new StringBuffer(query);
+      StringBuilder buf = new StringBuilder(query);
       boolean done = false;
       int len = AMPERSAND_ENTITY.length();
       int nextPos = 0; // position in search string of next entity

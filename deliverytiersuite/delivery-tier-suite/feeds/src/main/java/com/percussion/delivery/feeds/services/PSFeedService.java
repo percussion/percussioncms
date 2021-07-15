@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -207,6 +207,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 catch (FeedException | IOException e)
                 {
                 	log.error("Unexpected exception generating RSS feed: {}", e.getMessage());
+                	log.debug(e.getMessage(), e);
                     return Response.status(Status.INTERNAL_SERVER_ERROR).build();
                 }
                 if (StringUtils.isNotBlank(feed))
@@ -286,6 +287,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
 
         }catch(Exception e){
         	log.error(e.getMessage(),e);
+        	log.debug(e.getMessage(), e);
         	throw new WebApplicationException(403);
         }
         
@@ -318,7 +320,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         catch (Exception e)
         {
        		log.error("Exception during reading external feed : {}", e.getMessage());
-       		log.debug(e);
+       		log.debug(e.getMessage(), e);
         }
         finally
         {
@@ -451,7 +453,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         {
             client = ClientBuilder.newClient();
             log.error("Exception occurred in creating the SSL Client : {} " , e.getMessage());
-            log.debug(e);
+            log.debug(e.getMessage(), e);
         }
 
         WebTarget webTarget = client.target(url + "/perc-metadata-services/metadata/get");
@@ -510,6 +512,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         catch (Exception e)
         {
        		log.error("Exception during feed generation : {}" , e.getMessage());
+       		log.debug(e.getMessage(), e);
             throw new FeedException(e.getMessage(), e);
         }
 
@@ -632,8 +635,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             List<IPSFeedDescriptor> feeds = feedDao.findBySite(prevSiteName);
             feedDao.deleteDescriptors(feeds);
         } catch (Exception e) {
-            log.error("Error updating feed entries for old site: {}",prevSiteName);
-            log.debug(e);
+            log.error("Error updating feed entries for old site: {}, Error: {}",prevSiteName, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 

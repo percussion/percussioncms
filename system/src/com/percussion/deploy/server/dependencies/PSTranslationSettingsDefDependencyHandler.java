@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,6 +44,9 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.IPSContentService;
 import com.percussion.services.content.PSContentServiceLocator;
 import com.percussion.services.content.data.PSAutoTranslation;
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.commons.lang.StringUtils;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,10 +54,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import com.percussion.services.error.PSNotFoundException;
-import org.apache.commons.lang.StringUtils;
-import org.xml.sax.SAXException;
 
 /**
  * Class to handle packaging and deploying TranslationSettings definition for 
@@ -238,7 +237,7 @@ public class PSTranslationSettingsDefDependencyHandler
    {
       if (xlnList == null)
          throw new IllegalArgumentException("depData may not be null");
-      StringBuffer str = new StringBuffer();
+      StringBuilder str = new StringBuilder();
       try
       {
          for (PSAutoTranslation xln : xlnList)

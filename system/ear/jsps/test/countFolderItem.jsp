@@ -9,7 +9,27 @@
     import="com.percussion.utils.guid.IPSGuid, com.percussion.utils.request.PSRequestInfo, com.percussion.webservices.content.IPSContentWs, com.percussion.webservices.content.PSContentWsLocator"
     import="com.percussion.webservices.security.IPSSecurityWs, com.percussion.webservices.security.PSSecurityWsLocator, org.apache.commons.lang.StringUtils, javax.jcr.Value, javax.jcr.query.QueryResult"
     import="javax.jcr.query.Row, javax.jcr.query.RowIterator, javax.servlet.jsp.JspWriter"
-    import="java.util.*"
+    import="java.util.*,com.percussion.server.PSServer"
+    import="com.percussion.services.utils.jspel.PSRoleUtilities"
+    import="com.percussion.i18n.PSI18nUtils"
+%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
+
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
+    String fullrolestr = PSRoleUtilities.getUserRoles();
+
+    if (!fullrolestr.contains("Admin"))
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
 
 %>
 <%--
@@ -31,7 +51,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -202,7 +222,7 @@ table#results th{
 <h1>Count Items</h1>
 <h2>Use this page to count sub folders and content items under a given folder</h2>
 <h4>example: //Sites/EnterpriseInvestments/InvestmentAdvice</h4>
-<form method="POST"> 
+<csrf:form method="POST" action="/test/countFolderItem.jsp">
 <%
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
          String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
@@ -227,7 +247,7 @@ table#results th{
          
 %>
 <p><input type="text" name="folderpath" size="80" value="<%=lastquery%>" /><input type="submit" name="execute" value="execute" label="Execute" /></p>
-</form>
+</csrf:form>
 <%if (request.getMethod().equals("POST")
                && request.getParameter("execute").equals("execute"))
   {

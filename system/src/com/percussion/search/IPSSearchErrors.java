@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -187,4 +187,10 @@ public interface IPSSearchErrors
     * </TABLE>
     */
    public static final int HTML_SEARCH_MISSING_PARAMETER = 16053;
+
+   /**
+    * Use getInstance() to instead of new instance on this class
+    */
+   public static final int USE_GET_INSTANCE = 16054;
+
 }

@@ -292,7 +292,7 @@ public class PSRxInstallerBotTest extends MockObjectTestCase
       {
          @Override
          @SuppressWarnings("unused")
-         void parseValues(Properties properties, StringBuffer message) {}
+         void parseValues(Properties properties, StringBuilder message) {}
          
       };
       try(final InputStream in = bot.openDefaultConfiguration()){
@@ -786,7 +786,7 @@ public class PSRxInstallerBotTest extends MockObjectTestCase
       try
       {
          String s;
-         StringBuffer sb = new StringBuffer();
+         StringBuilder sb = new StringBuilder();
          while ((s = reader.readLine()) != null)
          {
             sb.append(s);
@@ -923,7 +923,7 @@ public class PSRxInstallerBotTest extends MockObjectTestCase
       private String readApplicationOutput(final String pattern) throws IOException
       {
          mi_currentStr = "";
-         final StringBuffer appOutput = new StringBuffer();
+         final StringBuilder appOutput = new StringBuilder();
          while (!isClosed()
                && !mi_currentStr.contains(USER_INPUT_MARKER)
                && !mi_currentStr.contains(pattern))
@@ -1085,7 +1085,7 @@ public class PSRxInstallerBotTest extends MockObjectTestCase
       /**
        * Standard output.
        */
-      private StringBuffer mi_stdOut = new StringBuffer();
+      private StringBuilder mi_stdOut = new StringBuilder();
 
       /**
        * Step on which return timeout.

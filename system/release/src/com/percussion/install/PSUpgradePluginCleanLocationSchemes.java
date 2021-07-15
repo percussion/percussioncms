@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,6 +33,7 @@ import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -60,6 +61,7 @@ public class PSUpgradePluginCleanLocationSchemes implements IPSUpgradePlugin
    /**
     * Implements process method of IPSUpgardePlugin.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule config, Element elemData)
    {
       m_config = config;
@@ -192,8 +194,8 @@ public class PSUpgradePluginCleanLocationSchemes implements IPSUpgradePlugin
       List schemeKeys = new ArrayList();
       List lsDeleteData = new ArrayList();
       List paramsDeleteData = new ArrayList();
-      StringBuffer lsDeletedRows = new StringBuffer();
-      StringBuffer paramsDeletedRows = new StringBuffer();
+      StringBuilder lsDeletedRows = new StringBuilder();
+      StringBuilder paramsDeletedRows = new StringBuilder();
       PSJdbcTableData lsData = lsSchema.getTableData();
       PSJdbcTableData paramsData = paramsSchema.getTableData();
       Document doc = PSXmlDocumentBuilder.createXmlDocument();

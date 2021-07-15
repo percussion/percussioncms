@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -316,7 +316,7 @@ public class PSXmlDomContext
    public void handleException(Exception e, boolean throwException)
          throws PSExtensionProcessingException
    {
-      StringBuffer estr = new StringBuffer("Unexpected exception in ");
+      StringBuilder estr = new StringBuilder("Unexpected exception in ");
       estr.append(m_function).append("\n");
       estr.append(e.toString()).append("\n");
       estr.append(e.getMessage().toString()).append("\n");

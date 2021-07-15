@@ -1,30 +1,28 @@
-<%@page import="com.percussion.webservices.content.IPSContentDesignWs"%>
-<%@page import="com.percussion.services.guidmgr.IPSGuidManager"%>
-<%@page import="com.percussion.services.guidmgr.PSGuidManagerLocator"%>
-<%@page import="com.percussion.services.assembly.data.PSTemplateSlot"%>
-<%@page import="com.percussion.services.assembly.data.PSTemplateBinding"%>
+<%@page import="com.percussion.services.assembly.IPSAssemblyService"%>
+<%@page import="com.percussion.services.assembly.IPSAssemblyTemplate"%>
 <%@page import="com.percussion.services.assembly.IPSAssemblyTemplate.PublishWhen"%>
-<%@page import="com.percussion.workbench.ui.editors.form.PSPublishWhenHelper.PublishWhenChoice"%>
-<%@page import="com.percussion.services.guidmgr.data.PSGuid"%>
+<%@page import="com.percussion.services.assembly.IPSTemplateBinding"%>
+<%@page import="com.percussion.services.assembly.IPSTemplateSlot"%>
+<%@page import="com.percussion.services.assembly.PSAssemblyServiceLocator"%>
+<%@page import="com.percussion.services.assembly.data.PSTemplateBinding"%>
+<%@page import="com.percussion.services.catalog.PSTypeEnum"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" 
-    import="javax.jcr.query.Query"
-    import="javax.jcr.query.QueryResult"  
-    import="javax.jcr.query.RowIterator" 
-    import="javax.jcr.query.Row, com.percussion.services.contentmgr.IPSNodeDefinition" 
-    import="javax.jcr.Value, com.percussion.services.catalog.IPSCatalogSummary" 
-    import="java.io.IOException,com.percussion.services.catalog.PSTypeEnum"
-    import="com.percussion.services.contentmgr.IPSContentMgr, com.percussion.services.contentmgr.PSContentMgrLocator, com.percussion.webservices.content.PSContentWsLocator, com.percussion.webservices.content.IPSContentWs, com.percussion.utils.guid.IPSGuid, com.percussion.server.webservices.PSServerFolderProcessor, com.percussion.server.PSRequest, com.percussion.utils.request.PSRequestInfo"
-    import="com.percussion.design.objectstore.PSLocator, com.percussion.webservices.security.IPSSecurityWs, com.percussion.webservices.security.PSSecurityWsLocator"
-    import="com.percussion.services.guidmgr.data.PSLegacyGuid, com.percussion.services.security.data.PSCommunity"
-    import="com.percussion.cms.PSCmsException, com.percussion.webservices.PSErrorResultsException"
-    import="com.percussion.cms.objectstore.PSObjectAclEntry, com.percussion.cms.objectstore.IPSDbComponent, com.percussion.cms.objectstore.PSObjectAcl, com.percussion.cms.objectstore.PSFolder"
-    import="java.util.Map, java.util.HashSet, java.util.Set, java.util.Collections, java.util.Map.Entry, java.util.Iterator, java.util.HashMap, java.util.Arrays, java.util.ArrayList, java.util.List, java.util.Collection, org.apache.commons.lang.StringUtils, javax.servlet.jsp.JspWriter"
-    import="org.apache.log4j.Logger, com.percussion.utils.types.PSPair"
-    import="com.percussion.services.assembly.PSAssemblyServiceLocator, com.percussion.services.assembly.IPSAssemblyTemplate, com.percussion.services.assembly.IPSAssemblyService"
-    import="com.percussion.services.sitemgr.PSSiteManagerLocator, com.percussion.services.sitemgr.IPSSiteManager, com.percussion.services.sitemgr.IPSSite"
-	import="com.percussion.webservices.assembly.PSAssemblyWsLocator,com.percussion.webservices.assembly.IPSAssemblyDesignWs,com.percussion.services.assembly.IPSTemplateBinding, com.percussion.services.assembly.IPSTemplateSlot"
-    %>
+    import="com.percussion.services.contentmgr.IPSContentMgr"
+    import="com.percussion.services.contentmgr.IPSNodeDefinition"
+    import="com.percussion.services.contentmgr.PSContentMgrLocator"
+    import="com.percussion.services.guidmgr.IPSGuidManager, com.percussion.services.guidmgr.PSGuidManagerLocator"
+    import="com.percussion.services.guidmgr.data.PSGuid, com.percussion.services.sitemgr.IPSSite"
+    import="com.percussion.services.sitemgr.IPSSiteManager,com.percussion.services.sitemgr.PSSiteManagerLocator"
+    import="com.percussion.utils.guid.IPSGuid, com.percussion.utils.types.PSPair, com.percussion.webservices.assembly.IPSAssemblyDesignWs, com.percussion.webservices.assembly.PSAssemblyWsLocator, com.percussion.webservices.content.IPSContentDesignWs, com.percussion.webservices.content.PSContentWsLocator, com.percussion.workbench.ui.editors.form.PSPublishWhenHelper.PublishWhenChoice, org.apache.logging.log4j.LogManager"
+    import="org.apache.logging.log4j.Logger, javax.servlet.jsp.JspWriter, java.io.IOException"
+    import="java.util.ArrayList, java.util.Collection"
+    import="java.util.List"
+%>
+<%@ page import="java.util.Set" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <!doctype html>
 <html>
 <head>
@@ -35,7 +33,7 @@
 </head>
 <body>
 <%
-Logger log = Logger.getLogger("psoDispatchTemplateGenerator"); 
+Logger log = LogManager.getLogger("psoDispatchTemplateGenerator");
 IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
 IPSAssemblyService asvc = PSAssemblyServiceLocator.getAssemblyService();
 IPSSiteManager siteSvc = PSSiteManagerLocator.getSiteManager();
@@ -220,7 +218,8 @@ public void printSiteList(IPSSiteManager siteSvc , Logger logger, JspWriter out)
 		}
 		out.println("</select>");
 	}catch(IOException e){
-		logger.error(e.getLocalizedMessage(),e);		
+		logger.error("{}",e.getMessage());
+		logger.debug(e);
 	}
 	
 	//Spit out the available templates
@@ -298,12 +297,12 @@ private String getSiteList(IPSSiteManager siteSvc , Logger logger, JspWriter out
 	json = json + "]}";
 	return json;
 } %>
-<form method="post">
+<csrf:form method="post" action="DispatchTemplateGenerator.jsp">
 	<label for="sitelist">Select A Site:</label><select name="sitelist" id="sitelist">
 	</select>
 	<br />
 	<input type="submit" />
-</form>
+</csrf:form>
 <% } %>
 </body>
 </html>

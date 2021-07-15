@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,6 +31,11 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,12 +46,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * This class publishes a manual edition for preview purposes. This is also
@@ -92,7 +91,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       {
          if (reader != null)
          {
-            StringBuffer returnValue = new StringBuffer();
+            StringBuilder returnValue = new StringBuilder();
             String nextLine = null;
             try
             {
@@ -280,7 +279,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
             }
 
             String appName = "Rhythmyx/sys_pubHandler/publisher.htm";
-            StringBuffer pubUrl = getAppURL(host, port, appName);
+            StringBuilder pubUrl = getAppURL(host, port, appName);
             pubUrl.append("?editionid=");
             pubUrl.append(editionId);
             pubUrl.append("&PUBAction=publish");
@@ -318,7 +317,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
 
             // Parse status to determine when publishing is done
             appName = "Rhythmyx/sys_pubHandler/publisher.xml";
-            StringBuffer pubStatusUrl = getAppURL(host, port, appName);
+            StringBuilder pubStatusUrl = getAppURL(host, port, appName);
 
             pubStatusUrl.append("?editionid=");
             pubStatusUrl.append(editionId);
@@ -385,7 +384,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
     * @return a string buffer, never <code>null</code>, which allows further
     *         manipulation by the caller.
     */
-   protected StringBuffer getAppURL(String host, String port, String appName)
+   protected StringBuilder getAppURL(String host, String port, String appName)
    {
       if (host == null || host.trim().length() == 0)
       {
@@ -399,7 +398,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       {
          throw new IllegalArgumentException("appName may not be null or empty");
       }
-      StringBuffer appURL = new StringBuffer();
+      StringBuilder appURL = new StringBuilder();
       appName = "Rhythmyx/sys_pubHandler/publisher.xml";
       appURL.append("http://");
       appURL.append(host);

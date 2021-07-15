@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@ package com.percussion.pubserver.impl;
 
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
+import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.pubserver.data.PSPublishServerInfo;
 import com.percussion.pubserver.data.PSPublishServerProperty;
@@ -68,9 +69,9 @@ import com.percussion.sitemanage.service.IPSSitePublishStatusService;
 import com.percussion.tools.Base64;
 import com.percussion.utils.PSNamedLockManager;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.webservices.publishing.IPSPublishingWs;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -1082,6 +1083,7 @@ public class PSPubServerService implements IPSPubServerService
      * @param pubServerInfo
      * @param oldPasswordProperty
      */
+    @SuppressFBWarnings("HARD_CODE_PASSWORD")
     private void setPasswordProperty(PSPubServer server, PSPublishServerInfo pubServerInfo, PSPubServerProperty oldPasswordProperty)
     {
         Boolean isPasswordSet = Boolean.valueOf(pubServerInfo.findProperty(PASSWORD_FLAG)) ? true : false;

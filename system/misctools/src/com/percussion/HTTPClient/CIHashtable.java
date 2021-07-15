@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,6 +32,7 @@ import java.util.Hashtable;
  *
  * @version	0.3-3  06/05/2001
  * @author	Ronald Tschalär
+ * @deprecated
  */
 @Deprecated
 class CIHashtable extends Hashtable
@@ -42,7 +43,7 @@ class CIHashtable extends Hashtable
      * Create a new CIHashtable with the specified initial capacity and the
      * specified load factor.
      *
-     * @param intialCapacity the initial number of buckets
+     * @param initialCapacity the initial number of buckets
      * @param loadFactor a number between 0.0 and 1.0
      * @see java.util.Hashtable#Hashtable(int, float)
      */
@@ -55,7 +56,7 @@ class CIHashtable extends Hashtable
     /**
      * Create a new CIHashtable with the specified initial capacity.
      *
-     * @param intialCapacity the initial number of buckets
+     * @param initialCapacity the initial number of buckets
      * @see java.util.Hashtable#Hashtable(int)
      */
     public CIHashtable(int initialCapacity)

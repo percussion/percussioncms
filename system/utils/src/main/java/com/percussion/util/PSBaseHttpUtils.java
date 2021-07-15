@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,7 +33,12 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class PSBaseHttpUtils
 {
@@ -504,7 +509,7 @@ public class PSBaseHttpUtils
     public static String addQueryParams(String path, Map<String, Object> params,
                                         boolean urlEncode)
     {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         if (path != null)
             result.append(path);
         if (params == null)
@@ -546,7 +551,7 @@ public class PSBaseHttpUtils
      * @param param Anything allowed. If blank, nothing is appended.
      * @param value Anything is allowed.
      */
-    private static void appendKeyValuePair(StringBuffer result, String param,
+    private static void appendKeyValuePair(StringBuilder result, String param,
                                            String value, boolean urlEncode)
     {
         try

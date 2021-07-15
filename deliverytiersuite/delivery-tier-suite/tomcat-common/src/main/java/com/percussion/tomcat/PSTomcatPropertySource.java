@@ -19,7 +19,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -70,7 +70,7 @@ public class PSTomcatPropertySource implements org.apache.tomcat.util.Introspect
             logger.error("Unable to determine catalina.home!  Is the environment set?");
             catalinaBase="";
         }
-        logger.debug("Got catalina.home:" + catalinaBase);
+        logger.debug("Got catalina.home:{}", catalinaBase);
         Properties props = new Properties();
 
         Path p = Paths.get(catalinaBase, "conf/perc");
@@ -79,7 +79,7 @@ public class PSTomcatPropertySource implements org.apache.tomcat.util.Introspect
         try (FileInputStream fs = new FileInputStream(p.toFile())) {
             props.load(fs);
         } catch (IOException exception) {
-            logger.error("Error reading:" + p.toAbsolutePath() + " got error " + exception.getMessage());
+            logger.error("Error reading:{} got error {}", p.toAbsolutePath(), exception.getMessage());
         }
 
         return props;

@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author DougRand
@@ -278,7 +278,7 @@ public class PSStringTemplate
          throw new IllegalArgumentException("Start index must be non-negative");
       }
       
-      StringBuffer rval = new StringBuffer();
+      StringBuilder rval = new StringBuilder();
       
       if (StringUtils.isBlank(m_template))
          return rval.toString();
@@ -334,7 +334,7 @@ public class PSStringTemplate
       IPSTemplateDictionary dict,
       int pos,
       String template,
-      StringBuffer rval) throws PSStringTemplateException
+      StringBuilder rval) throws PSStringTemplateException
    {
       pos += m_startSequence.length();
       // Search for end

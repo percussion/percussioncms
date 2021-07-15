@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -263,6 +263,8 @@ public class PSDeploymentManager
       }
       catch (Exception e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          throw new PSDeployException(
             IPSDeploymentErrors.UNEXPECTED_ERROR, e.toString());
       }
@@ -1422,6 +1424,8 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
@@ -1487,6 +1491,8 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
+               log.error(e.getMessage());
+               log.debug(e.getMessage(), e);
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
@@ -1551,6 +1557,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1623,6 +1631,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1811,6 +1821,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(e.getMessage());
+                  log.debug(e.getMessage(), e);
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1973,7 +1985,9 @@ public class PSDeploymentManager
       catch (PSServerLockException e) 
       {
          // this is not expected, but helper method throws it
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
    }
@@ -2062,7 +2076,7 @@ public class PSDeploymentManager
     * <code>null</code>.
     * @throws PSDeployException if there is an error retrieving the status.
     */
-   int getJobStatus(int jobId, StringBuffer messageBuffer)
+   int getJobStatus(int jobId, StringBuilder messageBuffer)
       throws PSDeployException
    {
       if (messageBuffer == null)

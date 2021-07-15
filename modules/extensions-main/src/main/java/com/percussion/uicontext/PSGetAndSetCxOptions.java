@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,6 +38,9 @@ import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.IPSXmlErrors;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,10 +50,6 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * This class works directly with ContentExplorer PSOptionManager, this
@@ -190,7 +189,7 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
       m_defaultLocalOptionMap = new HashMap();
 
 
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("rx_resources");
       sb.append(File.separator);
       sb.append("css");

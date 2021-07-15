@@ -7,7 +7,7 @@
  ******************************************************************************/
 package com.percussion.autotest.framework;
 
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 public class QAObjectRegistry
@@ -15,7 +15,7 @@ public class QAObjectRegistry
 
     public QAObjectRegistry()
     {
-        m_objs = new Hashtable();
+        m_objs = new ConcurrentHashMap();
     }
 
     public QAServerObject getObject(Object key)

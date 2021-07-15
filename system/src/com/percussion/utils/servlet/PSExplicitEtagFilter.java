@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -226,7 +226,6 @@ public class PSExplicitEtagFilter extends OncePerRequestFilter {
              */
             @Override
             public void setWriteListener(WriteListener writeListener) {
-                //TODO: Implement me
                 throw new RuntimeException("Not implemented");
             }
         }
@@ -266,12 +265,12 @@ public class PSExplicitEtagFilter extends OncePerRequestFilter {
           try
           {
              // MessageDigest is not thread-safe
-             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
              return messageDigest.digest(bytes);
           }
           catch (NoSuchAlgorithmException ex)
           {
-             throw new IllegalStateException("Could not find MD5 MessageDigest instance", ex);
+             throw new IllegalStateException("Could not find SHA-256 MessageDigest instance", ex);
           }
        }
 

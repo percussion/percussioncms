@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -432,7 +432,7 @@
                             content:"Connection to Google Analytics was successful.", "id": "perc-ga-test-connect-success"});
 
 	   if(typeof(callback) == 'function')
-                        callback(status);
+                        callback($.PercServiceUtils.STATUS_SUCCESS);
                      percJQuery.unblockUI();
 	},
         error: function(request,status, error){
@@ -570,7 +570,7 @@
                              if(self.val() == "none")
                                 $("input[id='perc_ga_apikey_" + site + "']").css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
                              else
-                                $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                                 $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                           }
                           else
                           {
@@ -582,7 +582,7 @@
 
                  sitesContainer.find(".perc-ga-apikey-field").each(function(){
                     $(this).on("focus",apiKeyFocus).on("blur",function(e){
-                        apiKeyBlur(e);
+                        apiKeyBlur(e,$(this));
                         });
                 })
               }
@@ -598,8 +598,8 @@
                    self.css("color", "black").val("");
            }
 
-           function apiKeyBlur(){
-              var self = $(this)
+           function apiKeyBlur(event,inst){
+              var self = inst;
               if(self.val() == "")
                   self.css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile");
            }
@@ -642,7 +642,7 @@
                    var selectedClass = (hasSelection && temp['key'] == selectedProfileId) ? ' perc-selected' : '';
                    var selected = (hasSelection && temp['key'] == selectedProfileId) ? ' selected="selected"' : '';
                    if (selected != ""){
-                      $("input[id='perc_ga_apikey_" + site + "']").removeAttr("disabled");
+                      $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                    }
                    opt = '<option title="' + temp['value'] + '" class="perc-ga-profile-list-option'
                       + selectedClass + '" value="' + temp['key'] + '"' + selected + '>' + temp['value'] + '</option>';
@@ -665,16 +665,16 @@
               var $delete = $("#perc-ga-delete");
 
               $connect.off('click').on('click', function(e){
-                _onConnect(e);
+                _onConnect(e,$connect);
               });
               $cancel.off('click').on('click', function(e){
-                _onCancel(e);
+                _onCancel(e,$cancel);
                 });
               $save.off('click').on('click', function(e){
-                _onSave(e);
+                _onSave(e,$save);
                 });
               $delete.off('click').on('click', function(e){
-                _onDelete(e);
+                _onDelete(e,$delete);
                 });
 
 
@@ -726,8 +726,8 @@
             * creds against the google provider and if successful loads profiles and
             * updates the UI.
             */
-           function _onConnect(event){
-              if(!$(this).hasClass("perc-inactive"))
+           function _onConnect(event,inst){
+              if(!inst.hasClass("perc-inactive"))
               {
                 var thePwd = _hasStoredPwd ? "null" : $("#perc-ga-pwd").val();
                 var uid = $("#perc-ga-user").val();
@@ -763,7 +763,7 @@
             * Action called when the cancel button is clicked. Reverts the UI back
             * to the persisted state.
             */
-           function _onCancel(event){
+           function _onCancel(event,inst){
               _storedConfig = _originalValues['config'];
               _hasStoredPwd = _originalValues['hasStoredPwd'];
               _profileList = _originalValues['profileList'];
@@ -777,8 +777,8 @@
             * Action called when the save button is clicked. Persists config and
             * profiles to the server.
             */
-           function _onSave(event){
-              if(!$(this).hasClass("perc-inactive"))
+           function _onSave(event,inst){
+              if(!inst.hasClass("perc-inactive"))
               {
                 percJQuery.PercBlockUI();
                 _saveConfig(_savePersistedProfiles);
@@ -788,8 +788,8 @@
            /**
             * Action called when the clear credentials is clicked. Deletes the config.
             */
-           function _onDelete(event){
-              if(!$(this).hasClass("perc-inactive"))
+           function _onDelete(event,inst){
+              if(!inst.hasClass("perc-inactive"))
               {
                     percJQuery.perc_utils.confirm_dialog({
                        id: "confirmDelete",

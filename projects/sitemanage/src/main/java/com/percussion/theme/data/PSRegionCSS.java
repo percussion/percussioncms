@@ -17,27 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.theme.data;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.percussion.share.data.PSAbstractDataObject;
-import com.percussion.utils.types.PSPair;
-
 import net.sf.oval.constraint.NotBlank;
 import net.sf.oval.constraint.NotNull;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * It contains CSS properties for a specific region.
@@ -160,7 +157,7 @@ public class PSRegionCSS extends PSAbstractDataObject implements Serializable, C
 
     public String getAsCSSString()
     {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         
         if (outerRegionName == null)
             return buffer.toString();
@@ -177,7 +174,7 @@ public class PSRegionCSS extends PSAbstractDataObject implements Serializable, C
         return buffer.toString();
     }
 
-    private void addAsCSSStringRegionName(StringBuffer buffer, String name)
+    private void addAsCSSStringRegionName(StringBuilder buffer, String name)
     {
         buffer.append("#");
         buffer.append(name);
@@ -185,7 +182,7 @@ public class PSRegionCSS extends PSAbstractDataObject implements Serializable, C
         buffer.append(" ");
     }
     
-    private void addAsCSSStringPropertys(StringBuffer buffer)
+    private void addAsCSSStringPropertys(StringBuilder buffer)
     {
         for (Property p : properties)
         {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,8 @@ package com.percussion.rx.services.deployer;
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigServiceLocator;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -41,8 +43,6 @@ import com.percussion.services.security.PSAclServiceLocator;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.security.IPSTypedPrincipal;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.webservices.security.IPSSecurityDesignWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
 import org.apache.commons.lang.StringUtils;
@@ -153,7 +153,7 @@ public class PSPackageVisibility
     */
    private String getCommunitiesFromAcl(IPSAcl acl)
    {
-      StringBuffer comms = new StringBuffer();
+      StringBuilder comms = new StringBuilder();
       for (String c : getCommunityListFromAcl(acl))
       {
          if (comms.length() > 0)

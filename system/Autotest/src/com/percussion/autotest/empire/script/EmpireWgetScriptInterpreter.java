@@ -265,7 +265,7 @@ public class EmpireWgetScriptInterpreter extends EmpireScriptInterpreter
       if (in.indexOf('%') >= 0)
       {
          // wget converts percent when it shouldn't
-         StringBuffer inBuf = new StringBuffer(in.length());
+         StringBuilder inBuf = new StringBuilder(in.length());
          for (int i = 0; i < in.length(); i++)
          {
             char c = in.charAt(i);

@@ -119,7 +119,7 @@
         var $target = $(event.target);
 
         if (($target.parents('#' + $.timepicker._mainDivId).length == 0)) {
-            let inst = $.datepicker._getInst($target[0]);
+            var inst = $.datepicker._getInst($target[0]);
 
             if (($target[0].id != $.datepicker._mainDivId &&
                 $target.parents('#' + $.datepicker._mainDivId).length == 0 &&
@@ -129,7 +129,9 @@
                 !($.datepicker._inDialog && $.blockUI)) ||
                 ($target.hasClass($.datepicker.markerClassName) && $.datepicker._curInst != inst))
                 $('html').on("click",function (evt){
-                    $.datepicker._hideDatepicker();
+                    if(typeof inst !== 'undefined'){
+                        $.datepicker._hideDatepicker(inst);
+                    }
                 })
         }
         return;
@@ -169,10 +171,9 @@
         _hideDatepickerOrg.apply(this,[input, duration]);
 
         // Hide the timepicker if enabled
-        if (showTime) {
+        if (showTime && this._datepickerShowing === false) {
             $.timepicker.hide();
         }
-
     };
 
     /**
@@ -427,7 +428,7 @@
             if (this._colonPos != -1) {
                 h = parseInt(dt.substr(this._colonPos - 2, 2), 10);
                 m = parseInt(dt.substr(this._colonPos + 1, 2), 10);
-                a = jQuery.trim(dt.substr(this._colonPos + 3, 3));
+                a = dt.substr(this._colonPos + 3, 3).trim();
             }
 
             a = a.toLowerCase();

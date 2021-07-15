@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -77,6 +77,7 @@ import com.percussion.extension.PSDatabaseFunctionManager;
 import com.percussion.extension.PSExtensionManager;
 import com.percussion.i18n.PSTmxResourceBundle;
 import com.percussion.install.InstallUtil;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.log.PSLogHandler;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerStop;
@@ -88,22 +89,22 @@ import com.percussion.search.PSSearchAdmin;
 import com.percussion.search.PSSearchEngine;
 import com.percussion.search.PSSearchException;
 import com.percussion.search.PSSearchIndexEventQueue;
+import com.percussion.security.IPSDecryptor;
+import com.percussion.security.IPSKey;
+import com.percussion.security.IPSSecretKey;
 import com.percussion.security.PSAclHandler;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptionKeyFactory;
+import com.percussion.security.PSEncryptor;
 import com.percussion.security.PSEntry;
 import com.percussion.security.PSRoleManager;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
-import com.percussion.security.IPSDecryptor;
-import com.percussion.security.IPSKey;
-import com.percussion.security.IPSSecretKey;
-import com.percussion.security.PSEncryptionKeyFactory;
 import com.percussion.server.cache.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.content.PSFormContentParser;
@@ -128,14 +129,14 @@ import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.serialization.PSObjectSerializer;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.log4j.Level;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -172,7 +173,6 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -682,13 +682,14 @@ public class PSServer {
       }
    }
 
+   @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
    public static String stackToString(Throwable t)
    {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
       t.printStackTrace(pw);
-      String sStackTrace = t.getMessage() + " Stack=:/n"+sw.toString(); // stack trace as a string
-      return sStackTrace;
+      return  t.getMessage() + " Stack=:/n"+ sw; // stack trace as a string
+
    }
 
    /**
@@ -1064,7 +1065,7 @@ public class PSServer {
          }
       }
       // buildRequestFileURL
-      StringBuffer requestURL = new StringBuffer();
+      StringBuilder requestURL = new StringBuilder();
       requestURL.append( PSServer.makeRequestRoot(null) );
       requestURL.append( "/" );
       requestURL.append( appName );
@@ -2273,9 +2274,9 @@ public class PSServer {
       PSConsole.printInfoMsg("Server",
             IPSServerErrors.REQ_HANDLER_INIT, (Object[])null);
 
-      ms_RequestHandlers      = new Hashtable<String,IPSRequestHandler>();
-      ms_rootedRequestHandlers      = new Hashtable<String,IPSRequestHandler>();
-      ms_requestHandlerTypes = new Hashtable<IPSRequestHandler,List<String>>();
+      ms_RequestHandlers      = new ConcurrentHashMap<String,IPSRequestHandler>();
+      ms_rootedRequestHandlers      = new ConcurrentHashMap<String,IPSRequestHandler>();
+      ms_requestHandlerTypes = new ConcurrentHashMap<IPSRequestHandler,List<String>>();
       IPSRequestHandler handler;
 
       if (ms_srvConfig != null)
@@ -2939,8 +2940,8 @@ public class PSServer {
       if (ms_RequestHandlers != null) {
          Set<IPSRequestHandler> stoppedHandlers =
             new HashSet<IPSRequestHandler>();
-         Hashtable<String, IPSRequestHandler> reqHandlers = 
-            new Hashtable<String, IPSRequestHandler>();
+         ConcurrentHashMap<String, IPSRequestHandler> reqHandlers = 
+            new ConcurrentHashMap<String, IPSRequestHandler>();
          reqHandlers.putAll(ms_RequestHandlers);
          for (Enumeration<IPSRequestHandler> e = reqHandlers.elements();
             e.hasMoreElements(); )
@@ -4382,13 +4383,13 @@ public class PSServer {
    private static int                     ms_WhatsUp              = INITED_NONE;
    private static PSProperties            ms_objectStoreProps     = null;
    private static PSProperties            ms_serverProps          = new PSProperties();
-   static Hashtable<String,IPSRequestHandler> ms_RequestHandlers      = null;
+   static ConcurrentHashMap<String,IPSRequestHandler> ms_RequestHandlers      = null;
 
    /**
     * List of request handlers that will process requests based on the request
     * root of the URL.
     */
-   private static Hashtable<String,IPSRequestHandler> ms_rootedRequestHandlers
+   private static ConcurrentHashMap<String,IPSRequestHandler> ms_rootedRequestHandlers
       = null;
    protected static PSConsole             ms_console              = null;
 
@@ -4467,8 +4468,8 @@ public class PSServer {
     * List of request handlers and what types of request methods they can handle
     * (i.e. GET or POST) - all types should be uppercased.
     */
-   private static Hashtable<IPSRequestHandler,List<String>>
-      ms_requestHandlerTypes = new Hashtable<IPSRequestHandler,List<String>>();
+   private static ConcurrentHashMap<IPSRequestHandler,List<String>>
+      ms_requestHandlerTypes = new ConcurrentHashMap<IPSRequestHandler,List<String>>();
 
 
    /**

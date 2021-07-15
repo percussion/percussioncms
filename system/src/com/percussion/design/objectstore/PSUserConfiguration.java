@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,11 +26,10 @@ package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.util.Enumeration;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.Enumeration;
 
 
 /**
@@ -57,7 +56,7 @@ import org.w3c.dom.Element;
  * @version    1.0
  * @since      1.0
  */
-public class PSUserConfiguration extends java.util.Hashtable
+public class PSUserConfiguration extends java.util.concurrent.ConcurrentHashMap
    implements IPSDocument
 {
    /**
@@ -143,7 +142,7 @@ public class PSUserConfiguration extends java.util.Hashtable
     * PSUserConfiguration object. Any subsequent changes made to the object
     * by the caller will also effect the user configuration.
     *
-    * @param   props      the new properties to associate with this user
+    * @param   propTree      the new properties to associate with this user
     *
     * @see               #getPropertyTree
     */

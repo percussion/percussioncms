@@ -1,4 +1,5 @@
 <%@ page import="java.util.*,com.percussion.i18n.PSI18nUtils" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
 		   prefix="rxcomp"%>
 <%--
@@ -20,7 +21,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -38,6 +39,7 @@
 	<script src="<%= root %>/sys_resources/js/globalErrorMessages.js">;</script>
 	<script src="<%= root %>/sys_resources/js/<%= locale %>/globalErrorMessages.js">;</script>
 	<script src="<%= root %>/tmx/tmx.jsp?sys_lang=<%= locale %>">;</script>
+	<script src="/JavaScriptServlet"></script>
 	<script src="<%= root %>/sys_resources/dojo/dojo.js">;</script>
 
 	<!--

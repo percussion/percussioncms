@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -109,7 +109,7 @@
 			<h2>Social Button Content Configuration</h2>
 			<ul>
 			<li><h5>This widget references icons from the Fontawesome library. Please be sure to include the Fontawesome library in your page or template.</h5></li>
-			<li><h5>The Google Tag Manager script must be placed in your template for the data push to work properly. View <a href="https://support.google.com/tagmanager/answer/6103696" target="_blank">this page</a> for more information.</h5></li>
+			<li><h5>The Google Tag Manager script must be placed in your template for the data push to work properly. View <a href="https://support.google.com/tagmanager/answer/6103696" target="_blank" rel="noopener noreferrer">this page</a> for more information.</h5></li>
 		</ul>
 			<!--<span id="perc-help-toggle" class="perc-toggle-help fa fa-question-circle" title="Click to toggle help"></span><label for="perc-help-toggle">Click to toggle help.</label>
 				<div class="perc-help">

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -89,28 +89,27 @@
                 //our editor class - we get the id from the div and pull the data from the input field.
                 var dataFieldName = $(".perc-default-lang").attr("id");
                 var dataStr = $("input[name='" + dataFieldName + "']").val().trim();
-
+                    var data = null;
                 if(dataStr.length>0){
                     data = JSON.parse(dataStr);
                 }    
                 
-                if(data!=null){
-                 var $table = $('#perc-default-lang-editor');
-                    //After fixing the plus "+" icon not appearing data.config was undefined.
-                    //Thus breaking the editor and "+" icon functionality as data was array of SiteSummary.
-                 for(let i =0 ; i < data.SiteSummary.length ; i++){
-                    var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
-                        if (data.SiteSummary[i].protocol) {
-                            $clone.find('.perc-lang-protocol').val(data.SiteSummary[i].protocol);
-                        }
-                        $clone.find('.perc-site-list').val(data.SiteSummary[i].siteid);
-                        $clone.find('.perc-lang-list').val(data.SiteSummary[i].lang);
-                        $clone.find('.perc-country-list').val(data.SiteSummary[i].country);
-                        $clone.find('input[name="default-lang"]').prop("checked", data.SiteSummary[i].defLang);
-      
-                        $table.find('table').append($clone);      
+                if(data!=null) {
+                    var $table = $('#perc-default-lang-editor');
+                    for(var i =0 ; i < data.config.length ; i++){
+                        var $clone = $table.find('tr.hide').clone(true).removeClass('hide table-line');
+                        if (data.config[i].protocol) {
+                            $clone.find('.perc-lang-protocol').val(data.config[i].protocol);
+                            }
+                        $clone.find('.perc-site-list').val(data.config[i].siteid);
+                        $clone.find('.perc-lang-list').val(data.config[i].lang);
+                        $clone.find('.perc-country-list').val(data.config[i].country);
+                        $clone.find('input[name="default-lang"]').prop("checked", data.config[i].defLang);
+
+                        $table.find('table').append($clone);
                     }
-                }
+                    }
+
                 
                _attachEvents();
                 }

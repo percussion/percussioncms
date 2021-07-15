@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,6 +34,7 @@ import com.percussion.server.PSServer;
 import com.percussion.server.content.PSFormContentParser;
 import com.percussion.util.PSEntrySet;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -45,8 +46,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Element;
 
 /**
  * Class for utility methods used by deployment components
@@ -376,7 +375,7 @@ public class PSDeployComponentUtils
     * of <code>String</code> values.  Never <code>null</code>, may
     * be empty.
     */
-   public static Map parseParams(String url, StringBuffer base)
+   public static Map parseParams(String url, StringBuilder base)
    {
       if (url == null)
          throw new IllegalArgumentException("url may not be null");

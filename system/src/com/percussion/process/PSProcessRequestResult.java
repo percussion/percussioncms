@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,7 +26,6 @@ package com.percussion.process;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -275,8 +274,8 @@ public class PSProcessRequestResult
       boolean empty = text == null || text.trim().length() == 0;
       m_resultText = empty ? "-- No output --" : text;
       //strip out any non-Xml conforming characters
-      StringBuffer buf = new StringBuffer(m_resultText);
-      StringBuffer cleanBuf = new StringBuffer(m_resultText.length());
+      StringBuilder buf = new StringBuilder(m_resultText);
+      StringBuilder cleanBuf = new StringBuilder(m_resultText.length());
       for (int i = 0; i < buf.length(); i++)
       {
          char c = buf.charAt(i);

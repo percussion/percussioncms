@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,14 +27,12 @@ package com.percussion.design.objectstore;
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * The PSSubject class defines a subject (group or user) to be stored
@@ -227,7 +225,7 @@ public abstract class PSSubject extends PSDatabaseComponent
    @Override
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(getName());
+      StringBuilder buf = new StringBuilder(getName());
       buf.append("{").append(getSubjectTypeName()).append("}");
 
       return buf.toString();

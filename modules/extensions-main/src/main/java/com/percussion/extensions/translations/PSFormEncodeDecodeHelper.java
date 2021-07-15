@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -121,7 +121,7 @@ public class PSFormEncodeDecodeHelper
       
       final Source source = new Source(content);
       final OutputDocument outDoc = new OutputDocument(source);
-      StringBuffer buff = new StringBuffer();
+      StringBuilder buff = new StringBuilder();
       StartTag sTag = null;
       EndTag eTag = null;
       int idx = 0;
@@ -201,7 +201,7 @@ public class PSFormEncodeDecodeHelper
    
    private static String toProperCase(String str)
    {
-      StringBuffer buff = new StringBuffer(str.toLowerCase());
+      StringBuilder buff = new StringBuilder(str.toLowerCase());
       if(buff.length() > 0)
       {
          buff.replace(0, 1, buff.substring(0, 1).toUpperCase());

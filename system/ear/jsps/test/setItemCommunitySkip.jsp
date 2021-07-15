@@ -11,8 +11,12 @@
     import="com.percussion.cms.PSCmsException, com.percussion.webservices.PSErrorResultsException, com.percussion.services.security.data.PSCommunity"
     import="com.percussion.cms.objectstore.PSObjectAclEntry, com.percussion.cms.objectstore.IPSDbComponent, com.percussion.cms.objectstore.PSObjectAcl, com.percussion.cms.objectstore.PSFolder"
     import="java.util.Map, java.util.Set, java.util.Collections, java.util.Map.Entry, java.util.Iterator, java.util.HashMap, java.util.Arrays, java.util.ArrayList, java.util.List, org.apache.commons.lang.StringUtils, javax.servlet.jsp.JspWriter"
-    
+    import="com.percussion.i18n.PSI18nUtils"
+    import="com.percussion.services.utils.jspel.PSRoleUtilities"
+    import="com.percussion.server.PSServer"
     %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -32,11 +36,27 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
+<%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+    }
+    String fullrolestr = PSRoleUtilities.getUserRoles();
+
+    if (!fullrolestr.contains("Admin"))
+        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
+                + "/ui/RxNotAuthorized.jsp"));
+
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -240,7 +260,7 @@
 <p>
 Use this page to update item community
 </p>
-<form method="POST"> 
+<csrf:form method="POST" action="/test/setItemCommunitySkip.jsp">
 
 <%
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
@@ -317,7 +337,7 @@ Community ID
 </textarea>
 <br/>
 <input type="submit" name="execute" value="execute" label="Execute" /> 
-</form>
+</csrf:form>
 <p>
 <%if (request.getMethod().equals("POST")
                && request.getParameter("execute").equals("execute"))

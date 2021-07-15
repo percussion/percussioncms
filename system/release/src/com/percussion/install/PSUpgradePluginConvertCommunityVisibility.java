@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.install;
 
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.datasource.PSDatasourceMgrLocator;
 import com.percussion.services.guidmgr.PSGuidHelper;
@@ -42,9 +44,12 @@ import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionInfo;
-import com.percussion.security.IPSTypedPrincipal;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -57,15 +62,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import java.util.Set;
 
 /**
  * Convert community visibility info from tables to acls.
@@ -149,7 +147,7 @@ public class PSUpgradePluginConvertCommunityVisibility
 
       NodeList elements = elemData.getElementsByTagName("update");
       int count = elements.getLength();
-      StringBuffer problems = new StringBuffer();
+      StringBuilder problems = new StringBuilder();
 
       IPSAclService asvc = PSAclServiceLocator.getAclService();
       List acls = new ArrayList();
@@ -459,7 +457,7 @@ public class PSUpgradePluginConvertCommunityVisibility
       String hide = element.getAttribute("hide");
 
       // Create query string
-      StringBuffer b = new StringBuffer();
+      StringBuilder b = new StringBuilder();
       b.append("SELECT ");
       b.append(objectIdColumn);
       b.append(", ");
@@ -498,7 +496,7 @@ public class PSUpgradePluginConvertCommunityVisibility
       String tableName = element.getAttribute("name").toUpperCase();
 
       // Create query string
-      StringBuffer b = new StringBuffer();
+      StringBuilder b = new StringBuilder();
       b.append("SELECT ");
       b.append(objectIdColumn);
       b.append(",");
@@ -522,7 +520,7 @@ public class PSUpgradePluginConvertCommunityVisibility
     * @throws SQLException
     * @throws NamingException
     */
-   private Map getQueryResults(StringBuffer query, boolean hide)
+   private Map getQueryResults(StringBuilder query, boolean hide)
          throws SQLException, NamingException
    {
       Connection c = null;

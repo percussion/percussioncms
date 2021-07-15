@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,9 +38,9 @@ function countProperties(obj) {
     P.widgetPropertiesDialog = function( setWidgetProperty, widgetProperties, widgetDefinitionId, postCallback, propertyType, getWidgetByName ) {
         restGetWidgetDefinition(widgetDefinitionId, propertyType, function(widgetDef) {
             if (widgetProperties){
-                if (typeof(widgetProperties.sys_perc_name) != "undefined" && typeof(widgetProperties.sys_perc_description) != "undefined" ){
-                    widgetDef.userPrefDef.sys_perc_name = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
-                    widgetDef.userPrefDef.sys_perc_description = (new $.perc_sys_pref("perc_sys_description","","Description","sys_perc_description"));
+                if (typeof(widgetProperties['sys_perc_name']) != "undefined" && typeof(widgetProperties['sys_perc_description']) != "undefined" ){
+                    widgetDef.userPrefDef['sys_perc_name'] = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
+                    widgetDef.userPrefDef['sys_perc_description'] = (new $.perc_sys_pref("perc_sys_description","","Description","sys_perc_description"));
                 }
                 widgetDef.setValuesFromWidgetProperties( widgetProperties );
             }

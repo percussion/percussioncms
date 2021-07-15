@@ -17,33 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.assetmanagement.service.impl;
 
-import static com.percussion.util.PSSqlHelper.qualifyTableName;
-
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import com.percussion.cms.IPSConstants;
 import com.percussion.pagemanagement.service.IPSWidgetAssetRelationshipDao;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.guidmgr.PSGuidHelper;
-
-import java.sql.SQLException;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+
+import java.sql.SQLException;
+
+import static com.percussion.util.PSSqlHelper.qualifyTableName;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * The service used to update Page & Asset relationships.
@@ -57,6 +56,7 @@ public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipD
    
     private SessionFactory sessionFactory;
 
+    @SuppressFBWarnings("SQL_INJECTION_HIBERNATE")
     @Transactional
     public int updateWidgetNameForRelatedPages(String templateId, String widgetName, long widgetId)
     {

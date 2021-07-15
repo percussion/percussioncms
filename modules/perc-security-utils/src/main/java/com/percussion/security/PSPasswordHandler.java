@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,7 +30,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -48,6 +47,7 @@ public class PSPasswordHandler {
     private static final Logger log = LogManager.getLogger(PSPasswordHandler.class);
     private static final int DEFAULT_SALT_SIZE=128;
     private static final int DEFAULT_ITERATIONS = 10000;
+    public static final String ALGORITHM = "PBKDF2WithHmacSHA512";
 
     private PSPasswordHandler(){
         //Do nothing
@@ -70,7 +70,7 @@ public class PSPasswordHandler {
          byte[] encoded;
 
          try {
-             skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+             skf = SecretKeyFactory.getInstance(ALGORITHM);
          } catch (NoSuchAlgorithmException e) {
              log.error(e.getMessage());
              log.debug(e.getMessage(),e);
@@ -120,6 +120,7 @@ public class PSPasswordHandler {
      byte[] ogSalt = ArrayUtils.subarray(hashedPwWithSalt, hashedPwWithSalt.length - DEFAULT_SALT_SIZE, hashedPwWithSalt.length);
      byte[] newPwWithSalt = getHashedPasswordBytes(password, ogSalt);
 
-     return MessageDigest.isEqual(newPwWithSalt, hashedPwWithSalt);
+     return Base64.getEncoder().encodeToString(newPwWithSalt).equals(
+             encodedPw);
  }
 }

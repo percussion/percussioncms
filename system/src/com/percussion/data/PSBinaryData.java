@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -82,14 +82,14 @@ public class PSBinaryData
    {
       if (m_byte != null)
       {
-         StringBuffer my_StringBuffer = new StringBuffer();
+         StringBuilder my_StringBuilder = new StringBuilder();
          for (int i = 0; i < m_byte.length; i++)
          {
-            my_StringBuffer.append(getLeftHexNibble(m_byte[i]));
-            my_StringBuffer.append(getRightHexNibble(m_byte[i]));
+            my_StringBuilder.append(getLeftHexNibble(m_byte[i]));
+            my_StringBuilder.append(getRightHexNibble(m_byte[i]));
          }
 
-         return my_StringBuffer.toString();
+         return my_StringBuilder.toString();
       } else
          return null;
    }
@@ -102,14 +102,14 @@ public class PSBinaryData
    {
       if (m_byte != null)
       {
-         StringBuffer my_StringBuffer = new StringBuffer();
+         StringBuilder my_StringBuilder = new StringBuilder();
          for (int i = 0; i < m_byte.length; i++)
          {
-            my_StringBuffer.append(getLeftOctalNibble(m_byte[i]));
-            my_StringBuffer.append(getRightOctalNibble(m_byte[i]));
+            my_StringBuilder.append(getLeftOctalNibble(m_byte[i]));
+            my_StringBuilder.append(getRightOctalNibble(m_byte[i]));
          }
 
-         return my_StringBuffer.toString();
+         return my_StringBuilder.toString();
       } else
          return null;
    }
@@ -122,14 +122,14 @@ public class PSBinaryData
    {
       if (m_byte != null)
       {
-         StringBuffer my_StringBuffer = new StringBuffer();
+         StringBuilder my_StringBuilder = new StringBuilder();
          for (int i = 0; i < m_byte.length; i++)
          {
-            my_StringBuffer.append(getLeftBinaryNibble(m_byte[i]));
-            my_StringBuffer.append(getRightBinaryNibble(m_byte[i]));
+            my_StringBuilder.append(getLeftBinaryNibble(m_byte[i]));
+            my_StringBuilder.append(getRightBinaryNibble(m_byte[i]));
          }
 
-         return my_StringBuffer.toString();
+         return my_StringBuilder.toString();
       } else
          return null;
    }

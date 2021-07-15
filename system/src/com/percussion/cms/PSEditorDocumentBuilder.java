@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,8 +26,30 @@ package com.percussion.cms;
 import com.percussion.cms.handlers.PSCloneCommandHandler;
 import com.percussion.cms.handlers.PSContentEditorHandler;
 import com.percussion.cms.handlers.PSEditCommandHandler;
-import com.percussion.data.*;
-import com.percussion.design.objectstore.*;
+import com.percussion.data.IPSDataExtractor;
+import com.percussion.data.PSConversionException;
+import com.percussion.data.PSDataExtractionException;
+import com.percussion.data.PSDataExtractorFactory;
+import com.percussion.data.PSExecutionData;
+import com.percussion.data.PSMetaDataCache;
+import com.percussion.data.PSViewEvaluator;
+import com.percussion.design.objectstore.IPSBackEndMapping;
+import com.percussion.design.objectstore.PSBackEndColumn;
+import com.percussion.design.objectstore.PSCgiVariable;
+import com.percussion.design.objectstore.PSContentEditor;
+import com.percussion.design.objectstore.PSContentEditorPipe;
+import com.percussion.design.objectstore.PSContentItemStatus;
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSHtmlParameter;
+import com.percussion.design.objectstore.PSLiteralSet;
+import com.percussion.design.objectstore.PSRequestor;
+import com.percussion.design.objectstore.PSSingleHtmlParameter;
+import com.percussion.design.objectstore.PSSystemValidationException;
+import com.percussion.design.objectstore.PSTableRef;
+import com.percussion.design.objectstore.PSTableSet;
+import com.percussion.design.objectstore.PSUrlRequest;
+import com.percussion.design.objectstore.PSUserContext;
+import com.percussion.design.objectstore.PSViewSet;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.i18n.tmxdom.IPSTmxDtdConstants;
@@ -44,7 +66,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is the base class for all document builders. It knows the basic
@@ -1087,7 +1117,7 @@ public abstract class PSEditorDocumentBuilder
             }
             catch (SQLException e)
             {
-               StringBuffer buf = new StringBuffer(250);
+               StringBuilder buf = new StringBuilder(250);
                buf.append( System.getProperty( "line.separator" ));
                buf.append( e.getLocalizedMessage());
                SQLException next = e.getNextException();

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -1019,7 +1019,7 @@ public class AssemblyDesignTestCase extends PSAssemblyTestBase
 
          // update and save again
          testcreate.setDescription(testcreate.getDescription() + " - changed");
-         StringBuffer template = new StringBuffer("Line 1");
+         StringBuilder template = new StringBuilder("Line 1");
          template.append("\n");
          template.append("Line 2");
          template.append("\n");

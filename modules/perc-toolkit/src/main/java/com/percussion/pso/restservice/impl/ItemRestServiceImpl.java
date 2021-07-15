@@ -10,29 +10,70 @@
 package com.percussion.pso.restservice.impl;
 
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.*;
+import com.percussion.cms.objectstore.IPSFieldValue;
+import com.percussion.cms.objectstore.PSBinaryValue;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSCoreItem;
+import com.percussion.cms.objectstore.PSDateValue;
+import com.percussion.cms.objectstore.PSFolderAcl;
+import com.percussion.cms.objectstore.PSItemDefinition;
+import com.percussion.cms.objectstore.PSItemField;
+import com.percussion.cms.objectstore.PSItemFieldMeta;
+import com.percussion.cms.objectstore.PSObjectAclEntry;
+import com.percussion.cms.objectstore.PSRelationshipFilter;
+import com.percussion.cms.objectstore.PSTextValue;
 import com.percussion.cms.objectstore.server.PSBinaryFileValue;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldSet;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.pso.restservice.IItemRestService;
 import com.percussion.pso.restservice.exception.ItemRestException;
 import com.percussion.pso.restservice.exception.ItemRestNotModifiedException;
+import com.percussion.pso.restservice.model.AclItem;
+import com.percussion.pso.restservice.model.Child;
+import com.percussion.pso.restservice.model.ChildRow;
+import com.percussion.pso.restservice.model.Copy;
+import com.percussion.pso.restservice.model.DateValue;
 import com.percussion.pso.restservice.model.Error;
-import com.percussion.pso.restservice.model.*;
-import com.percussion.pso.restservice.model.Item;
-import com.percussion.pso.restservice.model.Value;
 import com.percussion.pso.restservice.model.Error.ErrorCode;
+import com.percussion.pso.restservice.model.Field;
+import com.percussion.pso.restservice.model.FileValue;
+import com.percussion.pso.restservice.model.FolderAcl;
+import com.percussion.pso.restservice.model.FolderInfo;
+import com.percussion.pso.restservice.model.Item;
+import com.percussion.pso.restservice.model.ItemRef;
+import com.percussion.pso.restservice.model.Items;
+import com.percussion.pso.restservice.model.Relationship;
+import com.percussion.pso.restservice.model.Relationships;
+import com.percussion.pso.restservice.model.Slot;
+import com.percussion.pso.restservice.model.SlotItem;
+import com.percussion.pso.restservice.model.StringValue;
+import com.percussion.pso.restservice.model.Translation;
+import com.percussion.pso.restservice.model.Value;
+import com.percussion.pso.restservice.model.XhtmlValue;
 import com.percussion.pso.restservice.model.results.PagedResult;
 import com.percussion.pso.restservice.support.IImportItemSystemInfo;
 import com.percussion.pso.restservice.support.ImportItemSystemInfoLocator;
 import com.percussion.pso.restservice.utils.ItemServiceHelper;
 import com.percussion.pso.utils.HTTPProxyClientConfig;
 import com.percussion.pso.utils.PSOEmailUtils;
-import com.percussion.server.*;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSServer;
+import com.percussion.server.PSUserSession;
 import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.assembly.impl.nav.PSNavConfig;
 import com.percussion.services.content.data.PSItemStatus;
@@ -53,7 +94,11 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.webservices.*;
+import com.percussion.webservices.PSErrorException;
+import com.percussion.webservices.PSErrorResultsException;
+import com.percussion.webservices.PSErrorsException;
+import com.percussion.webservices.PSUserNotMemberOfCommunityException;
+import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
@@ -70,9 +115,25 @@ import org.dom4j.Document;
 import org.dom4j.io.DocumentResult;
 import org.springframework.stereotype.Service;
 
-import javax.jcr.*;
-import javax.jcr.query.*;
-import javax.ws.rs.*;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Property;
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.ValueFormatException;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -83,15 +144,35 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
+
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
 
 /**
  */
@@ -260,7 +341,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				if (contenttypeid==101) {
 					isFolder=true;
 					PSRequest req = (PSRequest) PSRequestInfo
-					.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+					.getRequestInfo(KEY_PSREQUEST);
 					PSServerFolderProcessor folderproc =  PSServerFolderProcessor.getInstance();
 					String globalTemplate = folderproc.getGlobalTemplateProperty(id);
 					PSComponentSummary[] children = folderproc.getChildSummaries(new PSLocator(id,-1));
@@ -351,19 +432,11 @@ public class ItemRestServiceImpl implements IItemRestService {
 				item.setContentType(contentTypeName);
 
 			}
-		} catch (PSErrorException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
-		} catch (RepositoryException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
 		} catch (Exception e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error( e.getMessage());
+			log.error(e.getMessage());
 			log.debug(e.getMessage(), e);
-		} 
+		}
 
 		return item;
 
@@ -489,7 +562,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 
 				// TODO : Check if folder really refers to an item
 				PSRequest req = (PSRequest) PSRequestInfo
-				.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+				.getRequestInfo(KEY_PSREQUEST);
 				PSServerFolderProcessor folderproc =  PSServerFolderProcessor.getInstance();
 
 				if (item.getFolders() != null) {
@@ -523,7 +596,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 					
 					if (checkoutUser != null && checkoutUser.length() > 0) {
 						PSRequest cxreq = (PSRequest) PSRequestInfo
-						.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+						.getRequestInfo(KEY_PSREQUEST);
 						IPSRequestContext ctx = new PSRequestContext(cxreq);
 						userName = ctx.getUserContextInformation(
 								"User/Name", "").toString();
@@ -588,18 +661,18 @@ public class ItemRestServiceImpl implements IItemRestService {
 			    
 			     
 				if (status != null) {
-					boolean checkInOnly = item.getCheckInOnly() != null && item.getCheckInOnly()? true : false;
+					boolean checkInOnly = item.getCheckInOnly() != null && item.getCheckInOnly();
 					PSItemStatus ps = status.get(0);	
 					if(ps.getToState() != null){
 					    if (ps.getToState().equals("Quick Edit")){
 					 	      ps.setFromState("Review");
-						      ps.setFromStateId(new Long(2));
+						      ps.setFromStateId(2L);
 						      status.set(0, ps);
 					     }
 					}
 					else{
 						ps.setFromState("Review");
-						ps.setFromStateId(new Long(2));
+						ps.setFromStateId(2L);
 						status.set(0, ps);
 					}
 					cws.releaseFromEdit(status,checkInOnly);
@@ -697,19 +770,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				log.error("Error", e);
 			}
 
-		} catch (PSUnknownContentTypeException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
-		} catch (PSErrorException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
-		} catch (FileNotFoundException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
-		} catch (IOException e) {
+		} catch (PSErrorException | IOException | PSDataExtractionException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
 			log.error("Error {}", e.getMessage());
 			log.debug(e.getMessage(), e);
@@ -725,10 +786,6 @@ public class ItemRestServiceImpl implements IItemRestService {
 				log.error("Error {}", e.getMessage());
 				log.debug(e.getMessage(), e);
 			}
-		} catch (PSDataExtractionException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
 		} catch (ItemRestException e) {
 			log.error("Unexpected exception",e);
 			log.error("Error {}", e.getMessage());
@@ -836,7 +893,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 		try {
 			Property prop = node.getProperty( field);
 			mime_prop = node.getProperty(field + "_type").getString();
-			log.debug("mime type is " + mime_prop);
+			log.debug("mime type is {}:" , mime_prop);
 			String orig = prop.getString();
 			if (orig != null && orig.length() > 0) {
 				return Base64Utility.encode(prop.getString().getBytes());
@@ -858,7 +915,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 	 */
 	private List<Field> getFromRxFields(Node item, PSItemDefinition itemdef) {
 		initServices();
-		List<Field> fields = new ArrayList<Field>();
+		List<Field> fields = new ArrayList<>();
 
 		Iterator<PSField> iterator = itemdef.getParentFields();
 
@@ -1028,16 +1085,16 @@ public class ItemRestServiceImpl implements IItemRestService {
 				int cid = isOwner ? dependent.getId() : owner.getId();
 				int revision = isOwner ? dependent.getRevision() : owner
 						.getRevision();
-				log.debug("category = " + category);
-				log.debug("Name = " + name);
-				log.debug("dependentid=" + dependentId);
-				log.debug("ownerid=" + dependentId);
-				log.debug("revision = " + revision);
+				log.debug("category = {}" , category);
+				log.debug("Name = {}" , name);
+				log.debug("dependentid= {}" , dependentId);
+				log.debug("ownerid={}" , dependentId);
+				log.debug("revision = {}" , revision);
 
 				Map<String, String> props = rel.getAllProperties();
 				for (Entry<String, String> entry : props.entrySet()) {
-					log.debug("Prop name=" + entry.getKey() + " value="
-							+ entry.getValue());
+					log.debug("Prop name= {} value= {}",entry.getKey() ,
+							 entry.getValue());
 				}
 
 				if (category.equals(PSRelationshipConfig.CATEGORY_TRANSLATION)) {
@@ -1051,7 +1108,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 					trans.setRevision(revision);
 
 					if (translations == null) {
-						translations = new ArrayList<Translation>();
+						translations = new ArrayList<>();
 					}
 					translations.add(trans);
 				} else if (category.equals(PSRelationshipConfig.CATEGORY_COPY)) {
@@ -1063,7 +1120,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 					copy.setRevision(revision);
 					copy.setHref(generateItemLink(cid, revision));
 					if (copies == null) {
-						copies = new ArrayList<Copy>();
+						copies = new ArrayList<>();
 					}
 					copies.add(copy);
 				} else if (category
@@ -1103,25 +1160,25 @@ public class ItemRestServiceImpl implements IItemRestService {
 					if (slotid != null) {
 						slotname = isi.getSlotName(Integer.parseInt(slotid));
 
-						log.debug("Slotname is " + slotname);
+						log.debug("Slotname is {}" , slotname);
 						Slot slot = new Slot();
 						slot.setName(slotname);
 						if (slots == null)
-							slots = new ArrayList<Slot>();
+							slots = new ArrayList<>();
 
 						if (!slots.contains(slot)) {
 							slot.setType(rel.getConfig().getName());
 							slots.add(slot);
-							log.debug("cannot find slot " + slot.getName());
+							log.debug("cannot find slot {}" , slot.getName());
 						} else {
 							log.debug("slot already exists");
 							slot = slots.get(slots.indexOf(slot));
-							log.debug("Got existing slot" + slot.getName());
+							log.debug("Got existing slot {}" , slot.getName());
 						}
 						if (slot != null) {
 							List<SlotItem> items = slot.getItems();
 							if (items == null)
-								items = new ArrayList<SlotItem>();
+								items = new ArrayList<>();
 							log.debug("Adding new slot item to list");
 							items.add(newSlotItem);
 							// Better to do all sorting in one go
@@ -1154,8 +1211,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 	public void locateItem(Item item) throws ItemRestException {
 		int foundId = -1;
 		if (item.getContentId() != null && item.getContentId() > 0) {
-			log.debug("Item already located, contentid is "
-					+ item.getContentId());
+			log.debug("Item already located, contentid is {}",
+					 item.getContentId());
 		} else {
 			String keyField = item.getKeyField();
 			if (keyField == null) {
@@ -1168,7 +1225,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				 String name = item.getTitle();
 				 List<String> paths = item.getFolders();
 				 PSRequest req = (PSRequest) PSRequestInfo
-					.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+					.getRequestInfo(KEY_PSREQUEST);
 					PSServerFolderProcessor folderproc =  PSServerFolderProcessor.getInstance();
 				
 			
@@ -1236,7 +1293,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 					}
 				}
 				if (value == null) {
-					log.error("Cannot get value for keyfield " + keyField);
+					log.error("Cannot get value for keyfield {}",  keyField);
 					return;
 				}
 				String query = "select rx:sys_contentid from nt:base";
@@ -1262,7 +1319,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				} else if (size==1){
 					foundId = res.getItemRefs().get(0).getContentId();
 					item.setContentId(foundId);
-					log.debug("located item id=" + foundId);
+					log.debug("located item id={}" , foundId);
 				}
 				
 				
@@ -1308,9 +1365,9 @@ public class ItemRestServiceImpl implements IItemRestService {
 				// TODO: Best to calculate slot type based upon slot itself,
 				// Currently rely on type to be specified.
 				for (Slot slot : updateSlots) {
-					log.debug("Updating slot " + slot.getName());
+					log.debug("Updating slot {}" , slot.getName());
 					List<SlotItem> updateItems = slot.getItems();
-					List<SlotItem> existingItems = new ArrayList<SlotItem>();
+					List<SlotItem> existingItems = new ArrayList<>();
 					if (currentRels != null && currentRels.getSlots() != null) {
 
 						for (Slot existSlot : currentRels.getSlots()) {
@@ -1360,8 +1417,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 											folderId = folderIds.get(folderIds
 													.size());
 										} else {
-											log.error("Cannot get guid for folder "
-													+ itemToAdd.getFolder());
+											log.error("Cannot get guid for folder {} "
+													, itemToAdd.getFolder());
 										}
 									}
 									log.debug("Getting template id");
@@ -1391,27 +1448,26 @@ public class ItemRestServiceImpl implements IItemRestService {
 				}
 			}
 			if (updateRels.getTranslations() != null) {
-				List<Translation> updateTrans = new ArrayList<Translation>(
+				List<Translation> updateTrans = new ArrayList<>(
 						updateRels.getTranslations());
-				List<Translation> existingTrans = new ArrayList<Translation>();
+				List<Translation> existingTrans = new ArrayList<>();
 
 				if (currentRels != null
 						&& currentRels.getTranslations() != null) {
 					existingTrans.addAll(currentRels.getTranslations());
 				}
 
-				List<Relationship> itemsToDelete = new ArrayList<Relationship>(
+				List<Relationship> itemsToDelete = new ArrayList<>(
 						existingTrans);
 				itemsToDelete.removeAll(updateTrans);
-				log.debug("Need to remove " + itemsToDelete.size()
-						+ " relationships");
+				log.debug("Need to remove {} relationships", itemsToDelete.size());
 
-				List<Translation> itemsToAdd = new ArrayList<Translation>(
+				List<Translation> itemsToAdd = new ArrayList<>(
 						updateTrans);
 				itemsToAdd.removeAll(existingTrans);
-				log.debug("Need to add " + itemsToAdd.size() + " relationships");
+				log.debug("Need to add {} relationships", itemsToAdd.size());
 
-				if (itemsToDelete.size() > 0) {
+				if (!itemsToDelete.isEmpty()) {
 					if (check) {
 						return true;
 					} else {
@@ -1525,8 +1581,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 	public Item getItemFromStream(InputStream is) throws JAXBException {
 		JAXBContext jc = JAXBContext.newInstance(new Class[] { Item.class });
 		Unmarshaller um = jc.createUnmarshaller();
-		Item item = (Item) um.unmarshal(is);
-		return item;
+		return  (Item) um.unmarshal(is);
 	}
 
 	/**
@@ -1561,10 +1616,10 @@ public class ItemRestServiceImpl implements IItemRestService {
 
 	private PagedResult jcrSearch(String q, Integer n, String w, String path) {
 		initServices();
-		Map<String, String> pmap = new HashMap<String, String>();
+		Map<String, String> pmap = new HashMap<>();
 		PagedResult resultPage = new PagedResult();
-		List<ItemRef> refs = new ArrayList<ItemRef>();
-		Set<Integer> ids = new TreeSet<Integer>();
+		List<ItemRef> refs = new ArrayList<>();
+		Set<Integer> ids = new TreeSet<>();
 		Query query;
 		if (n == null)
 			n = 1;
@@ -1574,14 +1629,14 @@ public class ItemRestServiceImpl implements IItemRestService {
 		try {
 			boolean moreResults = true;
 			while (moreResults && ids.size() < PAGE_SIZE) {
-				String where = " where rx:sys_contentid >" + n.toString();
+				String where = " where rx:sys_contentid >" + n;
 				if (w.length() > 0) {
 					where += " and " + w + " ";
 				}
 				if (path != null && path.length() > 1 && path.startsWith("/")) {
 					where += " and jcr:path like '" + path + "%" + "'";
 				}
-				log.debug("Starting query " + q + where);
+				log.debug("Starting query {} {}" , q , where);
 				query = contentMgr.createQuery(q + where
 						+ " order by rx:sys_contentid", Query.SQL);
 				QueryResult qresults = contentMgr.executeQuery(query,
@@ -1594,7 +1649,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 					Row row = rows.nextRow();
 					String contentid = row.getValue("rx:sys_contentid")
 					.getString();
-					int id = Integer.valueOf(contentid);
+					int id = Integer.parseInt(contentid);
 					ids.add(id);
 					n = id;
 				}
@@ -1614,8 +1669,6 @@ public class ItemRestServiceImpl implements IItemRestService {
 				refs.add(ref);
 			}
 			resultPage.setItemRefs(refs);
-		} catch (InvalidQueryException e) {
-			log.error(e,e);
 		} catch (RepositoryException e) {
 			log.error(e,e);
 		}
@@ -1666,7 +1719,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 	 * @throws ItemRestNotModifiedException 
 	 */
 	private void updateFields(Item item, PSCoreItem psItem)
-	throws FileNotFoundException, IOException, ItemRestException, ItemRestNotModifiedException {
+	throws IOException, ItemRestException, ItemRestNotModifiedException {
 		boolean titleFieldSet = false;
 		if (item.getFields() != null) {
 			for (Field field : item.getFields()) {
@@ -1676,8 +1729,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 						titleFieldSet = true;
 					updateFieldValue(field, psField);
 				} else {
-					log.debug("Cannot find field " + field.getName()
-							+ " Ignoring");
+					log.debug("Cannot find field {} Ignoring", field.getName());
 				}
 			}
 
@@ -1699,17 +1751,15 @@ public class ItemRestServiceImpl implements IItemRestService {
 	 *            Field
 	 * @param psField
 	 *            PSItemField
-	 * @throws IOException
-	 * @throws FileNotFoundException
 	 * @throws ItemRestException
 	 * @throws ItemRestNotModifiedException 
 	 */
 	private void updateFieldValue(Field field, PSItemField psField)
-	throws FileNotFoundException, IOException, ItemRestException, ItemRestNotModifiedException {
+	throws  ItemRestException, ItemRestNotModifiedException {
 
 	psField.clearValues();
 
-		log.debug("updating field " + field.getName());
+		log.debug("updating field {}" , field.getName());
 
 		if (field.getValues() != null) {
 			for (Value value : field.getValues()) {
@@ -1749,7 +1799,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 		IPSFieldValue oldValue = psField.getValue();
 		
 		String dataType = m_fieldMeta.getFieldDef().getDataType();
-		log.debug("Field "+psField.getName()+"DataType is "+dataType);
+		log.debug("Field {} DataType is {}",psField.getName(),dataType);
 		if (m_fieldMeta.isBinary())
 		{
 			if (value instanceof FileValue) {
@@ -1774,7 +1824,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 					}
 					
 					if(ref.isAbsolute()){
-						log.debug("Using file "+ binValue.getHref());
+						log.debug("Using file {}", binValue.getHref());
 						File file = new File(binValue.getHref());
 
 							if (file.exists()) {
@@ -1794,57 +1844,48 @@ public class ItemRestServiceImpl implements IItemRestService {
 						HTTPProxyClientConfig proxy = new HTTPProxyClientConfig();
 						
 						if(!proxy.getProxyServer().equals("")){
-							log.debug("Setting Proxy server to " + proxy.getProxyServer()+ ":" + proxy.getProxyPort());
+							log.debug("Setting Proxy server to {}:{}"  ,proxy.getProxyServer(), proxy.getProxyPort());
 							client.getHostConfiguration().setProxy(proxy.getProxyServer(), Integer.parseInt(proxy.getProxyPort()));
 						}
 						client.getParams().setConnectionManagerTimeout(2000);
-					
-					
 						
 						GetMethod get=null;
 						PSPurgableTempFile tmp=null;
 						try{
 	
 							get = new GetMethod(ref.toURL().toString());
-							
-							//Add the modification check headers if we have valid params.
-//							if(binValue.getETag()!=null && !binValue.getETag().trim().equals("")){
-//								get.addRequestHeader(HTTP_IFNONEMATCH, binValue.getETag());
-//							}
-//							
-//							if(binValue.getLastModified()!=null && !binValue.getLastModified().trim().equals("")){
-//								get.addRequestHeader(HTTP_IFMODIFIED,binValue.getLastModified());
-//							}
-							
+
    						   int  code = client.executeMethod(get);
 
 					      if(code != HttpStatus.SC_OK) {
-					        log.error("Unable to fetch remote resource, status code: " + code);
+					        log.error("Unable to fetch remote resource, status code: {}" , code);
 					        throw new ItemRestException("Error processing " + binValue.getHref() + " HTTP request failed.");
 					      }
 
 					      tmp = new PSPurgableTempFile("pso", null, null);
-					      FileOutputStream out = new FileOutputStream((File)tmp);
-					      
-					        byte[] buffer = new byte[1024];
-							int count = -1;
-							MessageDigest md = MessageDigest.getInstance("MD5");
-							DigestInputStream in = new DigestInputStream(get.getResponseBodyAsStream(),md);
-							
-							while ((count = in.read(buffer)) != -1) {
-								out.write(buffer, 0, count);
-							}
-							out.flush();
-							out.close();
-							in.close();
+					      MessageDigest md = MessageDigest.getInstance("SHA-256");
+					      byte[] buffer = new byte[1024];
+					      int count = -1;
+					      try(FileOutputStream out = new FileOutputStream((File) tmp)) {
+
+
+							  try(DigestInputStream in = new DigestInputStream(get.getResponseBodyAsStream(), md)) {
+
+								  while ((count = in.read(buffer)) != -1) {
+									  out.write(buffer, 0, count);
+								  }
+								  out.flush();
+							  }
+						  }
+
 							
 							//Now compare the digest to the version in the system already. 
 							byte[] new_md5 =  md.digest();
-							log.debug("New Item MD5 Checksum is " + new_md5);
+							log.debug("New Item MD5 Checksum is {}" , new_md5);
 							byte[] old_md5;						
-							//newValue = new PSPurgableFileValue(tmp);					
+							//newValue = new PSPurgableFileValue(tmp);
 
-							
+
 							if(oldValue!=null){
 								PSPurgableTempFile old_t=null;
 								if(oldValue instanceof PSBinaryValue){
@@ -1854,9 +1895,13 @@ public class ItemRestServiceImpl implements IItemRestService {
 								
 							//Only need to compare checksums if the file size is the same;
 								md.reset();
-								in = new DigestInputStream(new FileInputStream(old_t),md);
-								while ((count = in.read(buffer)) != -1) {}
-								
+								try(DigestInputStream in = new DigestInputStream(new FileInputStream(old_t),md)) {
+									count = 0;
+									Arrays.fill(buffer, (byte) 0);
+									while (count != -1) {
+										count = in.read(buffer);
+									}
+								}
 								old_md5 = md.digest();
 								log.debug("Existing item MD5 Checksum = " +  old_md5);		
 								if(Arrays.equals(old_md5,new_md5)){
@@ -1905,7 +1950,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 						== PSItemFieldMeta.DATATYPE_NUMERIC)){
 			newValue = new PSTextValue(value.getStringValue());
 		} else if (m_fieldMeta.getBackendDataType() == PSItemFieldMeta.DATATYPE_DATE) {
-			if(((DateValue)value) != null)
+			if((value) != null)
 				newValue = new PSDateValue( ((DateValue)value).getDate()); 
 		}
 
@@ -1928,10 +1973,10 @@ public class ItemRestServiceImpl implements IItemRestService {
 	@Consumes("text/xml")
 	public Item updateItem(@PathParam("id") int id, Item item) {
 		initServices();
-		log.debug("Id referenced from path is " + id);
+		log.debug("Id referenced from path is {}" ,id);
 		if (item.getContentId() == null) {
 			item.setContentId(id);
-		} else if (item.getContentId().intValue() != id) {
+		} else if (item.getContentId() != id) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, "Content id from path different than content id specified in item");
 			return item;
 		}
@@ -1954,7 +1999,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 		item.setContentId(id);
 		try {
 			PSRequest req = (PSRequest) PSRequestInfo
-			.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+			.getRequestInfo(KEY_PSREQUEST);
 
 			IPSRequestContext ctx = new PSRequestContext(req);
 			String userName = ctx.getUserContextInformation("User/Name", "")
@@ -1962,19 +2007,19 @@ public class ItemRestServiceImpl implements IItemRestService {
 
 			String session = req.getServerRequest().getUserSession().getId();
 
-			log.debug("Found user " + userName);
-			log.debug("Found session " + session);
+			log.debug("Found user {}" ,userName);
+			log.debug("Found session {}" , session);
 
-			log.debug("Deleting item " + id);
+			log.debug("Deleting item {}" , id);
 			// convert content id to guids, revision -1 should enforce
 			// current version of requests.
 			IPSGuid guid = gmgr.makeGuid(new PSLocator(id, -1));
 			List<IPSGuid> guids = Collections.singletonList(guid);
 			Item currentItem = getItem(id);
-			boolean requireCheckout = currentItem.getContentType().equals(
-			"Folder") ? false : true;
+			boolean requireCheckout = !currentItem.getContentType().equals(
+					"Folder");
 			if (currentItem.getErrors() != null
-					&& currentItem.getErrors().size() > 0) {
+					&& !currentItem.getErrors().isEmpty()) {
 				item.setErrors(currentItem.getErrors());
 			} else {
 
@@ -2003,22 +2048,11 @@ public class ItemRestServiceImpl implements IItemRestService {
 
 			}
 		} catch (PSDataExtractionException e) {
-			// TODO Auto-generated catch block
 			log.error("Cannot Purge item", e);
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
 		} catch (PSUserNotMemberOfCommunityException e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
 			log.debug("Current user is not in community of item, ", e);
-		} catch (PSErrorsException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error(e,e);
-		} catch (PSErrorResultsException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error(e,e);
-		} catch (PSErrorException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error(e,e);
-
 		} catch (Exception e) {
 			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
 			log.error(e,e);
@@ -2056,12 +2090,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 			String body, @QueryParam("debug") boolean debug,
 			@QueryParam("param") String param) {
 		initServices();
-		log.debug("Import template is " + templateName);
-		/*
-		 * PSRequest req2 = (PSRequest) PSRequestInfo
-		 * .getRequestInfo(PSRequestInfo.KEY_PSREQUEST); HttpServletRequest req
-		 * = req2.getServletRequest();
-		 */
+		log.debug("Import template is {}" , templateName);
+
 		Items items = new Items();
 		IPSAssemblyItem asmItem = new PSAssemblyWorkItem();
 		Items output = null;
@@ -2071,7 +2101,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			IPSAssemblyTemplate template = aService
 			.findTemplateByName(templateName);
 
-			Map<String, Object> bindings = new HashMap<String, Object>();
+			Map<String, Object> bindings = new HashMap<>();
 
 			asmItem.setParameterValue("sys_itemfilter", "preview");
 			asmItem.setParameterValue("sys_template",
@@ -2081,7 +2111,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			asmItem.setId(guid);
 			asmItem.setFilter(filter.findFilterByName("preview"));
 			
-			log.debug("Import Body is " + body);
+			log.debug("Import Body is: {} " , body);
 			
 			bindings.put("$importbody", body);
 			bindings.put("$importparam", param);
@@ -2092,8 +2122,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			List<IPSAssemblyResult> asmResult = aService.assemble(Collections
 					.singletonList(asmItem));
 			log.debug("Got assembly Result");
-			// Item output =
-			// ItemServiceHelper.getItemFromXml(asmResult.get(0).getResultStream());
+
 
 			InputStream is = asmResult.get(0).getResultStream();
 			BufferedReader reader = new BufferedReader(
@@ -2101,7 +2130,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
+				sb.append(line).append("\n");
 			}
 			is.close();
 			assemblyResult = sb.toString();
@@ -2277,7 +2306,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			@PathParam("fieldname") String field) {
 		initServices();
 
-		log.debug("Getting file item id=" + id + " field=" + field);
+		log.debug("Getting file item id={} field={}", id , field);
 		PSComponentSummary summary = summ.loadComponentSummary(id);
 		PSLocator head = summary.getHeadLocator();
 		return getFile(head.getId(), head.getRevision(), field);
@@ -2290,7 +2319,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			@PathParam("rev") int revision, @PathParam("fieldname") String field) {
 		initServices();
 
-		log.debug("Getting file item id=" + id + " field=" + field);
+		log.debug("Getting file item id={} field={}" ,id, field);
 
 		PSLocator head = new PSLocator(id, revision);
 		List<IPSGuid> guids = Collections.singletonList(gmgr.makeGuid(head));
@@ -2302,9 +2331,9 @@ public class ItemRestServiceImpl implements IItemRestService {
 			node = contentMgr.findItemsByGUID(guids, null).get(0);
 			Property prop = node.getProperty("rx:" + field);
 			mime_prop = node.getProperty("rx:" + field + "_type").getString();
-			log.debug("mime type is " + mime_prop);
+			log.debug("mime type is {}" , mime_prop);
 			if (prop.getValue()!=null){
-				log.debug("Value class is " + prop.getValue().getClass());
+				log.debug("Value class is {}" ,prop.getValue().getClass());
 				is = prop.getStream();
 			}
 		} catch (RepositoryException e) {
@@ -2326,7 +2355,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 	public void switchCommunity(int communityid)
 	throws PSUserNotMemberOfCommunityException {
 		PSRequest req = (PSRequest) PSRequestInfo
-		.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+		.getRequestInfo(KEY_PSREQUEST);
 
 		PSUserSession pssess = req.getUserSession();
 		Object curComm = pssess
@@ -2343,30 +2372,30 @@ public class ItemRestServiceImpl implements IItemRestService {
 	private int findNavIdForFolderPath(String path) throws ItemRestException {
 		PSRelationshipFilter filter = new PSRelationshipFilter();
 		PSRequest req = (PSRequest) PSRequestInfo
-		.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+		.getRequestInfo(KEY_PSREQUEST);
 		PSServerFolderProcessor folderproc =  PSServerFolderProcessor.getInstance();
 		int folderid=-1;
 	    int navonId = -1;
 		try {
 			folderid = folderproc.getIdByPath(path);
 		} catch (PSCmsException e) {
-			log.error("cannot get folderid for path "+path,e);
+			log.error("cannot get folderid for path {}", path,e);
 			throw new ItemRestException("cannot get folderid for path "+path);
 		}
 		if (folderid>0) {
 	      filter.setOwner(new PSLocator(folderid, 0)); 
 	      filter.setName(PSRelationshipFilter.FILTER_NAME_FOLDER_CONTENT);
-	      Set<Long> typeIds = new HashSet<Long>();
+	      Set<Long> typeIds = new HashSet<>();
 	      PSNavConfig navConfig = PSNavConfig.getInstance(); 
-	      typeIds.add(new Long(navConfig.getNavonType().getUUID()));
-	      typeIds.add(new Long(navConfig.getNavTreeType().getUUID())); 
+	      typeIds.add((long) navConfig.getNavonType().getUUID());
+	      typeIds.add((long) navConfig.getNavTreeType().getUUID());
 	      filter.setDependentContentTypeIds(typeIds);
 	      
 	      List<PSRelationship> rels;
 		try {
 			rels = system.loadRelationships(filter);
 		} catch (PSErrorException e) {
-			log.error("Cannot get folder relationships for path "+path,e);
+			log.error("Cannot get folder relationships for path {} Error:{}",path,e.getMessage());
 			throw new ItemRestException("Cannot get folder relationships for path "+path);
 		}
 	 
@@ -2392,26 +2421,26 @@ public class ItemRestServiceImpl implements IItemRestService {
 
 		log.debug("Returned From InitServices");
 		
-		log.debug("Feed Content Type is " + content_type);
+		log.debug("Feed Content Type is {}" , content_type);
 
 		PagedResult ret = new PagedResult();
-		List<ItemRef> refs = new ArrayList<ItemRef>();
+		List<ItemRef> refs = new ArrayList<>();
 		int lastId = 0;
 		
 		ret= jcrSearch("SELECT rx:sys_contentid FROM rx:" + content_type, 0, null);		
 	
 		refs = ret.getItemRefs();
 
-		log.debug("Found " + refs.size() + content_type + " Items...");
+		log.debug("Found {} {} Items...", refs.size() , content_type );
 		
-			while(refs.size()>0){
+			while(!refs.isEmpty()){
 				
 				for(int i = 0;i<refs.size();i++){
 					try{
 						lastId = refs.get(i).getContentId();
-						log.debug("Updating content_id " + lastId);
+						log.debug("Updating content_id {}" , lastId);
 						updateItem(false,lastId,0);
-						log.debug("content_id " + lastId + " updated.");
+						log.debug("content_id {} updated.", lastId);
 					}catch(Exception ex){
 						log.debug(ex,ex);
 					}
@@ -2442,7 +2471,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 	public Response updateItem(@QueryParam("debug")boolean debug, @QueryParam("sys_contentid")int sys_contentid, @QueryParam("sys_folderid")int sys_folderid) {
 		initServices();
 
-		log.debug("Feed sys_contentid is " + sys_contentid);
+		log.debug("Feed sys_contentid is {}", sys_contentid);
 	
 		// Make sure that the item is checked in
 		try{
@@ -2483,12 +2512,12 @@ public class ItemRestServiceImpl implements IItemRestService {
 			Field targetEditTransition = feedDef.getField("targetEditTransition");
 			
 			if (feedFormat == null) {	//If allowed, it's archived. So don't process, but don't add to error list when caught.			
-				log.debug("FeedFormat is not defined for content ID " + sys_contentid);
+				log.debug("FeedFormat is not defined for content ID {}" ,sys_contentid);
 				throw new ArchivedException("FeedFormat is not defined for archived feed with content ID " + sys_contentid);
 			}	
 			IPSAssemblyTemplate template = aService.findTemplateByName(feedFormat.getStringValue());
 
-			Map<String, Object> bindings = new HashMap<String, Object>();
+			Map<String, Object> bindings = new HashMap<>();
 
 			asmItem.setParameterValue("sys_itemfilter", "preview");
 			asmItem.setParameterValue("sys_template",
@@ -2624,14 +2653,13 @@ public class ItemRestServiceImpl implements IItemRestService {
 
 			}
 	
-		} catch (Exception e) {
-			if (e instanceof ArchivedException )			
-				log.debug(e.getMessage());
-			else {
+		} catch (ArchivedException e) {
+			log.debug(e.getMessage());
+		}catch(Exception e) {
 				items.addError(ErrorCode.ASSEMBLY_ERROR, "Assembly Error" + assemblyResult, e);
-				log.debug("Assembly Error" + assemblyResult,e);
-			}
+				log.debug("Assembly Error {} ", assemblyResult,e);
 		}
+
 		
 	// send an email when there are updates or errors
 		
@@ -2643,7 +2671,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 		
 		if (items.hasErrors()) {
 			String str = null;
-			StringBuffer sb = new StringBuffer("Errors found in Content ID: " + sys_contentid);
+			StringBuilder sb = new StringBuilder("Errors found in Content ID: ").append(sys_contentid);
 			sb.append("\n Error is: ");
 			List <Error>mailErrors = items.getErrors();
 			int i = 0;
@@ -2705,16 +2733,17 @@ public class ItemRestServiceImpl implements IItemRestService {
 	 * @param esubject subject
 	 * @param ebody body
 	 * @throws IOException
-	 * @throws FileNotFoundException
 	 * @throws ItemRestException
 	 * @throws ItemRestNotModifiedException 
 	 */
 	public void sendEmailNotification(String esubject, String ebody) {
 		
 		Properties props = new Properties();
-		try {
-		String propFile = PSServer.getRxFile(PSServer.BASE_CONFIG_DIR + "/Workflow/" + EMAIL_NOTIFICATION_PROPS);		
-		props.load(new FileInputStream(propFile));	
+		String propFile = PSServer.getRxFile(PSServer.BASE_CONFIG_DIR + "/Workflow/" + EMAIL_NOTIFICATION_PROPS);
+
+		try (FileInputStream fis = new FileInputStream(propFile)){
+
+		props.load(fis);
 	     
 		String from_line 	= props.getProperty("from_line");
 		if (from_line.equals(""))
@@ -2729,7 +2758,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 		if (bcc_line.equals(""))
 			bcc_line = null;
 		
-		StringBuffer body_buffer = new StringBuffer("");
+		StringBuilder body_buffer = new StringBuilder();
 		String email_body = props.getProperty("body");
 		if(!email_body.equals(""))
 			body_buffer.append(email_body);
@@ -2740,7 +2769,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 		body_buffer.append(body_ps);
 		String body = new String(body_buffer);
 		
-		StringBuffer subject_buffer = new StringBuffer("");
+		StringBuilder subject_buffer = new StringBuilder();
 		String email_subject = props.getProperty("subject");
 		if(!email_subject.equals(""))
 			subject_buffer.append(email_subject);

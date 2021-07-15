@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -90,7 +90,7 @@ var globalVar;
     	getTabLockData(function(lockinfo){
     		var user = lockinfo.userName;
 
-    		if(typeof user !== 'undefined' && user !== null && typeof $.PercNavigationManager.getUserName() != 'undefined' && user !== $.PercNavigationManager.getUserName()) {
+    		if(typeof user !== 'undefined' &&  user !== null  && user !== "" && typeof $.PercNavigationManager.getUserName() != 'undefined' && user !== $.PercNavigationManager.getUserName()) {
     			confirmDialog(I18N.message( "perc.ui.category.controller@Category tab is locked" ), user + " " + I18N.message( "perc.ui.category.controller@User working on categories" ), function(action){
 
     				if(action == "cancel") {

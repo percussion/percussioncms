@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -631,7 +631,7 @@ public class PSMailMessage implements IPSMailErrors
    private String         m_charEncoding = PSCharSets.rxJavaEnc();
 
    // the body can be in one of two formats, a string or an input stream
-   private StringBuffer   m_bodyBuf = new StringBuffer();
+   private StringBuilder   m_bodyBuf = new StringBuilder();
    private InputStream   m_bodyIn = null;
 }
 

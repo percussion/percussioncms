@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,6 +33,7 @@ import com.percussion.share.data.PSMapWrapper;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.data.PSSite;
@@ -144,10 +145,12 @@ public class PSSiteDataRestService
     @Path(SAVE_PATH)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSite save(PSSite site)
+    public PSSite save(PSSite site) throws PSParametersValidationException
     {
         try {
             return siteDataService.save(site);
+        } catch (PSParametersValidationException pve){
+            throw pve;
         } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);

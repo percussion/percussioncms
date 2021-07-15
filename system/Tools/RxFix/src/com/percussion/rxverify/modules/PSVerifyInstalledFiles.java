@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,9 @@ package com.percussion.rxverify.modules;
 
 import com.percussion.rxverify.data.PSFileInfo;
 import com.percussion.rxverify.data.PSInstallation;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,9 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author dougrand
@@ -64,7 +64,7 @@ public class PSVerifyInstalledFiles implements IPSVerify
     * that the special category "IGNORED" means that matching files are not
     * placed in the bill of materials.
     */
-   private static final Object RULES[] =
+   private static final Object[] RULES =
    {
          Pattern.compile("/_.*"), "IGNORE", // Installer detritus
          // Binaries and libraries are platform specific 
@@ -117,6 +117,7 @@ public class PSVerifyInstalledFiles implements IPSVerify
     * 
     * @see com.percussion.rxverify.IPSVerify#verify(java.util.Map, java.io.File)
     */
+   @SuppressFBWarnings({"PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN"})
    @SuppressWarnings("unchecked")
    public void verify(File rxdir, File originalRxDir,
          PSInstallation installation)
@@ -137,7 +138,7 @@ public class PSVerifyInstalledFiles implements IPSVerify
       generate(rxdir, existing);
 
       // Compare the two maps and print out information
-      l.info("Verify contents of installation " + rxdir);
+      l.info("Verify contents of installation {}" , rxdir);
 
       Iterator iter = installation.getFileCategories();
       while (iter.hasNext())
@@ -145,64 +146,52 @@ public class PSVerifyInstalledFiles implements IPSVerify
          String category = (String) iter.next();
          List<String> bomelements = installation.getFiles(category);
          List<String> realelements = existing.getFiles(category);
-         Set<String> bomset = new HashSet<String>(bomelements);
+         Set<String> bomset = new HashSet<>(bomelements);
          Set<String> realset = null;
-         Map<String,PSFileInfo> realmap = new HashMap<String,PSFileInfo>();
+         Map<String,PSFileInfo> realmap = new HashMap<>();
 
          if (realelements != null)
          {
-            realset = new HashSet<String>(realelements);
-            Iterator<String> eiter = realset.iterator();
-            while (eiter.hasNext())
-            {
+            realset = new HashSet<>(realelements);
+            for (String s : realset) {
                //FB: BC_IMPOSSIBLE_CAST NC 1-17-16
-              File f = new File(eiter.next());
-               PSFileInfo file = new PSFileInfo(f,f.getParentFile().getPath()) ;
+               File f = new File(s);
+               PSFileInfo file = new PSFileInfo(f, f.getParentFile().getPath());
                realmap.put(file.getPath(), file);
             }
          }
          else
          {
-            realset = new HashSet<String>();
+            realset = new HashSet<>();
          }
 
-         if (realelements == null || realelements.size() == 0)
+         if (realelements == null || realelements.isEmpty())
          {
-            l.warn(category + " missing");
+            l.warn( "{} missing", category );
          }
          else if (bomset.equals(realset))
          {
-            l.info(category + " installed");
+            l.info("{} installed",category );
          }
          else
          {
             bomset.removeAll(realset);
-            l.warn(category + " has missing or non-matching files");
-            Iterator<String> missing = bomset.iterator();
-            while (missing.hasNext())
-            {
-               //FB: BC_IMPOSSIBLE_CAST NC 1-17-16
-               File f = new File(missing.next());
-               PSFileInfo missingelement = new PSFileInfo(f,f.getParentFile().getPath()) ;
-  
+            l.warn("{} has missing or non-matching files",category );
+            for (String s : bomset) {
+               File f = new File(s);
+               PSFileInfo missingelement = new PSFileInfo(f, f.getParentFile().getPath());
+
                String path = missingelement.getPath();
-               PSFileInfo realelement = 
-                  realmap.get(path);
-               if (realelement == null)
-               {
-                  l.debug("Missing file " + path);
-               } //FB: EC_BAD_ARRAY_COMPARE NC 1-17-16
-               else if (! Arrays.equals(realelement.getDigest(), missingelement.getDigest()))
-               {
-                  l.debug("Modified file " + path);
-               }
-               else if (realelement.getSize() != missingelement.getSize())
-               {
-                  l.debug("Size does not match " + path);
-               }
-               else
-               {
-                  l.debug("Error " + path);
+               PSFileInfo realelement =
+                       realmap.get(path);
+               if (realelement == null) {
+                  l.debug("Missing file {}", path);
+               } else if (!Arrays.equals(realelement.getDigest(), missingelement.getDigest())) {
+                  l.debug("Modified file {}", path);
+               } else if (realelement.getSize() != missingelement.getSize()) {
+                  l.debug("Size does not match {}", path);
+               } else {
+                  l.debug("Error {}", path);
                }
             }
          }
@@ -233,33 +222,22 @@ public class PSVerifyInstalledFiles implements IPSVerify
    /**
     * Does the actual generation after {@link #generate(File, PSInstallation)}
     * sets the {@link #m_rxdir} instance variable
-    * @throws IOException
-    * @throws DigestException
-    * @throws NoSuchAlgorithmException
-    * @see com.percussion.rxverify.modules.IPSVerify#generate(java.io.File,
-    *      com.percussion.rxverify.PSInstallation)
     */
    private void generate2(File rxdir, PSInstallation installation) 
    throws NoSuchAlgorithmException, DigestException, IOException
    {
       // Recurse into sub-directories
-      File dirs[] = rxdir.listFiles();
+      File[] dirs = rxdir.listFiles();
 
-      for (int i = 0; i < dirs.length; i++)
-      {
-         File file = dirs[i];
-         if (file.isDirectory())
-         {
+      for (File file : dirs) {
+         if (file.isDirectory()) {
             generate2(file, installation);
-         }
-         else
-         {
+         } else {
             String rpath = relPath(file);
             String category = getCategory(rpath);
-            if (category.equals("IGNORE") == false)
-            {
-               PSFileInfo fi = 
-                  new PSFileInfo(file, rpath);
+            if (!category.equals("IGNORE")) {
+               PSFileInfo fi =
+                       new PSFileInfo(file, rpath);
                installation.addFile(category, fi);
             }
          }
@@ -279,7 +257,7 @@ public class PSVerifyInstalledFiles implements IPSVerify
       String absPath = file.getAbsolutePath();
       String rxAbsPath = m_rxdir.getAbsolutePath();
 
-      if (absPath.startsWith(rxAbsPath) == false)
+      if (!absPath.startsWith(rxAbsPath))
       {
          throw new IllegalArgumentException(
                "The passed file not in the rx directory " + absPath);

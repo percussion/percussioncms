@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,16 +26,14 @@ package com.percussion.ant.install;
 
 import com.percussion.install.PSLogger;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-
-import javax.xml.parsers.DocumentBuilder;
-
 import org.apache.tools.ant.taskdefs.condition.Condition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import java.io.File;
 
 /**
  * This class is used to determine if a particular element exists in the xml
@@ -291,7 +289,7 @@ public class PSXMLElementCondition extends PSAction implements Condition
     */
    private static String getElementData(Node node)
    {
-      StringBuffer ret = new StringBuffer();
+      StringBuilder ret = new StringBuilder();
       Node text;
 
       if (node != null)

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,6 +52,10 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.util.PSBijectionMap;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.InputStream;
@@ -60,11 +64,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * Class to handle packaging and deploying a Locale definintion.
@@ -653,7 +652,7 @@ public class PSLocaleDefDependencyHandler extends PSDependencyHandler
                   
                   // try to parse the tuid for an id.  If we don't get one, keep 
                   // checking other types
-                  StringBuffer suffix = new StringBuffer();
+                  StringBuilder suffix = new StringBuilder();
                   String[] ids = parseTuIds(key, tmxType, suffix);
                   if (ids == null)
                      continue;
@@ -772,7 +771,7 @@ public class PSLocaleDefDependencyHandler extends PSDependencyHandler
     * parsed from the key.
     */
    private String[] parseTuIds(String tuid, PSTmxType tmxType, 
-      StringBuffer suffix)
+      StringBuilder suffix)
    {
       String[] tuIds = null;
       

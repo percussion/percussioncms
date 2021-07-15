@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -164,7 +164,7 @@ class VerifyMD5 implements HashVerifier
      */
     private static String hex(byte[] buf)
     {
-	StringBuffer str = new StringBuffer(buf.length*3);
+	StringBuilder str = new StringBuilder(buf.length*3);
 	for (int idx=0; idx<buf.length; idx++)
 	{
 	    str.append(Character.forDigit((buf[idx] >>> 4) & 15, 16));

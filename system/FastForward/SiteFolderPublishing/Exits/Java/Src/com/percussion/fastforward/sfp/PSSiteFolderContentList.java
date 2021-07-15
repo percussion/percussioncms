@@ -217,7 +217,7 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
       String folderPath;
       if (appendFolderName)
       {
-         StringBuffer folderPathBuf = new StringBuffer();
+         StringBuilder folderPathBuf = new StringBuilder();
          folderPathBuf.append(parentFolderPath);
          folderPathBuf.append(
             PSSite.getFolderFileName(folder.getCurrentLocator()));

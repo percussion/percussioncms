@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.HTTPClient;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.FilterInputStream;
 import java.io.IOException;
@@ -52,7 +54,8 @@ class MD5InputStream extends FilterInputStream
      * @param is the input stream over which the md5 hash is to be calculated
      * @param verifier the HashVerifier to invoke when the stream is closed
      */
-    public MD5InputStream(InputStream is, HashVerifier verifier)
+    @SuppressFBWarnings("WEAK_MESSAGE_DIGEST_MD5")
+	public MD5InputStream(InputStream is, HashVerifier verifier)
     {
 	super(is);
 	this.verifier = verifier;

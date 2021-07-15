@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -285,7 +285,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSActionMenu.class).addOrder(Order.asc("sortOrder")).list();
         } catch (Exception e) {
-            ms_log.warn("An error occurred while listing action menus:" + e.getMessage());
+            ms_log.warn("An error occurred while listing action menus: {}" , e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -297,7 +297,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSActionMenu.class).add(Restrictions.ilike("type",type)).addOrder(Order.asc("sortOrder")).list();
         }catch(Exception e) {
-            ms_log.warn("An error occurred while listing action menus:" + e.getMessage());
+            ms_log.warn("An error occurred while listing action menus by type: {}" , e.getMessage());
             return new ArrayList<>();
         }
    }
@@ -308,7 +308,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSUiContext.class).list();
         }catch(Exception e) {
-            ms_log.warn("An error occurred while listing UI Contexts:" + e.getMessage());
+            ms_log.warn("An error occurred while listing UI Contexts: {}" ,e.getMessage());
             return new ArrayList<>();
         }
    }

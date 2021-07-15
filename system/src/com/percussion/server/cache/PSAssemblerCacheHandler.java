@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -51,6 +51,10 @@ import com.percussion.server.PSUserSessionManager;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,11 +65,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Handles the caching of Content Assembler pages.  Will only cache pages with
@@ -824,7 +823,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
          keys[KEY_SESSIONID_INDEX] = NO_SESSION_ID;
 
       // now build the composite key
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       // add protocol
       buf.append(request.getServletRequest().getScheme());
@@ -975,7 +974,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
     */
    private String getRequestPage(String url)
    {
-      StringBuffer requestPage = new StringBuffer();
+      StringBuilder requestPage = new StringBuilder();
       boolean gotPage = false;
       if (url.trim().length() > 0)
       {

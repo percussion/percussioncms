@@ -17,21 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.managednav;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
@@ -44,9 +34,15 @@ import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-import com.percussion.fastforward.managednav.PSNavon;
-import com.percussion.fastforward.managednav.PSNavonType;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Adds an attribute to the &lt;Navon&gt; nodes in a Managed Navigation tree.
@@ -446,7 +442,7 @@ public class PSNavAddAttribute extends PSDefaultExtension
     */
    private static String logArray(Object[] array, String title)
    {
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("logging ");
       sb.append(title);
       if (array == null)

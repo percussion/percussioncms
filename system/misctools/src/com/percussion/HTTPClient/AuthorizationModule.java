@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,7 @@ package com.percussion.HTTPClient;
 
 import java.io.IOException;
 import java.net.ProtocolException;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -34,6 +34,7 @@ import java.util.Hashtable;
  * request returns with an appropriate status (401 or 407) then the
  * necessary info is sought from the AuthenticationInfo class.
  *
+ * @deprecated As of 8.0.0 - use Commons HTTP client instead
  * @version	0.3-3  06/05/2001
  * @author	Ronald Tschalär
  */
@@ -42,11 +43,11 @@ class AuthorizationModule implements HTTPClientModule
 {
     /** This holds the current Proxy-Authorization-Info for each
         HTTPConnection */
-    private static Hashtable proxy_cntxt_list = new Hashtable();
+    private static ConcurrentHashMap proxy_cntxt_list = new ConcurrentHashMap();
 
     /** a list of deferred authorization retries (used with
 	Response.retryRequest()) */
-    private static Hashtable deferred_auth_list = new Hashtable();
+    private static ConcurrentHashMap deferred_auth_list = new ConcurrentHashMap();
 
     /** counters for challenge and auth-info lists */
     private int	auth_lst_idx,
@@ -147,7 +148,7 @@ class AuthorizationModule implements HTTPClientModule
 		    break;
 		}
 	    }
-	    Hashtable proxy_auth_list = Util.getList(proxy_cntxt_list,
+	    ConcurrentHashMap proxy_auth_list = Util.getList(proxy_cntxt_list,
 						     con.getContext());
 	    guess = (AuthorizationInfo) proxy_auth_list.get(
 				    con.getProxyHost()+":"+con.getProxyPort());

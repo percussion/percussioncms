@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -114,7 +114,7 @@
             {
                 if (menu.css('display') === 'none')
                 {
-                    showMenu(true);
+                    showMenu(true,event.pageX,event.pageY);
                 }
                 else
                 {
@@ -128,14 +128,12 @@
          * Makes the menu visible/invisible.
          * @param boolean flag If true, makes the menu visible
          */
-        function showMenu(flag)
+        function showMenu(flag,X,Y)
         {
             if (flag)
             {
-                var menuX = btn[0].getBoundingClientRect().left + btn[0].getBoundingClientRect().width + $(window)['scrollLeft']()-menu.outerWidth(true);
-
-                //var menuX = btn.position().left + btn.outerWidth() - menu.outerWidth() - 1;
-                var menuY = btn.position().top + btn.outerHeight() + 9;
+                var menuX = X  - menu.outerWidth(true);
+                var menuY = Y + 10;
                 menu
                     .css("top", menuY)
                     .css("left", menuX)
@@ -199,15 +197,7 @@
 
             // In this case, "this" represents the menu entry
             var state_enabled = evt.target.classList.contains("ui-enabled");
-            if (entriesListenedLeft === 1 && entriesDisabled === menuEntries.length - 1)
-            {
-                // If there only 1 entry left to trigger the event, and the previous ones were
-                // all disabled, then its states determines the state of the button
-                enableButton(state_enabled);
-                entriesListenedLeft = menuEntries.length;
-                entriesDisabled = 0;
-            }
-            else if (entriesListenedLeft === 1 && entriesDisabled < menuEntries.length - 1)
+            if (entriesListenedLeft === 1 && entriesDisabled < menuEntries.length )
             {
                 enableButton(true);
                 entriesListenedLeft = menuEntries.length;

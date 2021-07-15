@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -150,13 +150,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetContentFinder.IS_MATCH_BY_NAME;
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
@@ -914,7 +914,7 @@ public class PSPageUtils extends PSJexlUtilBase
     public Map<String, String> parseSoProMetadata(String metadata)
     {
         JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(metadata);
-        Map<String, String> map = new Hashtable<>();
+        Map<String, String> map = new ConcurrentHashMap<>();
 
         for (Object key : jsonObject.keySet())
         {

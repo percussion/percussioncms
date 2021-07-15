@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@
 package com.percussion.log;
 
 
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The PSLogMultipleHandlers class is used to log requests matching the
@@ -69,7 +70,7 @@ public class PSLogMultipleHandlers extends PSLogInformation {
     *
     * @param   info     the information to be reported
     */
-   public PSLogMultipleHandlers(int applId, java.util.Hashtable info)
+   public PSLogMultipleHandlers(int applId, ConcurrentHashMap info)
    {
       super(LOG_TYPE, applId);
 
@@ -96,7 +97,7 @@ public class PSLogMultipleHandlers extends PSLogInformation {
     * Get the sub-messages (type and text). A sub-message is created
     * for each piece of information reported when this object was created.
     * See the
-    * {@link #PSLogMultipleHandlers(int, java.util.Hashtable) constructor}
+    * {@link #PSLogMultipleHandlers(int, java.util.concurrent.ConcurrentHashMap) constructor}
     * for more details.
     *
     * @return  an array of sub-messages (PSLogSubMessage)

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,9 +26,8 @@
 {
     /*
      * On document ready calls the render function, editor or read only.
-     * FIXME
      */
-    $(document).ready(function(){
+    $(function(){
 
       //listens for dropdown changes and in addition to disabling unrelated inputs, will also uncheck enable option for disabled rows
       $("#perc-social-button-type").on("change",function(){

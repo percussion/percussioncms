@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -158,7 +158,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while deleting form : " + e.getLocalizedMessage());
+            log.error("Exception occurred while deleting form, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -175,7 +176,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     {
 
         if(log.isDebugEnabled()){
-            log.debug("Http Header in the service is :" + header.getRequestHeaders());
+            log.debug("Http Header in the service is : {}", header.getRequestHeaders());
         }
 
         Map<String, String[]> formFields = new HashMap<>();
@@ -200,7 +201,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 // this form was submitted by a spam bot and has the hidden field populated
                 if(key.equals("topyenoh") && param.getValue().toString().length() > 2) {
                     isSpamBot = true;
-                    log.debug("headers getRequestHeaders: " + header.getRequestHeaders());
+                    log.debug("headers getRequestHeaders: {}", header.getRequestHeaders());
                     continue;
                 }
                 else if (key.equals("topyenoh")) {
@@ -322,9 +323,9 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             if(isFormEmail){
 
                 if(emailNotifSubject==null)
-                    log.error("Form " + formName + " is configured as an email form but is missing email-subject field");
+                    log.error("Form  is configured as an email form but is missing email-subject field {}",formName);
                 if(emailNotifToVals==null)
-                    log.error("Form " + formName + " is configured as an email form but is missing perc_EmailFormTo field to send email to.");
+                    log.error("Form {} is configured as an email form but is missing perc_EmailFormTo field to send email to.", formName);
 
                 if(emailNotifSubject==null || emailNotifToVals==null){
                     log.error("Skipping form email for this form as it is not configured correctly.");
@@ -355,7 +356,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
 
             if(isSpamBot) {
-                log.error("Blocking post from " + httpServletRequest.getRemoteAddr() + ", was detected as a SPAM bot.  Consider blocking this IP in firewall rules.");
+                log.error("Blocking post from {}, was detected as a SPAM bot.  Consider blocking this IP in firewall rules.", httpServletRequest.getRemoteAddr());
                 WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                         "Post detected as a Bot.  Form submission rejected."), Response.serverError().build());
                 handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
@@ -395,13 +396,13 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     client.executeMethod( post );
                     String body = post.getResponseBodyAsString( );
 
-                    log.debug("Response Body:" + body);
+                    log.debug("Response Body: {}", body);
 
 
                     if(post.getStatusCode() >=200 &&  post.getStatusCode()  <=399){
                         success = true;
                     }else{
-                        log.error("Post to remote form service: " + processorUrl + " failed with error code:" + post.getStatusCode() + " and a response body of: " + body);
+                        log.error("Post to remote form service: {} failed with error code: {} and a response body of: {}",processorUrl, post.getStatusCode(), body);
                         log.error("Redirecting to error page...");
                     }
 
@@ -430,7 +431,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     try{
                         sendFormDataEmail(emailNotifTo, emailNotifSubject, form);
                     }catch(Exception e){
-                        log.error("Error sending form email for form: " + formName,e);
+                        log.error("Error sending form email for form: {}, Error: {}", formName,e.getMessage());
+                        log.debug(e.getMessage(), e);
                     }
 
                     handleRedirect(successRedirect, encryptExist, hostRedirect, resp);
@@ -440,7 +442,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 try {
                     formService.save(form);
                 } catch (IllegalArgumentException e) {
-                    log.error("Exception occurred while saving a form : " + e.getLocalizedMessage());
+                    log.error("Exception occurred while saving a form, Error: {}", e.getMessage());
+                    log.debug(e.getMessage(), e);
 
                     WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                             "Invalid form submitted"), Response.serverError().build());
@@ -452,7 +455,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     try{
                         sendFormDataEmail(emailNotifTo, emailNotifSubject, form);
                     }catch(Exception e){
-                        log.error("An error occurred sending the form notification email to:" + emailNotifTo + " for form " + formName,e );
+                        log.error("An error occurred sending the form notification email to: {} for form {}, Error: {}",emailNotifTo, formName,e.getMessage() );
+                        log.debug(e.getMessage(), e);
                     }
                 }
 
@@ -461,7 +465,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception ex)
         {
-            log.error("Exception occurred during form creation : " + ex.getMessage(),ex);
+            log.error("Exception occurred during form creation, Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             WebApplicationException webEx = new WebApplicationException(ex, Response.serverError().build());
             handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
         }
@@ -519,7 +524,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Cannot email form data, unexpected error: " + e.getMessage(),e);
+            log.error("Cannot email form data, unexpected error, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
     }
 
@@ -566,7 +572,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting form summaries : " + e.getLocalizedMessage());
+            log.error("Exception occurred while getting form summaries, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -601,7 +608,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting all form summaries : " + e.getLocalizedMessage());
+            log.error("Exception occurred while getting all form summaries, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -627,8 +635,9 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             forms = formService.findFormsByName(formName);
 
             if(log.isDebugEnabled()){
-                log.debug("Forms by name(" + formName + ") : " + forms.toString());
+                log.debug("Forms by name({}) : {}", formName, forms.toString());
             }
+            
 
             formService.markAsExported(forms);
 
@@ -638,7 +647,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while exporting the form : " + e.getLocalizedMessage());
+            log.error("Exception occurred while exporting the form, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -689,7 +699,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
         String version = super.getVersion();
 
-        log.info("getVersion() from PSFormRestService ..." + version);
+        log.info("getVersion() from PSFormRestService ...{}", version);
 
         return version;
     }
@@ -700,7 +710,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.debug("Nothing to do in forms service for site: " + prevSiteName);
+        log.debug("Nothing to do in forms service for site: {}", prevSiteName);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

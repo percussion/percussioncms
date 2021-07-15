@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -956,8 +956,6 @@
             var pageName = callbackData.pageName;
             if (dialogFlag)
             {
-                $.PercScheduleDialog.open(itemId, pageName);
-                $(".ui-datepicker-trigger").trigger("click");
                 $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
                 $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
                 $("#perc-schedule-dialog-cancel").trigger("click");

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,8 @@ package com.percussion.install;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.util.PSSQLStatement;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,8 +36,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-
-import org.w3c.dom.Element;
 
 /**
  * Initial release of Site Explorer did not have New Version menu item. The aim
@@ -58,6 +58,7 @@ public class PSUpgradePluginAddNewVersionToSiteExplorer implements IPSUpgradePlu
     * @param elemData data element of plugin.
     * @return <code>null</code>
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule config, Element elemData)
    {
       config.getLogStream().println(

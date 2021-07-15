@@ -76,8 +76,10 @@ jQuery.cookie = function(name, value, options) {
         // in the packed version for some reason...
         var path = options.path ? '; path=' + (options.path) : '';
         var domain = options.domain ? '; domain=' + (options.domain) : '';
+        var sameSite = options.sameSite ? ';SameSite=' + (options.sameSite) : '';
         var secure = options.secure ? '; secure' : '';
-        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+
+        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, sameSite, secure].join('');
     } else { // only name given, get cookie
         var cookieValue = null;
         if (document.cookie && document.cookie != '') {

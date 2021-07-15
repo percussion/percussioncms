@@ -17,12 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.ant.gui;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.ProjectHelper;
+import org.apache.tools.ant.helper.ProjectHelperImpl;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,15 +47,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.ProjectHelper;
-import org.apache.tools.ant.helper.ProjectHelperImpl;
 
 /**
  * Class that excepts and validates options for the rx build then builds a temp
@@ -217,8 +217,8 @@ public class PSRxBuildInput
          return;
 
       FileWriter fw = null;
-      StringBuffer buff = new StringBuffer();
-      StringBuffer propertiesBuff = new StringBuffer();
+      StringBuilder buff = new StringBuilder();
+      StringBuilder propertiesBuff = new StringBuilder();
       try
       {
 
@@ -473,13 +473,13 @@ public class PSRxBuildInput
     * Set a enviroment's variable if the value passed in is not <code>
     * null</code> or empty.
     * 
-    * @param buff the stringbuffer to use, cannot be <code>null</code>.
+    * @param buff the StringBuilder to use, cannot be <code>null</code>.
     * @param var the name of the property, cannot be <code>null</code> or
     *           empty.
     * @param value the value to assign, can be <code>null</code> or empty.
     * 
     */
-   private void setEnviromentVar(StringBuffer buff, String var, String value)
+   private void setEnviromentVar(StringBuilder buff, String var, String value)
    {
       if (buff == null)
          throw new IllegalArgumentException("Project cannot be null.");
@@ -493,14 +493,14 @@ public class PSRxBuildInput
    /**
     * Set a enviroment's variable if the value passed in is <code>true</code>.
     * 
-    * @param buff the stringbuffer to use, cannot be <code>null</code>.
+    * @param buff the StringBuilder to use, cannot be <code>null</code>.
     * @param var the name of the property, cannot be <code>null</code> or
     *           empty.
     * @param value the boolean value, the property will only be set if this is
     *           <code>true</code>
     * 
     */
-   private void setEnviromentVar(StringBuffer buff, String var, boolean value)
+   private void setEnviromentVar(StringBuilder buff, String var, boolean value)
    {
       if (value)
          setEnviromentVar(buff, var, "true");
@@ -510,13 +510,13 @@ public class PSRxBuildInput
     * Set a project's property if the value passed in is not <code>
     * null</code> or empty.
     * 
-    * @param buff the stringbuffer to use, cannot be <code>null</code>.
+    * @param buff the StringBuilder to use, cannot be <code>null</code>.
     * @param prop the name of the property, cannot be <code>null</code> or
     *           empty.
     * @param value the value to assign, can be <code>null</code> or empty.
     * 
     */
-   private void setProperty(StringBuffer buff, String prop, String value)
+   private void setProperty(StringBuilder buff, String prop, String value)
    {
       if (buff == null)
          throw new IllegalArgumentException("Project cannot be null.");
@@ -530,14 +530,14 @@ public class PSRxBuildInput
    /**
     * Set a project's property if the value passed in is <code>true</code>.
     * 
-    * @param buff the stringbuffer to use, cannot be <code>null</code>.
+    * @param buff the StringBuilder to use, cannot be <code>null</code>.
     * @param prop the name of the property, cannot be <code>null</code> or
     *           empty.
     * @param value the boolean value, the property will only be set if this is
     *           <code>true</code>
     * 
     */
-   private void setProperty(StringBuffer buff, String prop, boolean value)
+   private void setProperty(StringBuilder buff, String prop, boolean value)
    {
       if (value)
          setProperty(buff, prop, "true");

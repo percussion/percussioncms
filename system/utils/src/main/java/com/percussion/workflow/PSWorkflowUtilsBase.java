@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -747,7 +747,7 @@ public static final String ROLE_DELIMITER = ",";
         {
             return "";
         }
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         buf.append((calendar.get(Calendar.MONTH) + 1)+ "/" );
         buf.append(calendar.get(Calendar.DAY_OF_MONTH)  + "/");
         buf.append(calendar.get(Calendar.YEAR) + " ");
@@ -1388,16 +1388,16 @@ public static final String ROLE_DELIMITER = ",";
 
         // To get delimiters between the substrings, put in the first substring
         // and thereafter append delimeter + substring.
-        StringBuffer delimitedStringBuffer =
-                new StringBuffer(toStringHandleNull(iter.next(), stringForNull));
+        StringBuilder delimitedStringBuilder =
+                new StringBuilder(toStringHandleNull(iter.next(), stringForNull));
 
         while (iter.hasNext())
         {
-            delimitedStringBuffer.append(delimeter +
+            delimitedStringBuilder.append(delimeter +
                     toStringHandleNull(iter.next(),
                             stringForNull));
         }
-        return delimitedStringBuffer.toString();
+        return delimitedStringBuilder.toString();
     }
 
 

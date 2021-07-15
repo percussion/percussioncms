@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -462,7 +462,7 @@ public class PSBackEndCredential extends PSComponent
    
    public String toString()
    {
-      StringBuffer buf = new StringBuffer(100);
+      StringBuilder buf = new StringBuilder(100);
         buf.append(m_alias + ": " + m_dataSource);
       
       if (m_comment != null && m_comment.length() > 0)

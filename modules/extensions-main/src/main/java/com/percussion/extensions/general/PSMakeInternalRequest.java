@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,22 +32,20 @@ import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSStylesheetCacheManager;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A UDF that makes an internal request to the specified resource and returns
@@ -243,7 +241,7 @@ public class PSMakeInternalRequest extends PSSimpleJavaUdfExtension
       catch (TransformerConfigurationException e)
       {
          // there is an error with the stylesheet
-         StringBuffer errorMsg = new StringBuffer(e.getLocalizedMessage());
+         StringBuilder errorMsg = new StringBuilder(e.getLocalizedMessage());
          errorMsg.append("\r\n");
          
          if (stylesheet != null)

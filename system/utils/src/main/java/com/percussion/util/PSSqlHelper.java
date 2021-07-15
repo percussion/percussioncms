@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,19 +28,34 @@ import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.tools.IPSUtilsConstants;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.naming.NamingException;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.*;
-
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -284,7 +299,7 @@ public class PSSqlHelper
     *    the empty string is returned.
     */
    public static String parseTableName( String driver, String tableName,
-         StringBuffer originBuf, StringBuffer catalogBuf )
+         StringBuilder originBuf, StringBuilder catalogBuf )
    {
       if ( null == tableName || tableName.trim().length() == 0 )
          return "";
@@ -1687,7 +1702,7 @@ public class PSSqlHelper
     *  special case listed above for parameter <code>indexNameBuf</code> where 
     *  its value may change if method returns false.
     */
-   public static boolean handleBackingIndex(StringBuffer indexNameBuf, 
+   public static boolean handleBackingIndex(StringBuilder indexNameBuf,
          DatabaseMetaData md) throws SQLException
    {
       String indexName = indexNameBuf.toString();
@@ -1879,7 +1894,7 @@ public class PSSqlHelper
       PreparedStatement st = null;
       try
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          for (char ch = 0x21; ch < 0x017F; ch += 15)
          {
             st = PSPreparedStatement.getPreparedStatement(conn, delete);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -93,9 +93,10 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
                 pollResponse = new PSPollsResponse(PollResponseStatus.SUCCESS, restPoll);
             }
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
-            log.error("Error occurred while getting poll by name : " + t.getLocalizedMessage());
+            log.error("Error occurred while getting poll by name : {}, Error: {}", t.getLocalizedMessage(), t.getMessage());
+            log.debug(t.getMessage(), t);
             pollResponse = new PSPollsResponse(PollResponseStatus.ERROR, SERVER_ERROR_MESSAGE);
         }
         return pollResponse;
@@ -112,7 +113,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
     public PSPollsResponse getPollByQuestion(@PathParam("pollQuestion") String pollQuestion)
     {
         if(log.isDebugEnabled()){
-            log.debug("Poll question is :" + pollQuestion);
+            log.debug("Poll question is : {}", pollQuestion);
         }
         PSPollsResponse pollResponse = null;
         try
@@ -128,9 +129,10 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
                 pollResponse = new PSPollsResponse(PollResponseStatus.SUCCESS, restPoll);
             }
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
-            log.error("Error occurred while getting poll by question : " + t.getLocalizedMessage());
+            log.error("Error occurred while getting poll by question : {}, Error: {}", t.getLocalizedMessage(), t.getMessage());
+            log.debug(t.getMessage(), t);
             pollResponse = new PSPollsResponse(PollResponseStatus.ERROR, SERVER_ERROR_MESSAGE);
         }
         return pollResponse;
@@ -146,7 +148,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
     public PSPollsResponse savePoll(PSRestPoll restPoll, @Context HttpServletRequest req)
     {
         if(log.isDebugEnabled()){
-            log.debug("Context path in http servlet request is : " + req.getContextPath());
+            log.debug("Context path in http servlet request is : {}", req.getContextPath());
         }
         PSPollsResponse pollResponse = null;
         try
@@ -162,9 +164,10 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
             pollResponse = new PSPollsResponse(PollResponseStatus.SUCCESS, restPoll);
 
         }
-        catch(Throwable t)
+        catch(Exception t)
         {
-            log.error("Error occurred while saving a poll(" + restPoll.getPollName() + ") : " + t.getLocalizedMessage());
+            log.error("Error occurred while saving a poll(" + restPoll.getPollName() + ") : {}, Error: {}", t.getLocalizedMessage(), t.getMessage());
+            log.debug(t.getMessage(), t);
             pollResponse = new PSPollsResponse(PollResponseStatus.ERROR, SERVER_ERROR_MESSAGE);
         }
         return pollResponse;
@@ -180,7 +183,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
     public String canUserVote(@PathParam("pollQuestion") String pollQuestion, @Context HttpServletRequest req)
     {
         if(log.isDebugEnabled()){
-            log.debug("Context path in http servlet request is : " + req.getContextPath());
+            log.debug("Context path in http servlet request is : {}", req.getContextPath());
         }
         HttpSession session= req.getSession(true);
         Object sessVar = session.getAttribute(pollQuestion);
@@ -213,7 +216,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
 
         String version = super.getVersion();
 
-        log.info("getVersion() from PSPollsRestService ..." + version);
+        log.info("getVersion() from PSPollsRestService ...{}", version);
 
         return version;
     }
@@ -223,7 +226,7 @@ public class PSPollsRestService extends PSAbstractRestService implements IPSPoll
      */
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.debug("Polls service for site rename. Nothing to do for site: " + prevSiteName);
+        log.debug("Polls service for site rename. Nothing to do for site: {}", prevSiteName);
         return Response.status(Status.NO_CONTENT).build();
     }
 }

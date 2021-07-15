@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.ant.install;
 
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
@@ -33,7 +34,7 @@ import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSJdbcUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
@@ -101,6 +102,7 @@ public class PSExecSQLStmt extends PSAction
 {
    private static final Logger log = LogManager.getLogger(PSExecSQLStmt.class);
    // see base class
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    @Override
    public void execute() {
       String driver = null;
@@ -476,7 +478,7 @@ public class PSExecSQLStmt extends PSAction
     */
    private String qualifyTableNames(String strStmt, PSJdbcDbmsDef dbmsDef)
    {
-      StringBuffer strBuffer = new StringBuffer();
+      StringBuilder strBuffer = new StringBuilder();
       StringTokenizer stok = new StringTokenizer(strStmt);
 
       while (stok.hasMoreTokens())
@@ -515,7 +517,7 @@ public class PSExecSQLStmt extends PSAction
     */
    private String qualifyViewNames(String strStmt, PSJdbcDbmsDef dbmsDef)
    {
-      StringBuffer strBuffer = new StringBuffer();
+      StringBuilder strBuffer = new StringBuilder();
       StringTokenizer stok = new StringTokenizer(strStmt);
 
       while (stok.hasMoreTokens())

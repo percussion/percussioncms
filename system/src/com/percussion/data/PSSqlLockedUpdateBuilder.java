@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,7 +33,7 @@ import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.error.PSIllegalArgumentException;
 
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -63,14 +63,14 @@ public class PSSqlLockedUpdateBuilder extends PSSqlUpdateBuilder
      * @param logins a list of logins, one per connection index in the values
      * contained within <code>connKeys</code>, must never be <code>null</code>
      * 
-    * @param connKeys a hashtable that associates opaque keys representing
+    * @param connKeys a ConcurrentHashMap that associates opaque keys representing
      * a specific database and server, and indecies into the <code>logins</code>
      * list passed to this method, must never be <code>null</code>
      * 
      * @return an update statement for the table passed to the ctor, this
      * will never be <code>null</code>
     */
-   PSUpdateStatement generate(java.util.List logins, Hashtable connKeys)
+   PSUpdateStatement generate(java.util.List logins, ConcurrentHashMap connKeys)
       throws PSIllegalArgumentException
    {
         if (logins == null)

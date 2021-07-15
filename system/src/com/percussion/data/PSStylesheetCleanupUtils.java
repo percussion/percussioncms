@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -69,9 +69,9 @@ public class PSStylesheetCleanupUtils
             "Stylesheet cleanup filter cannot be null.");
       if(htmlText == null || htmlText.trim().length() == 0)
          return htmlText;
-      // The StringBuffer is used to build the modified
+      // The StringBuilder is used to build the modified
       // start tags
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       OutputDocument outDoc = new OutputDocument(htmlText);
       Source source = new Source(htmlText);
       StartTag sTag = null;

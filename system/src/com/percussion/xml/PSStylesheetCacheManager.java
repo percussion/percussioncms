@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,9 +38,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Caches stylesheets as PSCachedStylesheet in a Map keyed by URL
@@ -58,10 +58,10 @@ public class PSStylesheetCacheManager
 
    /**
     * the Stylesheet cache is a keyed table that contains
-    * javax.xml.transform.Templates objects.  Hashtable is used
+    * javax.xml.transform.Templates objects.  ConcurrentHashMap is used
     * rather than HashMap because it is synchronized.
     **/
-   static Map ms_cache = new Hashtable();
+   static Map ms_cache = new ConcurrentHashMap();
 
    /**
     * get a stylesheet from the cache by URL.  If the stylesheet does not
@@ -110,14 +110,14 @@ public class PSStylesheetCacheManager
       }
       catch (IOException e)
       {
-         StringBuffer errorMsg = new StringBuffer(styleFile.toString());
+         StringBuilder errorMsg = new StringBuilder(styleFile.toString());
          errorMsg.append("\r\n");
          errorMsg.append(e.toString());
          throw new PSExtensionProcessingException(0, errorMsg.toString());
       }
       catch (TransformerFactoryConfigurationError e)
       {
-         StringBuffer errorMsg = new StringBuffer(styleFile.toString());
+         StringBuilder errorMsg = new StringBuilder(styleFile.toString());
          errorMsg.append("\r\n");
          errorMsg.append(e.toString());
          throw new PSExtensionProcessingException(0, errorMsg.toString());
@@ -128,14 +128,14 @@ public class PSStylesheetCacheManager
    }
 
    /**
-    * Traverses an Iterator, printing each object to a StringBuffer.  If the
+    * Traverses an Iterator, printing each object to a StringBuilder.  If the
     * object is a TransformerException, print additional information.
     *
     * @param   buf    where to append the strings; modified by this method;
     *    cannot be <code>null</code>
     * @param   iter   where to find the objects; cannot be <code>null</code>
     */
-   private static void appendFromIterator(StringBuffer buf,
+   private static void appendFromIterator(StringBuilder buf,
                                           Iterator iter)
    {
       while (iter.hasNext())
@@ -166,14 +166,14 @@ public class PSStylesheetCacheManager
 
    /**
     * Extract errors from an PSTransformErrorListener and append them to a
-    * StringBuffer, then clear the errors from the listener.
+    * StringBuilder, then clear the errors from the listener.
     *
     * @param   buf      where to append the strings; modified by this method;
     *    if null, return quietly.
     * @param   errors   where to find the errors; if null or not our
     *    implementation, return quietly.
     */
-   public static void appendErrorMessages(StringBuffer buf,
+   public static void appendErrorMessages(StringBuilder buf,
                                           ErrorListener errors)
    {
       if (null == buf || null == errors) return;
@@ -210,7 +210,7 @@ public class PSStylesheetCacheManager
    private static String getExceptionContextData(Exception e)
       throws IOException
    {
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
       String resource = "";
 
       if(e instanceof TransformerException)
@@ -264,7 +264,7 @@ public class PSStylesheetCacheManager
    private static String getExceptionContextData(Exception e, URL url)
       throws IOException
    {
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
       int errorLine = 0;
 
       if(e instanceof TransformerException)
@@ -304,7 +304,7 @@ public class PSStylesheetCacheManager
     * @param   errorLine the error line number
     */
    private static void getExceptionContextData(
-         StringBuffer buf, BufferedReader source, int errorLine)
+         StringBuilder buf, BufferedReader source, int errorLine)
    {
       if (errorLine > 0)
       {

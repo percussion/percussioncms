@@ -17,22 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.tablefactory;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSProperties;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -52,18 +62,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.*;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.apache.logging.log4j.LogManager;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
 *  This class is used to install and upgrade Rhythmyx tables.
@@ -807,7 +814,7 @@ public class RxJdbcTableFactory
 
       identifier = fixIdentifierCase(identifier);
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       boolean addedCatalog = false;
       String catalog = null;
@@ -1047,7 +1054,7 @@ public class RxJdbcTableFactory
 
       public String getSelectStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          buf.append("SELECT * FROM ");
          buf.append(m_qualifiedName);
          return buf.toString();
@@ -1055,7 +1062,7 @@ public class RxJdbcTableFactory
 
       public String getAddColumnStatement(RxColumns addColumn)
       {
-          StringBuffer buf = new StringBuffer();
+          StringBuilder buf = new StringBuilder();
 
          buf.append("ALTER TABLE ");
          buf.append(m_qualifiedName);
@@ -1069,7 +1076,7 @@ public class RxJdbcTableFactory
 
       public String getInsertStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("INSERT INTO ");
          buf.append(m_qualifiedName);
@@ -1098,7 +1105,7 @@ public class RxJdbcTableFactory
 
       public String getCreateTableStatement(boolean includePrimaryKey)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          String fullDbName = new String();
 
          buf.append("CREATE TABLE ");
@@ -1144,7 +1151,7 @@ public class RxJdbcTableFactory
 
       public String getCopyTableStatement(RxTables rxTable, String strBackupTable)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
           String strFullSource = new String();
           String strFullTarget = new String();
           if(cDB.getDataBase()== null && cDB.getSchema()!=null)
@@ -1190,7 +1197,7 @@ public class RxJdbcTableFactory
 
       public String getCreateTableStatement(RxTables rxTable)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          String fullDbName = new String();
 
          buf.append("CREATE TABLE ");
@@ -1223,7 +1230,7 @@ public class RxJdbcTableFactory
 
       public String getAddPrimaryKeyStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("ALTER TABLE ");
          buf.append(m_qualifiedName);
@@ -1244,7 +1251,7 @@ public class RxJdbcTableFactory
       public String getAddPrimaryKeyStatement(Vector vKeys, RxTables rxTable)
          throws SQLException
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          String qualifiedName = "";
           if(cDB.getDataBase()== null && cDB.getSchema()!=null)
@@ -1287,7 +1294,7 @@ public class RxJdbcTableFactory
       {
          int size = m_fKey.size();
          String[] stmts = new String[size];
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          for (int i = 0; i < size; i++)
          {
@@ -4505,7 +4512,7 @@ System.out.println("NULL Values not allowed as Update Key");
 
       public String getColumnDef()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append(m_name);
          buf.append(" ");
@@ -4577,7 +4584,7 @@ System.out.println("NULL Values not allowed as Update Key");
 
       public String getCreateIndexStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("CREATE INDEX ");
          buf.append(m_qualifiedName);
@@ -4804,6 +4811,7 @@ System.out.println("NULL Values not allowed as Update Key");
     * -dbprops <propsFile> -typemap <typeMapFile> -def <defFile> -data <dataFile>
     * @param args see description.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    private static void main2(String args[])
    {
       if(args.length < 8)

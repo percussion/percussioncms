@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,7 +29,14 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSApplicationBuilder;
 import com.percussion.cms.PSCmsException;
 import com.percussion.error.PSException;
-import com.percussion.extension.*;
+import com.percussion.extension.IPSExtension;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSExtensionErrors;
+import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.IPSWorkFlowContext;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
@@ -45,7 +52,11 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Updates the status history context for this transition or checkout or
@@ -315,18 +326,12 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
                   "No status history was written.");
             }
 
-         }
-         catch(SQLException e)
-         {
-            except = e;
-         }
-         catch(PSEntryNotFoundException e)
+         } catch(PSEntryNotFoundException e)
          {
             if (e.getLanguageString() == null)
                e.setLanguageString(lang);
             except = e;
-         }
-                  catch (Exception e)
+         } catch(Exception e)
          {
             except = e;
          }
@@ -583,5 +588,5 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
    /**
     * The resource used to update the CONTENTSTATUS.LAST_PUBLIC_REVISION colum
     */
-   private final static String PUT_LASTPUBREV_RSC = "sys_ceSupport/putLastPublicRev"; 
+   private  static final String PUT_LASTPUBREV_RSC = "sys_ceSupport/putLastPublicRev";
 }

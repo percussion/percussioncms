@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,8 @@ package com.percussion.install;
 
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSSqlHelper;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.w3c.dom.Element;
 
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -32,8 +34,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.w3c.dom.Element;
 
 /**
  * Adds the desing Display Format columns to be used by List View services (under design node)
@@ -56,6 +56,7 @@ public class PSUpgradePluginAddDesignDisplayFormatValues implements IPSUpgradePl
    /* (non-Javadoc)
     * @see com.percussion.install.IPSUpgradePlugin#process(com.percussion.install.IPSUpgradeModule, org.w3c.dom.Element)
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public PSPluginResponse process(IPSUpgradeModule module, @SuppressWarnings("unused") Element elemData)
    {
       logger = module.getLogStream();

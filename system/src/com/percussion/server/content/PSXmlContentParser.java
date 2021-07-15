@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,9 +29,16 @@ import com.percussion.data.PSXmlFieldExtractor;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestParsingException;
-import com.percussion.util.*;
+import com.percussion.util.PSBaseHttpUtils;
+import com.percussion.util.PSCharSets;
+import com.percussion.util.PSCharSetsConstants;
+import com.percussion.util.PSInputStreamReader;
+import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,10 +48,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 
 /**
@@ -234,7 +237,7 @@ public class PSXmlContentParser extends PSContentParser {
     */
    public static String getSaxExceptionContextMessage(SAXParseException e)
    {
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
       getSaxExceptionContextMessage(errorMsg, e);
       return errorMsg.toString();
    }
@@ -251,7 +254,7 @@ public class PSXmlContentParser extends PSContentParser {
     *            and column number
     */
    public static void getSaxExceptionContextMessage(
-      StringBuffer buf, SAXParseException e)
+      StringBuilder buf, SAXParseException e)
    {
       buf.append(e.getMessage());
       buf.append(" (line ");
@@ -274,7 +277,7 @@ public class PSXmlContentParser extends PSContentParser {
    public static String getSaxExceptionContextData(
       SAXParseException e, BufferedReader source)
    {
-      StringBuffer errorMsg = new StringBuffer();
+      StringBuilder errorMsg = new StringBuilder();
       getSaxExceptionContextData(errorMsg, e, source);
       return errorMsg.toString();
    }
@@ -292,7 +295,7 @@ public class PSXmlContentParser extends PSContentParser {
     * @return   a string containing any contextual text which can be found
     */
    public static void getSaxExceptionContextData(
-      StringBuffer buf, SAXParseException e, BufferedReader source)
+      StringBuilder buf, SAXParseException e, BufferedReader source)
    {
       if (e.getLineNumber() > 0) {
          String   curLine;
@@ -330,7 +333,7 @@ public class PSXmlContentParser extends PSContentParser {
       if (e instanceof org.xml.sax.SAXParseException) {
          SAXParseException se = (SAXParseException)e;
 
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          buf.append(getSaxExceptionContextMessage(se));
 
          if (source != null) {

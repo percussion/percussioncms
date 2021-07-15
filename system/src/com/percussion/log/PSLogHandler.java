@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,6 +30,7 @@ import com.percussion.server.PSRequestStatistics;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSUserSession;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,8 +39,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.w3c.dom.Document;
 
 /**
  * The PSLogHandler class defines the logging rules used by a particular server
@@ -353,7 +352,7 @@ public class PSLogHandler
          
          PSUserSession sess = request.getUserSession();
          String sessId = "";
-         StringBuffer userNames = new StringBuffer();
+         StringBuilder userNames = new StringBuilder();
          if (sess != null)
          {
             sessId = sess.getId();

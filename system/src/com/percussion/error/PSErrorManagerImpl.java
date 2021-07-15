@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,7 +33,11 @@ import com.percussion.util.PSMapClassToObject;
 
 import java.net.URL;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -91,7 +95,7 @@ public class PSErrorManagerImpl implements IPSErrorManager {
     *
     * @param      loc      the locale to use
     */
-   public synchronized static void init(Locale loc)
+   public  static synchronized void init(Locale loc)
       throws MissingResourceException, NumberFormatException
    {
       // Inject this error manager.
@@ -358,15 +362,15 @@ public class PSErrorManagerImpl implements IPSErrorManager {
 
       if (msg == null)
       {
-         String sArgs = "";
+         StringBuilder sArgs = new StringBuilder();
          String comma = "";
 
          for (int i = 0; i < arrayArgs.length; i++) {
-            sArgs += comma + arrayArgs[i].toString();
+            sArgs.append(comma).append(arrayArgs[i].toString());
             comma = "; ";
          }
 
-         msg = sArgs;
+         msg = sArgs.toString();
       }
 
       return msg;
@@ -410,15 +414,15 @@ public class PSErrorManagerImpl implements IPSErrorManager {
 
       if (msg == null)
       {
-         String sArgs = "";
+         StringBuilder sArgs = new StringBuilder();
          String comma = "";
 
          for (int i = 0; i < arrayArgs.length; i++) {
-            sArgs += comma + arrayArgs[i].toString();
+            sArgs.append(comma).append(arrayArgs[i].toString());
             comma = "; ";
          }
 
-         msg = sArgs;
+         msg = sArgs.toString();
       }
 
       return msg;
@@ -431,7 +435,6 @@ public class PSErrorManagerImpl implements IPSErrorManager {
     *
     * @param      loc         the locale
     *
-    * @param                  a hash table containing the string resources
     */
    private static ResourceBundle getErrorStringBundle(Locale loc)
       throws MissingResourceException
@@ -439,7 +442,7 @@ public class PSErrorManagerImpl implements IPSErrorManager {
       ResourceBundle strBundle = null;
 
       synchronized  (m_errorStrings) {
-         strBundle = (ResourceBundle)m_errorStrings.get(loc.toString());
+         strBundle = m_errorStrings.get(loc.toString());
          if (strBundle != null)
             return strBundle;
 
@@ -458,7 +461,6 @@ public class PSErrorManagerImpl implements IPSErrorManager {
     *
     * @param      loc         the locale
     *
-    * @param                  a hash table containing the error page maps
     */
    private static PSMapClassToObject getErrorPageMaps(Locale loc)
       throws MissingResourceException, NumberFormatException
@@ -466,7 +468,7 @@ public class PSErrorManagerImpl implements IPSErrorManager {
       PSMapClassToObject pageMap = null;
 
       synchronized  (m_errorURLs) {
-         pageMap = (PSMapClassToObject)m_errorURLs.get(loc.toString());
+         pageMap = m_errorURLs.get(loc.toString());
          if (pageMap != null)
             return pageMap;
 
@@ -516,8 +518,8 @@ public class PSErrorManagerImpl implements IPSErrorManager {
     * The PSMapClassToObject object is a hash table using the
     * PSLogError subclass as the key and the error URL (URL) as the value.
     */
-   static private Hashtable<String, PSMapClassToObject> m_errorURLs =
-         new Hashtable<>();
+   private static ConcurrentHashMap<String, PSMapClassToObject> m_errorURLs =
+         new ConcurrentHashMap<>();
 
    /**
     * This is a hash table using Locale.toString as the key and the
@@ -526,18 +528,18 @@ public class PSErrorManagerImpl implements IPSErrorManager {
     * The ResourceBundle object is a property file backed string
     * resource bundle containing our error strings in the specified locale
     */
-   static private Hashtable<String, ResourceBundle>   m_errorStrings =
-         new Hashtable<>();
+   private static  ConcurrentHashMap<String, ResourceBundle>   m_errorStrings =
+         new ConcurrentHashMap<>();
 
    /**
     * The default locale to use when one is not specified.
     */
-   static private Locale      m_defaultLocale   = Locale.getDefault();
+   private static  Locale      m_defaultLocale   = Locale.getDefault();
 
 
    /**
     * Flag that indicates if this class is used on the server side.
     */
-   static private boolean     ms_isServerSide;
+   private static  boolean     ms_isServerSide;
 }
 

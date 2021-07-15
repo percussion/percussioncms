@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,12 +26,11 @@ package com.percussion.design.objectstore;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 
 /**
@@ -393,7 +392,7 @@ public class PSRelation extends PSDatabaseComponent
       if (m_keyNames.size() == 0)
          throw new IllegalStateException("This relation contains no keys");
 
-      StringBuffer datasetName = new StringBuffer();
+      StringBuilder datasetName = new StringBuilder();
       for (int i = 0; i < m_keyNames.size(); i++)
          datasetName.append( m_keyNames.get(i));
 

@@ -17,47 +17,50 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.user.service.impl;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import com.github.javafaker.Faker;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSPasswordHandler;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PSDefaultPasswordEncryptionBeanTest
 {
-
-    /*
-     * TODO For Dave's password filter work, there are two implementations that should
-     * produce the same filter password, hence the following test.
-     * This is obviously not ideal for if one changes the other one will have to also.
-     */
     PSDefaultPasswordEncryptionBean filter = new PSDefaultPasswordEncryptionBean();
 
-
     @Test
-    public void shouldCreateHashForDemoPasswordAndShouldBeEqualForBothFilters() throws Exception
+    public void shouldCreateHashesThatVerifyWithPasswordHandler() throws Exception
     {
-        String beanPassword = filter.encrypt("demo");
-        String systemPassword = encrypt("demo");
-        log.info("demo ==> " + beanPassword);
-        assertEquals("password hashes should be equal", beanPassword, systemPassword);
+        Faker faker = new Faker();
+
+        String testPassword = faker.aquaTeenHungerForce().character().toString();
+        String beanPassword = filter.encrypt(testPassword);
+        String systemPassword = encrypt(testPassword);
+
+        log.info("These may be different even for same password depending on the salt.");
+        log.info("testPassword ==> " + beanPassword);
+        log.info("systemPassword ==> " + beanPassword);
+
+        assertTrue(PSPasswordHandler.checkHashedPassword(testPassword,beanPassword));
+        assertTrue(PSPasswordHandler.checkHashedPassword(testPassword,systemPassword));
+
     }
 
-    public String encrypt(String password)
-    {
+    public String encrypt(String password) throws PSEncryptionException {
         if(StringUtils.isBlank(password))
         {
             return StringUtils.EMPTY;
         }
-        return DigestUtils.shaHex(password.trim());
+        return PSPasswordHandler.getHashedPassword(password.trim());
 
     }
     /**

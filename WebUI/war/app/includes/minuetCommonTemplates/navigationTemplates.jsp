@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -116,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="https://help.percussion.com" target="_blank" title="<i18n:message key="perc.ui.common.label@Help" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <a href="https://help.percussion.com" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Help" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-question-circle fa-fw"></i>
                   </span>
@@ -128,7 +128,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="https://community.percussion.com/" target="_blank" title="<i18n:message key="perc.ui.common.label@Percussion Community" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <a href="https://community.percussion.com/" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Percussion Community" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-hands-helping fa-fw"></i>
                   </span>
@@ -182,7 +182,7 @@
                 <p><img class="perc-about-logo" src="/cm/images/logos/percussion-logo-white.png" alt="Percussion Logo" title="Percussion"></p>
                 <p><%= ver %></p>
                 <p>Copyright &copy; <%= year %> by Percussion&nbsp;Software&nbsp;Inc.</p>
-                <p><a title="Percussion Software" href="https://www.percussion.com" target="_blank" class="perc-about-link">https://www.percussion.com</a></p>
+                <p><a title="Percussion Software" href="https://www.percussion.com" target="_blank" rel="noopener noreferrer" class="perc-about-link">https://www.percussion.com</a></p>
                 <p><button class="perc-toggle-about perc-close-about btn btn-block perc-confirmation-button perc-confirmation-button-dark"><i18n:message key="perc.ui.common.label@Close" /></button></p>
             </div>
         </div>
@@ -198,7 +198,7 @@
                         <div class="col-12 perc-password-form-container">
                             <span class="perc-dialog-title"><i18n:message key="perc.ui.change.pw@Change Password" /></span>
                             <hr class="perc-divider-white mb-5">
-                            <form>
+                            <csrf:form method="post" action="navigationTemplates.jsp">
                                 <div class="form-group">
                                     <label for="percNewPassword"><i18n:message key="perc.ui.change.pw@Enter New Password" /></label>
                                     <input name="password" type="password" class="form-control perc-change-password-field" id="percNewPassword" placeholder='<i18n:message key="perc.ui.change.pw@Enter New Password" />'>
@@ -207,7 +207,7 @@
                                     <label for="percConfirmNewPassword"><i18n:message key="perc.ui.change.pw@Confirm New Password" /></label>
                                     <input name="confirmPassword" type="password" class="form-control perc-change-password-field" id="percConfirmNewPassword" placeholder='<i18n:message key="perc.ui.change.pw@Confirm New Password" />'>
                                 </div>
-                            </form>
+                            </csrf:form>
                             <p class="perc-change-password-error"><span>&nbsp;<span></p>
                         </div>
                     </div>

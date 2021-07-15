@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -139,7 +139,7 @@ public class HttpHeaderElement
      */
     public String toString()
     {
-	StringBuffer buf = new StringBuffer();
+	StringBuilder buf = new StringBuilder();
 	appendTo(buf);
 	return buf.toString();
     }
@@ -150,10 +150,10 @@ public class HttpHeaderElement
      * more efficient version of <code>toString()</code> for assembling
      * multiple elements.
      *
-     * @param buf the StringBuffer to append this header to
+     * @param buf the StringBuilder to append this header to
      * @see #toString()
      */
-    public void appendTo(StringBuffer buf)
+    public void appendTo(StringBuilder buf)
     {
 	buf.append(name);
 

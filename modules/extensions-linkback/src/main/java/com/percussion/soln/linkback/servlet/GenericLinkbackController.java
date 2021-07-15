@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -84,11 +84,11 @@ public class GenericLinkbackController extends AbstractController {
      */
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+             {
         initCodec();
 
         String linkbackToken = request.getParameter(linkbackParameterName);
-        log.debug("linkbackToken=" + linkbackToken);
+        log.debug("linkbackToken={}" , linkbackToken);
 
         if (linkbackToken == null) {
 
@@ -99,9 +99,8 @@ public class GenericLinkbackController extends AbstractController {
         }
 
         Map<String, String> params = linkbackCodec.decode(linkbackToken);
-        log.debug("map: " + params);
-        ModelAndView mav = handleLinkBackRedirect(params);
-        return mav;
+        log.debug("map: {}" , params);
+        return  handleLinkBackRedirect(params);
 
     }
 
@@ -110,8 +109,7 @@ public class GenericLinkbackController extends AbstractController {
      * model. Subclasses override this method to determine how the linkback
      * should be handled.
      * 
-     * @param params
-     *            map of parameter values
+     * @param tokenParams map of parameter values
      * @return ModelAndView
      */
     protected ModelAndView handleLinkBackRedirect(Map<String, String> tokenParams) {
@@ -124,7 +122,7 @@ public class GenericLinkbackController extends AbstractController {
         params.putAll(getAdditionalParameters());
         modifyParameterMap(params);
         String path = getRedirectPath();
-        log.debug("redirect path: " + path);
+        log.debug("redirect path: {}",  path);
         return new ModelAndView(new RedirectView(path, true), params);
     }
 

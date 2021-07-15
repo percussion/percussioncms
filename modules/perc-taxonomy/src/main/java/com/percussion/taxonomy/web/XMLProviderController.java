@@ -17,21 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.taxonomy.web;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Hashtable;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.percussion.taxonomy.domain.Language;
+import com.percussion.taxonomy.domain.Node;
+import com.percussion.taxonomy.domain.Related_node;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -39,11 +34,12 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.percussion.taxonomy.domain.Language;
-import com.percussion.taxonomy.domain.Node;
-import com.percussion.taxonomy.domain.Node_editor;
-import com.percussion.taxonomy.domain.Related_node;
-import com.percussion.taxonomy.domain.Value;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
 public class XMLProviderController extends AbstractXMLProviderController {
@@ -235,7 +231,7 @@ public class XMLProviderController extends AbstractXMLProviderController {
     	// int langID = tp.getLangID();
     	int langID = Language.DEFAUL_LANG; 
     	
-    	Hashtable<Integer, Hashtable<String,Collection<String>>> titles_hashtable = buildTitlesHashtable(tp.getTaxID(),langID);
+    	ConcurrentHashMap<Integer, ConcurrentHashMap<String,Collection<String>>> titles_ConcurrentHashMap = buildTitlesConcurrentHashMap(tp.getTaxID(),langID);
     	
 		Collection<Object[]> unfilted_nodes = (Collection<Object[]>) nodeService.getAllNodeNames(tp.getTaxID(), langID);
     	
@@ -276,7 +272,7 @@ public class XMLProviderController extends AbstractXMLProviderController {
     				}
     				
     				
-    				String title = buildTitle(titles_hashtable.get(node.getId()), null, langID, tripletPlusTwo, false, true);
+    				String title = buildTitle(titles_ConcurrentHashMap.get(node.getId()), null, langID, tripletPlusTwo, false, true);
     				String s = "{";
     				s += "\"id\" : \"#" + prefix + node.getId() + "\", ";
     				s += "\"label\" : \"" + StringUtils.replace(parent_abbr + tripletPlusTwo[2],"\"","\\\"") + "\", ";

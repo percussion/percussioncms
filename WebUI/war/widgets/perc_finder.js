@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -290,7 +290,7 @@ var assetPagination = null;
         function set_finder_height_in_cookie (height) {
             if (!isLibMode && get_finder_height_from_cookie() !== height) {
                 var state = get_finder_is_collapsed_from_cookie() ? 'collapsed' : 'expanded';
-                $.cookie(finderExpandStateCookie, state + height);
+                $.cookie(finderExpandStateCookie, state + height,{"sameSite": "Strict"});
             }
         }
 
@@ -300,7 +300,7 @@ var assetPagination = null;
                 var height, state;
                 height = get_finder_height_from_cookie();
                 state = isExpanded ? 'expanded' : 'collapsed';
-                $.cookie(finderExpandStateCookie, state + height);
+                $.cookie(finderExpandStateCookie, state + height,{"sameSite": "Strict"});
             }
         }
 

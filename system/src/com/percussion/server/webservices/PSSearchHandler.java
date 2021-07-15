@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -693,7 +693,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          else
          {
             // add search field including each content id
-            StringBuffer inClause = new StringBuffer();
+            StringBuilder inClause = new StringBuilder();
             Iterator<PSSearchResult> searchResults 
                = searchResultList.iterator();
             List<String> contentIds = new ArrayList<String>();
@@ -728,7 +728,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          // within the folder hierarchy
          if (allowedIds != null)
          {
-            StringBuffer inClause = new StringBuffer(allowedIds.size() * 5);
+            StringBuilder inClause = new StringBuilder(allowedIds.size() * 5);
             Iterator i = allowedIds.iterator();
             while(i.hasNext())
             {
@@ -1116,7 +1116,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          PSWSSearchField fld = (PSWSSearchField) extFields.next();
          if (fld.getName().equals(SYS_CONTENTTYPEID))
          {
-            StringBuffer buf = new StringBuffer(100);
+            StringBuilder buf = new StringBuilder(100);
             Iterator<String> values = new PSExternalInValuesIterator(
                fld.getValue());
             while (values.hasNext())
@@ -1171,7 +1171,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          {
             specifiedStateName = true;
             extFields.remove();
-            StringBuffer buf = new StringBuffer(100);
+            StringBuilder buf = new StringBuilder(100);
             Iterator<String> values = new PSExternalInValuesIterator(
                field.getValue());
             while (values.hasNext())
@@ -1616,7 +1616,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       catch (TransformerException e)
       {
          // add the details of the error to the message
-         StringBuffer errorMsg = new StringBuffer(e.toString());
+         StringBuilder errorMsg = new StringBuilder(e.toString());
          errorMsg.append("\r\n");
          try
          {

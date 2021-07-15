@@ -17,11 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.ant;
+
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,9 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
 
 /**
  * Creates the xml list of shared classes that will be put into
@@ -284,7 +284,7 @@ public class PSCreateSharedClassList extends Task
    /**
     * The string buffer used to build up the xml file.
     */
-   private StringBuffer m_buffer = new StringBuffer();
+   private StringBuilder m_buffer = new StringBuilder();
    
    public final static String PACKAGE_NMK = "package.nmk";
    public final static String PACKAGE_MACRO = "PACKAGE";

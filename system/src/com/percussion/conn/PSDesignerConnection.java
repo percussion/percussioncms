@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,24 +29,35 @@ import com.percussion.error.PSException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.server.IPSServerErrors;
-import com.percussion.util.*;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import com.percussion.server.IPSServerErrors;
+import com.percussion.util.PSBase64Encoder;
+import com.percussion.util.PSBaseHttpUtils;
+import com.percussion.util.PSCharSets;
+import com.percussion.util.PSCountWriter;
+import com.percussion.util.PSFormatVersion;
+import com.percussion.util.PSInputStreamReader;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
@@ -1275,7 +1286,7 @@ public class PSDesignerConnection
 // DBG>
 // System.out.println("DEBUG: OUTHDR( " + name + ": " + value + ")");
 // <DBG
-      StringBuffer buf = new StringBuffer(
+      StringBuilder buf = new StringBuilder(
          name.length() + 4 + (value == null ? 0 : value.length()));
 
       buf.append(name);

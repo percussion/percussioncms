@@ -17,15 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tools;
-
-import java.io.IOException;
-import java.io.Writer;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -38,6 +35,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.io.Writer;
 
 public class PrintNode
 {
@@ -280,7 +280,7 @@ public class PrintNode
 		char[] chars = input.toCharArray();
 		int len = chars.length;
 
-		StringBuffer buf = new StringBuffer((int)(chars.length * 1.5));
+		StringBuilder buf = new StringBuilder((int)(chars.length * 1.5));
 
 		char c;
 

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,8 @@ package com.percussion.user.service.impl;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.security.IPSPasswordFilter;
-import com.percussion.security.ToDoVulnerability;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSPasswordHandler;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Lazy;
@@ -39,7 +40,6 @@ import java.io.File;
  */
 @Component("defaultPasswordEncryptionBean")
 @Lazy
-@ToDoVulnerability
 public class PSDefaultPasswordEncryptionBean implements IPSPasswordFilter
 {
 
@@ -53,7 +53,16 @@ public class PSDefaultPasswordEncryptionBean implements IPSPasswordFilter
         {
            return StringUtils.EMPTY; 
         }
-        return DigestUtils.shaHex(password.trim()); 
+        try {
+            return  PSPasswordHandler.getHashedPassword(password.trim());
+        } catch (PSEncryptionException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    @Override
+    public String getAlgorithm() {
+        return PSPasswordHandler.ALGORITHM;
     }
 
     /* (non-Javadoc)
@@ -65,4 +74,28 @@ public class PSDefaultPasswordEncryptionBean implements IPSPasswordFilter
 
     }
 
+    /***
+     * Will encrypt the password using the hashing / encryption
+     * routine used in the previous version of the software.
+     *
+     * This is to allow Security Providers to re-encrypt passwords
+     * on login after a security update.
+     *
+     * @param password
+     * @return
+     */
+    @Override
+    @Deprecated
+    public String legacyEncrypt(String password) {
+        if(StringUtils.isBlank(password))
+        {
+            return StringUtils.EMPTY;
+        }
+        return DigestUtils.shaHex(password.trim());
+    }
+
+    @Override
+    public String getLegacyAlgorithm() {
+        return "SHA-1";
+    }
 }
