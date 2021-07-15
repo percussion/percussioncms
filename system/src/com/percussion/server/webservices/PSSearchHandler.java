@@ -35,7 +35,6 @@ import com.percussion.cms.objectstore.PSContentType;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSItemRelatedItem;
 import com.percussion.cms.objectstore.PSKey;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSSearch;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
@@ -137,12 +136,14 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import static com.percussion.cms.objectstore.PSProcessorProxy.RELATIONSHIP_COMPTYPE;
+
 /**
  * This class is used to handle all search related operations for webservices.
  * These operations are specified in the "Search" port in the
  * <code>WebServices.wsdl</code>.
  * 
- * @See {@link com.percussion.hooks.webservices.PSWSSearch}.
+ * @see {@link com.percussion.hooks.webservices.PSWSSearch}.
  */
 public class PSSearchHandler extends PSWebServicesBaseHandler
 {     
@@ -214,7 +215,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
    public List<Integer> searchAndGetContentIds(PSRequest request,
          PSWSSearchRequest searchReq) throws PSException
    {
-      List<Integer> result = new ArrayList<Integer>();
+      List<Integer> result = new ArrayList<>();
       
       PSWSSearchParams searchParams = searchReq.getSearchParams();
       int commandMax = Integer.MAX_VALUE;
@@ -236,7 +237,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          }
       }
 
-      Map<String, String> props = new HashMap<String, String>();
+      Map<String, String> props = new HashMap<>();
       props.put(PSSearchQuery.QUERYPROP_MAXRESULTS, "" + commandMax);
 
       String lang;
@@ -284,7 +285,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
    public List<Integer> searchAndGetContentIdsForSearchByStatus(PSRequest request,
                                                                 PSWSSearchRequest searchReq) throws PSException{
 
-      List<Integer> result = new ArrayList<Integer>();
+      List<Integer> result = new ArrayList<>();
 
       PSWSSearchParams searchParams = searchReq.getSearchParams();
       int commandMax = Integer.MAX_VALUE;
@@ -301,18 +302,15 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          }
       }
 
-      return new ArrayList<Integer>(allowedIds);
+      return new ArrayList<>(allowedIds);
 
    }
 
    private Map<String, String> getFieldQueries(
          List<PSWSSearchField> extSearchFields)
    {
-      Map<String, String> fieldQueries = new HashMap<String, String>();
-      Iterator fields = extSearchFields.iterator();
-      while (fields.hasNext())
-      {
-         PSWSSearchField field = (PSWSSearchField) fields.next();
+      Map<String, String> fieldQueries = new HashMap<>();
+      for (PSWSSearchField field : extSearchFields) {
          fieldQueries.put(field.getName(), field.getValue());
       }
 
@@ -373,7 +371,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
    private void processExternalSearch(PSRequest request, 
       PSWSSearchRequest searchReq, Document parent) throws PSException
    {
-      HashSet<Long> contentTypeIdSet = new HashSet<Long>();
+      HashSet<Long> contentTypeIdSet = new HashSet<>();
       boolean useSearchEngine = 
          PSServer.getServerConfiguration().isSearchEngineAvailable();
       String ftsQuery = null;
@@ -453,16 +451,16 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
                request, request.getUserSession().getUserCurrentCommunity());
             if (!StringUtils.isBlank(communityId))
             {
-               long contentTypeIds[] = mgr.getAllContentTypeIds(
+               long[] contentTypeIds = mgr.getAllContentTypeIds(
                   Integer.parseInt(communityId));
-               
-               contentTypes = "";
+
+               StringBuilder ct = new StringBuilder();
                for (long contentTypeId : contentTypeIds)
                {
-                  contentTypes += Long.toString(contentTypeId);
-                  contentTypes += ",";
+                  ct.append(contentTypeId).append(",");
                }
-               
+               contentTypes = ct.toString();
+
                PSWSSearchField contentTypesField = new PSWSSearchField(
                   IPSHtmlParameters.SYS_CONTENTTYPEID, 
                   PSWSSearchField.OP_ATTR_IN,
@@ -473,7 +471,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       }
 
       if (searchParams.getContentTypeId() != -1)
-         contentTypeIdSet.add(new Long(searchParams.getContentTypeId()));
+         contentTypeIdSet.add(searchParams.getContentTypeId());
 
       int start = searchParams.getStartIndex();
       int end = searchParams.getEndIndex();
@@ -511,7 +509,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       Element root = parent.getDocumentElement();
 
       // get the complete list of content types first
-      long allTypes[] = mgr.getAllContentTypeIds(
+      long[] allTypes = mgr.getAllContentTypeIds(
          PSItemDefManager.COMMUNITY_ANY);
       boolean hasContentTypeId = false;
 
@@ -522,8 +520,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          // if one aleady in list, leave it alone, as that's all we'll search on
          if (contentTypeIdSet.isEmpty())
          {
-            for (int i = 0; i < allTypes.length; i++)
-               contentTypeIdSet.add(new Long(allTypes[i]));
+            for (long allType : allTypes) contentTypeIdSet.add(allType);
          }
       }
       else
@@ -531,11 +528,11 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          boolean first = contentTypeIdSet.isEmpty();
 
          Collection<PSWSSearchField> allFields = 
-            new ArrayList<PSWSSearchField>();
+            new ArrayList<>();
          allFields.addAll(intSearchFields);
          allFields.addAll(extSearchFields);
          Iterator flIter = allFields.iterator();
-         List<String> contentIds = new ArrayList<String>();
+         List<String> contentIds = new ArrayList<>();
          
          if (allowedIds != null)
          {
@@ -604,14 +601,13 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       List<PSSearchResult> searchResultList = null;
       if (useSearchEngine)
       {
-         Set<Long> origContentTypeIdSet = new HashSet<Long>(contentTypeIdSet);
+         Set<Long> origContentTypeIdSet = new HashSet<>(contentTypeIdSet);
 
          // remove any non-visible content types
-         Set<Long> visTypes = new HashSet<Long>();
+         Set<Long> visTypes = new HashSet<>();
          long[] types = mgr.getContentTypeIds(PSItemDefManager.COMMUNITY_ANY);
-         for (int i = 0; i < types.length; i++)
-            visTypes.add(new Long(types[i]));
-         visTypes.add(new Long(PSFolder.FOLDER_CONTENT_TYPE_ID));
+         for (long type : types) visTypes.add(type);
+         visTypes.add((long) PSFolder.FOLDER_CONTENT_TYPE_ID);
          contentTypeIdSet.retainAll(visTypes);
 
          // if there are no contentTypes to search for, just
@@ -621,21 +617,16 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
 
          // set up parametric fields
          Map<String, String> fieldQueries = new HashMap<String, String>();
-         Iterator fields = extSearchFields.iterator();
-         while (fields.hasNext())
-         {
-            PSWSSearchField field = (PSWSSearchField) fields.next();
+         for (PSWSSearchField field : extSearchFields) {
             fieldQueries.put(field.getName(), field.getValue());
          }
 
          PSSearchEngine searchEngine = PSSearchEngine.getInstance();
          PSSearchQuery searchQuery = searchEngine.getSearchQuery();
-         List<PSKey> cTypes = new ArrayList<PSKey>();
-         Iterator typeIds = contentTypeIdSet.iterator();
-         while (typeIds.hasNext())
-         {
-            PSKey cTypeKey = PSContentType.createKey(((Long) typeIds.next())
-                  .intValue());
+         List<PSKey> cTypes = new ArrayList<>();
+         for (Long aLong : contentTypeIdSet) {
+            PSKey cTypeKey = PSContentType.createKey(aLong
+                    .intValue());
             cTypes.add(cTypeKey);
          }
          try
@@ -650,7 +641,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
             //       a specified 'state-name' by the combination of
             //       (workflow-id=## && state-id=##) || workflow-id=## && state-id=##) ...etc.
             int maxExternalSearch = searchStateName ? Integer.MAX_VALUE : commandMax;
-            Map<String, String> props = new HashMap<String, String>();
+            Map<String, String> props = new HashMap<>();
             props.put(PSSearchQuery.QUERYPROP_MAXRESULTS, "" + maxExternalSearch);
 
             String lang;
@@ -696,14 +687,14 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
             StringBuilder inClause = new StringBuilder();
             Iterator<PSSearchResult> searchResults 
                = searchResultList.iterator();
-            List<String> contentIds = new ArrayList<String>();
+            List<String> contentIds = new ArrayList<>();
             while (searchResults.hasNext())
             {
                PSSearchResult searchResult = searchResults.next();
                int ctId = searchResult.getKey().getId();
                String delim = inClause.length() == 0 ? "" : ",";
                inClause.append(delim);
-               inClause.append(String.valueOf(ctId));
+               inClause.append(ctId);
                contentIds.add(String.valueOf(ctId));
             }
 
@@ -715,7 +706,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
                && (origContentTypeIdSet.size() == allTypes.length))
             {
                IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-               Collection ctypeIds = cms.findContentTypesForIds(contentIds);
+               Collection<Long> ctypeIds = cms.findContentTypesForIds(contentIds);
                contentTypeIdSet.retainAll(ctypeIds);
             }
 
@@ -736,7 +727,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
                int ctId = Integer.parseInt(idstr);
                String delim = inClause.length() == 0 ? "" : ",";
                inClause.append(delim);
-               inClause.append(String.valueOf(ctId));
+               inClause.append(ctId);
             }
             intSearchFields.add(new PSWSSearchField("sys_contentid",
                PSWSSearchField.OP_ATTR_IN, inClause.toString(),
@@ -763,61 +754,45 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
 
          // now that we have all the urls for the content editors, now we
          // make a request for each search
-         ArrayList<Element> retElems = new ArrayList<Element>();
+         ArrayList<Element> retElems = new ArrayList<>();
 
 
-         if (ms_logger.isDebugEnabled())
-         {
-            ms_logger.debug("contentTypeIdSet = " + contentTypeIdSet);
-         }
-         
-         Iterator ctIter = contentTypeIdSet.iterator();
-         while (ctIter.hasNext())
-         {
-            Long typeId = (Long) ctIter.next();
-            String contentTypeUrl = mgr.getTypeEditorUrl(typeId.longValue());
 
-            if (ms_logger.isDebugEnabled())
-            {
-               ms_logger.debug("Search typeId(" + typeId + "), url = " 
-                  + contentTypeUrl);
-            }
-            
-            if (contentTypeUrl == null)
-            {
+         log.debug("contentTypeIdSet = {}" , contentTypeIdSet);
+
+         for (Long typeId : contentTypeIdSet) {
+            String contentTypeUrl = mgr.getTypeEditorUrl(typeId);
+
+
+            log.debug("Search typeId({}), url ={} ", typeId
+                    , contentTypeUrl);
+
+
+            if (contentTypeUrl == null) {
                throw new PSException(
-                  IPSWebServicesErrors.WEB_SERVICE_INVALID_SEARCH_CONTENTTYPE,
-                  typeId.toString());
+                       IPSWebServicesErrors.WEB_SERVICE_INVALID_SEARCH_CONTENTTYPE,
+                       typeId.toString());
             }
-            
+
             Document doc = null;
 
-            try
-            {
-               doc = processInternalRequestEx(request, 
-                  contentTypeUrl, false);
-               
-               if (ms_logger.isDebugEnabled())
-               {
-                  ms_logger.info("typeId(" + typeId + "), doc = "
-                     + PSXmlDocumentBuilder.toString(doc));
-               }
-            }
-            catch (PSException ex)
-            {
+            try {
+               doc = processInternalRequestEx(request,
+                       contentTypeUrl, false);
+
+               log.debug("typeId({}), doc = {}", typeId, PSXmlDocumentBuilder.toString(doc));
+            } catch (PSException ex) {
                PSConsole.printMsg("WSSearchHandler",
-                  "Exception, Source CE Url: " + contentTypeUrl
-                     + "\nMessage: " + ex.getMessage());
+                       "Exception, Source CE Url: " + contentTypeUrl
+                               + "\nMessage: " + ex.getMessage());
 
                continue;
             }
 
-            if (null != doc)
-            {
+            if (null != doc) {
                Element tmp = doc.getDocumentElement();
                tmp = PSXMLDomUtil.getFirstElementChild(tmp);
-               while (tmp != null)
-               {
+               while (tmp != null) {
                   retElems.add(tmp);
                   tmp = PSXMLDomUtil.getNextElementSibling(tmp);
                }
@@ -852,11 +827,10 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
             count++;
          }
 
-         if (ms_logger.isDebugEnabled()) 
-         {
-            ms_logger.debug("start = " + start + "  end = " + end + "count = "
-               + (count - 1));
-         }
+
+         log.debug("start = {}  end = {} count = {}",start,end,
+               (count - 1));
+
       }
       
       // parse the result doc
@@ -887,7 +861,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       {
          PSRelationshipProcessor rp = PSRelationshipProcessor.getInstance();
          topFolderId = rp.getIdByPath(
-            PSRelationshipProcessorProxy.RELATIONSHIP_COMPTYPE, 
+            RELATIONSHIP_COMPTYPE,
             searchParams.getFolderPathFilter(),
             PSServerFolderProcessor.FOLDER_RELATE_TYPE);          
       }
@@ -913,7 +887,6 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     *           obtain user name and role information 
     * @param searchResponse the search response
     */
-   @SuppressWarnings("unchecked")
    private void handleFolderPermissions(PSRequest request,
          PSWSSearchResponse searchResponse)
    {
@@ -921,7 +894,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
             "-1");
       Iterator<IPSSearchResultRow> riter = searchResponse.getRows();
       PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
-      List<PSLocator> folderids = new ArrayList<PSLocator>();
+      List<PSLocator> folderids = new ArrayList<>();
       while (riter.hasNext())
       {
          IPSSearchResultRow row = riter.next();
@@ -937,7 +910,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
 
       IPSRequestContext ctx = new PSRequestContext(request);
       Map<Integer,PSComponentSummary> summap = 
-         new HashMap<Integer,PSComponentSummary>();
+         new HashMap<>();
       try
       {
          PSComponentSummaries sums = proc.getComponentSummaries(folderids
@@ -951,7 +924,8 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       }
       catch (PSCmsException e)
       {
-         ms_logger.error("Couldn't load folder information", e);
+         log.error("Couldn't load folder information: {}", e.getMessage());
+         log.debug(e);
       }
       
       // Get permissions and set
@@ -1010,7 +984,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
             }
          }
 
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          Iterator<IPSSearchResultRow> riter = searchResponse.getRows(); 
          while(riter.hasNext())
          {
@@ -1071,16 +1045,19 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       }
       catch (NumberFormatException e)
       {
-         ms_logger.error("One or more bad state or workflow ids " +
-                "were found - this should be impossible");
+         log.error("One or more bad state or workflow ids " +
+                "were found - this should be impossible: {}", e.getMessage());
+         log.debug(e);
       }
       catch (PSSystemException e)
       {
-         ms_logger.error("Problem while computing assignment type", e);
+         log.error("Problem while computing assignment type: {}", e.getMessage());
+         log.debug(e);
       }
       catch (PSInternalRequestCallException e)
       {
-         ms_logger.error("Problem retrieving community info");
+         log.error("Problem retrieving community info: {}", e.getMessage());
+         log.debug(e);
       }
       finally
       {
@@ -1209,7 +1186,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       while (entries.hasNext())
       {
          PSSearchResult result = (PSSearchResult) entries.next();
-         Integer key = new Integer(result.getKey().getId());
+         Integer key = result.getKey().getId();
          if (!allowedIds.contains(key))
             entries.remove();
       }
@@ -1231,7 +1208,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       String fieldValue = fieldDef.getValue();
       int operator = fieldDef.getOperatorEnum().getOrdinal();
 
-      Collection<String> retList = new ArrayList<String>();
+      Collection<String> retList = new ArrayList<>();
 
       String id = fieldValue;
       if (operator == PSWSSearchField.OP_ATTR_IN)
@@ -1262,12 +1239,8 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * @param parent The parent document to add the response element to, assumed
     *           not <code>null</code> and it will already contain the correct
     *           base element for the response
-    * 
-    * @throws PSException
     */
-   @SuppressWarnings("unused") 
    void internalSearchListAction(PSRequest request, Document parent)
-      throws PSException
    {
       Element root = parent.getDocumentElement();
       PSApplicationHandler ah = PSServer
@@ -1281,15 +1254,12 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          List datasets = app.getDataSets();
          if (datasets != null && !datasets.isEmpty())
          {
-            Iterator resIter = datasets.iterator();
-            while (resIter.hasNext())
-            {
-               PSDataSet dataset = (PSDataSet) resIter.next();
-               if (dataset.getPipe() instanceof PSQueryPipe)
-               {
+            for (Object o : datasets) {
+               PSDataSet dataset = (PSDataSet) o;
+               if (dataset.getPipe() instanceof PSQueryPipe) {
                   Element el = parent.createElement(EL_INTERNALSEARCH);
                   Text name = parent.createTextNode(dataset.getRequestor()
-                        .getRequestPage());
+                          .getRequestPage());
                   el.appendChild(name);
 
                   root.appendChild(el);
@@ -1307,12 +1277,9 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * @param parent The parent document to add the response element to, may not
     *           be <code>null</code> and should already contain the correct
     *           base element for the response
-    * 
-    * @throws PSException
+    *
     */
-   @SuppressWarnings("unused") 
    void searchConfigurationAction(PSRequest request, Document parent)
-         throws PSException
    {
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
@@ -1377,10 +1344,9 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          List searchResultList, PSWSSearchResponse searchResponse)
          throws PSException
    {
-      if (ms_logger.isDebugEnabled())
-      {
-         ms_logger.debug("retDoc(I)=\n" + PSXmlDocumentBuilder.toString(retDoc));
-      }      
+
+         log.debug("retDoc(I)=\n {}" , PSXmlDocumentBuilder.toString(retDoc));
+
 
       // substitute relevancy
       if (searchResultList != null)
@@ -1408,7 +1374,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       if (outRows == null)
       {
          //If extensions return null make sure we create an empty list.
-         outRows = new ArrayList<IPSSearchResultRow>();
+         outRows = new ArrayList<>();
       }
       searchResponse.setRows(outRows);
 
@@ -1424,10 +1390,9 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       PSXmlDocumentBuilder.replaceRoot(retDoc, 
          responseDoc.getDocumentElement());
 
-      if (ms_logger.isDebugEnabled())
-      {
-         ms_logger.debug("retDoc(A)=\n" + PSXmlDocumentBuilder.toString(retDoc));
-      }      
+
+      log.debug("retDoc(A)=\n {}" , PSXmlDocumentBuilder.toString(retDoc));
+
    }
 
    /**
@@ -1452,23 +1417,20 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     *            not be extracted for any reason.
     */
    @SuppressWarnings("unchecked")
-   private List<IPSSearchResultRow> runResultProcessingExtensions(
+   private static List<IPSSearchResultRow> runResultProcessingExtensions(
       PSRequest request, List<IPSSearchResultRow> rowList)
          throws PSNotFoundException, PSExtensionException,
          PSDataExtractionException, PSExtensionProcessingException
    {
       PSExecutionData data = new PSExecutionData(null, null, request);
-      if (ms_extensionRunners == null)
-         ms_extensionRunners = buildExtensionRunners();
+      if (extensionRunners == null)
+         extensionRunners = buildExtensionRunners();
 
-      Iterator runners = ms_extensionRunners.iterator();
-      while (runners.hasNext())
-      {
-         PSExtensionRunner runner = (PSExtensionRunner) runners.next();
-         rowList = runner.runSearchResultProcessor(data, rowList);
+      for (PSExtensionRunner extensionRunner : extensionRunners) {
+         rowList = extensionRunner.runSearchResultProcessor(data, rowList);
          //If the extension returned null, make sure you create an empty list
          if (rowList == null)
-            rowList = new ArrayList<IPSSearchResultRow>();
+            rowList = new ArrayList<>();
          /*
           * If the rowList is empty, run no more extensions
           */
@@ -1490,24 +1452,19 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * @throws PSNotFoundException if the extension could not be located in the
     *            server class path.
     */
-   @SuppressWarnings("unchecked")
-   private List buildExtensionRunners() throws PSNotFoundException,
+   private static List<PSExtensionRunner> buildExtensionRunners() throws PSNotFoundException,
          PSExtensionException
    {
-      List runners = new ArrayList();
+      List<PSExtensionRunner> runners = new ArrayList<>();
       IPSExtensionManager manager = PSServer.getExtensionManager(null);
       PSExtensionRunner runner = null;
       PSServerConfiguration conf = PSServer.getServerConfiguration();
       PSSearchConfig searchConfig = conf.getSearchConfig();
-      Iterator extensions = searchConfig.getSearchResultProcessingExtensions()
-            .iterator();
-      while (extensions.hasNext())
-      {
-         PSExtensionCall call = (PSExtensionCall) extensions.next();
+      for (Object o : searchConfig.getSearchResultProcessingExtensions()) {
+         PSExtensionCall call = (PSExtensionCall) o;
          IPSExtension extension = manager.prepareExtension(call
-               .getExtensionRef(), null);
-         if (extension instanceof IPSSearchResultsProcessor)
-         {
+                 .getExtensionRef(), null);
+         if (extension instanceof IPSSearchResultsProcessor) {
             runner = PSExtensionRunner.createRunner(call, extension);
             runners.add(runner);
          }
@@ -1532,12 +1489,10 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       // build map of contentid to relvancy as strings to avoid walking list
       // many times
       Map resultMap = new HashMap(searchResults.size());
-      Iterator results = searchResults.iterator();
-      while (results.hasNext())
-      {
-         PSSearchResult result = (PSSearchResult) results.next();
+      for (Object searchResult : searchResults) {
+         PSSearchResult result = (PSSearchResult) searchResult;
          resultMap.put(String.valueOf(result.getKey().getId()), String
-               .valueOf(result.getRelevancy()));
+                 .valueOf(result.getRelevancy()));
       }
 
       // now walk rows and set relevancy
@@ -1816,14 +1771,14 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     *            interpreted as a content type id (or list of ids).
     */
    private Collection<Long> getContentTypesForField(PSRequest request,
-         long allTypes[], PSWSSearchField fieldDef)
-         throws PSInternalRequestCallException, PSException
+                                                    long[] allTypes, PSWSSearchField fieldDef)
+         throws PSException
    {
       String fieldName = fieldDef.getName();
       String fieldValue = fieldDef.getValue();
       int operator = fieldDef.getOperatorEnum().getOrdinal();
 
-      Collection<Long> retList = new ArrayList<Long>();
+      Collection<Long> retList = new ArrayList<>();
       if (fieldName.equals(SYS_CONTENTTYPEID) && 
          (fieldDef.getExternalOperator().length() == 0 && 
          (operator == PSWSSearchField.OP_ATTR_IN || 
@@ -1864,15 +1819,12 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       }
       else
       {
-         for (int i = 0; i < allTypes.length; i++)
-         {
-            long typeId = allTypes[i];
+         for (long typeId : allTypes) {
             PSItemDefManager mgr = PSItemDefManager.getInstance();
             String path = mgr.getTypeEditorUrl(typeId);
             PSInternalRequest iReq = PSServer.getInternalRequest(path, request,
-                  null, true);
-            if (iReq == null)
-            {
+                    null, true);
+            if (iReq == null) {
                /*
                 * This means the content editor has shut down since the allTypes
                 * list was generated. So just skip this one.
@@ -1880,8 +1832,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
                continue;
             }
             IPSInternalRequestHandler rh = iReq.getInternalRequestHandler();
-            if (rh != null && rh instanceof PSContentEditorHandler)
-            {
+            if ( rh instanceof PSContentEditorHandler) {
                PSContentEditorHandler ceh = (PSContentEditorHandler) rh;
                PSContentEditor ce = ceh.getContentEditor();
                PSContentEditorPipe cePipe = (PSContentEditorPipe) ce.getPipe();
@@ -1889,10 +1840,9 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
                // check the merged field set first, if not found
                // then check the read only fields of the system
                if (inFieldSet(ceMapper.getFieldSet(), fieldName, false)
-                     || inFieldSet(PSServer.getContentEditorSystemDef()
-                           .getFieldSet(), fieldName, true))
-               {
-                  retList.add(new Long(typeId));
+                       || inFieldSet(PSServer.getContentEditorSystemDef()
+                       .getFieldSet(), fieldName, true)) {
+                  retList.add(typeId);
                }
             }
          }
@@ -1932,7 +1882,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          else
             ms_restrictContentToCommunity = Boolean.FALSE;
       }
-      return ms_restrictContentToCommunity.booleanValue();
+      return ms_restrictContentToCommunity;
    }
 
    /**
@@ -1993,7 +1943,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * in {@link #runResultProcessingExtensions(PSRequest, List)}, never
     * <code>null</code> after that.
     */
-   private static List ms_extensionRunners = null;
+   private static List<PSExtensionRunner> extensionRunners = null;
 
    /**
     * Constants for XML elements/attributes defined in the schema
@@ -2041,7 +1991,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
     * Iterator for a delimited list of values formated for an external search
     * with an "in" operator.
     */
-   private class PSExternalInValuesIterator implements Iterator<String>
+   private static class PSExternalInValuesIterator implements Iterator<String>
    {
       /**
        * Construct the iterator
@@ -2068,6 +2018,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
          return next;
       }
 
+      @Override
       public void remove()
       {
          throw new UnsupportedOperationException("remove not supported");
@@ -2096,7 +2047,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
        * Used to walk the string supplied during construction to return values.
        * never <code>null</code> or modified after construction.
        */
-      private StringTokenizer mi_toker;
+      private final StringTokenizer mi_toker;
       
       /**
        * The next value to return, modified by calls to {@link #getNext()}, 
@@ -2108,5 +2059,5 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
    /**
     * Commons logger
     */
-    private static final Logger ms_logger = LogManager.getLogger(PSSearchHandler.class);
+    private static final Logger log = LogManager.getLogger(PSSearchHandler.class);
 }

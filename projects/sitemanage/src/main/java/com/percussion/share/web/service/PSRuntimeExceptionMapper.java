@@ -29,10 +29,8 @@ import com.percussion.share.service.exception.PSErrorUtils;
 import com.percussion.share.validation.PSErrors;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.util.PSSiteManageBean;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import javax.inject.Singleton;
 import javax.ws.rs.Produces;
@@ -75,9 +73,9 @@ public class PSRuntimeExceptionMapper extends PSAbstractExceptionMapper<RuntimeE
         }
         else {
 
-            log.error(ERROR_MESSAGE + PSExceptionUtils.getMessageForLog(exception));
+            log.error("{} {}",ERROR_MESSAGE,PSExceptionUtils.getMessageForLog( exception));
 
-            log.debug(exception);
+            log.debug(PSExceptionUtils.getMessageForLog(exception),exception);
         }
         
         PSErrors errors = PSErrorUtils.createErrorsFromException(exception);

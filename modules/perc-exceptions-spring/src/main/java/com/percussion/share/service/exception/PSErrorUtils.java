@@ -29,7 +29,6 @@ import com.percussion.share.validation.PSErrors;
 import com.percussion.share.validation.PSErrors.PSObjectError;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
-import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 
@@ -85,8 +84,6 @@ public class PSErrorUtils
             Validate.notNull(errors);
             PSObjectError oe = errors.getGlobalError();
             setMessage(oe.getDefaultMessage());
-            //setStackTrace(cause.getStackTrace());
-            //initCause(cause.getCause());
         }
 
         @Override

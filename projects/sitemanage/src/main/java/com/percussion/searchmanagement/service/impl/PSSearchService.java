@@ -88,6 +88,12 @@ import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 @Component("searchService")
 public class PSSearchService implements IPSSearchService
 {
+    /**
+     * TODO:  This service needs refactored to not use the Web Services API for calling the backend search
+     * it should just be calling the spring service instead.  The way it is coded now it is interacting with the
+     * backend search over the wire which is not smart as it is running in the same web app.
+     */
+
 
     @Autowired
     IPSPageDaoHelper ipsPageDaoHelper;
@@ -168,15 +174,16 @@ public class PSSearchService implements IPSSearchService
         }
         catch (NumberFormatException nfe)
         {
-            String errorMessage = "Error occurred while trying to parse the sys_contentid";
-            log.error(errorMessage, nfe);
-            throw new PSSearchServiceException(errorMessage, nfe);
+
+            log.error("Error occurred while trying to parse the sys_contentid: {}", nfe.getMessage());
+            log.debug(nfe);
+            throw new PSSearchServiceException(nfe);
         }
         catch (Exception e)
         {
-            String errorMessage = "Error occurred while trying to perform a full text search";
-            log.error(errorMessage, e);
-            throw new PSSearchServiceException(errorMessage, e);
+            log.error("Error occurred while trying to perform a full text search: {}", e.getMessage());
+            log.debug(e);
+            throw new PSSearchServiceException(e);
         }
     }
 
@@ -204,8 +211,7 @@ public class PSSearchService implements IPSSearchService
             IPSGuid myGuid = PSGuidUtils.makeGuid(itemEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
             if (folderHelper.getParentFolderId(myGuid, false) == null)
             {
-                log.debug("Item (id = " + itemEntry.getContentId() + ") is not in a folder.  It will not be "
-                        + "included in the search results.");
+                log.debug("Item (id = {}) is not in a folder.  It will not be included in the search results.",itemEntry.getContentId());
                 continue;
             }
             
@@ -298,22 +304,21 @@ public class PSSearchService implements IPSSearchService
             for(Integer contentID:contentIdList){
 
                 if(!recycleService.isInRecycler(contentID.toString()))
-                newContentIdList.add(contentID);
-                                                 }
+                    newContentIdList.add(contentID);
+            }
 
             return newContentIdList;
         }
         catch (NumberFormatException nfe)
         {
-            String errorMessage = "Error occurred while trying to parse the sys_contentid"; 
-            log.error(errorMessage, nfe);
-            throw new PSSearchServiceException(errorMessage, nfe);
+            log.error("Error occurred while trying to parse the sys_contentid: {}", nfe.getMessage());
+            log.debug(nfe);
+            throw new PSSearchServiceException(nfe);
         }
         catch (Exception e)
         {
-            String errorMessage = "Error occurred while trying to perform a full text search";
-            log.error(errorMessage, e);
-            throw new PSSearchServiceException(errorMessage, e);
+            log.error("Error occurred while trying to perform a full text search: {}", e.getMessage());
+            throw new PSSearchServiceException( e);
         }
         
     }

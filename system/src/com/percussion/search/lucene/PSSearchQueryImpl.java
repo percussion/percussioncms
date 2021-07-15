@@ -128,7 +128,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
             }
             msg+=". The content might not have been indexed yet." +
                   " Returning empty results.";
-            ms_log.info(msg);
+            log.info(msg);
             return searchResults;
          }
 
@@ -284,14 +284,14 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
                IndexReader ir = getIndexReader(ctype.getPart());
                if(ir == null)
                {
-                  ms_log.debug("{}",MessageFormat.format(msg,args));
+                  log.debug("{}",MessageFormat.format(msg,args));
                   continue;
                }
                isList.add(ir);
             }
             catch (Exception e)
             {
-               ms_log.debug(MessageFormat.format(msg,args));
+               log.debug(MessageFormat.format(msg,args));
             }
          }
 
@@ -328,7 +328,7 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
          if (!f.exists() || !f.isDirectory()) {
             // Not having a index folder for a given content type is not an error
             // Log it
-            ms_log.debug(
+            log.debug(
                     "No index directory exists for the supplied content type id {}. Ignoring it in search.",
                     ctypeId);
             return null;
@@ -494,6 +494,6 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
    /**
     * Reference to log for this class
     */
-   private static final Logger ms_log = LogManager.getLogger(PSSearchQueryImpl.class);
+   private static final Logger log = LogManager.getLogger(PSSearchQueryImpl.class);
 
 }
