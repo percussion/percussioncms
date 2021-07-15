@@ -14,11 +14,12 @@
     import="com.percussion.services.guidmgr.IPSGuidManager, com.percussion.services.guidmgr.PSGuidManagerLocator"
     import="com.percussion.services.guidmgr.data.PSGuid, com.percussion.services.sitemgr.IPSSite"
     import="com.percussion.services.sitemgr.IPSSiteManager,com.percussion.services.sitemgr.PSSiteManagerLocator"
-    import="com.percussion.utils.guid.IPSGuid, com.percussion.utils.types.PSPair, com.percussion.webservices.assembly.IPSAssemblyDesignWs, com.percussion.webservices.assembly.PSAssemblyWsLocator, com.percussion.webservices.content.IPSContentDesignWs, com.percussion.webservices.content.PSContentWsLocator, com.percussion.workbench.ui.editors.form.PSPublishWhenHelper.PublishWhenChoice, org.apache.log4j.Logger"
-    import="javax.servlet.jsp.JspWriter, java.io.IOException, java.util.ArrayList"
-    import="java.util.Collection, java.util.List"
-    import="java.util.Set"
+    import="com.percussion.utils.guid.IPSGuid, com.percussion.utils.types.PSPair, com.percussion.webservices.assembly.IPSAssemblyDesignWs, com.percussion.webservices.assembly.PSAssemblyWsLocator, com.percussion.webservices.content.IPSContentDesignWs, com.percussion.webservices.content.PSContentWsLocator, com.percussion.workbench.ui.editors.form.PSPublishWhenHelper.PublishWhenChoice, org.apache.logging.log4j.LogManager"
+    import="org.apache.logging.log4j.Logger, javax.servlet.jsp.JspWriter, java.io.IOException"
+    import="java.util.ArrayList, java.util.Collection"
+    import="java.util.List"
 %>
+<%@ page import="java.util.Set" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 
@@ -32,7 +33,7 @@
 </head>
 <body>
 <%
-Logger log = Logger.getLogger("psoDispatchTemplateGenerator"); 
+Logger log = LogManager.getLogger("psoDispatchTemplateGenerator");
 IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
 IPSAssemblyService asvc = PSAssemblyServiceLocator.getAssemblyService();
 IPSSiteManager siteSvc = PSSiteManagerLocator.getSiteManager();
@@ -217,7 +218,8 @@ public void printSiteList(IPSSiteManager siteSvc , Logger logger, JspWriter out)
 		}
 		out.println("</select>");
 	}catch(IOException e){
-		logger.error(e.getLocalizedMessage(),e);		
+		logger.error("{}",e.getMessage());
+		logger.debug(e);
 	}
 	
 	//Spit out the available templates
