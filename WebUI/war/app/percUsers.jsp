@@ -163,7 +163,7 @@
     </div>
 </div>
 
-<div id="perc-users-import-users-dialog-fixed" class="perc-dialog">
+<div id="perc-users-import-users-dialog-fixed" class="perc-dialog" style="z-index:5500;">
     <div class="ui-dialog-content" style="height : 410px; overflow : hidden">
         <div id="perc-users-search">
       <span id="perc-users-search-label">
