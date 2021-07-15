@@ -24,6 +24,7 @@
   -->
 
 <Resources>
+  <file id="image_slider_font_awesome_css"  path="/web_resources/cm/css/fontawesome/css/all.css"  type="css" />
   <file type="css" path="/rx_resources/widgets/percImageSlider/css/percImageSlider.css" context="PREVIEW" id="percImageSliderPreview_style"/>
   <file type="css" path="/web_resources/widgets/imageSlider/css/percImageSlider.css" id="percImageSlider_style"/>
   <file id="slick_css"  path="/web_resources/widgets/imageSlider/css/slick.css"  type="css" >
