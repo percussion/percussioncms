@@ -2914,6 +2914,14 @@ class being loaded was ''{0}'', and the underlying exception was {1}.</seg>
             <seg>A required {0} parameter is missing. The missing parameter name is {1}.</seg>
          </tuv>
       </tu>
+      <tu tuid="16054">
+         <prop type="sectionname" xml:lang="en-us">System Resources</prop>
+         <note xml:lang="en-us">Use getInstance()</note>
+         <tuv xml:lang="en-us">
+            <seg>Use getInstance() method to get the singleton instance of this class.</seg>
+         </tuv>
+      </tu>
+
       <tu tuid="16301">
          <prop type="sectionname" xml:lang="en-us">System Resources</prop>
          <note xml:lang="en-us">Invalid port for remote process daemon.</note>
