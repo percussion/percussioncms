@@ -147,7 +147,7 @@
 							</td>
 							<td class="perc-input-td perc-slider-image-path-td">
 								<input readonly="readonly" id="perc-content-edit-imageInputField" data-perc-widget-event-source="imageSlider" data-perc-image-content-id="" data-perc-image-path-link-id="" type="text" name="imageInputField" class="datadisplay perc-slider-image-path"></input>
-								<input alt="Browse Images" id="perc-image-slider-browse-button" class="perc-select-button perc-image-field-select-button" type="button" for="perc-content-edit-imageInputField" value="&#xf002;"></input>
+								<input alt="Browse Images" id="perc-image-slider-browse-button" class="fa fa-search perc-select-button perc-image-field-select-button" type="button" for="perc-content-edit-imageInputField" value="&#xf002;"></input>
 							</td>
 							<td class="perc-input-td perc-slider-image-caption-td">
 								<input name="imageCaption" class="datadisplay perc-slider-image-caption" style="height: 15px;padding-top: 3px;padding-bottom: 5px;"></input>
@@ -157,7 +157,7 @@
 							</td>
 							<td class="perc-input-td perc-slider-image-link-td">
 								<input readonly="readonly" id="perc-content-edit-imageLinkField" data-perc-page-content-id="" data-perc-page-path-link-id="" type="text" name="imageLinkField" class="datadisplay perc-slider-image-link"></input>
-								<input alt="Browse Internal Pages" id="perc-image-slider-browse-button" class="perc-select-button perc-page-field-select-button" type="button" for="perc-content-edit-imageLinkField" value="&#xf002;"></input>
+								<input alt="Browse Internal Pages" id="perc-image-slider-browse-button" class="fa fa-search perc-select-button perc-page-field-select-button" type="button" for="perc-content-edit-imageLinkField" value="&#xf002;"></input>
 							</td>
 							<td class="perc-input-td perc-slider-image-external-link-td">
 								<input name="imageExternalLinkField" class="datadisplay perc-slider-image-external-link" style="height: 15px;padding-top: 3px;padding-bottom: 5px;" placeholder="https://www.percussion.com"></input>
