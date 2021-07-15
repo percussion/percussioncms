@@ -173,7 +173,8 @@ public class PSSiteimprove {
 				addSiteImproveTaskToPreExistingEditions(credentials.getSiteName());
 				String metadataKey = SITEIMPROVE_CREDENTIALS_BASE_KEY + credentials.getSiteName();
 				metadataService.save(new PSMetadata(metadataKey, jsonMap.toString()));
-				return Response.ok().build();
+				//CMS-8189 : Upgraded jquery unable to parse if response is empty string. Advisable to return "204 - No content" to avoid jquery parser error for json.
+				return Response.noContent().build();
 			} 
 			
 			return Response.status(Response.Status.UNAUTHORIZED).entity("Failed to validate credentials against siteImprove").build();
@@ -215,7 +216,8 @@ public class PSSiteimprove {
 			publishSettingsJSON.put("isSiteImproveEnabled", publishSettings.getIsSiteImproveEnabled());
 
 			metadataService.save(new PSMetadata(siteConfigKey, publishSettingsJSON.toString()));
-			return Response.ok().build();
+			//CMS-8189 : Upgraded jquery unable to parse if response is empty string. Advisable to return "204 - No content" to avoid jquery parser error for json.
+			return Response.noContent().build();
 		} catch (Exception e) {
 			String message = "Failed to save configuration settings for " + publishSettings.getSiteName() + " Exception is " + e.getMessage();
 			logger.error(message, e);
