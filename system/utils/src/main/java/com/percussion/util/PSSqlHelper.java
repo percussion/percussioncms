@@ -786,7 +786,8 @@ public class PSSqlHelper
          }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException e)
       {
-            log.debug("reflection to call "+JBOSS_WRAPPED_CLASS+".getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment",e);
+            log.error("reflection to call {}.getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment, Error: {}", JBOSS_WRAPPED_CLASS, e.getMessage());
+            log.debug(e.getMessage(), e);
       }
 
    }

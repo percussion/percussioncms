@@ -392,7 +392,7 @@ public class PSSQLStatement implements Statement
    protected void logElapsedTime()
    {
       m_timer.stop();
-      log.debug("SQL[" + m_currSQLExeCount + "]: " + m_timer.toString());
+      log.debug("SQL[{}]:, {} ",m_currSQLExeCount, m_timer.toString());
    }
    
    /**
@@ -407,8 +407,8 @@ public class PSSQLStatement implements Statement
       m_timer.start();
       m_currSQLExeCount = ++ms_sqlExeCount; 
       
-      log.debug("SQL[" + m_currSQLExeCount + "]: \n" + m_sqlStatement);
-      log.debug("\n" + m_additionalLogInfo.toString());
+      log.debug("SQL[{}]: \n,{}",m_currSQLExeCount, m_sqlStatement);
+      log.debug("\n{}", m_additionalLogInfo.toString());
       m_additionalLogInfo = new StringBuilder(); // flush the buffer
    }
    

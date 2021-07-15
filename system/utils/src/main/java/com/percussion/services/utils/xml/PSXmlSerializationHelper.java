@@ -576,8 +576,10 @@ public class PSXmlSerializationHelper
       {
          // Find underlying cause Exception.
          if (e.getCause() != null) {
-            log.error("Cause=",e.getCause());
+            log.error("Cause= ",e.getCause());
          }
+         log.error(e.getMessage(), e);
+         log.debug(e.getMessage(), e);
          throw new RuntimeException("Error copying bean properties",e);
       }
    }
