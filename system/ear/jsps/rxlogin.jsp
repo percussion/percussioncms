@@ -57,6 +57,8 @@
 	String autoComplete = "";
 	if(loginComplete != null && loginComplete.equalsIgnoreCase("off") ){
 		autoComplete = "autocomplete='off'";
+	}else{
+		autoComplete = "autocomplete='on'";
 	}
 	PSLocaleManager locManager = PSLocaleManager.getInstance();
 %>
