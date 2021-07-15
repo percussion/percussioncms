@@ -22,6 +22,10 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
+#perc-image-slider-browse-button.fa{
+    font-size: 10px !important;
+}
+
 .percImageSlider-empty-style
 {
     height: 100px;
@@ -177,7 +181,7 @@
 }
 
 input#perc-image-slider-browse-button {
-    font-family: FontAwesome !important;
+    font-family: 'Font Awesome 5 Free' !important;
     height: 25px;
 }
 
