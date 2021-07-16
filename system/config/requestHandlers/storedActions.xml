@@ -667,7 +667,7 @@
             sys_variantid - variantid of the page for active assembly, caller sends this as HTML parameter.
          -->
    <ActionSet name="checkoutaadoc">
-      <Action ignoreError="yes" name="checkout">
+      <Action name="checkout" ignoreError="yes">
          <PSXParam name="sys_command">
             <DataLocator>
                <PSXTextLiteral id="0">

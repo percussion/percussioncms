@@ -195,7 +195,10 @@ public abstract class PSFileDataRepository<T>
         }
         catch (IOException | PSValidationException | PSXmlFileDataRepository.PSXmlFileDataRepositoryException e)
         {
+            log.error("{}", e.getMessage());
+            log.debug(e);
             throw new PSDataServiceException(e);
+
         }
         
         initialized = true;
