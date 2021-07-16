@@ -66,7 +66,7 @@ public class PSXmlSerializationHelper
    /**
     * Static for logging
     */
-   private static final Logger ms_log = LogManager.getLogger(PSXmlSerializationHelper.class);
+   private static final Logger log = LogManager.getLogger(PSXmlSerializationHelper.class);
 
    /**
     * Static used for method lookup
@@ -372,7 +372,8 @@ public class PSXmlSerializationHelper
                   }
                   catch (Exception e)
                   {
-                     ms_log.error("Could not instantiate ", e);
+                     log.error("Could not instantiate, Error: {}", e.getMessage());
+                     log.debug(e.getMessage(), e);
                      throw new RuntimeException(e);
                   }
                }
@@ -575,8 +576,9 @@ public class PSXmlSerializationHelper
       {
          // Find underlying cause Exception.
          if (e.getCause() != null) {
-            ms_log.error("Cause=",e.getCause());
+            log.error("Cause= {}, Error: {}",e.getCause(), e.getMessage());
          }
+         log.debug(e.getMessage(), e);
          throw new RuntimeException("Error copying bean properties",e);
       }
    }
