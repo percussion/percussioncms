@@ -27,9 +27,9 @@
     $.perc_social_config_gadget = {
         showConfigurationWindow: showConfigurationWindow
     };
-    
+
     var _dialog;
-    
+
     function showConfigurationWindow(callback) {
         $.PercLicenseService.getModuleLicense('REDIRECT', function(status, data) {
             if (status) {
@@ -38,7 +38,7 @@
                     type: 'CM1',
                     token: data.moduleLicense.handshake
                 };
-                
+
                 var url = data.moduleLicense.uiProvider + '/configure/?auth=' + JSON.stringify(clientIdentity);
 
                 var dialogContent = "<div>";
@@ -46,16 +46,15 @@
                 dialogContent += "    <p>Your browser doesn't support iframes.</p>";
                 dialogContent += "  </iframe>";
                 dialogContent += "</div>";
-                dialogContent = $(dialogContent);
-                
-                _dialog = percJQuery(dialogContent).dialog({
+                dialogContent = percJQuery(dialogContent);
+
+                _dialog = dialogContent.perc_dialog({
                     'id' : 'perc-website-config-gadget-dialog',
                     'dialogClass': 'perc-website-config-gadget-frame',
-                    'width': 1020,
-                    'height': 696,
-                    'resizable': false,
+                    'width': 380,
+                    'height': 450,
+                    'resizable': true,
                     'modal': true,
-                    'zIndex': 9500,
                     'title' : 'Website Configuration',
                     close: function () {
                         _dialog.empty();
@@ -72,7 +71,7 @@
 
                 parent.window.addEventListener('message', messageEventHandler, false);
             }
-            
+
             callback(status);
         });
     }
