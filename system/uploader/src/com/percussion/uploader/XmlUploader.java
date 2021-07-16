@@ -677,8 +677,7 @@ public class XmlUploader
             InputStream errResponse = null;
             stats.docsProcessed++;
 
-            log.info("\nProcessing " + sources[i].getDisplayName()
-                        + "...\n");
+            log.info("\nProcessing {}...\n", sources[i].getDisplayName());
             // variables used outside try block
             boolean isResponseOk = false;
             Exception exc = null;
