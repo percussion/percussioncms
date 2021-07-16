@@ -294,7 +294,7 @@
 	<xsl:template match="Control[@name='percQueryControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
 		<script >
 	<![CDATA[
-			$(document).ready(function(){
+			$(function(){
 
 				$(".hasDatepicker").addClass('datadisplay');
 
@@ -313,7 +313,7 @@
 
 				// Fill templates field
 
-				if (splitPath[0] != undefined && splitPath[0] != "")
+				if (typeof splitPath[0] !== "undefined")
 				{
 					$.PercServiceUtils.makeJsonRequest(
 							$.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],

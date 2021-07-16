@@ -72,7 +72,7 @@
 				<script> 
                    (function($)
                    {
-                        $(document).ready(function(){
+                        $(function(){
                             
                              if(!$("#perc-content-edit-metadata-link").hasClass('noClick')) {
                                 $(".perc-content-edit-data").hide();
