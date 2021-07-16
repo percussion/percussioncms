@@ -843,7 +843,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 .perc-step-config-button
 {
     display:inline-block;
-    background:url(../images/images/buttonConfigurePage.gif);
+    background:url(../images/images/buttonConfigurePage.png);
     background-repeat:none;
     width:21px;
     height:22px;
@@ -903,7 +903,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 
 .perc-step-delete-button
 {
-    background:url(../images/images/buttonDeletePage.gif);
+    background:url(../images/images/buttonDeletePage.png);
     background-repeat:none;
     width:20px;
     height:22px;

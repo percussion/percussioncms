@@ -44,8 +44,8 @@
             ADD_BUTTON_IMAGE: "buttonAddPage2.gif",
             /* These 2 buttons are designed to go together, config on the left and
                delete on the right. */
-            CONFIG_BUTTON_IMAGE: "buttonConfigurePage.gif",
-            DELETE_BUTTON_IMAGE: "buttonDeletePage.gif",
+            CONFIG_BUTTON_IMAGE: "buttonConfigurePage.png",
+            DELETE_BUTTON_IMAGE: "buttonDeletePage.png",
             /* This image is identical to CONFIG_BUTTON_IMAGE, except it is designed to
                be by itself. */
             CONFIG_BUTTON_IMAGE_STANDALONE: "buttonConfigStandalone.png",
