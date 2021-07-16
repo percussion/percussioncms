@@ -1418,6 +1418,6 @@ public static final String ROLE_DELIMITER = ",";
     /**
      * The logger
      */
-    private static final Logger ms_log = LogManager.getLogger(PSWorkflowUtilsBase.class.getName());
+    private static final Logger log = LogManager.getLogger(PSWorkflowUtilsBase.class.getName());
 }
 

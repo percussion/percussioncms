@@ -23,7 +23,6 @@
  */
 package com.percussion.comments.service.impl;
 
-import com.percussion.category.dao.impl.PSCategoryDao;
 import com.percussion.comments.data.PSComment;
 import com.percussion.comments.data.PSCommentIds;
 import com.percussion.comments.data.PSCommentList;
@@ -57,8 +56,6 @@ import net.sf.json.JSONObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -293,7 +290,7 @@ public class PSCommentsService implements IPSCommentsService
                 }
             } catch (Exception e) {
                 String serviceUrl = server.getUrl() + COMMENT_GET_COMMENTS_ON_PAGE;
-                log.warn("Error getting all comments data from processor at : " + serviceUrl, e);
+                log.warn("Error getting all comments data from processor at : {}", serviceUrl, e);
                 throw new WebApplicationException(e, Response.serverError().build());
             }
 
@@ -328,27 +325,29 @@ public class PSCommentsService implements IPSCommentsService
             // deletes
             if (!CollectionUtils.isEmpty(commentModeration.getDeletes()))
             {
-                log.info("Deleting comments in the delivery server: " + server.getUrl());
+                log.info("Deleting comments in the delivery server: {}", server.getUrl());
                 moderateCommentsOnDeliveryServer(server, COMMENT_DELETE_PATH, commentModeration.getDeletes());
             }
 
             // approves
             if (!CollectionUtils.isEmpty(commentModeration.getApproves()))
             {
-                log.info("Approving comments in the delivery server: " + server.getUrl());
+                log.info("Approving comments in the delivery server: {}", server.getUrl());
                 moderateCommentsOnDeliveryServer(server, COMMENT_APPROVE_PATH, commentModeration.getApproves());
             }
 
             // rejects
             if (!CollectionUtils.isEmpty(commentModeration.getRejects()))
             {
-                log.info("Rejecting comments in the delivery server: " + server.getUrl());
+                log.info("Rejecting comments in the delivery server: {}", server.getUrl());
                 moderateCommentsOnDeliveryServer(server, COMMENT_REJECT_PATH, commentModeration.getRejects());
             }
         }
         catch (Exception ex)
         {
-            log.error("There was an error in moderating comments in the delivery server: " + ex.getMessage());
+            log.error("There was an error in moderating comments in the delivery server. Error: {}", ex.getMessage());
+            log.debug(ex.getMessage(), ex);
+
             throw new WebApplicationException(ex, Response.serverError().build());
         }
     }
@@ -375,7 +374,8 @@ public class PSCommentsService implements IPSCommentsService
         // TODO: add more specific exception handlers. Can't right now because delivery tier hides them
         catch (Exception e)
         {
-            log.error("An unknown error occurred while retrieving the default moderation setting: ",e);
+            log.error("An unknown error occurred while retrieving the default moderation setting. Error: {}",e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new RuntimeException("An unknown error occurred while retrieving the default moderation setting");
         }
     }
@@ -403,7 +403,7 @@ public class PSCommentsService implements IPSCommentsService
             }
             else
             {
-                log.error("Unknown default moderation state: " + moderationState);
+                log.error("Unknown default moderation state: {}", moderationState);
                 throw new WebApplicationException(Response.serverError().build());
             }
         }
@@ -412,7 +412,9 @@ public class PSCommentsService implements IPSCommentsService
             String msg = "An error occurred while retrieving the default moderation setting.  "
                     + e.getLocalizedMessage();
 
-            log.error(msg);
+            log.error("{}, Error: {}", msg, e.getMessage());
+            log.debug(e.getMessage(), e);
+
             throw new RuntimeException(msg);
         }
     }
@@ -496,7 +498,7 @@ public class PSCommentsService implements IPSCommentsService
             // If something goes wrong while getting the page by path, just move
             // on writing
             // the error to the log.
-            log.warn("Error occurred while finding the page by path : " + fullPagePath, e);
+            log.warn("Error occurred while finding the page by path : {}", fullPagePath, e);
         }
 
         if (page == null)
@@ -566,7 +568,7 @@ public class PSCommentsService implements IPSCommentsService
         catch (Exception e)
         {
             String urlStr = server.getUrl() + url;
-            log.warn("Error getting all comments data from processor at : " + urlStr, e);
+            log.warn("Error getting all comments data from processor at : {}", urlStr, e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
 
