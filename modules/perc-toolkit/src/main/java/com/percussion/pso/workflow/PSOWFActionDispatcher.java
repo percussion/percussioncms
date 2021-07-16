@@ -9,15 +9,6 @@
  ******************************************************************************/
 package com.percussion.pso.workflow;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
@@ -32,6 +23,16 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 /**
  * This is the legacy version of the PSOWFActionDispatcher. 
@@ -99,9 +100,9 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
 
         int transitionId = wfContext.getTransitionID();
         int workflowId = wfContext.getWorkflowID();
-        log.debug("Content id: " + contentId);
-        log.debug("Workflow id: " + workflowId);
-        log.debug("Transition Id: " + transitionId);
+        log.debug("Content id: {}", contentId);
+        log.debug("Workflow id: {}", workflowId);
+        log.debug("Transition Id: {}", transitionId);
         //int contentType = 0;
         try
         {
@@ -109,16 +110,17 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
         }
         catch(Exception e)
         {            
-            log.error("WFActionDispatcher::performAction", e);
+            log.error("WFActionDispatcher::performAction", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         try
         {
             //Object actions[] = getWorkflowActions(contentType, transitionId);
         	List<String> actions = getWorkflowActions(workflowId, transitionId);
-            log.debug("found " + actions.size() + " actions to execute."); 
+            log.debug("found {} actions to execute.", actions.size());
             for(String action : actions)
             {
-                log.debug("Executing " + action + "... ");
+                log.debug("Executing {}..." , action);
                 IPSWorkflowAction wfaction = (IPSWorkflowAction)this.getExtension(action, 
                       IPSWorkflowAction.class.getName());
                 if(wfaction != null)
@@ -130,7 +132,8 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
         }
         catch(Exception nfx)
         {
-            log.error("WFActionDispatcher::performAction",nfx);
+            log.error("WFActionDispatcher::performAction, Error: {}",nfx.getMessage());
+            log.debug(nfx.getMessage(), nfx);
             throw new PSExtensionProcessingException("WFActionDispatcher::performAction", nfx);
         }
         log.debug("WFActionDispatcher::performAction done");
@@ -152,19 +155,17 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
                 for(StringTokenizer st = new StringTokenizer(sActions, ","); st.hasMoreTokens(); actions.add(st.nextToken()));
             } else
             {
-                log.error("Could not find property " + workflowId + ":" + transitionId + " in " + "rxconfig/Workflow/dispatcher.properties");
+                log.error("Could not find property {} : {} in rxconfig/Workflow/dispatcher.properties", workflowId, transitionId);
             }
         }
         catch(FileNotFoundException fex)
         {
-            log.error("Properties file not found: rxconfig/Workflow/dispatcher.properties", fex);
-            log.error(fex.getMessage());
+            log.error("Properties file not found: rxconfig/Workflow/dispatcher.properties, Error: {}", fex.getMessage());
             log.debug(fex.getMessage(), fex);
         }
         catch(IOException ex)
         {
-            log.error("Properties file could not be opened: rxconfig/Workflow/dispatcher.properties",ex);
-            log.error(ex.getMessage());
+            log.error("Properties file could not be opened: rxconfig/Workflow/dispatcher.properties, Error: {}",ex.getMessage());
             log.debug(ex.getMessage(), ex);
         }
         finally
@@ -187,12 +188,12 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
        while(itr.hasNext())
        {
           PSExtensionRef ref  = itr.next();
-          log.debug("found extension " + ref.getFQN()); 
+          log.debug("found extension {}", ref.getFQN());
           ext = extMgr.prepareExtension(ref, null);
-          log.debug("prepared extension " + ext.getClass().getCanonicalName()); 
+          log.debug("prepared extension {}", ext.getClass().getCanonicalName());
           return ext;
        }  
-       log.error("Extension name " + workflowActionName + " was not found "); 
+       log.error("Extension name {} was not found", workflowActionName);
        return ext;
     }
 

@@ -128,7 +128,7 @@ public class MultiSiteResolutionController extends ParameterizableViewController
       long tid = Long.parseLong(templateid);
       IPSGuid tguid = gmgr.makeGuid(tid,PSTypeEnum.TEMPLATE); 
       IPSAssemblyTemplate template = asm.loadTemplate(tguid, false); 
-      log.debug("loaded template " + template.getName() + " for id " + templateid);
+      log.debug("loaded template {} for id {}", template.getName(), templateid);
       return template; 
    }
 
