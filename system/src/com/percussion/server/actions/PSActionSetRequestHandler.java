@@ -46,17 +46,16 @@ import com.percussion.server.PSServerLogHandler;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * This class implements a loadable request handler for dispatching action set
@@ -90,11 +89,11 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
          throw new IllegalArgumentException(
             "extension manager may not be null" );
 
-      m_extMgr = extMgr;
+      this.extMgr = extMgr;
 
       // some day loadable handlers will have their own error handlers,
       // but today they piggy-back off the server's.
-      m_errorHandler = PSServer.getErrorHandler();
+      errorHandler = PSServer.getErrorHandler();
    }
 
 
@@ -102,62 +101,61 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
    public void init(Collection requestRoots, InputStream cfgFileIn)
       throws PSServerException
    {
-      if (requestRoots == null || requestRoots.size() == 0)
+      if (requestRoots == null || requestRoots.isEmpty())
          throw new IllegalArgumentException(
             "must provide at least one request root" );
 
       // validate that requestRoots contains only Strings
-      for (Iterator iter = requestRoots.iterator(); iter.hasNext();)
-      {
-         if (!(iter.next() instanceof String))
+      for (Object requestRoot : requestRoots) {
+         if (!(requestRoot instanceof String))
             throw new IllegalArgumentException(
-               "request roots collection may only contain String objects");
+                    "request roots collection may only contain String objects");
       }
-      m_requestRoots = requestRoots;
+      this.requestRoots = requestRoots;
 
-      m_actionSets = new HashMap();
+      actionSets = new HashMap<>();
       if (cfgFileIn != null)
       {
          try
          {
             // load the configuration file to construct map of action sets
             Document configDoc =
-               PSXmlDocumentBuilder.createXmlDocument( cfgFileIn, true );
+               PSXmlDocumentBuilder.createXmlDocument( cfgFileIn, false );
 
             Element root = configDoc.getDocumentElement();
             if (root != null)
             {
-               NodeList actionSets = root.getChildNodes();
-               for (int i = 0; i < actionSets.getLength(); i++)
+               NodeList as = root.getChildNodes();
+               for (int i = 0; i < as.getLength(); i++)
                {
-                  Node child = actionSets.item( i );
+                  Node child = as.item( i );
                   if (child instanceof Element)
                      try
                      {
                         PSActionSet actionSet =
                            new PSActionSet( (Element) child );
-                        if (m_actionSets.containsKey( actionSet.getName() ))
+                        if (this.actionSets.containsKey( actionSet.getName() ))
                            throw new PSActionSetException(
                               IPSServerErrors.ACTION_SET_DUPLICATE_NAME,
                               actionSet.getName() );
                         else
                         {
                            // ctor successful, init it
-                           actionSet.init( m_extMgr );
+                           actionSet.init(extMgr);
 
                            PSConsole.printMsg( HANDLER,
                               "Initialization completed: " +
                               actionSet.getName() );
 
                            // only add to the map when ctor and init succeed
-                           m_actionSets.put( actionSet.getName(), actionSet );
+                           this.actionSets.put( actionSet.getName(), actionSet );
                         }
                      } catch (Exception e)
                      {
                         // failure loading or initing a set -- not fatal
                         PSConsole.printMsg( HANDLER, "An action set could not" +
                         " be loaded because of an error and will be skipped. " +
-                        e.toString() );
+                        e.getMessage() );
                      }
                } // end of action set for loop
             }
@@ -174,7 +172,7 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
          {
             PSConsole.printMsg( HANDLER,
                "Failed to initialize action sets request handler: " +
-               e.toString() );
+               e.getMessage() );
          }
       }
 
@@ -191,7 +189,7 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
    // see IPSRootedHandler for documentation
    public Iterator getRequestRoots()
    {
-      return m_requestRoots.iterator();
+      return requestRoots.iterator();
    }
 
    /**
@@ -236,8 +234,8 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
       params.put( IPSHtmlParameters.SYS_CONTENTID, contentid );
 
       // request must be authenticated to access the cataloger resource
-      PSInternalRequest ir = PSServer.getInternalRequest( 
-         ms_catalogerAppRsrcName, request, params, false );
+      PSInternalRequest ir = PSServer.getInternalRequest(
+              catalogerAppRsrcName, request, params, false );
       if (ir != null)
       {
          try
@@ -283,8 +281,8 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
       {
          // unexpected error: the cataloging resource was not found
          throw new PSActionSetException( 
-            IPSServerErrors.ACTION_SET_MISSING_CATALOGER, 
-            ms_catalogerAppRsrcName );
+            IPSServerErrors.ACTION_SET_MISSING_CATALOGER,
+                 catalogerAppRsrcName);
       }
    }
 
@@ -309,7 +307,7 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
       
-      if (m_actionSets == null)
+      if (actionSets == null)
          throw new IllegalStateException(
             "Must call the init method before processing requests" );
           
@@ -318,45 +316,34 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
       {
          // determine which action set is requested
          String setName = request.getRequestPage( false );
-         if (!m_actionSets.containsKey( setName ))
+         if (!actionSets.containsKey( setName ))
             PSServerLogHandler.handleRequestHandlerNotFound( request );
          else
          {
             // determine which content editor to apply the action set to
             String ceUrl = getContentEditorURL( request );
-            if (ceUrl != null)
-            {
                // do the work
-               PSActionSet actionSet =
-                  (PSActionSet) m_actionSets.get( setName );
+               PSActionSet actionSet = actionSets.get( setName );
                actionSet.processRequest( ceUrl, this, request );
-            }
-            else
-            {
-               /* null from getContentEditorURL means a must authenticate
-                  response has been sent to requestor.  All other problems
-                  would have thrown an exception.
-                */
-            }
          }
       } catch (PSErrorException e)
       {
          PSLogError err = e.getLogError();
-         m_errorHandler.reportError( response, err );
+         errorHandler.reportError( response, err );
       } catch (PSException e)
       {
          // wrap the exception in a PSLogError so it can be returned
          PSLogError err = new PSUnknownProcessingError( 0,
             request.getUserSessionId(), e.getErrorCode(),
             e.getErrorArguments() );
-         m_errorHandler.reportError( response, err );
+         errorHandler.reportError( response, err );
       } catch (Exception e)
       {
          // wrap the exception in a PSLogError so it can be returned
          PSLogError err = new PSUnknownProcessingError( 0,
             request.getUserSessionId(), IPSServerErrors.EXCEPTION_NOT_CAUGHT,
             e.toString() );
-         m_errorHandler.reportError( response, err );
+         errorHandler.reportError( response, err );
       }
    }
 
@@ -381,12 +368,12 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
     * before a new login can be attempted. The count of failed logins is kept
     * in the user session.
     */
-   private static final int MAX_LOGIN_ATTEMPTS = 3;
+   public static final int MAX_LOGIN_ATTEMPTS = 3;
    
    /**
     * Name of the internal resource used to catalog content editor URLs.
     */ 
-   private static final String ms_catalogerAppRsrcName = 
+   private static final String catalogerAppRsrcName =
       "sys_psxContentEditorCataloger/getUrl.xml";
 
    /**
@@ -394,24 +381,24 @@ public class PSActionSetRequestHandler implements IPSLoadableRequestHandler
     * method, never <code>null</code> or empty after. Contains
     * <code>String</code> objects.
     */
-   private Collection m_requestRoots = null;
+   private Collection<String> requestRoots = null;
 
    /**
     * Reference to the server's extension manager. Used to process the actions'
     * extensions.  Never <code>null</code> after construction.
     */
-   private IPSExtensionManager m_extMgr;
+   private final IPSExtensionManager extMgr;
 
    /**
     * Maps a action set name (a <code>String</code>) to its object 
     * representation (a <code>PSActionSet</code>). Initialized in the 
     * <code>init</code> method and never <code>null</code> after that.
     */
-   private Map m_actionSets = null;
+   private Map<String,PSActionSet> actionSets = null;
 
    /**
     * The error handler for this request handler.  Never <code>null</code>
     * after construction.
     */
-   private PSErrorHandler m_errorHandler;
+   private PSErrorHandler errorHandler;
 }
