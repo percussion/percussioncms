@@ -32,8 +32,13 @@ import com.percussion.foldermanagement.service.IPSFolderService.PSWorkflowNotFou
 import com.percussion.pathmanagement.service.IPSPathService.PSPathNotFoundServiceException;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.data.PSLightWeightObject;
-
-import java.util.List;
+import com.percussion.share.data.PSLightWeightObjectList;
+import com.percussion.share.service.exception.PSValidationException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -48,14 +53,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import com.percussion.share.data.PSLightWeightObjectList;
-import com.percussion.share.service.exception.PSValidationException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 /**
  * Exposes the services provided by {@link PSFolderService} through a REST API,
@@ -151,25 +149,27 @@ public class PSFolderRestService
         }
         catch(PSWorkflowNotFoundException e)
         {
-            log.error(message, e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.status(Status.NOT_FOUND).entity(message + e.getMessage()).build();
         }
         catch(IllegalArgumentException e)
         {   
             // This means that either the workflow name or the path are empty.
-            log.error(message, e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.status(Status.BAD_REQUEST).entity(message + e.getLocalizedMessage()).build();
         }
         catch(PSPathNotFoundServiceException | LoadException e)
         {
             // This means that the required path could not be found.
-            log.error(message);
-            log.debug(e.getMessage(),e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.status(Status.NOT_FOUND).entity(message + e.getLocalizedMessage()).build();
         } catch (Exception e)
         {
-            log.error(message);
-            log.debug(e.getMessage(),e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.serverError().entity(message + e.getLocalizedMessage()).build();
         }
     }
@@ -195,24 +195,28 @@ public class PSFolderRestService
             return Response.noContent().build();
         }
         catch(PSWorkflowNotFoundException e)
-        {   
-            log.error(message, e);
+        {
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.status(Status.NOT_FOUND).entity(message + e.getMessage()).build();
         }
         catch (PSWorkflowAssignmentInProgressException e)
         {
-           log.error(message, e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.status(Status.CONFLICT).entity(e.getLocalizedMessage()).build();
         }
         catch(IllegalArgumentException e)
         {   
             // This means that is empty or does not exists.
-            log.error(message, e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.status(Status.BAD_REQUEST).entity(message + e.getLocalizedMessage()).build();
         }
         catch (Exception e)
         {
-            log.error(message, e);
+            log.error("{}, Error: {}", message, e.getMessage());
+            log.debug(e.getMessage(), e);
             return Response.serverError().entity(message + e.getLocalizedMessage()).build();
         }
     }
