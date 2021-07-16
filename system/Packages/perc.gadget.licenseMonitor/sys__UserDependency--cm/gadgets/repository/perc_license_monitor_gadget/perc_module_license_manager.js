@@ -273,7 +273,7 @@
             $("<option/>").attr("value",this.id).text(this.label).appendTo(typeComboBox);
         });
         licActElemCont.append(typeComboBox).append(`<input name='perc-lmg-modulelicense-key'/>`).append(`<a href="#" class="perc-lmg-button perc-lmg-activate" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</a>`);
-        licActElemCont.append("<div id='perc-lmg-modulelicense-key-error' style='display:hidden; color:red'/>");
+        licActElemCont.append("<div id='perc-lmg-modulelicense-key-error' style='display:none; color:red'/>");
         _addActivateClickEvent(licActElemCont, activationSuccessCallback);
         return licActElemCont;
     }
