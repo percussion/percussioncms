@@ -27,14 +27,13 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Synchronized notification service implementation
@@ -44,7 +43,7 @@ public class PSNotificationService implements IPSNotificationService
    /**
     * The log to use
     */
-   private static final Logger ms_log = LogManager.getLogger(PSNotificationService.class);
+   private static final Logger log = LogManager.getLogger(PSNotificationService.class);
 
    /**
     * The listeners to call
@@ -68,7 +67,8 @@ public class PSNotificationService implements IPSNotificationService
          }
          catch (Exception e)
          {
-            ms_log.error("Problem in notification", e);
+            log.error("Problem in notification: {}", e.getMessage());
+            log.debug(e);
          }
       }
  

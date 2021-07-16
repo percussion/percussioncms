@@ -24,9 +24,7 @@
 
 package com.percussion.share.dao.impl;
 
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
-
+import com.google.gdata.util.common.net.UriEncoder;
 import com.percussion.conn.PSServerException;
 import com.percussion.design.objectstore.PSAuthentication;
 import com.percussion.design.objectstore.PSDirectory;
@@ -37,6 +35,7 @@ import com.percussion.design.objectstore.PSSecurityProviderInstance;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.security.PSDirectoryServerCataloger;
 import com.percussion.security.PSSecurityProvider;
@@ -57,19 +56,20 @@ import com.percussion.user.service.impl.PSDirectoryServiceConfig;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.ext.Provider;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This class is notified when both the server and container have completed initialization.  It is used to modify
@@ -150,14 +150,17 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         }
         catch (PSXmlFileDataRepositoryException e)
         {
-            log.error("The LDAP configuration is invalid: ", e);
+            log.error("The LDAP configuration is invalid: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             
             return;
         }
         catch (PSBeanValidationException e)
         {
-            log.error("The LDAP configuration contains illegal values: ", e);
-            
+            log.error("The LDAP configuration contains illegal values: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             return;
         }
         
@@ -186,66 +189,66 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
             
             // clear the user password
             directoryServiceConfig.clearPassword();
-            
-            if (log.isDebugEnabled())
-            {
+
+            try {
+                //Diagnostics for debugging
                 String host = "";
                 String port = "";
                 String user = "";
                 String objAttrName = "";
                 String catalog = "";
                 StringBuilder orgUnits = new StringBuilder("");
-                
+
                 // load the server configuration and log the LDAP properties
                 PSServerConfiguration newConfig = os.getServerConfigObject(stok);
                 PSAuthentication auth = newConfig.getAuthentication(AUTHENTICATION_NAME);
-                if (auth != null)
-                {
+                if (auth != null) {
                     user = auth.getUser();
                     PSDirectorySet dirSet = newConfig.getDirectorySet(DIRECTORY_SET_NAME);
                     objAttrName = dirSet.getRequiredAttributeName(PSDirectorySet.OBJECT_ATTRIBUTE_KEY);
                     Iterator<?> iter = newConfig.getDirectories();
-                    while (iter.hasNext())
-                    {
-                        if (orgUnits.length() > 0)
-                        {
+                    while (iter.hasNext()) {
+                        if (orgUnits.length() > 0) {
                             orgUnits.append(", ");
                         }
-                        
+
                         PSDirectory dir = (PSDirectory) iter.next();
-                        if (StringUtils.isEmpty(catalog))
-                        {
+                        if (StringUtils.isEmpty(catalog)) {
                             catalog = dir.isShallowCatalogOption() ? PSDirectory.CATALOG_SHALLOW :
-                                PSDirectory.CATALOG_DEEP;
+                                    PSDirectory.CATALOG_DEEP;
                         }
-                        
-                        //FIXME:  URI needs encoded or this will error out.
-                        URI providerUri = new URI(dir.getProviderUrl());
-                                                
-                        if (StringUtils.isEmpty(host))
-                        {
+
+                        String uri = dir.getProviderUrl();
+                        uri = UriEncoder.encode(uri);
+                        URI providerUri = new URI(uri);
+
+                        if (StringUtils.isEmpty(host)) {
                             host = providerUri.getHost();
                         }
-                        
-                        if (StringUtils.isEmpty(port))
-                        {
+
+                        if (StringUtils.isEmpty(port)) {
                             port = String.valueOf(providerUri.getPort());
                         }
-                        
+
                         String orgUnit = StringUtils.removeStart(providerUri.getPath(), "/");
                         orgUnits.append("organizationalUnit:").append(orgUnit);
                     }
                 }
-                
-                if (StringUtils.isBlank(orgUnits.toString()))
-                {
+
+                if (StringUtils.isBlank(orgUnits.toString())) {
                     orgUnits.append("organizationalUnit:");
                 }
-                
-                log.debug("LDAP configuration properties [host:" + host + ", port:" + port + ", user:" + user
-                        + ", catalog:" + catalog + ", objectAttributeName:" + objAttrName + ", " + orgUnits + "].");
-                //TODO:  What is this code doing with the parsed data other than writing this debug entry?
+
+                log.debug("LDAP configuration properties [host: {}, port: {}, user: {}, catalog: {}, objectAttributeName: {}, orgUnits:{}].",
+                        host, port, user, catalog, objAttrName, orgUnits
+                );
+            }catch(Exception e){
+                //this is debug info we are logging so just log this exception and continue
+                log.debug("{}",e.getMessage());
+                log.debug(e);
             }
+
+
         }
         finally
         {
@@ -258,7 +261,9 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
             }
             catch (PSServerException se)
             {
-                log.error("Failed to release lock on server configuration.", se);
+                log.error("Failed to release lock on server configuration: {}",
+                        PSExceptionUtils.getMessageForLog(se));
+                log.debug(se);
             }
         }
     }
@@ -306,11 +311,14 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
             boolean removeLdap = ldapServer == null; 
             if (removeLdap)
             {            
-                log.info("Removing LDAP configuration...");
+                log.info("Removing existing LDAP configuration...");
+
+                //TODO: 8.1 - This will break customers upgrading from Rx 7.3.2
+
+                // clear the current ldap configuration
+                removeLdapConfig(serverConfig);
             }
-            
-            // clear the current ldap configuration
-            removeLdapConfig(serverConfig);
+
                         
             if (!removeLdap)
             {
@@ -322,7 +330,9 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         }
         catch (Exception e) 
         {
-            log.error("Failed to update server configuration.", e);
+            log.error("Failed to update server configuration: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
     }
     
@@ -421,12 +431,16 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         serverConfig.getSecurityProviderInstances().add(ldapSp);
         
         // add authentication
-        String newPwd = ldapServer.getPassword();
-        String pwd = (oldPwd == null || !StringUtils.isEmpty(newPwd)) ? newPwd : oldPwd;
-        PSAuthentication ldapAuth = new PSAuthentication(AUTHENTICATION_NAME, PSAuthentication.SCHEME_SIMPLE, 
-                ldapServer.getUser(), null, pwd, null);
-        serverConfig.addAuthentication(ldapAuth);
-        
+        if(!StringUtils.isEmpty(ldapServer.getPassword())) {
+            log.info("Updating LDAP authentication credentials for LDAP user: {}",ldapServer.getUser());
+            String newPwd = ldapServer.getPassword();
+            String pwd = (oldPwd == null || !StringUtils.isEmpty(newPwd)) ? newPwd : oldPwd;
+            PSAuthentication ldapAuth = new PSAuthentication(AUTHENTICATION_NAME, PSAuthentication.SCHEME_SIMPLE,
+                    ldapServer.getUser(), null, pwd, null);
+            serverConfig.addAuthentication(ldapAuth);
+        }else{
+            log.debug("Skipping changing authentication as ldapserver.xml has blank password.");
+        }
         String host = ldapServer.getHost();
         int port = ldapServer.getPort();
         CatalogType catalog = ldapServer.getCatalogType();
@@ -438,7 +452,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         {
             PSDirectory dir = new PSDirectory(DIRECTORY_NAME_PREFIX + ' ' + i++, catalog.name(),
                     PSDirectory.FACTORY_LDAP, AUTHENTICATION_NAME,
-                    (ldapServer.getSecure() ? SECURE_PROVIDER_URL_PREFIX : PROVIDER_URL_PREFIX) + host + ':' + port + '/' + orgUnit, null);  
+                    (ldapServer.getSecure() ? SECURE_PROVIDER_URL_PREFIX : PROVIDER_URL_PREFIX) + host + ':' + port + '/' + orgUnit, null);
             serverConfig.addDirectory(dir);
             PSReference dirRef = new PSReference(dir.getName(), PSDirectory.class.getName());
             dirRefs.add(dirRef);
