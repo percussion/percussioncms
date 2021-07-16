@@ -178,6 +178,7 @@
         var infoText = I18N.message("perc.ui.gadgets.licenseMonitor@Module License Activation Dialog");
         // Set the basic markup for the dialog and assign it to the module's dialog variable
         var dialogContent;
+        var content;
         dialogContent =  '<div>';
         dialogContent +=     '<div class="perc-lmg-edit-panels-container">';
         dialogContent +=        '<div class="perc-lmg-edit-activation-panel">';
@@ -189,10 +190,9 @@
         dialogContent +=        '</div>';
         dialogContent +=     '</div>';
         dialogContent += '</div>';
-        dialogContent = $(dialogContent);
-        dialogContent.find("#perc-module-license-display-container").append($.perc_module_license_manager.generateLicenseView(combinedInfo));
-        dialogContent.find("#perc-module-license-activate-container").append($.perc_module_license_manager.generateLicenseActivatorView(cloudInfo.licenseTypes, activationSuccessCallback));
-
+        content = percJQuery(dialogContent);
+        content.find("#perc-module-license-display-container").append($.perc_module_license_manager.generateLicenseView(combinedInfo));
+        content.find("#perc-module-license-activate-container").append($.perc_module_license_manager.generateLicenseActivatorView(cloudInfo.licenseTypes, activationSuccessCallback));
         buttons = {
             [I18N.message("perc.ui.gadgets.licenseMonitor@Close")] : {
                 'id': 'perc-lmg-activation-dialog-cancel',
@@ -204,7 +204,7 @@
         };
         var dlgTitle = I18N.message("perc.ui.gadgets.licenseMonitor@Edit Module Licenses");
 
-        dialog = percJQuery(dialogContent).perc_dialog({
+        dialog = content.perc_dialog({
             'id' : constants.DIALOG_MODULE_ID,
             'width': 343,
             'resizable': false,
@@ -222,7 +222,7 @@
                 }
             }
             combinedInfo[i] = newCombinedInfo;
-            dialogContent.find("#perc-module-license-display-container").empty().append($.perc_module_license_manager.generateLicenseView(combinedInfo));
+            content.find("#perc-module-license-display-container").empty().append($.perc_module_license_manager.generateLicenseView(combinedInfo));
         }
     }
     /**
