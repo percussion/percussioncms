@@ -110,7 +110,7 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
         }
         catch(Exception e)
         {            
-            log.error("WFActionDispatcher::performAction", e.getMessage());
+            log.error("WFActionDispatcher::performAction. Error: {}", e.getMessage());
             log.debug(e.getMessage(), e);
         }
         try
