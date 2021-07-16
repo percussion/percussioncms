@@ -335,7 +335,7 @@
     <xsl:template match="Control[@name='pageAutoListWidgetControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
         <script >
     <![CDATA[
-            $(document).ready(function(){
+            $(function(){
                 $("#autolist-title").on("click", function () {
                     $("#criteria_for_list").toggle();
                     $("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
@@ -349,7 +349,7 @@
 
                 // Fill templates field
 
-                if (splitPath[0] !== undefined && splitPath[0] !== "")
+                if (typeof splitPath[0] !== "undefined")
                 {
                     $.PercServiceUtils.makeJsonRequest(
                             $.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
