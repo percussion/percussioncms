@@ -24,6 +24,7 @@
 
 package com.percussion.auditlog.util;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,14 +37,18 @@ public class AuditPropertyLoader {
 
     private static final Logger log = LogManager.getLogger(AuditPropertyLoader.class);
 
+    private AuditPropertyLoader(){
+        //Don't allow new instances
+    }
+
     public static Properties loadProperties(String filePath){
         Properties prop = new Properties();
         try (InputStream input = new FileInputStream(filePath)) {
             prop.load(input);
 
         } catch (IOException ex) {
-            log.error(ex.getMessage());
-            log.debug(ex.getMessage(), ex);
+            log.warn("Unable to load Audit Log properties file: {}", PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
         }
 
         return prop;

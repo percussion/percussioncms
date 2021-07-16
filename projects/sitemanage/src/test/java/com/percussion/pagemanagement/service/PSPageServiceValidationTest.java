@@ -46,6 +46,7 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.publishing.IPSPublishingWs;
@@ -56,6 +57,7 @@ import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import java.util.HashSet;
@@ -72,6 +74,7 @@ import static org.junit.Assert.assertNotNull;
  */
 @RunWith(JMock.class)
 @Ignore
+@Category(IntegrationTest.class)
 public class PSPageServiceValidationTest
 {
 
