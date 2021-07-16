@@ -2138,7 +2138,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			items.addError(ErrorCode.ASSEMBLY_ERROR, "Assembly Error", e);
 		}
 		try {
-			log.debug("Assembly result is " + assemblyResult);
+			log.debug("Assembly result is {}", assemblyResult);
 			output = ItemServiceHelper.getItemsFromXml(assemblyResult);
 
 			if (output != null) {
@@ -2635,7 +2635,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 			}
 			is.close();
 			assemblyResult = sb.toString();
-			log.debug("Assembly result is " + assemblyResult);
+			log.debug("Assembly result is {}", assemblyResult);
 			output = ItemServiceHelper.getItemsFromXml(assemblyResult);
 
 			if (output != null) {

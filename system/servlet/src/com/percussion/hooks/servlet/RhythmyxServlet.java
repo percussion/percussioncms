@@ -254,7 +254,7 @@ public class RhythmyxServlet extends PSServletBase
                // get the Rhythmyx roles and add all SSO headers if requested
                if (m_connFactory.isSingleSignOn()) {
                   String user = req.getRemoteUser();
-                  m_logger.debug("Remote user is " + user);
+                  m_logger.debug("Remote user is {}", user);
 
                   if (user != null && rhythmyxRoles != null) {
                      String header = m_connFactory.getAuthenticatedUserHeaderName();
@@ -264,7 +264,7 @@ public class RhythmyxServlet extends PSServletBase
                      header = m_connFactory.getUserRolesHeaderName();
                      header += HEADER_TOKEN + rhythmyxRoles;
                      headers.add(header);
-                     m_logger.debug("Role list is " + rhythmyxRoles);
+                     m_logger.debug("Role list is {}", rhythmyxRoles);
                   }
                }
 
@@ -324,7 +324,7 @@ public class RhythmyxServlet extends PSServletBase
                         req.setAttribute(RX_SESSION_ATTRIB, rxSessionCookie);
                         req.setAttribute(RX_ROLE_LIST, rhythmyxRoles);
 
-                        m_logger.debug("Found session cookie " + rxSessionCookie);
+                        m_logger.debug("Found session cookie {}", rxSessionCookie);
                      } else
                         rxSessionCookie =
                                 (String) session.getAttribute(RX_SESSION_ATTRIB);
@@ -340,7 +340,7 @@ public class RhythmyxServlet extends PSServletBase
                         passThroughData(inreader, respWriterOut);
                      }
                   }
-                  m_logger.debug("Sent response size=" +
+                  m_logger.debug("Sent response size={}",
                           String.valueOf(resp.getBufferSize()));
                }
             }
@@ -644,10 +644,10 @@ public class RhythmyxServlet extends PSServletBase
          throws ServletException
    {
       HttpSession session = req.getSession();
-      m_logger.debug("JSession ID =" + session.getId());
-      m_logger.debug("Request is:" + req.toString());
+      m_logger.debug("JSession ID = {}", session.getId());
+      m_logger.debug("Request is: {}", req.toString());
       String rhythmyxRoles = (String) session.getAttribute(RX_ROLE_LIST);
-      m_logger.debug("Session RxRoles: " + rhythmyxRoles);
+      m_logger.debug("Session RxRoles: {}", rhythmyxRoles);
       
       if (m_connFactory.isSingleSignOn())
       {
@@ -656,15 +656,14 @@ public class RhythmyxServlet extends PSServletBase
          {
             if (m_connFactory.isResolveUserRolesHeader())
             {
-               m_logger.debug("User Roles Header name is "
-                     + m_connFactory.getUserRolesHeaderName());
+               m_logger.debug("User Roles Header name is {}", m_connFactory.getUserRolesHeaderName());
                rhythmyxRoles = loadRhythmyxRoles(req);
             }
             else
             {
                rhythmyxRoles = "";
             }
-            m_logger.debug("Server RxRole List: " + rhythmyxRoles);
+            m_logger.debug("Server RxRole List: {}", rhythmyxRoles);
             session.setAttribute(RX_ROLE_LIST, rhythmyxRoles);
          }
       }
@@ -728,11 +727,11 @@ public class RhythmyxServlet extends PSServletBase
                {
                   Element role = (Element) roles.item(i);
                   String roleName = role.getAttribute("name");
-                  m_logger.debug("Testing for rolename " + roleName);
+                  m_logger.debug("Testing for rolename {}", roleName);
                   if (req.isUserInRole(roleName))
                   {
                      roleList += roleName + DELIMITER;
-                     m_logger.debug("User is in role: " + roleName);
+                     m_logger.debug("User is in role: {}", roleName);
                   }
                   else
                   {
@@ -743,7 +742,7 @@ public class RhythmyxServlet extends PSServletBase
                      if (req.isUserInRole(testRoleName))
                      {
                         roleList += roleName + DELIMITER;
-                        m_logger.debug("User is in role: " + roleName);
+                        m_logger.debug("User is in role: {}", roleName);
                      }
                   }
                }
@@ -787,7 +786,7 @@ public class RhythmyxServlet extends PSServletBase
 
       URL url = new URL(protocol, host, port, file);
 
-      m_logger.debug("Role List URL is: " + url.toString());
+      m_logger.debug("Role List URL is: {}", url.toString());
       return url;
    }
 
@@ -838,15 +837,15 @@ public class RhythmyxServlet extends PSServletBase
                line.substring(0, COOKIE_STRING.length()+1).toLowerCase();
             if (rxSession != null && lineLower.startsWith(COOKIE_STRING))
             {
-               m_logger.debug("Found Cookie:" + line);
-               m_logger.debug("Sent session id:" + rxSession);
+               m_logger.debug("Found Cookie: {}", line);
+               m_logger.debug("Sent session id: {}", rxSession);
 
                // only add the Rhythmyx session cookie if its not already there
                if (line.indexOf(RX_SESSION_COOKIE) == -1)
                   line += DELIMITER + SPACE + RX_SESSION_COOKIE + "=" + rxSession;
             }
          }
-         m_logger.debug("HTTP Header: " + line);
+         m_logger.debug("HTTP Header: {}", line);
          headers.add(line);
       }
 

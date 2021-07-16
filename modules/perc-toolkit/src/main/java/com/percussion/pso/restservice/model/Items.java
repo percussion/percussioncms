@@ -54,7 +54,7 @@ public void setErrors(List<Error> errors) {
 public void addError(Error.ErrorCode error, String message) {
 	if(errors == null) errors = new ArrayList<Error>(); 
 	errors.add(new Error(error,message));
-	log.debug("Error is: " + message);
+	log.debug("Error is: {}", message);
 }
 
 
@@ -72,7 +72,7 @@ public void addError(Error.ErrorCode error,String message, Exception e) {
 	StringWriter sw = new StringWriter();
 	e.printStackTrace(new PrintWriter(sw));
 	errors.add(new Error(error,messageex + "\n"+ message +"\n"+sw.toString()));
-	log.debug("Error is: " + message);
+	log.debug("Error is: {}", message);
 	
 }
 
@@ -80,7 +80,7 @@ public void addError(Error.ErrorCode error,String message, Exception e) {
 public void addError(Error.ErrorCode error) {
 	if(errors == null) errors = new ArrayList<Error>();
 	errors.add(new Error(error));
-	log.debug("Error is: " + error.toString());
+	log.debug("Error is: {}", error.toString());
 }
 
 public boolean hasError(Error.ErrorCode error) {
