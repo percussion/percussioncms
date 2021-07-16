@@ -193,11 +193,11 @@ public class ImageEditorWizard
 			throws Exception
 	{
 	    String folderid = request.getParameter(IPSHtmlParameters.SYS_FOLDERID);
-        log.debug("processCancel: folder id is " + folderid);
+        log.debug("processCancel: folder id is {}", folderid);
         String folderParam = ""; 
         if(StringUtils.isNotBlank(folderid))
         {
-           folderParam = "&sys_folderid=" + folderid; 
+           folderParam = "&sys_folderid=" + folderid;
         }
 
 		status.setComplete();
@@ -352,17 +352,16 @@ public class ImageEditorWizard
 	protected void setupDisplayImage(MasterImageMetaData mimd, UserSessionData usd)
 	   throws Exception
 	{
-	    log.debug("height is " + mimd.getMetaData().getHeight() + " width is " +
-              mimd.getMetaData().getWidth()); 
+	    log.debug("height is {} width is {}", mimd.getMetaData().getHeight(), mimd.getMetaData().getWidth());
         double scalefactor = computeScaleFactor(mimd.getMetaData().getHeight(), 
               mimd.getMetaData().getWidth()); 
-        log.debug("Scale Factor is  " + scalefactor); 
+        log.debug("Scale Factor is  {}", scalefactor);
         usd.setScaleFactor(scalefactor);
         SimpleImageMetaData displayImage; 
         if(scalefactor > 1.0)
         { //the image must be resized. 
            displayImage = createScaledImage(mimd, scalefactor);
-           log.debug("Display image is " + displayImage); 
+           log.debug("Display image is {}", displayImage);
         }
         else
         {
@@ -428,7 +427,7 @@ public class ImageEditorWizard
 					ImageSizeDefinition isd = imageSizeDefMgr.getImageSize(sizedImagesArray[x - 1]);
 					simd.setSizeDefinition(isd);
 					mimd.addSizedImage(simd);
-					log.debug("setupSizedImages: adding new image size " + isd.getLabel()); 
+					log.debug("setupSizedImages: adding new image size {}", isd.getLabel());
 					usd.setDirty(true); 
 				}
 				
@@ -449,7 +448,7 @@ public class ImageEditorWizard
 					if (previousSimds.containsKey(key))
 					{
 						simd = previousSimds.get(key);
-						log.debug("setupSizedImages: Image of type [" + key + "] previously chosen, re-using existing one");
+						log.debug("setupSizedImages: Image of type [{}] previously chosen, re-using existing one", key);
 						previousSimds.remove(key); 
 					}
 					else
@@ -457,7 +456,7 @@ public class ImageEditorWizard
 						simd = new SizedImageMetaData();
 						ImageSizeDefinition isd = imageSizeDefMgr.getImageSize(key);
 						simd.setSizeDefinition(isd);
-						log.debug("setupSizedImages: Image of type [" + key + "] not previously chosen, created a new one");
+						log.debug("setupSizedImages: Image of type [{}] previously chosen, re-using existing one", key);
 						usd.setDirty(true); 
 					}
 					newSimds.put(simd.getSizeDefinition().getCode(), simd);
@@ -469,7 +468,7 @@ public class ImageEditorWizard
 				}
 			}
 
-			log.debug("setupSizedImages: Sized Images in MIMD: " + mimd.getSizedImages().size());
+			log.debug("setupSizedImages: Sized Images in MIMD: {}", mimd.getSizedImages().size());
 		}
 		else 
 		{
@@ -639,7 +638,7 @@ public class ImageEditorWizard
 			int page)
 	{
 	   UserSessionData usd = getUserSessionData(request);
-	   log.debug("getViewName: got usd: " + usd);
+	   log.debug("getViewName: got usd: {}", usd);
 
 	   String[] wizardPages = usd.getPages();
 	   if (wizardPages == null)
@@ -653,7 +652,7 @@ public class ImageEditorWizard
 	      log.debug("getViewName returning page: {}", wizardPages[page]);
 	      return wizardPages[page];
 	   }
-	   log.debug("getViewName: wizardPages[" + wizardPages.length + "] does not have as many entries as the current page number [" + page + "] expected");
+	   log.debug("getViewName: wizardPages[{}] does not have as many entries as the current page number [{}] expected",  wizardPages.length, page);
 	   return MAIN_PAGE;
 
 	}
