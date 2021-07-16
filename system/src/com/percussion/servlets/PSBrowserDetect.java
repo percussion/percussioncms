@@ -152,11 +152,11 @@ public class PSBrowserDetect implements Filter
                   // If the browser is IE and its major version is not 8, 9, 10, or
                   // 11 show
                   // warning page, else redirects to an appropriate location.
-                  showWarningMessage = ((browserGroup.equals(Browser.IE) && (browserMajorVersion < 11 )));
+                  showWarningMessage = browserGroup.equals(Browser.IE) && (browserMajorVersion < 11);
 
                   if (showWarningMessage)
                   {
-                      log.info("PSBrowserDetect: Support level for " + userAgent.getBrowser() + " is not supported.");
+                      log.info("PSBrowserDetect: Support level for {} is not supported.", userAgent.getBrowser());
                   }
                }
           }
@@ -166,7 +166,7 @@ public class PSBrowserDetect implements Filter
       }
       catch (Exception e)
       {
-         log.debug("Failure parsing browser User-Agent " + ((HttpServletRequest) request).getHeader("User-Agent"));
+         log.debug("Failure parsing browser User-Agent {}", ((HttpServletRequest) request).getHeader("User-Agent"));
       }
       chain.doFilter(request, response);
       return;
