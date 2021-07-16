@@ -27,13 +27,16 @@ package com.percussion.services.security.impl;
 import com.percussion.design.objectstore.PSConditional;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.IPSDirectoryCataloger;
 import com.percussion.security.IPSGroupProvider;
 import com.percussion.security.IPSInternalRoleCataloger;
 import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
 import com.percussion.security.IPSRoleCataloger;
 import com.percussion.security.IPSSubjectCataloger;
 import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.services.security.IPSRoleMgr;
@@ -43,19 +46,23 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSCatalogerConfig;
 import com.percussion.services.security.data.PSCatalogerConfigurations;
 import com.percussion.util.PSBaseBean;
-import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import javax.security.auth.Subject;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of the {@link IPSRoleMgr} service.  Additionally provides
@@ -64,6 +71,8 @@ import java.util.*;
 @PSBaseBean("sys_roleMgr")
 public class PSRoleMgr implements IPSRoleMgr
 {
+   private static final Logger log = LogManager.getLogger(PSRoleMgr.class);
+
    public List<Subject> findUsers(List<String> names) 
       throws PSSecurityCatalogException
    {
@@ -211,7 +220,8 @@ public class PSRoleMgr implements IPSRoleMgr
          }
          catch (Exception e)
          {
-            LogManager.getLogger(PSRoleMgr.class).error("Error finding users: " + e.getLocalizedMessage(),e);
+            log.error("Error finding users: {}" , PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             if(throwCatalogerExceptions)
                throw new PSSecurityCatalogException(e);
          }         
@@ -401,7 +411,7 @@ public class PSRoleMgr implements IPSRoleMgr
    public List<Principal> findGroups(String pattern, String catalogerName,
       String type) throws PSSecurityCatalogException
    {
-      List<Principal> groups = new ArrayList<Principal>();
+      List<Principal> groups = new ArrayList<>();
       
       boolean specifiedName = !StringUtils.isBlank(catalogerName);
       boolean matchedName = false;
@@ -457,10 +467,8 @@ public class PSRoleMgr implements IPSRoleMgr
          while (groupProviders.hasNext())
          {
             IPSGroupProvider gp = groupProviders.next();
-            Iterator<String> groupNames = gp.getGroups(groupFilter).iterator();
-            while (groupNames.hasNext())
-            {
-               groups.add(PSTypedPrincipal.createGroup(groupNames.next()));
+            for (String s : gp.getGroups(groupFilter)) {
+               groups.add(PSTypedPrincipal.createGroup(s));
             }
          }
          

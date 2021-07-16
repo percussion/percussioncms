@@ -207,8 +207,8 @@ public class PSServerConfiguration implements IPSDocument
       requestRoot = requestRoot.trim();
       int length = requestRoot.length();
       if (length > MAX_REQ_ROOT_LEN) {
-         Object[] args = { new Integer(MAX_REQ_ROOT_LEN),
-            new Integer(length) };
+         Object[] args = { MAX_REQ_ROOT_LEN,
+            length };
          throw new PSIllegalArgumentException(
             IPSObjectStoreErrors.SRV_ROOT_TOO_BIG, args);
       }
@@ -265,14 +265,14 @@ public class PSServerConfiguration implements IPSDocument
       PSAclEntry ace;
       String key;
       int level;
-      for (int i = 0; i < size; i++) {
-         ace = (PSAclEntry)entries.get(i);
+      for (Object entry : entries) {
+         ace = (PSAclEntry) entry;
 
          key = ace.getName();
 
          if (names.put(key, ace) != null)   /* we've seen this already */
             throw new PSIllegalArgumentException(
-            IPSObjectStoreErrors.ACL_ENTRYLIST_DUPLICATE, ace.getName());
+                    IPSObjectStoreErrors.ACL_ENTRYLIST_DUPLICATE, ace.getName());
 
          level = ace.getAccessLevel();
          if ((level & adminAccess) == adminAccess)
@@ -389,7 +389,6 @@ public class PSServerConfiguration implements IPSDocument
     *
     * @return         the time in seconds before timeout to warn,
     *
-    * @see            PSApplication#getUserSessionWarning
     */
    public int getUserSessionWarning()
    {
@@ -420,7 +419,7 @@ public class PSServerConfiguration implements IPSDocument
     * <P>
     * Applications can override this setting.
     *
-    * @param   timeout      the timeout interval for user sessions, in seconds
+    * @param   warning  the timeout interval for user sessions, in seconds
     *
     * @see      PSApplication#setUserSessionTimeout
     */
@@ -1189,14 +1188,11 @@ public class PSServerConfiguration implements IPSDocument
             {
                Element groupsNode = PSXmlDocumentBuilder.addEmptyElement(doc,
                   directories, XML_GROUP_PROVIDERS_ELEMENT);
-               Iterator groupProviders = m_groupProviders.iterator();
-               while (groupProviders.hasNext())
-               {
+               for (Object m_groupProvider : m_groupProviders) {
                   IPSGroupProviderInstance groupProvider =
-                     (IPSGroupProviderInstance)groupProviders.next();
+                          (IPSGroupProviderInstance) m_groupProvider;
 
-                  if (groupProviderNames.contains(groupProvider.getName()))
-                  {
+                  if (groupProviderNames.contains(groupProvider.getName())) {
                      groupsNode.appendChild(groupProvider.toXml(doc));
                   }
                }

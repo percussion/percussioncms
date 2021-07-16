@@ -34,6 +34,10 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.server.PSServer;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.io.IoBuilder;
 
 import javax.naming.CompoundName;
 import javax.naming.Context;
@@ -42,12 +46,12 @@ import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -55,14 +59,18 @@ import java.util.Properties;
 /**
  * This class provides utility functions used for JNDI operations.
  */
-@SuppressWarnings("unchecked")
 public class PSJndiUtils
 {
+
+   private static final Logger log = LogManager.getLogger(PSJndiUtils.class);
+
+
    /**
     * Do not instantiate this class, all functionality exposed is static.
     */
    private PSJndiUtils()
    {
+      //hidden constructor to prevent instantiation.
    }
    
 
@@ -136,13 +144,7 @@ public class PSJndiUtils
          
          return (IPSPasswordFilter) ext;
       }
-      catch (PSNotFoundException e)
-      {
-         throw new PSRuntimeException(
-            IPSSecurityErrors.DIR_PASSWORD_FILTER_INIT_ERROR,
-               new Object[] { extensionName, e.toString() });
-      }
-      catch (PSExtensionException e)
+      catch (PSNotFoundException | PSExtensionException e)
       {
          throw new PSRuntimeException(
             IPSSecurityErrors.DIR_PASSWORD_FILTER_INIT_ERROR,
@@ -162,7 +164,7 @@ public class PSJndiUtils
     * @return the filter string in the form of (&(key1=value1)...(keyN=valueN))
     *    for all map entries, never <code>null<code>.
     */
-   public static String buildFilter(Map values)
+   public static String buildFilter(Map<String,Object> values)
    {
       if (values == null)
          throw new IllegalArgumentException("values cannot be null");
@@ -171,40 +173,22 @@ public class PSJndiUtils
          throw new IllegalArgumentException("values cannot be empty");
          
       StringBuilder filter = new StringBuilder("(&");
-      
-      Iterator keys = values.keySet().iterator();
-      while (keys.hasNext())
-      {
-         String key = (String) keys.next();
+
+      for (String key : values.keySet()) {
          if (key == null)
             throw new IllegalArgumentException("key cannot be null");
-            
+
          key = key.trim();
          if (key.length() == 0)
             throw new IllegalArgumentException("key cannot be empty");
-            
+
          Object obj = values.get(key);
-         if (obj == null || obj instanceof String)
-         {
-            String value = (String) values.get(key);
+         if (obj instanceof String) {
+            String value = (String)values.get(key);
             appendFilterCond(filter, key, value);
-         }
-         else
-         {
+         } else {
             List valList = (List) obj;
-            if (valList.isEmpty())
-               appendFilterCond(filter, key, null);
-            else
-            {
-               filter.append("(|");
-               Iterator vals = valList.iterator();
-               while (vals.hasNext())
-               {
-                  String value = (String) vals.next();
-                  appendFilterCond(filter, key, value);
-               }
-               filter.append(")");            
-            }
+            appendFilterCond(filter, key, null);
          }
       }
       filter.append(")");
@@ -268,7 +252,7 @@ public class PSJndiUtils
       if (StringUtils.isBlank(url))
          url = dir.getProviderUrl();
       
-      Hashtable env = new Hashtable();
+      Hashtable<String,Object> env = new Hashtable<>();
 
 
       // need to set the context factory (provided by user)
@@ -288,9 +272,12 @@ public class PSJndiUtils
          dir.getProviderUrl()));
       env.put(Context.SECURITY_CREDENTIALS, auth.getCredentials());
 
+
       // Provide debug output
-      if (dir.isDebug())
-         env.put("com.sun.jndi.ldap.trace.ber", System.out);
+      if (dir.isDebug()) {
+         OutputStream out = IoBuilder.forLogger(log).setLevel(Level.DEBUG).buildOutputStream();
+         env.put("com.sun.jndi.ldap.trace.ber", out);
+      }
 
       return new InitialDirContext(env);
    }   
@@ -301,7 +288,7 @@ public class PSJndiUtils
     * @param env the environment to which to add the connection pooling 
     *    configuration properties, not <code>null</code>, may be empty.
     */
-   public static void addConnectionPooling(Hashtable env)
+   public static void addConnectionPooling(Map<String, Object> env)
    {
       if (env == null)
          throw new IllegalArgumentException("env cannot be null");
@@ -326,13 +313,14 @@ public class PSJndiUtils
          {
              env.put(Context.SECURITY_PROTOCOL, "ssl");
              env.put(Context.PROVIDER_URL,url.replace("ldaps:", "ldap:"));
+
          } else if (url.isEmpty())
          {
             throw new IllegalArgumentException("PROVIDER_URL not set in ldap environment");
          }
 
          String securityProtocol = StringUtils.defaultString((String)env.get(Context.SECURITY_PROTOCOL));
-         if (securityProtocol!=null && securityProtocol.equals("ssl"))
+         if (securityProtocol.equals("ssl"))
          {
              String sslFactory =  StringUtils.defaultString((String)env.get(PSServerConfiguration.SECURE_SOCKET_FACTORY));
              if (!sslFactory.isEmpty())
@@ -728,10 +716,11 @@ public class PSJndiUtils
    {
       boolean isEscChar = false;
 
-      for (int i=0; i < DN_ESCAPE_CHARS.length && !isEscChar; i++)
-      {
-         if (test == DN_ESCAPE_CHARS[i])
+      for (char dnEscapeChar : DN_ESCAPE_CHARS) {
+         if (test == dnEscapeChar) {
             isEscChar = true;
+            break;
+         }
       }
 
       return isEscChar;
@@ -768,10 +757,9 @@ public class PSJndiUtils
       if (filterPattern != null)
       {
          buf.append("(|");
-         for (int i=0; i < filterPattern.length; i++)
-         {
-            String filter = filterPattern[i];
-   
+         for (String s : filterPattern) {
+            String filter = s;
+
             // only support '%', convert to '*'
             filter = processFilter(filter);
             buf.append(" (");
