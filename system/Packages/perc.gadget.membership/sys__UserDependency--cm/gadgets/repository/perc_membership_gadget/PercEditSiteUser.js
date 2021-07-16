@@ -33,7 +33,7 @@ $.PercEditSiteUser = function(site, userData, successCalBack)
 	var dialogHTML = createDialogHtml();
     var siteName  = site;
 
-    var dialog = window.parent.jQuery(dialogHTML).perc_dialog( {
+    var dialog = percJQuery(dialogHTML).perc_dialog( {
                 resizable : false,
                 title: I18N.message("perc.ui.gadgets.membership@Edit User"),
                 modal: true,
@@ -98,7 +98,7 @@ $.PercEditSiteUser = function(site, userData, successCalBack)
                                     I18N.message("perc.ui.editSectionDialog.label@Please use a comma to separate each group name") +
 								'</div>' +
 							'</div>';
-		return $(dialogHtml);
+		return dialogHtml;
 		
 	}
 	
