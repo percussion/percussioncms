@@ -176,7 +176,7 @@ public class PSRenderService implements IPSRenderService
         PSParsedRegionTree<PSRegion, PSRegionCode> tree = PSTemplateRegionParser.parse(null, result);
         PSRegion region = tree.getRegions().get(regionId);
         if (region == null) {
-            log.error("Missing regionId: " + regionId + " from render result:\n" + result);
+            log.error("Missing regionId: {} from render result:\n {}", regionId, result);
             throw new PSRenderServiceException("RegionId: " + regionId + " was not found in result: " + result);
         }
         return PSRegionTreeUtils.treeToString(region);
@@ -313,7 +313,7 @@ public class PSRenderService implements IPSRenderService
         PSRegion root = PSTemplateRegionParser.parse(null, html).getRootNode();
 
         if(log.isDebugEnabled()) {
-            log.debug("Parse html: " + html);
+            log.debug("Parse html: {}", html);
             log.debug(root);
         }
         return root;

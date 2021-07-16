@@ -77,9 +77,9 @@ public class DemandPreviewController extends ParameterizableViewController
 			String siteId = request.getParameter(IPSHtmlParameters.SYS_SITEID);
 			Validate.notEmpty(siteId);
 			if(log.isDebugEnabled())
-			   log.debug("Publishing for preview id:" + contentId + " folder:" + folderId +" site:" +siteId );
+			   log.debug("Publishing for preview id:{}, folder:{}, and site: {}", contentId, folderId, siteId );
 		   	String redirectTo = doPublishForPreview(contentId, folderId, siteId);
-		   	log.debug("redirecting to:" + redirectTo); 
+		   	log.debug("redirecting to:{}", redirectTo);
 		   	mav.addObject("redirectTo", redirectTo); 
 		   	
 		} catch (Exception e){
@@ -102,7 +102,7 @@ public class DemandPreviewController extends ParameterizableViewController
 	    PSLocator loc = isFinder.getCurrentOrEditLocator(contentId); 
 	    
 	    IPSGuid contentGUID = gmgr.makeGuid(loc);
-	    log.debug("Content item is " + contentGUID);
+	    log.debug("Content item is {}", contentGUID);
 	    IPSGuid folderGUID = gmgr.makeGuid(new PSLocator(folderId, "0"));
 	   
 	    SiteEditionHolder siteEditionHolder = siteEditionLookUpService.LookUpSiteEdition(siteId);
@@ -111,10 +111,10 @@ public class DemandPreviewController extends ParameterizableViewController
        
 	    IPSAssemblyTemplate template = itemTemplateService.findTemplate(siteEditionHolder.getSite(), contentGUID);
 	    Validate.notNull(template); 
-	    log.debug("using assembly context " + siteEditionHolder.getContext().getName()); 
+	    log.debug("using assembly context {}", siteEditionHolder.getContext().getName());
 	    redirectTo = linkBuilderService.buildLinkUrl(siteEditionHolder.getSite(), template,
 	            contentGUID, folderGUID, siteEditionHolder.getContext(),siteEditionHolder.getContextURLRootVar()); 
-	    log.debug("redirect address: " + redirectTo);
+	    log.debug("redirect address: {}", redirectTo);
 		return redirectTo; 
 	}
 
