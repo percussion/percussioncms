@@ -329,7 +329,7 @@ public class PSServer {
          }
          String scheme = PSServer.getProperty("proxyScheme");
          if(PSServer.isRequestBehindProxy(null) &&  !(host.equals("localhost") || host.equals("127.0.0.1"))){
-            int ports  = Integer.valueOf(PSServer.getProperty("proxyPort"));
+            int ports  = Integer.parseInt(PSServer.getProperty("proxyPort"));
             String domainName = PSServer.getProperty("publicCmsHostname");
             return new URL(scheme, domainName, ports, path);
          }else{

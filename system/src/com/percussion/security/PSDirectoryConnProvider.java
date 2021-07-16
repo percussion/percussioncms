@@ -369,7 +369,7 @@ public class PSDirectoryConnProvider extends PSJndiProvider
          searchControls.setSearchScope(scope);
          searchControls.setCountLimit(1);
       
-         Map<String, String> filter = new HashMap<>();
+         Map<String, Object> filter = new HashMap<>();
          filter.put(userAttributeName, user);
 
          boolean isRelative = true;

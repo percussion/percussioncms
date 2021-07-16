@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,17 +83,15 @@ public class PSSecureProperty
            String ky = k == null ? ERROR_VALUE : k;
 
 
-           log.debug("loading properties from file: " + filepath.getAbsolutePath());
+           log.debug("loading properties from file: {}" , filepath.getAbsolutePath());
            try (FileInputStream is = new FileInputStream(filepath)) {
                props.load(is);
            } catch (IOException e) {
-               log.error("ERROR: " + e.getMessage());
+               log.error("{}" , e.getMessage());
                log.debug(e);
            }
            for (String regex : propnames) {
                String[] expandedKeys = expandMatchingKeys(regex, props);
-               if (expandedKeys == null)
-                   continue;
                for (String key : expandedKeys) {
                    boolean enc = isValueClouded((String) props.get(key));
                    if (!enc) {
@@ -105,7 +104,7 @@ public class PSSecureProperty
                try (FileOutputStream os = new FileOutputStream(filepath)) {
                    props.store(os, "");
                } catch (IOException e) {
-                   log.error("ERROR: " + e.getMessage());
+                   log.error("ERROR: {}" , e.getMessage());
                    log.debug(e);
                }
            }
@@ -118,7 +117,7 @@ public class PSSecureProperty
            throw new IllegalArgumentException(ERROR_FILEPATH);
 
        if (!filepath.exists() || !filepath.isFile()) {
-           log.warn("File does not exist: " + filepath.getAbsolutePath());
+           log.warn("File does not exist: {}" , filepath.getAbsolutePath());
            return false;
        }
        return true;
@@ -132,17 +131,18 @@ public class PSSecureProperty
 
             Properties props = new Properties();
             boolean modified = false;
-                log.debug("loading properties from file: " + filepath.getAbsolutePath());
+                log.debug("loading properties from file: {}" , filepath.getAbsolutePath());
                 try(FileInputStream is = new FileInputStream(filepath)) {
                     props.load(is);
                 } catch (IOException e) {
-                    log.error("ERROR : {}",e);
+                    log.error("ERROR : {}",e.getMessage());
+                    log.debug(e);
                 }
 
-            for (Object key : props.keySet()) {
-                    String value = (String)props.get(key);
-                    if(value != null && isValueClouded(value)){
-                         props.put(key, getValue(value,null));
+            for (Map.Entry entry : props.entrySet()) {
+                    String value = (String)entry.getValue();
+                    if(isValueClouded(value)){
+                         props.put(entry.getKey(), getValue(value,null));
                          modified=true;
 
                     }
@@ -152,7 +152,7 @@ public class PSSecureProperty
                 try(FileOutputStream os = new FileOutputStream(filepath)) {
                     props.store(os, "");
                 } catch (IOException e) {
-                    log.error("ERROR: " + e.getMessage());
+                    log.error("ERROR: {}" , e.getMessage());
                     log.debug(e);
                 }
             }
@@ -182,8 +182,8 @@ public class PSSecureProperty
       if(s == null)
          throw new IllegalArgumentException(ERROR_VALUE);
       String ky = k == null ? ERROR_VALUE: k;   
-	     
-      String encryptedValue = StringUtils.EMPTY;
+
+      String encryptedValue;
       String decryptedValue = StringUtils.EMPTY;
 
       if (s.startsWith(ENC_PREFIX) && s.endsWith(ENC_POSTFIX))
@@ -253,13 +253,13 @@ public class PSSecureProperty
     * Helper to expand all matching keys for a regular expression.
     * @param regex assumed not <code>null</code> or empty.
     * @param props assumed not <code>null</code>.
-    * @return
+    * @return An array of matching keys
     */
    private static String[] expandMatchingKeys(String regex, Properties props)
    {
        List<String> results = new ArrayList<>();
        Pattern pattern = Pattern.compile(regex);
-       Matcher matcher = null;
+       Matcher matcher;
        for(Object key : props.keySet())
        {
            String current = (String)key;
@@ -270,8 +270,7 @@ public class PSSecureProperty
            }
            
        }
-       if(results.isEmpty())
-           return null;
+
        return results.toArray(new String[]{});
    }
    

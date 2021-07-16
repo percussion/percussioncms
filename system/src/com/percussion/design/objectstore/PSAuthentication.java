@@ -23,18 +23,18 @@
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSCryptographer;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -469,20 +469,19 @@ public class PSAuthentication extends PSComponent
       String encryptedValue = tree.getElementData(XML_ATTR_ENCRYPTED, false);
       boolean encrypted = (encryptedValue != null && 
          encryptedValue.trim().equalsIgnoreCase(XML_ATTRVALUE_YES));
-         
+
       data = tree.getElementData(XML_ELEM_PASSWORD, false);
       if (encrypted)
       {
-         String userStr = getUser();
-         String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).INVALID_DRIVER() : userStr;
-
          try{
-            PSEncryptor.getInstance("AES",
+            data = PSEncryptor.getInstance("AES",
                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).decrypt(data);
-         } catch (PSEncryptionException e) {
+         } catch (PSEncryptionException e) { String userStr = getUser();
+            String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).INVALID_DRIVER() : userStr;
+
             data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).INVALID_CRED(), key, data);
@@ -545,7 +544,8 @@ public class PSAuthentication extends PSComponent
                  PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).encrypt(getPassword());
       } catch (PSEncryptionException e) {
-         logger.error("Error encrypting password: " + e.getMessage(),e);
+         logger.error("Error encrypting password: {}" , e.getMessage());
+         logger.debug(e);
          pw = "";
       }
 

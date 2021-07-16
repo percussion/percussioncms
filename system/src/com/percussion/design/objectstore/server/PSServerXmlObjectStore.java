@@ -119,7 +119,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
 
@@ -145,7 +144,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @throws IllegalStateException if {@link
     * #createInstance(PSXmlObjectStoreHandler)} has already been called.
     */
-   public static PSServerXmlObjectStore createInstance(
+   public static synchronized PSServerXmlObjectStore createInstance(
          PSXmlObjectStoreHandler os)
    {
       // make sure this hasn't already been created.
@@ -168,7 +167,7 @@ public class PSServerXmlObjectStore extends PSObjectFactory
     * @throws IllegalStateException if {@link
     * #createInstance(PSXmlObjectStoreHandler)} has not already been called.
     */
-   public static PSServerXmlObjectStore getInstance()
+   public static synchronized PSServerXmlObjectStore getInstance()
    {
       // make sure this has already been created
       if (ms_objectStore == null)
