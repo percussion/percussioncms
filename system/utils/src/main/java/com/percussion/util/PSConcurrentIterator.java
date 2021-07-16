@@ -85,7 +85,8 @@ public class PSConcurrentIterator <T>  implements Iterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentIterator does not support remove");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentIterator.remove().  Please correct the implementation to remove from the source collection itself.", e);
+            log.error("Detected potential thread safety problem, call to PSConcurrentIterator.remove().  Please correct the implementation to remove from the source collection itself. Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
             throw(e);
         }
     }

@@ -183,11 +183,13 @@ public class PSProperties extends java.util.Properties {
         }
         catch(FileNotFoundException e)
         {
-            log.error("Util", e);
+            log.error("Util, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         catch(IOException e)
         {
-            log.error("Util", e);
+            log.error("Util, Error: {}", e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         return file;
     }
