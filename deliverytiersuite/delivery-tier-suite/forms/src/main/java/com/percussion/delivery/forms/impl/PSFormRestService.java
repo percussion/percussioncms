@@ -256,7 +256,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             String[] formNameValues = percFields.get(FORM_NAME_KEY);
             if (formNameValues == null || formNameValues[0] == null || formNameValues[0].trim().length() == 0)
             {
-                log.error("Supplied form missing " + FORM_NAME_KEY + " field.");
+                log.error("Supplied form missing {} field.", FORM_NAME_KEY);
                 WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                         "Supplied form missing " + FORM_NAME_KEY + " field."), Response.serverError().build());
                 handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
@@ -417,7 +417,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
 
                 }else{
-                    this.log.error(FORM_PROCESSORURL + " was not specified but Form is configured to POST to a remote service.");
+                    log.error("{} was not specified but Form is configured to POST to a remote service.", FORM_PROCESSORURL);
                     WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                             "Invalid form submitted"), Response.serverError().build());
                     handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);

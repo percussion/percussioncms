@@ -145,8 +145,10 @@ public class PSCloudService implements IPSCloudService {
 
         try {
             poLic = getLicense(licenseType);
-        } catch (PSLicenseServiceException le) { 
-            throw new WebApplicationException(licenseType.toFriendlyString() + " is not enabled for this instance of Percussion CMS");
+        } catch (PSLicenseServiceException le) {
+			log.error(le.getMessage());
+			log.debug(le.getMessage(),le);
+        	throw new WebApplicationException(licenseType.toFriendlyString() + " is not enabled for this instance of Percussion CMS");
         }
         
         PSCloudServiceInfo info = new PSCloudServiceInfo();
@@ -181,7 +183,9 @@ public class PSCloudService implements IPSCloudService {
             PSCloudServiceInfo info = getInfo(licenseType);
             return getPageData(info, pageId);
         } catch (PSCloudServiceException e) {
-            throw new WebApplicationException(e);
+            log.error(e.getMessage());
+            log.debug(e.getMessage() ,e);
+	    	throw new WebApplicationException(e);
         }
     }
     
@@ -318,7 +322,7 @@ public class PSCloudService implements IPSCloudService {
             pageData.setPageName(path.substring(path.lastIndexOf("/") + 1));
         }
         else {
-            log.error("Failed to find the name for the page with path " + path);
+            log.error("Failed to find the name for the page with path {}", path);
         }
         
         pageData.setLastPublished(itemProps.getLastPublishedDate());
