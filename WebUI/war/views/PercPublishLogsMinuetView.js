@@ -77,7 +77,8 @@
                 response = {};
                 response.result = {};
                 response.source = I18N.message("perc.ui.publish.title@Delete Publishing Logs");
-                if(result[1] == 'success') {
+                //CMS-8073 : The result is returned as 204 - No Content <host:port>/Rhythmyx/services/sitemanage/pubstatus/purge/ api
+                if(result[1] === 'success' || result[1] === 'nocontent') {
                     response.result.status = I18N.message("perc.ui.publish.title@Delete Logs Success");
                     refreshSiteLogs();
                 }
