@@ -131,6 +131,7 @@
        <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
        <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
        <maven.execmaven.plugin.version>1.6.0</maven.execmaven.plugin.version>
+       <batik.version>1.14</batik.version>
        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
        <maven.pmd.plugin.version>3.13.0</maven.pmd.plugin.version>
        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
@@ -150,6 +151,7 @@
        <gson.version>2.8.5</gson.version>
        <cxf.version>3.4.4</cxf.version>
        <servlet.spec>3.1.0</servlet.spec>
+       <xmlgraphics.common.version>2.6</xmlgraphics.common.version>
        <hibernate.version>5.1.14.Final</hibernate.version>
        <commons-logging.version>1.2</commons-logging.version>
        <commons.io.version>2.8.0</commons.io.version>
@@ -2094,13 +2096,13 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>
-                <artifactId>batik-transcoder</artifactId>
-                <version>1.13</version>
+                <artifactId>batik-all</artifactId>
+                <version>${batik.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>
                 <artifactId>xmlgraphics-commons</artifactId>
-                <version>2.4</version>
+                <version>${xmlgraphics.common.version}</version>
             </dependency>
             <dependency>
                     <groupId>org.xerial</groupId>
