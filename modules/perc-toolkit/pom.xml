@@ -264,6 +264,15 @@
                     <groupId>org.apache.avalon.framework</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>xalan</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>xerces</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+
             </exclusions>
             <scope>compile</scope>
         </dependency>

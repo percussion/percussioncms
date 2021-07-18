@@ -23,21 +23,8 @@
  */
 package com.percussion.i18n.rxlt;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.StringTokenizer;
-
-import org.apache.commons.io.IOUtils;
-import java.io.InputStream;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -46,6 +33,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 
 /**
  * This class serves the following two purposes:
@@ -67,7 +66,6 @@ public class PSCommandLineProcessor
     * document is used.
     * @param standalone <code>true</code> to enable the commandline user interface, 
     * <code>false</code> to run with no command line ui from within another java process.
-    * @see PSRxltMain#CONFIG_FILE
     * @throws SAXException if any error occurs parsing rxltconfig.xml file
     * @throws IOException in case of error building XML document from input
     * stream for the configuration file
@@ -96,18 +94,18 @@ public class PSCommandLineProcessor
       }
    }
 
-   private void setupInputStream()
+   private static void setupInputStream()
    {
-      if (ms_consoleLineReader == null)
+      if (consoleLineReader == null)
       {
          try
          {
-            ms_consoleInputStreamReader = new InputStreamReader(System.in);
-            ms_consoleLineReader = new BufferedReader(ms_consoleInputStreamReader);
+            consoleInputStreamReader = new InputStreamReader(System.in);
+            consoleLineReader = new BufferedReader(consoleInputStreamReader);
          }
          catch(Exception e) //This should never happen
          {
-            e.printStackTrace();
+            logger.error(PSExceptionUtils.getMessageForLog(e));
          }
       }
    }
@@ -142,10 +140,21 @@ public class PSCommandLineProcessor
    public void terminate()
    {
       logMessage("End of the session");
-      if (ms_consoleLineReader != null)
-         IOUtils.closeQuietly(ms_consoleLineReader);
-      if(ms_consoleInputStreamReader != null)
-         IOUtils.closeQuietly(ms_consoleInputStreamReader);
+      if (consoleLineReader != null){
+         try{
+            consoleLineReader.close();
+         } catch (IOException e) {
+            logger.debug(e);
+         }
+      }
+
+      if(consoleInputStreamReader != null){
+         try{
+            consoleInputStreamReader.close();
+         } catch (IOException e) {
+            logger.debug(e);
+         }
+      }
    }
    /**
     * This method gets the action to run from UI. Gathers all the inoformation
@@ -164,18 +173,17 @@ public class PSCommandLineProcessor
          throw new IllegalStateException("Not running standalone, user input disable");
       
       int action = -1;
-  
-      action = -1;
+
       while(action==-1)
       {
          //Display the list of languages already in the Rhythmyx Content Manager
          displayExistingLanguages();
-         System.out.println();
-         System.out.println("Available Actions:");
-         System.out.println("------------------");
-         NodeList nl = m_CfgDocument.getElementsByTagName("action");
+         logger.info("");
+         logger.info("Available Actions:");
+         logger.info("------------------");
+         NodeList nl = m_CfgDocument.getElementsByTagName(ACTION);
          Element elem;
-         String temp = "";
+         String temp;
          for(int i=0; null!=nl && i<nl.getLength(); i++)
          {
             elem = (Element)nl.item(i);
@@ -183,17 +191,17 @@ public class PSCommandLineProcessor
              * Make sure to initialize process=no for all actions.
              * Only one action is run in one pass in UI mode.
              */
-            elem.setAttribute("process", "no");
+            elem.setAttribute(PROCESS, "no");
             //
-            System.out.println(elem.getAttribute("actionid") + ". " +
+            logger.info("{}. {}",elem.getAttribute(ACTION_ID) ,
                elem.getAttribute(PSRxltConfigUtils.ATTR_NAME));
          }
          //ask for user input until he enters a valid action
          do
          {
-            System.out.println("(All Locale modifications must be performed through the workbench)");
-            System.out.print("Choose an Action:");
-            temp = ms_consoleLineReader.readLine();
+            logger.info("(All Locale modifications must be performed through the workbench)");
+            logger.info("Choose an Action:");
+            temp = consoleLineReader.readLine();
             try
             {
                action = Integer.parseInt(temp);
@@ -227,7 +235,6 @@ public class PSCommandLineProcessor
     * possibility.
     * @throws PSFatalException if there is a problem connecting to server
     * database to get supported languages.
-    * @see PSRxltMain#CONFIG_FILE
     */
    private void gatherActionInfo(int actionid)
       throws IOException, PSFatalException
@@ -238,7 +245,7 @@ public class PSCommandLineProcessor
          throw new IllegalArgumentException(
             "Action element for actionid='" + actionid + "' is missing");
       }
-      String temp = "";
+      String temp;
       switch(actionid)
       {
          case IPSActionHandler.ACTIONID_GENERATE_TMX_RESOURCES:
@@ -246,27 +253,28 @@ public class PSCommandLineProcessor
             boolean backtomain = false;
             boolean allSections = false;
             while((!backtomain && !allSections)
-               && (sections == null || sections.size() < 1))
+               && (sections == null || sections.isEmpty()))
             {
-               System.out.println();
-               System.out.println("Available Sections:");
-               System.out.println("------------------");
+               logger.info("");
+               logger.info("Available Sections:");
+               logger.info("------------------");
                NodeList nl = elem.getElementsByTagName("section");
                Element sect;
                for(int i=0; null!=nl && i<nl.getLength(); i++)
                {
                   sect = (Element)nl.item(i);
                   //make sure to initialize process=no for all actions
-                  sect.setAttribute("process", "no");
+                  sect.setAttribute(PROCESS, "no");
                   //
-                  System.out.println(sect.getAttribute("sectionid") + ". "
-                     + sect.getAttribute(PSRxltConfigUtils.ATTR_NAME));
+                  logger.info("{}. {}",
+                          sect.getAttribute("sectionid"),
+                          sect.getAttribute(PSRxltConfigUtils.ATTR_NAME));
                }
-               System.out.println("A. All");
-               System.out.println("B. Back to action menu");
-               System.out.print(
+               logger.info("A. All");
+               logger.info("B. Back to action menu");
+               logger.info(
                   "Choose Sections (Separate section identifiers with commas):");
-               temp = ms_consoleLineReader.readLine();
+               temp = consoleLineReader.readLine();
                //user interrupted ressing CTRL C
                if(temp == null)
                   return;
@@ -277,13 +285,13 @@ public class PSCommandLineProcessor
                else if(temp.startsWith("B"))
                   backtomain = true;
                sections = parseSectionList(temp);
-               String sectionid = null;
+               String sectionid;
                for(int i=0; null!=nl && i<nl.getLength(); i++)
                {
                   sect = (Element)nl.item(i);
                   sectionid = sect.getAttribute("sectionid");
                   if(allSections || sections.contains(sectionid))
-                     sect.setAttribute("process", "yes");
+                     sect.setAttribute(PROCESS, "yes");
                }
             }
             if(backtomain)
@@ -294,10 +302,10 @@ public class PSCommandLineProcessor
             temp = outputfile;
             do
             {
-               System.out.println("Specify output file path name:");
+               logger.info("Specify output file path name:");
                if(temp.trim().length() > 0)
-                  System.out.println("Default is <" + outputfile + ">");
-               temp = ms_consoleLineReader.readLine();
+                  logger.info("Default is <{}>", outputfile );
+               temp = consoleLineReader.readLine();
                //user interrupted ressing CTRL C
                if(temp == null)
                   return;
@@ -313,11 +321,11 @@ public class PSCommandLineProcessor
             temp = keepmissingkeysonly;
             do
             {
-               System.out.println("Generate only the new resource keys missing in " +
+               logger.info("Generate only the new resource keys missing in " +
                   "server TMX file (yes/no):");
                if(temp.trim().length() > 0)
-                  System.out.println("Default is <" + keepmissingkeysonly + ">");
-               temp = ms_consoleLineReader.readLine();
+                  logger.info("Default is <" + keepmissingkeysonly + ">");
+               temp = consoleLineReader.readLine();
                //user interrupted ressing CTRL C
                if(temp == null)
                   return;
@@ -330,7 +338,7 @@ public class PSCommandLineProcessor
                 && !temp.equalsIgnoreCase("no")));
 
             elem.setAttribute("keepmissingkeysonly", temp);
-            elem.setAttribute("process", "yes");
+            elem.setAttribute(PROCESS, "yes");
             break;
          case IPSActionHandler.ACTIONID_MERGE_MASTER:
             //file path
@@ -338,11 +346,11 @@ public class PSCommandLineProcessor
             temp = filepath;
             do
             {
-               System.out.println(
+               logger.info(
                   "Specify the path to the TMX file you want to merge: ");
                if(temp.trim().length() > 0)
-                  System.out.println("Default is <" + filepath + ">");
-               temp = ms_consoleLineReader.readLine();
+                  logger.info("Default is <" + filepath + ">");
+               temp = consoleLineReader.readLine();
                //user interrupted ressing CTRL C
                if(temp == null)
                   return;
@@ -351,10 +359,12 @@ public class PSCommandLineProcessor
             } while(temp.trim().length() < 1);
 
             elem.setAttribute(PSRxltConfigUtils.ATTR_FILE_PATH, temp.trim());
-            elem.setAttribute("process", "yes");
+            elem.setAttribute(PROCESS, "yes");
             break;
-         case IPSActionHandler.ACTIONID_EXIT:
-            elem.setAttribute("process", "yes");
+          case IPSActionHandler.ACTIONID_EXIT:
+            elem.setAttribute(PROCESS, "yes");
+            break;
+         default:
             break;
       }
    }
@@ -366,9 +376,9 @@ public class PSCommandLineProcessor
     * @return List of sectionids chosen by the user for processing. Never
     * <code>null</code>.
     */
-   private List parseSectionList(String line)
+   private List<String> parseSectionList(String line)
    {
-      ArrayList list = new ArrayList();
+      ArrayList<String> list = new ArrayList<>();
       StringTokenizer tokenizer = new StringTokenizer(line, ",");
       String temp = null;
       int val;
@@ -403,13 +413,13 @@ public class PSCommandLineProcessor
    private Element getActionElement(int action)
    {
       String actionString = String.valueOf(action);
-      NodeList nl = m_CfgDocument.getElementsByTagName("action");
+      NodeList nl = m_CfgDocument.getElementsByTagName(ACTION);
       Element elem;
       String temp;
       for(int i=0; null!=nl && i<nl.getLength(); i++)
       {
          elem = (Element)nl.item(i);
-         temp = elem.getAttribute("actionid");
+         temp = elem.getAttribute(ACTION_ID);
          if(temp.equals(actionString))
             return elem;
       }
@@ -434,18 +444,18 @@ public class PSCommandLineProcessor
    {
       try
       {
-         NodeList nl = m_CfgDocument.getElementsByTagName("action");
+         NodeList nl = m_CfgDocument.getElementsByTagName(ACTION);
          Element elem;
          String temp;
          int actionid;
          for(int i=0; null!=nl && i<nl.getLength(); i++)
          {
             elem = (Element)nl.item(i);
-            temp = elem.getAttribute("process");
+            temp = elem.getAttribute(PROCESS);
             if(!temp.equalsIgnoreCase("yes"))
                continue;
 
-            temp = elem.getAttribute("actionid");
+            temp = elem.getAttribute(ACTION_ID);
             actionid = Integer.parseInt(temp);
             IPSActionHandler handler = null;
             switch(actionid)
@@ -595,19 +605,19 @@ public class PSCommandLineProcessor
    /**
     * The console line reader initialized when this class is loaded.
     */
-   static BufferedReader ms_consoleLineReader = null;
+   static BufferedReader consoleLineReader = null;
 
-   static InputStreamReader ms_consoleInputStreamReader = null;
+   static InputStreamReader consoleInputStreamReader = null;
 
    /**
-    * Root directory for Rhythmyx, initialized in {@link #init()} method, never
+    * Root directory for Rhythmyx, initialized in {@link #init(Document)} method, never
     * <code>null</code> after that.
     */
    private String m_rxroot = null;
    
    private boolean ms_standalone = false;
    
-   private static final org.apache.logging.log4j.Logger ms_logger = LogManager.getLogger(PSCommandLineProcessor.class);
+   private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(PSCommandLineProcessor.class);
    
    /**
     * String constant representing the Logfile name. Log file is always written
@@ -622,9 +632,9 @@ public class PSCommandLineProcessor
     */
    static void logMessage(String msg)
    {
-      if (ms_logEnabled)
+      if (logEnabled)
       {
-         ms_logger.info(msg);
+         logger.info(msg);
       }
    }
 
@@ -637,17 +647,12 @@ public class PSCommandLineProcessor
     */
    static void logMessage(String key, String singleArg)
    {
-      if (!ms_logEnabled)
+      if (!logEnabled)
          return;
       
       Object[] args = { singleArg };
-      String msgText = getRes().getString(key);
-      if(msgText != null)
-      {
-         ms_logger.info(msgText, args);
-      }
-      else
-         ms_logger.info(key);
+      String msgText = MessageFormat.format(getRes().getString(key),args);
+      logger.info(msgText);
    }
 
    /**
@@ -660,16 +665,16 @@ public class PSCommandLineProcessor
     */
    static void logMessage(String key, Object[]args)
    {
-      if (!ms_logEnabled)
+      if (!logEnabled)
          return;
       
-      String msgText = getRes().getString(key);
+      String msgText = MessageFormat.format(getRes().getString(key),args);
       if(msgText != null)
       {
-         ms_logger.info(msgText, args);
+         logger.info(msgText);
       }
       else
-         ms_logger.info(key);
+         logger.info(key);
    }
 
    /**
@@ -678,7 +683,7 @@ public class PSCommandLineProcessor
     */
    static Logger getLogger()
    {
-      return ms_logger;
+      return logger;
    }
 
    /**
@@ -690,11 +695,11 @@ public class PSCommandLineProcessor
    {
       /* load the resources first. this will throw an exception if we can't
       find them */
-      if (m_res == null)
-         m_res = ResourceBundle.getBundle("com.percussion.i18n.rxlt.PSRxltMain"
+      if (res == null)
+         res = ResourceBundle.getBundle("com.percussion.i18n.rxlt.PSRxltMain"
          + "Resources");
 
-      return m_res;
+      return res;
    }
    
    /**
@@ -706,7 +711,7 @@ public class PSCommandLineProcessor
     */
    public static void setIsLogEnabled(boolean enabled)
    {
-      ms_logEnabled = enabled;
+      logEnabled = enabled;
    }
    
    /**
@@ -718,17 +723,17 @@ public class PSCommandLineProcessor
     */
    public static boolean isLogEnabled()
    {
-      return ms_logEnabled;
+      return logEnabled;
    }
    
    public static boolean areDotsEnabled()
    {
-      return ms_dotsEnabled;
+      return dotsEnabled;
    }
    
    public static void setDotsEnabled(boolean enabled)
    {
-      ms_dotsEnabled = enabled;
+      dotsEnabled = enabled;
    }
    
    /**
@@ -747,13 +752,18 @@ public class PSCommandLineProcessor
     * The program resources. You must access this variable through the {@link
     * #getRes getRes} method.
     */
-   private static ResourceBundle m_res = null;
+   private static ResourceBundle res = null;
    
    /**
     * Indicates if logging is enabled.  Intially <code>true</code>, modified
     * by {@link #setIsLogEnabled(boolean)}.
     */
-   private static boolean ms_logEnabled = true;
+   private static boolean logEnabled = true;
    
-   private static boolean ms_dotsEnabled = true;
+   private static boolean dotsEnabled = true;
+
+   private static final String ACTION_ID="actionid";
+   private static final String ACTION="action";
+   private static final String PROCESS="process";
+
 }

@@ -23,7 +23,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<!-- Configuration file for the Rhythmyx Language Tool. Packaged as part of JAR file.
+<!-- Configuration file for the Percussion Language Tool. Packaged as part of JAR file.
 User should never need to edit this. The default settings are suitable for the
 post installer to run the tool so that the language translation keys are generated
 from the existing system and merged with the server resource bundle. Merging with
@@ -67,7 +67,7 @@ untranslated keywords. The real process will be complete only when the file
 				<section sectionid="2" name="XSL Stylesheets" process="yes"/>
 				<section sectionid="3" name="Content Editors" process="yes"/>
 				<section sectionid="4" name="Extension and System Resources" process="yes"/>
-            <section sectionid="5" name="JSP Files" process="yes"/>            
+            	<section sectionid="5" name="JSP Files" process="yes"/>
 			</sections>
 		</action>
 		<!-- Process this action by default. The file name for this action must match with that for the above action -->
