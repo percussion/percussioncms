@@ -61,13 +61,13 @@
     <!--==========================================================-->
     <!-- PSLanguageTool                                           -->
     <!--                                                          -->
-    <!-- Launches the Rhythmyx language Tool using the given      -->
+    <!-- Launches the Percussion Language Tool using the given      -->
     <!-- classpath.                                               -->
     <!--==========================================================-->
     <macrodef name="PSLanguageTool">
         <attribute name="classpath"/>
         <sequential>
-            <echo>Running Rhythmyx Language Tool...</echo>
+            <echo>Running Percussion Language Tool...</echo>
             <!-- A Timeout is needed here because rxlt is not closing all of its descriptors (files) which makes the process hang for linux and ant 1.7 -->
             <java classname="com.percussion.i18n.rxlt.PSRxltMain" dir="${install.rxlt}" fork="true" maxmemory="1024m" classpathref="@{classpath}" timeout="${install.languageToolTimeOut}">
                 <arg value="-R${install.dir}"/>

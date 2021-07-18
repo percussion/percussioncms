@@ -23,6 +23,7 @@
  */
 package com.percussion.i18n.rxlt;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tablefactory.PSJdbcColumnData;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
@@ -34,9 +35,18 @@ import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSQLStatement;
+import com.percussion.utils.container.PSMissingApplicationPolicyException;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import com.percussion.utils.container.PSMissingApplicationPolicyException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -50,15 +60,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 /**
  * This class handles the action to add a new language to the Rhythmyx Content
@@ -104,32 +105,37 @@ public class PSLocaleHandler
     * @see #getLocaleDocument
     */
    public static Object[] getLocaleStrings(String rxroot)
-      throws FileNotFoundException, IOException, SAXException,
+      throws  IOException, SAXException,
             PSJdbcTableFactoryException, SQLException, PSInvalidXmlException,
             PSMissingApplicationPolicyException
    {
       Document doc = getLocaleDocument(rxroot);
       List<String> list = new ArrayList<>();
-      NodeList nl = doc.getElementsByTagName("column");
-      Element elem = null;
-      String temp = null;
-      Node node = null;
-      for(int i=0; nl != null && i<nl.getLength(); i++)
-      {
-         elem = (Element)nl.item(i);
-         temp = elem.getAttribute(PSRxltConfigUtils.ATTR_NAME);
-         if(!temp.equals("LANGUAGESTRING"))
-            continue;
 
-         node = elem.getFirstChild();
-         if(node instanceof Text)
-            temp = ((Text)node).getData();
-         if(temp!=null)
-            temp = temp.trim();
-         if(temp != null && temp.length() > 0)
-         list.add(temp);
+      if(doc != null) {
+
+         NodeList nl = doc.getElementsByTagName("column");
+         Element elem = null;
+         String temp = null;
+         Node node = null;
+         for (int i = 0; nl != null && i < nl.getLength(); i++) {
+            elem = (Element) nl.item(i);
+            temp = elem.getAttribute(PSRxltConfigUtils.ATTR_NAME);
+            if (!temp.equals(COL_LANGUAGE_STRING))
+               continue;
+
+            node = elem.getFirstChild();
+            if (node instanceof Text)
+               temp = ((Text) node).getData();
+            if (temp != null)
+               temp = temp.trim();
+            if (temp != null && temp.length() > 0)
+               list.add(temp);
+         }
       }
+
       return list.toArray();
+
    }
 
    /**
@@ -248,6 +254,7 @@ public class PSLocaleHandler
     * See {@link IPSSectionHandler#process(Element)} for
     * details about this method.
     */
+   @Override
    public void process(Element cfgData)
       throws PSActionProcessingException
    {
@@ -262,7 +269,7 @@ public class PSLocaleHandler
     * @throws PSActionProcessingException
     */
    @SuppressWarnings("unused")
-   private void processEnableDisableLanguage(Element cfgData)
+   private static void processEnableDisableLanguage(Element cfgData)
       throws PSActionProcessingException
    {
       String rxroot = cfgData.getOwnerDocument().getDocumentElement().
@@ -331,7 +338,7 @@ public class PSLocaleHandler
     * language to Rhythmyx Content Manager
     */
    @SuppressWarnings("unused")
-   private void processAddLanguage(Element cfgData)
+   private static void processAddLanguage(Element cfgData)
       throws PSActionProcessingException
    {
       String rxroot = cfgData.getOwnerDocument().getDocumentElement().
@@ -384,7 +391,7 @@ public class PSLocaleHandler
     * language or locale
     */
    @SuppressWarnings("unused")
-   private void processEditLanguage(Element cfgData)
+   private static void processEditLanguage(Element cfgData)
       throws PSActionProcessingException
    {
       String rxroot = cfgData.getOwnerDocument().getDocumentElement().
@@ -451,7 +458,7 @@ public class PSLocaleHandler
     * @throws PSJdbcTableFactoryException in case of any error in JDBC table
     * factory processing
     */
-   static public Document getTableDataDoc(Connection conn,
+    public static Document getTableDataDoc(Connection conn,
       PSJdbcDbmsDef dbmsDef, PSJdbcDataTypeMap dataTypeMap)
          throws PSJdbcTableFactoryException
    {
@@ -546,25 +553,25 @@ public class PSLocaleHandler
     * @throws IllegalArgumentException if languageString is <code>null</code> or
     * <code>empty</code>
     */
-   public synchronized static boolean isLocaleSupported(String languageString)
+   public static synchronized  boolean isLocaleSupported(String languageString)
       throws IllegalArgumentException
    {
       if(languageString == null || languageString.length() < 1)
          throw new IllegalArgumentException(
             "Language string must not be null or empty");
       //List was never built, build it
-      if(ms_SupportedLocaleStrings == null)
+      if(supportedLocaleStrings == null)
       {
-         ms_SupportedLocaleStrings = new ArrayList<>();
+         supportedLocaleStrings = new ArrayList<>();
          Locale locale[] = Locale.getAvailableLocales();
          for(int i=0; i<locale.length; i++)
          {
             //Convert from Java's "en_US" form to XML's "en-us" form
-            ms_SupportedLocaleStrings.add(
+            supportedLocaleStrings.add(
                locale[i].toString().toLowerCase().replace('_', '-'));
          }
       }
-      if(ms_SupportedLocaleStrings.contains(languageString))
+      if(supportedLocaleStrings.contains(languageString))
          return true;
       return false;
    }
@@ -596,9 +603,9 @@ public class PSLocaleHandler
     * @throws SQLException If there are any errors generating system ids.
     * @throws PSJdbcTableFactoryException if there are any other errors.
     */
-   public boolean saveLocale(Connection conn, PSJdbcDbmsDef dbmsDef,
-      PSJdbcDataTypeMap dataTypeMap, String languageString,
-      String displayName, String desc, int status, boolean overwrite)
+   public static boolean saveLocale(Connection conn, PSJdbcDbmsDef dbmsDef,
+                                    PSJdbcDataTypeMap dataTypeMap, String languageString,
+                                    String displayName, String desc, int status, boolean overwrite)
          throws SQLException, PSJdbcTableFactoryException
    {
       if (languageString == null || languageString.trim().length() == 0)
@@ -683,7 +690,9 @@ public class PSLocaleHandler
          {
             schema.setTableData(null);
          }
-         catch (PSJdbcTableFactoryException e){}
+         catch (PSJdbcTableFactoryException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+         }
       }
 
       return saved;
@@ -712,10 +721,10 @@ public class PSLocaleHandler
       throws FileNotFoundException, IOException, PSInvalidXmlException,
        SAXException, com.percussion.utils.container.PSMissingApplicationPolicyException
    {
-      if (m_repositoryProperties == null)
-         m_repositoryProperties = PSJdbcDbmsDef.loadRxRepositoryProperties(rxroot);
+      if (repositoryProperties == null)
+         repositoryProperties = PSJdbcDbmsDef.loadRxRepositoryProperties(rxroot);
      
-      return m_repositoryProperties;
+      return repositoryProperties;
    }
 
    /**
@@ -738,14 +747,14 @@ public class PSLocaleHandler
       PSJdbcDbmsDef dbmsDef, PSJdbcDataTypeMap dataTypeMap)
         throws PSJdbcTableFactoryException
    {
-      if (m_localeSchema == null)
+      if (localeSchema == null)
       {
-         m_localeSchema = PSJdbcTableFactory.catalogTable(conn, dbmsDef,
+         localeSchema = PSJdbcTableFactory.catalogTable(conn, dbmsDef,
          dataTypeMap, LOCALE_TABLE, false);
-         m_localeSchema.setAllowSchemaChanges(false);
+         localeSchema.setAllowSchemaChanges(false);
       }
 
-      return m_localeSchema;
+      return localeSchema;
    }
 
    /**
@@ -818,19 +827,19 @@ public class PSLocaleHandler
     * System's default Locale is used to formatting the date. We depend on Java
     * for date formatting. This list is built only once when it is required.
     */
-   static private List<String> ms_SupportedLocaleStrings = null;
+   static private List<String> supportedLocaleStrings = null;
 
    /**
     * The repository properties, <code>null</code> until loaded by a call to
     * {@link #getRepositoryProperties}.
     */
-   private static Properties m_repositoryProperties = null;
+   private static Properties repositoryProperties = null;
 
    /**
     * The table schema for the locales table, <code>null</code> until loaded by
     * a call to <code>getTableSchema()</code>.
     */
-   private static PSJdbcTableSchema m_localeSchema = null;
+   private static PSJdbcTableSchema localeSchema = null;
 
    /**
     * Constant for the name of the repository table containing locale
@@ -884,13 +893,14 @@ public class PSLocaleHandler
       try
       {
          PSLocaleHandler localeHandler = new PSLocaleHandler();
-         System.out.println(PSXmlDocumentBuilder.toString(
-            PSLocaleHandler.getLocaleDocument(System.getProperty("rxdeploydir"))));
+         String msg = PSXmlDocumentBuilder.toString(
+                 PSLocaleHandler.getLocaleDocument(System.getProperty("rxdeploydir")));
+         log.info("{}",msg);
       }
       catch(Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
       }
    }
 }

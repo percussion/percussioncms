@@ -23,6 +23,7 @@
  */
 package com.percussion.i18n;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.rxlt.PSCommandLineProcessor;
 import com.percussion.i18n.rxlt.PSRxltMain;
 import com.percussion.server.PSServer;
@@ -37,7 +38,12 @@ import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Properties;
 
@@ -51,7 +57,7 @@ import java.util.Properties;
  */
 public class PSI18nStartupManager implements IPSNotificationListener {
     private static final String RUN_AT_STARTUP = "runAtStartup";
-    private static final Logger m_log = LogManager
+    private static final Logger log = LogManager
             .getLogger(PSI18nStartupManager.class);
 
 
@@ -91,7 +97,10 @@ public class PSI18nStartupManager implements IPSNotificationListener {
                 if (success && !needToRun)
                     return;
             } catch (IOException | SAXException | ParserConfigurationException e) {
-                m_log.error("Invalid tmx file detected. will backup and regenerate "+masterFile.getAbsolutePath() +" error :"+e.toString());
+                log.error("Invalid tmx file detected. will backup and regenerate {} Error: {}",
+                        masterFile.getAbsolutePath() ,
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
                 backup = true;
                 success = false;
             }
@@ -106,10 +115,10 @@ public class PSI18nStartupManager implements IPSNotificationListener {
 
         // clear cache
         try {
-            m_log.info("Running Language Tool...");
+            log.info("Running Language Tool...");
             PSCommandLineProcessor.setDotsEnabled(false);
             success = PSRxltMain.process(false, PSServer.getRxFile("."));
-            m_log.info("Language Tool completed, reloading i18n resources...");
+            log.info("Language Tool completed, reloading i18n resources...");
 
             success |= PSTmxResourceBundle.getInstance().loadResources();
 
@@ -119,8 +128,9 @@ public class PSI18nStartupManager implements IPSNotificationListener {
             }
 
         } catch (Exception e) {
-            m_log.error("Error reloading 18n resources: " +
-                e.getLocalizedMessage(), e);
+            log.error("Error reloading 18n resources: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
         finally {
             if ( needToRun && !success)
@@ -129,7 +139,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
     }
 
     private void backupInvaidFile(File masterFile) {
-        Throwable backupException = null;
+        Exception backupException = null;
         boolean backupSuccess;
         File backupFile = null;
         try {
@@ -142,9 +152,13 @@ public class PSI18nStartupManager implements IPSNotificationListener {
 
         if (!backupSuccess) {
             if (backupFile == null)
-                m_log.error("Cannot generate backup filename for " + masterFile.getAbsolutePath(), backupException);
+                log.error("Cannot generate backup filename for {}. Error: {}",
+                        masterFile.getAbsolutePath(),
+                        PSExceptionUtils.getMessageForLog(backupException));
             else
-                m_log.error("Could not backup I18n file " + masterFile + " to " + backupFile.getAbsolutePath(), backupException);
+                log.error("Could not backup I18n file {} to {}.",
+                        masterFile,
+                        backupFile.getAbsolutePath());
 
         }
     }
@@ -163,16 +177,17 @@ public class PSI18nStartupManager implements IPSNotificationListener {
                             RUN_AT_STARTUP, "false"));
 
                 if (!doRun) {
-                    m_log.info(
+                    log.info(
                         "i18n resources are up to date, Language Tool will not run");
                 }
             } catch (IOException e) {
-                m_log.warn("Unable to load file " + propFile +
-                    ", Language Tool will not run.", e);
+                log.warn("Unable to load file {}, Language Tool will not run. Error: {}",
+                        propFile,
+                        e.getMessage());
             }
         } else {
-            m_log.warn("Unable to locate file " + propFile +
-                ", Language Tool will not run.");
+            log.warn("Unable to locate i18n property file {}, Language Tool will not run.",
+                    propFile);
         }
 
         return doRun;
@@ -193,8 +208,10 @@ public class PSI18nStartupManager implements IPSNotificationListener {
         try(OutputStream out =new FileOutputStream(propFile) ) {
             props.store(out, null);
         } catch (IOException e) {
-            m_log.warn("Unable to write to file " + propFile + ": " +
-                e.getLocalizedMessage(), e);
+            log.warn("Unable to write to file {}. Error: {}",
+                    propFile,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
     }
 }

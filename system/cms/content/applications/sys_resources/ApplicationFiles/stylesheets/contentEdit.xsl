@@ -6,7 +6,7 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-]>
+		]>
 <!-- $ Id: $ -->
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
@@ -38,7 +38,7 @@
 				<xsl:text>&#10;</xsl:text>
 				<script src="../../cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 				<xsl:text>&#10;</xsl:text>
-                <script  src="../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
+				<script  src="../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
 				<xsl:text>&#10;</xsl:text>
 				<script src="../../cm/jslib/profiles/3x/libraries/bowser/es5.js"></script>
 				<xsl:text>&#10;</xsl:text>
@@ -60,52 +60,52 @@
 				<xsl:call-template name="createControlStyleTags">
 					<xsl:with-param name="styletags" select="$styletags"/>
 				</xsl:call-template>
-                <link rel="stylesheet" href="../../cm/widgets/PercDataTable/PercDataTable.css"/>
+				<link rel="stylesheet" href="../../cm/widgets/PercDataTable/PercDataTable.css"/>
 				<link rel="stylesheet" href="../../cm/widgets/PercActionDataTable/PercActionDataTable.css"/>
-                <link rel="stylesheet" href="../../cm/widgets/PercPageDataTable/PercPageDataTable.css"/>
-                <link rel="stylesheet" href="../../cm/widgets/PercSimpleMenu/PercSimpleMenu.css"/>
+				<link rel="stylesheet" href="../../cm/widgets/PercPageDataTable/PercPageDataTable.css"/>
+				<link rel="stylesheet" href="../../cm/widgets/PercSimpleMenu/PercSimpleMenu.css"/>
 				<link rel="stylesheet" href="../sys_resources/css/cmlite.css"/>
-                <link rel="stylesheet" href="/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+				<link rel="stylesheet" href="/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css"/>
 				<xsl:text>&#10;</xsl:text>
 				<script language="javascript" src="{concat('../web_resources/cm/common/js/PercGlobalVariablesData.js?_',@currentTimeStamp)}">;</script>
 				<xsl:text>&#10;</xsl:text>
-				<script> 
-                   (function($)
-                   {
-                        $(function(){
-                            
-                             if(!$("#perc-content-edit-metadata-link").hasClass('noClick')) {
-                                $(".perc-content-edit-data").hide();
-                                $("#perc-content-edit-metadata-link, #perc-content-edit-site-link").on("click",function () {
-                                    $(this).parent().find(".perc-content-edit-data").toggle();
-                                    $(this).toggleClass('perc-spacer perc-tab-open');                                
-                                });
-                            }
-                        // Add class 'perc-shared-asset' to body tag if asset is shared one    
-                        if($('body').find('#perc-content-edit-sys_title').length)
-                        {   
-                            var getFieldType = $('#perc-content-edit-sys_title').attr('type');
-                            if(getFieldType == 'text') { 
-                                $('body').addClass('perc-shared-asset');
-                            }
-                        }
-                     <xsl:if test="@commandName='edit'">
-                            findTopMostJQuery();
-                            addKeyPressDirtyEvents();
-                     </xsl:if>       
-                        });
-                    })(jQuery);
+				<script>
+					$(function(){
+
+					if(!$("#perc-content-edit-metadata-link").hasClass('noClick')) {
+					$(".perc-content-edit-data").hide();
+					$("#perc-content-edit-metadata-link, #perc-content-edit-site-link").on("click",function () {
+					$(this).parent().find(".perc-content-edit-data").toggle();
+					$(this).toggleClass('perc-spacer perc-tab-open');
+					});
+					}
+					// Add class 'perc-shared-asset' to body tag if asset is shared one
+					if($('body').find('#perc-content-edit-sys_title').length)
+					{
+					var getFieldType = $('#perc-content-edit-sys_title').attr('type');
+					if(getFieldType == 'text') {
+						$('body').addClass('perc-shared-asset');
+					}
+					}
+					<xsl:if test="@commandName='edit'">
+						findTopMostJQuery();
+						addKeyPressDirtyEvents();
+					</xsl:if>
+					});
 				</script>
 				<xsl:text>&#10;</xsl:text>
 				<title><xsl:value-of select="//DisplayField/Control[@paramName='sys_title']/Value"/></title>
 				<xsl:text>&#10;</xsl:text>
+			</head>
+			<body>
 				<style type="text/css">
 					.perc-required-legend{
-						position: relative; float: left; padding-right: 9px; margin-top: 3px;
+						position: relative; float: right; padding-right: 9px; margin-top: 3px;
 					}
+
 					#edit-page-metadata > form > span.perc-required-legend{
 						margin-top: -29px;
-						padding-right: 0;
+						padding-right: 0px;
 						margin-right: -2px;
 					}
 					.perc-required-field:before {
@@ -117,13 +117,13 @@
 						padding-right:35px;
 						padding-bottom:30px;
 					}
+
+
 				</style>
-			</head>
-			<body>
 				<form method="post" action="{@submitHref}" id="perc-content-form" name="perc-content-form" encType="multipart/form-data">
-				<xsl:if test="//DisplayField[@displayType='sys_normal']/Control[@isRequired = 'yes' and @isReadOnly='no' and @name != 'sys_HiddenInput']">
-			   	<span class="perc-required-legend"><label>* - denotes required field</label></span>
-			   </xsl:if>
+					<xsl:if test="//DisplayField[@displayType='sys_normal']/Control[@isRequired = 'yes' and @isReadOnly='no' and @name != 'sys_HiddenInput']">
+						<span class="perc-required-legend"><label>* - denotes required field</label></span>
+					</xsl:if>
 					<xsl:apply-templates select="ItemContent"/>
 					<xsl:apply-templates select="ActionLinkList" mode="addformparams"/>
 					<input xmlns="" type="hidden" name="sys_contenttypeid">
@@ -157,19 +157,19 @@
 			</div>
 			<div id="perc-content-edit-metadata-sep"/>
 		</div>
-        
-		<div id="perc-site-impact-panel" style = "display:none">			
+
+		<div id="perc-site-impact-panel" style = "display:none">
 			<div id="perc-content-edit-site-link" class = "perc-spacer">
 				<span id="perc-content-edit-site-icon" />Site Impact</div>
 			<div class="perc-content-edit-data">
-                    <span class = "font_normal_07em_black">Pages using this asset</span>
-                    <div class = "perc-site-impact-pages">
-                    </div>
-                    <span class = "font_normal_07em_black">Templates using this asset</span>
-                    <div class = "perc-site-impact-templates">
-                    </div>                    
-			</div>            
-        </div>
+				<span class = "font_normal_07em_black">Pages using this asset</span>
+				<div class = "perc-site-impact-pages">
+				</div>
+				<span class = "font_normal_07em_black">Templates using this asset</span>
+				<div class = "perc-site-impact-templates">
+				</div>
+			</div>
+		</div>
 	</xsl:template>
 	<xsl:template match="DisplayField[@displayType='sys_hidden']">
 		<xsl:comment>Hidden Control</xsl:comment>
@@ -182,55 +182,55 @@
 	</xsl:template>
 	<xsl:template match="DisplayField[@displayType='sys_normal'] | DisplayField[@displayType='sys_error']">
 		<xsl:comment>Normal Control</xsl:comment>
-        <div type="{@displayType}">
-        <xsl:if test="DisplayLabel!=''">
-			<xsl:variable name="keyval">
-				<xsl:choose>
-					<xsl:when test="DisplayLabel/@sourceType='sys_system'">
-						<xsl:value-of select="concat('psx.ce.system.', Control/@paramName, '@', DisplayLabel)"/>
-					</xsl:when>
-					<xsl:when test="DisplayLabel/@sourceType='sys_shared'">
-						<xsl:value-of select="concat('psx.ce.shared.', Control/@paramName, '@', DisplayLabel)"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="concat('psx.ce.local.', /ContentEditor/@contentTypeId, '.', Control/@paramName, '@', DisplayLabel)"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<xsl:variable name="mnemonickeyval">
-				<xsl:choose>
-					<xsl:when test="DisplayLabel/@sourceType='sys_system'">
-						<xsl:value-of select="concat('psx.ce.system.', Control/@paramName, '.mnemonic.', DisplayLabel, '@', Control/@accessKey)"/>
-					</xsl:when>
-					<xsl:when test="DisplayLabel/@sourceType='sys_shared'">
-						<xsl:value-of select="concat('psx.ce.shared.', Control/@paramName, '.mnemonic.', DisplayLabel, '@', Control/@accessKey)"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="concat('psx.ce.local.', /ContentEditor/@contentTypeId, '.', Control/@paramName, '.mnemonic.', DisplayLabel, '@', Control/@accessKey)"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<label for="{Control/@paramName}" accesskey="{Control/@accessKey}">
-			<xsl:if test="Control/@isRequired='yes'"><xsl:attribute name="class">perc-required-field</xsl:attribute></xsl:if>
-				<xsl:call-template name="getMnemonicLocaleString">
-					<xsl:with-param name="key" select="$keyval"/>
-					<xsl:with-param name="mnemonickey" select="$mnemonickeyval"/>
-					<xsl:with-param name="lang" select="$lang"/>
-				</xsl:call-template>
-			</label>
-			<br/>
-		</xsl:if>
-		<xsl:apply-templates select="Control" mode="psxcontrol"/>
-        <xsl:if test="position()!=last()">
-            <br/>
-        </xsl:if>
-		<xsl:variable name="paramName" select="Control/@paramName"/>
-		<xsl:if test="//FieldError[@submitName=$paramName]">
-			<label class="perc_field_error" for="{$paramName}" generated="true" style="display: block;">
-				<xsl:value-of select="//FieldError[@submitName=$paramName]"/>
-			</label>
-		</xsl:if>
-        </div>
+		<div type="{@displayType}">
+			<xsl:if test="DisplayLabel!=''">
+				<xsl:variable name="keyval">
+					<xsl:choose>
+						<xsl:when test="DisplayLabel/@sourceType='sys_system'">
+							<xsl:value-of select="concat('psx.ce.system.', Control/@paramName, '@', DisplayLabel)"/>
+						</xsl:when>
+						<xsl:when test="DisplayLabel/@sourceType='sys_shared'">
+							<xsl:value-of select="concat('psx.ce.shared.', Control/@paramName, '@', DisplayLabel)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat('psx.ce.local.', /ContentEditor/@contentTypeId, '.', Control/@paramName, '@', DisplayLabel)"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:variable name="mnemonickeyval">
+					<xsl:choose>
+						<xsl:when test="DisplayLabel/@sourceType='sys_system'">
+							<xsl:value-of select="concat('psx.ce.system.', Control/@paramName, '.mnemonic.', DisplayLabel, '@', Control/@accessKey)"/>
+						</xsl:when>
+						<xsl:when test="DisplayLabel/@sourceType='sys_shared'">
+							<xsl:value-of select="concat('psx.ce.shared.', Control/@paramName, '.mnemonic.', DisplayLabel, '@', Control/@accessKey)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat('psx.ce.local.', /ContentEditor/@contentTypeId, '.', Control/@paramName, '.mnemonic.', DisplayLabel, '@', Control/@accessKey)"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<label for="{Control/@paramName}" accesskey="{Control/@accessKey}">
+					<xsl:if test="Control/@isRequired='yes'"><xsl:attribute name="class">perc-required-field</xsl:attribute></xsl:if>
+					<xsl:call-template name="getMnemonicLocaleString">
+						<xsl:with-param name="key" select="$keyval"/>
+						<xsl:with-param name="mnemonickey" select="$mnemonickeyval"/>
+						<xsl:with-param name="lang" select="$lang"/>
+					</xsl:call-template>
+				</label>
+				<br/>
+			</xsl:if>
+			<xsl:apply-templates select="Control" mode="psxcontrol"/>
+			<xsl:if test="position()!=last()">
+				<br/>
+			</xsl:if>
+			<xsl:variable name="paramName" select="Control/@paramName"/>
+			<xsl:if test="//FieldError[@submitName=$paramName]">
+				<label class="perc_field_error" for="{$paramName}" generated="true" style="display: block;">
+					<xsl:value-of select="//FieldError[@submitName=$paramName]"/>
+				</label>
+			</xsl:if>
+		</div>
 	</xsl:template>
 	<xsl:template match="DisplayField">
 		<b>unmatched display field type: '<xsl:copy-of select="@displayType"/>'</b>
@@ -262,7 +262,7 @@
 	<xsl:template match="psxctl:FileDescriptor" mode="scriptfiles"><xsl:value-of select="psxctl:FileLocation"/>;</xsl:template>
 	<xsl:template match="ControlName" mode="stylefiles">
 		<xsl:variable name="ctlname" select="."/>
-		<xsl:choose> 
+		<xsl:choose>
 			<xsl:when test="$systemLibraryDoc/*/psxctl:ControlMeta[@name=$ctlname]">
 				<xsl:apply-templates select="$systemLibraryDoc/*/psxctl:ControlMeta[@name=$ctlname]/psxctl:AssociatedFileList/psxctl:FileDescriptor[@type='css']" mode="stylefiles"/>
 			</xsl:when>

@@ -49,9 +49,11 @@
               file="${install.src}/rxconfig/Server/startupProcessManager.properties"/>
 
         <!-- i18n always install or upgrade -->
-        <echo>Updating i18n property file</echo>
-        <echo file="${install.dir}/rxconfig/I18N/rxlt.properties" force="true">runAtStartup=true
-        </echo>
+        <echo>Updating i18n property file...</echo>
+        <propertyfile file="${install.dir}/rxconfig/I18n/rxlt.properties">
+            <entry key="runAtStartup" value="true" default="true" />
+        </propertyfile>
+
 
         <!-- Always update the sys_ schema files with latest -->
         <echo>Refreshing master schema files...</echo>

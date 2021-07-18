@@ -33,7 +33,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * This is the main class for the Rhythmyx Language Tool. Runs the processor in
+ * This is the main class for the Percussion Language Tool. Runs the processor in
  * the {@link #main} method and provides some static utility methods to provide
  * information about the tool.
  */
@@ -141,8 +141,8 @@ public class PSRxltMain
     * Returns the version string for this program.
     *
     * @return the version string in the form of
-    *    "Rhythmyx Language Tool 1.0; Build:127". If the version resources can
-    *    not be found, the string "Rhythmyx Language Tool" is returned.
+    *    "Percussion Language Tool 1.0; Build:127". If the version resources can
+    *    not be found, the string "Percussion Language Tool" is returned.
     */
    public static String getVersionString()
    {
@@ -209,5 +209,5 @@ public class PSRxltMain
    /**
     * The publisher version string. constant.
     */
-   public static final String PROGRAM_NAME = "Rhythmyx Language Tool";
+   public static final String PROGRAM_NAME = "Percussion Language Tool";
 }

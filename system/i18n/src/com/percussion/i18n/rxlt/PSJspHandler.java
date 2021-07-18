@@ -29,6 +29,9 @@ import com.percussion.i18n.tmxdom.IPSTmxDtdConstants;
 import com.percussion.i18n.tmxdom.IPSTmxTranslationUnit;
 import com.percussion.i18n.tmxdom.IPSTmxTranslationUnitVariant;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileReader;
@@ -36,11 +39,8 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Element;
 
 /**
  * Scans all JSP files for i18n information.  For system files, this information
@@ -64,7 +64,6 @@ import org.w3c.dom.Element;
  */
 public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
 {
-   private static final String APP_SERVER = "AppServer/server/rx/deploy";
    private static final String JETTY_APP_SERVER = "jetty/base/webapps";
 
    /**
@@ -73,7 +72,7 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
     * 
     * @see #process
     */
-   private static String ms_SectionName = "JSP Files";
+   private static String sectionName = "JSP Files";
 
    /**
     * Enumeration for the rxi18n comment translation unit sections that are
@@ -102,13 +101,13 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
       /**
        * Ordinal value, initialized in the ctor, and never modified.
        */
-      private int mi_ordinal;
+      private int ordinal;
 
       /**
        * Name value for the action category, initialized in the ctor, never
        * modified.
        */
-      private String mi_name = null;
+      private String name = null;
 
       /**
        * Returns the ordinal value for the enumeration.
@@ -117,7 +116,7 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
        */
       private int getOrdinal()
       {
-         return mi_ordinal;
+         return ordinal;
       }
 
       /**
@@ -127,7 +126,7 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
        */
       private String getName()
       {
-         return mi_name;
+         return name;
       }
 
       /**
@@ -139,12 +138,12 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
        */
       private TuSectionEnum(int ord, String name)
       {
-         mi_ordinal = ord;
+         ordinal = ord;
          if (StringUtils.isBlank(name))
          {
             throw new IllegalArgumentException("name may not be null or empty");
          }
-         mi_name = name;
+         this.name = name;
       }
    }
    
@@ -156,10 +155,10 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
 
       String rxroot = cfgData.getOwnerDocument().getDocumentElement()
             .getAttribute(PSRxltConfigUtils.ATTR_RXROOT);
-      ms_SectionName = cfgData.getAttribute(PSRxltConfigUtils.ATTR_NAME);
+      sectionName = cfgData.getAttribute(PSRxltConfigUtils.ATTR_NAME);
 
       PSCommandLineProcessor.logMessage("blankLine", "");
-      PSCommandLineProcessor.logMessage("processingSection", ms_SectionName);
+      PSCommandLineProcessor.logMessage("processingSection", sectionName);
       PSCommandLineProcessor.logMessage("blankLine", "");
 
       PSTmxDocument tmxDoc = null;
@@ -185,7 +184,7 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
             tu = tmxDoc.createTranslationUnit(key, desc);
             tu.addProperty(tmxDoc.createProperty(
                   IPSTmxDtdConstants.ATTR_VAL_SECTIONNAME,
-                  PSI18nUtils.DEFAULT_LANG, ms_SectionName));
+                  PSI18nUtils.DEFAULT_LANG, sectionName));
             if (note != null)
                tu.addNote(tmxDoc.createNote(PSI18nUtils.DEFAULT_LANG,
                      note), true);
@@ -198,19 +197,15 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
                if (tuvprops != null)
                {
                   String[] props = tuvprops.split(",");
-                  if (props != null && props.length > 0)
+                  if ( props.length > 0)
                   {
-                     for (int i=0; i<props.length; i++)
-                     {
-                        String prop = props[i];
-                        if (prop != null)
-                        {
+                     for (String prop : props) {
+                        if (prop != null) {
                            String[] propVal = prop.split("=");
-                           if (propVal != null && propVal.length == 2)
-                           {
+                           if (propVal.length == 2) {
                               tuv.addProperty(tmxDoc.createProperty(
-                                    propVal[0], PSI18nUtils.DEFAULT_LANG,
-                                    propVal[1]));
+                                      propVal[0], PSI18nUtils.DEFAULT_LANG,
+                                      propVal[1]));
                            }
                         }
                      }
@@ -240,9 +235,7 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
     */
    private void handleAllJsps(String rxroot, Map tuInfo)
    {
-      File rxapp = new File(rxroot, APP_SERVER);
-      handleAllJsps(rxapp, tuInfo);
-      rxapp = new File(rxroot, JETTY_APP_SERVER);
+      File rxapp = new File(rxroot, JETTY_APP_SERVER);
       handleAllJsps(rxapp, tuInfo);
    }
 
@@ -256,7 +249,7 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
    {
       if (dir.exists())
       {
-      for (File f : dir.listFiles())
+      for (File f : Objects.requireNonNull(dir.listFiles()))
       {
          if (f.getName().endsWith(".jsp"))
          {
@@ -279,14 +272,13 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
     * @param tuInfo the map of translation unit
     * key/[note, props, seg] pairs
     */
-   @SuppressWarnings("unchecked")
    private void handleJspFile(File file, Map tuInfo)
    {
-      Reader r = null;
-      try
+
+      try( Reader r = new FileReader(file))
       {
          showDots(true);
-         r = new FileReader(file);
+
          String text = IOUtils.toString(r);
          getTranslationUnitInfo(text, tuInfo);
       }
@@ -296,8 +288,6 @@ public class PSJspHandler extends PSIdleDotter implements IPSSectionHandler
       }
       finally
       {
-         if (r != null)
-            IOUtils.closeQuietly(r);
          showDots(false);
       }
 
