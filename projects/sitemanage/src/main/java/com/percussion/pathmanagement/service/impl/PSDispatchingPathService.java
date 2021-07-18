@@ -514,7 +514,8 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             String pathToCheck = PSFolderHelper.getOppositePath(folderPath);
             isValidForRecycle = folderHelper.isFolderValidForRecycleOrRestore(pathToCheck, folderPath, FOLDER_TYPE, RECYCLED_TYPE);
         } catch (Exception e) {
-            log.error("Error finding item properties by id when restoring folder: " + guid);
+            log.error("Error finding item properties by id when restoring folder: {}, Error: {}", guid, e.getMessage());
+            log.debug(e.getMessage(), e);
             hasErrors = true;
         }
         if (hasErrors) {
@@ -523,8 +524,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
         if (isValidForRecycle) {
             recycleService.restoreFolder(guid);
         } else {
-            throw new PSPathServiceException("Error restoring folder.  Destination may already " +
-                    "contain a folder" + "with the same name.");
+            throw new PSPathServiceException("Error restoring folder.  Destination may already contain a folder with the same name.");
         }
         return new PSNoContent("Successfully restored folder with guid: " + guid);
     }
@@ -784,7 +784,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 stopWatch.start();
                 List<PSPathItem> items = pathService.findChildren(relativePath);
                 stopWatch.stop();
-                log.debug("pathService.findChildren: " + stopWatch.toString());
+                log.debug("pathService.findChildren: {}", stopWatch.toString());
                 
                 items = filterByCategoryAndType(items, category, type);
                 
@@ -794,14 +794,14 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 stopWatch.start();
                 validateAndSetFullPaths(items);
                 stopWatch.stop();
-                log.debug("validateAndSetFullPaths: " + stopWatch.toString());
+                log.debug("validateAndSetFullPaths: {}", stopWatch.toString());
                 
                 boolean isSortSpecified = PSPathUtils.isSortSpecified(sortColumn, sortOrder);
                 
                 stopWatch.start();
                 PSSimpleDisplayFormat format = getDisplayFormat(displayFormatId);
                 stopWatch.stop();
-                log.debug("getDisplayFormat: " + stopWatch.toString());
+                log.debug("getDisplayFormat: {}", stopWatch.toString());
                 
                 if (isSortSpecified)
                 {
@@ -813,7 +813,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                     stopWatch.start();
                     PSPathUtils.sort(items, sortColumn, sortOrder);
                     stopWatch.stop();
-                    log.debug("PSPathUtils.sort: " + stopWatch.toString());
+                    log.debug("PSPathUtils.sort: {}", stopWatch.toString());
                 }
                 
                 stopWatch.start();
@@ -821,7 +821,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 List<PSPathItem> itemsInPage = result.getChildrenInPage();
                 Integer resultingStartIndex = result.getStartIndex();
                 stopWatch.stop();
-                log.debug("PSPathUtils.getPage: " + stopWatch.toString());
+                log.debug("PSPathUtils.getPage: {}", stopWatch.toString());
                 
                 // If sort wasn't specified, I need to update items with display properties here
                 if (!isSortSpecified)
@@ -829,7 +829,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                     stopWatch.start();
                     listViewHelper.fillDisplayProperties(new PSDisplayPropertiesCriteria(itemsInPage, format));
                     stopWatch.stop();
-                    log.debug("PSUiHelper.setDisplayFormatInfo (before returning): " + stopWatch.toString());
+                    log.debug("PSUiHelper.setDisplayFormatInfo (before returning): {}", stopWatch.toString());
                 }
                 
                 return new PSPagedItemList(itemsInPage, items.size(), resultingStartIndex);
@@ -1102,7 +1102,7 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
                 rvalue = rvalue.substring(1);
             }
             if (log.isDebugEnabled()) {
-                log.debug(format("Original path: {0}, Normalized path: {1}", path,rvalue));
+                log.debug("Original path: {}, Normalized path: {}", path,rvalue);
             }
             return rvalue;
             

@@ -67,8 +67,9 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         try {
             getDao().delete(id);
         } catch (DeleteException e) {
-            String error = format("Error deleting object: {0}", id);
-            log.error(error,e);
+            String error = format("Error deleting object: {}", id);
+            log.error("{} Error: {}", error, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new DataServiceDeleteException(error,e);
         }
     }

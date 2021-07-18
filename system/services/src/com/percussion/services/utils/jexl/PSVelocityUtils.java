@@ -88,7 +88,7 @@ private static void initProperties() {
        String fixMacros = (String)autocorrectPatterns.getOrDefault(AUTO_FIX_MACRO_FILES, "true");
        if (!(fixMacros.equalsIgnoreCase("true") || fixMacros.equalsIgnoreCase("yes")))
        {
-          log.debug("Property "+AUTO_FIX_MACRO_FILES +" set to "+fixMacros+ " Skipping VM File fixup");
+          log.debug("Property {} set to {} Skipping VM File fixup", AUTO_FIX_MACRO_FILES, fixMacros);
           return;
        }
        File folder = f.getParentFile();
@@ -101,7 +101,8 @@ private static void initProperties() {
             origTemplate = new String(Files.readAllBytes(f.toPath()), StandardCharsets.UTF_8);
 
         } catch (IOException e) {
-            log.error("Cannot read velocity template "+f.getAbsolutePath(),e);
+            log.error("Cannot read velocity template {} Error: {}", f.getAbsolutePath(), e.getMessage());
+            log.debug(e.getMessage(), e);
             return;
         }
         String fileName = f.getName();
@@ -117,23 +118,22 @@ private static void initProperties() {
                                  new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8)) {
                         writer.write(processed);
                     } catch (FileNotFoundException e) {
-                       log.error("File not found exception for file ",e);
+                       log.error("File not found exception for file Error: {}", e.getMessage());
+                       log.debug(e.getMessage(), e);
                        return;
 
                     } catch (IOException e) {
-                        log.error("IOException writing processed velocity macro to "+f.getAbsolutePath(),e);
+                        log.error("IOException writing processed velocity macro to {} Error: {}", f.getAbsolutePath(), e.getMessage());
+                        log.debug(e.getMessage(), e);
                         return;
                     }
 
-
-
-
-                    log.info("updated Velocity macro file "+f.getAbsolutePath() +" backup written to "+backup.getAbsolutePath());
+                    log.info("Updated Velocity macro file {} backup written to {}", f.getAbsolutePath(), backup.getAbsolutePath());
                 } catch (Exception e)
                 {
-                    log.error("Cannot backup or write fixed up velocity template",e);
+                    log.error("Cannot backup or write fixed up velocity template Error: {}", e.getMessage());
                     return;
-   }
+                }
    
             }
 
@@ -300,13 +300,14 @@ private static void initProperties() {
 			   if (fixTrailingSpace.equalsIgnoreCase("true")) {
                    String lastChar = ret.substring(ret.length() - 1);
                    if (lastChar.equals("#") || lastChar.equals("$")) {
-                       log.debug("Last character of template " + name + " is " + lastChar + ". Appending space to fix parse error");
+                       log.debug("Last character of template {} is {}. Appending space to fix parse error", name, lastChar);
                        ret = ret.substring(0, ret.length() - 1) + " ";
                    }
                }
 		   }
 	   }catch(Exception e){
-		   log.error("An unexpected exception occurred while pre-compiling Template " + name, e);
+		   log.error("An unexpected exception occurred while pre-compiling Template {} Error: {}", name, e.getMessage());
+		   log.debug(e.getMessage(), e);
 	   }
 
 	   return ret;

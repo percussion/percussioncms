@@ -278,8 +278,9 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * see base interface method for details
      */
     public PSSiteSection create(PSCreateSiteSection req) throws PSDataServiceException {
-        if (log.isDebugEnabled())
-            log.debug("Received create site section: " + req.toString());
+        if (log.isDebugEnabled()) {
+            log.debug("Received create site section: {}", req.toString());
+        }
 
         createRequestValidator.validate(req).throwIfInvalid();
 
@@ -343,8 +344,9 @@ public class PSSiteSectionService implements IPSSiteSectionService
      * see base interface method for details
      */
     public PSSiteSection createExternalLinkSection(PSCreateExternalLinkSection req) throws PSValidationException, IPSPathService.PSPathNotFoundServiceException, PSSiteSectionException {
-        if (log.isDebugEnabled())
-            log.debug("Received create site section: " + req.toString());
+        if (log.isDebugEnabled()) {
+            log.debug("Received create site section: {}", req.toString());
+        }
 
         createExternalLinkRequestValidator.validate(req).throwIfInvalid();
         IPSGuid parentId = contentSrv.getIdByPath(req.getFolderPath());
@@ -590,7 +592,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             catch (PSNotFoundException e)
             {
-                 log.error("Failed to load the root section for the site  :" + site.getName());
+                 log.error("Failed to load the root section for the site: {}", site.getName());
             }
             allBlogsList.addAll(siteBlogsList);
         }
@@ -679,14 +681,15 @@ public class PSSiteSectionService implements IPSSiteSectionService
                         postProps.setId(idMapper.getString(postPage.getGuid()));
                         postProps.setTags(multiValues);
                     } catch (RepositoryException e) {
-                        log.error("Error setting properties for blog post with ID: " + postProps.getId(), e);
+                        log.error("Error setting properties for blog post with ID: {} {}", postProps.getId(), e.getMessage());
+                        log.debug(e.getMessage(), e);
                     }
                     
                     String folderPath = "";
                     try {
                         folderPath = fProc.getFolderPaths(summary.getCurrentLocator())[0];
                     } catch (PSCmsException e) {
-                        log.error("Error retrieving folder path for id: " + postPage.getGuid());
+                        log.error("Error retrieving folder path for id: {}", postPage.getGuid());
                     }
                     
                     String pagePath = folderHelper.concatPath(folderPath, summary.getName());
@@ -718,12 +721,12 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             else
             {
-                log.warn("Attempted to get posts for section '" + blogTitle + "'.");
+                log.warn("Attempted to get posts for section '{}'.", blogTitle);
             }
         }
         else
         {
-            log.warn("Attempted to get posts for non-blog '" + blogTitle + "'.");
+            log.warn("Attempted to get posts for non-blog '{}'.", blogTitle);
         }
         
         Collections.sort(posts, new Comparator<PSItemProperties>() {
@@ -759,7 +762,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         catch (WebApplicationException e)
         {
-            log.warn("Failed to find comments information for site '" + siteName + "'.");
+            log.warn("Failed to find comments information for site '{}'.", siteName);
         }
 
         return commentsMap;
@@ -781,7 +784,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         catch (PSErrorResultsException e)
         {
-            log.error("Failed to load the folder for the path" +  path);
+            log.error("Failed to load the folder for the path {}", path);
         }
         
         return id;
@@ -852,8 +855,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     blogProperties.setLastPublishDate(props
                             .getLastPublishedDate());
                 } catch (Exception e) {
-                    log.error("Error getting properties for " + landingPagePath
-                            + " [" + e.getLocalizedMessage() + "]", e);
+                    log.error("Error getting properties for {} [{}] Error: {}", landingPagePath, e.getLocalizedMessage(), e);
+                    log.debug(e.getMessage(), e);
                 }
                 blogList.add(blogProperties);
             }
@@ -877,7 +880,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             catch (PSErrorResultsException e)
             {
-                log.error("Failed to load the folder for the path" + siteSection.getFolderPath());
+                log.error("Failed to load the folder for the path {}", siteSection.getFolderPath());
             }
 
             if (folders != null && !folders.isEmpty())
@@ -904,8 +907,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 }
                 catch (Exception e)
                 {
-                    log.error("Cannot update blog templates on folder " + folder.getFolderPath() + " post template id="
-                            + newPostTemplate + " indexTemplateid = " + newIndexTemplate);
+                    log.error("Cannot update blog templates on folder {} post template id={} indexTemplateid = {}",
+                            folder.getFolderPath(), newPostTemplate, newIndexTemplate);
                 }
 
             }
@@ -941,7 +944,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
            }
            catch (PSErrorResultsException e)
            {
-               log.error("Failed to load the folder for the path" +  siteSection.getFolderPath());
+               log.error("Failed to load the folder for the path {}", siteSection.getFolderPath());
            }
        }
        return blogTemplateIds; 
@@ -1020,7 +1023,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             catch (PSErrorException e)
             {
-                log.debug("Failed to prepare for edit for item id=" + id.toString());
+                log.debug("Failed to prepare for edit for item id={}", id.toString());
 
                 String type = isPage ? "page" : "asset";
                 PSComponentSummary summary = getItemSummary(((PSLegacyGuid) id).getContentId());
@@ -1566,8 +1569,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     siteName
             );
 
-            log.error(ne.getLocalizedMessage());
-            log.warn("Removing invalid site definition:" + siteName);
+            log.error("{}", ne.getLocalizedMessage());
+            log.warn("Removing invalid site definition: {}", siteName);
             siteMgr.deleteSite(site);
         }
 
@@ -1596,7 +1599,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
                 try{
                 	child = loadSiteSection(childId, idMapper.getGuid(section.getId()), null, true, true, section.getDisplayTitlePath());
                 }catch(Exception e){
-                	log.error("Error loading section with id:" + idStr, e);
+                	log.error("Error loading section with id: {} Error: {}", idStr, e.getMessage());
+                	log.debug(e.getMessage(), e);
                 }
                 
                 if(child!=null)
@@ -1904,7 +1908,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         catch (PSErrorException e)
         {
-            log.error("Failed to create a folder name=" + name + ", under folder-path=\"" + parentPath + "\"", e);
+            log.error("Failed to create a folder name={}, under folder-path=\"{}\" Error: {}", name, parentPath, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PSSiteSectionException(e);
         }
     }
@@ -1971,7 +1976,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
             section = load(id);
         }
         catch(Exception e){
-            log.error("Failed to load section for the supplied id: " + id, e);
+            log.error("Failed to load section for the supplied id: {}", id, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new RuntimeException("Failed to find the selected section, it might have been deleted in another session.",e);
         }
         //Group all child sections as different type of sections require different treatment
@@ -2132,7 +2138,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
        }
        else
        {
-          log.warn("Could not find template for id: " + srcId);
+          log.warn("Could not find template for id: {}", srcId);
        }
        
        return tempId;
@@ -2183,7 +2189,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             //If we weren't able to auto detect / repair the landing page log an error but let the save proceed.
             if(landingPageId == null){
-            	log.error("Unable to locate the Landing Page for section " + req.getId() + req.getFolderName());
+            	log.error("Unable to locate the Landing Page for section {} {}", req.getId(), req.getFolderName());
             }else{
             
 	            PSComponentSummary summary = PSWebserviceUtils.getItemSummary(landingPageId.getContentId());
