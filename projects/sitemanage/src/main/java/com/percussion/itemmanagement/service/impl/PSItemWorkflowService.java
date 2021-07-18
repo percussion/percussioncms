@@ -185,6 +185,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
             return checkIn(id, false);
         } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -216,6 +218,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             } catch (PSErrorsException e) {
                 PSErrorException ex = (PSErrorException) e.getErrors().get(
                         ids.get(0));
+                log.error(e.getMessage());
+                log.debug(e.getMessage(),e);
                 throw new PSItemWorkflowServiceException("Failed to check-in item: " + sum != null ? sum.getName() : "no summary " + "id= " + id + " , Error: " + ex.getErrorMessage(), ex);
             }
 
@@ -255,8 +259,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
     
     private void forceCheckInLocalContent(PSLocator dep, String currentUser) {
         try {
-            log.debug("Attempting to force checkin for local content with content id: " + dep.getId()
-                    + " and current user: " + currentUser);
+            log.debug("Attempting to force checkin for local content with content id: {} and current user: {}",dep.getId(), currentUser);
             PSThreadRequestUtils.changeToInternalRequest(true);
             IPSGuid guid = idMapper.getGuid(dep);
             contentWs.checkinItems(Collections.singletonList(guid), null, true);
@@ -264,7 +267,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         catch (PSErrorsException e) {
             PSErrorException ex = (PSErrorException) e.getErrors().get(
                     dep.getId());
-            log.error("Error checking in local content with id: " + dep.getId() + " and error: " + ex.getErrorMessage(), e);
+            log.error("Error checking in local content with id: {} and error: {}", dep.getId(), ex.getErrorMessage());
+            log.debug(ex.getMessage(), ex);
         }
         finally {
             PSThreadRequestUtils.restoreOriginalRequest();
@@ -311,6 +315,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
             return trans;
         } catch (PSValidationException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -375,6 +381,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             }
             return results;
         } catch (PSItemWorkflowServiceException | PSDataServiceException | PSNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -422,9 +430,9 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         while (assetsIterator.hasNext())
         {
             String currentAssetId = assetsIterator.next();
-            log.debug("The asset being transitioned is: " + currentAssetId);
+            log.debug("The asset being transitioned is: {}", currentAssetId);
             String rootLevelFolderAllowedSites = folderHelper.getRootLevelFolderAllowedSitesPropertyValue(currentAssetId);
-            log.debug("The root level folder being checked is: " + rootLevelFolderAllowedSites);
+            log.debug("The root level folder being checked is: {}", rootLevelFolderAllowedSites);
             if (rootLevelFolderAllowedSites != null)
             {
                 if (!rootLevelFolderAllowedSites.contains(String.valueOf(siteId)))
@@ -519,7 +527,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
                 //It's ok if the check-out failed.  The check-out user name of the returned item user info will be different
                 //than the current user, which will indicate that the current user cannot check the item out.
-                log.warn("Failed to check-out item: " + sum.getName(), e);
+                log.warn("Failed to check-out item: {}", sum.getName(), e);
             }
 
             IPSRequestContext ctx = securityWs.getRequestContext();
@@ -535,6 +543,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             return new PSItemUserInfo(summary.getName(), summary.getCheckoutUserName(), currentUser,
                     getAssignmentType(id).getLabel());
         } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -656,6 +666,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
                     String folderPath = folderHelper.getFolderPath(path);
                     workflowId = folderHelper.getValidWorkflowId(folderHelper.findFolderProperties(folderHelper.findFolder(folderPath).getId()));
                 } catch (Exception e) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
                     throw new PSItemWorkflowServiceException("Cannot determine workflow for folder: " + path, e);
                 }
             }
@@ -682,7 +694,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         PSWorkflow workflow = getWorkflowFromName(workflowName);
         if (workflow == null)
         {
-            throw new PSItemWorkflowServiceException("Invalid workflow: " + workflowName);
+            throw new PSItemWorkflowServiceException("Invalid workflow:" + workflowName);
         }
         
         long stateId = -1;
@@ -788,7 +800,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         catch (PSSystemException e)
         {
             String msg = "Failed to get assignment type for item id = " + id;
-            log.error(msg, e);
+            log.error("{}, Error: {}", msg, e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new PSItemWorkflowServiceException(msg, e);
         }
         return psAssignmentTypeEnum;
@@ -813,7 +826,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         catch (PSErrorException e) {
             // if there is an error determining if content is local, we return false
             // and fall back to previous behavior prior to force checking in local content.
-            log.error("Error checking if content with id: " + id + " is local content.", e);
+            log.error("Error checking if content with id: {} is local content. Error: {}",id, e.getMessage());
+            log.debug(e.getMessage(), e);
             return false;
         }
     }
@@ -917,7 +931,7 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             }
             catch (Exception e)
             {
-                log.warn("Cannot checkin item "+id);
+                log.warn("Cannot checkin item {}", id);
             }
         }
         // the item must be checked out by other user or failed to checkin
@@ -975,6 +989,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             long jobId = asyncJobService.startJob(BULK_APPROVAL_JOB_BEAN, items);
             return "" + jobId;
         } catch (IPSFolderService.PSWorkflowNotFoundException e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e.getMessage());
         }
     }

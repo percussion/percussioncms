@@ -52,7 +52,7 @@ public class SimplifyParameters
       {
          String key = entry.getKey();
          Object value = entry.getValue();
-         log.trace("Entry Name " + key + " value type " + value.getClass().getCanonicalName()); 
+         log.trace("Entry Name {} value type {}", key, value.getClass().getCanonicalName());
          String sval = simplifyValue(value); 
          outMap.put(key, sval); 
       }
@@ -67,7 +67,7 @@ public class SimplifyParameters
       {
          String key = entry.getKey();
          Object value = entry.getValue();
-         log.trace("Entry Name " + key + " value type " + value.getClass().getCanonicalName());
+         log.trace("Entry Name {} value type {}", key, value.getClass().getCanonicalName());
          String sval = simplifyValue(value);
          outMap.put(key, sval);
       }
@@ -92,7 +92,7 @@ public class SimplifyParameters
             return ""; 
          }
          sval = x[0]; 
-         log.trace("Converted String[] to " + sval + " " + value);
+         log.trace("Converted String[] to {} {}", sval, value);
       }
       else if(value instanceof List)
       {
@@ -103,12 +103,12 @@ public class SimplifyParameters
             return ""; 
          }
          sval = x.get(0).toString(); 
-         log.trace("Converted List to " + sval + " " + value); 
+         log.trace("Converted List to {} {}", sval, value);
       }
       else
       {
          sval = value.toString(); 
-         log.trace("Converted Object to " + sval); 
+         log.trace("Converted Object to {}", sval);
       }
       return sval;
    }
