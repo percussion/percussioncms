@@ -292,8 +292,9 @@
 
 	</xsl:template>
 	<xsl:template match="Control[@name='percQueryControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
-		<script >
+	<xsl:text disable-output-escaping="yes">
 	<![CDATA[
+	<script >
 			$(function(){
 
 				$(".hasDatepicker").addClass('datadisplay');
@@ -354,8 +355,9 @@
 					);
 				}
 			});
+			</script>
 			]]>
-                </script>
+		</xsl:text>
 		<div id = "perc-querylist-wrapper">
 			<div id = "querylist-title-wrapper">
 				<div id = "querylist-title" class = "querylist-close-image">Archive Criteria</div>
