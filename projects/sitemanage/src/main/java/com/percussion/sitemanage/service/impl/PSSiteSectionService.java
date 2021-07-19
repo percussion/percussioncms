@@ -592,7 +592,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             catch (PSNotFoundException e)
             {
-                 log.error("Failed to load the root section for the site: {}", site.getName(), e.getMessage());
+                 log.error("Failed to load the root section for the site: {}, Error: {}", site.getName(), e.getMessage());
                  log.debug(e.getMessage(), e);
             }
             allBlogsList.addAll(siteBlogsList);
@@ -858,7 +858,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     blogProperties.setLastPublishDate(props
                             .getLastPublishedDate());
                 } catch (Exception e) {
-                    log.error("Error getting properties for {} [{}] Error: {}", landingPagePath, e.getMessage());
+                    log.error("Error getting properties for [{}], Error: {}", landingPagePath, e.getMessage());
                     log.debug(e.getMessage(), e);
                 }
                 blogList.add(blogProperties);

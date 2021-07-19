@@ -261,9 +261,9 @@ public class PSContentListServlet extends HttpServlet
          w.print(writer.toString());
          sw.stop();
          String info = MessageFormat.format(
-               "Created content list {} publication id {}\n" +
-               "Site id: {}, Delivery: {}, Context: {}\n" +
-               "{} result items took {} milliseconds",
+               "Created content list {0} publication id {3}\n" +
+               "Site id: {1}, Delivery: {2}, Context: {4}\n" +
+               "{5} result items took {6} milliseconds",
                contentlistname, siteid, delivery, publicationid, 
                context, items.size(), sw.elapsed());
          log.debug(info);
