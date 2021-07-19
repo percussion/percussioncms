@@ -147,6 +147,7 @@
 							</div>
  						</span>
 						<span id="main_resize" class="step image_asset_step">
+							<span id="resize_warning">Warning: Images resized by this editor will be converted to png file format.</span>
 							<table>
 								<tr>
 									<td>
