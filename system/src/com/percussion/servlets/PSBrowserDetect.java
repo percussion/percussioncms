@@ -166,7 +166,7 @@ public class PSBrowserDetect implements Filter
       }
       catch (Exception e)
       {
-         log.error("Failure parsing browser User-Agent {}", ((HttpServletRequest) request).getHeader("User-Agent"), e.getMessage());
+         log.error("Failure parsing browser User-Agent {}, Error: {}", ((HttpServletRequest) request).getHeader("User-Agent"), e.getMessage());
          log.debug(e.getMessage(), e);
       }
       chain.doFilter(request, response);

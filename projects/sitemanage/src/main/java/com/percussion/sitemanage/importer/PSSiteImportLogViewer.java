@@ -144,7 +144,7 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                     List<String> itemIds = folderHelper.findItemIdsByPath(site.getFolderPath());
                     pageLogIds = logDao.findLogIdsForObjects(itemIds, PSLogObjectType.PAGE.name());
                 } catch (Exception e) {
-                    log.error("Failed to load page import logs for Site: {}", siteName, e.getMessage());
+                    log.error("Failed to load page import logs for Site: {}, Error: {}", siteName, e.getMessage());
                     log.debug(e.getMessage(), e);
                 }
             }

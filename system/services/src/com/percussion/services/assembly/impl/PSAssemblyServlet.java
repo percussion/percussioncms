@@ -248,8 +248,7 @@ public class PSAssemblyServlet extends HttpServlet
       finally
       {
          watch.stop();
-         log.debug("Assembling item {}, template {} took {}", request.getParameter(IPSHtmlParameters.SYS_CONTENTID),(template != null ? template : variantid)
-               + " took " + watch.toString());
+         log.debug("Assembling item {}, template {} took {}", request.getParameter(IPSHtmlParameters.SYS_CONTENTID),(template != null ? template : variantid), watch.toString());
       }
 
    }
