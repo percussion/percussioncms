@@ -1,7 +1,7 @@
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN"
           "http://www.eclipse.org/jetty/configure_9_3.dtd">
 <!-- Tweak SsslContextFactory Includes / Excludes -->
-<Configure id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory">
+<Configure id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory$Server">
 	<!-- Mitigate SLOTH Attack -->
 	<Set name="IncludeCipherSuites">
 		<Call class="org.eclipse.jetty.util.StringUtil" name="arrayFromString">
