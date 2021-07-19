@@ -1198,6 +1198,8 @@
                             percDropdownTitleImage: dropdownButtonImage,
                             percDropdownTitleImageOver: dropdownButtonImageOver,
                             percDropdownShowExpandIcon: false,
+                            autoArrows:false,
+                            cssArrows: false,
                             percDropdownResizeToElement: "#perc-dropdown-page-workflow"
                         });
                         pageWorkflowDropdown.find('.perc-dropdown-title').off('click');
