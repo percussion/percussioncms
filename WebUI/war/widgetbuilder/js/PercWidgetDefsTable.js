@@ -63,7 +63,7 @@
       name: "publisherUrl",
       label: "Publisher URL",
       editable: false,
-      cell: "uri",
+      cell: "string",
     }, {
       name: "version",
       editable: false,
