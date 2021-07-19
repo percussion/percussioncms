@@ -145,7 +145,7 @@
                     // reset the dialog list of users and checkbox from the last search
                     importingUsersTable.empty();
                     importDialog.dialog("open");
-                    selectAllCheckbox.attr("checked", false);
+                    selectAllCheckbox.prop("checked", false);
                     selectUserLabel.hide();
                     narrowSearchLabel.hide();
 
@@ -294,7 +294,7 @@
          * Toggles all user checkboxes when Select All checkbox is checked/unchecked
          */
         function toggleSelectAll() {
-            if(selectAllCheckbox.attr("checked")) {
+            if(selectAllCheckbox.prop("checked")) {
                 $(".perc-users-checkboxes").prop("checked",true);
             } else {
                 $(".perc-users-checkboxes").prop("checked",false);
