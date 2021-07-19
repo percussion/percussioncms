@@ -129,7 +129,7 @@ form input[type='text']{
     -background-position:right top;
     -background-repeat:no-repeat;
     height:54px;
-    margin:0 0 0 16px;
+    margin:0 0 0 0px;
 }
 #perc-wb-defs-expander {
     font-size: 15pt;
