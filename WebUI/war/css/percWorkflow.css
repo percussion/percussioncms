@@ -250,13 +250,13 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
     height:16px;
     float:right;
     margin-right:8px;
-    background-image:url(../images/images/buttonAddUser.gif);
+    background-image:url(../images/images/buttonAddUser.png);
     cursor:pointer;
 }
 
 #perc-users-add-user-button:hover
 {
-    background-image:url(../images/images/buttonAddUserOver.gif);
+    background-image:url(../images/images/buttonAddUserOver.png);
 }
 
 #perc-username-list
