@@ -128,7 +128,7 @@ public class PSFixAllowedSitePropertiesWithBadSites extends PSFixDBBase implemen
             {
                correctCount++;
                masterCopy.remove(site);
-               log.warn("Allowed Site reference to invalid Site " + site + " detected.");
+               log.warn("Allowed Site reference to invalid Site {} detected.", site);
             }
          
             if(!preview){
@@ -139,7 +139,7 @@ public class PSFixAllowedSitePropertiesWithBadSites extends PSFixDBBase implemen
                update.setInt(5, sysId);
                
                update.executeUpdate();
-               log.info("Removed invalid Site references on Folder " + contentId);
+               log.info("Removed invalid Site references on Folder {}", contentId);
             }else{
                logPreview(Integer.toString(contentId),"Would remove invalid Site from folder.");
             }
