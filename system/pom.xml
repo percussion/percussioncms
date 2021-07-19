@@ -799,6 +799,18 @@
             <artifactId>commons-dbcp</artifactId>
         </dependency>
 
+     <!--  Re-enable for CMS-8062
+        <dependency>
+            <groupId>de.digitalcollections.imageio</groupId>
+            <artifactId>imageio-turbojpeg</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.digitalcollections.imageio</groupId>
+            <artifactId>imageio-openjpeg</artifactId>
+        </dependency>
+        -->
+
         <dependency>
             <groupId>com.twelvemonkeys.servlet</groupId>
             <artifactId>servlet</artifactId>
