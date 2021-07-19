@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public class PSRequestInfoBase
 {
-   static public final String USER_SESSION_OBJECT_SYS_LANG = "sys_lang";
+    public static final String USER_SESSION_OBJECT_SYS_LANG = "sys_lang";
    
    /**
     * The authentication cookie for this request stored as a string value.
@@ -60,8 +60,7 @@ public class PSRequestInfoBase
    public static final String KEY_USER = "USER";
 
    /**
-    * The request associated with the current thread. Stored as
-    * {@link com.percussion.server.PSRequest}.  May not be the original request
+    * The request associated with the current thread. May not be the original request
     * that initiated request processing for the current thread.
     */
    public static final String KEY_PSREQUEST = "PSREQUEST";
@@ -82,16 +81,16 @@ public class PSRequestInfoBase
     * {@link #initRequestInfo(Map)}and is reset in {@link #resetRequestInfo()}
     * and should never be <code>null</code> between these two calls
     */
-   private static ThreadLocal<Map<String,Object>> ms_map = 
-      new ThreadLocal<Map<String,Object>>();
+   private static ThreadLocal<Map<String,Object>> mapThreadLocal =
+      new ThreadLocal<>();
 
    
    /**
     * Is the TLS inited ?
     */
-   private static ThreadLocal<Boolean> m_isInited = new ThreadLocal<Boolean>();
+   private static ThreadLocal<Boolean> isInitedThreadLocal = new ThreadLocal<>();
    static {
-      m_isInited.set(false);
+      isInitedThreadLocal.set(false);
    }
    /**
     * test the boolean value to see if this object is inited.
@@ -99,10 +98,10 @@ public class PSRequestInfoBase
     */
    public static boolean isInited()
    {
-      Boolean initVal = (Boolean)m_isInited.get();
+      Boolean initVal = isInitedThreadLocal.get();
       if ( initVal == null )
          return false;
-      return initVal.booleanValue();
+      return initVal;
    }
    
    /**
@@ -134,12 +133,12 @@ public class PSRequestInfoBase
    public static void initRequestInfo(Map<String,Object> initialData)
    {
       if (initialData == null)
-         initialData = new HashMap<String,Object>();
-      Map<String,Object> map = ms_map.get();
+         initialData = new HashMap<>();
+      Map<String,Object> map = mapThreadLocal.get();
       if (map != null)
          throw new IllegalStateException("Must call reset first");
-      ms_map.set(initialData);
-      m_isInited.set(true);
+      mapThreadLocal.set(initialData);
+      isInitedThreadLocal.set(true);
    }
 
    /**
@@ -154,7 +153,7 @@ public class PSRequestInfoBase
       {
          throw new IllegalArgumentException("key may not be null or empty");
       }
-      Map<String,Object> map = ms_map.get();
+      Map<String,Object> map = mapThreadLocal.get();
       if (map == null)
          return null;
       return map.get(key);
@@ -163,7 +162,7 @@ public class PSRequestInfoBase
   
    public static Map<String,Object> getRequestInfoMap()
    {
-      return ms_map.get();
+      return mapThreadLocal.get();
    }
    /**
     * Copies the request info. Modifications to this collection
@@ -171,10 +170,10 @@ public class PSRequestInfoBase
     * @return maybe null.
     */
    public static Map<String, Object> copyRequestInfoMap() {
-      Map<String,Object> map = ms_map.get();
+      Map<String,Object> map = mapThreadLocal.get();
       if (map == null)
          return null;
-      return new HashMap<String, Object>(map);
+      return new HashMap<>(map);
    }
 
    /**
@@ -189,7 +188,7 @@ public class PSRequestInfoBase
       {
          throw new IllegalArgumentException("key may not be null or empty");
       }
-      Map<String,Object> map = ms_map.get();
+      Map<String,Object> map = mapThreadLocal.get();
       if (map == null)
          throw new IllegalStateException("Must call init first");
       if (value == null)
@@ -209,11 +208,11 @@ public class PSRequestInfoBase
     */
    public static void resetRequestInfo()
    {
-      Map<String,Object> map = ms_map.get();
+      Map<String,Object> map = mapThreadLocal.get();
       if (map == null)
          return; // do nothing there is nothing in the map.
-      ms_map.set(null);
-      m_isInited.set(false);
+      mapThreadLocal.remove();
+      isInitedThreadLocal.set(false);
    }
 
 }

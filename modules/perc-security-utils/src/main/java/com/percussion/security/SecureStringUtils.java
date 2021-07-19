@@ -24,8 +24,10 @@
 
 package com.percussion.security;
 
+import com.github.javafaker.Faker;
 import com.ibm.icu.text.Normalizer2;
 import org.apache.commons.lang3.StringUtils;
+import org.owasp.encoder.Encode;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -35,9 +37,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.owasp.encoder.Encode;
-import org.owasp.encoder.Encoder;
 
 public class SecureStringUtils {
 
@@ -328,6 +327,18 @@ public class SecureStringUtils {
      */
     public static String sanitizeStringForHTML(String str){
        return Encode.forHtml(str);
+    }
+
+    public static String generateRandomPassword(){
+        Faker f = Faker.instance(getSecureRandom());
+
+        char[] password = f.lorem().characters(6, 20, true, true).toCharArray();
+        char[] special = new char[]{'!', '@', '#', '$', '%', '^', '&', '*'};
+        for (int i = 0; i < f.random().nextInt(6); i++) {
+            password[f.random().nextInt(password.length)] = special[f.random().nextInt(special.length)];
+        }
+        return new String(password);
+
     }
 
 }

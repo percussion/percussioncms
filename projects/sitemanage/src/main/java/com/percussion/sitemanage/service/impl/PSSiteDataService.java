@@ -1203,9 +1203,10 @@ import static org.apache.commons.lang.Validate.notNull;
         Map<String, String> resultMap = new HashMap<>();
         File saasDir = new File(PSServer.getRxDir().getAbsolutePath() + SAAS_SITE_CONFIG_FOLDER_PATH);
         if(!saasDir.exists() || !saasDir.isDirectory()){
-            String msg = "Either saas configuration folder does not exist or it is not a folder. Path: " + saasDir.getAbsolutePath();
-            log.error(msg);
-            throw new DataServiceLoadException(msg);
+            if(!saasDir.mkdirs()){
+                log.error("Error creating SaaS configuration folder: {}",
+                        PSServer.getRxDir().getAbsolutePath() + SAAS_SITE_CONFIG_FOLDER_PATH);
+            }
         }
         FileFilter filter = new SuffixFileFilter(".json",IOCase.INSENSITIVE);
         File[] fileList = saasDir.listFiles(filter);
