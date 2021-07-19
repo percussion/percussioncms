@@ -133,7 +133,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
          File logfile = logs[i];
          if (containsError(logfile))
          {
-            l.error("Error in upgrade log " + logfile);
+            l.error("Error in upgrade log {}", logfile);
          }
       }
 
@@ -184,7 +184,7 @@ public class PSVerifyInstallerLogs implements IPSVerify
 
       if (installlog.exists() == false)
       {
-         l.error("Installer log is missing: " + installlog);
+         l.error("Installer log is missing: {}", installlog);
          return;
       }
 

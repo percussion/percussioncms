@@ -248,9 +248,7 @@ public class PSAssemblyServlet extends HttpServlet
       finally
       {
          watch.stop();
-         log.debug("Assembling item "
-               + request.getParameter(IPSHtmlParameters.SYS_CONTENTID)
-               + " template " + (template != null ? template : variantid)
+         log.debug("Assembling item {}, template {} took {}", request.getParameter(IPSHtmlParameters.SYS_CONTENTID),(template != null ? template : variantid)
                + " took " + watch.toString());
       }
 
@@ -492,8 +490,7 @@ public class PSAssemblyServlet extends HttpServlet
       /* Discard if the connection has closed */
       if (response.isCommitted())
       {
-         log.error("Could not return error information "
-               + "because response is committed: {}", string);
+         log.error("Could not return error information because response is committed: {}", string);
          return;
       }
 

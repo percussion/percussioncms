@@ -126,6 +126,8 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                     siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
                     site = siteDao.find(siteName);
                 } catch (PSDataServiceException e) {
+                    log.error(e.getMessage());
+                    log.debug(e.getMessage(), e);
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load for template: " + templateName);
                     return;
                 }
@@ -142,7 +144,8 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                     List<String> itemIds = folderHelper.findItemIdsByPath(site.getFolderPath());
                     pageLogIds = logDao.findLogIdsForObjects(itemIds, PSLogObjectType.PAGE.name());
                 } catch (Exception e) {
-                    log.error("Failed to load page import logs for Site: {}", siteName);
+                    log.error("Failed to load page import logs for Site: {}", siteName, e.getMessage());
+                    log.debug(e.getMessage(), e);
                 }
             }
 
