@@ -132,6 +132,7 @@ private static void initProperties() {
                 } catch (Exception e)
                 {
                     log.error("Cannot backup or write fixed up velocity template Error: {}", e.getMessage());
+					log.debug(e.getMessage(), e);
                     return;
                 }
    
@@ -318,7 +319,8 @@ private static void initProperties() {
 	   try{
 		   ret.load(preCompilerFile);
 	   }catch(IOException e){
-			log.error("Velocity pre-compiler disabled.  Unable to load configuration file from stream.", e);
+			log.error("Velocity pre-compiler disabled.  Unable to load configuration file from stream. Error: {}", e.getMessage());
+			log.debug(e.getMessage(), e);
 	   }
 
 	   autocorrectPatterns = ret;
@@ -329,6 +331,7 @@ private static void initProperties() {
 				ret.load(input);
 			} catch (IOException e) {
 				log.error("Velocity pre-compiler disabled.  Unable to load configuration file: {}. Error: {}" , preCompilerFile, e.getMessage());
+				log.debug(e.getMessage(), e);
 			}
 
 	   autocorrectPatterns = ret;

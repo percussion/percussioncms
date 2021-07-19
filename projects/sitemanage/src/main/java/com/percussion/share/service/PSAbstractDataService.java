@@ -68,7 +68,7 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
             getDao().delete(id);
         } catch (DeleteException e) {
             String error = format("Error deleting object: {}", id);
-            log.error("{} Error: {}", error, e.getMessage());
+            log.error("Error: {}",  e.getMessage());
             log.debug(e.getMessage(), e);
             throw new DataServiceDeleteException(error,e);
         }
@@ -92,7 +92,7 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
             validate(object);
             return getDao().save(object);
         } catch (SaveException | LoadException | DeleteException e) {
-            String error = format("Error saving object: {0}", object);
+            String error = format("Error saving object: {}", object);
             throw new DataServiceSaveException(error,e);
         }
     }

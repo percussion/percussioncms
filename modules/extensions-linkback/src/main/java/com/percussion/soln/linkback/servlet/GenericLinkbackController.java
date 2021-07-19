@@ -95,7 +95,7 @@ public class GenericLinkbackController extends AbstractController {
             return createHelpView();
         }
         else if(StringUtils.isBlank(linkbackToken)) {
-            return createErrorView(format("Linkback param ({0}) is an empty string.", getLinkbackParameterName()));
+            return createErrorView(format("Linkback param ({}) is an empty string.", getLinkbackParameterName()));
         }
 
         Map<String, String> params = linkbackCodec.decode(linkbackToken);
