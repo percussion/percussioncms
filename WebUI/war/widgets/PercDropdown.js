@@ -149,8 +149,6 @@
         if(config.percDropdownResizeToElement) {
             config.onBeforeShow = resizeDropdown;
         }
-        config.autoArrows = false;
-        config.cssArrows = false;
         var callbacks = config.percDropdownCallbacks;
         var callbackData = config.percDropdownCallbackData;
         var labels = config.percDropdownOptionLabels;
@@ -169,15 +167,14 @@
                 .css("cursor","pointer")
                 .addClass(arrowClass)
                 .addClass('btn btn-primary perc-workflow-split-button-right')
-                .on("mouseenter",
+                .on("hover",
                     function(){
                         $(this)
                             .css("overflow","visible");
-                    }).on("mouseleave",
-                function(){
-                    $(this)
-                        .css("overflow","visible");
-                });
+                    }, function(){
+                        $(this)
+                            .css("overflow","visible");
+                    });
 
             // TODO: should this styling be on a CSS? the margin should be based on the size of the image.
             var optionsList = dropdown.find(".perc-dropdown-option-list");
@@ -236,8 +233,8 @@
 
             dropdownOptionList.append(dropdownOptionItem);
 
-            dropdownOptionItem
-                .on("click",null,callbackData[k], callbacks[k]);
+            dropdownOptionItem.on("click",null,callbackData[k], callbacks[k]);
+
         }
         dropdownOptionItemTemplate.remove();
         dropdown.superfish(config);

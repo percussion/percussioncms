@@ -51,8 +51,8 @@
                 _dialog = dialogContent.perc_dialog({
                     'id' : 'perc-website-config-gadget-dialog',
                     'dialogClass': 'perc-website-config-gadget-frame',
-                    'width': 380,
-                    'height': 450,
+                    'width': 1020,
+                    'height': 696,
                     'resizable': true,
                     'modal': true,
                     'title' : 'Website Configuration',
