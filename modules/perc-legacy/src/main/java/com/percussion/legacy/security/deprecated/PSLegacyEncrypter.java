@@ -509,4 +509,10 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
       }
    }
 
+   @Deprecated
+   public static final String LEGACY_USER_PWD="demo";
+
+   @Deprecated
+   public static final String LEGACY_USER_PWD_ENC = "89e495e7941cf9e40e6980d14a16bf023ccd4c91";
+
 }

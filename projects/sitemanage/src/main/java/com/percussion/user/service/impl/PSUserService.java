@@ -31,18 +31,23 @@ import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.role.service.IPSRoleService;
 import com.percussion.role.service.impl.PSRoleService;
 import com.percussion.security.IPSPasswordFilter;
 import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSPasswordHandler;
 import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.security.PSSecurityException;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSThreadRequestUtils;
-import com.percussion.security.ToDoVulnerability;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
+import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -91,7 +96,6 @@ import com.percussion.user.service.IPSUserService.PSDirectoryServiceStatus.Servi
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.PSSpringBeanProvider;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.utils.service.impl.PSBackEndRoleManagerFacade;
 import com.percussion.utils.service.impl.PSUtilityService;
@@ -116,6 +120,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -125,7 +133,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -133,6 +141,10 @@ import java.util.concurrent.TimeUnit;
 
 import static com.percussion.role.service.IPSRoleService.ADMINISTRATOR_ROLE;
 import static com.percussion.role.service.IPSRoleService.DESIGNER_ROLE;
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
+import static com.percussion.utils.request.PSRequestInfoBase.initRequestInfo;
+import static com.percussion.utils.request.PSRequestInfoBase.resetRequestInfo;
+import static com.percussion.utils.request.PSRequestInfoBase.setRequestInfo;
 import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
 import static com.percussion.webservices.PSWebserviceUtils.setUserName;
 import static java.util.Arrays.asList;
@@ -156,8 +168,13 @@ public class PSUserService implements IPSUserService
 {
     private static final Logger log = LogManager.getLogger(PSUserService.class);
 
+    public static final String VAR_CONFIG_PATH="var" + File.separatorChar + "config";
+
+    public static final String PWD_CONFIG_PATH=VAR_CONFIG_PATH + File.separatorChar + "generated";
+
     // Used to get the email on the user
     private static final String EMAIL_ATTRIBUTE_NAME = "sys_email";
+    private static final String PWD_FILE = "passwords";
 
     private final IPSUserLoginDao userLoginDao;
 
@@ -184,10 +201,18 @@ public class PSUserService implements IPSUserService
     
     private final IPSUtilityService utilityService;
     
-    private static final String PERCUSSION_ADMIN_NAME = "PercussionAdmin";
-    
-    public static final List<String> SYSTEM_USERS = asList("rxserver",PERCUSSION_ADMIN_NAME);
-    private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
+    public static final String PERCUSSION_ADMIN_NAME = "PercussionAdmin";
+    public static final String ADMIN_NAME ="Admin";
+    public static final String ADMIN1_NAME ="admin1";
+    public static final String ADMIN2_NAME ="admin2";
+    public static final String EDITOR_NAME="Editor";
+    public static final String CONTRIBUTOR_NAME="Contributor";
+    public static final String RXSERVER_NAME="rxserver";
+    public static final String RXPUBLISHER_NAME="rxpublisher";
+
+
+    public static final List<String> SYSTEM_USERS = asList(RXSERVER_NAME,PERCUSSION_ADMIN_NAME);
+    private final PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
     private PSUserManagementEvent psUserManagementEvent;
 
     @Autowired
@@ -248,8 +273,9 @@ public class PSUserService implements IPSUserService
                      * services. On server start up this is not setup.
                      */
                     PSRequest req = PSRequest.getContextForRequest();
-                    PSRequestInfo.initRequestInfo((Map<String,Object>) null);
-                    PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_PSREQUEST, req);
+                    resetRequestInfo();
+                    initRequestInfo( null);
+                    setRequestInfo(KEY_PSREQUEST, req);
                     setUserName(PSSecurityProvider.INTERNAL_USER_NAME);
     
                     TimeUnit.SECONDS.sleep(30);
@@ -257,6 +283,15 @@ public class PSUserService implements IPSUserService
                     createPercussionUser();
                     log.info("Finished creating Percussion User");
                 }
+                log.info("Replacing legacy 'demo' password for generated users...");
+                updateLegacyPasswordsForUser(ADMIN_NAME);
+                updateLegacyPasswordsForUser(EDITOR_NAME);
+                updateLegacyPasswordsForUser(CONTRIBUTOR_NAME);
+                updateLegacyPasswordsForUser(RXSERVER_NAME);
+                updateLegacyPasswordsForUser(ADMIN1_NAME);
+                updateLegacyPasswordsForUser(ADMIN2_NAME);
+                log.info("Done generating new password for generated users.");
+
             }
             catch (Exception e)
             {
@@ -286,23 +321,110 @@ public class PSUserService implements IPSUserService
         }
 
     }
-    
-    /**
-     * Create the PercussionUser
+
+
+    private void writeTemporaryPassword(String uid, String pwd){
+        File pwdFile = new File(PSServer.getRxDir().getAbsolutePath() + File.separatorChar + PWD_CONFIG_PATH);
+    try {
+        if (!pwdFile.exists()) {
+            pwdFile.mkdirs();
+            Properties props = new Properties();
+                props.put(uid, pwd);
+                try (FileOutputStream outputStream = new FileOutputStream(PSServer.getRxDir().getAbsolutePath() + File.separatorChar + PWD_CONFIG_PATH + File.separatorChar + PWD_FILE)) {
+                    props.store(outputStream, "File for generated temporary passwords");
+                }
+        }else{
+            Properties props = new Properties();
+            try(FileInputStream fis = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + File.separatorChar + PWD_CONFIG_PATH + File.separatorChar + PWD_FILE)) {
+                props.load(fis);
+            }
+
+            props.put(uid,pwd);
+
+            try (FileOutputStream outputStream = new FileOutputStream(PSServer.getRxDir().getAbsolutePath() + File.separatorChar + PWD_CONFIG_PATH + File.separatorChar + PWD_FILE)) {
+                props.store(outputStream, "File for generated temporary passwords");
+            }
+        }
+    } catch (IOException e) {
+        log.error("{}", PSExceptionUtils.getMessageForLog(e));
+        log.debug(e);
+    }
+    }
+
+
+    /***
+     * generates a new password for any built-in / generated users
+     * that have "demo" as their password.
      */
-    @ToDoVulnerability
-    //TODO: Fix Me
+    private void updateLegacyPasswordsForUser(String userName){
+
+        boolean found = false;
+        PSUserLogin u=null;
+        try {
+
+            List<PSUserLogin> users = userLoginDao.findByName(userName);
+            if(users != null && !users.isEmpty()) {
+                 u = users.get(0);
+                log.debug("Found User: {}", u.getUserid());
+            }
+            found = true;
+        } catch (PSDataServiceException e) {
+            //ignore if not found
+        }
+
+        if(found && u != null) {
+            try {
+                if (PSLegacyEncrypter.LEGACY_USER_PWD.equalsIgnoreCase(u.getPassword()) ||
+                        PSLegacyEncrypter.LEGACY_USER_PWD_ENC.equalsIgnoreCase(u.getPassword()) ||
+                        PSPasswordHandler.getHashedPassword(PSLegacyEncrypter.LEGACY_USER_PWD).equals(u.getPassword())
+                ) {
+                    String pw = SecureStringUtils.generateRandomPassword();
+                    String cryptPW = (passwordFilter == null) ? pw : passwordFilter.encrypt(pw);
+                    u.setPassword(cryptPW);
+                    try {
+
+                        userLoginDao.save(u);
+
+                        writeTemporaryPassword(userName, pw);
+
+                        log.info("Generating new temporary password: {} for {}", pw, userName);
+                        log.info("This temporary password will be stored in: {}", PSServer.getRxDir().getAbsolutePath() + File.separatorChar + PWD_CONFIG_PATH + File.separatorChar + PWD_FILE);
+                        log.info("Please change this temporary password using the Change Password feature after installation / upgrade.");
+                    } catch (PSDataServiceException e) {
+                        log.error("An unexpected error resetting legacy passwords: {}",
+                                PSExceptionUtils.getMessageForLog(e));
+                        log.debug(e);
+                    }
+                }
+            } catch (PSEncryptionException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+            }
+        }
+    }
+
+    /**
+     * Create the PercussionUser.  Will generate a password and write the password
+     * to system log and to the PWD_CONFIG_PATH + "password" file.
+     */
     protected void createPercussionUser() {
+
         PSUser user = new PSUser();
+
+        String password = SecureStringUtils.generateRandomPassword();
+
         user.setName(PERCUSSION_ADMIN_NAME);
-        //user.setPassword(UUID.randomUUID().toString());
-        user.setPassword("demo");
+        user.setPassword(password);
+
         user.setEmail("");
         List<String> roles = new ArrayList<>();
         roles.add(IPSRoleService.ADMINISTRATOR_ROLE); 
         
         user.setRoles(roles);
         createUser(user);
+        log.info("Generating temporary password: {} for {}", password, PERCUSSION_ADMIN_NAME);
+        log.info("This temporary password will be stored in: {}",PWD_CONFIG_PATH + File.separatorChar + PWD_FILE);
+        log.info("Please change this temporary password using the Change Password feature after installation / upgrade.");
+        writeTemporaryPassword(PERCUSSION_ADMIN_NAME,password);
     }
 
     @Override
@@ -525,7 +647,7 @@ public class PSUserService implements IPSUserService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUser update(PSUser user) throws PSDataServiceException
     {
-        log.debug("updating user " + user);
+        log.debug("updating user {}" , user);
         PSUserProviderType provider = fromProvider(user.getName());
         user.setProviderType(provider);
         doValidation(user, false);
