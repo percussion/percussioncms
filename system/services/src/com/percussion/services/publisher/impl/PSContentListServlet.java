@@ -88,7 +88,7 @@ public class PSContentListServlet extends HttpServlet
    /**
     * Logger for content list servlet
     */
-   private static final Logger ms_log = LogManager.getLogger(PSContentListServlet.class);
+   private static final Logger log = LogManager.getLogger(PSContentListServlet.class);
 
    /**
     * Date format used in content lists
@@ -266,16 +266,19 @@ public class PSContentListServlet extends HttpServlet
                "{5} result items took {6} milliseconds",
                contentlistname, siteid, delivery, publicationid, 
                context, items.size(), sw.elapsed());
-         ms_log.debug(info);
+         log.debug(info);
       }
       catch (Exception e)
       {
+
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
          response.setContentType("text/plain");
          PrintWriter w;
          try
          {
             Throwable orig = PSExceptionHelper.findRootCause(e, true);
-            ms_log.error("Content list failure", orig);
+            log.error("Content list failure", orig);
             w = response.getWriter();
             w.println(e.getLocalizedMessage());
          }

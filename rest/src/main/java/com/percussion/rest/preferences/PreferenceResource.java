@@ -68,7 +68,8 @@ public class PreferenceResource {
             log.debug("Didn't find any preferences");
             throw new WebApplicationException("No preferences found.",404);
         }catch(Exception e){
-            log.error("An unexpected error occurred getting preferences.",e);
+            log.error("An unexpected error occurred getting preferences. {}",e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e.getMessage(),e,500);
         }
    }
@@ -91,7 +92,8 @@ public class PreferenceResource {
             log.debug("Didn't find any preferences");
             throw new WebApplicationException("No preferences found.",404);
         }catch(Exception e){
-            log.error("An unexpected error occurred saving preferences.",e);
+            log.error("An unexpected error occurred saving preferences. {}",e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e.getMessage(),e,500);
         }
     }
@@ -110,10 +112,11 @@ public class PreferenceResource {
         try {
             return adaptor.loadPreference(preference);
         }catch(NotFoundException e){
-        log.debug("Didn't find a match for preference" + preference );
+        log.debug("Didn't find a match for preference {}", preference );
         throw new WebApplicationException("No preference found.",404);
     }catch(Exception e){
-        log.error("An unexpected error occurred getting preference: " +preference ,e);
+        log.error("An unexpected error occurred getting preference: {}, Error: {}",preference ,e.getMessage());
+        log.debug(e.getMessage(), e);
         throw new WebApplicationException(e.getMessage(),e,500);
     }
     }
@@ -139,10 +142,11 @@ public class PreferenceResource {
 
             return adaptor.savePreference(pref);
         }catch(NotFoundException e){
-            log.debug("Didn't find a match for preference" + pref.getName() + " for user:" + pref.getUserName());
+            log.debug("Didn't find a match for preference {} for user: {}", pref.getName(), pref.getUserName());
             throw new WebApplicationException("No preference found.",404);
         }catch(Exception e){
-            log.error("An unexpected error occurred saving preference: " +pref.getName() + " for userName: " + pref.getUserName(),e);
+            log.error("An unexpected error occurred saving preference: {} for userName: {}, Error: {}",pref.getName(), pref.getUserName(),e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e.getMessage(),e,500);
         }
     }
@@ -163,10 +167,11 @@ public class PreferenceResource {
         try{
             adaptor.deletePreference(pref);
         }catch(NotFoundException e){
-            log.debug("Didn't find a match for preference" + pref.getName() + " for user:" + pref.getUserName());
+            log.debug("Didn't find a match for preference {} for user: {}", pref.getName(), pref.getUserName());
             throw new WebApplicationException("No preference found.",404);
         }catch(Exception e){
-            log.error("An unexpected error occurred deleting preference: " +pref.getName() + " for userName: " + pref.getUserName(),e);
+            log.error("An unexpected error occurred saving preference: {} for userName: {}, Error: {}",pref.getName(), pref.getUserName(),e.getMessage());
+            log.debug(e.getMessage(), e);
             throw new WebApplicationException(e.getMessage(),e,500);
         }
 

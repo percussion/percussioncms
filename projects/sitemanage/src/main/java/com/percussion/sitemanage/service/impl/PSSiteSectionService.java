@@ -573,7 +573,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         catch (PSNotFoundException | PSDataServiceException e)
         {
-           log.error("Failed to load the root section for the site:{} Error:{}" , siteName,e.getMessage());
+           log.error("Failed to load the root section for the site:{} Error:{}" , siteName, e.getMessage());
            log.debug(e.getMessage(),e);
         }
         return siteBlogsList;
@@ -592,7 +592,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             catch (PSNotFoundException e)
             {
-                 log.error("Failed to load the root section for the site: {}", site.getName());
+                 log.error("Failed to load the root section for the site: {}, Error: {}", site.getName(), e.getMessage());
+                 log.debug(e.getMessage(), e);
             }
             allBlogsList.addAll(siteBlogsList);
         }
@@ -689,7 +690,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     try {
                         folderPath = fProc.getFolderPaths(summary.getCurrentLocator())[0];
                     } catch (PSCmsException e) {
-                        log.error("Error retrieving folder path for id: {}", postPage.getGuid());
+                        log.error("Error retrieving folder path for id: {}, Error: {}", postPage.getGuid(), e.getMessage());
+                        log.debug(e.getMessage(), e);
                     }
                     
                     String pagePath = folderHelper.concatPath(folderPath, summary.getName());
@@ -784,7 +786,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
         }
         catch (PSErrorResultsException e)
         {
-            log.error("Failed to load the folder for the path {}", path);
+            log.error("Failed to load the folder for the path {}, Error: {}", path, e.getMessage());
+            log.debug(e.getMessage(), e);
         }
         
         return id;
@@ -855,7 +858,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
                     blogProperties.setLastPublishDate(props
                             .getLastPublishedDate());
                 } catch (Exception e) {
-                    log.error("Error getting properties for {} [{}] Error: {}", landingPagePath, e.getLocalizedMessage(), e);
+                    log.error("Error getting properties for [{}], Error: {}", landingPagePath, e.getMessage());
                     log.debug(e.getMessage(), e);
                 }
                 blogList.add(blogProperties);
@@ -880,7 +883,8 @@ public class PSSiteSectionService implements IPSSiteSectionService
             }
             catch (PSErrorResultsException e)
             {
-                log.error("Failed to load the folder for the path {}", siteSection.getFolderPath());
+                log.error("Failed to load the folder for the path {}, Error: {}", siteSection.getFolderPath(), e.getMessage());
+                log.debug(e.getMessage(), e);
             }
 
             if (folders != null && !folders.isEmpty())
