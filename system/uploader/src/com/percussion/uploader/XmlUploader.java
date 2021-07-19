@@ -187,7 +187,9 @@ public class XmlUploader
             m_rxPort = Integer.parseInt(port);
          }
          catch (NumberFormatException e)
+
          {
+
             throw new IllegalArgumentException( "Invalid port number: " + port );
          }
       }
@@ -236,6 +238,7 @@ public class XmlUploader
 
                      catch (Exception e)
                      {
+
                         throw new RuntimeException("Failed to decrypt password.");
                      }
                   }
@@ -764,6 +767,8 @@ public class XmlUploader
                   } catch (IOException e) {
                      userMsg = "Failed to read response document from Rhythmyx server.\r\n" +
                              e.getLocalizedMessage();
+                     log.error("userMsg, Error: {}", e.getMessage());
+                     log.debug(e.getMessage(), e);
                   }
                   IOUtils.closeQuietly(errResponse);
                   pattern = DEFAULT_ERROR;
