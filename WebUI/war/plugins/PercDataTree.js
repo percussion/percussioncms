@@ -303,17 +303,8 @@
                     // we must also convert the 'children' property to an array (CXF problem)
 
                     if(typeof this.children !== 'undefined') {
-                      var many_data_children = (this.children.child instanceof Array);
-
-                    if (many_data_children)
-                    {
                         this.children !== "" && addSubtreeContents(dynatree_node.getChildren()[i], this.children.child, levelLimit, level + 1);
                     }
-                    else
-                    {
-                        // The current node has only one child, but we must wrap it with an array
-                        //this.children != "" && addSubtreeContents(dynatree_node.getChildren()[i], [this.children.child], levelLimit, level + 1);
-                    }}
                 });
 
             }
