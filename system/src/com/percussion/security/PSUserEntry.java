@@ -254,7 +254,7 @@ public class PSUserEntry extends PSEntry
       try {
          // we always sign UTF-8
 
-         MessageDigest md = MessageDigest.getInstance("SHA-1");
+         MessageDigest md = MessageDigest.getInstance("SHA-256");
 
          md.update((userId + ":" + pw).getBytes(PSCharSets.rxJavaEnc()));
          byte[] digest = md.digest();
