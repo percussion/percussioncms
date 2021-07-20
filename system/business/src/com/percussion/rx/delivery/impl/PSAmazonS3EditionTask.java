@@ -257,16 +257,15 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     * @throws FileNotFoundException
     * @throws IOException
     */
-   private Map<String, PSPair<String, File>> getLocalWebResFiles() throws FileNotFoundException, IOException
-   {
+   private Map<String, PSPair<String, File>> getLocalWebResFiles() throws FileNotFoundException, IOException {
       Map<String, PSPair<String, File>> localFilesMap = new HashMap<>();
       generateLocalFileMap(webResFolder, localFilesMap);
       return localFilesMap;
    }
 
    private void generateLocalFileMap(File dir, Map<String, PSPair<String, File>> localFilesMap)
-         throws FileNotFoundException, IOException
-   {
+           throws IOException {
+
       for (File file : dir.listFiles())
       {
          if (file.isFile() && !isIgnorableFile(file))
@@ -274,7 +273,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
             String key = generateKey(file);
             try(InputStream is = new FileInputStream(file)){
                localFilesMap.put(key,
-                     new PSPair<>(DigestUtils.sha3_256Hex(IOUtils.toByteArray(is)), file));
+                     new PSPair<>(DigestUtils.sha256Hex(IOUtils.toByteArray(is)), file));
             }
          }
          else if (file.isDirectory())
