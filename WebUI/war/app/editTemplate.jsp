@@ -218,9 +218,10 @@
                 <jsp:include page="template_style.jsp" flush="true"/>
             </div>
             <div id="perc-pageEditor-edit-template-toolbar-content" class="ui-helper-clearfix"> </div>
-            <div id="bottom"></div>
+
         </div>
     </div>
+    <div id="bottom"></div>
     <iframe id="frame" name="frame"  title="<i18n:message key='perc.ui.design.title@Edit Template'/>" style="width: 100%; border: 0;" width="100%" class="perc-ui-component-ready"></iframe>
 </div>
 

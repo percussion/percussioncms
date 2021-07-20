@@ -246,7 +246,6 @@
             </div>
         </div>
         <div id="perc-pageEditor-toolbar-content" class="ui-helper-clearfix"></div>
-        <div id="bottom"></div>
     </div>
 </div>
 <div id="bottom"></div>
