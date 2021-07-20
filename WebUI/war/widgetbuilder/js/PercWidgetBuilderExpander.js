@@ -29,7 +29,7 @@
 (function($)
 {
     var percDefsExpandedState = "perc-defs-expanded-state";
-    $(document).ready(function(){
+    $(function(){
         handleDefsCollapseExpander();
     });
 
@@ -73,7 +73,7 @@
     }
     function setDefsExpandedStateInCookie (isExpanded) {
         var state = isExpanded ? 'expanded' : 'collapsed';
-        $.cookie(percDefsExpandedState, state);
+        $.cookie(percDefsExpandedState, state, {"sameSite": "Strict"});
     }
     function getDefsExpandedStateFromCookie () {
         return ('' + $.cookie(percDefsExpandedState));
