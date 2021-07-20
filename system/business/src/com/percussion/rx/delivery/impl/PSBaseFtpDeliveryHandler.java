@@ -23,8 +23,6 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
@@ -32,6 +30,10 @@ import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,10 +41,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Base ftp delivery handler. This adds retry logic to the <code>login</code>
@@ -545,8 +544,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
          {
                  try(InputStream inputStream = retryItem.getContentStream()) {
                      if (isDebugEnabled) {
-                         ms_log.debug("About to ftp publish content item"
-                                 + " to remoteFilepath: " + location);
+                         ms_log.debug("About to ftp publish content item to remoteFilepath: {}" , location);
                      }
 
                      result = deliverItem(item, inputStream, jobId, location);
