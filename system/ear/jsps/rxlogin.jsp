@@ -85,7 +85,7 @@
 			color: #FFFFFF;
 		}
 	</style>
-	<script language="javascript">
+	<script>
 		function setCursor() {
 			// leave focus in username
 			cmd = document.getElementById("perc-login-username");
@@ -104,15 +104,15 @@
 <body onload="setCursor()">
 <div class="container">
 	<div class='perc-login row center-block'>
-		<form id="loginform" name="loginform" method="post" enctype="multipart/form-data">
+		<csrf:form id="loginform" name="loginform" method="post" enctype="multipart/form-data" action="login">
 			<div class='perc-login-logo'><img src="/sys_resources/images/percussion-logo.png" alt="${rxcomp:i18ntext('general@Percussion Logo Alt',locale)}" title="${rxcomp:i18ntext('general@Percussion Logo Title',locale)}"/></div>
 			<div class='perc-form'>
 				<div class="form-group">
-					<label for="perc-login-username" form="loginform">${rxcomp:i18ntext('jsp_login@User name',locale)}</label>
+					<label for="perc-login-username">${rxcomp:i18ntext('jsp_login@User name',locale)}</label>
 					<input type="text" id="perc-login-username"  name="j_username"  value="<%= username %>" tabindex="1" class="form-control" <%= autoComplete %>/>
 				</div>
 				<div class="form-group">
-					<label for="perc-login-password" form="loginform">${rxcomp:i18ntext('jsp_login@Password',locale)}</label>
+					<label for="perc-login-password">${rxcomp:i18ntext('jsp_login@Password',locale)}</label>
 					<input type="password" id="perc-login-password" name="j_password" value="<%= password %>" tabindex="2" class="form-control" <%= autoComplete %>/>
 				</div>
 				<div class="form-group">
@@ -133,7 +133,7 @@
 				</div>
 				<button type="submit" id="perc-login-button" form="loginform" class="btn btn-primary btn-default">${rxcomp:i18ntext('jsp_login@LoginButton',locale)}</button>
 			</div>
-		</form>
+		</csrf:form>
 	</div>
 	<div class="row">
 		<div class="col-sm-4">
