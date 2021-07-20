@@ -73,10 +73,10 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     private static final String PAGE_ICON_PATH = ICON_BASE_PATH + "sys_resources/images/finderPage.png";
     private static final String LANDING_PAGE_ICON_PATH = ICON_BASE_PATH + "sys_resources/images/finderLandingPage.png";
     
-    private IPSContentWs contentWs;
-    private PSItemDefManager itemDefManager;
-    private IPSIdMapper idMapper;
-    private IPSManagedNavService navService;
+    private final IPSContentWs contentWs;
+    private final PSItemDefManager itemDefManager;
+    private final IPSIdMapper idMapper;
+    private final IPSManagedNavService navService;
     
     private static final String ASSET_ROOT = PSAssetPathItemService.ASSET_ROOT;
 
@@ -111,7 +111,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
         {
             String normalizedPath = StringUtils.removeEnd(path, "/");
             if(log.isTraceEnabled())
-                log.trace("Getting id for path: " + path + " normalized: " + normalizedPath);
+                log.trace("Getting id for path: {} normalized: {}",path , normalizedPath);
             IPSGuid guid = contentWs.getIdByPath(normalizedPath, relationshipTypeName);
             String id = guid == null ? null : idMapper.getString(guid);
             if(log.isTraceEnabled())
@@ -219,8 +219,8 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
         IPSGuid childNavId = navService.findNavigationIdFromFolder(item.getGUID(), relationshipTypeName);
         if(childNavId != null)
         {
-        	Map<String, String> map = navService.getNavonProperties(childNavId,Collections.singletonList(navService.NAVON_FIELD_TYPE));
-        	navType = map.get(navService.NAVON_FIELD_TYPE);
+        	Map<String, String> map = navService.getNavonProperties(childNavId,Collections.singletonList(IPSManagedNavService.NAVON_FIELD_TYPE));
+        	navType = map.get(IPSManagedNavService.NAVON_FIELD_TYPE);
         }
         return navType; 
     }
@@ -391,8 +391,8 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
             IPSGuid guid = idMapper.getGuid(id);
             List<PSItemSummary> sums = contentWs.findFolderChildren(guid, false);
             int landingPageId = getLandingPageId(sums);
-            List<F> items = convert(factory, sums, landingPageId, PSRelationshipConfig.TYPE_FOLDER_CONTENT);
-            return items;
+            return convert(factory, sums, landingPageId, PSRelationshipConfig.TYPE_FOLDER_CONTENT);
+         
         }
         catch (Exception e)
         {
@@ -433,7 +433,7 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
         try
         {
             IPSGuid guid = idMapper.getGuid(id);
-            List<PSItemSummary> sums = contentWs.findItems(asList(guid), false);
+            List<PSItemSummary> sums = contentWs.findItems(Collections.singletonList(guid), false);
             // get the landing page
             if (sums.isEmpty()) return null;
 
@@ -462,9 +462,8 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     
     protected String getIconFromSystem(String id) {
         PSLocator locator = idMapper.getLocator(id);
-        Map<PSLocator, String> paths = itemDefManager.getContentTypeIconPaths(asList(locator));
-        String path = paths.get(locator);
-        return path;
+        Map<PSLocator, String> paths = itemDefManager.getContentTypeIconPaths(Collections.singletonList(locator));
+        return paths.get(locator);
     }
     
     
