@@ -220,14 +220,14 @@
                     </div>
                 </div>
             </ul>
-            <div id="tabs-1">
-                <jsp:include page="template_create.jsp" flush="true"/>
-            </div>
-            <div id="bottom"></div>
         </div>
     </div>
+    <div id="tabs-1">
+        <jsp:include page="template_create.jsp" flush="true"/>
+    </div>
+<div id="bottom"></div>
+<iframe id="frame" name="frame" title="<i18n:message key='perc.ui.design.title@Edit Template' />" style="width: 100%; border: 0" width="100%" class="perc-ui-component-ready"></iframe>
 </div>
 <%@include file='includes/siteimprove_integration.html'%>
-<iframe id="frame" name="frame" title="<i18n:message key='perc.ui.design.title@Edit Template' />" style="width: 100%; border: 0" width="100%" class="perc-ui-component-ready"></iframe>
 </body>
 </html>

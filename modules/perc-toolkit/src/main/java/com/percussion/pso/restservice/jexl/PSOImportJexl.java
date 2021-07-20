@@ -32,7 +32,11 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.ccil.cowan.tagsoup.Parser;
-import org.dom4j.*;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Node;
+import org.dom4j.XPath;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.SAXReader;
 import org.jsoup.Jsoup;
@@ -47,7 +51,11 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.sax.SAXSource;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
@@ -532,11 +540,11 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 		String ret = String.valueOf(data.hashCode());
 	
 	    try {
-			MessageDigest sha1 = MessageDigest.getInstance("SHA1");
-			sha1.reset();
-			sha1.update(data.getBytes());
+			MessageDigest checksum = MessageDigest.getInstance("SHA-256");
+			checksum.reset();
+			checksum.update(data.getBytes());
 	    
-			ret = asHex(sha1.digest());
+			ret = asHex(checksum.digest());
 	    } catch (NoSuchAlgorithmException e) {
 			log.debug(e,e);
 		}

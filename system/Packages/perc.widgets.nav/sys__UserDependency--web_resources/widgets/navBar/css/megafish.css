@@ -114,11 +114,11 @@
   width: 0;
   /* order of following 3 rules important for fallbacks to work */
   border: 5px solid transparent;
-  border-top-color: #dFeEFF; /* edit this to suit design (no rgba in IE8) */
-  border-top-color: rgba(255,255,255,.5);
+  border-top-color: #133C55; /* edit this to suit design (no rgba in IE8) */
+  border-top-color: rgba(19,60,85,.5);
 }
 .sf-arrows > li > .sf-with-ul:focus:after,
 .sf-arrows > li:hover > .sf-with-ul:after,
 .sf-arrows > .sfHover > .sf-with-ul:after {
-  border-top-color: white; /* IE8 fallback colour */
+  border-top-color: #133C55; /* IE8 fallback colour */
 }

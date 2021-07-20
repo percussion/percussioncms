@@ -437,6 +437,14 @@ public class PSSitePublishService implements IPSSitePublishService
                 itemWorkflowService.performApproveTransition(id, false, null);
             else if (trigger.equalsIgnoreCase(IPSItemWorkflowService.TRANSITION_TRIGGER_ARCHIVE))
                 itemWorkflowService.transition(id, IPSItemWorkflowService.TRANSITION_TRIGGER_ARCHIVE);
+        }else{
+            //Allow TakeDown of a Page in case page is live and user clicks "Delete" page
+            if(itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_PENDING) || itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_LIVE)){
+                if (trigger.equalsIgnoreCase(IPSItemWorkflowService.TRANSITION_TRIGGER_ARCHIVE)) {
+                    itemWorkflowService.transition(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT);
+                    itemWorkflowService.transition(id, IPSItemWorkflowService.TRANSITION_TRIGGER_ARCHIVE);
+                }
+            }
         }
     }
 
@@ -609,6 +617,11 @@ public class PSSitePublishService implements IPSSitePublishService
 
             if (itemWorkflowService.isTriggerAvailable(id, IPSItemWorkflowService.TRANSITION_TRIGGER_REMOVE))
             {
+                tdActionProps.setEnabled(true);
+            }
+
+            //Added this check to check if Quick edit trigger is available after pending or live status of page to enable schedule publish action.
+            if(itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_TAKEDOWN, IPSItemWorkflowService.CURRENT_STATE_PENDING) || itemWorkflowService.isQuickEditTriggerAvailableForPendingOrLivePage(id, IPSItemWorkflowService.TRANSITION_TRIGGER_EDIT, IPSItemWorkflowService.CURRENT_STATE_LIVE)){
                 tdActionProps.setEnabled(true);
             }
             

@@ -25,6 +25,7 @@
 package com.percussion.thumbnail;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
@@ -34,14 +35,26 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.exec.*;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteWatchdog;
+import org.apache.commons.exec.LogOutputStream;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -111,34 +124,25 @@ public class PSScreenCapture {
             exec.execute(commandline);
 
         } catch (Exception e) {
-            log.error("Error taking screen capture using phantomjs with error: " + e.getMessage());
+            log.error("Error taking screen capture using phantomjs with error: {}" ,PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
 
         }
     }
 
-    private static void extractExecutable() {
+    private static synchronized void extractExecutable() {
 
         if (install)
         {
-            synchronized (install)
-            {
-                if (install)
-                {
-                    copyWebCapResource();
-                    extractPhantomJs();
-                    install = false;
-                }
-            }
-
-
+            copyWebCapResource();
+            extractPhantomJs();
+            install = false;
         }
-
     }
 
-    private static void extractPhantomJs() {
+    private static synchronized void extractPhantomJs() {
         if (!PHANTOM_JS.exists()) {
-            synchronized (install) {
+
                 if (install && !PHANTOM_JS.exists()) {
                     ClassLoader classLoader = PSScreenCapture.class.getClassLoader();
                     String instFilename = "";
@@ -154,10 +158,10 @@ public class PSScreenCapture {
                     }
 
                     try (InputStream in = PSScreenCapture.class.getResourceAsStream("/phantomjs-inst/" + instFilename);
-                         BufferedInputStream bis = new BufferedInputStream(in);
+                         BufferedInputStream bis = new BufferedInputStream(in)
                     ) {
                         Path srcDir = Files.createTempDirectory("phantominst");
-                        srcDir.toFile().deleteOnExit();;
+                        srcDir.toFile().deleteOnExit();
 
                         if (instFilename.endsWith(".zip"))
                             extractZip(bis, instFilename, srcDir.toFile());
@@ -197,13 +201,12 @@ public class PSScreenCapture {
                             log.warn("Unable to set Posix permissions, not supported on this operating system");
                         }
                     } catch (IOException ex) {
-                        log.error("Error getting install from resource " + ex.getMessage());
+                        log.error("Error getting install from resource: {}" , PSExceptionUtils.getMessageForLog(ex));
                         log.debug(ex);
                     }
 
                 }
             }
-        }
     }
 
     private static void copyWebCapResource() {
@@ -226,7 +229,8 @@ public class PSScreenCapture {
                 out.write(buffer, 0, n);
             }
         } catch (IOException e) {
-            log.error("IO Exception while extracting bz2 archive:" + e.getMessage() );
+            log.error("IO Exception while extracting bz2 archive:{}" ,
+                    PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
         }
 
@@ -245,7 +249,7 @@ public class PSScreenCapture {
                 }
                 File curfile = new File(targetDir, entry.getName());
                 if (!curfile.toPath().normalize().startsWith(targetDir.toPath())) {
-                    log.error("Invalid File Path: " + curfile.toPath());
+                    log.error("Invalid File Path: {}" , curfile.toPath());
                     return;
                 }
                 if(curfile.getName().endsWith("phantomjs"))
@@ -260,10 +264,10 @@ public class PSScreenCapture {
                 }
             }
         } catch (FileNotFoundException e) {
-            log.error("Cannot find file extracting tar for phantomjs install: " + e.getMessage());
+            log.error("Cannot find file extracting tar for phantomjs install: {}" , e.getMessage());
             log.debug(e);
         } catch (IOException e) {
-            log.error("Error reading extracting tar file for phantomjs install: " + e.getMessage());
+            log.error("Error reading extracting tar file for phantomjs install: {}" , e.getMessage());
             log.debug(e);
         }
     }
@@ -271,12 +275,12 @@ public class PSScreenCapture {
     private static void extractZip(InputStream fs, String instFilename, File targetDir) {
         try (
              ArchiveInputStream i = new ArchiveStreamFactory()
-                     .createArchiveInputStream(fs);) {
+                     .createArchiveInputStream(fs)) {
             ArchiveEntry entry = null;
             while ((entry = i.getNextEntry()) != null) {
-                log.debug("Extracting " + entry.getName() + " to " + targetDir);
+                log.debug("Extracting {} to {}" ,entry.getName(), targetDir);
                 if (!i.canReadEntryData(entry)) {
-                    log.error("cannot read entry " + entry.getName());
+                    log.error("Cannot read entry {}" , entry.getName());
                     continue;
                 }
                 String name = fileName(targetDir, entry);
@@ -299,15 +303,8 @@ public class PSScreenCapture {
                     }
                 }
             }
-        } catch (ArchiveException e) {
-            log.error("Unexpected Archive error while installing phantomjs for the thumbnail service: " + e.getMessage());
-            log.debug(e);
-
-        } catch (FileNotFoundException e) {
-            log.error("File not found while installing phantomjs for the thumbnail service: " + e.getMessage());
-            log.debug(e);
-        } catch (IOException e) {
-            log.error("File IO error occurred while installing phantomjs for the thumbnail service: " + e.getMessage());
+        } catch (ArchiveException | IOException e) {
+            log.error("Unexpected Archive error while installing phantomjs for the thumbnail service: {}" , e.getMessage());
             log.debug(e);
         }
     }
@@ -325,12 +322,12 @@ public class PSScreenCapture {
         try ( InputStream stream = classLoader.getResourceAsStream(resourceName)){
 
             if(stream==null){
-                log.warn("Unable to locate thumbnail resource: " + resourceName);
+                log.warn("Unable to locate thumbnail resource: {}" , resourceName);
             }else{
                 FileUtils.copyInputStreamToFile(stream,destination);
             }
         } catch (IOException e) {
-            log.warn("Unable to copy thumbnail resource:" + e.getMessage());
+            log.warn("Unable to copy thumbnail resource: {}" , PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
         }
     }
