@@ -3766,6 +3766,37 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         </tuv>
     </tu>
 
+    <tu tuid="perc.ui.users.import.dialogs@Search">
+        <prop type="sectionname" xml:lang="en-us">User Management</prop>
+        <note xml:lang="en-us">Search button</note>
+        <tuv xml:lang="en-us">
+            <seg>Search</seg>
+        </tuv>
+        <tuv xml:lang="es">
+            <seg>Buscar</seg>
+        </tuv>
+    </tu>
+    <tu tuid="perc.ui.users.import.dialogs@Import">
+        <prop type="sectionname" xml:lang="en-us">User Management</prop>
+        <note xml:lang="en-us">Import button</note>
+        <tuv xml:lang="en-us">
+            <seg>Import</seg>
+        </tuv>
+        <tuv xml:lang="es">
+            <seg>Importar</seg>
+        </tuv>
+    </tu>
+    <tu tuid="perc.ui.users.import.dialogs@Cancel">
+        <prop type="sectionname" xml:lang="en-us">User Management</prop>
+        <note xml:lang="en-us">Cancel button</note>
+        <tuv xml:lang="en-us">
+            <seg>Cancel</seg>
+        </tuv>
+        <tuv xml:lang="es">
+            <seg>Cancelar</seg>
+        </tuv>
+    </tu>
+
     <tu tuid="perc.ui.users.import.dialogs@NameStartsWith">
         <prop type="sectionname" xml:lang="en-us">User Management</prop>
         <note xml:lang="en-us">Label for search box</note>
