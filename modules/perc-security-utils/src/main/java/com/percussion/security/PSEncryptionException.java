@@ -37,4 +37,8 @@ public class PSEncryptionException extends Exception{
     public PSEncryptionException() {
         super();
     }
+
+    public PSEncryptionException(Throwable t){
+        super(t);
+    }
 }
