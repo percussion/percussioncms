@@ -23,6 +23,7 @@
  */
 package com.percussion.services.pubserver;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.ToDoVulnerability;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
@@ -64,7 +65,7 @@ public interface IPSPubServerDao
 
    @ToDoVulnerability
    @Deprecated
-   public static final String encryptionKey = "p3$Y&ND8#Zdefghl";
+   public static final String encryptionKey = PSLegacyEncrypter.PUBSERVER_ENCRYPTION_KEY;
 
    public static final String PUBLISH_SECURE_SITE_CONF = "publishSecureSiteConfigOnExactPath";
    

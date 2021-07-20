@@ -336,9 +336,10 @@
                 </p>
             </div>
             <div id="perc-pageEditor-toolbar-content" class="ui-helper-clearfix"></div>
-            <div id="bottom"></div>
+
         </div>
     </div>
+    <div id="bottom"></div>
     <iframe id="frame" name="frame" title="<i18n:message key='perc.ui.navMenu.webmgt@Editor' />" style="width: 100%; border:0;" perc-ui-component="perc-ui-component-editor-frame"
             class="perc-ui-component-processing"></iframe>
 </div>

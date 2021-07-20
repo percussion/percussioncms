@@ -44,6 +44,7 @@ import java.util.Base64;
 /**
  * Utility class to encrypt and decrypt strings using the Blowfish cipher with a 
  * secret shared key.
+ * @deprecated Only use for upgrade from prior versions
  */
 @Deprecated
 public class PSLegacyEncrypter extends PSAbstractEncryptor {
@@ -514,5 +515,8 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
 
    @Deprecated
    public static final String LEGACY_USER_PWD_ENC = "89e495e7941cf9e40e6980d14a16bf023ccd4c91";
+
+   @Deprecated
+   public static final String PUBSERVER_ENCRYPTION_KEY = "p3$Y&ND8#Zdefghl";
 
 }
