@@ -27,6 +27,7 @@ import com.percussion.extension.IPSExtensionDef;
 import com.percussion.security.IPSPasswordFilter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSPasswordHandler;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -102,6 +103,7 @@ public class DefaultPasswordFilter implements IPSPasswordFilter
     * @param password
     * @return
     */
+   @SuppressFBWarnings("WEAK_MESSAGE_DIGEST_SHA1")
    @Override
    @Deprecated
    public String legacyEncrypt(String password) {
