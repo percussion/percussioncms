@@ -1029,7 +1029,7 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #set($jQueryLocation = $widgetitem.getProperties().get("jQueryUILocation"))##
 #if("${jQueryLocation}"  ==  "" )##
 #if($perc.linkContext.mode == "PUBLISH")##
-#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.js")##
 #else##
 #set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
@@ -1052,7 +1052,7 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 ## The jQueryLink link provided is no good
 <!-- Unable to verify CDN link - defaulting to system jquery version -->
 #if($perc.linkContext.mode.toString() == "PUBLISH")##
-#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.js")##
 #else##
 #set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
@@ -1074,7 +1074,7 @@ crossorigin="$!{jQueryCrossOrigin}"
 #elseif($perc.linkContext.mode.toString() == "PUBLISH" && $location_name == "additionalHeadContent")##
 #if($js_link.getUrl().endsWith("/jquery-ui.js"))##
 #if ($perc.linkContext.site.overrideSystemJQueryUI==false)##
-<script src="/web_resources/cm/jslib/jquery-ui.1.12.1.js"></script>
+<script src="/web_resources/cm/jslib/jquery-ui.js"></script>
 #end##
 #else##
 <script src="$js_link"></script>
