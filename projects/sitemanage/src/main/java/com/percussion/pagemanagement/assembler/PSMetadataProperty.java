@@ -27,19 +27,18 @@
  */
 package com.percussion.pagemanagement.assembler;
 
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
+import org.apache.commons.lang.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 /**
  * @author davidpardini
@@ -612,7 +611,7 @@ class HashCalculator
 {
     private static final String HEXES = "0123456789ABCDEF";
 
-    private static final String HASH_ALGORITHM = "SHA-1";
+    private static final String HASH_ALGORITHM = "SHA-256";
 
     private static final String CONTENT_ENCODING = "UTF-8";
 
