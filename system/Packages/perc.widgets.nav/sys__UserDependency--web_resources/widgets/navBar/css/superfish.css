@@ -112,21 +112,19 @@
     width: 0;
     /* order of following 3 rules important for fallbacks to work */
     border: 5px solid transparent;
-    border-top-color: #dFeEFF; /* edit this to suit design (no rgba in IE8) */
-    border-top-color: rgba(255,255,255,.5);
-}
-    border-top-color: white; /* IE8 fallback colour */
+    border-top-color: #133C55; /* edit this to suit design (no rgba in IE8) */
+    border-top-color: rgba(19,60,85,.5);
 }
 /* styling for right-facing arrows */
 .sf-arrows ul .sf-with-ul:after {
     margin-top: -5px;
     margin-right: -3px;
     border-color: transparent;
-    border-left-color: #dFeEFF; /* edit this to suit design (no rgba in IE8) */
-    border-left-color: rgba(255,255,255,.5);
+    border-left-color: #133C55; /* edit this to suit design (no rgba in IE8) */
+    border-left-color: rgba(19,60,85,.5);
 }
 .sf-arrows ul li > .sf-with-ul:focus:after,
 .sf-arrows ul li:hover > .sf-with-ul:after,
 .sf-arrows ul .sfHover > .sf-with-ul:after {
-    border-left-color: white;
+    border-left-color: #133C55;
 }
