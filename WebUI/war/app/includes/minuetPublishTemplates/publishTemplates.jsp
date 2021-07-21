@@ -544,14 +544,12 @@
                 </div>
             </div>
         </div>
-        <div class="form-group" >
-            <label for="region">* <i18n:message key="perc.ui.publish.view@Region"/>:</label>
-            <select aria-required="true" class="form-control perc-region-group" percServerFileProp="region" id="region" name="region" value="{{#filterByValue serverInfo.properties 'key' 'region'}}{{/filterByValue}}">
-
-            </select>
-        </div>
     </div>
-
+    <div class="form-group" >
+        <label for="region">* <i18n:message key="perc.ui.publish.view@Region"/>:</label>
+        <select aria-required="true" class="form-control perc-region-group" percServerFileProp="region" id="region" name="region" value="{{#filterByValue serverInfo.properties 'key' 'region'}}{{/filterByValue}}">
+        </select>
+    </div>
     <hr>
 </script>
 
