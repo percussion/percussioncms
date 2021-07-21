@@ -50,7 +50,7 @@
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__effectiveness__gadget_images_gadgetIconEffectiveness-png">
       <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_effectiveness_gadget\images\gadgetIconEffectiveness.png</RxFile>
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_effectiveness_gadget\images\gadgetIconEffectiveness.jpg</RxFile>
          <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__effectiveness__gadget_images_gadgetIconEffectiveness-png\gadgetIconEffectiveness.png</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>

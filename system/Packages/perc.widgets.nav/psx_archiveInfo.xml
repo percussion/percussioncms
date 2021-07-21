@@ -193,17 +193,17 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/navBar/images/widgetIconBreadcrumb.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/navBar/images/widgetIconBreadcrumb.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/navBar/images/widgetIconBreadcrumb.png" dependencyType="User" displayName="widgetIconBreadcrumb.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/navBar/images/widgetIconBreadcrumb.jpg" dependencyType="User" displayName="widgetIconBreadcrumb.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/navBar/images/widgetIconNavBar.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/navBar/images/widgetIconNavBar.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/navBar/images/widgetIconNavBar.png" dependencyType="User" displayName="widgetIconNavBar.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/navBar/images/widgetIconNavBar.jpg" dependencyType="User" displayName="widgetIconNavBar.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>

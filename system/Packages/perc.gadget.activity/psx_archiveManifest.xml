@@ -26,7 +26,7 @@
 <PSXArchiveManifest>
    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__activity__gadget_images_gadgetIconActivity-png">
       <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_activity_gadget\images\gadgetIconActivity.png</RxFile>
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_activity_gadget\images\gadgetIconActivity.jpg</RxFile>
          <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__activity__gadget_images_gadgetIconActivity-png\gadgetIconActivity.png</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
@@ -50,7 +50,7 @@
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--cm_gadgets_repository_perc__activity__gadget_images_gadgetIconActivityOver-png">
       <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_activity_gadget\images\gadgetIconActivityOver.png</RxFile>
+         <RxFile>C:\installs\dev\cm20101130\cm\gadgets\repository\perc_activity_gadget\images\gadgetIconActivityOver.jpg</RxFile>
          <ArchiveFile>sys__UserDependency--cm_gadgets_repository_perc__activity__gadget_images_gadgetIconActivityOver-png\gadgetIconActivityOver.png</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>

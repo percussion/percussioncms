@@ -28,7 +28,7 @@
         category="content"
         description="Widget to enter text using a WYSIWYG editor"
         author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/PSWidget_RichText/images/widgetIconText.png"
+        thumbnail="/rx_resources/widgets/PSWidget_RichText/images/widgetIconText.jpg"
         preferred_editor_width="780"
         preferred_editor_height="585" 
         is_responsive="true"/>

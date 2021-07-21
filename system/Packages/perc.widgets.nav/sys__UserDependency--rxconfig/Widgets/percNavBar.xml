@@ -28,7 +28,7 @@
                  category="navigation"
                  description="Add Navigation links to a page"
                  author="Percussion Software Inc"
-                 thumbnail="/web_resources/widgets/navBar/images/widgetIconNavBar.png"
+                 thumbnail="/web_resources/widgets/navBar/images/widgetIconNavBar.jpg"
                  is_responsive="true"/>
     <UserPref name="maxlevels"
               display_name="Maximum number of levels to be shown"

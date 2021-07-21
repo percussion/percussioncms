@@ -28,7 +28,7 @@
         category="integration"
         description="Widget to accept and render raw html code."
         author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/PSWidget_RawHtml/images/widgetIconHtm.png"
+        thumbnail="/rx_resources/widgets/PSWidget_RawHtml/images/widgetIconHtm.jpg"
 		preferred_editor_width="785"
         preferred_editor_height="405"
 		is_responsive="true"

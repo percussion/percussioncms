@@ -49,9 +49,9 @@
             <PSXDeployableElement>
                <PSXDependency autoDep="no" autoExpand="yes" dependencyId="sys_UserDependency" dependencyType="Shared" displayName="User Dependency" isAssociation="yes" isIncluded="yes" objectType="Custom" objectTypeName="Custom" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="yes">
                   <Dependencies>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/cm1_welcome_gadget/images/gadgetIconWelcome.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/cm1_welcome_gadget/images/gadgetIconWelcome.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/cm1_welcome_gadget/images/gadgetIconWelcome.png" dependencyType="User" displayName="gadgetIconWelcome.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/cm1_welcome_gadget/images/gadgetIconWelcome.jpg" dependencyType="User" displayName="gadgetIconWelcome.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>

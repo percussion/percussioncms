@@ -28,7 +28,7 @@
               category="blog,search"
               description=" Displays a list of tags"
               author="Percussion Software Inc"
-              thumbnail="/rx_resources/widgets/tagList/images/widgetIconLinkTagList.png"
+              thumbnail="/rx_resources/widgets/tagList/images/widgetIconLinkTagList.jpg"
               preferred_editor_width="800"
               preferred_editor_height="685"
               is_responsive="true"/>

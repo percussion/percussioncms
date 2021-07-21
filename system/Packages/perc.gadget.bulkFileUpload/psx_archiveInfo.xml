@@ -269,9 +269,9 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_bulk_file_upload_gadget/images/gadgetIconBulkFileUpload.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="cm/gadgets/repository/perc_bulk_file_upload_gadget/images/gadgetIconBulkFileUpload.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_bulk_file_upload_gadget/images/gadgetIconBulkFileUpload.png" dependencyType="User" displayName="gadgetIconBulkFileUpload.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="cm/gadgets/repository/perc_bulk_file_upload_gadget/images/gadgetIconBulkFileUpload.jpg" dependencyType="User" displayName="gadgetIconBulkFileUpload.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>

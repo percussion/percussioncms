@@ -56,7 +56,7 @@
          <ArchiveFile>ContentType-359\percRssAsset.schemaDef.contentType</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/rssIcon.png">
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/rssIcon.jpg">
       <PSXDependencyFile fileType="SUPPORT_FILE">
          <RxFile>C:\ins\dev\rx_resources\images\ContentTypeIcons\rssIcon.png</RxFile>
          <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\rssIcon.png\rssIcon.png</ArchiveFile>

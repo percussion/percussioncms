@@ -33,7 +33,7 @@
         description="Promote date driven events by displaying a calendar"
         category="Other"
         author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/calendar/images/calendarIcon.png"
+        thumbnail="/rx_resources/widgets/calendar/images/calendarIcon.jpg"
         preferred_editor_width="800"
         preferred_editor_height="425"
         is_responsive="false"/> 

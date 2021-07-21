@@ -28,7 +28,7 @@
         category="content,search"
         description="Display a dynamic list of page links"
         author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/pageAutoList/images/widgetIconLinkAutoList.png"
+        thumbnail="/rx_resources/widgets/pageAutoList/images/widgetIconLinkAutoList.jpg"
         preferred_editor_width="800"
         preferred_editor_height="685"
         is_responsive="true"/>

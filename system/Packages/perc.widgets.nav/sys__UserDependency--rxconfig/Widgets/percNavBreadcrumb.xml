@@ -28,7 +28,7 @@
         category="navigation"
         description="Display a navigation breadcrumb in your site"
         author="Percussion Software Inc"
-        thumbnail="/web_resources/widgets/navBar/images/widgetIconBreadcrumb.png"
+        thumbnail="/web_resources/widgets/navBar/images/widgetIconBreadcrumb.jpg"
 		is_responsive="true"/>
     <Resource href="/web_resources/widgets/navBar/css/breadcrumb.css" 
         type="css" 

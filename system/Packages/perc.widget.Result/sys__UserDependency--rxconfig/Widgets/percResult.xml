@@ -31,7 +31,7 @@
         category="search"
         description="Display the result of a search"
         author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/result/images/widgetIconLinkResult.png"
+        thumbnail="/rx_resources/widgets/result/images/widgetIconLinkResult.jpg"
         preferred_editor_width="800"
         preferred_editor_height="685"
 		is_responsive="true"/>

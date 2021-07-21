@@ -98,7 +98,7 @@
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetIconSimpleText-png">
       <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_SimpleText\images\widgetIconSimpleText.png</RxFile>
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_SimpleText\images\widgetIconSimpleText.jpg</RxFile>
          <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__SimpleText_images_widgetIconSimpleText-png\widgetIconSimpleText.png</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
@@ -178,7 +178,7 @@
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetIconText-png">
       <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RichText\images\widgetIconText.png</RxFile>
+         <RxFile>D:\Percussion\ins\dev\rx_resources\widgets\PSWidget_RichText\images\widgetIconText.jpg</RxFile>
          <ArchiveFile>sys__UserDependency--rx__resources_widgets_PSWidget__RichText_images_widgetIconText-png\widgetIconText.png</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>

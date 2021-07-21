@@ -28,7 +28,7 @@
         category="rich media,search"
         description="Display an automated list of image assets"
         author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/imageAutoList/images/widgetIconImageAutoList.png"
+        thumbnail="/rx_resources/widgets/imageAutoList/images/widgetIconImageAutoList.jpg"
         preferred_editor_width="780"
         preferred_editor_height="665"
 		is_responsive="true"/>

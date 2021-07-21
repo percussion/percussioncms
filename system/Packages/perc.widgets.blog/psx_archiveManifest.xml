@@ -75,9 +75,9 @@
          <ArchiveFile>sys__UserDependency--rx__resources_widgets_blogPost_images_WidgetIconBlogOver-png\WidgetIconBlogOver.png</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsBlog.png">
+   <PSXDepFilesIdTypes DependencyKey="ImageFile-rx_resources/images/ContentTypeIcons/filetypeIconsBlog.jpg">
       <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>D:\Percussion\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsBlog.png</RxFile>
+         <RxFile>D:\Percussion\ins\dev\rx_resources\images\ContentTypeIcons\filetypeIconsBlog.jpg</RxFile>
          <ArchiveFile>ImageFile-rx_resources\images\ContentTypeIcons\filetypeIconsBlog.png\filetypeIconsBlog.png</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>

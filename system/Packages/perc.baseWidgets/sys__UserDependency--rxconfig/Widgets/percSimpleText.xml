@@ -28,7 +28,7 @@
                  category="content"
                  description="Widget used for entering plain text"
                  author="Percussion Software Inc"
-                 thumbnail="/rx_resources/widgets/PSWidget_SimpleText/images/widgetIconSimpleText.png"
+                 thumbnail="/rx_resources/widgets/PSWidget_SimpleText/images/widgetIconSimpleText.jpg"
                  preferred_editor_width="640"
                  preferred_editor_height="500"
                  is_responsive="true"

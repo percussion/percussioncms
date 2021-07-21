@@ -470,17 +470,17 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/widgetIconLinkTagList.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/widgetIconLinkTagList.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/widgetIconLinkTagList.png" dependencyType="User" displayName="widgetIconLinkTagList.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/widgetIconLinkTagList.jpg" dependencyType="User" displayName="widgetIconLinkTagList.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/widgetIconLinkTagListOver.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/tagList/images/widgetIconLinkTagListOver.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/widgetIconLinkTagListOver.png" dependencyType="User" displayName="widgetIconLinkTagListOver.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/tagList/images/widgetIconLinkTagListOver.jpg" dependencyType="User" displayName="widgetIconLinkTagListOver.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>

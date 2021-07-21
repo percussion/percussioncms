@@ -2373,9 +2373,9 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_RawHtml/images/widgetIconHtm.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_RawHtml/images/widgetIconHtm.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_RawHtml/images/widgetIconHtm.png" dependencyType="User" displayName="widgetIconHtm.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_RawHtml/images/widgetIconHtm.jpg" dependencyType="User" displayName="widgetIconHtm.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>
@@ -2389,9 +2389,9 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_SimpleText/images/widgetIconSimpleText.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_SimpleText/images/widgetIconSimpleText.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_SimpleText/images/widgetIconSimpleText.png" dependencyType="User" displayName="widgetIconSimpleText.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_SimpleText/images/widgetIconSimpleText.jpg" dependencyType="User" displayName="widgetIconSimpleText.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>
@@ -2405,9 +2405,9 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_RichText/images/widgetIconText.png">
+                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_RichText/images/widgetIconText.jpg">
                         <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_RichText/images/widgetIconText.png" dependencyType="User" displayName="widgetIconText.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_RichText/images/widgetIconText.jpg" dependencyType="User" displayName="widgetIconText.jpg" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>

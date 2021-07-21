@@ -199,7 +199,7 @@
                                  <Description/>
                               </PSXDeployableElement>
                               <PSXDeployableObject>
-                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/images/ContentTypeIcons/rssIcon.png" dependencyType="Local" displayName="rssIcon.png" isAssociation="no" isIncluded="yes" objectType="ImageFile" objectTypeName="Image File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
+                                 <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/images/ContentTypeIcons/rssIcon.jpg" dependencyType="Local" displayName="rssIcon.jpg" isAssociation="no" isIncluded="yes" objectType="ImageFile" objectTypeName="Image File" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                                     <Dependencies/>
                                  </PSXDependency>
                                  <RequiredClasses/>
