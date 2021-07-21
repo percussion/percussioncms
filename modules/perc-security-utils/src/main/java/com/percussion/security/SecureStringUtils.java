@@ -333,7 +333,7 @@ public class SecureStringUtils {
         Faker f = Faker.instance(getSecureRandom());
 
         char[] password = f.lorem().characters(6, 20, true, true).toCharArray();
-        char[] special = new char[]{'!', '@', '#', '$', '%', '^', '&', '*'};
+        char[] special = new char[]{'@', '$', '%', '^', '&', '*'};
         for (int i = 0; i < f.random().nextInt(6); i++) {
             password[f.random().nextInt(password.length)] = special[f.random().nextInt(special.length)];
         }
