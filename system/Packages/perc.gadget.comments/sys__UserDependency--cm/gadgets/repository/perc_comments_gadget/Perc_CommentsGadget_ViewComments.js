@@ -28,77 +28,80 @@
      * A lot of this functionality should be pulled out and refactored into a central function, to provide guard rails for the developers.
      */
     function createDataTable(data, site, pagePath){
-        
+
         var itemsPerPage = 999999999; // No paging support yet.  Change to sensible number once we implement it.
         var isLargeColumn = true;
         window.gadgets = false;
         var tableDiv = $('#perc-gadget-comments-viewComments-container');
         statusTable = $("<table id='perc-gadget-comments-viewComments-table' cellspacing='0'>");
         tableDiv.append(statusTable);
-        
+
         var percData = [];
-        
+
         $.PercCommentsGadgetService().getArticleDescription(site, pagePath, function(article, callbackOptions){
 
             var articleDesc = $('<div />').
-				append(
-					$('<div />').
-						attr('id', 'perc-gadget-comments-viewComments-articleSummary').
-						append(
-							$('<span />').
-								text(
-									$('<div />').
-										append(article.title).
-										text()
-								)
-						).append(
-							$('<span />').
-								text(
-									$('<div />').
-										append(article.summary).
-										text()
-								)
-						)
-				).append(
-					$('<div />').
-						attr('id', 'perc-gadget-comments-viewComments-numComments').
-						text(data.length + ((data.length>1)?' comments:':' comment:'))
-				);
+            append(
+                $('<div />').
+                attr('id', 'perc-gadget-comments-viewComments-articleSummary').
+                append(
+                    $('<span />').
+                    text(
+                        $('<div />').
+                        append(article.title).
+                        text()
+                    )
+                ).append(
+                    $('<span />').
+                    text(
+                        $('<div />').
+                        append(article.summary).
+                        text()
+                    )
+                )
+            ).append(
+                $('<div />').
+                attr('id', 'perc-gadget-comments-viewComments-numComments').
+                text(data.length + ((data.length>1)?' comments:':' comment:'))
+            );
             var allModeration = newRejectApproveAllActions();
-            var row = [articleDesc, allModeration];
-            percData.push(row);
+            let newRow = statusTable.append('<tr>');
+            newRow.append('<td>').append(articleDesc);
+            newRow.append('<td>').append(allModeration);
 
             $.each(data, function(){
                 var commentData = this;
                 var commentTitle   = $('<h2 />').addClass('perc-gadget-comments-viewComments-commentTitle').text($('<div />').append(commentData.title).text());
-				var commentDateRaw = $.timeago.parse(commentData.createdDate);
+                var commentDateRaw = $.timeago.parse(commentData.createdDate);
                 var dateParts = $.perc_utils.splitDateTime(commentData.createdDate);
 
                 var commentDate    = $('<span />').
-					addClass('perc-gadget-comments-viewComments-commentDate').
-					append( 
-						$('<span />').
-							text(commentData.createdDate).
-							attr('title', commentData.createdDate).
-							timeago()
-					).append(
-						$('<span />').
-							text(
+                addClass('perc-gadget-comments-viewComments-commentDate').
+                append(
+                    $('<span />').
+                    text(commentData.createdDate).
+                    attr('title', commentData.createdDate).
+                    timeago()
+                ).append(
+                    $('<span />').
+                    text(
 
-                                ', ' + dateParts.date + ", " + dateParts.time
-							)
-					);
+                        ', ' + dateParts.date + ", " + dateParts.time
+                    )
+                );
                 var commentAuthor  = $('<span />').addClass('perc-gadget-comments-viewComments-commentAuthor').text($('<div />').append( ( commentData.username ? commentData.username : "Anonymous" ) ).text() + " said...");
                 var commentText    = $('<div />').addClass('perc-gadget-comments-viewComments-commentText').text($('<div />').append(commentData.text).text());
 
                 var commentAggregate = $('<div />').addClass('perc-datatable-firstrow').append(commentDate).append(commentAuthor).append(commentText);
-                
+
                 var commentId = commentData.id;
                 var rejectApproveActions = newRejectApproveActions(commentData.approvalState, commentId, site);
 
-                var row = [commentAggregate, rejectApproveActions];
+                let newRow = statusTable.append('<tr>');
+                newRow.append('<td>').append(commentAggregate);
+                newRow.append('<td>').append(rejectApproveActions);
 
-                percData.push(row);
+
             });
 
             var dataTypeCols0 = [
@@ -112,33 +115,32 @@
             var dataTypeCols = isLargeColumn?dataTypeCols1:dataTypeCols0;
 
             var tableConfig = {
+                autoWidth: true,
+                ordering: true,
+                fixedHeader: true,
+                searching: false,
+                paging:false,
                 iDisplayLength : itemsPerPage,
                 aoColumns: dataTypeCols,
                 percHeaderClasses : ["perc-datatable-cell-string perc-gadget-comments-viewComments-comment", "perc-datatable-cell-string perc-gadget-comments-viewComments-action"],
                 percHeaders : ["Title", "Action"],
-                percData : percData,
-                oLanguage: {"sZeroRecords": "No Comments Found", "sInfo" : "Showing _START_ to _END_ of _TOTAL_ total results", "sInfoEmpty" : "No results found"},
-                percColumnWidths : [["82%", "18%"],["82%", "18%"]],
-                aaSorting : []
+                oLanguage: {"sZeroRecords": "&nbsp;", "sInfo" : "Showing _START_ to _END_ of _TOTAL_ total results", "sInfoEmpty" : "&nbsp;"},
+                percColumnWidths : [["82%", "18%"],["82%", "18%"]]
             };
 
-            new FixedHeader(statusTable.percDataTable(tableConfig));
+
 
             // if the last row does not fill the bottom of the dialog
             // expand the height of the last row to the bottom of the dialog
             var container = $("#perc-gadget-comments-viewComments-container");
             var containerHeight = container.height();
-            var lastRow = $("td.perc-gadget-comments-viewComments-action:last");
-            var lastRowTop = lastRow.position().top;
-            var lastRowHeight = lastRow.height();
-            var lastRowNewHeight = containerHeight - lastRowTop;
-            if(lastRowNewHeight > lastRowHeight)
-                lastRow.height(lastRowNewHeight);
-			
+            $('#perc-gadget-comments-viewComments-table').DataTable(tableConfig);
+
             $(window).trigger('perc-datatable-doneLoading');
-            
+
             updateApproveRejectAllActions();
         }, {});
+
     }
 
     function newRejectApproveAllActions() {
@@ -146,7 +148,7 @@
         var approvalActionRejectAction  = $("<div class='perc-gadget-comments-rejectAction-all'  title='Reject All Comments'>");
         var approvalActionApproveAction = $("<div class='perc-gadget-comments-approveAction-all' title='Approve All Comments'>");
         var approvalActionDeleteAction  = $("<div class='perc-gadget-comments-deleteAction-all' title='Delete All Comments'>");
-        
+
         var approvalActionAllLabel      = $("<div class='perc-gadget-comments-label-all'>ALL</div>");
         approvalActionMenu
             .append(approvalActionRejectAction)
@@ -154,7 +156,7 @@
             .append(approvalActionDeleteAction)
             .append(approvalActionAllLabel)
             .addClass("perc-gadget-comments-default-all");
-        
+
         approvalActionRejectAction.on("click",function(evt){
             rejectAll(evt);
         });
@@ -164,18 +166,18 @@
         approvalActionDeleteAction.on("click", function(evt){
             deleteAll(evt);
         });
-        
+
         return approvalActionMenu;
     }
 
     function deleteAll(evt) {
-        var approvalActionMenu = $(this).parent();
+        var approvalActionMenu = $(evt.target).parent();
         approvalActionMenu
             .attr("currentState", "ALL_DELETED")
             .removeClass("perc-gadget-comments-approved-all")
             .removeClass("perc-gadget-comments-rejected-all")
             .addClass("perc-gadget-comments-deleted-all");
-        
+
         var allIndividualMenus = $(".perc-gadget-comments-actionMenu");
         allIndividualMenus
             .attr("currentState", "DELETED")
@@ -185,13 +187,13 @@
     }
 
     function rejectAll(evt) {
-        var approvalActionMenu = $(this).parent();
+        var approvalActionMenu = $(evt.target).parent();
         approvalActionMenu
             .attr("currentState", "ALL_REJECTED")
             .removeClass("perc-gadget-comments-approved-all")
             .removeClass("perc-gadget-comments-deleted-all")
             .addClass("perc-gadget-comments-rejected-all");
-        
+
         var allIndividualMenus = $(".perc-gadget-comments-actionMenu");
         allIndividualMenus
             .attr("currentState", "REJECTED")
@@ -201,13 +203,13 @@
     }
 
     function approveAll(evt) {
-        var approvalActionMenu = $(this).parent();
+        var approvalActionMenu = $(evt.target).parent();
         approvalActionMenu
             .attr("currentState", "ALL_APPROVED")
             .addClass("perc-gadget-comments-approved-all")
             .removeClass("perc-gadget-comments-deleted-all")
             .removeClass("perc-gadget-comments-rejected-all");
-        
+
         var allIndividualMenus = $(".perc-gadget-comments-actionMenu");
         allIndividualMenus
             .attr("currentState", "APPROVED")
@@ -217,10 +219,10 @@
     }
 
     function newRejectApproveActions(approvalState, commentId, site) {
-        
+
         var approvalStateClass          = approvalState == "APPROVED" ? "perc-gadget-comments-approved" : "perc-gadget-comments-rejected";
         var approvalStateClassOriginal  = approvalStateClass;
-        
+
         var approvalActionMenu          = $("<div class='perc-gadget-comments-actionMenu' site='"+site+"' commentId='"+commentId+"'>");
         var approvalActionRejectAction  = $("<div class='perc-gadget-comments-rejectAction'  title='Reject Comment'>");
         var approvalActionApproveAction = $("<div class='perc-gadget-comments-approveAction' title='Approve Comment'>");
@@ -245,12 +247,12 @@
         approvalActionDeleteAction.on("click",function(evt){
             deleteComment(evt);
         });
-        
+
         return approvalActionMenu;
     }
-    
+
     function reject(evt) {
-        var approvalActionMenu = $(this).parent();
+        var approvalActionMenu = $(evt.target).parent();
         approvalActionMenu
             .attr("currentState", "REJECTED")
             .removeClass("perc-gadget-comments-approved")
@@ -258,9 +260,9 @@
             .addClass("perc-gadget-comments-rejected");
         updateApproveRejectAllActions();
     }
-    
+
     function approve(evt) {
-        var approvalActionMenu = $(this).parent();
+        var approvalActionMenu = $(evt.target).parent();
         approvalActionMenu
             .attr("currentState", "APPROVED")
             .addClass("perc-gadget-comments-approved")
@@ -268,9 +270,9 @@
             .removeClass("perc-gadget-comments-rejected");
         updateApproveRejectAllActions();
     }
-    
+
     function deleteComment(evt) {
-        var approvalActionMenu = $(this).parent();
+        var approvalActionMenu = $(evt.target).parent();
         approvalActionMenu
             .attr("currentState", "DELETED")
             .addClass("perc-gadget-comments-deleted")
@@ -278,7 +280,7 @@
             .removeClass("perc-gadget-comments-rejected");
         updateApproveRejectAllActions();
     }
-    
+
     function updateApproveRejectAllActions() {
         var allIndividualMenus = $(".perc-gadget-comments-actionMenu");
         var individualMenuCount = allIndividualMenus.length;
@@ -322,12 +324,12 @@
                 .addClass("perc-gadget-comments-default-all");
         }
     }
-    
-    $(document).ready(function(){
+
+    $(function(){
 
         var site     = $(document).getUrlParam('site');
         var pagePath = $(document).getUrlParam('pagePath');
-		window.parent.jQuery("#" + window.name).parent().css('padding', '0');
+        window.parent.jQuery("#" + window.name).parent().css('padding', '0');
         $.PercCommentsGadgetService().getCommentsOnPage(site, pagePath, function(comments, callbackOptions){
             createDataTable(comments, site, pagePath);
         }, {});
