@@ -23,18 +23,27 @@
  */
 package com.percussion.services.pubserver.data;
 
-import com.percussion.services.pubserver.impl.PSPubServerDao;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
+import com.percussion.server.PSServer;
 import com.percussion.share.data.PSAbstractDataObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+import static com.percussion.services.pubserver.IPSPubServerDao.PUBLISH_PASSWORD_PROPERTY;
 import static com.percussion.util.PSBase64Decoder.decode;
-import static com.percussion.util.PSBase64Encoder.encode;
 
 /**
  * Represents a single property for the server.
@@ -47,6 +56,7 @@ import static com.percussion.util.PSBase64Encoder.encode;
 @Table(name = "PSX_PUBSERVER_PROPERTIES")
 public class PSPubServerProperty extends PSAbstractDataObject
 {
+   private static final Logger log = LogManager.getLogger(PSPubServerProperty.class);
 
    /**
     * 
@@ -160,10 +170,19 @@ public class PSPubServerProperty extends PSAbstractDataObject
     */
    public String getValue()
    {
-      if (isEncodedProperty())
-         return StringUtils.isEmpty(value) ? value : decode(value);
-      else
+      if (isEncodedProperty()) {
+         try {
+            PSEncryptor encryptor = PSEncryptor.getInstance(
+                    "AES",
+                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+            return StringUtils.isEmpty(value) ? value : encryptor.decrypt(value);
+         } catch (PSEncryptionException e) {
+            return StringUtils.isEmpty(value) ? value : decode(value);
+         }
+      }
+      else {
          return value;
+      }
    }
 
    /**
@@ -171,10 +190,22 @@ public class PSPubServerProperty extends PSAbstractDataObject
     */
    public void setValue(String value)
    {
-      if (isEncodedProperty())
-         this.value = StringUtils.isEmpty(value) ? value : encode(value);
-      else
+      if (isEncodedProperty()) {
+         PSEncryptor encryptor = PSEncryptor.getInstance(
+                 "AES",
+                 PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+         try {
+            this.value = StringUtils.isEmpty(value) ? value : encryptor.encrypt(value);
+         } catch (PSEncryptionException e) {
+            log.error("Unable to encrypt encoded property: {} Error: {}", this.name,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
+            this.value= value;
+         }
+      }
+      else {
          this.value = value;
+      }
    }
 
    /**
@@ -183,6 +214,6 @@ public class PSPubServerProperty extends PSAbstractDataObject
     */
    private boolean isEncodedProperty()
    {
-      return PSPubServerDao.PUBLISH_PASSWORD_PROPERTY.equals(name);
+      return PUBLISH_PASSWORD_PROPERTY.equals(name);
    }
 }
