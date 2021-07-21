@@ -1322,7 +1322,7 @@
             var columnGadgets = dashboardColumn.find(".perc-gadget");
             if (columnGadgets.length === 0)
             {
-                var dashboardColumnPosition = dashboardColumn.position();
+                var dashboardColumnPosition = dashboardColumn.parent().position();
                 var dashboardContainPosition = dashboardContainer.position();
                 addGadgetDropArea(null, columnIndex, 0, dashboardColumnPosition.left, dashboardContainPosition.top, dashboardColumn.width() - DASHBOARD_GADGET_MARGIN, dashboardContainer.height());
             }
@@ -1370,7 +1370,7 @@
         // but honor position and size parameters passed in explicitly
         if (dashboardGadget!==  null && typeof dashboardGadget !== "undefined")
         {
-            var dashboardGadgetPosition = dashboardGadget.position();
+            var dashboardGadgetPosition = dashboardGadget.parent().parent().position();
 
             var gadgetParentColumnId = dashboardGadget.parent(".perc-gadget-column").attr("id");
             var columnIndexString = gadgetParentColumnId.replace("col-", "");
