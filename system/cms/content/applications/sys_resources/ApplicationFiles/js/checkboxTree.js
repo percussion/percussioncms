@@ -233,7 +233,7 @@ var _treeData = [
     }
   ]
 },
-{title: "Documnent with some children (expanded on init)", key: "id4", expand: true,
+{title: "Document with some children (expanded on init)", key: "id4", expand: true,
   children: [
     {title: "Sub-item 4.1 (active on init)", activate: true,
       children: [

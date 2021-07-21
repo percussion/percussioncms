@@ -293,12 +293,12 @@ public class PSXmlObjectStoreLockManager
          }
          catch (InterruptedException inte)
          {
-            // ignore, acquired will be false
             if (lockedResults != null)
             {
                lockedResults.setArgs(
                   IPSObjectStoreErrors.LOCK_WAIT_INTERRUPTED, null);
             }
+            Thread.currentThread().interrupt();
          }
       }
 

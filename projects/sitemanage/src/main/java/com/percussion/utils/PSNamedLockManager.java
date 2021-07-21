@@ -23,12 +23,12 @@
  */
 package com.percussion.utils;
 
+import org.apache.commons.lang.Validate;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
-
-import org.apache.commons.lang.Validate;
 
 /**
  * Manages a map of named locks, so that locks can be acquired based on a name, also simplifies some of the semantics.
@@ -87,7 +87,7 @@ public class PSNamedLockManager
         }
         catch (InterruptedException e)
         {
-            // didn't get it, fall through
+            Thread.currentThread().interrupt();
         }
         
         return didLock;

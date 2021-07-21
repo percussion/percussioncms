@@ -24,8 +24,9 @@
 
 package com.percussion.ant.install;
 
-import com.percussion.install.RxUpgrade;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.PSLogger;
+import com.percussion.install.RxUpgrade;
 
 /**
  * The execute method of this called when it is an upgrade.
@@ -64,18 +65,12 @@ public class PSUpgrade extends PSAction
 
       RxUpgrade upgrade = new RxUpgrade();
       String[] pluginFiles = getUpgradeFileNames();
-      for (int i = 0; i < pluginFiles.length; i++)
-      {
-         String fileName = pluginFiles[i];
-
-         try
-         {
+      for (String fileName : pluginFiles) {
+         try {
             upgrade.process(m_strRootDir, fileName);
-         }
-         catch(Exception e)
-         {
-            e.printStackTrace(System.out);
-            PSLogger.logError("file: " + fileName + " " + e.getMessage());
+         } catch (Exception e) {
+            PSLogger.logError("file: " + fileName + " " +
+                    PSExceptionUtils.getMessageForLog(e));
             PSLogger.logError(e);
          }
       }
@@ -92,7 +87,7 @@ public class PSUpgrade extends PSAction
 
    /**
     * Setter for UpgradeFileName.
-    * @param fileName, never <code>null</code> or <code>empty</code>.
+    * @param fileNames, never <code>null</code> or <code>empty</code>.
     */
    public void setUpgradeFileNames(String fileNames)
    {

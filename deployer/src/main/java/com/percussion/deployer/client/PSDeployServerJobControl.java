@@ -72,7 +72,7 @@ public class PSDeployServerJobControl  implements IPSDeployJobControl
          }
          catch (InterruptedException e1)
          {
-
+            Thread.currentThread().interrupt();
          }
          
          try

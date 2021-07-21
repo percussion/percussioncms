@@ -24,18 +24,17 @@
 
 package com.percussion.share.service;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-
+import com.percussion.share.async.PSAsyncJobStatus;
+import com.percussion.share.test.PSRestTestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.percussion.share.async.PSAsyncJobStatus;
-import com.percussion.share.test.PSRestTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class PSAsyncJobStatusRestServiceTest extends PSRestTestCase<PSAsyncJobStatusRestClient>
 {
@@ -72,7 +71,8 @@ public class PSAsyncJobStatusRestServiceTest extends PSRestTestCase<PSAsyncJobSt
           catch (InterruptedException e)
           {
               log.error(e.getMessage());
-              log.debug(e.getMessage(), e);
+              log.debug(e);
+              Thread.currentThread().interrupt();
           }
       }
       assertEquals(100, jobStatus.getStatus().intValue());

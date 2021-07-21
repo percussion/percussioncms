@@ -24,7 +24,6 @@
 package com.percussion.server.cache;
 
 import com.percussion.design.objectstore.PSServerCacheSettings;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -155,6 +154,7 @@ public class PSCacheStatisticsTest extends TestCase
       }
       catch(InterruptedException e)
       {
+         Thread.currentThread().interrupt();
       }
    }
    

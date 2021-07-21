@@ -40,8 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Singleton class to manage server-wide caching.  Is impelemented as a set of
  * {@link IPSCacheHandler} objects, each of which is responsible for handling
@@ -233,7 +231,7 @@ public class PSCacheManager implements IPSHandlerInitListener
     *
     * @return The singleton instance of this class, never <code>null</code>.
     */
-   public static PSCacheManager getInstance()
+   public static synchronized PSCacheManager getInstance()
    {
       if (ms_cacheManager == null)
          ms_cacheManager = new PSCacheManager();

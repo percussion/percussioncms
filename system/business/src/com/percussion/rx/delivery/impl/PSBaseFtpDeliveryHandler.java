@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.delivery.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
@@ -53,6 +54,7 @@ import static org.apache.commons.lang.Validate.notNull;
  */
 public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 {
+    private static final String NO_MORE_RETRIES = "No more loginRetries left - failed to login.";
     /**
      * See {@link #getMaxRetries()}
      */
@@ -226,12 +228,12 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
      * properties set in the publisher-beans.xml
      */
     public void logDebugInformation() {
-        ms_log.debug("Default timeout: " + getTimeout());
-        ms_log.debug("Use passive mode: " + getUsePassiveMode());
-        ms_log.debug("Connect timeout: " + getConnectTimeout());
-        ms_log.debug("Max retries: " + getMaxRetries());
-        ms_log.debug("Active port start: " + getActivePortStart() +
-                ". Active port end: " + getActivePortEnd());
+        ms_log.debug("Default timeout: {}" ,getTimeout());
+        ms_log.debug("Use passive mode: {}" , getUsePassiveMode());
+        ms_log.debug("Connect timeout: {}" , getConnectTimeout());
+        ms_log.debug("Max retries: {}" , getMaxRetries());
+        ms_log.debug("Active port start: {}. Active port end: {}", getActivePortStart()
+                 , getActivePortEnd());
     }
 
    /**
@@ -604,7 +606,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 
       if (StringUtils.isNotBlank(failureMessage))
       {
-         ms_log.debug("Error in doDelivery(): " + failureMessage);
+         ms_log.debug("Error in doDelivery(): {}" , failureMessage);
       }
    }
 
@@ -630,8 +632,8 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
       {
          ms_log.debug("Ftp session disconnected, attempting to republish.");
 
-         ms_log.debug("About to relogin, ftpPutRetriesLeft: "
-               + (ftpPutRetriesLeft - 1));
+         ms_log.debug("About to relogin, ftpPutRetriesLeft: {}"
+               , (ftpPutRetriesLeft - 1));
       }
       
       try
@@ -641,6 +643,8 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
       }
       catch (InterruptedException intex)
       {
+          ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+          Thread.currentThread().interrupt();
       }
 
       try
@@ -663,6 +667,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
     * (non-Javadoc)
     * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#prepareForDelivery(long)
     */
+    @Override
    protected Collection<IPSDeliveryResult> prepareForDelivery(long jobId) throws PSDeliveryException
    {
       if (isTransactional())
@@ -675,6 +680,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
     * (non-Javadoc)
     * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#releaseForDelivery(long)
     */
+    @Override
    protected void releaseForDelivery(long jobId)
    {
       logoff();
@@ -745,11 +751,11 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                   msg = result.getFailureMessage();
                }
 
-               ms_log.warn(msg + ", loginRetriesLeft:" + loginRetriesLeft);
+               ms_log.warn( "{}, loginRetriesLeft: {}" , msg, loginRetriesLeft);
 
                if (loginRetriesLeft <= 1)
                {
-                  ms_log.error("No more loginRetries left - failed to login.");
+                  ms_log.error(NO_MORE_RETRIES);
                   // tried few times, but we still fail - give up
                   break;
                }
@@ -761,6 +767,8 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                }
                catch (InterruptedException intex)
                {
+                   ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+                   Thread.currentThread().interrupt();
                }
             }
          }
@@ -779,7 +787,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 
             if (loginRetriesLeft <= 1)
             {
-               ms_log.error("No more loginRetries left - failed to login.");
+               ms_log.error(NO_MORE_RETRIES);
                //tried few times, but we still fail - give up
                throw de;
             }
@@ -789,7 +797,10 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                //first time wait the least, next time wait more, etc.
                Thread.sleep(15000 / loginRetriesLeft);
             }
-            catch(InterruptedException intex){}
+            catch(InterruptedException intex){
+                ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+                Thread.currentThread().interrupt();
+            }
          }
          catch(Exception e)
          {
@@ -806,7 +817,7 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
 
             if (loginRetriesLeft <= 1)
             {
-               ms_log.error("No more loginRetries left - failed to login.");
+               ms_log.error(NO_MORE_RETRIES);
                //tried few times, but we still fail - give up
                throw new PSDeliveryException(IPSDeliveryErrors.UNEXPECTED_ERROR, 
                      e.getMessage());
@@ -817,7 +828,10 @@ public abstract class PSBaseFtpDeliveryHandler extends PSBaseDeliveryHandler
                //first time wait the least, next time wait more, etc.
                Thread.sleep(15000 / loginRetriesLeft);
             }
-            catch(InterruptedException intex){}
+            catch(InterruptedException intex){
+                ms_log.error(PSExceptionUtils.getMessageForLog(intex));
+                Thread.currentThread().interrupt();
+            }
          }
       } 
       

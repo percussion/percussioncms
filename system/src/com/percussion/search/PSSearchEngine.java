@@ -23,10 +23,15 @@
  */
 package com.percussion.search;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.search.lucene.PSSearchQueryImpl;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -35,12 +40,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 /**
  * This class is the primary class for a pluggable-search-engine architecture.
@@ -306,8 +305,8 @@ public abstract class PSSearchEngine
       }
       catch (InterruptedException e)
       {
-         throw new IllegalStateException(
-               "Interrupted PSSearchEngine.getInstance() waiting for initialization",e);
+         logger.error(PSExceptionUtils.getMessageForLog(e));
+         Thread.currentThread().interrupt();
       }
       
       if (null == ms_instance)
@@ -411,6 +410,7 @@ public abstract class PSSearchEngine
                PrintConsoleMessage(
                      "Interrupted while waiting for admin to be released"
                      + " during search engine shutdown.");
+               Thread.currentThread().interrupt();
             }
          }
          doShutdown(force);
@@ -919,7 +919,7 @@ public abstract class PSSearchEngine
                }
                catch (InterruptedException ie)
                {
-                  //if someone interrupted us, skip this processing and cont
+                  Thread.currentThread().interrupt();
                   break;
                }
             }
@@ -965,6 +965,7 @@ public abstract class PSSearchEngine
                }
                catch (InterruptedException ie)
                {
+                  Thread.currentThread().interrupt();
                   //if someone interrupted us, skip this processing and cont
                   break;
                }
@@ -1014,9 +1015,7 @@ public abstract class PSSearchEngine
          }
          catch (InterruptedException e)
          {
-            //since this shouldn't happen, don't i18n
-            throw new PSSearchException(IPSServerErrors.RAW_DUMP, 
-                  "Timed out waiting for search engine to un-pause.");
+            Thread.currentThread().interrupt();
          }
       }
    }

@@ -23,20 +23,7 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.percussion.services.error.PSNotFoundException;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
 import com.percussion.rx.delivery.IPSDeliveryItem;
 import com.percussion.rx.delivery.IPSDeliveryManager;
@@ -50,6 +37,7 @@ import com.percussion.rx.publisher.data.PSPubItemStatus;
 import com.percussion.rx.publisher.impl.PSPublishHandler;
 import com.percussion.server.PSServer;
 import com.percussion.services.PSBaseServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.publisher.IPSDeliveryType;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
@@ -60,6 +48,18 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The local delivery manager simply looks up the appropriate publisher plugin,
@@ -78,13 +78,13 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    /**
     * Logger used for delivery manager.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSLocalDeliveryManager.class);
+   private static final Logger log = LogManager.getLogger(PSLocalDeliveryManager.class);
 
    /**
     * A map joining the job id to a map of activated delivery handlers. Used to
     * deliver content and do abort and commit behavior.
     */
-   private Map<Long, Map<String, IPSDeliveryHandler>> m_jobToHandler = 
+   private Map<Long, Map<String, IPSDeliveryHandler>> jobToHandler =
       new HashMap<>();
 
    /**
@@ -101,20 +101,20 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
     * 
     * Default to {@link #DEFAULT_TMP_DIR} under the Rhythmyx install root.
     */
-   private File m_tempDir = null;
+   private volatile File m_tempDir = null;
    
    /**
     * The default temporary directory relative to the Rhythmyx installation root.
     */
-   private String DEFAULT_TMP_DIR = "temp/publish";
+   private static final String DEFAULT_TMP_DIR = "temp/publish";
    
-   private Object tempDirLock = new Object();
+   private final Object tempDirLock = new Object();
 
    /**
     * The rx publish service, (auto) wired by spring
     */
    @Autowired
-   private IPSRxPublisherServiceInternal m_rxPubService = null;
+   private static final IPSRxPublisherServiceInternal m_rxPubService = null;
    
    
    public IPSDeliveryResult process(IPSDeliveryItem result)
@@ -143,19 +143,19 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
          }
          if (callDeliver)
          {
-            ms_log.debug("Deliver: " + result.getReferenceId());
+            log.debug("Deliver: {}" , result.getReferenceId());
             return bean.deliver(result);
          }
          else
          {
-            ms_log.debug("Remove: " + result.getReferenceId());
+            log.debug("Remove: {}" , result.getReferenceId());
             return bean.remove(result);
          }
       }
       catch (Exception e)
       {
-         ms_log.error("Failed delivery: " + result.getReferenceId(), e);
-         return new PSDeliveryResult(Outcome.FAILED, e.getLocalizedMessage(),
+         log.error("Failed delivery: {} Error: {}" , result.getReferenceId(), PSExceptionUtils.getMessageForLog(e));
+         return new PSDeliveryResult(Outcome.FAILED, PSExceptionUtils.getMessageForLog(e),
                result.getId(), result.getJobId(), result.getReferenceId(), result.getDeliveryContext(),
                null);
       }
@@ -178,7 +178,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    {
       if (StringUtils.isBlank(tmpDirPath))
       {
-         ms_log.warn("Ignore empty value of the tempDir property");
+         log.warn("Ignore empty value of the tempDir property");
          return;
       }
       
@@ -203,8 +203,8 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
       tempDir.mkdirs();
       if ((!tempDir.exists()) || (!tempDir.isDirectory()))
       {
-         ms_log.error("Failed to create temp directory, "
-               + tempDir.getAbsolutePath());
+         log.error("Failed to create temp directory, {}"
+               , tempDir.getAbsolutePath());
          return;
       }
 
@@ -215,9 +215,10 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
       }
       catch (IOException e)
       {
-         ms_log.error(
-               "Failed to clean temporary directory "
-                     + tempDir.getAbsolutePath(), e);
+         log.error(
+               "Failed to clean temporary directory: {} Error: {}"
+                     , tempDir.getAbsolutePath(), PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
       }
    }
    
@@ -241,19 +242,16 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
     */
    private File getTempDirFile()
    {
-      if (m_tempDir != null)
-         return m_tempDir;
-      
-      
-      synchronized(tempDirLock)
-      {
-         if (m_tempDir==null)
-         {
+      File result = m_tempDir;
+      if (result != null) // First check (no locking)
+         return result;
+      synchronized(this) {
+         if (m_tempDir == null) // Second check (with locking)
             m_tempDir = new File(PSServer.getRxDir(), DEFAULT_TMP_DIR);
-            initTempDir(m_tempDir);
-         }
+         initTempDir(m_tempDir);
+         return m_tempDir;
       }
-      return m_tempDir;
+
    }
 
    /**
@@ -268,14 +266,9 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    private IPSDeliveryHandler getHandlerForJob(long jobId, IPSDeliveryType loc, 
          IPSDeliveryItem result) throws PSDeliveryException, PSNotFoundException {
       IPSDeliveryHandler handler = null;
-      synchronized (m_jobToHandler)
+      synchronized (jobToHandler)
       {
-         Map<String, IPSDeliveryHandler> hmap = m_jobToHandler.get(jobId);
-         if (hmap == null)
-         {
-            hmap = new HashMap<>();
-            m_jobToHandler.put(jobId, hmap);
-         }
+         Map<String, IPSDeliveryHandler> hmap = jobToHandler.computeIfAbsent(jobId, k -> new HashMap<>());
          handler = hmap.get(loc.getBeanName());
          if (handler == null)
          {
@@ -290,7 +283,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
             if (site == null)
             {
                IPSSiteManager siteMgr = PSSiteManagerLocator.getSiteManager();
-               site = siteMgr.loadUnmodifiableSite(result.getSiteId());
+               site = siteMgr.loadSite(result.getSiteId());
                
                if (site == null)
                   return null; // site does not exist
@@ -307,8 +300,8 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
                   .getBeanName());
             if (handler == null)
             {
-               ms_log.error("Couldn't load bean for delivery type: "
-                     + loc.getName());
+               log.error("Couldn't load bean for delivery type: {}"
+                     ,loc.getName());
                throw new RuntimeException(
                      "Cannot deliver, no handler for delivery type "
                            + loc.getName());
@@ -324,9 +317,9 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    public void rollback(long jobId) throws PSDeliveryException
    {
       Map<String, IPSDeliveryHandler> hmap;
-      synchronized (m_jobToHandler)
+      synchronized (jobToHandler)
       {
-         hmap = m_jobToHandler.get(jobId);
+         hmap = jobToHandler.get(jobId);
       }
       
       if (hmap != null)
@@ -337,9 +330,9 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
          }
       }
       
-      synchronized(m_jobToHandler)
+      synchronized(jobToHandler)
       {
-         m_jobToHandler.remove(jobId);
+         jobToHandler.remove(jobId);
          m_jobToSiteServer.remove(jobId);
       }
    }
@@ -354,12 +347,12 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
    {
       PSStopwatch watch = new PSStopwatch();
       watch.start();
-      ms_log.debug("Commit for job " + jobId + " ...");
+      log.debug("Commit for job {} ...",jobId);
 
       Map<String, IPSDeliveryHandler> hmap;
-      synchronized (m_jobToHandler)
+      synchronized (jobToHandler)
       {
-         hmap = m_jobToHandler.get(jobId);
+         hmap = jobToHandler.get(jobId);
       }
       Collection<IPSDeliveryResult> results = 
          new ArrayList<>();
@@ -371,22 +364,21 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
             results.addAll(handler.commit(jobId));
          }
 
-         synchronized (m_jobToHandler)
+         synchronized (jobToHandler)
          {
-            m_jobToHandler.remove(jobId);
+            jobToHandler.remove(jobId);
             m_jobToSiteServer.remove(jobId);
          }
-         ms_log.debug("Commit: " + jobId);
+         log.debug("Commit: {}" , jobId);
       }
       else
       {
-         ms_log.debug("Job cancelled: " + jobId);
+         log.debug("Job cancelled: {}" , jobId);
       }
       
       watch.stop();
-      ms_log.debug("Committed buffered " + results.size()
-            + " files for job " + jobId + ". Elapsed time: "
-            + watch.toString());
+      log.debug("Committed buffered {} files for job {}. Elapsed time: {}",results.size(),jobId,
+             watch);
 
       return results;
    }
@@ -397,7 +389,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
     */
    public void init(long jobid, IPSSite site, IPSPubServer server)
    {
-      synchronized (m_jobToHandler)
+      synchronized (jobToHandler)
       {
          PSPair<IPSSite, IPSPubServer> siteServer = new PSPair<>();
          siteServer.setFirst(site);

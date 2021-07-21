@@ -24,6 +24,9 @@
 
 package com.percussion.HTTPClient;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.security.cert.X509Certificate;
 import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -39,11 +42,6 @@ import java.net.SocketException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Vector;
-
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.security.cert.X509Certificate;
 
 /**
  * This class implements http protocol requests; it contains most of HTTP/1.1
@@ -2899,7 +2897,7 @@ public class HTTPConnection implements GlobalConstants, HTTPClientModuleConstant
 	    try
 		{ wait(); }
 	    catch (InterruptedException ie)
-		{ throw new IOException(ie.toString()); }
+		{ Thread.currentThread().interrupt(); }
 	}
 
 
@@ -3006,7 +3004,9 @@ public class HTTPConnection implements GlobalConstants, HTTPClientModuleConstant
                             if (input_demux.available(null) != 0)
                                 break;
                             try { Thread.sleep(one_unit); }
-                            catch (InterruptedException ie) { }
+                            catch (InterruptedException ie) {
+								Thread.currentThread().interrupt();
+							}
                         }
 
                         if (input_demux.available(null) == 0)
@@ -3180,7 +3180,9 @@ public class HTTPConnection implements GlobalConstants, HTTPClientModuleConstant
 	    try
 		{ con.join((long) con_timeout); }
 	    catch (InterruptedException ie)
-		{ }
+		{
+			Thread.currentThread().interrupt();
+		}
 
 	    if (con.getException() != null)
 		throw con.getException();

@@ -1655,7 +1655,7 @@ public class PSServer {
                }
                catch (InterruptedException e)
                {
-                  // oh well, keep going
+                  Thread.currentThread().interrupt();
                }
             }
             
@@ -2926,11 +2926,8 @@ public class PSServer {
       }
    }
 
-   private static void shutdownRequestHandlers()
+   private static synchronized void shutdownRequestHandlers()
    {
-      // we're not synchronizing on this as the shutdown method is the
-      // only one that calls us, and it guarantees no overlap
-
       /* now go through the handlers and shut each one down.  May be dupes in
        * in this list, so keep track of who's been shut down so we don't call
        * shutdown more than once.  Also create and loop through a local copy
@@ -3289,6 +3286,7 @@ public class PSServer {
          }
          catch (InterruptedException inte)
          {
+            Thread.currentThread().interrupt();
             return;
          }
          catch (Throwable evt)
