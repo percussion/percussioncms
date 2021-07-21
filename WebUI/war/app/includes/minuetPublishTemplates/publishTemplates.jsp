@@ -367,7 +367,7 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input aria-required="true" type="password" class="form-control" percServerDatabaseProp="password" id="perc-database-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}">
+                    <input autocomplete="off" aria-required="true" type="password" class="form-control" percServerDatabaseProp="password" id="perc-database-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}">
                 </div>
             </div>
         </div>
@@ -529,7 +529,7 @@
                             <i aria-hidden class="fas fa-key"></i>
                         </div>
                     </div>
-                    <input type="password" aria-required="true" class="form-control" percServerFileProp="accesskey" id="perc-access-key" name="accesskey" value="{{#filterByValue serverInfo.properties 'key' 'accesskey'}}{{/filterByValue}}">
+                    <input autocomplete="off" type="password" aria-required="true" class="form-control" percServerFileProp="accesskey" id="perc-access-key" name="accesskey" value="{{#filterByValue serverInfo.properties 'key' 'accesskey'}}{{/filterByValue}}">
                 </div>
             </div>
             <div class="col-md-6 col col-sm-12">
@@ -540,7 +540,7 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input aria-required="true" type="password" class="form-control" percServerFileProp="securitykey" id="perc-security-key" name="securitykey" value="{{#filterByValue serverInfo.properties 'key' 'securitykey'}}{{/filterByValue}}">
+                    <input autocomplete="off" aria-required="true" type="password" class="form-control" percServerFileProp="securitykey" id="perc-security-key" name="securitykey" value="{{#filterByValue serverInfo.properties 'key' 'securitykey'}}{{/filterByValue}}">
                 </div>
             </div>
         </div>
@@ -633,7 +633,7 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" percServerFileProp="password" id="perc-ftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
+                    <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-ftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
                 </div>
             </div>
         </div>
@@ -732,7 +732,7 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
+                    <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
                 </div>
             </div>
         </div>
@@ -821,7 +821,7 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
+                    <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
                 </div>
             </div>
         </div>
