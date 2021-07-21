@@ -160,7 +160,7 @@ public class PSRecaptchaService {
 			in.close();
 
 			// print result
-			log.debug(response.toString());
+			log.debug("{}",response);
 			
 			//parse JSON response and return 'success' value
 			 JSONObject json = new JSONObject(response.toString());

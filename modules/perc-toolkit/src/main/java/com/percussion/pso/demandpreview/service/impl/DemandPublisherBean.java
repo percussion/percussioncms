@@ -9,6 +9,7 @@
 package com.percussion.pso.demandpreview.service.impl;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pso.demandpreview.service.DemandPublisherService;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.rx.publisher.IPSRxPublisherService;
@@ -104,9 +105,9 @@ public class DemandPublisherBean implements DemandPublisherService
                Thread.sleep(sleeptime);
             } catch (InterruptedException ex)
             {
-               log.error("Interrupted {} " , ex.getMessage());
-               log.debug(ex.getMessage(),ex);
-               throw new TimeoutException("Publishing Interrupted"); 
+               log.error("Interrupted: {} " , PSExceptionUtils.getMessageForLog(
+                       ex));
+               Thread.currentThread().interrupt();
             } 
          }
       }
@@ -145,9 +146,8 @@ public class DemandPublisherBean implements DemandPublisherService
             Thread.sleep(sleeptime);            
          } catch (InterruptedException ex)
          {
-            log.error("Interrupted {}" , ex.getMessage());
-            log.debug(ex.getMessage(),ex);
-            throw new TimeoutException("Publishing Interrupted"); 
+            log.error("Interrupted: {}" , PSExceptionUtils.getMessageForLog(ex));
+            Thread.currentThread().interrupt();
          } 
          
       }

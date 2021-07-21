@@ -46,11 +46,11 @@ public class PSDebugManager
 {
 
    /**
-    * Used to obtain the singlton instance of the DebugManager.  If an instance
+    * Used to obtain the singleton instance of the DebugManager.  If an instance
     * has not yet been created, it will be done so in a lazy fashion.
     * @roseuid 39F492DC033C
     */
-   public static PSDebugManager getDebugManager()
+   public static synchronized PSDebugManager getDebugManager()
    {
       if (ms_debugManager == null)
          ms_debugManager = new PSDebugManager();

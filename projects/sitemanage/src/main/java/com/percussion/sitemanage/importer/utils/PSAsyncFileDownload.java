@@ -26,17 +26,15 @@ package com.percussion.sitemanage.importer.utils;
 
 import com.percussion.queue.impl.PSPageImportQueue;
 import com.percussion.server.PSRequest;
-import com.percussion.sitemanage.importer.utils.PSFileDownLoadJobRunner;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 
@@ -106,7 +104,7 @@ public class PSAsyncFileDownload
                         }
                         catch (InterruptedException e)
                         {
-                            
+                            Thread.currentThread().interrupt();
                         }
                     }
                     threads.clear();
@@ -124,7 +122,7 @@ public class PSAsyncFileDownload
             	try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					
+                    Thread.currentThread().interrupt();
 				}
             }
             

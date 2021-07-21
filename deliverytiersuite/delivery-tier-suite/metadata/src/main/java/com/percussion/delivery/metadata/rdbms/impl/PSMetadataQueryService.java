@@ -591,7 +591,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
                 queryBuf.append(PSMetadataQueryServiceHelper.getSortingOrder(orderBy));
         }
 
-        log.debug(queryBuf.toString());
+        log.debug("{}",queryBuf);
 
         Query q = sess.createQuery(queryBuf.toString());
         int useLimit=queryLimit;

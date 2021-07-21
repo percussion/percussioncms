@@ -39,6 +39,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
@@ -2066,6 +2067,7 @@ public class PSJdbcTableFactory
       try
       {
          TransformerFactory factory = TransformerFactory.newInstance();
+         factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
          Transformer transformer = factory.newTransformer(
             new StreamSource(xslUrl.toString()));
 

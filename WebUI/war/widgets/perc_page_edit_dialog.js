@@ -164,11 +164,13 @@
                 var ceField = iframeContainer.find("[for='" + this.fieldNames[0] + "']").closest('div[type]').before(groupHtml);
                 var fields = this.fieldNames;
                 var groupName = this.groupName;
-                for(var i=0;i<fields.length;i++)
+                let i =0;
+                for(let fld of fields)
                 {
-                    var fieldDiv = iframeContainer.find("[for='" + fields[i] + "']").closest('div[type]').attr("groupName", groupName);
+                    var fieldDiv = iframeContainer.find("[for='" + fld + "']").closest('div[type]').attr("groupName", groupName);
                     if(index!==0)
                         fieldDiv.hide();
+                    i++;
                 }
             });
             var FileNameField = iframeContainer.find("label[for='sys_title']").closest('div[type]');

@@ -133,6 +133,7 @@ class PSLogQueueThread extends java.lang.Thread
             catch (InterruptedException e)
             {
                conOut("Interrupted. Shutting down.");
+               Thread.currentThread().interrupt();
                break;
             }
 

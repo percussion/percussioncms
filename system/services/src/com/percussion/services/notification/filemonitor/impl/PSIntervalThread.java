@@ -23,9 +23,6 @@
  */
 package com.percussion.services.notification.filemonitor.impl;
 
-import java.lang.String;
-import java.lang.Thread;
-
 public abstract class PSIntervalThread implements Runnable {
 
     /**
@@ -107,7 +104,7 @@ public abstract class PSIntervalThread implements Runnable {
                 Thread.sleep(interval);
 
             } catch (InterruptedException e) {
-                //Ignore
+                Thread.currentThread().interrupt();
             }
         }
     }

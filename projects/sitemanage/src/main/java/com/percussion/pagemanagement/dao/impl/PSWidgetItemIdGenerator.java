@@ -23,21 +23,20 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static org.apache.commons.lang.StringUtils.*;
-import static org.apache.commons.lang.Validate.*;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
 import com.percussion.pagemanagement.data.PSRegionWidgets;
 import com.percussion.pagemanagement.data.PSWidgetItem;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
@@ -49,8 +48,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
     public Long generateId(PSRegionWidgetAssociations widgets, PSWidgetItem item)
     {
         Long id = Long.parseLong(RandomStringUtils.randomNumeric(10));
-        if (log.isDebugEnabled())
-            log.debug("Generated widget item id: " + id + " for widget: " + item);
+        log.debug("Generated widget item id: {} for widget: {}",id, item);
         return id;
     }
 

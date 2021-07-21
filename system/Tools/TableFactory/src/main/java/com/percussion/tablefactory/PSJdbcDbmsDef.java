@@ -601,7 +601,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
             }
             catch (InterruptedException e1)
             {
-               // just ignore this
+               Thread.currentThread().interrupt();
             }
          }
 

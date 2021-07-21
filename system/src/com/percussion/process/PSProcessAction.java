@@ -192,6 +192,7 @@ public class PSProcessAction implements Runnable
          {
             // This should never happen
             status = PSProcessStatus.PROCESS_INTERRUPTED;
+            Thread.currentThread().interrupt();
          }
          
          if (status == PSProcessStatus.PROCESS_FINISHED)
@@ -289,7 +290,7 @@ public class PSProcessAction implements Runnable
          }
          catch (InterruptedException e)
          {
-            // All waits can have this happen
+            Thread.currentThread().interrupt();
          }
       }
 
@@ -331,7 +332,7 @@ public class PSProcessAction implements Runnable
       }
       catch (InterruptedException e)
       {
-         // Ignore interrupts
+         Thread.currentThread().interrupt();
       }
 
       return m_exitValue;

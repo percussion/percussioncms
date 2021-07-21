@@ -38,6 +38,8 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.PSWebserviceUtils;
 import org.apache.commons.collections.list.AbstractListDecorator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
@@ -50,8 +52,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -125,7 +125,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
         }
         catch (InterruptedException e)
         {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+
         }
         finally {
             executorService.shutdown();
@@ -243,7 +244,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             }
             catch (InterruptedException e)
             {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
+                return null;
             }
             catch (ExecutionException e)
             {

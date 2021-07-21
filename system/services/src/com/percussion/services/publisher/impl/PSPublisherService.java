@@ -109,7 +109,6 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.timing.PSTimer;
-import com.percussion.utils.types.PSPair;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -2292,6 +2291,7 @@ public class PSPublisherService
             catch (InterruptedException e)
             {
                log.warn("Wait interrupted for demand publish", e);
+               Thread.currentThread().interrupt();
             }
          }
       }
