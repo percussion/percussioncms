@@ -1323,8 +1323,8 @@
             if (columnGadgets.length === 0)
             {
                 var dashboardColumnPosition = dashboardColumn.parent().position();
-                var dashboardContainPosition = dashboardContainer.position();
-                addGadgetDropArea(null, columnIndex, 0, dashboardColumnPosition.left, dashboardContainPosition.top, dashboardColumn.width() - DASHBOARD_GADGET_MARGIN, dashboardContainer.height());
+                var dashboardContainPosition = dashboardContainer.scrollTop;
+                addGadgetDropArea(null, columnIndex, 0, dashboardColumnPosition.left, dashboardContainPosition, dashboardColumn.width() - DASHBOARD_GADGET_MARGIN, dashboardContainer.height());
             }
             columnIndex++;
         });
@@ -1376,7 +1376,7 @@
             var columnIndexString = gadgetParentColumnId.replace("col-", "");
 
             // if passed in honor the parameters otherwise get from dashboard gadget
-            top = top === undefined ? dashboardGadgetPosition.top : top;
+            top = top === undefined ? dashboardGadget.position().top : top;
             left = left === undefined ? dashboardGadgetPosition.left : left;
             columnIndex = columnIndex === undefined ? parseInt(columnIndexString) : columnIndex;
             rowIndex = rowIndex === undefined ? dashboardGadget.prevAll().length : rowIndex;
