@@ -28,6 +28,7 @@ import com.percussion.cloudservice.IPSCloudService;
 import com.percussion.cloudservice.data.PSCloudLicenseType;
 import com.percussion.cloudservice.data.PSCloudServiceInfo;
 import com.percussion.cloudservice.data.PSCloudServicePageData;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.error.PSLicenseServiceException;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
@@ -45,7 +46,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
 import java.util.List;
@@ -255,9 +262,9 @@ public class PSCloudService implements IPSCloudService {
 		} catch (PSLicenseServiceException le) {
 			if (!isLogged) {
 				isLogged = true;
-				log.info(licenseType.toFriendlyString()
-						+ " is not enabled for this instance of CM1, activate the license using license monitor gadget.");
-				log.error(le);
+				log.info("{} is not enabled for this instance of CM1, activate the license using license monitor gadget.",licenseType.toFriendlyString());
+				log.error(PSExceptionUtils.getMessageForLog(le));
+				log.debug(le);
 			}
 		}
 		return poLic != null;

@@ -160,7 +160,7 @@ public class PSSiteImportLogger implements IPSSiteImportLogger
         }
         catch (InterruptedException e)
         {
-            // stop waiting
+            Thread.currentThread().interrupt();
         }
     }
     

@@ -327,9 +327,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
 
             CheckPub cp = new CheckPub(pubStatusUrl.toString());
             Thread th = new Thread(cp);
-            th.run();
-            //Control will return from this thread after the edition has
-            // finished publishing.
+            th.start();
+
 
             request
                   .printTraceMessage("About to remove Preview page from the RXEDITIONITEM table");

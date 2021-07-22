@@ -24,15 +24,14 @@
 package com.percussion.rxverify.modules;
 
 import com.percussion.rxverify.data.PSInstallation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author dougrand
@@ -194,15 +193,15 @@ public class PSVerifyInstallerLogs implements IPSVerify
       {
          if (line.startsWith("FATAL"))
          {
-            l.fatal(line);
+            l.fatal("{}",line);
          }
          else if (line.startsWith("ERROR"))
          {
-            l.error(line);
+            l.error("{}",line);
          }
          else if (line.startsWith("WARN"))
          {
-            l.warn(line);
+            l.warn("{}",line);
          }
       }
    }   

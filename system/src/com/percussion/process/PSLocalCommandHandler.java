@@ -244,7 +244,7 @@ public class PSLocalCommandHandler implements IPSCommandHandler
             }
             catch (InterruptedException e1)
             {
-               // Ignore
+               Thread.currentThread().interrupt();
             } 
          }
          

@@ -57,7 +57,6 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.types.PSPair;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -164,7 +163,6 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
                    .build();
        }else {
            log.debug("Using Access/Security Key");
-           PSAesCBC aes = new PSAesCBC();
            String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
            String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
            String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
@@ -214,9 +212,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     }
 
     private String getExceptionMessage(Exception e){
-        return (StringUtils.isBlank(e
-                .getLocalizedMessage()) ? e.getClass().getName() : e
-                .getLocalizedMessage());
+        return PSExceptionUtils.getMessageForLog(e);
     }
 
    /**

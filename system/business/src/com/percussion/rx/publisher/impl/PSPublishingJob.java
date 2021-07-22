@@ -23,71 +23,106 @@
  */
 package com.percussion.rx.publisher.impl;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSNotFoundException;
-import com.percussion.extension.IPSExtensionManager;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionRef;
-import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.rx.publisher.*;
-import com.percussion.rx.publisher.IPSPublisherJobStatus.ItemState;
-import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
-import com.percussion.rx.publisher.data.PSCancelPublishingMessage;
-import com.percussion.rx.publisher.data.PSJobControlMessage;
-import com.percussion.rx.publisher.data.PSPubItemStatus;
-import com.percussion.rx.publisher.data.PSPublisherJobStatus;
-import com.percussion.rx.publisher.jsf.nodes.PSPublishingStatusHelper;
-import com.percussion.security.PSSecurityProvider;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSServer;
-import com.percussion.server.cache.PSExitFlushCache;
-import com.percussion.services.assembly.*;
-import com.percussion.services.assembly.jexl.PSDocumentUtils;
-import com.percussion.services.assembly.jexl.PSStringUtils;
-import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.services.guidmgr.IPSGuidManager;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.jms.IPSQueueSender;
-import com.percussion.services.publisher.*;
-import com.percussion.services.publisher.IPSPubStatus.EndingState;
-import com.percussion.services.publisher.data.PSContentListItem;
-import com.percussion.services.publisher.data.PSContentListResults;
-import com.percussion.services.publisher.data.PSEditionType;
-import com.percussion.services.publisher.data.PSSiteItem;
-import com.percussion.services.publisher.impl.PSIteratorChain;
-import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteManagerLocator;
-import com.percussion.services.utils.xml.PSObjectStream;
-import com.percussion.util.*;
-import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.timing.PSTimer;
-import com.percussion.xml.PSXmlDocumentBuilder;
-import com.percussion.xml.PSXmlTreeWalker;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+ import com.google.common.base.Function;
+ import com.google.common.base.Predicate;
+ import com.google.common.collect.Iterators;
+ import com.percussion.design.objectstore.PSLocator;
+ import com.percussion.design.objectstore.PSNotFoundException;
+ import com.percussion.error.PSExceptionUtils;
+ import com.percussion.extension.IPSExtensionManager;
+ import com.percussion.extension.PSExtensionException;
+ import com.percussion.extension.PSExtensionRef;
+ import com.percussion.extension.PSParameterMismatchException;
+ import com.percussion.rx.publisher.IPSEditionTask;
+ import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
+ import com.percussion.rx.publisher.IPSPublisherItemStatus;
+ import com.percussion.rx.publisher.IPSPublisherJobStatus;
+ import com.percussion.rx.publisher.IPSPublisherJobStatus.ItemState;
+ import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
+ import com.percussion.rx.publisher.IPSPublishingJobStatusCallback;
+ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
+ import com.percussion.rx.publisher.PSPublisherUtils;
+ import com.percussion.rx.publisher.data.PSCancelPublishingMessage;
+ import com.percussion.rx.publisher.data.PSJobControlMessage;
+ import com.percussion.rx.publisher.data.PSPubItemStatus;
+ import com.percussion.rx.publisher.data.PSPublisherJobStatus;
+ import com.percussion.rx.publisher.jsf.nodes.PSPublishingStatusHelper;
+ import com.percussion.security.PSSecurityProvider;
+ import com.percussion.server.PSRequest;
+ import com.percussion.server.PSServer;
+ import com.percussion.server.cache.PSExitFlushCache;
+ import com.percussion.services.assembly.IPSAssemblyItem;
+ import com.percussion.services.assembly.IPSAssemblyResult;
+ import com.percussion.services.assembly.IPSAssemblyService;
+ import com.percussion.services.assembly.IPSAssemblyTemplate;
+ import com.percussion.services.assembly.PSAssemblyException;
+ import com.percussion.services.assembly.PSAssemblyServiceLocator;
+ import com.percussion.services.assembly.jexl.PSDocumentUtils;
+ import com.percussion.services.assembly.jexl.PSStringUtils;
+ import com.percussion.services.catalog.PSTypeEnum;
+ import com.percussion.services.guidmgr.IPSGuidManager;
+ import com.percussion.services.guidmgr.PSGuidManagerLocator;
+ import com.percussion.services.jms.IPSQueueSender;
+ import com.percussion.services.publisher.IPSContentList;
+ import com.percussion.services.publisher.IPSDeliveryType;
+ import com.percussion.services.publisher.IPSEdition;
+ import com.percussion.services.publisher.IPSEditionContentList;
+ import com.percussion.services.publisher.IPSEditionTaskDef;
+ import com.percussion.services.publisher.IPSEditionTaskLog;
+ import com.percussion.services.publisher.IPSPubItemStatus;
+ import com.percussion.services.publisher.IPSPubStatus;
+ import com.percussion.services.publisher.IPSPubStatus.EndingState;
+ import com.percussion.services.publisher.IPSPublisherService;
+ import com.percussion.services.publisher.PSPublisherServiceLocator;
+ import com.percussion.services.publisher.data.PSContentListItem;
+ import com.percussion.services.publisher.data.PSContentListResults;
+ import com.percussion.services.publisher.data.PSEditionType;
+ import com.percussion.services.publisher.data.PSSiteItem;
+ import com.percussion.services.publisher.impl.PSIteratorChain;
+ import com.percussion.services.sitemgr.IPSSite;
+ import com.percussion.services.sitemgr.IPSSiteManager;
+ import com.percussion.services.sitemgr.PSSiteManagerLocator;
+ import com.percussion.services.utils.xml.PSObjectStream;
+ import com.percussion.util.IPSHtmlParameters;
+ import com.percussion.util.PSBaseHttpUtils;
+ import com.percussion.util.PSStopwatch;
+ import com.percussion.util.PSXMLDomUtil;
+ import com.percussion.utils.guid.IPSGuid;
+ import com.percussion.utils.request.PSRequestInfo;
+ import com.percussion.utils.timing.PSTimer;
+ import com.percussion.xml.PSXmlDocumentBuilder;
+ import com.percussion.xml.PSXmlTreeWalker;
+ import org.apache.commons.lang.StringUtils;
+ import org.apache.commons.lang.exception.ExceptionUtils;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ import org.w3c.dom.Document;
+ import org.w3c.dom.Element;
 
-import javax.naming.NameNotFoundException;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+ import javax.naming.NameNotFoundException;
+ import java.io.StringReader;
+ import java.io.UnsupportedEncodingException;
+ import java.net.URL;
+ import java.util.ArrayList;
+ import java.util.Collection;
+ import java.util.Collections;
+ import java.util.Comparator;
+ import java.util.Date;
+ import java.util.HashMap;
+ import java.util.HashSet;
+ import java.util.Iterator;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Set;
+ import java.util.TreeSet;
+ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ConcurrentLinkedQueue;
+ import java.util.concurrent.atomic.AtomicInteger;
+ import java.util.concurrent.atomic.AtomicReference;
 
-import static com.percussion.rx.publisher.PSPublisherUtils.getContentList;
-import static com.percussion.rx.publisher.PSPublisherUtils.getEditionContentList;
-import static org.apache.commons.lang.Validate.notNull;
+ import static com.percussion.rx.publisher.PSPublisherUtils.getContentList;
+ import static com.percussion.rx.publisher.PSPublisherUtils.getEditionContentList;
+ import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Implement the actual job for publishing. Jobs run for the length of time that
@@ -250,7 +285,7 @@ public class PSPublishingJob implements Runnable
    /**
     * Logger.
     */
-   private static final Logger ms_log = LogManager.getLogger(PSPublishingJob.class);
+   private static final Logger log = LogManager.getLogger(PSPublishingJob.class);
 
    /**
     * The assembly service, never <code>null</code>.
@@ -491,8 +526,8 @@ public class PSPublishingJob implements Runnable
       m_publishJobTimeout = jobTimeout * 60000;
       m_publishQueueTimeout = queueTimeout * 60000;
       
-      ms_log.debug("Publish job time out is set to " + jobTimeout + " minutes.");
-      ms_log.debug("Publish queue time out is set to " + queueTimeout + " minutes.");
+      log.debug("Publish job time out is set to {} minutes.",jobTimeout);
+      log.debug("Publish queue time out is set to {} minutes.", queueTimeout);
    }
   
    /**
@@ -665,21 +700,21 @@ public class PSPublishingJob implements Runnable
    {
       if (isQueueTimeout)
       {
-         ms_log.warn("Edition "
+         log.warn("Edition "
                      + getEditionLabel()
                      + " has been aborted by publish queue timed out. The job is still waiting for "
                      + m_queued + " unprocessed items.");
       }
       else
       {
-         ms_log.warn("Edition "
+         log.warn("Edition "
                      + getEditionLabel()
                      + " has been aborted by job timed out. The job is still waiting for "
                      + m_queued + " unprocessed items.");
       }
 
       StateSummaryLogger stateSum = new StateSummaryLogger();
-      ms_log.debug("Item map summary: " + stateSum.toString());
+      log.debug("Item map summary: " + stateSum.toString());
 
    }
    
@@ -720,7 +755,7 @@ public class PSPublishingJob implements Runnable
          ed = psvc.loadEdition(m_editionId);
          if (ed == null)
          {
-            ms_log.error("Couldn't find edition: " + m_editionId.getUUID()
+            log.error("Couldn't find edition: " + m_editionId.getUUID()
                   + " exiting");
             return;
          }
@@ -729,7 +764,7 @@ public class PSPublishingJob implements Runnable
          IPSGuid siteid = ed.getSiteId();
          if (siteid == null)
          {
-            ms_log.error("Destination site must be configured for edition "
+            log.error("Destination site must be configured for edition "
                   + getEditionLabel() + " exiting");
             return;
          }
@@ -748,10 +783,10 @@ public class PSPublishingJob implements Runnable
          Set<PSSiteItemKey> unpublishedKeys = new HashSet<>();
          if (ed.getEditionType().equals(PSEditionType.NORMAL))
          {
-            ms_log.debug("Queuing unpblishing Items");
+            log.debug("Queuing unpblishing Items");
             unpublishedKeys = processUnpublishingItems(psvc, ed, site);
          }
-         ms_log.debug("Queuing work Items");
+         log.debug("Queuing work Items");
          if (!queueWorkItems(psvc, ed, site, unpublishedKeys))
          {
             // Canceled
@@ -760,7 +795,7 @@ public class PSPublishingJob implements Runnable
          if (!m_canceled)
          {
             changeState(State.WORKING);
-            ms_log.info("All items for job "+m_jobid+ " Queued. State changed to WORKING" );
+            log.info("All items for job "+m_jobid+ " Queued. State changed to WORKING" );
             debugStatusCounts();
             waitForJobCompletion();
          }
@@ -773,12 +808,12 @@ public class PSPublishingJob implements Runnable
             String msg = "User Needs to restart jetty for initializing new datasource created for publishing.";
             m_publishSender.sendMessage(msg, IPSQueueSender.PRIORITY_HIGHEST);
             changeState(State.PUBSERVERNEWDBCONFIG);
-            ms_log.error(msg, e);
+            log.error(msg, e);
          }else {
 
             cancel(false);
             m_message = ExceptionUtils.getRootCauseMessage(e);
-            ms_log.error("Cancelling due to error: "
+            log.error("Cancelling due to error: "
                     + "Unexpected problem while running publishing Job id="
                     + m_jobid + ", Edition " + getLogLabel(ed), e);
          }
@@ -794,7 +829,7 @@ public class PSPublishingJob implements Runnable
       while (m_updates.size()>0)
       {
         int updated=m_rxpubsvc.flushStatusToDatabase(m_updates);
-        ms_log.info("Updated database with "+updated+" remaining status items "+m_updates.size()+" remaining" );
+        log.info("Updated database with "+updated+" remaining status items "+m_updates.size()+" remaining" );
       }
       
       /*
@@ -834,7 +869,7 @@ public class PSPublishingJob implements Runnable
       waitForStatusWrite();
       
       editionTimer.stop();
-      ms_log.info("Main Publishing Job '" + m_jobid + "' for edition " + getLogLabel(ed) + " completed in " + editionTimer);
+      log.info("Main Publishing Job '" + m_jobid + "' for edition " + getLogLabel(ed) + " completed in " + editionTimer);
       // Capture the end time
       Date end_time = new Date();
       
@@ -846,10 +881,10 @@ public class PSPublishingJob implements Runnable
       {
          PSStopwatch tasksTimer = new PSStopwatch();
          tasksTimer.start();
-         ms_log.info("Running Post Edition Tasks of '" + m_jobid + "' for edition " + getLogLabel(ed));
+         log.info("Running Post Edition Tasks of '" + m_jobid + "' for edition " + getLogLabel(ed));
          runPostTasks(ed, site, pubStatus, start_time, end_time, (long)editionTimer.elapsed());
          tasksTimer.stop();
-         ms_log.info("Finished Post Edition Tasks of '" + m_jobid + "' for edition " + getLogLabel(ed) + " completed in " + tasksTimer);
+         log.info("Finished Post Edition Tasks of '" + m_jobid + "' for edition " + getLogLabel(ed) + " completed in " + tasksTimer);
       }
       
       EndingState endStatus = getEndingStatus();
@@ -861,7 +896,7 @@ public class PSPublishingJob implements Runnable
       
      
       m_endTime = new Date();
-      ms_log.info("Publishing Finished '" + m_jobid + "' for edition " + getLogLabel(ed));
+      log.info("Publishing Finished '" + m_jobid + "' for edition " + getLogLabel(ed));
       if (m_notifyCallback != null)
          m_notifyCallback.notifyStatus(getStatus());
    }
@@ -926,10 +961,10 @@ public class PSPublishingJob implements Runnable
       catch (PSParameterMismatchException e) 
       {
          // should never be here.
-         ms_log.error("Flush cache failed", e);
+         log.error("Flush cache failed", e);
       }
       sw.stop();
-      ms_log.debug("Done flushAllCache " + sw.toString());
+      log.debug("Done flushAllCache " + sw.toString());
    }
    
    /**
@@ -940,7 +975,7 @@ public class PSPublishingJob implements Runnable
    private void commitJobAndEndingJob()
    {
       changeState(State.COMMITTING);
-      ms_log.info("Entering COMITTING State for job "+m_jobid);
+      log.info("Entering COMITTING State for job "+m_jobid);
       // Wait for a while. The high priority message will run around and
       // will eventually cause the acknowledge message to be called.
       synchronized (this)
@@ -951,7 +986,7 @@ public class PSPublishingJob implements Runnable
          }
          catch(Exception e)
          {
-            ms_log.error("Could not send job end message!", e);
+            log.error("Could not send job end message!", e);
             // Can't wait if we didn't send end message
             m_committed = true;
          }
@@ -963,6 +998,8 @@ public class PSPublishingJob implements Runnable
             }
             catch (InterruptedException e)
             {
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               Thread.currentThread().interrupt();
               
             }
          }
@@ -1053,8 +1090,8 @@ public class PSPublishingJob implements Runnable
    private Set<PSSiteItemKey> processUnpublishingItems(IPSPublisherService psvc,
          IPSEdition ed, IPSSite site)
    {
-      PSTimer timer = new PSTimer(ms_log);
-      ms_log.debug("Begin unpublish items for Edition " + getLogLabel(ed));
+      PSTimer timer = new PSTimer(log);
+      log.debug("Begin unpublish items for Edition " + getLogLabel(ed));
       
       List<Long> refs = psvc.findReferenceIdsToUnpublishByServer(ed.getPubServerOrSiteId(), site.getUnpublishFlags());
       List<IPSPubItemStatus> stati =
@@ -1073,7 +1110,7 @@ public class PSPublishingJob implements Runnable
       List<IPSAssemblyItem> queuedItems = new ArrayList<>();
       for(IPSPubItemStatus status : stati)
       {
-         if (ms_log.isDebugEnabled())
+         if (log.isDebugEnabled())
             logUnpublishedItemStatus(status);
          
          if (m_canceled) return Collections.emptySet(); 
@@ -1092,7 +1129,7 @@ public class PSPublishingJob implements Runnable
          if (q < 0)
          {
             String message = "Bad content url found: " + url;
-            ms_log.warn(message);
+            log.warn(message);
             recordFailureStatus(item, message);
             continue;
          }
@@ -1171,10 +1208,10 @@ public class PSPublishingJob implements Runnable
     */
    private void logUnpublishedItemStatus(IPSPubItemStatus status)
    {
-      if (!ms_log.isDebugEnabled())
+      if (!log.isDebugEnabled())
          return;
       
-      ms_log.debug("Unpublishing Ref-ID: " + status.getReferenceId()
+      log.debug("Unpublishing Ref-ID: " + status.getReferenceId()
             + ", Content-ID: " + status.getContentId() + ", Folder-ID: "
             + status.getFolderId() + ", URL: " + status.getAssemblyUrl()
             + ", Location: " + status.getLocation());
@@ -1222,7 +1259,7 @@ public class PSPublishingJob implements Runnable
     */
    private void handleFailure(IPSAssemblyItem item, String msg, Exception e)
    {
-      ms_log.warn(msg, e);
+      log.warn(msg, e);
       recordFailureStatus(item, e != null ? e.getLocalizedMessage() : msg);
    }
 
@@ -1259,7 +1296,7 @@ public class PSPublishingJob implements Runnable
          String msg = "Cannot unpublish item " + item.getId()
                + " for delivery type " + dtype.getName()
                + " which requires unpublishing information.";
-         ms_log.error(msg);
+         log.error(msg);
          recordFailureStatus(item, msg);
       }
       else
@@ -1287,7 +1324,7 @@ public class PSPublishingJob implements Runnable
          }
          catch (PSAssemblyException e)
          {
-            ms_log.error("Problem trying to fetch template information "
+            log.error("Problem trying to fetch template information "
                   + "- skipping status", e);
             return;
          }
@@ -1358,7 +1395,7 @@ public class PSPublishingJob implements Runnable
             log.setJobId(m_jobid);
             log.setStatus(false);
             
-            ms_log.info("Running edition task " + task.getExtensionName());
+            PSPublishingJob.log.info("Running edition task " + task.getExtensionName());
             PSStopwatch sw = new PSStopwatch();
             sw.start();
             try
@@ -1382,7 +1419,7 @@ public class PSPublishingJob implements Runnable
                   + ", Edition " + getLogLabel(edition) + ".";
                if (task.getContinueOnFailure())
                {
-                  ms_log.warn(serverLog, e);
+                  PSPublishingJob.log.warn(serverLog, e);
                   log.setMessage(msg);
                }
                else
@@ -1390,14 +1427,14 @@ public class PSPublishingJob implements Runnable
                   if (post)
                   {
                      msg = msg + ", terminating task processing";
-                     ms_log.error(serverLog, e);
+                     PSPublishingJob.log.error(serverLog, e);
                      log.setMessage(msg);
                      return;
                   }
                   else
                   {
                      msg = msg + ", terminating edition";
-                     ms_log.error(serverLog, e);
+                     PSPublishingJob.log.error(serverLog, e);
                      log.setMessage(msg);
                      throw new RuntimeException(e);
                   }
@@ -1459,7 +1496,7 @@ public class PSPublishingJob implements Runnable
       {
          if (m_canceled)
          {
-            ms_log.info("Edition " + getLogLabel(ed) + " has been cancelled");
+            log.info("Edition " + getLogLabel(ed) + " has been cancelled");
             return false;
          }
          processContentList(psvc, clist, ed, site, unpublishedKeys);         
@@ -1529,7 +1566,7 @@ public class PSPublishingJob implements Runnable
       final IPSContentList contentlist = getContentList(eclist);
       if (contentlist == null)
       {
-         ms_log.warn("Could not load content list: "
+         log.warn("Could not load content list: "
                + eclist.getContentListId() + " - skipping");
          return;
       }
@@ -1537,7 +1574,7 @@ public class PSPublishingJob implements Runnable
       boolean isCreatedRequest = false;
 
       PSStopwatch sw = new PSStopwatch();
-      ms_log.debug("Begin process content list " + getLogLabel(contentlist));
+      log.debug("Begin process content list " + getLogLabel(contentlist));
       PSObjectStream<IPSAssemblyItem> stream  = null;
       try
       {
@@ -1546,7 +1583,7 @@ public class PSPublishingJob implements Runnable
          sw.start();
          final ContentItems items;
 
-         PSTimer timer = new PSTimer(ms_log);
+         PSTimer timer = new PSTimer(log);
          if (isCustomContentList(contentlist))
             items = getLegacyContentListItems(site, eclist, contentlist);
          else
@@ -1591,8 +1628,8 @@ public class PSPublishingJob implements Runnable
                   try {
                      changeLocationItems = handler.getUnpublishingItemsByServer(ed.getPubServerOrSiteId(), deliveryContext, contentlist, unpublishKeys, assemblyItems);
                   } catch (com.percussion.services.error.PSNotFoundException e) {
-                     ms_log.warn(e.getMessage());
-                     ms_log.debug(e.getMessage(),e);
+                     log.warn(e.getMessage());
+                     log.debug(e.getMessage(),e);
                   }
                   Iterator<IPSAssemblyItem> moreUnPubs = Iterators.filter(assemblyItems.iterator(), new Predicate<IPSAssemblyItem>()
                   {
@@ -1626,14 +1663,14 @@ public class PSPublishingJob implements Runnable
       {
          String errorMsg = "Failed to process Content List " + getLogLabel(contentlist)
                + " while running publishing Job id=" + m_jobid + ", Edition " + getLogLabel(ed) + ". ";
-         ms_log.error(errorMsg, e);
+         log.error(errorMsg, e);
          m_hasJobError = true;
          throw new RuntimeException(errorMsg, e);
       }
       finally
       {
          sw.stop();
-         ms_log.debug("Finish process content list " + getLogLabel(contentlist) + ". " + sw.toString());
+         log.debug("Finish process content list " + getLogLabel(contentlist) + ". " + sw.toString());
 
          if (isCreatedRequest)
             resetRequestInfo();
@@ -1830,19 +1867,19 @@ public class PSPublishingJob implements Runnable
          }
          if (m_queued.get() == 0 && m_assembled.get() == 0 && m_paged.get() == 0)
          {
-            ms_log.debug("Detected Job Completion (queued, assembled and paged are 0) for job " + m_jobid );
+            log.debug("Detected Job Completion (queued, assembled and paged are 0) for job " + m_jobid );
             debugStatusCounts();
             break;
          }
          if (m_canceled)
          {
-            ms_log.info("Edition " + getEditionLabel() + " has been cancelled");
+            log.info("Edition " + getEditionLabel() + " has been cancelled");
             debugStatusCounts();
             break;
          }
          if (isTimeout())
          {
-            ms_log.error("Job Timeout " +m_jobid);
+            log.error("Job Timeout " +m_jobid);
             debugStatusCounts();
             break;            
          }
@@ -1858,9 +1895,9 @@ public class PSPublishingJob implements Runnable
    
    private void debugStatusCounts()
    {
-      if(ms_log.isDebugEnabled())
+      if(log.isDebugEnabled())
       {
-         ms_log.debug("Counts for job "+m_jobid + ": Queued = "+m_queued.get() 
+         log.debug("Counts for job "+m_jobid + ": Queued = "+m_queued.get()
          + ", Paged = "+m_paged.get() 
          + ", Assembled = "+m_assembled.get() 
          + ", Cancelled = "+m_delivered.get() 
@@ -1885,7 +1922,7 @@ public class PSPublishingJob implements Runnable
    
       ms_log.debug("Sending started update handler message for job "+m_jobid);
       m_publishSender.sendMessage(updateMsg, IPSQueueSender.PRIORITY_HIGHEST);   */
-      ms_log.debug("Sending Job Start message for job "+m_jobid);
+      log.debug("Sending Job Start message for job "+m_jobid);
       m_publishSender.sendMessage(msg, IPSQueueSender.PRIORITY_HIGHEST);
    }
    
@@ -1896,7 +1933,7 @@ public class PSPublishingJob implements Runnable
    {
          PSJobControlMessage msg = new PSJobControlMessage(m_jobid,
                PSJobControlMessage.ControlType.END, m_siteguid, m_pubserverguid, null);
-         ms_log.debug("Sending Job End message for job "+m_jobid);
+         log.debug("Sending Job End message for job "+m_jobid);
          m_publishSender.sendMessage(msg, IPSQueueSender.PRIORITY_HIGHEST);
    }
 
@@ -2065,7 +2102,7 @@ public class PSPublishingJob implements Runnable
       if (q < 0)
       {
          String message = "Bad content url found: " + url;
-         ms_log.warn(message);
+         log.warn(message);
          recordFailureStatus(item, message);
          return null;
       }
@@ -2093,7 +2130,7 @@ public class PSPublishingJob implements Runnable
       {
          String message = "Skipping assembly item because it couldn't be "
                + "normalized. Assembly url was: " + url;
-         ms_log.error(message, e);
+         log.error(message, e);
          recordFailureStatus(item, message, e.getLocalizedMessage());
          return null;
       }
@@ -2161,7 +2198,7 @@ public class PSPublishingJob implements Runnable
       {
          String message = "Skipping unpublished item because no " +
                "prior publishing information could be found."; 
-         ms_log.error(message, e);
+         log.error(message, e);
          recordFailureStatus(item, message, e.getLocalizedMessage());
       }
    }
@@ -2239,7 +2276,7 @@ public class PSPublishingJob implements Runnable
          throws Exception
    {
       ContentItems cItems = new ContentItems();
-      PSTimer timer = new PSTimer(ms_log);
+      PSTimer timer = new PSTimer(log);
       
       setCurrentContentList(clist.getName());
       
@@ -2264,7 +2301,7 @@ public class PSPublishingJob implements Runnable
       setRequestParameters(params);
       final IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
       
-      timer = new PSTimer(ms_log);
+      timer = new PSTimer(log);
       cItems.mi_items = Iterators.transform(clResults.iterator(), new Function<PSContentListItem, ContentItem>()
       {
          public ContentItem apply(PSContentListItem item)
@@ -2357,7 +2394,7 @@ public class PSPublishingJob implements Runnable
       String deliveryType = contentlistelem.getAttribute(ATTR_DELIVERY);
       if (StringUtils.isBlank(deliveryType))
       {
-         ms_log.warn("Delivery type cannot be blank in contentlist, "
+         log.warn("Delivery type cannot be blank in contentlist, "
                + "skipping");
          cItems.mi_items = Collections.emptyIterator();
          return null;
@@ -2458,7 +2495,7 @@ public class PSPublishingJob implements Runnable
          previousState = previousStateRef.getAndSet(curState);
             
       }
-         ms_log.trace("updating state for refId "+refId);
+         log.trace("updating state for refId "+refId);
          updateJobStatus(previousState, curState);
    }
 
@@ -2482,7 +2519,7 @@ public class PSPublishingJob implements Runnable
        
          if (preState != null)
          {
-            ms_log.trace("Item State change from "+preState.name()+" to "+curState.name());
+            log.trace("Item State change from "+preState.name()+" to "+curState.name());
             switch (preState)
             {
                case QUEUED: m_queued.decrementAndGet(); break;
@@ -2496,7 +2533,7 @@ public class PSPublishingJob implements Runnable
                      "Unrecognized item state: " + preState);
             }
          } else {
-            ms_log.trace("New Item State to "+curState.name());
+            log.trace("New Item State to "+curState.name());
          }
          
          switch (curState)

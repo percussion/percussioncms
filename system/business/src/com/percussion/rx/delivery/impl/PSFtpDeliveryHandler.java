@@ -23,26 +23,27 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
  * A subclass of the file delivery handler that does the delivery to a remote
@@ -67,10 +68,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * See {@link #getTimeout()}
     */
    private int m_timeout = -1;
-   
-   /**
-    * @see {@link #getUsePassiveMode()}.
-    */
+
    private boolean m_usePassiveMode = false;
    
    /**
@@ -80,10 +78,10 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
    {
    // FB: SIC_THREADLOCAL_DEADLY_EMBRACE NC 1-17-16
       /**
-       * Determines if the {@link #mi_ftp} has been logged in. It is 
+       * Determines if  has been logged in. It is
        * <code>true</code> if it has been logged in. Defaults to 
-       * <code>false</code>. It is set be {@link #login(FTPClient, long)} 
-       * and reset by {@link #logout(FTPClient)}
+       * <code>false</code>. It is set be {@link #login(PSFtpClient, long, boolean, Integer, Integer)}
+       * and reset by {@link #logout(PSFtpClient)}
        */
       private boolean mi_hasLogin = false;      
    }
@@ -131,6 +129,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * 
     * @see #getUsePassiveMode()
     */
+   @Override
    public void setUsePassiveMode(boolean usePassiveMode)
    {
       m_usePassiveMode = usePassiveMode;
@@ -144,6 +143,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * @return <code>true</code> if using passive mode is on; otherwise using
     * active mode.
     */
+   @Override
    public boolean getUsePassiveMode()
    {
       return m_usePassiveMode;
@@ -153,15 +153,15 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * Opens a socket connection from the given FTP client and the site.
     *  
     * @param ftp the FTP client, assumed not <code>null</code>.
-    * @param site the target site, assumed not <code>null</code>.
-    * 
+    * @param ipAddress the target site, assumed not <code>null</code>.
+    * @param port The ftp port
     * @throws SocketException If the socket timeout could not be set.
     * @throws IOException If the socket could not be opened. In most cases you 
     * will only want to catch IOException since SocketException is derived from 
     * it. 
     */
    private void openSocketConnection(FTPClient ftp, String ipAddress, int port)
-      throws SocketException, IOException
+      throws IOException
    {
       ftp.setDefaultPort(port);
 
@@ -176,7 +176,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          ftp.setSoTimeout(m_timeout);
       
       if (m_timeout != -1)
-         ms_log.debug("set socket timeout: " + m_timeout);
+         ms_log.debug("set socket timeout: {}" , m_timeout);
    }
 
    /**
@@ -274,7 +274,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          
          if(!FTPReply.isPositiveCompletion(ftp.sendCommand("OPTS UTF8 ON"))) { 
             // May only be a problem with Windows IIS FTP that does not follow spec and default to UTF-8
-            ms_log.warn("Error sending 'OPTS UTF8 ON' to ftp server, may not be a problem if server default is UTF-8:" + ftp.getReplyString()); 
+            ms_log.warn("Error sending 'OPTS UTF8 ON' to ftp server, may not be a problem if server default is UTF-8:{}" , ftp.getReplyString());
          }
          
          if (m_usePassiveMode)
@@ -324,10 +324,10 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
             return false;
          }
          
-         ms_log.debug(String.format("Authenticating to FTP Server with Username %s",info.userName));
+         ms_log.debug("Authenticating to FTP Server with Username {}",info.userName);
          if (!ftp.login(info.userName, info.password))
          {
-            ms_log.error(String.format("Authenticating to FTP Server with Username %s failed",info.userName));
+            ms_log.error("Authenticating to FTP Server with Username {} failed",info.userName);
       
             return false;
          }
@@ -337,7 +337,8 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
       }
       catch (Exception e)
       {
-         ms_log.error("FTP Connection Check Failed to connect", e);
+         ms_log.error("FTP Connection Check Failed to connect. Error: {}", PSExceptionUtils.getMessageForLog(e));
+         ms_log.debug(e);
          connected = false;
       }
       finally
@@ -352,6 +353,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
     * (non-Javadoc)
     * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#prepareForDelivery(long)
     */
+   @Override
    protected Collection<IPSDeliveryResult> prepareForDelivery(long jobId) throws PSDeliveryException
    {
       // initialize data 
@@ -400,7 +402,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          ftp.storeFile(file.getName(), inputStream);
 
          return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
-               jobId, item.getReferenceId(), location.getBytes("UTF8"));
+               jobId, item.getReferenceId(), location.getBytes(StandardCharsets.UTF_8));
       }
       catch (Exception e)
       {
@@ -439,7 +441,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          if (!ftp.changeWorkingDirectory(parent))
          {
             throw new IOException("Could not create directory: "
-                  + dir.toString());
+                  + dir);
          }
       }
       else
@@ -448,7 +450,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
       }
       if (!ftp.makeDirectory(dir.getName()))
       {
-         throw new IOException("Could not create directory: " + dir.toString());
+         throw new IOException("Could not create directory: " + dir);
       }
    }
 
@@ -488,7 +490,10 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
       }
       catch (IOException e)
       {
-         ms_log.error("Error remove " + (isFile ? "file" : "directory") + ": \"" + location + "\"", e);
+         ms_log.error("Error removing {} : {} Error: {}",(isFile ? "file" : "directory"),
+                 location,
+                  PSExceptionUtils.getMessageForLog(e));
+         ms_log.debug(e);
          return isFile ? getItemResult(Outcome.FAILED, item, jobId, e.getLocalizedMessage()) : null;
       }
       finally
@@ -515,8 +520,9 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          }
          catch (Exception e)
          {
-            ms_log.error("Could not restore working directory: "
-                  + currentWorkingDirectory, e);
+            ms_log.error("Could not restore working directory: {} Error: {}"
+                  , currentWorkingDirectory, PSExceptionUtils.getMessageForLog(e));
+            ms_log.debug(e);
          }
       }
    }

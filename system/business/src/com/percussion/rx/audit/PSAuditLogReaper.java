@@ -25,12 +25,11 @@ package com.percussion.rx.audit;
 
 import com.percussion.services.audit.IPSDesignObjectAuditConfig;
 import com.percussion.services.audit.IPSDesignObjectAuditService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Automatically deletes old audit log entries on a daily basis as configured by
@@ -120,6 +119,7 @@ public class PSAuditLogReaper extends Thread
       catch (InterruptedException e)
       {
          ms_log.info("Interrupted, shutting down");
+         Thread.currentThread().interrupt();
       }
       catch (Throwable t)
       {

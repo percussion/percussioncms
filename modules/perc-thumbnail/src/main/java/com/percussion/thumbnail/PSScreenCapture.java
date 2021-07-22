@@ -193,7 +193,6 @@ public class PSScreenCapture {
                             Set<PosixFilePermission> permissions = new HashSet<>();
 
                             permissions.add(PosixFilePermission.GROUP_EXECUTE);
-                            permissions.add(PosixFilePermission.OTHERS_EXECUTE);
                             permissions.add(PosixFilePermission.OWNER_EXECUTE);
 
                             Files.setPosixFilePermissions(targetFile, permissions);

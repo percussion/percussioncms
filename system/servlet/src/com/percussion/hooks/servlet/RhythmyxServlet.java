@@ -380,7 +380,7 @@ public class RhythmyxServlet extends PSServletBase
       if ((queryString != null) && (queryString.length() != 0))
          statusLine += "?" + queryString;
       statusLine += SPACE + protocol + RET_NEWLINE;
-      m_logger.debug(statusLine);
+      m_logger.debug("{}",statusLine);
 
       return statusLine;
    }

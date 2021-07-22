@@ -34,18 +34,16 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Utilities to make internal document requests from jsp el
@@ -54,6 +52,10 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PSItemUtilities
 {
+
+   private PSItemUtilities(){
+      //require static access
+   }
    /**
     * Make an internal request and return the result.
     * 

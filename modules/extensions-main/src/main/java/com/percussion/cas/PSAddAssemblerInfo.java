@@ -69,6 +69,7 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -1161,7 +1162,7 @@ public class PSAddAssemblerInfo implements IPSResultDocumentProcessor
 
          // Create a transform factory instance.
          TransformerFactory tfactory = TransformerFactory.newInstance();
-
+         tfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
          // Create a transformer for the stylesheet.
          Transformer transformer =
                tfactory.newTransformer(new StreamSource(fileTransform));

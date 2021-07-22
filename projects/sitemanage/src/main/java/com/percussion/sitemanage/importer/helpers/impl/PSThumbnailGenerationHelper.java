@@ -34,12 +34,11 @@ import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.utils.request.PSRequestInfo;
-
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component("thumbnailGenerationHelper")
 @Lazy
@@ -68,7 +67,7 @@ public class PSThumbnailGenerationHelper extends PSImportHelper {
 		try {
 			Thread.sleep(10000);
 		} catch (InterruptedException e) {
-			// NOOP
+			Thread.currentThread().interrupt();
 		}
 		
 		startTimer();

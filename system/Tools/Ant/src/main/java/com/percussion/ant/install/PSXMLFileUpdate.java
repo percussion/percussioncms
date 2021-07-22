@@ -24,12 +24,22 @@
 
 package com.percussion.ant.install;
 
-import com.percussion.install.RxFileManager;
 import com.percussion.install.PSLogger;
+import com.percussion.install.RxFileManager;
 import com.percussion.util.IOTools;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -43,17 +53,6 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
 
 
 /**
@@ -276,6 +275,7 @@ public class PSXMLFileUpdate extends PSAction implements EntityResolver
 
       // Create a transformer for the stylesheet.
       TransformerFactory tfactory  = TransformerFactory.newInstance();
+      tfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
       Transformer transformer = tfactory.newTransformer(xslSource);
 
       setTransformParams(rxDir, transformer);
