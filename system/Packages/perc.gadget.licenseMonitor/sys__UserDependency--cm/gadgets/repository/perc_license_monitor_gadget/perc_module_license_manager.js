@@ -59,7 +59,7 @@
                 _validateModuleLicenses(payLoad, _validateModuleLicensesCB);
             }
             else{
-                _getModuleLicenseTypes(_getModuleLicenseTypesCB);    
+                _getModuleLicenseTypes(_getModuleLicenseTypesCB);
             }
         }
         function _validateModuleLicensesCB(status, result){
@@ -71,7 +71,7 @@
             var data = {};
             data.combinedInfo = combinedInfo;
             data.cloudInfo = result;
-            getModuleLicensesInfoCB(true, data);    
+            getModuleLicensesInfoCB(true, data);
         }
         function _getModuleLicenseTypesCB(status, result){
             if(!status){
@@ -82,9 +82,9 @@
             var data = {};
             data.combinedInfo = combinedInfo;
             data.cloudInfo = result;
-            getModuleLicensesInfoCB(true, data);    
+            getModuleLicensesInfoCB(true, data);
         }
-        
+
         _getModuleLicenses(_getModuleLicensesCB);
 
     }
@@ -98,23 +98,23 @@
         var dataObject = [];
         dataObject.push(payLoad);
         $.ajax({
-        		type: 'POST',
-        		url: handshakeUrl,
-                contentType: 'application/json',
-                data : JSON.stringify(dataObject),
-                dataType : 'json'
+            type: 'POST',
+            url: handshakeUrl,
+            contentType: 'application/json',
+            data : JSON.stringify(dataObject),
+            dataType : 'json'
         })
-        .done(function(data){
-            callback(true, data);
-        })
-        .fail(function(jqXhr, textstatus, errorMessage){
-            errorMessage = errorMessage?errorMessage:I18N.message("perc.ui.gadgets.licenseMonitor@Failed to activate the license");
-            callback(false,errorMessage);
-        });
-        
+            .done(function(data){
+                callback(true, data);
+            })
+            .fail(function(jqXhr, textstatus, errorMessage){
+                errorMessage = errorMessage?errorMessage:I18N.message("perc.ui.gadgets.licenseMonitor@Failed to activate the license");
+                callback(false,errorMessage);
+            });
+
 
     }
-    
+
     function saveModuleLicense(data, callback)
     {
         var handshake = data.handshakes[0];
@@ -142,7 +142,7 @@
             }
         });
     }
-    
+
     function _getModuleLicenses(callback)
     {
         //call the service and get the results
@@ -160,28 +160,28 @@
             }
         });
     }
-    
+
     function _getModuleLicenseTypes(callback)
     {
         var typesUrl = $.perc_module_license_manager.LICENSING_BASE_URL + $.perc_module_license_manager.TYPES_URL;
         $.ajax({
-        		type: 'GET',
-        		url: typesUrl,
-                timeout:$.perc_module_license_manager.AJAX_TIMEOUT
+            type: 'GET',
+            url: typesUrl,
+            timeout:$.perc_module_license_manager.AJAX_TIMEOUT
         })
-        .done(function(data){
-            //Remove SOCIAL_PROMOTION from module license list till cloud build is deployed.
-            for(var i=0; i<=data.licenseTypes.length; i++){
-                if(data.licenseTypes[i].id==="SOCIAL_PROMOTION"){
-                    data.licenseTypes.splice(i,1);
+            .done(function(data){
+                //Remove SOCIAL_PROMOTION from module license list till cloud build is deployed.
+                for(var i=0; i<=data.licenseTypes.length; i++){
+                    if(data.licenseTypes[i].id==="SOCIAL_PROMOTION"){
+                        data.licenseTypes.splice(i,1);
+                    }
                 }
-            }
-            callback(true, data);
-        })
-        .fail(function(jqXhr, textstatus, errorMessage){
-            errorMessage = errorMessage?errorMessage:I18N.message("perc.ui.gadgets.licenseMonitor@Failed to get available modules");
-            callback(false,errorMessage);
-        });
+                callback(true, data);
+            })
+            .fail(function(jqXhr, textstatus, errorMessage){
+                errorMessage = errorMessage?errorMessage:I18N.message("perc.ui.gadgets.licenseMonitor@Failed to get available modules");
+                callback(false,errorMessage);
+            });
     }
 
     function _createPayload(moduleLicenses)
@@ -227,28 +227,28 @@
     {
         var validityUrl = $.perc_module_license_manager.LICENSING_BASE_URL + $.perc_module_license_manager.VALIDITY_URL;
         $.ajax({
-        		type: 'POST',
-        		url: validityUrl,
-                contentType: 'application/json',
-                data : JSON.stringify(payLoad),
-                dataType : 'json'
+            type: 'POST',
+            url: validityUrl,
+            contentType: 'application/json',
+            data : JSON.stringify(payLoad),
+            dataType : 'json'
         })
-        .done(function(data){
-            for(var i=0; i<=data.licenseTypes.length; i++){
-                if(data.licenseTypes[i].id=="SOCIAL_PROMOTION"){
-                    data.licenseTypes.splice(i,1);
+            .done(function(data){
+                for(var i=0; i<=data.licenseTypes.length; i++){
+                    if(data.licenseTypes[i].id=="SOCIAL_PROMOTION"){
+                        data.licenseTypes.splice(i,1);
+                    }
                 }
-            }
-            callback(true, data);
-        })
-        .fail(function(jqXhr, textstatus, errorMessage){
-            errorMessage = errorMessage?errorMessage:I18N.message("perc.ui.gadgets.licenseMonitor@Failed to get validated modules");
-            callback(false,errorMessage);
-        });
+                callback(true, data);
+            })
+            .fail(function(jqXhr, textstatus, errorMessage){
+                errorMessage = errorMessage?errorMessage:I18N.message("perc.ui.gadgets.licenseMonitor@Failed to get validated modules");
+                callback(false,errorMessage);
+            });
     }
 
     function generateLicenseView(licenseInfo,  newLicenseInfo){
-        
+
         var licInfoElemCont = $("<div/>");
         $.each(licenseInfo, function(){
             var curLI = this;
@@ -272,14 +272,15 @@
         $.each(licenseTypes, function(){
             $("<option/>").attr("value",this.id).text(this.label).appendTo(typeComboBox);
         });
-        licActElemCont.append(typeComboBox).append(`<input name='perc-lmg-modulelicense-key'/>`).append(`<a href="#" class="perc-lmg-button perc-lmg-activate" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</a>`);
+
+        licActElemCont.append(typeComboBox).append(`<input name='perc-lmg-modulelicense-key'/>`).append(`<button aria-label="Activate License" id="activate-license-button" class="btn btn-primary advanced">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</button>`);
         licActElemCont.append("<div id='perc-lmg-modulelicense-key-error' style='display:none; color:red'/>");
         _addActivateClickEvent(licActElemCont, activationSuccessCallback);
         return licActElemCont;
     }
-    
+
     function _addActivateClickEvent(licActElemCont, activationSuccessCallback){
-        licActElemCont.find(".perc-lmg-activate").on("click", function(){
+        licActElemCont.find("#activate-license-button").on("click", function(){
             var parent = $(this).closest(".perc-lmg-modulelicense-act-top");
             var errElem = parent.find("#perc-lmg-modulelicense-key-error").hide();
             var key = parent.find("input[name=perc-lmg-modulelicense-key]").val();
@@ -325,13 +326,13 @@
                 });
             });
         });
-    
+
     }
-    
+
     var payLoadTemplate =   {
-          "key":"YOUR-KEY",
-          "token":"THIS_IS_WHERE_THE_TOKEN_IS_RETURNED",
-          "type":"THE_LICENSE_TYPE",
-          "valid":false
+        "key":"YOUR-KEY",
+        "token":"THIS_IS_WHERE_THE_TOKEN_IS_RETURNED",
+        "type":"THE_LICENSE_TYPE",
+        "valid":false
     };
 })(jQuery);
