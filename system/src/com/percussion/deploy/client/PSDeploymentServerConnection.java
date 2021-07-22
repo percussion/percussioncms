@@ -38,22 +38,26 @@ import com.percussion.deploy.error.PSLockedException;
 import com.percussion.deploy.objectstore.PSDbmsInfo;
 import com.percussion.deploy.objectstore.PSDeploymentServerConnectionInfo;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSServerLockException;
 import com.percussion.server.job.PSJobException;
 import com.percussion.util.PSCharSetsConstants;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
-import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
 import com.percussion.util.PSPurgableTempFile;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -66,11 +70,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 
 /**
@@ -308,7 +307,7 @@ public class PSDeploymentServerConnection
                }
             }
             catch (InterruptedException | PSDeployException e)
-            {/*do nothing*/}
+            {Thread.currentThread().interrupt();}
          }
       };
       //Don't even bother to start if locking time is less than 2 minutes.

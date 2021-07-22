@@ -46,12 +46,12 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -237,6 +237,9 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 					return true;
 				}
 			} catch (InterruptedException e) {
+
+				Thread.currentThread().interrupt();
+
 				return false;
 			} catch (Throwable t) {
 				if (t instanceof ThreadDeath) {
@@ -267,6 +270,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 				// check to see if search indexing needs to restart
 				importingSite.checkSearchIndexQueueStatus(false);
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 				return false;
 			} catch (Throwable t) {
 				if (t instanceof ThreadDeath) {

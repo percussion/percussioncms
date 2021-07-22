@@ -33,27 +33,86 @@ import com.percussion.data.jdbc.PSFileSystemDriver;
 import com.percussion.data.vfs.IPSVirtualDirectory;
 import com.percussion.data.vfs.PSVirtualApplicationDirectory;
 import com.percussion.deploy.server.PSServerJdbcDbmsDef;
-import com.percussion.design.objectstore.*;
-import com.percussion.design.objectstore.legacy.*;
+import com.percussion.design.objectstore.IPSObjectStoreErrors;
+import com.percussion.design.objectstore.PSAcl;
+import com.percussion.design.objectstore.PSAclEntry;
+import com.percussion.design.objectstore.PSApplication;
+import com.percussion.design.objectstore.PSApplicationFile;
+import com.percussion.design.objectstore.PSComponent;
+import com.percussion.design.objectstore.PSContentEditorSharedDef;
+import com.percussion.design.objectstore.PSContentEditorSystemDef;
+import com.percussion.design.objectstore.PSExtensionFile;
+import com.percussion.design.objectstore.PSFeatureSet;
+import com.percussion.design.objectstore.PSLockedException;
+import com.percussion.design.objectstore.PSLogger;
+import com.percussion.design.objectstore.PSNonUniqueException;
+import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.design.objectstore.PSNotLockedException;
+import com.percussion.design.objectstore.PSObjectFactory;
+import com.percussion.design.objectstore.PSRevisionEntry;
+import com.percussion.design.objectstore.PSRevisionHistory;
+import com.percussion.design.objectstore.PSRoleConfiguration;
+import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.design.objectstore.PSSystemValidationException;
+import com.percussion.design.objectstore.PSTableLocator;
+import com.percussion.design.objectstore.PSUnknownDocTypeException;
+import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.design.objectstore.PSVersionConflictException;
+import com.percussion.design.objectstore.legacy.IPSComponentConverter;
+import com.percussion.design.objectstore.legacy.IPSComponentUpdater;
+import com.percussion.design.objectstore.legacy.IPSConfigFileLocator;
+import com.percussion.design.objectstore.legacy.IPSRepositoryInfo;
+import com.percussion.design.objectstore.legacy.PSAllowAllCtypeWorkflowsUpdater;
+import com.percussion.design.objectstore.legacy.PSBackendTableConverter;
+import com.percussion.design.objectstore.legacy.PSConfigurationCtx;
+import com.percussion.design.objectstore.legacy.PSTableLocatorConverter;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSException;
 import com.percussion.error.PSRuntimeException;
-import com.percussion.extension.*;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSExtensionManager;
+import com.percussion.extension.PSExtensionDefFactory;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionRef;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
-import com.percussion.security.*;
-import com.percussion.server.*;
+import com.percussion.security.PSAclHandler;
+import com.percussion.security.PSAuthenticationFailedException;
+import com.percussion.security.PSAuthenticationRequiredException;
+import com.percussion.security.PSAuthorizationException;
+import com.percussion.security.PSUserEntry;
+import com.percussion.server.IPSCgiVariables;
+import com.percussion.server.IPSServerErrors;
+import com.percussion.server.IPSValidateSession;
+import com.percussion.server.PSConsole;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestStatistics;
+import com.percussion.server.PSResponse;
+import com.percussion.server.PSServer;
+import com.percussion.server.PSUserSession;
 import com.percussion.server.config.PSConfigManager;
 import com.percussion.services.datasource.PSHibernateDialectConfig;
 import com.percussion.services.security.data.PSCatalogerConfig;
-import com.percussion.tablefactory.*;
+import com.percussion.tablefactory.IPSJdbcTableChangeListener;
+import com.percussion.tablefactory.PSJdbcDataTypeMap;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcTableChangeEvent;
+import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
+import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSDocVersionConverter2;
 import com.percussion.util.PSProperties;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
-import com.percussion.utils.jdbc.*;
+import com.percussion.utils.jdbc.IPSConnectionInfo;
+import com.percussion.utils.jdbc.IPSDatasourceConfig;
+import com.percussion.utils.jdbc.IPSDatasourceResolver;
+import com.percussion.utils.jdbc.PSConnectionDetail;
+import com.percussion.utils.jdbc.PSConnectionHelper;
+import com.percussion.utils.jdbc.PSConnectionInfo;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.spring.IPSBeanConfig;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -65,10 +124,27 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.naming.NamingException;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * The PSXmlObjectStoreHandler class implements XML file object store
@@ -6115,7 +6191,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
             }
             catch (InterruptedException e)
             {
-               return null;
+               Thread.currentThread().interrupt();
             }
          }
          m_lockedFiles.put(canon, Boolean.TRUE);
@@ -6173,7 +6249,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
             }
             catch (InterruptedException e)
             {
-               return null;
+               Thread.currentThread().interrupt();
             }
          }
          m_lockedFiles.put(canon, Boolean.TRUE);

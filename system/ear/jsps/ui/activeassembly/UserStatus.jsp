@@ -39,7 +39,7 @@
 	String locale = PSRoleUtilities.getUserCurrentLocale();
 	String localeDisplay = PSLocaleManager.getInstance().getLocale(locale).getDisplayName();
 	String redirect = (String) request.getParameter("sys_redirecturl");
-	String rxloginurl = "../../sys_welcome/rxlogin.html?communitypage=yes";
+	String rxloginurl = "/login";
 	if (redirect != null)
 	{
 	   rxloginurl += "&sys_redirecturl=" + URLEncoder.encode(redirect, "UTF-8");

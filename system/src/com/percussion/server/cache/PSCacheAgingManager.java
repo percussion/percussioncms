@@ -112,6 +112,7 @@ class PSCacheAgingManager implements IPSCacheModifiedListener
                   catch(InterruptedException e)
                   {
                      m_run = false;
+                     Thread.currentThread().interrupt();
                   }
                   catch(Throwable t)
                   {
@@ -157,7 +158,8 @@ class PSCacheAgingManager implements IPSCacheModifiedListener
                   }
                   catch(InterruptedException e)
                   {
-                     m_run = false;                  
+                     m_run = false;
+                     Thread.currentThread().interrupt();
                   }
                   catch(Throwable t)
                   {

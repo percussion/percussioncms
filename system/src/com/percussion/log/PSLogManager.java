@@ -287,6 +287,7 @@ public class PSLogManager
                }
                catch (InterruptedException interrupt)
                {
+                  Thread.currentThread().interrupt();
                   break;
                }
             }
@@ -419,6 +420,7 @@ public class PSLogManager
       catch (InterruptedException e)
       {
          close();
+         Thread.currentThread().interrupt();
          return;
       }
       // load the message string resource bundle for the specified locale
@@ -464,6 +466,7 @@ public class PSLogManager
          {
             conOut(
                "Interrupted while waiting for log queue thread to terminate.");
+            Thread.currentThread().interrupt();
          }
       }
       

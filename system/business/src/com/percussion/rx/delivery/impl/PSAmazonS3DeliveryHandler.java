@@ -31,6 +31,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -213,10 +214,15 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
                                 }
                             }
 
-                        } catch (Exception e) {
-                            log.error("The bucket {} does not exist on amazon s3 server. Error: {}" ,bucketName,
-                                    PSExceptionUtils.getMessageForLog(e));
-                            log.debug(e);
+                        } catch (AmazonS3Exception e) {
+                            if(e.getStatusCode() == 404){
+                                log.debug("The object {} was not found so this is a new item.",key);
+                            }else{
+                                log.error(PSExceptionUtils.getMessageForLog(e));
+                            }
+                            // In any error state we can't confirm that the object hasn't changed
+                            // so always flag it as a change so publish is attempted.
+                            checksumValueChanged=true;
                         }
                         if (checksumValueChanged) {
                             copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), checksum);

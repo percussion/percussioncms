@@ -80,6 +80,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
+import javax.annotation.concurrent.ThreadSafe;
 import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -106,6 +107,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This class follows the singleton pattern, and a reference to the single
  * instance may be obtained using {@link #getInstance()}.
  */
+@ThreadSafe
 public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHandlerInitListener
 {
    private static final int EVENT_WAIT_TIME_MS = 10000;
@@ -207,6 +209,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                   }
                   catch (InterruptedException e)
                   {
+                     Thread.currentThread().interrupt();
                      break;
                   }
                   catch (Throwable t)
@@ -299,7 +302,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
             }
             catch (InterruptedException e)
             {
-               // try again
+               Thread.currentThread().interrupt();
             }
          }
 
@@ -618,7 +621,8 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                Thread.sleep(1000);
             }
             catch (InterruptedException e)
-            { /* ignore */
+            {
+               Thread.currentThread().interrupt();
             }
          }
       }
@@ -1605,7 +1609,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     * The singleton instance of this class, <code>null</code> until first call
     * to {@link #getInstance()}, never <code>null</code> or modified after that.
     */
-   private static PSSearchIndexEventQueue ms_instance = null;
+   private static volatile PSSearchIndexEventQueue ms_instance = null;
 
    /**
     * The name of the aging thread created by this object.

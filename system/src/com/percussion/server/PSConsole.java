@@ -223,13 +223,13 @@ public class PSConsole /* extends Thread */
       
       Logger l = getLogger(subsystem);
       if (subMessages == null)
-         l.info(message);
+         l.info("{}",message);
       else
       {
          String arr[] = new String[subMessages.length + 1];
          arr[0] = message;
          System.arraycopy(subMessages, 0, arr, 1, subMessages.length);
-         l.info( arr);
+         l.info( "{}",arr);
       }
    }
 

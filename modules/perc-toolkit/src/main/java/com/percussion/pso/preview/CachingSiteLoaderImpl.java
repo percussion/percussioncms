@@ -147,6 +147,7 @@ public class CachingSiteLoaderImpl implements InitializingBean, SiteLoader
       {
          try
          {
+            //TODO: NC-?????
             while(true)
             {
                setAllSites(loadAllSites()); 
@@ -154,12 +155,12 @@ public class CachingSiteLoaderImpl implements InitializingBean, SiteLoader
             }
          } catch (PSSiteManagerException ex)
          {
-            log.error("Unexpected Site Manager Exception Error: {]",ex.getMessage());
+            log.error("Unexpected Site Manager Exception Error: {}",ex.getMessage());
             log.debug(ex.getMessage(), ex);
          } catch (InterruptedException ex)
          {
              log.error("Site Reloading was Interrupted Error: {}", ex.getMessage());
-             log.debug(ex.getMessage(), ex);
+            Thread.currentThread().interrupt();
          }
       }
       

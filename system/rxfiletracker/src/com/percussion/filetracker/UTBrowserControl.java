@@ -82,9 +82,8 @@ public class UTBrowserControl
                 }
                 catch(InterruptedException x)
                 {
-                    System.err.println("Error bringing up browser, cmd='" +
-                                       cmd + "'");
-                    System.err.println("Caught: " + x);
+                    Thread.currentThread().interrupt();
+
                 }
             }
         }

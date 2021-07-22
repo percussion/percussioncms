@@ -33,10 +33,26 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSConnectionInfo;
-import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.XMLConstants;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -48,24 +64,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * This servlet is used by the workbench, specifically the tmeplate editor and
@@ -310,6 +308,7 @@ public class PSTdSchemaXmlServlet extends HttpServlet
       }
 
       TransformerFactory tFactory = TransformerFactory.newInstance();
+      tFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
       Transformer transformer = null;
       transformer = tFactory.newTransformer(
          new StreamSource(xslUrl.toString()));

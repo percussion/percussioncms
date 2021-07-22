@@ -266,7 +266,7 @@ public class PSContentListServlet extends HttpServlet
                "{5} result items took {6} milliseconds",
                contentlistname, siteid, delivery, publicationid, 
                context, items.size(), sw.elapsed());
-         log.debug(info);
+         log.debug("{}",info);
       }
       catch (Exception e)
       {

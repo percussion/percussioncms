@@ -867,6 +867,7 @@ public class PSSitePublishService implements IPSSitePublishService
         }
         catch (InterruptedException e)
         {
+            Thread.currentThread().interrupt();
         }
     }
 

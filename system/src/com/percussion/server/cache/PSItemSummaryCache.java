@@ -34,9 +34,21 @@ import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.data.IPSTableChangeListener;
 import com.percussion.data.PSTableChangeEvent;
 import com.percussion.data.PSUpdateHandler;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSBackEndColumn;
+import com.percussion.design.objectstore.PSBackEndTable;
+import com.percussion.design.objectstore.PSDataSet;
+import com.percussion.design.objectstore.PSDataSynchronizer;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSPipe;
+import com.percussion.design.objectstore.PSUpdateColumn;
+import com.percussion.design.objectstore.PSUpdatePipe;
 import com.percussion.error.PSException;
-import com.percussion.server.*;
+import com.percussion.server.IPSRequestHandler;
+import com.percussion.server.IPSServerErrors;
+import com.percussion.server.PSInternalRequest;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSServer;
 import com.percussion.services.legacy.IPSCmsObjectMgrInternal;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
@@ -53,7 +65,16 @@ import org.w3c.dom.Element;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -90,7 +111,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     *    been called.
     * @throws PSCacheException if other error occurs.
     */
-   static PSItemSummaryCache createInstance()
+   static synchronized PSItemSummaryCache createInstance()
          throws PSCacheException
    {
       if (ms_instance != null)
