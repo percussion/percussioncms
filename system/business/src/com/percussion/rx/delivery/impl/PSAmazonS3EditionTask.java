@@ -154,18 +154,33 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws Exception
    {
        AmazonS3 s3 = null;
+       String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
+       if(selectedRegionName == null || selectedRegionName.trim().equals("")){
+
+           //Default to EC2 regions
+           try {
+               if (Regions.getCurrentRegion() != null){
+                   selectedRegionName = Regions.getCurrentRegion().getName();
+               }
+           }catch(Exception e){
+               //Do nothing
+           }
+           //Fallback to publisher-beans.xml
+           if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
+               selectedRegionName = getConfiguredAWSRegion().getName();
+           }
+       }
 
        if(PSAmazonS3DeliveryHandler.isEC2Instance()){
            log.debug("EC2 Instance Running");
            s3 = AmazonS3ClientBuilder.standard()
                    .withCredentials(new InstanceProfileCredentialsProvider(false))
-                   .withRegion(Regions.getCurrentRegion().getName())
+                   .withRegion(selectedRegionName)
                    .build();
        }else {
            log.debug("Using Access/Security Key");
            String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
            String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
-           String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
 
            try {
                accessKey = decrypt(accessKey);
@@ -174,21 +189,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
                log.error(PSExceptionUtils.getMessageForLog(e));
                throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
            }
-           if(selectedRegionName == null || selectedRegionName.trim().equals("")){
 
-               //Default to EC2 regions
-               try {
-                   if (Regions.getCurrentRegion() != null){
-                       selectedRegionName = Regions.getCurrentRegion().getName();
-                   }
-               }catch(Exception e){
-                   //Do nothing
-               }
-               //Fallback to publisher-beans.xml
-               if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
-                   selectedRegionName = getConfiguredAWSRegion().getName();
-               }
-           }
 
            BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
            s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
