@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -23,12 +23,12 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 <Module>
-  <ModulePrefs title="Cookie Consent" description="This gadget provides statistics regarding cookie-consent entries." thumbnail="images/gadgetIconCookie.png" height="325" adminOnly="true">
-      <Require feature="perc_core"/>
-      <Require feature="perc_jquery_ui"/>
-      <Require feature="settitle" />
-      <Require feature="minimessage" />
-  </ModulePrefs>
+    <ModulePrefs title="Cookie Consent" description="This gadget provides statistics regarding cookie-consent entries." thumbnail="images/gadgetIconCookie.png" height="325" adminOnly="true">
+        <Require feature="perc_core"/>
+        <Require feature="perc_jquery_ui"/>
+        <Require feature="settitle" />
+        <Require feature="minimessage" />
+    </ModulePrefs>
     <UserPref name="site" display_name="Site" required="true" datatype="enum" default_value="">
         <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
     </UserPref>
@@ -39,8 +39,8 @@
         <EnumValue value="20" display_value="20 results"/>
         <EnumValue value="25" display_value="25 results"/>
     </UserPref>
-  <Content type="html">
-      <![CDATA[
+    <Content type="html">
+        <![CDATA[
         <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
         <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="/cm/gadgets/repository/perc_cookie_consent_gadget/cookie_consent_gadget.css" rel="stylesheet" type="text/css" />
@@ -123,7 +123,7 @@
 
             <!-- advanced button all sites -->
             <div id="delete-btn-all">
-                <button id="advanced-all-sites-btn" type="button" aria-label="Advanced Settings" class="btn btn-info advanced" data-toggle="collapse" data-target="#advanced">Advanced</button>
+                <button id="advanced-all-sites-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced">Advanced</button>
                 <div id="advanced" class="collapse cookie-consent-advanced">
                     <p>Delete all cookie consent entries.</p>
                     <button id="cookie-consent-delete-btn" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
@@ -132,7 +132,7 @@
 
             <!-- advanced button for selected site -->
             <div id="delete-btn-site" style="display: none;">
-                <button id="advanced-site-btn" type="button" aria-label="Advanced Settings" class="btn btn-info advanced" data-toggle="collapse" data-target="#advanced-site">Advanced</button>
+                <button id="advanced-site-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced-site">Advanced</button>
                 <div id="advanced-site" class="collapse cookie-consent-advanced">
                     <p>Delete cookie consent entries for site: </p>
                     <button id="cookie-consent-site-delete-btn" aria-label="Delete cookie consent entries for selected site" class="cookie-consent-delete-btn">Delete entries for site</button>
@@ -140,5 +140,5 @@
             </div>
         </div>
      ]]>
-  </Content> 
+    </Content>
 </Module>

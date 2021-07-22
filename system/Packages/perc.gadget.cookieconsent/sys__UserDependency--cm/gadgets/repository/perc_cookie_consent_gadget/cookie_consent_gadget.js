@@ -30,7 +30,7 @@ var PercPathConstants = percJQuery.perc_paths;
 var LOG_ENDPOINT = PercPathConstants.COOKIE_CONSENT_LOG;
 var SELECTED_SITES_CSV_URL = LOG_ENDPOINT;
 
-$(document).ready(function () {
+$(function () {
     var prefs    = new gadgets.Prefs();
     var rows     = parseInt(prefs.getString("zrows"));
     var site = prefs.getString("site");
@@ -58,28 +58,28 @@ $(document).ready(function () {
     function init() {
         initButtons();
         getAllConsentEntries(site);
-    };
+    }
 
     /**
      * Initializes the 'export cookie entries' button/URL.
      */
     function initButtons() {
         var $exportButton = $("#export-link");
-        $exportButton.unbind().bind('click', function() {
+        $exportButton.on('click', function(evt) {
             exportCookieCSV(SELECTED_SITES_CSV_URL+"/"+site+ "/cookie_consent_log.csv");
         });
 
         var $backButton = $('#perc-cookie-back-button');
-        $backButton.unbind().bind('click', returnToMainScreen);
+        $backButton.off('click').on('click', returnToMainScreen);
 
         var $advancedAllSitesButton = $('#advanced-all-sites-btn');
-        $advancedAllSitesButton.unbind().bind('click', addAdvancedHeight);
+        $advancedAllSitesButton.off('click').on('click', addAdvancedHeight);
 
         var $advancedSiteButton = $('#advanced-site-btn');
-        $advancedSiteButton.unbind().bind('click', addAdvancedHeight);
+        $advancedSiteButton.off('click').on('click', addAdvancedHeight);
 
         var $deleteButton = $('#cookie-consent-delete-btn');
-        $deleteButton.unbind().bind('click', confirmDelete);
+        $deleteButton.off('click').on('click', confirmDelete);
     }
 
     /**
@@ -226,7 +226,7 @@ $(document).ready(function () {
         var name = tableSelector.selector + "_length";
         // selector has # in it, removing this character
         name = name.substring(1);
-        $("select[name='" + name + "']").unbind().bind('change', function() {
+        $("select[name='" + name + "']").off('change').on('change', function() {
             adjustIframeHeight(tableSelector);
         });
 
@@ -241,7 +241,7 @@ $(document).ready(function () {
      */
     function setSiteButtonBindings() {
         $('.perc-cookie-button-site').each(function(key, val) {
-            $(val).unbind().bind('click', function() {
+            $(val).off('click').on('click', function() {
                 displaySiteStatistics($(val).text());
             });
         });
@@ -269,7 +269,7 @@ $(document).ready(function () {
         // update export entries button
         $exportSiteButton = $('#export-site-link');
         $exportSiteButton.text(I18N.message( "perc.ui.gadgets.cookieConsent@Export consent entries for" ) + ' ' + siteName);
-        $exportSiteButton.unbind().bind('click', function() {
+        $exportSiteButton.off('click').on('click', function() {
             exportCookieCSV(siteURL);
         });
 
@@ -282,7 +282,7 @@ $(document).ready(function () {
         $('#advanced-site p').text(I18N.message( "perc.ui.gadgets.cookieConsent@Delete entries" ) + ': ' + siteName);
 
         $deleteSiteButton = $('#cookie-consent-site-delete-btn');
-        $deleteSiteButton.unbind().bind('click', function() {
+        $deleteSiteButton.off('click').on('click', function() {
             confirmDelete(siteName);
         });
 
