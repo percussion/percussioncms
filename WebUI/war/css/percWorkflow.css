@@ -904,7 +904,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 
 .perc-step-delete-button:hover
 {
-    background:url(../images/images/buttonDeletePageOver.gif);
+    background:url(../images/images/buttonDeletePageOver.png);
 }
 
 .perc-step-delete-disable,.perc-step-delete-disable:hover
