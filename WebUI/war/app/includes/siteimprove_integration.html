@@ -5,79 +5,91 @@
 				.si-iframe-container.si-pos-east {right: 250px !important;}
 			</style>
 			<script>
-				function injectSiteImprove(siteName) {
-	
-				var SITEIMPROVE_CREDENTIALS_ROOT = "/Rhythmyx/services/integrations/siteimprove/token";
-				var idParam = getParameterByName("id");
-				var viewType = getParameterByName("view");
-	
-				var pagePath = '';
-				var siteURL = '';
-				var page_url = '';
+				function getSiteImproveCookie() {
+					var result = document.cookie.match(new RegExp('siteimprove_credentials' + '=([^;]+)'));
+					result && (result = result[1]);
+					return result;
+				}
 
-				var paths = $.perc_finder().getCurrentPath();
-				if (paths[1] === 'Recycling') {
-				    return;
-				}
-	
-				if(viewType === 'editor' && idParam !== '' && idParam !== null) {
-					pagePath = $.PercNavigationManager.getPath();
-					pagePath = pagePath.substring(pagePath.split("/", 2).join("/").length+1);
-					//this means we are trying to load SI information for a site
-					//that does not have siteimprove enabled or trying to load
-					//SI information for a different site from within a page context.
-					if(!(pagePath.indexOf(siteName) >= 0))
+				function injectSiteImprove(siteName, finderPath) {
+
+				var cook  = getSiteImproveCookie();
+				if(typeof cook != "undefined") {
+					var SITEIMPROVE_CREDENTIALS_ROOT = "/Rhythmyx/services/integrations/siteimprove/token";
+					var idParam = getParameterByName("id");
+					var viewType = getParameterByName("view");
+
+					var pagePath = '';
+					var siteURL = '';
+					var page_url = '';
+
+					var paths = finderPath;
+					if (paths[1] === 'Recycling') {
 						return;
-				}
-	
-				siteURL = window.location.protocol + "//" + window.location.host + SITEIMPROVE_CREDENTIALS_ROOT + "/" + siteName;
-	
-				// Make call to the PSSiteimprove.retrieveSiteImproveCredentials
-				$.ajax({
-					url: siteURL,
-					method: "GET",
-					headers: { "Accept": "application/json; odata=verbose" },
-					success: function (data) {
-						if(data === '' || typeof data === "undefined") {
-							console.log('Not able to retrieve token from Siteimprove endpoint.  Please make sure Siteimprove is enabled for this site if desired.');
-							$('.si-toggle-container').hide();
-							$('.si-iframe-container').hide();
-						}
-						else {
-							var credentials = JSON.parse(data.metadata.data);
-							var token = credentials.token;
-							page_url = credentials.siteProtocol + "://" + pagePath;
-							
-							if(credentials.canonicalDist === 'sections') {
-								page_url = page_url.replace(credentials.defaultDocument, '');
-							}
-							
-							var _si = window._si || [];
-							
-							// TODO:i18n
-							if(viewType === 'editor' && idParam !== null && idParam !== '' && (pagePath.indexOf(siteName) >= 0)) {
-								// we have in a page context and can inject siteimprove for page
-								_si.push(['input', page_url, token, function() {
-									console.log('Sending a page-specific url to Siteimprove for page: ' + page_url);
-								}])
-							}
-							else {
-								// we are at the domain level
-								siteName = credentials.siteProtocol + "://" + siteName;
-								_si.push(['domain', siteName, token, function() { 
-									console.log('Sending a domain-specific url to Siteimprove for site: ' + siteName);
-								}])
-							} // end else statement
-	
-							$('.si-toggle-container').show();
-	
-							//if(window._si !== undefined){window._si.push(['showlog','']);} -- Leaving this line. In case we want to check logs from siteimprove in future.
-						}
-					},
-					error: function (data) {
-						console.error(JSON.stringify(data));
 					}
-				});
+
+					if (viewType === 'editor' && idParam !== '' && idParam !== null) {
+						pagePath = $.PercNavigationManager.getPath();
+						pagePath = pagePath.substring(pagePath.split("/", 2).join("/").length + 1);
+						//this means we are trying to load SI information for a site
+						//that does not have siteimprove enabled or trying to load
+						//SI information for a different site from within a page context.
+						if (!(pagePath.indexOf(siteName) >= 0))
+							return;
+					}
+
+					siteURL = window.location.protocol + "//" + window.location.host + SITEIMPROVE_CREDENTIALS_ROOT + "/" + siteName;
+
+					// Make call to the PSSiteimprove.retrieveSiteImproveCredentials
+					$.ajax({
+						url: siteURL,
+						method: "GET",
+						headers: {"Accept": "application/json; odata=verbose"},
+						success: function (data) {
+							if (data === '' || typeof data === "undefined") {
+								console.log('Not able to retrieve token from Siteimprove endpoint.  Please make sure Siteimprove is enabled for this site if desired.');
+								$('.si-toggle-container').hide();
+								$('.si-iframe-container').hide();
+							} else {
+								var credentials = JSON.parse(data.metadata.data);
+								var token = credentials.token;
+								page_url = credentials.siteProtocol + "://" + pagePath;
+
+								if (credentials.canonicalDist === 'sections') {
+									page_url = page_url.replace(credentials.defaultDocument, '');
+								}
+
+								var _si = window._si || [];
+
+								// TODO:i18n
+								if (viewType === 'editor' && idParam !== null && idParam !== '' && (pagePath.indexOf(siteName) >= 0)) {
+									// we have in a page context and can inject siteimprove for page
+									_si.push(['input', page_url, token, function () {
+										console.log('Sending a page-specific url to Siteimprove for page: ' + page_url);
+									}])
+								} else {
+									// we are at the domain level
+									siteName = credentials.siteProtocol + "://" + siteName;
+									_si.push(['domain', siteName, token, function () {
+										console.log('Sending a domain-specific url to Siteimprove for site: ' + siteName);
+									}])
+								} // end else statement
+
+								$('.si-toggle-container').show();
+
+								//if(window._si !== undefined){window._si.push(['showlog','']);} -- Leaving this line. In case we want to check logs from siteimprove in future.
+							}
+						},
+						error: function (data) {
+							console.error(JSON.stringify(data));
+						}
+					});
+					// Only reference the plugin if it is actually enabled.
+					var s = document.createElement( 'script' );
+					s.setAttribute( 'src', 'https://cdn.siteimprove.net/cms/overlay.js' );
+					s.setAttribute('async')
+					document.body.appendChild( s );
+				}
 			}
 
 			function getParameterByName(name) {
@@ -90,5 +102,4 @@
 				return decodeURIComponent(results[2].replace(/\+/g, " "));
 			}
 		</script>
-		<script async src="https://cdn.siteimprove.net/cms/overlay.js"></script>
 		</div>
