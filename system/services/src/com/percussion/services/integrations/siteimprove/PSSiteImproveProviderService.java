@@ -24,19 +24,10 @@
 
 package com.percussion.services.integrations.siteimprove;
 
-import com.percussion.delivery.client.TLSV12ProtocolSocketFactory;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.TLSSocketFactory;
 import com.percussion.server.PSServer;
 import com.percussion.services.integrations.IPSIntegrationProviderService;
-
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import com.percussion.util.PSURLEncoder;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -53,13 +44,21 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Services for the REST endpoint for our Siteimprove integration.
  */
 public class PSSiteImproveProviderService implements IPSIntegrationProviderService
 {
 
-   // The api endpoints for Siteimprove's api.
+   // The api endpoints for the Siteimprove api.
    private static final String NEW_SITEIMPROVE_BASE_URL = "https://api-gateway.siteimprove.com/cms-recheck";
 
    private static final String PERCUSSION_CM1_VERSION = "Percussion CMS " + PSServer.getVersion();
@@ -91,7 +90,7 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
     try{
        registerSslProtocol();
     }catch(Exception e){
-       logger.error("Error initilizing SSL Engine: " + e);
+       logger.error("Error initilizing SSL Engine: {}" , PSExceptionUtils.getMessageForLog(e));
        return "";
     }
 
@@ -103,7 +102,7 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
       }
       catch (Exception e1)
       {
-         logger.error("Unable to get new Siteimprove token with message: " + e1);
+         logger.error("Unable to get new Siteimprove token with message: {}", PSExceptionUtils.getMessageForLog(e1));
          return "";
       }
       String token = "";
@@ -113,13 +112,11 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
          JSONObject jsonObjectItems = new JSONObject(getMethod.getResponseBodyAsString());
          token = jsonObjectItems.getString(SITEIMPROVE_TOKEN);
       }
-      catch (IOException e)
+      catch (IOException | JSONException e)
       {
-         logger.error("Failed to get new Siteimprove token with message: " + e);
-      }
-      catch (JSONException e)
-      {
-         logger.error("Failed to get new Siteimprove token with message: " + e);
+         logger.error("Failed to get new Siteimprove token with message: {}" ,
+                 PSExceptionUtils.getMessageForLog(e));
+         logger.debug(e);
       }
 
       return token;
@@ -143,41 +140,36 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
          throw new NullPointerException("siteURL cannot be null or empty.");
       }
 
-      pool.submit(new Runnable()
-      {
-         @Override
-         public void run()
+      pool.submit(() -> {
+         try
          {
-            try
+
+            registerSslProtocol();
+
+            PostMethod postMethod = new PostMethod(NEW_SITEIMPROVE_BASE_URL);
+
+            JSONObject object = new JSONObject();
+            object.accumulate("url", siteId);
+            object.accumulate(SITEIMPROVE_TOKEN, credentials.get(SITEIMPROVE_TOKEN));
+            object.accumulate("type", SITEIMPROVE_RECRAWL_SITE);
+
+            logger.debug("JSON Object body: {}" ,object);
+
+            StringRequestEntity requestEntity = new StringRequestEntity(object.toString(), APPLICATION_JSON, UTF_8);
+
+            postMethod.setRequestEntity(requestEntity);
+
+            boolean responseStatus = executeMethod(postMethod);
+
+            if (!responseStatus)
             {
-
-               registerSslProtocol();
-
-               PostMethod postMethod = new PostMethod(NEW_SITEIMPROVE_BASE_URL);
-
-               JSONObject object = new JSONObject();
-               object.accumulate("url", siteId);
-               object.accumulate(SITEIMPROVE_TOKEN, credentials.get(SITEIMPROVE_TOKEN));
-               object.accumulate("type", SITEIMPROVE_RECRAWL_SITE);
-
-               logger.debug("JSON Object body:" + object.toString());
-
-               StringRequestEntity requestEntity = new StringRequestEntity(object.toString(), APPLICATION_JSON, UTF_8);
-
-               postMethod.setRequestEntity(requestEntity);
-
-               Boolean responseStatus = executeMethod(postMethod);
-
-               if (!responseStatus)
-               {
-                  throw new Exception("Failed to request a page check from siteimprove with id:  " + siteId);
-               }
-
+               throw new PSSiteImproveProviderException("Failed to request a page check from siteimprove with id:  " + siteId);
             }
-            catch (Exception e)
-            {
-               logger.error(e);
-            }
+
+         }
+         catch (Exception e)
+         {
+            logger.error(e);
          }
       });
    }
@@ -190,12 +182,9 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
     *           siteimprove's side. Otherwise do a new site crawl.
     * @param credentials The sitename/token allowing us to access the siteimprove
     *           api.
-    * @throws Exception We failed to request a page on siteimprove or the
-    *            supplied page url was empty or null.
     */
    @Override
    public void updatePageInfo(final String siteId, final String pageURL, final Map<String, String> credentials)
-         throws Exception
    {
 
       if (pageURL == null || pageURL.isEmpty())
@@ -203,60 +192,56 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
          throw new NullPointerException("pageUrl cannot be null or empty.");
       }
 
-      pool.submit(new Runnable()
-      {
-         @Override
-         public void run()
+      pool.submit(() -> {
+         try
          {
-            try
+            int retries = 0;
+            while (retries < 4)
             {
-               int retries = 0;
-               while (retries < 4)
+               registerSslProtocol();
+
+               PostMethod postMethod = new PostMethod(NEW_SITEIMPROVE_BASE_URL);
+
+               JSONObject object = new JSONObject();
+
+               String finalURL = pageURL;
+
+               logger.debug("canonicalDist: {}" , credentials.get("canonicalDist"));
+               logger.debug("siteProtocol: {}" , credentials.get("siteProtocol"));
+               logger.debug("defaultDocument: {}" , credentials.get("defaultDocument"));
+               logger.debug("token: {}" , credentials.get(SITEIMPROVE_TOKEN));
+               logger.debug("siteName: {}" , credentials.get("sitename"));
+
+               if("sections".equals(credentials.get("canonicalDist")))
+                  finalURL = StringUtils.replace(pageURL, credentials.get("defaultDocument"), "");
+
+               object.accumulate("url", finalURL);
+               object.accumulate(SITEIMPROVE_TOKEN, credentials.get(SITEIMPROVE_TOKEN));
+               object.accumulate("type", SITEIMPROVE_RECHECK_PAGE);
+
+               logger.debug("JSON Object body: {}" , object);
+
+               StringRequestEntity requestEntity = null;
+
+               requestEntity = new StringRequestEntity(object.toString(), APPLICATION_JSON, UTF_8);
+
+               postMethod.setRequestEntity(requestEntity);
+
+               boolean responseStatus = executeMethod(postMethod);
+               if (responseStatus)
                {
-                  registerSslProtocol();
-
-                  PostMethod postMethod = new PostMethod(NEW_SITEIMPROVE_BASE_URL);
-
-                  JSONObject object = new JSONObject();
-                  
-                  String finalURL = pageURL;
-                  
-                  logger.debug("canonicalDist: " + credentials.get("canonicalDist"));
-                  logger.debug("siteProtocol: " + credentials.get("siteProtocol"));
-                  logger.debug("defaultDocument: " + credentials.get("defaultDocument"));
-                  logger.debug("token: " + credentials.get("token"));
-                  logger.debug("siteName: " + credentials.get("sitename"));
-                  
-                  if("sections".equals(credentials.get("canonicalDist")))
-                     finalURL = StringUtils.replace(pageURL, credentials.get("defaultDocument"), "");
-
-                  object.accumulate("url", finalURL);
-                  object.accumulate(SITEIMPROVE_TOKEN, credentials.get(SITEIMPROVE_TOKEN));
-                  object.accumulate("type", SITEIMPROVE_RECHECK_PAGE);
-
-                  logger.debug("JSON Object body:" + object.toString());
-
-                  StringRequestEntity requestEntity = null;
-
-                  requestEntity = new StringRequestEntity(object.toString(), APPLICATION_JSON, UTF_8);
-
-                  postMethod.setRequestEntity(requestEntity);
-
-                  Boolean responseStatus = executeMethod(postMethod);
-                  if (responseStatus)
-                  {
-                     return;
-                  }
-                  Thread.sleep(3000);
-                  retries++;
+                  return;
                }
-               throw new Exception("Failed to notify siteimprove to check page with url: " + pageURL
-                     + " .  Site id is: " + siteId + " .  Exceeded retry count.");
+               Thread.sleep(3000);
+               retries++;
             }
-            catch (Exception e)
-            {
-               logger.error(e);
-            }
+            throw new PSSiteImproveProviderException("Failed to notify siteimprove to check page with url: " + pageURL
+                  + " .  Site id is: " + siteId + " .  Exceeded retry count.");
+         } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | PSSiteImproveProviderException | IOException e) {
+            logger.error(PSExceptionUtils.getMessageForLog(e));
+         }catch (InterruptedException e) {
+            logger.error(e.getMessage());
+            Thread.currentThread().interrupt();
          }
       });
    }
@@ -267,11 +252,9 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
     *
     * @param httpMethod The http method we wish to execute, make sure it has the
     *           URI already.
-    * @param credentials The credentials in order to access Siteimprove.
     * @throws Exception The httpclient failed to execute the method.
     */
-   private Boolean executeMethod(HttpMethod httpMethod) throws Exception
-   {
+   private Boolean executeMethod(HttpMethod httpMethod) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
 
       HttpClient httpClient = new HttpClient();
       registerSslProtocol();
@@ -291,7 +274,7 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
       Protocol baseHttps = Protocol.getProtocol(scheme);
       int defaultPort = HTTPS_PORT;
 
-      ProtocolSocketFactory customFactory = (ProtocolSocketFactory) new TLSSocketFactory();
+      ProtocolSocketFactory customFactory = new TLSSocketFactory();
 
       Protocol customHttps = new Protocol(scheme, customFactory, defaultPort);
       Protocol.registerProtocol(scheme, customHttps);
@@ -329,7 +312,7 @@ public class PSSiteImproveProviderService implements IPSIntegrationProviderServi
     * from the front end Siteimprove plugin.
     */
    @Override
-   public String retrievePageInfo(String siteName, String pageURL, Map<String, String> credentials) throws Exception
+   public String retrievePageInfo(String siteName, String pageURL, Map<String, String> credentials)
    {
       throw new NotImplementedException();
    }

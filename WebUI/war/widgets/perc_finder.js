@@ -684,7 +684,7 @@ var assetPagination = null;
                     var searchPath = $("#mcol-path-summary").val();
                     if((searchPath.indexOf('/Sites') >= 0) && searchPath !== '/Sites') {
                         var siteName = getSiteNameByPath(searchPath);
-                        injectSiteImprove(siteName);
+                        injectSiteImprove(siteName, getCurrentPath());
                     }
 
                     finderOpenInProgress = false;
