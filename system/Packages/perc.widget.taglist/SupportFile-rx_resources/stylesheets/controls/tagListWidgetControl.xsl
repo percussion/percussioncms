@@ -322,7 +322,7 @@
 
                 // Fill templates field
 
-                if (typeof splitPath[0] !== "undefined")
+                if (typeof splitPath[0] !== "undefined" && splitPath[0] != "")
                 {
                     $.PercServiceUtils.makeJsonRequest(
                             $.perc_paths.TEMPLATES_BY_SITE + "/" + splitPath[0],
