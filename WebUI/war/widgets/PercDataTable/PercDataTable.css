@@ -38,6 +38,19 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.perc-tooltip {
+    display: none;
+    position: absolute;
+    background-color: lightgoldenrodyellow;
+    text-align: center;
+    padding: 0.5em;
+    border-radius: 5px;
+}
+
+.perc-tooltip-container:hover .perc-tooltip {
+    display: block;
+}
+
 .dataTables_empty .perc-datatable-columnrow {
     text-align : center;
 }
