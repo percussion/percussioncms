@@ -65,18 +65,25 @@ function checkForConsentDenyCookie(){
 function createCookie() {
     // sets cookie to expire in 5 years
     var futureDate = getDate(5, 0, 0);
-
-    document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;";
+    var secure = "";
+    if (window.isSecureContext) {
+        secure = " Secure;";
+    }
+    document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;" + secure;
 
     dismissDialog();
 
     postEntry();
 }
 
-function denyCookie(){
+function denyCookie() {
     var futureDate = getDate(5, 0, 0);
 
-    document.cookie = "deny_cookie" + "=true; expires=" + futureDate + ";path=/; SameSite=Lax";
+    var secure = "";
+    if (window.isSecureContext) {
+        secure = " Secure;";
+    }
+    document.cookie = "deny_cookie" + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;" + secure;
 
     dismissDialog();
 }
@@ -125,7 +132,11 @@ function postEntry() {
         if (status == $.PercServiceUtils.STATUS_ERROR) {
             // sets the cookie to expire in 5 days to try save again.
             var futureDate = getDate(0, 0, 5);
-            document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;";
+            var secure = "";
+            if (window.isSecureContext) {
+                secure = " Secure;";
+            }
+            document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;" + secure;
         }
     });
 }
