@@ -23,27 +23,46 @@
  */
 package com.percussion.servlets;
 
+import com.percussion.auditlog.PSActionOutcome;
+import com.percussion.auditlog.PSAuditLogService;
+import com.percussion.auditlog.PSAuthenticationEvent;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.server.*;
+import com.percussion.server.IPSCgiVariables;
+import com.percussion.server.PSApplicationHandler;
+import com.percussion.server.PSBaseResponse;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSServer;
+import com.percussion.server.PSUserSession;
+import com.percussion.server.PSUserSessionManager;
+import com.percussion.server.ThreadLocalProperties;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.utils.request.PSRequestInfoBase;
-import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.security.PSRemoteUserCallback;
 import com.percussion.utils.security.PSRequestHeadersCallback;
 import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.utils.servlet.PSServletUtils;
+import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import com.percussion.xsl.encoding.*;
+import com.percussion.xsl.encoding.PSBig5CharacterSet;
+import com.percussion.xsl.encoding.PSCp1252CharacterSet;
+import com.percussion.xsl.encoding.PSEUC_CNCharacterSet;
+import com.percussion.xsl.encoding.PSEUC_JPCharacterSet;
+import com.percussion.xsl.encoding.PSEUC_KRCharacterSet;
+import com.percussion.xsl.encoding.PSEUC_TWCharacterSet;
+import com.percussion.xsl.encoding.PSSJISCharacterSet;
+import com.percussion.xsl.encoding.PSUTF16BECharacterSet;
+import com.percussion.xsl.encoding.PSUTF16LECharacterSet;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -55,17 +74,26 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.security.auth.Subject;
-import javax.security.auth.callback.*;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-import javax.servlet.*;
-import javax.servlet.http.Cookie;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestWrapper;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.TransformerFactory;
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,13 +102,14 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
-import com.percussion.auditlog.PSActionOutcome;
-import com.percussion.auditlog.PSAuditLogService;
-import com.percussion.auditlog.PSAuthenticationEvent;
-import org.xml.sax.SAXException;
-
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -1706,8 +1735,8 @@ public class PSSecurityFilter implements Filter
       updateUserSession(request, response, true);
 
       String secure = "";
-      if("true".equalsIgnoreCase(PSServer.getProperty("requireHttps","false"))){
-         secure =  " Secure;";
+      if (request.isSecure()) {
+         secure = " Secure;";
       }
 
       String sameSite = " SameSite=";
