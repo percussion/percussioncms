@@ -34,21 +34,16 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.services.assembly.jexl.PSDocumentUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
-
-import java.io.File;
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
-import org.apache.commons.httpclient.HttpException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.DOMWriter;
 import org.w3c.dom.Document;
+
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.IOException;
 
 public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
 {
@@ -105,6 +100,7 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
     protected String getResourceUrl() throws PSDataServiceException {
         return getPageCategoryService().loadConfiguration().getTree().getUrl();
     }
+
     protected String loadResource(String resourceUrl) throws IOException, ServletException {
         return new  PSDocumentUtils().getDocument(resourceUrl);
     }
