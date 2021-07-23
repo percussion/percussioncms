@@ -215,4 +215,7 @@ public interface IPSDeliveryErrors
     * </table>
     */
    public static final int SOLR_COMMUNICATION_EXCEPTION = 11;
+
+
+   public static final int CANNOT_DELIVER_NO_DELIVERYTYPE=12;
 }
