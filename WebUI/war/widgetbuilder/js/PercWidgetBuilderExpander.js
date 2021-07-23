@@ -73,7 +73,11 @@
     }
     function setDefsExpandedStateInCookie (isExpanded) {
         var state = isExpanded ? 'expanded' : 'collapsed';
-        $.cookie(percDefsExpandedState, state, {"sameSite": "Strict"});
+        var options = {"SameSite": "Strict"};
+        if (window.isSecureContext) {
+            options.secure = true;
+        }
+        $.cookie(percDefsExpandedState, state, options);
     }
     function getDefsExpandedStateFromCookie () {
         return ('' + $.cookie(percDefsExpandedState));
