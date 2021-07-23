@@ -41,10 +41,11 @@
 .perc-tooltip {
     display: none;
     position: absolute;
-    background-color: lightgoldenrodyellow;
+    background-color: white;
     text-align: center;
     padding: 0.5em;
     border-radius: 5px;
+    border: 0.5px solid black;
 }
 
 .perc-tooltip-container:hover .perc-tooltip {
