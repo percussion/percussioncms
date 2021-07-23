@@ -117,6 +117,7 @@
     height: 16px;
     border: none;
     float: left;
+    display:inline-block !important;
 }
 .perc-bulk-expand{
     background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonBluePlus.png");
@@ -124,6 +125,7 @@
     height: 16px;
     border: none;
     float: left;
+    display:inline-block !important;
 }
 #perc-bulk-target-folder-label, #perc-bulk-details-label{
     padding-left: 5px;
