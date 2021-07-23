@@ -24,7 +24,7 @@
 package com.percussion.delivery.utils.spring;
 
 
-import com.percussion.security.PSSecureProperty;
+import com.percussion.delivery.utils.security.PSSecureProperty;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 /**
