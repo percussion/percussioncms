@@ -23,10 +23,7 @@
  */
 package com.percussion.delivery.utils.security;
 
-
-import com.percussion.security.PSSecureProperty;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -97,9 +94,9 @@ public class PSSecurePropertyTest
    @Test
    public void testGetClouded() throws Exception
    {
-      
-      String enc1 = PSSecureProperty.getClouded(pass, null, DEFAULT_ENCRYPTION);
-      String enc2 = PSSecureProperty.getClouded(pass, salt, DEFAULT_ENCRYPTION);
+
+      String enc1 = PSSecureProperty.getClouded(pass);
+      String enc2 = PSSecureProperty.getClouded(pass);
       String dec1 = PSSecureProperty.getValue(enc1, null);
       String dec2 = PSSecureProperty.getValue(enc2, salt);
       assertEquals(pass, dec1);
@@ -127,19 +124,7 @@ public class PSSecurePropertyTest
       assertTrue(strongEncoding);
       assertFalse(notEncodedValue);
    }
-   
-   @Ignore
-   public void testGetValueFromEncToStrongEnc() throws Exception
-   {
-      String decOldValue = PSSecureProperty.getValue(oldKey, null);
-      String encStrong = PSSecureProperty.getClouded(decOldValue, null, STRONG_ENCRYPTION);
-      String decNewValue = PSSecureProperty.getValue(encStrong, null);
-      
-      assertEquals(pass, decOldValue);
-      assertEquals(pass, decNewValue);
-      assertEquals(decNewValue, decOldValue);
-      assertEquals(true, encStrong.startsWith("ENC2("));
-   }
+
    
    @Test
    public void testsecureProperties() throws Exception
@@ -177,33 +162,21 @@ public class PSSecurePropertyTest
    {
       File file = new File(tempFolder.getRoot().getAbsolutePath() + File.separator+  filename);
 
-      OutputStream os = new FileOutputStream(file);
-      try
-      {
+      try (OutputStream os = new FileOutputStream(file)) {
          props.store(os, "");
       }
-      finally
-      {
-         if(os != null)
-            os.close();
-      }
+
    }
    
-   private Properties loadProps(String filename) throws Exception
-   {
-      File file = new File(tempFolder.getRoot().getAbsolutePath() + File.separator+  filename);
-      InputStream is = new FileInputStream(file);
-      try
-      {
+   private Properties loadProps(String filename) throws Exception {
+      File file = new File(tempFolder.getRoot().getAbsolutePath() + File.separator + filename);
+
+      try (InputStream is = new FileInputStream(file)) {
          Properties props = new Properties();
          props.load(is);
          return props;
       }
-      finally
-      {
-         if(is != null)
-            is.close(); 
-      }
+
    }
    
    private void copyProps(String source, String target) throws Exception

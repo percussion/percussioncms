@@ -511,12 +511,18 @@ public class PSLegacyEncrypter extends PSAbstractEncryptor {
    }
 
    @Deprecated
-   public static final String LEGACY_USER_PWD="demo";
+   public static final String LEGACY_USER_PWD = "demo";
 
    @Deprecated
    public static final String LEGACY_USER_PWD_ENC = "89e495e7941cf9e40e6980d14a16bf023ccd4c91";
 
    @Deprecated
    public static final String PUBSERVER_ENCRYPTION_KEY = "p3$Y&ND8#Zdefghl";
+
+   /**
+    * Constant to use for part one key when encrypting/decrypting the password.
+    */
+   @Deprecated
+   public static final String SECURE_PROPERTY_DEFAULT_KEY = "The value entered cannot be null!!!!!";
 
 }
