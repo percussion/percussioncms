@@ -4471,7 +4471,7 @@
 							}
 							data =
 								typeof data.d === "string"
-									? $.parseJSON(data.d)
+									? $.JSON.parse(data.d)
 									: data.d;
 						}
 						resultDfd.resolveWith(this, [data]);
@@ -6052,7 +6052,7 @@
 							}
 							break;
 						case "json":
-							source = $.parseJSON($container.text());
+							source = $.JSON.parse($container.text());
 							// $container already contains the <ul>, but we remove the plain (json) text
 							// $container.empty();
 							$container

@@ -5878,7 +5878,7 @@ jQuery.cookie = function (name, value, options) {
          */
         , decodeJSON: function (str) {
             try {
-                return $.parseJSON ? $.parseJSON(str) : window["eval"]("(" + str + ")") || {};
+                return $.JSON.parse ? $.JSON.parse(str) : window["eval"]("(" + str + ")") || {};
             } catch (e) {
                 return {};
             }
