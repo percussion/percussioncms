@@ -261,11 +261,15 @@ $(function () {
 
     function storeCredentials(siteName, token) {
 
+        var secure = "";
+        if (window.isSecureContext) {
+            secure = " Secure;";
+        }
         // store cookie with the token so when we delete
-        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + "; SameSite=Lax;";
+        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + "; SameSite=Lax;" + secure;
 
         // get current site
-        if(siteName === undefined || siteName == '')
+        if (siteName === undefined || siteName == '')
             siteName = $("#mySites").val();
 
         var credentials = {

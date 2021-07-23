@@ -290,7 +290,12 @@ var assetPagination = null;
         function set_finder_height_in_cookie (height) {
             if (!isLibMode && get_finder_height_from_cookie() !== height) {
                 var state = get_finder_is_collapsed_from_cookie() ? 'collapsed' : 'expanded';
-                $.cookie(finderExpandStateCookie, state + height,{"sameSite": "Strict"});
+
+                var options = {"SameSite": "Strict"};
+                if (window.isSecureContext) {
+                    options.secure = true;
+                }
+                $.cookie(finderExpandStateCookie, state + height, options);
             }
         }
 
@@ -300,7 +305,11 @@ var assetPagination = null;
                 var height, state;
                 height = get_finder_height_from_cookie();
                 state = isExpanded ? 'expanded' : 'collapsed';
-                $.cookie(finderExpandStateCookie, state + height,{"sameSite": "Strict"});
+                var options = {"SameSite": "Strict"};
+                if (window.isSecureContext) {
+                    options.secure = true;
+                }
+                $.cookie(finderExpandStateCookie, state + height, options);
             }
         }
 
