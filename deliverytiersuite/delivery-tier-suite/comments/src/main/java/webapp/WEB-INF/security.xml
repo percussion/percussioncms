@@ -25,6 +25,7 @@
 
 <beans:beans xmlns:security="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:p="http://www.springframework.org/schema/p"
              xmlns:util="http://www.springframework.org/schema/util"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
@@ -36,7 +37,8 @@
     <security:http pattern="/favicon.ico" security='none' />
 
     <security:http  create-session="stateless" use-expressions="true" auto-config="true">
-        <security:csrf disabled="true"/>
+        <security:csrf disabled="false" token-repository-ref="tokenRepository"/>
+
        <security:intercept-url pattern="/**" access="isAuthenticated()" />
 
        <security:custom-filter position="PRE_AUTH_FILTER"
@@ -47,6 +49,10 @@
         <security:cors configuration-source-ref="corsSource" />
        <security:http-basic/>
    </security:http>
+
+    <beans:bean id="tokenRepository"
+                class="org.springframework.security.web.csrf.CookieCsrfTokenRepository"
+                p:cookieHttpOnly="false"/>
 
     <beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
         <beans:property name="corsConfigurations">
