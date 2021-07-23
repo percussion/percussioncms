@@ -24,6 +24,7 @@
 package com.percussion.rx.delivery.impl;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
 import com.percussion.rx.delivery.IPSDeliveryItem;
 import com.percussion.rx.delivery.IPSDeliveryManager;
@@ -114,7 +115,8 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
     * The rx publish service, (auto) wired by spring
     */
    @Autowired
-   private static final IPSRxPublisherServiceInternal m_rxPubService = null;
+   @java.lang.SuppressWarnings("java:S1170")
+   private final IPSRxPublisherServiceInternal m_rxPubService = null;
    
    
    public IPSDeliveryResult process(IPSDeliveryItem result)
@@ -302,9 +304,8 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
             {
                log.error("Couldn't load bean for delivery type: {}"
                      ,loc.getName());
-               throw new RuntimeException(
-                     "Cannot deliver, no handler for delivery type "
-                           + loc.getName());
+               throw new PSDeliveryException(IPSDeliveryErrors.CANNOT_DELIVER_NO_DELIVERYTYPE,
+                       loc.getName());
             }
             handler.init(jobId, site, server);
             hmap.put(loc.getBeanName(), handler);
@@ -398,6 +399,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
       }
    }
 
+   @java.lang.SuppressWarnings("java:S2583")
    public void updateItemState(IPSDeliveryResult result)
    {
       PSPair<IPSSite, IPSPubServer> jobId = m_jobToSiteServer.get(result.getJobId());
@@ -414,7 +416,9 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
          status.addMessage(result.getFailureMessage());
       }
       status.setSiteId(jobId.getFirst().getGUID());
-      m_rxPubService.updateItemState(status);      
+
+      if(m_rxPubService != null)
+         m_rxPubService.updateItemState(status);
    }
    
    
