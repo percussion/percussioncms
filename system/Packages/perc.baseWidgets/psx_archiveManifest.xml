@@ -194,26 +194,7 @@
          <ArchiveFile>sys__UserDependency--rxconfig_Widgets_percSimpleText-xml\percSimpleText.xml</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
-    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_jslib_jquery-js">
-        <PSXDependencyFile fileType="SUPPORT_FILE">
-            <RxFile>D:\Percussion\ins\dev\web_resources\cm\jslib\jquery.js</RxFile>
-            <ArchiveFile>sys__UserDependency--web__resources_cm_jslib_jquery-js\jquery.js</ArchiveFile>
-        </PSXDependencyFile>
-    </PSXDepFilesIdTypes>
 
-    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_jslib_jquery--ui-1-12-1-js">
-        <PSXDependencyFile fileType="SUPPORT_FILE">
-            <RxFile>D:\Percussion\ins\dev\web_resources\cm\jslib\jquery-ui.js</RxFile>
-            <ArchiveFile>sys__UserDependency--web__resources_cm_jslib_jquery--ui-1-12-1-js\jquery-ui.js</ArchiveFile>
-        </PSXDependencyFile>
-    </PSXDepFilesIdTypes>
-
-    <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_jslib_jquery--ui-js">
-        <PSXDependencyFile fileType="SUPPORT_FILE">
-            <RxFile>D:\Percussion\ins\dev\web_resources\cm\jslib\jquery-ui.js</RxFile>
-            <ArchiveFile>sys__UserDependency--web__resources_cm_jslib_jquery--ui-js\jquery-ui.js</ArchiveFile>
-        </PSXDependencyFile>
-    </PSXDepFilesIdTypes>
     <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_cm_themes_smoothness_jquery--ui--1-8-9-custom-css">
         <PSXDependencyFile fileType="SUPPORT_FILE">
             <RxFile>D:\Percussion\ins\dev\web_resources\cm\themes\smoothness\jquery-ui-1.8.9.custom.css</RxFile>

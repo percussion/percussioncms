@@ -2337,34 +2337,6 @@
                           </PSXDeployableObject>
                       </PSXUserDependency>
 
-                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/jslib/jquery.js">
-                          <PSXDeployableObject>
-                              <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/jslib/jquery.js" dependencyType="User" displayName="jquery.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                  <Dependencies/>
-                              </PSXDependency>
-                              <RequiredClasses/>
-                          </PSXDeployableObject>
-                      </PSXUserDependency>
-
-
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/jslib/jquery-ui.js">
-                        <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/jslib/jquery-ui.js" dependencyType="User" displayName="jquery-ui.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                              <Dependencies/>
-                           </PSXDependency>
-                           <RequiredClasses/>
-                        </PSXDeployableObject>
-                     </PSXUserDependency>
-
-
-                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/cm/jslib/jquery-ui.js">
-                          <PSXDeployableObject>
-                              <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/cm/jslib/jquery-ui.js" dependencyType="User" displayName="jquery-ui.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                                  <Dependencies/>
-                              </PSXDependency>
-                              <RequiredClasses/>
-                          </PSXDeployableObject>
-                      </PSXUserDependency>
                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="rx_resources/widgets/PSWidget_RawHtml/images/widgetHtmSampleBackground.png">
                         <PSXDeployableObject>
                            <PSXDependency autoDep="no" autoExpand="yes" dependencyId="rx_resources/widgets/PSWidget_RawHtml/images/widgetHtmSampleBackground.png" dependencyType="User" displayName="widgetHtmSampleBackground.png" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
