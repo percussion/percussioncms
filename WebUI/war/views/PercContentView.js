@@ -135,7 +135,7 @@
                         var assetInfo = model.getAssetDropCriteria()[elem.attr('widgetid')];
                         var assetId = assetInfo && !assetInfo.locked?elem.attr('assetid'):"";
                         var wDef = elem.attr('widgetdefid');
-                        if(assetId && typeof model.getWidgetPrefs(wDef) !== 'undefined'&& model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
+                        if(assetId && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                         {
                             imgSrc = '/cm/images/icons/editor/promote';
                         }
@@ -267,7 +267,7 @@
             if(typeof(inside.draggable) == 'function')
             {
                 insideIframe(widget).draggable({
-                    scope: $.perc_iframe_scope,
+                    scope: 'default',
                     revert: true,
                     drag: function(event, ui) {
                         if(event.target.innerText.length <= 0)
@@ -276,10 +276,10 @@
                 });
                 insideIframe(widget).droppable({
                     // only interact with iframe draggables
-                    scope: $.perc_iframe_scope,
+                    scope: 'default',
                     tolerance : 'pointer',
                     // as you hover over the widget, update cursor and background
-                    activate : function(evt, ui) {
+                    over : function(evt, ui) {
 
                         var parentRegionId = $(this).parent().parent().attr("id");
 
@@ -318,7 +318,7 @@
                         });
                         var isEmptyDropOnWidget = false;
                         if(event.target.innerText.length === 0) {
-                            if(ui.draggable[0].innerText.length !== 0 && event.target.getAttribute('widgetdefid') === ui.draggable[0].getAttribute('widgetdefid')) {
+                            if(ui.draggable[0].innerText.length !== 0 && evt.target.getAttribute('widgetdefid') === ui.draggable[0].getAttribute('widgetdefid')) {
                                 var customText = event.target.innerHTML;
                                 dropOnWidget[0].innerHTML = ui.draggable[0].innerHTML;
                                 draggedWidget[0].innerHTML = customText;
@@ -364,10 +364,10 @@
             }
 
             widget.droppable({
-                scope: $.perc_iframe_scope,
+                scope: 'default',
                 tolerance : 'pointer',
                 // as you hover over the widget, update cursor and background
-                activate : function(evt, ui) {
+                over : function(evt, ui) {
                     var parentRegionId = $(this).parent().parent().attr("id");
 
                     overlap++;
