@@ -202,7 +202,7 @@
                 {
                     try
                     {
-                        var obj = $.JSON.parse(urlstring.query);
+                        var obj = JSON.parse(urlstring.query);
                         $.map(obj.criteria, function(n, i){
                             if ($.inArray(n, target.settings.query.criteria) === -1)
                             {
