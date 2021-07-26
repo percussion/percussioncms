@@ -241,6 +241,10 @@
         <!-- jquery for published site -->
         <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.js"
               file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-3.6.0.js"/>
+
+        <!-- jquery-ui for published site -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-ui.js"
+              file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"/>
         <!-- jquery migrate for published site -->
         <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery-migrate.js"
               file="${basedir}/../../WebUI/war/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"/>
