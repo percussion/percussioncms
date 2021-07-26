@@ -1012,11 +1012,14 @@ catch (Exception e){
     psContentEvent = new PSContentEvent(guid.toString(), String.valueOf(dependentId), paths.get(0), PSContentEvent.ContentEventActions.pagePublishSchedule, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
     psAuditLogService.logContentEvent(psContentEvent);
 }
-
+        String comments = req.getComments();
+        if(comments == null || comments.trim().equals("")){
+            comments = "Auto approval while scheduling";
+        }
 
         //Below code has been done to approve page after scheduling
         try{
-            itemWfService.performApproveTransition(id,true,"Auto approval while scheduling");
+            itemWfService.performApproveTransition(id,true,comments);
 
         }
         catch(IPSItemWorkflowService.PSItemWorkflowServiceException iwe)

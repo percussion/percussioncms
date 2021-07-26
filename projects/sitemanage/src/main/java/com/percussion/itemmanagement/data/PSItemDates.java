@@ -56,7 +56,7 @@ public class PSItemDates extends PSAbstractDataObject
      * @param startDate
      * @param endDate
      */
-    public PSItemDates(String itemId, String startDate, String endDate)
+    public PSItemDates(String itemId, String startDate, String endDate,String comments)
     {
         notEmpty(itemId, "itemId");
         notNull(itemId, "itemId");
@@ -64,6 +64,12 @@ public class PSItemDates extends PSAbstractDataObject
         this.itemId = itemId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.comments = comments;
+    }
+
+    public PSItemDates(String itemId, String startDate, String endDate)
+    {
+       this(itemId,startDate,endDate,null);
     }
 
     /**
@@ -113,10 +119,22 @@ public class PSItemDates extends PSAbstractDataObject
     {
         this.endDate = endDate;
     }
+
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
     
     @NotNull
     @NotEmpty
     private String itemId;
     private String startDate;
     private String endDate;
+
+
+    private String comments;
 }
