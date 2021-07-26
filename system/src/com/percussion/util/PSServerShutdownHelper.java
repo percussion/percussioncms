@@ -80,6 +80,7 @@ public abstract class PSServerShutdownHelper extends Thread
             }
             catch (InterruptedException ie) 
             {
+               Thread.currentThread().interrupt();
                return;
             }
          }

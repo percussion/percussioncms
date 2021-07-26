@@ -2365,6 +2365,7 @@ public class PSApplicationHandler implements IPSRootedHandler
                   catch (InterruptedException e)
                   {
                      PSConsole.printMsg("Server", e);
+                     Thread.currentThread().interrupt();
                   }
                }
             }

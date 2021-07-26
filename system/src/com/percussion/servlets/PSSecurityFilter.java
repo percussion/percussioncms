@@ -23,27 +23,46 @@
  */
 package com.percussion.servlets;
 
+import com.percussion.auditlog.PSActionOutcome;
+import com.percussion.auditlog.PSAuditLogService;
+import com.percussion.auditlog.PSAuthenticationEvent;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.server.*;
+import com.percussion.server.IPSCgiVariables;
+import com.percussion.server.PSApplicationHandler;
+import com.percussion.server.PSBaseResponse;
+import com.percussion.server.PSRequest;
+import com.percussion.server.PSRequestContext;
+import com.percussion.server.PSServer;
+import com.percussion.server.PSUserSession;
+import com.percussion.server.PSUserSessionManager;
+import com.percussion.server.ThreadLocalProperties;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.utils.request.PSRequestInfoBase;
-import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.security.PSRemoteUserCallback;
 import com.percussion.utils.security.PSRequestHeadersCallback;
 import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.utils.servlet.PSServletUtils;
+import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import com.percussion.xsl.encoding.*;
+import com.percussion.xsl.encoding.PSBig5CharacterSet;
+import com.percussion.xsl.encoding.PSCp1252CharacterSet;
+import com.percussion.xsl.encoding.PSEUC_CNCharacterSet;
+import com.percussion.xsl.encoding.PSEUC_JPCharacterSet;
+import com.percussion.xsl.encoding.PSEUC_KRCharacterSet;
+import com.percussion.xsl.encoding.PSEUC_TWCharacterSet;
+import com.percussion.xsl.encoding.PSSJISCharacterSet;
+import com.percussion.xsl.encoding.PSUTF16BECharacterSet;
+import com.percussion.xsl.encoding.PSUTF16LECharacterSet;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -55,17 +74,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.security.auth.Subject;
-import javax.security.auth.callback.*;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-import javax.servlet.*;
-import javax.servlet.http.Cookie;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletRequestWrapper;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.TransformerFactory;
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,13 +101,15 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.CopyOnWriteArrayList;
-import com.percussion.auditlog.PSActionOutcome;
-import com.percussion.auditlog.PSAuditLogService;
-import com.percussion.auditlog.PSAuthenticationEvent;
-import org.xml.sax.SAXException;
-
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -108,9 +137,8 @@ public class PSSecurityFilter implements Filter
     */
    protected static final String NON_SECURE_HTTP_BIND_ADDRESS = "perc.http.bind.address";
 
-   private PSSecurityUtility securityUtil = new PSSecurityUtility();
-   private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
-   private PSAuthenticationEvent psAuthenticationEvent;
+   private final PSSecurityUtility  securityUtil = new PSSecurityUtility();
+   private  final PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
 
    private static final String ERROR_HEADER_NULL="headers may not be null";
    private static final String THREAD="thread ";
@@ -314,7 +342,7 @@ public class PSSecurityFilter implements Filter
     * basic authentication and then send a 200 OK back to the client if it
     * succeeds rather.
     */
-   private static List<String> ms_loginRequests = new ArrayList<String>();
+   private static List<String> ms_loginRequests = new ArrayList<>();
    
    /**
     * Matcher for use in this class
@@ -329,7 +357,7 @@ public class PSSecurityFilter implements Filter
    /**
     * This is a string which matches CMS-API requests
     */
-   private static List<String> ms_externalApiRequests = new ArrayList<String>();
+   private static List<String> ms_externalApiRequests = new ArrayList<>();
 
    static
    {
@@ -364,13 +392,11 @@ public class PSSecurityFilter implements Filter
    
    /**
     * STORY-403 An exception IP address to allow through if SSL is on.
-    * @author adamgent
     */
    private String m_nonSecureHttpBindAddress = null;
    /**
-    * STORY-403 If not null use the header to get the {@link #m_nonSecureHttpBindAddressHeader}.
+    * STORY-403 If not null use the header.
     * This is needed for proxies such as Nginx or Apache that are in front of CM System.
-    * @author adamgent
     */
    private String m_nonSecureHttpBindAddressHeader = null;
 
@@ -431,8 +457,8 @@ public class PSSecurityFilter implements Filter
       m_userSecurityConfig = new File(userConfigDir,
             "security/user-security-conf.xml");
       if (!m_userSecurityConfig.exists())
-         ms_log.info("User security config file not found: "
-               + m_userSecurityConfig);
+         ms_log.info("User security config file not found: {}",
+                m_userSecurityConfig);
       loadConfigs();
    }
 
@@ -466,7 +492,7 @@ public class PSSecurityFilter implements Filter
       
       if (doLoadSystem || doLoadUser)
       {
-         m_configuredEntries = new CopyOnWriteArrayList<SecurityEntry>();
+         m_configuredEntries = new CopyOnWriteArrayList<>();
          loadConfig(m_systemSecurityConfig, false, m_configuredEntries);
          m_forceSecureLogin = loadConfig(m_userSecurityConfig, true, 
                m_configuredEntries);
@@ -551,37 +577,6 @@ public class PSSecurityFilter implements Filter
       {
          throw new IllegalArgumentException("chain may not be null");
       }
-      
-      // CORs handling
-      // If there is an error check to make sure "Access-Control-Allow-Headers"
-      // has request header in the list
-      if (request instanceof HttpServletRequest)
-      {
-         HttpServletRequest httpRequest = (HttpServletRequest) request;
-         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
-         httpResponse.addHeader("Access-Control-Allow-Origin", "*");
-         httpResponse
-               .addHeader(
-                     "Access-Control-Allow-Headers",
-                     "Cache-Control,Authorization,Session,Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers");
-         httpResponse.addHeader("Access-Control-Allow-Credentials", "true");
-         httpResponse.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
-
-         // DO not process pre-flight requests
-         if (httpRequest.getMethod().equals("OPTIONS"))
-         {
-            return;
-         }
-         else if (httpRequest.getHeader("session") != null)
-         {
-            // if we have a session header, then this is (possibly) a CMS-API
-            // call
-            // get session id out of header and put into special attribute to
-            // retrieve later
-            httpRequest.setAttribute(IPSHtmlParameters.SYS_SESSIONID, httpRequest.getHeader("session"));
-         }
-      }
 
       boolean needsReset = false;
       boolean ssorequest = false;
@@ -599,7 +594,7 @@ public class PSSecurityFilter implements Filter
              * If HTTPS is on only allow certain IP address through.
              */
             if ( ! isNonSecureHttpRequestAllowed(httpReq) ) {
-               httpResp.sendError(HttpServletResponse.SC_FORBIDDEN, "Only SSL connetions allowed");
+               httpResp.sendError(HttpServletResponse.SC_FORBIDDEN, "Only TLS/SSL connections allowed");
                return;
             }
             //If the request is not secure, check whether http is allowed or not before we proceed.
@@ -684,8 +679,8 @@ public class PSSecurityFilter implements Filter
    private boolean httpsRequired()
    {
       if(isHTTPSRequired != null){
-         ms_log.debug("Using requireHTTPS value of: " + isHTTPSRequired.booleanValue());
-         return isHTTPSRequired.booleanValue();
+         ms_log.debug("Using requireHTTPS value of: {}" , isHTTPSRequired);
+         return isHTTPSRequired;
       }
       boolean result = false;
       Properties serverProps = PSServer.getServerProps();
@@ -766,8 +761,8 @@ public class PSSecurityFilter implements Filter
    private HttpServletRequest authorize(HttpServletRequest request,
          HttpServletResponse response) throws IOException, ServletException
    {
-      ms_log.debug("enter authorize on thread "
-            + Thread.currentThread().getName());
+      ms_log.debug("enter authorize on thread {}"
+            , Thread.currentThread().getName());
       HttpSession sess = request.getSession();
       
       Object mutex = WebUtils.getSessionMutex(sess);
@@ -940,7 +935,7 @@ public class PSSecurityFilter implements Filter
                remaining = 0;
             }
              if(remaining<500){
-                 psAuthenticationEvent=new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.revoke,request,request.getRemoteUser());
+                PSAuthenticationEvent psAuthenticationEvent = new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.revoke, request, request.getRemoteUser());
                  psAuthenticationEvent.setActivity("revoke");
                  psAuditLogService.logAuthenticationEvent(psAuthenticationEvent);
              }
@@ -952,7 +947,7 @@ public class PSSecurityFilter implements Filter
             String json ="{\"expiry\":"+remaining+",\"warning\":"+warning+"}";
             
             try {
-               response.getWriter().write(json.toString());
+               response.getWriter().write(json);
                return true;
              } catch (IOException e) {
                 ms_log.error("Invalid json object for sessioncheck");
@@ -983,14 +978,11 @@ public class PSSecurityFilter implements Filter
          return false;
 
       // If Referer exists and does not match request then go to login.
-      if (!requestHeaaderMatchesRequest(reqURI, request.getHeader("Referer")))
+      if (!requestHeaderMatchesRequest(reqURI, request.getHeader("Referer")))
          return true;
 
       // If Origin exists and does not match request then go to login.
-      if (!requestHeaaderMatchesRequest(reqURI, request.getHeader("Origin")))
-         return true;
-
-      return false;
+      return !requestHeaderMatchesRequest(reqURI, request.getHeader("Origin"));
    }
    
    /**
@@ -1000,20 +992,17 @@ public class PSSecurityFilter implements Filter
     * @param reqHeader The header to mtch against the request <code>null</code>.
     * @return true if request matches header or header is missing. false if header does not match request.
     */
-   private boolean requestHeaaderMatchesRequest(URI requestURI, String reqHeader) 
+   private boolean requestHeaderMatchesRequest(URI requestURI, String reqHeader)
    {
       if (reqHeader == null)
           reqHeader = "";
       
-      if (reqHeader.isEmpty() != true && StringUtils.isNotBlank(reqHeader))
+      if (!reqHeader.isEmpty() && StringUtils.isNotBlank(reqHeader))
       {
          URI headerURI = URI.create(reqHeader);
-         if (!requestURI.getScheme().equals(headerURI.getScheme()) || 
-             !requestURI.getHost().equals(headerURI.getHost()) ||
-             !(requestURI.getPort() == headerURI.getPort()))
-         {
-            return false;
-         }
+         return requestURI.getScheme().equals(headerURI.getScheme()) &&
+                 requestURI.getHost().equals(headerURI.getHost()) &&
+                 (requestURI.getPort() == headerURI.getPort());
       }
       return true;
    }
@@ -1025,7 +1014,7 @@ public class PSSecurityFilter implements Filter
     * 
     * @param request the servlet request, assumed never <code>null</code>.
     * @return the auth type, never <code>null</code>.
-    * @throws ServletException
+    * @throws ServletException Exception
     */
    AuthType calculateAuthType(HttpServletRequest request) 
    throws ServletException
@@ -1081,8 +1070,9 @@ public class PSSecurityFilter implements Filter
    private HttpServletRequest handleExistingUserSession(
       HttpServletRequest request, HttpServletResponse response, String sessId) 
    {
-      ms_log.debug(THREAD + Thread.currentThread().getName()
-         + " found user session id specified by html param: " + sessId);
+      ms_log.debug("{}{} found user session id specified by html param: {}" ,
+              THREAD , Thread.currentThread().getName(),
+              sessId);
       
       initRequest(request, response);
       try
@@ -1091,8 +1081,10 @@ public class PSSecurityFilter implements Filter
       }
       catch (LoginException e)
       {
-         ms_log.debug(THREAD + Thread.currentThread().getName()
-            + " invalid user session id specified by html param: " + sessId);
+         ms_log.debug("{}{} invalid user session id specified by html param: {}" ,
+                 THREAD ,
+                 Thread.currentThread().getName(),
+                 sessId);
          return null;
       }
       
@@ -1181,19 +1173,16 @@ public class PSSecurityFilter implements Filter
     *         been handled by this method.
     * 
     * @throws IOException If there are any IO errors.
-    * @throws ServletException If the number of allowed attempts has been
-    *            exceeded.
     */
    private HttpServletRequest handleExternalAuth(HttpServletRequest request,
-         HttpServletResponse response) throws IOException, ServletException
+         HttpServletResponse response) throws IOException
    {
       try
       {
          HttpServletRequest authReq = authenticate(request, response, null,
                null);
-         ms_log.debug("Successfully authenticated subject on thread "
-               + Thread.currentThread().getName()
-               + " using external authentication information");
+         ms_log.debug("Successfully authenticated subject on thread {} using external authentication information",
+                 Thread.currentThread().getName());
          return authReq;
       }
       catch (LoginException e)
@@ -1212,14 +1201,13 @@ public class PSSecurityFilter implements Filter
     * @return <code>true</code> if it is determined to have been externally
     *         authenticated, <code>false</code> if not.
     */
-   @SuppressWarnings("unchecked")
    private boolean isExternallyAuthenticated(HttpServletRequest request)
    {
-      Map<String, String> headers = new HashMap<String, String>();
-      Enumeration e = request.getHeaderNames();
+      Map<String, String> headers = new HashMap<>();
+      Enumeration<String> e = request.getHeaderNames();
       while (e.hasMoreElements())
       {
-         String name = e.nextElement().toString();
+         String name = e.nextElement();
          headers.put(name, request.getHeader(name));
       }
       
@@ -1329,8 +1317,8 @@ public class PSSecurityFilter implements Filter
    {
       if (ms_log.isDebugEnabled()) 
       {
-         ms_log.debug(THREAD + Thread.currentThread().getName()
-               + " found 'public credentials': " + sub.getPublicCredentials());
+         ms_log.debug("{}{} found 'public credentials': {}" ,
+                 THREAD , Thread.currentThread().getName(), sub.getPublicCredentials());
       }
       HttpServletRequest newReq = new PSServletRequestWrapper(request, sub);
       updateUserSession(newReq, response, false);
@@ -1389,7 +1377,7 @@ public class PSSecurityFilter implements Filter
          boolean isBehindProxy = PSServer.isRequestBehindProxy(request);
          if(isBehindProxy  && request.getMethod().equalsIgnoreCase("GET"))  {
             String proxyUrl = PSServer.getProxyURL(request,true);
-            if(proxyUrl == ""){
+            if(StringUtils.isEmpty(proxyUrl)){
                proxyUrl = loginUrl ;
             }
             response.sendRedirect(proxyUrl+ loginUrl);
@@ -1397,16 +1385,16 @@ public class PSSecurityFilter implements Filter
             response.sendRedirect(loginUrl);
          }
 
-         ms_log.debug("Redirected authentication to login servlet on thread "
-               + Thread.currentThread().getName());
+         ms_log.debug("Redirected authentication to login servlet on thread {}"
+               , Thread.currentThread().getName());
       }
       catch (IllegalStateException e)
       {
-         ms_log.error("IllegalState on session: " + sess.getId(), e);
+         ms_log.error("IllegalState on session: {}" , sess.getId(), e);
       }
       catch (NullPointerException e)
       {
-         ms_log.error("Error on session: " + sess.getId(), e);
+         ms_log.error("Error on session: {}" , sess.getId(), e);
       }
    }
 
@@ -1421,7 +1409,6 @@ public class PSSecurityFilter implements Filter
     * @throws ServletException If the security configuration is not properly
     *            initialized.
     */
-   @SuppressWarnings("unchecked")
    private boolean isLoginRequest(HttpServletRequest request)
          throws ServletException
    {
@@ -1439,7 +1426,6 @@ public class PSSecurityFilter implements Filter
     * @throws ServletException If the security configuration is not properly
     *            initialized.
     */
-   @SuppressWarnings("unchecked")
    private boolean isExternalApiRequest(HttpServletRequest request)
          throws ServletException
    {
@@ -1503,7 +1489,7 @@ public class PSSecurityFilter implements Filter
                return null;
             }
             auth = auth.substring(space);
-            byte decoded[] = Base64.decodeBase64(auth.getBytes("UTF8"));
+            byte[] decoded = Base64.decodeBase64(auth.getBytes(StandardCharsets.UTF_8));
             String decodedAuth = new String(decoded);
             int colonIndex = decodedAuth.indexOf(":");
             
@@ -1524,13 +1510,13 @@ public class PSSecurityFilter implements Filter
                if (isLoginRequest(request))
                {
                   response.setStatus(200);
-                  ms_log.debug("Doing Basic.Return 200 response on thread "
-                        + Thread.currentThread().getName() );
+                  ms_log.debug("Doing Basic.Return 200 response on thread {}"
+                        , Thread.currentThread().getName() );
                   return null;
                }
                
-               ms_log.debug("Doing Basic: Successfully authenticated subject on thread "
-                     + Thread.currentThread().getName() );
+               ms_log.debug("Doing Basic: Successfully authenticated subject on thread {}"
+                     , Thread.currentThread().getName() );
                return authReq;
             }
          }
@@ -1556,8 +1542,8 @@ public class PSSecurityFilter implements Filter
       // HTTPClient API which is used by Workbench, ECC and MSM
       response.addHeader(PSBaseResponse.RHDR_WWW_AUTH, "Basic realm=\"\"");
       response.sendError(401, "Must authenticate");
-      ms_log.debug("Return 401 response on thread "
-            + Thread.currentThread().getName() + " doing basic");
+      ms_log.debug("Return 401 response on thread {} doing basic",
+              Thread.currentThread().getName());
    }
 
    /**
@@ -1665,17 +1651,14 @@ public class PSSecurityFilter implements Filter
     * @param password The password to use, may be <code>null</code> or empty.
     * 
     * @return a new request, never <code>null</code>.
-    * 
-    * @throws IOException If there are any IO errors.
+    *
     * @throws LoginException If authentication does not succeed or if the user
     *            is not assigned to at least one Rhythmyx role.
-    * @throws ServletException If the number of allowed login attempts is
-    *            exceeded
     */
    @SuppressWarnings("unused")
    public static HttpServletRequest authenticate(HttpServletRequest request,
          HttpServletResponse response, String userId, String password)
-         throws IOException, LoginException, ServletException
+         throws LoginException
    {
       if (request == null)
          throw new IllegalArgumentException(ERROR_REQUEST_NULL);
@@ -1706,8 +1689,8 @@ public class PSSecurityFilter implements Filter
       updateUserSession(request, response, true);
 
       String secure = "";
-      if("true".equalsIgnoreCase(PSServer.getProperty("requireHttps","false"))){
-         secure =  " Secure;";
+      if (request.isSecure()) {
+         secure = " Secure;";
       }
 
       String sameSite = " SameSite=";
@@ -1862,7 +1845,7 @@ public class PSSecurityFilter implements Filter
          return false;
       
       if (!PSRequestInfoBase.isInited())
-         PSRequestInfoBase.initRequestInfo(new HashMap<String, Object>());
+         PSRequestInfoBase.initRequestInfo(new HashMap<>());
       
       PSRequest psreq = getCurrentRequest();
       if (psreq != null && psreq.hasUserSession() && 
@@ -1958,9 +1941,8 @@ public class PSSecurityFilter implements Filter
       if (!PSRequestInfoBase.isInited())
          return null;
       
-      PSRequest req = (PSRequest) PSRequestInfoBase.getRequestInfo(
+      return  (PSRequest) PSRequestInfoBase.getRequestInfo(
               PSRequestInfoBase.KEY_PSREQUEST);
-      return req;
    }
    
    /**
@@ -2008,8 +1990,6 @@ public class PSSecurityFilter implements Filter
     *           request's subject, <code>false</code> if any current user
     *           entries should be left as is.
     */
-   @SuppressWarnings(value =
-   {"unchecked"})
    private static void updateUserSession(HttpServletRequest req,
          HttpServletResponse res, boolean replace)
    {
@@ -2090,61 +2070,42 @@ public class PSSecurityFilter implements Filter
       // don't allow authentication using internal user name
       if (PSSecurityProvider.INTERNAL_USER_NAME.equals(user))
       {
-         ms_log.warn("Attempt to login using internal user name: " + user);
+         ms_log.warn("Attempt to login using internal user name: {}" , user);
          throw new LoginException("Reserved user name: " + user);
       }
 
-      LoginContext lc = new LoginContext(ms_policy, new CallbackHandler()
-      {
-         @SuppressWarnings({"unchecked","unused"})
-         public void handle(Callback[] callbacks) throws IOException,
-               UnsupportedCallbackException
-         {
-            for (int i = 0; i < callbacks.length; i++)
-            {
-               Callback callback = callbacks[i];
-               if (callback instanceof NameCallback)
-               {
-                  NameCallback nc = (NameCallback) callback;
-                  nc.setName(user);
+      LoginContext lc = new LoginContext(ms_policy, callbacks -> {
+         for (Callback callback : callbacks) {
+            if (callback instanceof NameCallback) {
+               NameCallback nc = (NameCallback) callback;
+               nc.setName(user);
+            } else if (callback instanceof PasswordCallback) {
+               PasswordCallback pc = (PasswordCallback) callback;
+               char[] pw;
+               if (pass == null)
+                  pw = new char[0];
+               else {
+                  pw = new char[pass.length()];
+                  pass.getChars(0, pass.length(), pw, 0);
                }
-               else if (callback instanceof PasswordCallback)
-               {
-                  PasswordCallback pc = (PasswordCallback) callback;
-                  char[] pw;
-                  if (pass == null)
-                     pw = new char[0];
-                  else
-                  {
-                     pw = new char[pass.length()];
-                     pass.getChars(0, pass.length(), pw, 0);
-                  }
-                  pc.setPassword(pw);
+               pc.setPassword(pw);
+            } else if (callback instanceof PSRequestHeadersCallback) {
+               Map<String, String> headers = new HashMap<>();
+               // Enumeration<Object> Enumeration<String> for servlet 3.1
+               Enumeration<String> names = req.getHeaderNames();
+               while (names.hasMoreElements()) {
+                  String name = names.nextElement();
+                  headers.put(name, req.getHeader(name));
                }
-               else if (callback instanceof PSRequestHeadersCallback)
-               {
-                  Map<String, String> headers = new HashMap<String, String>();
-                  // Enumeration<Object> Enumeration<String> for servlet 3.1
-                  Enumeration<String> names = req.getHeaderNames();
-                  while (names.hasMoreElements())
-                  {
-                     String name = names.nextElement();
-                     headers.put(name, req.getHeader(name));
-                  }
 
-                  PSRequestHeadersCallback rhc = (PSRequestHeadersCallback) callback;
-                  rhc.setHeaders(headers);
-               }
-               else if (callback instanceof PSRemoteUserCallback)
-               {
-                  PSRemoteUserCallback ruc = (PSRemoteUserCallback) callback;
-                  ruc.setRemoteUser(req.getRemoteUser());
-               }
-               else
-               {
-                  throw new UnsupportedCallbackException(callbacks[i],
-                        "Unrecognized Callback");
-               }
+               PSRequestHeadersCallback rhc = (PSRequestHeadersCallback) callback;
+               rhc.setHeaders(headers);
+            } else if (callback instanceof PSRemoteUserCallback) {
+               PSRemoteUserCallback ruc = (PSRemoteUserCallback) callback;
+               ruc.setRemoteUser(req.getRemoteUser());
+            } else {
+               throw new UnsupportedCallbackException(callback,
+                       "Unrecognized Callback");
             }
          }
       });
@@ -2200,10 +2161,7 @@ public class PSSecurityFilter implements Filter
     */
    public void destroy()
    {
-      /**
-       * Nothing to do here but can be overridden
-       */
-
+       // Nothing to do here but can be overridden
    }
 
    /**
@@ -2229,8 +2187,8 @@ public class PSSecurityFilter implements Filter
       
       ThreadLocalProperties.setupProperties();
     
-      ms_log.info("System SAXParserFactory = "+parser + " setting to com.percussion.xml.PSSaxParserFactoryImpl");
-      ms_log.info("System TransformerFactory = "+transformer + " setting to com.icl.saxon.TransformerFactoryImpl");
+      ms_log.info("System SAXParserFactory = {} setting to com.percussion.xml.PSSaxParserFactoryImpl", parser);
+      ms_log.info("System TransformerFactory = {} setting to com.icl.saxon.TransformerFactoryImpl", transformer);
 
    }
 
@@ -2258,9 +2216,7 @@ public class PSSecurityFilter implements Filter
             .getName());
    }
 
-   /**
-    * Performs static initization of this class.
-    */
+   // Performs static Initialization of this class.
    static
    {
       defineSaxonCharacterencodings();

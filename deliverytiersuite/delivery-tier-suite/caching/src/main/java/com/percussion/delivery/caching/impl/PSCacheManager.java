@@ -32,7 +32,7 @@ import com.percussion.delivery.caching.data.PSCacheProvider;
 import com.percussion.delivery.caching.data.PSCacheRegion;
 import com.percussion.delivery.caching.data.PSInvalidateRequest;
 import com.percussion.delivery.caching.utils.PSJaxbUtils;
-import com.percussion.security.PSSecureProperty;
+import com.percussion.delivery.utils.security.PSSecureProperty;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -275,7 +275,7 @@ public class PSCacheManager implements IPSCacheManager
                     String val = provider.getProperty(key);
                     if(StringUtils.isNotBlank(val) && !PSSecureProperty.isValueClouded(val))
                     {
-                        provider.getProperties().put(key, PSSecureProperty.getClouded(val, null));
+                        provider.getProperties().put(key, PSSecureProperty.getClouded(val));
                         modified = true;
                     }
                 }

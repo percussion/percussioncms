@@ -1589,7 +1589,7 @@ class SimpleAuthPopup implements AuthorizationPrompter
 	    else
 		pass.requestFocus();
 
-	    try { wait(); } catch (InterruptedException e) { }
+	    try { wait(); } catch (InterruptedException e) {Thread.currentThread().interrupt(); }
 
 	    setVisible(false);
 

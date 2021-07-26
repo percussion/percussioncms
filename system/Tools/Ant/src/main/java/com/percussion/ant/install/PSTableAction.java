@@ -24,6 +24,7 @@
 
 package com.percussion.ant.install;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
 import com.percussion.install.RxInstallerProperties;
@@ -233,11 +234,8 @@ public class PSTableAction extends PSAction
       }
       catch(Exception e)
       {
-         PSLogger.logError(e.getMessage());
-         ps.println(e.toString());
-         e.printStackTrace(ps);
+         PSLogger.logError(PSExceptionUtils.getMessageForLog(e));
          isRepositoryError = true;
-         repositoryErrorMsg += e.getMessage();
          throw new BuildException(e.getMessage());
       }
    }

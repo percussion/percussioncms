@@ -115,6 +115,7 @@ public class PSAsyncJobService implements IPSAsyncJobService, IPSAsyncJobListene
            }
            catch (InterruptedException e)
            {
+               Thread.currentThread().interrupt();
               if (job.isCompleted()) {
                   break;
               }

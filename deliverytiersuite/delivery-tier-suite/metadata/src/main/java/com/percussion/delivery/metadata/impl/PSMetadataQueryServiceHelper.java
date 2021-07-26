@@ -23,14 +23,13 @@
  */
 package com.percussion.delivery.metadata.impl;
 
-import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
+import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -68,7 +67,7 @@ public abstract class PSMetadataQueryServiceHelper
     /**
      * 2011-01-21T09:36:05
      */
-    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static FastDateFormat dateFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
     public static VALUETYPE getDatatype(String name, PSPropertyDatatypeMappings datatypeMappings)
     {

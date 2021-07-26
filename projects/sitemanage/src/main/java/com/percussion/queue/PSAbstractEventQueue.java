@@ -137,7 +137,7 @@ public abstract class PSAbstractEventQueue<T>
             }
             catch (InterruptedException e)
             {
-               // try again
+               Thread.currentThread().interrupt();
             }
          }
 

@@ -168,7 +168,7 @@
         <any23.version>2.3</any23.version>
         <owl.version>5.1.10</owl.version>
        <awssdk.version>1.11.804</awssdk.version>
-        <bc.version>1.64</bc.version>
+        <bc.version>1.69</bc.version>
         <jackson.version>2.12.1</jackson.version>
         <jsoup.version>1.11.3</jsoup.version>
         <json.version>20201115</json.version>

@@ -24,11 +24,12 @@
 
 package com.percussion.HTTPClient;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -63,6 +64,8 @@ import java.util.TimeZone;
 @Deprecated
 public class Log
 {
+	private static final Logger log = LogManager.getLogger(Log.class);
+
     /** The HTTPConnection facility (1) */
     public static final int CONN  = 1 << 0;
     /** The HTTPResponse facility (2) */
@@ -86,7 +89,6 @@ public class Log
     private static final long   TZ_OFF;
 
     private static int     facMask     = 0;
-    private static Writer  logWriter   = new OutputStreamWriter(System.err);
     private static boolean closeWriter = false;
 
 
@@ -145,23 +147,10 @@ public class Log
      * @param facility  the facility which is logging the message
      * @param msg       the message to log
      */
+    @Deprecated
     public static void write(int facility, String msg)
     {
-	if ((facMask & facility) == 0)
-	    return;
-
-	try
-	{
-	    writePrefix();
-	    logWriter.write(msg);
-	    logWriter.write(NL);
-	    logWriter.flush();
-	}
-	catch (IOException ioe)
-	{
-	    System.err.println("Failed to write to log: " + ioe);
-	    System.err.println("Failed log Entry was: " + msg);
-	}
+		log.info(msg);
     }
 
     /**
@@ -172,31 +161,10 @@ public class Log
      * @param prefix    the string with which to prefix the stack trace; may be null
      * @param t         the exception to log
      */
+    @Deprecated
     public static void write(int facility, String prefix, Throwable t)
     {
-	if ((facMask & facility) == 0)
-	    return;
-
-	synchronized (Log.class)
-	{
-	    if (!(logWriter instanceof PrintWriter))
-		logWriter = new PrintWriter(logWriter);
-	}
-
-	try
-	{
-	    writePrefix();
-	    if (prefix != null)
-		logWriter.write(prefix);
-	    t.printStackTrace((PrintWriter) logWriter);
-	    logWriter.flush();
-	}
-	catch (IOException ioe)
-	{
-	    System.err.println("Failed to write to log: " + ioe);
-	    System.err.print("Failed log Entry was: " + prefix);
-	    t.printStackTrace(System.err);
-	}
+    	log.info(t.getMessage());
     }
 
     /**
@@ -208,26 +176,11 @@ public class Log
      *                  may be null
      * @param buf       the buffer to dump
      */
+    @Deprecated
     public static void write(int facility, String prefix, ByteArrayOutputStream buf)
     {
-	if ((facMask & facility) == 0)
-	    return;
-
-	try
-	{
-	    writePrefix();
-	    if (prefix != null)
-		logWriter.write(prefix);
-	    logWriter.write(NL);
-	    logWriter.write(new String(buf.toByteArray(), "ISO_8859-1"));
-	    logWriter.flush();
-	}
-	catch (IOException ioe)
-	{
-	    System.err.println("Failed to write to log: " + ioe);
-	    System.err.println("Failed log Entry was: " + prefix);
-	    System.err.println(new String(buf.toByteArray()));
-	}
+    	//If we are writing bytebuffers assume this is debug code
+		log.debug(buf);
     }
 
     /**
@@ -236,16 +189,9 @@ public class Log
      *  {thread-name} [time]
      * </PRE>
      */
+    @Deprecated
     private static final void writePrefix() throws IOException {
-	logWriter.write("{" + Thread.currentThread().getName() + "} ");
-
-	int mill  = (int) ((System.currentTimeMillis() + TZ_OFF) % (24 * 3600000));
-	int secs  = mill / 1000;
-	int mins  = secs / 60;
-	int hours = mins / 60;
-	logWriter.write("[" + fill2(hours) + ':' + fill2(mins - hours*60) +
-			':' + fill2(secs - mins * 60) + '.' +
-			fill3(mill - secs * 1000) + "] ");
+		//Do nada
     }
 
     private static final String fill2(int num) {
@@ -262,6 +208,7 @@ public class Log
      * @param facility  the facility to check
      * @return true if logging for the given facility is enable; false otherwise
      */
+    @Deprecated
     public static boolean isEnabled(int facility)
     {
 	return ((facMask & facility) != 0);
@@ -276,6 +223,7 @@ public class Log
      * @param enable     if true, enable logging for the chosen facilities; if
      *                   false, disable logging for them.
      */
+    @Deprecated
     public static void setLogging(int facilities, boolean enable)
     {
 	if (enable)
@@ -292,20 +240,9 @@ public class Log
      * @param closeWhenDone if true, close this stream when a new stream is set
      *                      again
      */
+    @Deprecated
     public static void setLogWriter(Writer log, boolean closeWhenDone)
     {
-	if (log == null)
-	    return;
-
-	if (closeWriter)
-	{
-	  try
-	      { logWriter.close(); }
-	  catch (IOException ioe)
-	      { System.err.println("Error closing log stream: " + ioe); }
-	}
-
-	logWriter   = log;
-	closeWriter = closeWhenDone;
+    	//Do nothing
     }
 }

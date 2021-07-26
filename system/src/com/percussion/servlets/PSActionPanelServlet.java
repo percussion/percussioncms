@@ -72,7 +72,6 @@ import java.util.Properties;
  * 
  * @author dougrand
  */
-@SuppressWarnings("serial")
 public class PSActionPanelServlet extends HttpServlet
 {
    private static final String RXAP = "RxAP_";
@@ -96,15 +95,21 @@ public class PSActionPanelServlet extends HttpServlet
       String folderid = request.getParameter("sys_folderid");
       String siteid = request.getParameter("sys_siteid");
 
-      //TODO: Validate numeric values
+      if(!StringUtils.isEmpty(contentid) && !StringUtils.isNumeric(contentid))
+         throw new IllegalArgumentException();
 
+      if(!StringUtils.isEmpty(contentid) && !StringUtils.isNumeric(folderid))
+         throw new IllegalArgumentException();
+
+      if(!StringUtils.isEmpty(contentid) && !StringUtils.isNumeric(siteid))
+         throw new IllegalArgumentException();
 
 
       TargetType targetType = getDispatchTargetType();
       String url = getTargetUrl(targetType, contentid);
-      Integer cid = new Integer(contentid);
-      PSItemUtilities iutils = new PSItemUtilities();
-      MultiMap siteinfo = iutils.getItemSiteInfo(cid);
+      int cid = Integer.parseInt(contentid);
+
+      MultiMap siteinfo = PSItemUtilities.getItemSiteInfo(cid);
       boolean showpanel = false;
       Integer fid = StringUtils.isNotBlank(folderid)
             ? new Integer(folderid)
@@ -132,7 +137,7 @@ public class PSActionPanelServlet extends HttpServlet
                sum.getCommunityId()));
          for(IPSGuid roleid : com.getRoleAssociations())
          {
-            PSBackEndRole roles[] = rmgr.loadRoles(new IPSGuid[] { roleid });
+            PSBackEndRole[] roles = rmgr.loadRoles(new IPSGuid[] { roleid });
             String rolename = roles[0].getNormalizedName();
             if (request.isUserInRole(rolename))
             {
@@ -175,8 +180,8 @@ public class PSActionPanelServlet extends HttpServlet
             List<String> folders = (List<String>) siteinfo.get(sitename);
             if (folders.size() == 1)
             {
-               sid = iutils.getSiteIdFromName(sitename);
-               fid = iutils.getFolderIdFromPath(folders.get(0));
+               sid = PSItemUtilities.getSiteIdFromName(sitename);
+               fid = PSItemUtilities.getFolderIdFromPath(folders.get(0));
                showpanel = true;
             }
             else if (fid != null)
@@ -197,11 +202,11 @@ public class PSActionPanelServlet extends HttpServlet
 
       if (fid != null)
       {
-         url += "&sys_folderid=" + fid.toString();
+         url += "&sys_folderid=" + fid;
       }
       if (sid != null)
       {
-         url += "&sys_siteid=" + sid.toString();
+         url += "&sys_siteid=" + sid;
       }
 
       request.setAttribute("title", title);
@@ -359,7 +364,7 @@ public class PSActionPanelServlet extends HttpServlet
       }
       sort(possibilities);
       IPSGuid tguid = null;
-      if (possibilities.size() > 0)
+      if (!possibilities.isEmpty())
       {
          tguid = possibilities.get(0).getGUID();
       }
@@ -468,7 +473,7 @@ public class PSActionPanelServlet extends HttpServlet
        * 
        * @param key Never blank.
        */
-      private TargetType(String key)
+      TargetType(String key)
       {
          if (StringUtils.isBlank(key))
          {

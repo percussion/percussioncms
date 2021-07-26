@@ -623,11 +623,11 @@
         var menuX = titleBar[0].getBoundingClientRect().left + titleBar[0].getBoundingClientRect().width - menu.outerWidth(true);
         var menuY = top + titleBar.outerHeight();
         // hide the menu if you hover away from it
-        menu.off().hover(function()
-        {}, function()
-        {
-            menu.hide();
-        });
+        menu.on({
+            mouseenter: function() { },
+            mouseleave: function() {  menu.hide(); }
+        })
+
         menu.css("top", menuY).css("left", menuX).css("display", "block");
         // update the menu items based on the current state of the gadget
         updateMinimizeExpandMenuItem(gadget);
@@ -667,10 +667,12 @@
         }
 
         // hide the menu if you are about to resize the finder
-        $(".ui-resizable-handle").hover(function()
-        {
-            menu.hide();
-        });
+        $(".ui-resizable-handle").on({
+            mouseenter: function() { },
+            mouseleave: function() {  menu.hide(); }
+        })
+
+
     }
 
     // check display attribute of gadget content
@@ -1322,9 +1324,9 @@
             var columnGadgets = dashboardColumn.find(".perc-gadget");
             if (columnGadgets.length === 0)
             {
-                var dashboardColumnPosition = dashboardColumn.position();
-                var dashboardContainPosition = dashboardContainer.position();
-                addGadgetDropArea(null, columnIndex, 0, dashboardColumnPosition.left, dashboardContainPosition.top, dashboardColumn.width() - DASHBOARD_GADGET_MARGIN, dashboardContainer.height());
+                var dashboardColumnPosition = dashboardColumn.parent().position();
+                var dashboardContainPosition = dashboardContainer.scrollTop;
+                addGadgetDropArea(null, columnIndex, 0, dashboardColumnPosition.left, dashboardContainPosition, dashboardColumn.width() - DASHBOARD_GADGET_MARGIN, dashboardContainer.height());
             }
             columnIndex++;
         });
@@ -1370,13 +1372,13 @@
         // but honor position and size parameters passed in explicitly
         if (dashboardGadget!==  null && typeof dashboardGadget !== "undefined")
         {
-            var dashboardGadgetPosition = dashboardGadget.position();
+            var dashboardGadgetPosition = dashboardGadget.parent().parent().position();
 
             var gadgetParentColumnId = dashboardGadget.parent(".perc-gadget-column").attr("id");
             var columnIndexString = gadgetParentColumnId.replace("col-", "");
 
             // if passed in honor the parameters otherwise get from dashboard gadget
-            top = top === undefined ? dashboardGadgetPosition.top : top;
+            top = top === undefined ? dashboardGadget.position().top : top;
             left = left === undefined ? dashboardGadgetPosition.left : left;
             columnIndex = columnIndex === undefined ? parseInt(columnIndexString) : columnIndex;
             rowIndex = rowIndex === undefined ? dashboardGadget.prevAll().length : rowIndex;

@@ -54,6 +54,8 @@ import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.design.objectstore.PSFeatureSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.IPSSecurityErrors;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -70,13 +72,15 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
-import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.util.PSFormatVersion;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
+import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -89,13 +93,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.security.auth.login.LoginException;
-import javax.servlet.ServletException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * Class to handle all requests from Deployment client.  Loosely implements the
@@ -221,11 +218,6 @@ public class PSDeploymentHandler  implements IPSLoadableRequestHandler
       {
          throw new PSAuthenticationFailedException(
             IPSSecurityErrors.GENERIC_AUTHENTICATION_FAILED, null);
-      }
-      catch (ServletException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-            e.getLocalizedMessage());
       }
 
       PSServer.checkAccessLevel(req, PSAclEntry.SACE_ADMINISTER_SERVER);

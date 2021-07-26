@@ -412,7 +412,7 @@
             // Accesss to the native XHR object is required to add event listeners
             // for the upload progress event:
             if (xhr.upload) {
-                $(xhr.upload).bind('progress', function (e) {
+                $(xhr.upload).on('progress', function (e) {
                     var oe = e.originalEvent;
                     // Make sure the progress event properties get copied over:
                     e.lengthComputable = oe.lengthComputable;
@@ -429,7 +429,7 @@
         _deinitProgressListener: function (options) {
             var xhr = options.xhr ? options.xhr() : $.ajaxSettings.xhr();
             if (xhr.upload) {
-                $(xhr.upload).unbind('progress');
+                $(xhr.upload).off('progress');
             }
         },
 
@@ -1066,10 +1066,10 @@
             // If the fileInput had focus before it was detached,
             // restore focus to the inputClone.
             if (restoreFocus) {
-                inputClone.focus();
+                inputClone.trigger('focus');
             }
             // Avoid memory leaks with the detached file input:
-            $.cleanData(input.unbind('remove'));
+            $.cleanData(input.off('remove'));
             // Replace the original file input element in the fileInput
             // elements set with the clone, which has been copied including
             // event handlers:

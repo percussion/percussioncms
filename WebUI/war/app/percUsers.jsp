@@ -55,12 +55,20 @@
 %>
 <i18n:settings lang="<%=locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
 <style>
+    .ui-dialog-titlebar-close{
+        display:none;
+    }
+
+    .paddingBetweenCols td
+    {
+        padding:0 10px;
+    }
     #perc-users-import-users-dialog-fixed {
         padding : 4px;
     }
     #perc-users-import-users-dialog-fixed div.ui-dialog-content {
         padding : 10px;
-        padding-bottom : 50px;
+        padding-bottom : 75px;
     }
 
     #perc-users-import-users-dialog-fixed input {
@@ -170,7 +178,9 @@
         <i18n:message key="perc.ui.users.import.dialogs@NameStartsWith" />
       </span><br />
             <input id="perc-users-search-input" style="width : 355px"></input>
-            <div id="perc-users-search-button"></div>
+            <button id="perc-users-search-button" class="btn btn-primary" name="perc-users-search-button">
+                <i18n:message key="perc.ui.users.import.dialogs@Search" />
+            </button>
             <div id="perc-users-narrow-search" style="position : absolute; display : none"></div>
         </div>
         <!-- header for the table below to select/deselect all users -->
@@ -178,27 +188,29 @@
         <div style="margin-left : 5px;">
             <table id="perc-users-directory-users-header">
                 <tr>
-                    <td><input id="perc-users-directory-users-selectall-checkbox" type="checkbox"></input>
+                    <td><input id="perc-users-directory-users-selectall-checkbox" type="checkbox"/>&nbsp;<span id="perc-users-directory-users-selectall-label">
+                        <i18n:message key="perc.ui.users.import.dialogs@SelectAll" /></span>
                     </td>
-                    <td><span id="perc-users-directory-users-selectall-label">
-              <i18n:message key="perc.ui.users.import.dialogs@SelectAll" /></span>
+                </tr>
+                <tr>
+                    <td><span id="perc-users-select-at-least-one-user-label" style="display:none">*
+      <i18n:message key="perc.ui.users.import.dialogs@SelectOneUser" /></span>
                     </td>
                 </tr>
             </table>
         </div>
         <!-- a scrollable list of users from the directory service created dinamically -->
         <div id="perc-users-directory-users-list">
-            <table id="perc-users-directory-users-table" style="cellpadding : 5px">
+            <table id="perc-users-directory-users-table" class="paddingBetweenCols">
             </table>
         </div>
-        <span id="perc-users-select-at-least-one-user-label" style="display:none">*
-      <i18n:message key="perc.ui.users.import.dialogs@SelectOneUser" />
-    </span>
         <div id="perc-users-directory-users-buttons">
-            <div id="perc-users-directory-users-import-button" class="perc-users-directory-users-import-button-disabled" title='<i18n:message key="perc.ui.users.import.tooltips@SelectUsersToImport"/>'>
-            </div>
-            <div id="perc-users-directory-users-cancel-button">
-            </div>
+            <button id="perc-users-directory-users-import-button" class="btn btn-primary" name="perc-users-directory-users-import-button" title='<i18n:message key="perc.ui.users.import.tooltips@SelectUsersToImport"/>'>
+                <i18n:message key="perc.ui.users.import.dialogs@Import" />
+            </button>
+            <button id="perc-users-directory-users-cancel-button" class="btn btn-primary" name="perc-users-directory-users-cancel-button">
+                <i18n:message key="perc.ui.users.import.dialogs@Cancel" />
+            </button>
         </div>
     </div>
 </div>

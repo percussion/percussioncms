@@ -24,15 +24,15 @@
 
 var COOKIE_CONSENT_NAME = "percCookieConsent";
 
-$(document).ready(function() {
+$(function() {
     var doesCookieExist = checkForConsentCookie();
 
-    $('#accept-btn-preview').unbind().bind('click', dismissDialog);
+    $('#accept-btn-preview').off('click').on('click', dismissDialog);
 
     if (!doesCookieExist) {
         $('.perc-consent-window').css('opacity', 1);
-        $('#accept-btn').unbind().bind('click', createCookie);
-        $('#deny-btn').unbind().bind('click', denyCookie);
+        $('#accept-btn').off('click').on('click', createCookie);
+        $('#deny-btn').off('click').on('click', denyCookie);
     }else {
         document.getElementById("perc-cookie-consent").style.visibility = "hidden";
     }
@@ -65,18 +65,25 @@ function checkForConsentDenyCookie(){
 function createCookie() {
     // sets cookie to expire in 5 years
     var futureDate = getDate(5, 0, 0);
-
-    document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/";
+    var secure = "";
+    if (window.isSecureContext) {
+        secure = " Secure;";
+    }
+    document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;" + secure;
 
     dismissDialog();
 
     postEntry();
 }
 
-function denyCookie(){
+function denyCookie() {
     var futureDate = getDate(5, 0, 0);
 
-    document.cookie = "deny_cookie" + "=true; expires=" + futureDate + ";path=/";
+    var secure = "";
+    if (window.isSecureContext) {
+        secure = " Secure;";
+    }
+    document.cookie = "deny_cookie" + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;" + secure;
 
     dismissDialog();
 }
@@ -125,7 +132,11 @@ function postEntry() {
         if (status == $.PercServiceUtils.STATUS_ERROR) {
             // sets the cookie to expire in 5 days to try save again.
             var futureDate = getDate(0, 0, 5);
-            document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/";
+            var secure = "";
+            if (window.isSecureContext) {
+                secure = " Secure;";
+            }
+            document.cookie = COOKIE_CONSENT_NAME + "=true; expires=" + futureDate + ";path=/; SameSite=Lax;" + secure;
         }
     });
 }

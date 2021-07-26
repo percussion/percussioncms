@@ -57,6 +57,8 @@ import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.design.objectstore.PSFeatureSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.rx.config.data.PSDescriptorSummaryReport;
 import com.percussion.rx.config.impl.PSConfigDefGenerator;
 import com.percussion.rx.config.impl.PSDefaultConfigGenerator;
@@ -98,8 +100,6 @@ import com.percussion.utils.codec.PSXmlDecoder;
 import com.percussion.utils.collections.PSMultiValueHashMap;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSCryptographer;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import com.percussion.xml.PSXmlValidator;
@@ -112,7 +112,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import javax.security.auth.login.LoginException;
-import javax.servlet.ServletException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -260,11 +259,6 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       {
          throw new PSAuthenticationFailedException(
                IPSSecurityErrors.GENERIC_AUTHENTICATION_FAILED, null);
-      }
-      catch (ServletException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
       }
 
       PSServer.checkAccessLevel(req, PSAclEntry.SACE_ADMINISTER_SERVER);

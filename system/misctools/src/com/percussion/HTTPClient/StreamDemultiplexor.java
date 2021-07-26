@@ -907,7 +907,9 @@ class SocketTimeout extends Thread
 
 	while (alive)
 	{
-	    try { sleep(1000L); } catch (InterruptedException ie) { }
+	    try { sleep(1000L); } catch (InterruptedException ie) {
+			Thread.currentThread().interrupt();
+		}
 
 	    synchronized (time_list)
 	    {

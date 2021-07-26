@@ -23,13 +23,15 @@
  */
 package com.percussion.pathmanagement.service.impl;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author JaySeletz
@@ -75,7 +77,7 @@ public class PSPathOptionsTest
                 }
                 catch (InterruptedException e)
                 {
-                    
+                    Thread.currentThread().interrupt();
                 }
             }
         };

@@ -23,10 +23,11 @@
  */
 package com.percussion.utils;
 
-import static org.junit.Assert.*;
-
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author JaySeletz
@@ -147,7 +148,7 @@ public class PSNamedLockManagerTest
                 }
                 catch (InterruptedException e)
                 {
-                    
+                    Thread.currentThread().interrupt();
                 }
             }
         }

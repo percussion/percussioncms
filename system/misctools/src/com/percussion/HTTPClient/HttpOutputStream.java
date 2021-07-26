@@ -197,7 +197,9 @@ public class HttpOutputStream extends OutputStream
     synchronized Response getResponse()
     {
 	while (resp == null)
-	    try { wait(); } catch (InterruptedException ie) { }
+	    try { wait(); } catch (InterruptedException ie) {
+			Thread.currentThread().interrupt();
+		}
 
 	return resp;
     }

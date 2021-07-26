@@ -26,7 +26,6 @@ package com.percussion.ant.install;
 
 import com.percussion.install.InstallUtil;
 import com.percussion.install.PSLogger;
-import com.percussion.security.PSSecureProperty;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import org.apache.tools.ant.BuildException;
 
@@ -41,9 +40,8 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
 
 
     protected  String getDBPropertyFile(){
-        String propFile = getRootDir() + File.separator
+        return   getRootDir() + File.separator
                 + "Deployment/Server/conf/perc/perc-datasources.properties";
-        return propFile;
     }
 
     @Override

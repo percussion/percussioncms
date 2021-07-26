@@ -40,6 +40,9 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,10 +51,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * Handles all client requests for Job operations including Export,
@@ -525,6 +524,7 @@ public class PSJobHandler implements IPSLoadableRequestHandler, IPSJobListener
          }
          catch (InterruptedException e)
          {
+            Thread.currentThread().interrupt();
             if (job.isCompleted())
                break;
          }

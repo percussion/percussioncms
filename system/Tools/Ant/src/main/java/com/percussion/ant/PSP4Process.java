@@ -23,6 +23,13 @@
  */
 package com.percussion.ant;
 
+import com.perforce.api.Debug;
+import com.perforce.api.Env;
+import com.perforce.api.EventLog;
+import com.perforce.api.P4JNI;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -32,13 +39,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.util.Date;
-
-import com.perforce.api.Debug;
-import com.perforce.api.Env;
-import com.perforce.api.EventLog;
-import com.perforce.api.P4JNI;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 
 /**
@@ -66,9 +66,9 @@ import org.apache.logging.log4j.Logger;
  * @author <a href="mailto:david@markley.cc">David Markley</a>
  * @version $Date: 2002/01/15 $ $Revision: #3 $
  * @see Env
- * @see SourceControlObject
  * @see Thread
  */
+@Deprecated
 public class PSP4Process
 {
 
@@ -604,13 +604,6 @@ public class PSP4Process
                Debug.verbose("P4Process: Thread is not done yet.");
             }
 
-            // Sleep for a second, so this thread can't become a CPU hog.
-            try
-            {
-               Debug.verbose("P4Process: Sleeping...");
-               Thread.sleep(100); // Sleep for 1/10th of a second.
-            }
-            catch (InterruptedException ie) {}
          }
       }
       catch (IOException ex)

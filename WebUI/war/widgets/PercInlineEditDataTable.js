@@ -29,7 +29,7 @@
  *  Description:
  *  Thin plugin layer over jQuery's datatable plugin http://www.datatables.net/
  *  to implement Percussion specific custom behavior.
- *  
+ *
  *  @param percHeaders   (string[]) Labels for the headers
  *  @param percColsLeft  (int[]) indices of columns to show if gadget is on the left
  *  @param percColsRight (int[]) indices of columns to show if gadget is on the right
@@ -39,13 +39,13 @@
  */
 (function($) {
     var nEditing = null;
-    
+
     // Exposed API/interface
     $.PercInlineEditDataTable = {
         init                : init,
         enableTable			: enableTable
     };
-    
+
     var defaultConfig = {
         percHeaderClasses : [],
         percDeleteRow: true,
@@ -69,41 +69,41 @@
             }
         }
     };
-    
+
     function enableTable (container, enabled)
     {
-		var table = $(container);    	
-    	if (enabled)
-    	{
-    		table.find("td").removeClass("perc-disabled");
-    	}
-    	else
-    	{
-    		table.find("td").addClass("perc-disabled");
-    	}
+        var table = $(container);
+        if (enabled)
+        {
+            table.find("td").removeClass("perc-disabled");
+        }
+        else
+        {
+            table.find("td").addClass("perc-disabled");
+        }
     }
-    
-    function init (container, config) {
-    	nEditing = null;
 
-    	var table = $(container);
-    	$('#' + config.percAddRowElementId).off("click");
-    	$(table).find('td span').off("click");
+    function init (container, config, dlgCallbackFunc) {
+        nEditing = null;
+
+        var table = $(container);
+        $('#' + config.percAddRowElementId).off("click");
+        $(table).find('td span').off("click");
         $(table).find('td input').off("click").off('focusout');
         $(table).find('a.perc-inline-edit-datatable-delete-row').off('click');
-    	table.html("");
+        table.html("");
 
-    	var columnWidths = [];
+        var columnWidths = [];
         if(config.percColumnWidths && config.percColumnWidths.length > 0)
             columnWidths = config.percColumnWidths;
-        
+
         // merge and override default and custom configurations
         config = $.extend({}, defaultConfig, config);
 
 
-        
+
         table.addClass("perc-inline-edit-datatable");
-        
+
         // create headers
         var headers = config.percHeaders;
 
@@ -112,13 +112,14 @@
         {
             headers.push ("");
             columnWidths.push("10");
+            config.percNewRowDefaultValues.push("");
         }
-        
+
         var indices = headers.length;
-    
+
         table.append("<thead><tr>");
         var tableHeaderRow = table.find("thead tr");
-             
+
         var headerClasses = config.percHeaderClasses;
         for(i=0; i < indices; i++) {
             var h = i;
@@ -153,12 +154,12 @@
                 var data = percRow.rowContent[d];
                 if(data==="" || data===undefined)
                     data = "&nbsp;";
-                
+
                 var placeHolderClass = "";
                 if (config.percShowValuesPlaceholders)
                 {
                     var placeHolderValue = "";
-                
+
                     if ($.type(config.percPlaceHolderValues[i]) === "string")
                     {
                         placeHolderValue = config.percPlaceHolderValues[i];
@@ -171,25 +172,28 @@
                     {
                         placeHolderClass = "perc-placeholder";
                     }
-                }    
+                }
 
                 tableData.append("<span class='" + placeHolderClass + "'>" + data + "</span>");
                 tableRow.append(tableData);
             }
-            
+
             tableBody.append(tableRow);
         }
         if (config.percNoTableHeaders)
         {
             table.find("thead").css("display", "none");
-        }        
+        }
+        if(oTable){
+            oTable.fnDestroy();
+        }
         var oTable = table.dataTable(config);
-        
+
         if (percRows.length == 0)
         {
             addRow();
         }
-        
+
         function editCol ( nRow, nCol )
         {
             var aData = oTable.fnGetData(nRow);
@@ -209,30 +213,32 @@
                 var rowNumber = oTable.fnGetPosition( nRow );
                 placeHolderValue = config.percPlaceHolderValues[rowNumber][colNumber];
             }
-            
+
             var value = "";
 
             if ($(aData[colNumber]).length > 0)
             {
                 value = $(aData[colNumber]).text().trim();
                 if (config.percShowValuesPlaceholders && value === placeHolderValue)
-                    value = "";            
+                    value = "";
                 nCol.innerHTML = '<input id="inputEdition'+ colNumber +'" placeholder="' + placeHolderValue + '" type="text" value="'+ value +'" />';
             }
             else
             {
                 value = aData[colNumber].trim();
                 if (config.percShowValuesPlaceholders && value === placeHolderValue)
-                    value = "";              
+                    value = "";
                 nCol.innerHTML = '<input id="inputEdition'+ colNumber +'" placeholder="' + placeHolderValue + '" type="text" value="'+ value +'" />';
+
             }
+            $(table).find('td input').on('focusout', tableCellFocusOut);
             var labelHtml = '<label class="visuallyhidden" for="inputEdition'+ colNumber +'">Search:</label>';
             table.parent().append(labelHtml);
             addPlaceHolder();
-                        
+
             $(nCol).find("input").trigger("focus");
         }
-        
+
         // Edit Cells
         function editRow ( nRow, isOnlyRow )
         {
@@ -241,6 +247,10 @@
             $(nRow).addClass("perc-edit-mode");
             for (var i = 0; i < jqTds.length; i++)
             {
+                //because third column is for delete button.
+                if(i>1){
+                    break;
+                }
                 var placeHolderValue = "";
                 if ($.type(config.percPlaceHolderValues[i]) === "string")
                 {
@@ -258,25 +268,29 @@
                     value = $(aData[i]).text().trim();
                     if (config.percShowValuesPlaceholders && value === placeHolderValue)
                         value = "";
-                        
+
                     jqTds[i].innerHTML = '<input id="inputEdition'+ i +'" placeholder="' + placeHolderValue + '" type="text" value="'+ value +'" />';
                 }
                 else
                 {
-                    value = aData[i].trim();
+                    value= "";
+                    if(typeof aData[i] != 'undefined'){
+                        value = aData[i].trim();
+                    }
+
                     if (config.percShowValuesPlaceholders && value === placeHolderValue)
-                        value = "";                
+                        value = "";
                     jqTds[i].innerHTML = '<input id="inputEdition'+ i +'" placeholder="' + placeHolderValue + '" type="text" value="'+ value +'" />';
-                }            
+                }
             }
             addPlaceHolder();
 
             if (!isOnlyRow)
             {
-                $(jqTds[0]).find("input").focus();
+                $(jqTds[0]).find("input").trigger("focus");
             }
         }
-        
+
         function restoreRow ( nRow )
         {
             var aData = oTable.fnGetData(nRow);
@@ -285,13 +299,14 @@
             if (config.percDeleteRow)
                 length--;
             for ( var i=0, iLen = length ; i<iLen ; i++ ) {
+
                 oTable.fnUpdate( "<span>" + aData[i] + "</span>", nRow, i, false );
             }
 
             oTable.fnDraw();
             $(nRow).append('<td><a class="perc-inline-edit-datatable-delete-row" href=""></a></td>');
         }
-        
+
         function saveRow (nRow)
         {
             var jqInputs = $('input', nRow);
@@ -316,7 +331,7 @@
                 placeHolderClass1 = "perc-placeholder";
                 value1 = placeHolderValue;
             }
-            
+
             if (config.percShowValuesPlaceholders && value2.trim() === "")
             {
                 var placeHolderValue2 = "";
@@ -332,7 +347,7 @@
                 placeHolderClass2 = "perc-placeholder";
                 value2 = placeHolderValue2;
             }
-    
+
             oTable.fnUpdate( "<span class='" + placeHolderClass1 + "'>" + value1 + "</span>", nRow, 0, false );
             oTable.fnUpdate( "<span class='" + placeHolderClass2 + "'>" + value2 + "</span>", nRow, 1, false );
             oTable.fnDraw();
@@ -340,7 +355,7 @@
             {
                 $(nRow).append('<td style="width:10px; max-width:10px"><a style="display:none;" class="perc-inline-edit-datatable-delete-row" href=""></a></td>');
             }
-            var newRowsDefaultValues = config.percNewRowDefaultValues;
+            var newRowsDefaultValues = defaultConfig.percNewRowDefaultValues;
             if (jqInputs[0].value.trim() === newRowsDefaultValues[0])
             {
                 deleteRow(nRow);
@@ -373,25 +388,27 @@
 
             oTable.fnUpdate( "<span class='" + placeHolderClass + "'>" + value + "</span>", nRow, colNumber, false );
             oTable.fnDraw();
-            var newRowsDefaultValues = config.percNewRowDefaultValues;
+            var newRowsDefaultValues = defaultConfig.percNewRowDefaultValues;
             if (jqInputs[0].value.trim() === newRowsDefaultValues[0])
             {
                 deleteRow(nRow);
             }
-            
+
             if (colNumber === 1)
             {
                 displayDeleteButton(nRow);
-            }            
+            }
         }
-        
+
         function displayDeleteButton(nRow)
         {
             var jqTds = $('td', nRow);
-            if ($(jqTds[1]).find("span").text().trim() !== "")
+            if ($(jqTds[1]).find("span").text().trim() !== ""){
                 $(nRow).find(".perc-inline-edit-datatable-delete-row").css("display", "block");
+                $(nRow).find(".perc-inline-edit-datatable-delete-row").on('click', deleteRowButtonAction);
+            }
         }
-        
+
         function addColIds (nRow)
         {
             var jqTds = $('>td', nRow);
@@ -400,52 +417,54 @@
                 $(jqTds[i]).attr("id", "perc-cell-" + rowNumber + "-" + i);
             }
         }
-        
+
         if (config.percAddRowElementId && config.percAddRowElementId != "")
         {
             // Add row action
             $('#' + config.percAddRowElementId).on("click", function (e) {
-                    e.preventDefault();
-                    var data = oTable.fnGetData();
-                    var value1 = "";
-                    var value2 = "";
-                    if ($(data[0][0]).length > 0)
-                    {
-                    	value1 = $(data[0][0]).text().trim();
-                    }
-                    else
-                    {
-                        value1 = data[0][0].trim();
-                    }
-                    if ($(data[0][1]).length > 0)
-                    {
-                        value2 = $(data[0][1]).text().trim();
-                    }
-                    else
-                    {
-                        value2 = data[0][1].trim();
-                    }
-                    if (data.length > 1 || (data.length === 1 && value1 !== "" && value2 !== ""))
-                    {
-                        addRow();
-                    }
+                e.preventDefault();
+                var data = oTable.fnGetData();
+                var value1 = "";
+                var value2 = "";
+                if ($(data[0][0]).length > 0)
+                {
+                    value1 = $(data[0][0]).text().trim();
+                }
+                else
+                {
+                    value1 = data[0][0].trim();
+                }
+                if ($(data[0][1]).length > 0)
+                {
+                    value2 = $(data[0][1]).text().trim();
+                }
+                else
+                {
+                    value2 = data[0][1].trim();
+                }
+                if (data.length > 1 || (data.length === 1 && value1 !== "" && value2 !== ""))
+                {
+                    addRow();
+                    $(table).find('td input').on('focusout', tableCellFocusOut);
+                }
             } );
         }
 
-        $(table).find('td input').on('focusout', function (e) {
+        function tableCellFocusOut(e){
+
             $(table).parent().find("label.visuallyhidden-with-placeholder").remove();
             $(table).parent().find("label.visuallyhidden").remove();
             e.stopPropagation();
             e.preventDefault();
-            
+
             var nRow = $(this).parents('tr')[0];
             var nCol = $(this).parents('td')[0];
             if (oTable.fnGetData().length === 1)
             {
-               nEditing = nRow;
-            }            
+                nEditing = nRow;
+            }
             if ( nEditing === nRow) {
-                
+
                 var jqInputs = $('input', nRow);
                 if (jqInputs.length > 1)
                 {
@@ -456,7 +475,7 @@
                     saveCol(nEditing, nCol);
                 }
                 nEditing = null;
-                
+
                 if (jqInputs.length > 1)
                 {
                     nEditing = nRow;
@@ -476,49 +495,48 @@
 
                 }
             }
-        });
-        
-        $(table).find('td span').on('click', function (e) {
+        }
+
+
+        $(table).find('td input').on('focusout', tableCellFocusOut);
+
+        $(table).find('td span').on('click', tableCellOnClick);
+
+        function tableCellOnClick(e){
             e.stopPropagation();
             e.preventDefault();
             if (!$(this).parents('td').hasClass("perc-disabled"))
             {
-	            /* Get the row as a parent of the link that was clicked on */
-	            var nRow = $(this).parents('tr')[0];
-	            var nCol = $(this).parents('td')[0];
-	            
-	            if ( nEditing !== null && nEditing !== nRow ) {
-	                /* Currently editing - but not this row - restore the old before continuing to edit mode */
+                /* Get the row as a parent of the link that was clicked on */
+                var nRow = $(this).parents('tr')[0];
+                var nCol = $(this).parents('td')[0];
+
+                if ( nEditing !== null && nEditing !== nRow ) {
+                    /* Currently editing - but not this row - restore the old before continuing to edit mode */
                     try
-                    {	                
+                    {
                         restoreRow( nEditing );
                     } catch(ex){
                         console.error(ex);
                     }
-	                editCol( nRow, nCol );
-	                nEditing = nRow;
-	            }
-	            else {
-	                /* No edit in progress - let's start one */
-	                editCol( nRow, nCol );
-	                nEditing = nRow;
-	            }
+                    editCol( nRow, nCol );
+                    nEditing = nRow;
+                }
+                else {
+                    /* No edit in progress - let's start one */
+                    editCol( nRow, nCol );
+                    nEditing = nRow;
+                }
             }
-        });
 
-        $(table).find('td').on('click', function (e) {
-            if ($(this).find("span").length > 0)
-            {
-                $(this).find("span").trigger("click");
-            }
-        });
-                 
+        }
+
         function addRow(isOnlyRow)
         {
-                    
-                    var newRowsDefaultValues = config.percNewRowDefaultValues;
 
-                    var aiNew = oTable.fnAddData( newRowsDefaultValues );
+            var newRowsDefaultValues = Array.from(config.percNewRowDefaultValues);
+
+            var aiNew = oTable.fnAddData( newRowsDefaultValues );
 
             if ( nEditing !== null && nEditing !== nRow ) {
                 try
@@ -532,28 +550,29 @@
             nEditing = nRow;
         }
         // Delete row action
-        $(table).find('a.perc-inline-edit-datatable-delete-row').on('click', function (e) {
+        $(table).find('a.perc-inline-edit-datatable-delete-row').on('click', deleteRowButtonAction);
+
+        function deleteRowButtonAction(e){
             e.stopPropagation();
             e.preventDefault();
-            
-            var nRow = $(this).parents('tr')[0];
+            var nRow = $(e.currentTarget).parents('tr')[0];
             deleteRow(nRow);
-        } );
-        
+        }
+
         function deleteRow( nRow)
         {
             oTable.fnDeleteRow( nRow );
             if (oTable.fnGetData().length === 0)
             {
-               addRow(true);
+                addRow(true);
             }
         }
         function addPlaceHolder()
         {
-	        if(!('placeholder' in $('<input>')[0] || 'placeHolder' in $('<input>')[0]))
-	        { 
-	        	table.find('input[placeholder]').placeHolder({hideOnFocus: false});    
-	        }
+            if(!('placeholder' in $('<input>')[0] || 'placeHolder' in $('<input>')[0]))
+            {
+                table.find('input[placeholder]').placeHolder({hideOnFocus: false});
+            }
         }
         // only fix ellipsis in IE
         if ($.browser.msie) {
@@ -561,7 +580,7 @@
             $(".perc-ellipsis").each(function() {
                 handleOverflow($(table));
             });
-            
+
             // fix text overflow when window resizes
             $(window).on('resize', function(evt){
                 $(".perc-ellipsis").each(function(){
@@ -581,4 +600,4 @@
         var width = element.parents("td").width();
         element.css("width",width);
     }
-})(jQuery); 
+})(jQuery);

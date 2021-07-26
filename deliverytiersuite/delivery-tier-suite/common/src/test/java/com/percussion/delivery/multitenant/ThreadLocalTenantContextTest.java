@@ -87,7 +87,7 @@ public class ThreadLocalTenantContextTest extends TestCase
 					Thread.sleep(5 * 1000);
 					System.out.println("Thread #: " + num + " key: " + key);
 				} 
-				catch (InterruptedException ignore){}
+				catch (InterruptedException ignore){Thread.currentThread().interrupt();}
 			}
 		}
 		
