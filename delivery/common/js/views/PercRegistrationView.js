@@ -106,7 +106,7 @@
             
             // If data property does not exists, create it and add the paramUrlRedirect element
             if (self.parent(".percRegistration").attr("data") !== undefined) {
-                options = $.parseJSON(self.parent(".percRegistration").attr("data"));
+                options = JSON.parse(self.parent(".percRegistration").attr("data"));
             }
             else {
                 options = {};
@@ -210,7 +210,7 @@
           var self = $(this);
           if (self.validate().form()) {
               // Retrieve widget and form options
-              var widgetOptions = $.parseJSON(self.parent().parent(".percRegistration").attr("data"));
+              var widgetOptions = JSON.parse(self.parent().parent(".percRegistration").attr("data"));
               var options = self.data("options");
               
               var registerObj = {

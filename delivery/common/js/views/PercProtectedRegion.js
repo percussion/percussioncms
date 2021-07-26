@@ -62,7 +62,7 @@
     function handleProtectContent(elem)
     {
         //Parse the region protection object.
-        var protectObj = $.parseJSON(elem.attr('data'));
+        var protectObj = JSON.parse(elem.attr('data'));
         if("undefined" !== typeof (protectObj)){
             //Get the id of the region to protect.
             if ("undefined" !== typeof (protectObj.protectedRegion) && "" !== protectObj.protectedRegion)

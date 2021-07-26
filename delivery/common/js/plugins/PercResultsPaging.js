@@ -46,7 +46,7 @@
         // Then, grabs the maxResults value, and parseInt on it, making sure to use base 10.        
         if(!(0 < parseInt(elem.settings.maxResults, 10))) // Might already be defined by the element itself, or might be defined, but NaN.
         {
-            elem.settings.maxResults = parseInt($.parseJSON(this.attr('data-query')).maxResults, 10);
+            elem.settings.maxResults = parseInt(JSON.parse(this.attr('data-query')).maxResults, 10);
             if (isNaN(elem.settings.maxResults) || 1 > elem.settings.maxResults) {
                 elem.settings.maxResults = 0;
             }
