@@ -550,7 +550,7 @@ gadgets.IfrGadget.prototype.getMainContent = function(continuation) {
   gadgets.rpc.setRelayUrl(iframeId, this.serverBase_ + this.rpcRelay);
   gadgets.rpc.setAuthToken(iframeId, this.rpcToken);
   continuation('<div class="' + this.cssClassGadgetContent + '"><iframe id="' +
-      iframeId + '" name="' + iframeId + '" class="' + this.cssClassGadget +
+      iframeId + '" name="' + iframeId + '" title="'+ this.title + '" class="' + this.cssClassGadget +
       '" src="about:blank' +
       '" style="border: 0; overflow: hidden;" ' +
       (this.height ? ' height="' + this.height + '"' : '') +
