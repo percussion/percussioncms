@@ -100,9 +100,9 @@
                 "<tr>" +
                 "<th style='text-align:left;width:10%;' id='perc-header-server'><span class='col-name'>" +
                 I18N.message("perc.ui.publishing.history@Server") + "</span></th>" +
-                "<th style='text-align:left;width:40%;' id='perc-header-location'><span class='col-name'>" +
+                "<th style='text-align:left;width:30%;' id='perc-header-location'><span class='col-name'>" +
                 I18N.message("perc.ui.publishing.history@Location") + "</span></th>" +
-                "<th style='text-align:left;width:5%;' id='perc-header-revision'><span class='col-name'>" +
+                "<th style='text-align:left;width:10%;' id='perc-header-revision'><span class='col-name'>" +
                 I18N.message("perc.ui.publishing.history@Revision") + "</span></th>" +
                 "<th style='text-align:left;width:30%;' id='perc-header-date'><span class='col-name'>" +
                 I18N.message("perc.ui.publishing.history@Date") + "</span></th>" +
@@ -135,15 +135,17 @@
                 if(pubEntry.status === "FAILURE"){
                     errorMsg = " title=\"" + pubEntry.errorMessage + "\" ";
                 }
+
                 var $rowHTML = $(
                     "<tr>" +
-                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.server + "</div></td>" +
-                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.location + "</div></td>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis perc-tooltip-container'>" + pubEntry.server + "<div class='perc-tooltip'>" + pubEntry.server + "</div></div></td>" +
+                    "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis perc-tooltip-container'>" + pubEntry.location + "<div class='perc-tooltip'>" + pubEntry.location + "</div></div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.revisionId + "</div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubDateDate + " " + pubDateTime + "</div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis'>" + pubEntry.operation + "</div></td>" +
                     "<td style='vertical-align: middle;'><div class='data-cell perc-ellipsis' title='" + errorMsg + "'>" + pubEntry.status + "</div></td>" +
                     "</tr>");
+
                 $rowHTML.find("td:eq(1)").data("timedate", pubDate);
                 $tbody.append($rowHTML);
             }
