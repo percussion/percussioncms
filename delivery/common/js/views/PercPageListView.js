@@ -154,7 +154,7 @@
 
             this.settings.query.criteria = [];
 
-            $.extend(this.settings, $.JSON.parse($(this).attr('data-query')));
+            $.extend(this.settings, JSON.parse($(this).attr('data-query')));
 
             this.settings.query = $.extend(true, {}, this.settings.query); // Prevents overwrite of anything, but initializes it if it doesn't exist already.
 
