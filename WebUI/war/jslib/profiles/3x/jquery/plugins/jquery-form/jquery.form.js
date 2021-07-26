@@ -943,7 +943,7 @@
 				}
 				if (typeof data === 'string') {
 					if ((type === 'json' || !type) && ct.indexOf('json') >= 0) {
-						data = parseJSON(data);
+						data = JSON.parse(data);
 					} else if ((type === 'script' || !type) && ct.indexOf('javascript') >= 0) {
 						$.globalEval(data);
 					}
