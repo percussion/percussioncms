@@ -291,7 +291,7 @@ var assetPagination = null;
             if (!isLibMode && get_finder_height_from_cookie() !== height) {
                 var state = get_finder_is_collapsed_from_cookie() ? 'collapsed' : 'expanded';
 
-                var options = {"SameSite": "Strict"};
+                var options = {"sameSite": "Strict"};
                 if (window.isSecureContext) {
                     options.secure = true;
                 }
@@ -305,7 +305,7 @@ var assetPagination = null;
                 var height, state;
                 height = get_finder_height_from_cookie();
                 state = isExpanded ? 'expanded' : 'collapsed';
-                var options = {"SameSite": "Strict"};
+                var options = {"sameSite": "Strict"};
                 if (window.isSecureContext) {
                     options.secure = true;
                 }
