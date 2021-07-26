@@ -486,6 +486,16 @@
         <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
         <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
+    </target>
+
+    <target name="deleteOldJqueryUIJsFile">
+        <if>
+            <available file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js" type="file" />
+            <then>
+                <delete file="${install.dir}/web_resources/cm//jslib/jquery-ui.1.12.1.js"/>
+            </then>
+        </if>
     </target>
 
     <target name="upgradeSiteConfig">
