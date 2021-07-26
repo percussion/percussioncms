@@ -24,7 +24,6 @@
 package com.percussion.rx.delivery.impl;
 
 import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
@@ -32,19 +31,22 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GetObjectMetadataRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
-import com.amazonaws.util.Base64;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
@@ -66,7 +68,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.ws.rs.client.ClientBuilder.newClient;
@@ -76,7 +78,7 @@ import static javax.ws.rs.client.ClientBuilder.newClient;
  */
 public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 {
-    private static final String CREDS_WRONG_MSG = "Either bucket doesn't exist or the credentials to access the bucket are wrong.";
+    private static final String CREDS_WRONG_MSG = "Either bucket {} doesn't exist or the credentials to access the bucket are wrong. Error: {}";
     private String targetRegion = Regions.DEFAULT_REGION.getName();
     private static Boolean isEC2Instance = null;
 
@@ -93,8 +95,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
     /**
      * Logger.
      */
-    @SuppressWarnings("hiding")
-    private static final Logger ms_log = LogManager.getLogger(PSAmazonS3DeliveryHandler.class);
+    private static final Logger log = LogManager.getLogger(PSAmazonS3DeliveryHandler.class);
 
     private ConcurrentHashMap<Long,TransferManager> jobTransferManagers;
 
@@ -103,7 +104,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         //Call the base class
         super.init(jobid, site, pubServer);
         if (jobTransferManagers == null) {
-            jobTransferManagers = new ConcurrentHashMap();
+            jobTransferManagers = new ConcurrentHashMap<>();
         }
         if(!jobTransferManagers.containsKey(jobid)) { // if key does not exist
             AmazonS3 s3Client = getAmazonS3Client(pubServer);
@@ -132,8 +133,8 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
      * Remove the single item specified by location. This method can be
      * overridden in a subclass.
      *
-     * @param jobId
-     * @param item
+     * @param item The item to be removed
+     * @param jobId The current jobId
      * @param location the location, never <code>null</code> or empty.
      * @return the result of the removal operation
      */
@@ -186,7 +187,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         try
         {
             AmazonS3 s3Client = getAmazonS3Client(pubServer);
-            TransferManager tm =null;
+            TransferManager tm;
             if(jobTransferManagers.containsKey(jobId)){  // check for the jobId
                 tm = jobTransferManagers.get(jobId);
             }else{ // if does not exist
@@ -196,25 +197,32 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             if (item.getFile() != null) {
                 String checksum = "";
                 try (InputStream is = new FileInputStream(item.getFile())) {
-                    checksum = calculateChecksum(is);
+
                     //reading server.properties to check if checksum check needs to be done or not, default is false
                     if (PSServer.getServerProps().getProperty("optimizePublishWithChecksum", "false").equalsIgnoreCase("true")) {
+                        checksum = calculateChecksum(is);
                         boolean checksumValueChanged = true;
-                        ms_log.debug("local CheckSum value -> {}" , checksum);
+                        log.debug("local CheckSum value -> {}" , checksum);
                         try {
                             GetObjectMetadataRequest mreq = new GetObjectMetadataRequest(bucketName, key);
                             ObjectMetadata retrieved_metadata = s3Client.getObjectMetadata(mreq);
                             if (retrieved_metadata != null) {
                                 String s3CheckSum = retrieved_metadata.getUserMetaDataOf("Perc-Content-Checksum");
-                                ms_log.debug("S3 Checksum  property -> {}" , s3CheckSum);
+                                log.debug("S3 Checksum  property -> {}" , s3CheckSum);
                                 if (checksum != null && checksum.equalsIgnoreCase(s3CheckSum)) {
                                     checksumValueChanged = false;
                                 }
                             }
 
-                        } catch (Exception e) {
-                            ms_log.error("this bucket does not exist on amazon s3 server {}" ,e.getMessage());
-                            ms_log.debug(e);
+                        } catch (AmazonS3Exception e) {
+                            if(e.getStatusCode() == 404){
+                                log.debug("The object {} was not found so this is a new item.",key);
+                            }else{
+                                log.error(PSExceptionUtils.getMessageForLog(e));
+                            }
+                            // In any error state we can't confirm that the object hasn't changed
+                            // so always flag it as a change so publish is attempted.
+                            checksumValueChanged=true;
                         }
                         if (checksumValueChanged) {
                             copyToAmazonDirect(tm, bucketName, key, item.getFile(), item.getMimeType(), item.getLength(), checksum);
@@ -248,17 +256,8 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
                     .getLocalizedMessage());
         }
 
-        try
-        {
-            return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
-                    jobId, item.getReferenceId(), location.getBytes("UTF8"));
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            ms_log.error("Problem delivering item", e);
-            return new PSDeliveryResult(Outcome.FAILED, e.getLocalizedMessage(),
-                    item.getId(), jobId, item.getReferenceId(), null);
-        }
+        return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
+                jobId, item.getReferenceId(), location.getBytes(StandardCharsets.UTF_8));
     }
     /**
      * calculate the checksum of provided InputStream
@@ -274,15 +273,16 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         String result="";
         try {
             byte[] byteArray = IOUtils.toByteArray(originalInputStream);
-            result = Base64.encodeAsString(DigestUtils.sha3_256(byteArray));
+
+            result = DigestUtils.sha256Hex(byteArray);
         }catch(Exception e){
-            ms_log.error("Exception occurred while calculateChecksum -- > {}", e.getMessage());
-            ms_log.debug(e);
+            log.error("Exception occurred while calculateChecksum -- > {}", e.getMessage());
+            log.debug(e);
         }
         return result;
     }
 
-    private void copyToAmazon(TransferManager tm, String bucketName, String key, InputStream is, String mimeType, long contentLength) throws AmazonServiceException, AmazonClientException, InterruptedException
+    private void copyToAmazon(TransferManager tm, String bucketName, String key, InputStream is, String mimeType, long contentLength) throws AmazonClientException, InterruptedException
     {
         try{
             ObjectMetadata metadata = new ObjectMetadata();
@@ -294,7 +294,13 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         }
         finally
         {
-            IOUtils.closeQuietly(is);
+            if(is != null){
+                try{
+                    is.close();
+                } catch (IOException e) {
+                    log.debug(e);
+                }
+            }
         }
 
     }
@@ -337,53 +343,82 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             //means not an EC2 Server
             isEC2Instance = Boolean.FALSE;
         }
-        return isEC2Instance.booleanValue();
+        return isEC2Instance;
     }
 
     private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws PSDeliveryException{
         AmazonS3 s3 = null;
 
+        String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
+        if(selectedRegionName == null || selectedRegionName.trim().equals("")){
+
+            //Default to EC2 regions
+            try {
+                if (Regions.getCurrentRegion() != null){
+                    selectedRegionName = Regions.getCurrentRegion().getName();
+                }
+            }catch(Exception e){
+                log.debug(e);
+            }
+            //Fallback to publisher-beans.xml
+            if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
+                selectedRegionName = getConfiguredAWSRegion().getName();
+            }
+        }
+
         if(isEC2Instance()){
-            ms_log.debug("EC2 Instance Running");
+            log.debug("EC2 Instance Running");
             s3 = AmazonS3ClientBuilder.standard()
                     .withCredentials(new InstanceProfileCredentialsProvider(false))
-                    .withRegion(Regions.getCurrentRegion().getName())
+                    .withRegion(selectedRegionName)
                     .build();
         }else {
-            ms_log.debug("Using Access/Security Key");
-            PSAesCBC aes = new PSAesCBC();
+
             String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
             String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
-            String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
+
 
             try {
-                accessKey = aes.decrypt(accessKey, IPSPubServerDao.encryptionKey);
-                secretKey = aes.decrypt(secretKey, IPSPubServerDao.encryptionKey);
+
+                accessKey = decrypt(accessKey);
+                secretKey = decrypt(secretKey);
             } catch (Exception e) {
-                ms_log.error(e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
                 throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
             }
-            if(selectedRegionName == null || selectedRegionName.trim().equals("")){
 
-                //Default to EC2 regions
-                try {
-                    if (Regions.getCurrentRegion() != null){
-                        selectedRegionName = Regions.getCurrentRegion().getName();
-                    }
-                }catch(Exception e){
-                    //Do nothing
-                }
-                //Fallback to publisher-beans.xml
-                if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
-                    selectedRegionName = getConfiguredAWSRegion().getName();
-                }
-            }
 
             BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
             s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
         }
         return s3;
 
+    }
+
+    /**
+     * Decrypt the string.  Will attempt to decrypt using legacy algorithms to handle upgrade scenario.
+     * @param dstr base64 encoded encrypted string
+     * @return clear text version of the string.
+     */
+    private String decrypt(String dstr) {
+
+        try {
+            PSEncryptor encryptor = PSEncryptor.getInstance(
+                    "AES",
+                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+            return encryptor.decrypt(dstr);
+        } catch (PSEncryptionException e) {
+            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
+            try {
+                PSAesCBC aes = new PSAesCBC();
+                return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
+            } catch (PSEncryptionException psEncryptionException) {
+                log.error("Unable to decrypt string. Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
+                return dstr;
+            }
+        }
     }
 
     private String getExceptionMessage(Exception e){
@@ -396,6 +431,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
      * (non-Javadoc)
      * @see com.percussion.rx.delivery.impl.PSBaseDeliveryHandler#checkConnection(com.percussion.services.pubserver.IPSPubServer, com.percussion.services.sitemgr.IPSSite)
      */
+    @Override
     public boolean checkConnection(IPSPubServer pubServer, IPSSite site)
     {
         boolean result = true;
@@ -404,11 +440,13 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         {
             AmazonS3 s3Client = getAmazonS3Client(pubServer);
             s3Client.getS3AccountOwner();
-            result = s3Client.doesBucketExist(bucketName);
+            result = s3Client.doesBucketExistV2(bucketName);
         }
         catch (Exception e)
         {
-            ms_log.error(CREDS_WRONG_MSG, e);
+            log.error(CREDS_WRONG_MSG, bucketName,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             result = false;
         }
         return result;
@@ -437,7 +475,8 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         }
         catch (Exception e)
         {
-            ms_log.error("Error copying image to amazon s3 bucket.", e);
+            log.error("Error copying image to amazon s3 bucket. {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             result = new PSPair<>(Boolean.FALSE, e.getLocalizedMessage());
         }
         finally
@@ -450,9 +489,8 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 
     public static String generateTestImageKey(String token)
     {
-        String imgName = FilenameUtils.getBaseName(PSAmazonS3DeliveryHandler.PERC_TEST_IMG) + "-" + token
+        return FilenameUtils.getBaseName(PSAmazonS3DeliveryHandler.PERC_TEST_IMG) + "-" + token
                 + "." + FilenameUtils.getExtension(PSAmazonS3DeliveryHandler.PERC_TEST_IMG);
-        return imgName;
     }
 
     public static final String PERC_TEST_IMG = "percussion_test_image_donotuse.jpg";

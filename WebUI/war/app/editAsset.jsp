@@ -247,9 +247,10 @@
         </div>
         <div id="perc-pageEditor-toolbar-content" class="ui-helper-clearfix"></div>
     </div>
-</div>
+
 <div id="bottom"></div>
 <iframe id="frame" name="frame" style="width: 100%" class="perc-ui-component-ready" frameborder="0"></iframe>
+</div>
 <%@include file='includes/siteimprove_integration.html'%>
 </body>
 </html>

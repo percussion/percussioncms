@@ -454,13 +454,8 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
     width:100px;
     float:right;
     margin-left:8px;
-    background-image:url(../images/images/blueButtonImport.png);
 }
 
-.perc-users-directory-users-import-button-enabled:hover
-{
-    background-image:url(../images/images/blueButtonImportOver.png);
-}
 
 .perc-users-directory-users-import-button-disabled
 {
@@ -468,7 +463,6 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
     width:100px;
     float:right;
     margin-left:8px;
-    background-image:url(../images/images/blueButtonImportDisabled.png);
 }
 
 #ui-dialog-title-perc-users-import-users-dialog
@@ -507,12 +501,10 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
     height:29px;
     width:78px;
     float:right;
-    background-image:url(../images/images/buttonCancel.gif);
 }
 
 #perc-users-directory-users-cancel-button:hover
 {
-    background-image:url(../images/images/buttonCancelOver.gif);
 }
 
 #perc-users-search-button
@@ -521,19 +513,18 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
     width:100px;
     float:right;
     margin-top:0;
-    background-image:url(../images/images/blueButtonSearch.png);
 }
 
 #perc-users-search-button:hover
 {
-    background-image:url(../images/images/blueButtonSearchOver.png);
 }
 
 #perc-users-directory-users-buttons
 {
-    position:absolute;
+    float:right;
     bottom:15px;
     right:20px;
+    display: contents;
 }
 
 #perc-roles-list,#perc-workflows-list,#perc-workflows-assigned-sites-folders,#perc-category-tree
@@ -913,7 +904,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 
 .perc-step-delete-button:hover
 {
-    background:url(../images/images/buttonDeletePageOver.gif);
+    background:url(../images/images/buttonDeletePageOver.png);
 }
 
 .perc-step-delete-disable,.perc-step-delete-disable:hover

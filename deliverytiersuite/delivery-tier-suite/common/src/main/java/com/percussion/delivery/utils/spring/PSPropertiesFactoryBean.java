@@ -24,7 +24,7 @@
 package com.percussion.delivery.utils.spring;
 
 
-import com.percussion.security.PSSecureProperty;
+import com.percussion.delivery.utils.security.PSSecureProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;

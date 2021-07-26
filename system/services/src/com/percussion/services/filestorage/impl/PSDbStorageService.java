@@ -883,18 +883,18 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
             int batchCount = PSDbStorageService.this.reparseBatch(BATCH_SIZE);
             count += batchCount;
             moreItems = batchCount == BATCH_SIZE;
-            log.debug("Reparsed " + batchCount + " Binary Items. Total " + count);
+            log.debug("Re-parsed {} Binary Items. Total {}" ,batchCount, count);
             try
             {
                sleep(10);
             }
             catch (InterruptedException e)
             {
-               throw new RuntimeException(e);
+               Thread.currentThread().interrupt();
             }
          }
 
-         log.debug("Finished reparsing metadata for binaries.  Shutting down thread");
+         log.debug("Finished re-parsing metadata for binaries.  Shutting down thread");
       }
    }
 
@@ -933,7 +933,7 @@ public class PSDbStorageService implements IPSFileStorageService, InitializingBe
          }
          catch (InterruptedException e)
          {
-            // TODO Auto-generated catch block
+            Thread.currentThread().interrupt();
          }
          if (m_isImport)
          {

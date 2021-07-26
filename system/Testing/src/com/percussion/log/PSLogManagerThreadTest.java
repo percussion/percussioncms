@@ -24,19 +24,15 @@
 
 package com.percussion.log;
 
-import com.percussion.server.PSRequest;
 import com.percussion.testing.IPSServerBasedJunitTest;
 import com.percussion.testing.PSConfigHelperTestCase;
-import com.percussion.testing.PSRequestHandlerTestSuite;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Properties;
-
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.TestSuite;
-import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.assertEquals;
 
@@ -139,6 +135,7 @@ public class PSLogManagerThreadTest extends PSConfigHelperTestCase
          }
          catch (InterruptedException e) {
             flushPrint("*** \tLog testing thread cleaning up.");
+            Thread.currentThread().interrupt();
          }
       }
       private long m_waitLimitMs;

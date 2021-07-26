@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.publisher.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.process.PSProcessAction;
 import com.percussion.process.PSProcessStatus;
@@ -33,13 +34,14 @@ import com.percussion.services.publisher.IPSPubStatus;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.util.PSDateFormatISO8601;
 import com.percussion.util.PSStringTemplate;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Run a command before or after an edition. <br/>
@@ -57,6 +59,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class PSEditionCommandTask implements IPSEditionTask
 {
+
+   private static final Logger log = LogManager.getLogger(PSEditionCommandTask.class);
 
    public TaskType getType()
    {
@@ -125,7 +129,8 @@ public class PSEditionCommandTask implements IPSEditionTask
          }
          catch (InterruptedException e1)
          {
-            // Ignore
+            log.error(PSExceptionUtils.getMessageForLog(e1));
+            Thread.currentThread().interrupt();
          }
       }
 

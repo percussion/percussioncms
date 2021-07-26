@@ -9,11 +9,13 @@
  ******************************************************************************/
 package com.percussion.pso.utils;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.fileupload.FileItem;
+
+import javax.activation.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.activation.DataSource;
-import org.apache.commons.fileupload.FileItem;
 
 /**
  * A thin wrapper for a FileItem as a DataSource. 
@@ -71,6 +73,7 @@ public class FileItemDataSource implements DataSource
     * @return the file name. 
     * @see javax.activation.DataSource#getName()
     */
+   @SuppressFBWarnings("FILE_UPLOAD_FILENAME")
    public String getName()
    {     
       return item.getName(); 

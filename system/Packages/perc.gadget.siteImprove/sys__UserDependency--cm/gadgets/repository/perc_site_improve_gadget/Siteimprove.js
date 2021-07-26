@@ -40,7 +40,7 @@ var IS_EXTEND_HEIGHT = true;
 var SITEIMPROVE_COOKIE_PATH = '/';
 var SITEIMPROVE_COOKIE_NAME = 'siteimprove_credentials';
 
-$(document).ready(function () {
+$(function () {
 
     //Hold onto our site configuration.
     var siteInfos = {};
@@ -51,7 +51,6 @@ $(document).ready(function () {
         $('#perc-site-improve-main').removeAttr('style');
         $('#perc-site-improve-back-div').css('display', 'none');
         $('#perc-existing-site-improve-credentials').css('display', 'none');
-        //$('#perc-try-out-siteimprove').css('display', 'none');
         $('#inactive-save-credentials-site-improve-img').css('display', 'none');
         $('#save-config-status-failure-message').text('');
     }
@@ -262,11 +261,15 @@ $(document).ready(function () {
 
     function storeCredentials(siteName, token) {
 
+        var secure = "";
+        if (window.isSecureContext) {
+            secure = " Secure;";
+        }
         // store cookie with the token so when we delete
-        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + ";";
+        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + "; SameSite=Lax;" + secure;
 
         // get current site
-        if(siteName === undefined || siteName == '')
+        if (siteName === undefined || siteName == '')
             siteName = $("#mySites").val();
 
         var credentials = {
@@ -454,7 +457,7 @@ $(document).ready(function () {
      * sites that have siteimprove enabled
      */
     function updateTokenForAccount(token) {
-        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + ";";
+        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + "; SameSite=Lax;";
         getAllSISiteCredentials(function (status, results) {
             if (status === PercSIServiceUtils.STATUS_ERROR) {
                 console.error(I18N.message("perc.ui.gadgets.siteimprove@Error Getting Credentials"));
@@ -558,12 +561,12 @@ $(document).ready(function () {
         var $resetBtn = $("#perc-site-improve-reset-btn");
         var $advancedBtn = $("#perc-site-improve-advanced-btn");
 
-        $backBtn.unbind().bind('click', onBack);
-        $existingSiteBtn.unbind().bind('click', onExistingSite);
-        $TrySiteBtn.unbind().bind('click', onTrySite);
-        $saveBtn.unbind().bind('click', save);
-        $resetBtn.unbind().bind('click', refreshToken);
-        $advancedBtn.unbind().bind('click', adjustIframeHeight);
+        $backBtn.off('click').on('click', onBack);
+        $existingSiteBtn.off('click').on('click', onExistingSite);
+        $TrySiteBtn.off('click').on('click', onTrySite);
+        $saveBtn.off('click').on('click', save);
+        $resetBtn.off('click').on('click', refreshToken);
+        $advancedBtn.off('click').on('click', adjustIframeHeight);
     }
 
     //Initialize the gadget

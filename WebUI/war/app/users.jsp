@@ -143,7 +143,7 @@
 
         #perc-users-import-users-dialog-fixed div.ui-dialog-content {
             padding: 10px;
-            padding-bottom: 50px;
+            padding-bottom: 75px;
         }
 
         #perc-users-import-users-dialog-fixed input {

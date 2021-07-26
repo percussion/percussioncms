@@ -23,13 +23,6 @@
  */
 package com.percussion.foldermanagement.service;
 
-import static java.util.Arrays.asList;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.percussion.foldermanagement.data.PSFolderItem;
 import com.percussion.foldermanagement.data.PSGetAssignedFoldersJobStatus;
 import com.percussion.foldermanagement.data.PSWorkflowAssignment;
@@ -49,15 +42,20 @@ import com.percussion.sitemanage.web.service.PSSiteRestClient;
 import com.percussion.sitemanage.web.service.PSSiteTemplateRestClient;
 import com.percussion.workflow.data.PSUiWorkflow;
 import com.percussion.workflow.web.service.PSSteppedWorkflowRestServiceClient;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author miltonpividori
@@ -766,10 +764,12 @@ public class PSFolderServiceTest extends PSRestTestCase<PSFolderServiceRestClien
             try
             {
                 System.out.println("Sleeping...");
+
                 Thread.sleep(1000);
             }
             catch (InterruptedException e)
             {
+                Thread.currentThread().interrupt();
                 break;
             }
         }

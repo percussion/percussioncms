@@ -1,6 +1,8 @@
 package com.percussion.pso.utils;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,7 +61,8 @@ public class PSOEmailUtils {
 	  * @param subject
 	  * @param body
 	  */
-	public static void sendEmail( String from_line, String to_line, String cc_line, String bcc_line, String subject, String body)
+	@SuppressFBWarnings("PATH_TRAVERSAL_IN")
+	public static void sendEmail(String from_line, String to_line, String cc_line, String bcc_line, String subject, String body)
 	{
 		try
 		{
@@ -69,28 +72,33 @@ public class PSOEmailUtils {
 			
 			propFile = PSServer.getRxFile(PSServer.BASE_CONFIG_DIR + "/Workflow/rxworkflow.properties");
 
-			 rxconfigProps.load(new FileInputStream(propFile));
-			 
-		     String smtp_host = rxconfigProps.getProperty("SMTP_HOST");		     
+			try(FileInputStream fis = new FileInputStream(propFile)) {
+				rxconfigProps.load(fis);
+			}
+		     String smtpHost = rxconfigProps.getProperty("SMTP_HOST");
 	         Properties props = System.getProperties();
-	         props.put("mail.host", smtp_host);
+	         props.put("mail.host", smtpHost);
 	         props.put("mail.transport.protocol", "SMTP");
 	         Session session = Session.getDefaultInstance(props, null);
 	         
 	         Message message = new MimeMessage(session);
 	         message.setFrom(new InternetAddress(from_line));	         
-	         message.addRecipients(Message.RecipientType.TO, (Address[])splitEmailAddresses(to_line).toArray(new Address[0]));
-			 if(cc_line != null)
-	            message.addRecipients(Message.RecipientType.CC, (Address[])splitEmailAddresses(cc_line).toArray(new Address[0]));
+	         message.addRecipients(Message.RecipientType.TO, splitEmailAddresses(to_line).toArray(new Address[0]));
+
+	         if(cc_line != null)
+	            message.addRecipients(Message.RecipientType.CC, splitEmailAddresses(cc_line).toArray(new Address[0]));
+
 			 if(bcc_line != null)
-				message.addRecipients(Message.RecipientType.BCC, (Address[])splitEmailAddresses(bcc_line).toArray(new Address[0]));
-	         message.setSubject(subject);
+			 	message.addRecipients(Message.RecipientType.BCC, splitEmailAddresses(bcc_line).toArray(new Address[0]));
+
+			 message.setSubject(subject);
 	         message.setText(body);
 	         Transport.send(message);
 	  }
 	  catch(Exception e)
 	  {
-			log.error(e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(e);
 	  }
 	}
 	

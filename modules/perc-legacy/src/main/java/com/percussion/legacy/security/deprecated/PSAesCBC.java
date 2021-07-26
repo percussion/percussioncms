@@ -25,12 +25,20 @@
 package com.percussion.legacy.security.deprecated;
 
 
+import com.percussion.security.PSEncryptionException;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -101,23 +109,27 @@ public class PSAesCBC
     @SuppressFBWarnings("PADDING_ORACLE")
     @Deprecated
     public String decrypt(String secretText, String encryptionKey)
-            throws Exception {
+            throws PSEncryptionException {
         if(isBlank(secretText))
             secretText = "";
         if(isBlank(encryptionKey))
             encryptionKey = "";
-        
-        final byte[] cipherText = secretText.getBytes(StandardCharsets.ISO_8859_1);
 
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
+        try {
+            final byte[] cipherText = secretText.getBytes(StandardCharsets.ISO_8859_1);
 
-        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes(StandardCharsets.ISO_8859_1),
-                "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
 
-        cipher.init(Cipher.DECRYPT_MODE, key,
-                new IvParameterSpec(InitialVector));
+            SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes(StandardCharsets.ISO_8859_1),
+                    "AES");
 
-        return new String(cipher.doFinal(cipherText), StandardCharsets.ISO_8859_1);
+            cipher.init(Cipher.DECRYPT_MODE, key,
+                    new IvParameterSpec(InitialVector));
+
+            return new String(cipher.doFinal(cipherText), StandardCharsets.ISO_8859_1);
+        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | BadPaddingException | NoSuchProviderException | InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException e) {
+            throw new PSEncryptionException(e);
+        }
     }
 
 }

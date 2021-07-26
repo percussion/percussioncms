@@ -27,6 +27,7 @@ package com.percussion.tools;
 /**
 * This class is a simple utility that does base64 encoding and decoding.
  *
+ * @deprecated Use java.util.Base64
 */
 @Deprecated
 public class Base64 {

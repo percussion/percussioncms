@@ -456,7 +456,7 @@ var jsErrorMsg = 'JavaScript error -- ' + msg;
 percGlobalErrors.push(jsErrorMsg);
 return false;
 }
-</script> ##
+</script>
 #set($percPageID = $perc.getPage().getId())##
 #if($perc.linkContext.getSite().isCanonical() && "$!{percPageID}" != "")##
 #set($renderCanonical = true)##
@@ -602,15 +602,14 @@ $__style
 #addMobilePreviewToolbar()##
 #addResponsiveResources()##
 </head>
-
 <body>
 <input type="hidden" id="perc_linkback_id" value="$perc.page.id"/>
 #if($perc.linkContext.mode == "PUBLISH" && $perc.template.protectedRegion && $perc.template.protectedRegion.String != "")##
 #set($loginPage = $rx.pageutils.getSiteLoginPage($perc.linkContext.site.name))##
-<div id="protectedRegionInformation" data="{&quot;protectedRegion&quot;:&quot;$!perc.template.protectedRegion&quot;,&quot;protectedRegionText&quot;:&quot;$!perc.template.protectedRegionText&quot;,&quot$
+<div id="protectedRegionInformation" data="{&quot;protectedRegion&quot;:&quot;$!perc.template.protectedRegion&quot;,&quot;protectedRegionText&quot;:&quot;$!perc.template.protectedRegionText&quot;,&quot$"/>
 #if("" != "$!{perc.template.protectedRegion}"))##
 <style>
-#$!perc.template.protectedRegion{
+$!perc.template.protectedRegion{
 display:none;
 }
 </style>
@@ -645,11 +644,9 @@ display:none;
 <script defer src='/Rhythmyx/web_resources/cm/foundation/js/foundation.min.js'></script>
 #end##
 #end##
-
 #perc_displayText("$!perc.linkContext.site.siteBeforeBodyCloseContent")##
 #perc_displayText("$!perc.page.beforeBodyCloseContent")##
 #perc_displayText("$!perc.template.beforeBodyCloseContent")##
-
 #set($jqueryUIwidget = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryUIWidget"))##
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery-ui.js"))##

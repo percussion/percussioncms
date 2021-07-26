@@ -22,23 +22,15 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.security;
+package com.percussion.services.integrations.siteimprove;
 
+public class PSSiteImproveProviderException extends Exception{
 
-public class PSEncryptionException extends Exception{
-    public PSEncryptionException(String s, Throwable e) {
-        super(s, e);
+    public PSSiteImproveProviderException(String msg){
+        super(msg);
     }
 
-    public PSEncryptionException(String s) {
-        super(s);
-    }
-
-    public PSEncryptionException() {
-        super();
-    }
-
-    public PSEncryptionException(Throwable t){
+    public PSSiteImproveProviderException(Throwable t){
         super(t);
     }
 }

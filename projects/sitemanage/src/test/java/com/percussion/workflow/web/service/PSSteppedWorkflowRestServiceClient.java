@@ -100,7 +100,7 @@ public class PSSteppedWorkflowRestServiceClient extends PSDataServiceRestClient<
                         }
                         catch (InterruptedException ie)
                         {
-                            // whatever
+                            Thread.currentThread().interrupt();
                         }
                     }
                 }

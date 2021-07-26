@@ -273,21 +273,21 @@
             request.setAttribute(CURRENT_USER_ROLES_KEY, roles.toString());
             request.setAttribute(IS_ADMIN_KEY, isAdmin);
             request.setAttribute(IS_DESIGNER_KEY, isDesigner);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             throw new JspException(e);
         }
 
-        setCookie(response, "perc_userName", name);
-        setCookie(response, "perc_isAdmin", isAdmin.toString());
-        setCookie(response, "perc_isDesigner", isDesigner.toString());
-        setCookie(response, "perc_isAccessibilityUser", isAccessibilityUser.toString());
+        setCookie(request, response, "perc_userName", name);
+        setCookie(request, response, "perc_isAdmin", isAdmin.toString());
+        setCookie(request, response, "perc_isDesigner", isDesigner.toString());
+        setCookie(request, response, "perc_isAccessibilityUser", isAccessibilityUser.toString());
     }
 
-    private void setCookie(HttpServletResponse response, String cookieName, String cookieValue)
-    {
-        response.addHeader("Set-Cookie", cookieName + "=" + cookieValue + "; SameSite=strict");
+    private void setCookie(HttpServletRequest request, HttpServletResponse response, String cookieName, String cookieValue) {
+        String secure = "";
+        if (request.isSecure())
+            secure = " Secure;";
+        response.addHeader("Set-Cookie", cookieName + "=" + cookieValue + "; SameSite=Strict;" + secure);
     }
 
 
@@ -296,8 +296,7 @@
      * @param request the servlet request, assumed not <code>null</code>.
      * @param response the servlet response, assumed not <code>null</code>.
      */
-    protected Map getItemEditorInfo(HttpServletRequest request, HttpServletResponse response) throws JspException
-    {
+    protected Map getItemEditorInfo(HttpServletRequest request, HttpServletResponse response) throws JspException {
         Map urlParams = new HashMap();
         try
         {

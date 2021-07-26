@@ -474,7 +474,7 @@ function updateDriverPropertiesUi() {
         }
         else if(selectedType == 'File' && currentSection == 'percServerPropertiesFileLocalTarget' && selectedDriver == 'AMAZONS3') {
             $(this).hide('fast');
-            if(isEC2Instance != null && JSON.parse(isEC2Instance) == true){
+            if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
                 $("#s3accessSecurityKey").hide('fast');
             }else{
                 $("#s3accessSecurityKey").show('fast');
@@ -743,9 +743,9 @@ function addRegionOptions(serverObj){
     if(selectedRegion != null){
         selectedRegion = selectedRegion.value;
     }
-    //Selecting Second Record as default because first one is us gov.
-    if(selectedRegion == null && regionsList.length > 2){
-        selectedRegion = regionsList[1];
+    //Selecting Third Record as default because first two is us gov.
+    if(selectedRegion == null && regionsList.length > 3){
+        selectedRegion = regionsList[2];
     }
 
 

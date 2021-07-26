@@ -38,6 +38,7 @@ import com.amazonaws.services.s3.transfer.MultipleFileUpload;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.util.IOUtils;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.legacy.security.deprecated.PSAesCBC;
@@ -45,6 +46,8 @@ import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.pubserver.IPSPubServer;
@@ -52,8 +55,8 @@ import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.types.PSPair;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -87,12 +90,13 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private IPSPubServerDao pubServerDao;
     private String targetRegion = Regions.DEFAULT_REGION.getName();
 
-   private static final Logger m_log = LogManager.getLogger(PSAmazonS3EditionTask.class.getName());
+   private static final Logger log = LogManager.getLogger(PSAmazonS3EditionTask.class.getName());
 
+   @SuppressFBWarnings("PATH_TRAVERSAL_IN")
    @SuppressWarnings("unused")
    public void init(IPSExtensionDef def, File codeRoot) throws PSExtensionException
    {
-      webResFolder = new File(PSServer.getRxDir().getAbsolutePath() + "/" + WEB_RESOURCES);
+      webResFolder = new File(PSServer.getRxDir().getAbsolutePath() + File.separatorChar + WEB_RESOURCES);
       webResFolderPath = webResFolder.getAbsolutePath();
    }
 
@@ -126,8 +130,11 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       }
       catch (Exception e)
       {
-         m_log.error(
-               "Error occurred while copying the web_resources files to amazon s3 bucket for Site: " + site.getLabel(), e);
+         log.error(
+               "Error occurred while copying the web_resources files to amazon s3 bucket for Site: {} Error: {}" ,
+                 site.getLabel(),
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
          throw e;
       }
       finally
@@ -147,42 +154,42 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws Exception
    {
        AmazonS3 s3 = null;
+       String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
+       if(selectedRegionName == null || selectedRegionName.trim().equals("")){
+
+           //Default to EC2 regions
+           try {
+               if (Regions.getCurrentRegion() != null){
+                   selectedRegionName = Regions.getCurrentRegion().getName();
+               }
+           }catch(Exception e){
+               //Do nothing
+           }
+           //Fallback to publisher-beans.xml
+           if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
+               selectedRegionName = getConfiguredAWSRegion().getName();
+           }
+       }
 
        if(PSAmazonS3DeliveryHandler.isEC2Instance()){
-           m_log.debug("EC2 Instance Running");
+           log.debug("EC2 Instance Running");
            s3 = AmazonS3ClientBuilder.standard()
                    .withCredentials(new InstanceProfileCredentialsProvider(false))
-                   .withRegion(Regions.getCurrentRegion().getName())
+                   .withRegion(selectedRegionName)
                    .build();
        }else {
-           m_log.debug("Using Access/Security Key");
-           PSAesCBC aes = new PSAesCBC();
+           log.debug("Using Access/Security Key");
            String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
            String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
-           String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
 
            try {
-               accessKey = aes.decrypt(accessKey, IPSPubServerDao.encryptionKey);
-               secretKey = aes.decrypt(secretKey, IPSPubServerDao.encryptionKey);
+               accessKey = decrypt(accessKey);
+               secretKey = decrypt(secretKey);
            } catch (Exception e) {
-               m_log.error(e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
                throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
            }
-           if(selectedRegionName == null || selectedRegionName.trim().equals("")){
 
-               //Default to EC2 regions
-               try {
-                   if (Regions.getCurrentRegion() != null){
-                       selectedRegionName = Regions.getCurrentRegion().getName();
-                   }
-               }catch(Exception e){
-                   //Do nothing
-               }
-               //Fallback to publisher-beans.xml
-               if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
-                   selectedRegionName = getConfiguredAWSRegion().getName();
-               }
-           }
 
            BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
            s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
@@ -206,9 +213,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     }
 
     private String getExceptionMessage(Exception e){
-        return (StringUtils.isBlank(e
-                .getLocalizedMessage()) ? e.getClass().getName() : e
-                .getLocalizedMessage());
+        return PSExceptionUtils.getMessageForLog(e);
     }
 
    /**
@@ -257,16 +262,15 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     * @throws FileNotFoundException
     * @throws IOException
     */
-   private Map<String, PSPair<String, File>> getLocalWebResFiles() throws FileNotFoundException, IOException
-   {
+   private Map<String, PSPair<String, File>> getLocalWebResFiles() throws FileNotFoundException, IOException {
       Map<String, PSPair<String, File>> localFilesMap = new HashMap<>();
       generateLocalFileMap(webResFolder, localFilesMap);
       return localFilesMap;
    }
 
    private void generateLocalFileMap(File dir, Map<String, PSPair<String, File>> localFilesMap)
-         throws FileNotFoundException, IOException
-   {
+           throws IOException {
+
       for (File file : dir.listFiles())
       {
          if (file.isFile() && !isIgnorableFile(file))
@@ -274,7 +278,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
             String key = generateKey(file);
             try(InputStream is = new FileInputStream(file)){
                localFilesMap.put(key,
-                     new PSPair<>(DigestUtils.sha3_256Hex(IOUtils.toByteArray(is)), file));
+                     new PSPair<>(DigestUtils.sha256Hex(IOUtils.toByteArray(is)), file));
             }
          }
          else if (file.isDirectory())
@@ -357,5 +361,32 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
 
       return pubServerDao;
    }
+
+    /**
+     * Decrypt the string.  Will attempt to decrypt using legacy algorithms to handle upgrade scenario.
+     * @param dstr base64 encoded encrypted string
+     * @return clear text version of the string.
+     */
+    private String decrypt(String dstr) {
+
+        try {
+            PSEncryptor encryptor = PSEncryptor.getInstance(
+                    "AES",
+                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+            return encryptor.decrypt(dstr);
+        } catch (PSEncryptionException e) {
+            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
+            try {
+                PSAesCBC aes = new PSAesCBC();
+                return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
+            } catch (PSEncryptionException psEncryptionException) {
+                log.error("Unable to decrypt string. Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
+                return dstr;
+            }
+        }
+    }
+
 
 }

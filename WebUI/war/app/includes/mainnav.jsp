@@ -26,34 +26,34 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
 <%
-String locale= PSRoleUtilities.getUserCurrentLocale();
-String lang="en";
-if(locale==null){
-	locale="en-us";
-}else{
-	if(locale.contains("-"))
-		lang=locale.split("-")[0];
-	else
-		lang=locale;
-}
+    String locale= PSRoleUtilities.getUserCurrentLocale();
+    String lang="en";
+    if(locale==null){
+        locale="en-us";
+    }else{
+        if(locale.contains("-"))
+            lang=locale.split("-")[0];
+        else
+            lang=locale;
+    }
     String mainNavTab = request.getParameter("mainNavTab");
     String debug = request.getParameter("debug");
     String thesite = request.getParameter("site");
     if(thesite == null)
-        thesite = "";     
+        thesite = "";
     boolean isDebug = "true".equals(debug);
     boolean isAdmin = (Boolean)request.getAttribute("isAdmin");
     boolean isDesigner = (Boolean)request.getAttribute("isDesigner");
-	String wdgBuilderParam = (String)request.getAttribute("isWidgetBuilderActive");
+    String wdgBuilderParam = (String)request.getAttribute("isWidgetBuilderActive");
     boolean isWdgActive = "true".equalsIgnoreCase(wdgBuilderParam.trim());
-    String debugQueryString = isDebug ? "&debug=true" : "";     
+    String debugQueryString = isDebug ? "&debug=true" : "";
 %>
 <script>
     function goToLocation(l)    {
-        window.location.href = l;  
+        window.location.href = l;
     }
-    
-    $(function () {
+
+    jQuery(function ($) { $(function () {
 
         // Dynamically reverse the z-index stacking order, this is done to get
         // around IE issue with z-index stacking. Bug# CML-2032
@@ -99,8 +99,8 @@ if(locale==null){
         // initialize the current view label
         var selector = '[data-navmgr=' + views[currentView] + ']';
         set_label($(selector));
-        $('body').on('click', function () {
-            $(this).find('.perc-topnav .perc-actions-menu').hide();
+        $('body').on('click', function (evt) {
+            $(evt.target).find('.perc-topnav .perc-actions-menu').hide();
         }).on('click', '.perc-topnav', function onTopNavClick (event) {
             clear();
             event.stopPropagation();
@@ -120,24 +120,25 @@ if(locale==null){
                 hide(evt);
             });
     });
+    });
     /*]]>*/
-    </script>
-    <i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
-    <div class="perc-topnav" role="navigation" aria-label="<i18n:message key="perc.ui.navMenu.topnav@Top Navigation"/>">
-        <label></label><span class="icon-chevron-down fas fa-chevron-down" role="presentation"></span>
-        <ul id="perc-top-menu-bar" class="perc-actions-menu box_shadow_with_padding" role="menubar" aria-label="<i18n:message key="perc.ui.navMenu.topNav@Top Navigation"/>">
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_HOME"><i18n:message key="perc.ui.navMenu.home@Home"/></li>
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DASHBOARD"><i18n:message key="perc.ui.navMenu.dashboard@Dashboard"/></li>
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_EDITOR"><i18n:message key="perc.ui.navMenu.webmgt@Editor"/></li>
+</script>
+<i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
+<div class="perc-topnav" role="navigation" aria-label="<i18n:message key="perc.ui.navMenu.topnav@Top Navigation"/>">
+    <label></label><span class="icon-chevron-down fas fa-chevron-down" role="presentation"></span>
+    <ul id="perc-top-menu-bar" class="perc-actions-menu box_shadow_with_padding" role="menubar" aria-label="<i18n:message key="perc.ui.navMenu.topNav@Top Navigation"/>">
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_HOME"><i18n:message key="perc.ui.navMenu.home@Home"/></li>
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DASHBOARD"><i18n:message key="perc.ui.navMenu.dashboard@Dashboard"/></li>
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_EDITOR"><i18n:message key="perc.ui.navMenu.webmgt@Editor"/></li>
         <% if (isAdmin || isDesigner) { %>
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_SITE_ARCH"><i18n:message key="perc.ui.navMenu.architecture@Architecture"/></li>
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DESIGN"><i18n:message key="perc.ui.navMenu.design@Design"/></li>
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_PUBLISH"><i18n:message key="perc.ui.navMenu.publish@Publish"/></li>
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_SITE_ARCH"><i18n:message key="perc.ui.navMenu.architecture@Architecture"/></li>
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_DESIGN"><i18n:message key="perc.ui.navMenu.design@Design"/></li>
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_PUBLISH"><i18n:message key="perc.ui.navMenu.publish@Publish"/></li>
         <% } %><% if (isAdmin) { %>
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_WORKFLOW"><i18n:message key="perc.ui.navMenu.admin@Administration"/></li>
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_WORKFLOW"><i18n:message key="perc.ui.navMenu.admin@Administration"/></li>
         <% } %>
         <% if (isWdgActive && (isAdmin || isDesigner)) { %>
-            <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_WIDGET_BUILDER"><i18n:message key="perc.ui.navMenu.admin@Widget Builder"/></li>
-        <% } %>        
-        </ul>
-    </div>
+        <li role="menuitem" class="perc-actions-menu-item" data-navmgr="VIEW_WIDGET_BUILDER"><i18n:message key="perc.ui.navMenu.admin@Widget Builder"/></li>
+        <% } %>
+    </ul>
+</div>

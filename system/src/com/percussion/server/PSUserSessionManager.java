@@ -261,7 +261,7 @@ public class PSUserSessionManager extends Thread
       }
       catch (InterruptedException e)
       {
-         // just fall through
+         Thread.currentThread().interrupt();
       }
     
    }

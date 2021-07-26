@@ -131,6 +131,7 @@ class PSCacheMemoryManager extends Thread
          catch (InterruptedException e)
          {
             m_shutdown = true;
+            Thread.currentThread().interrupt();
          }
          catch (Throwable t)
          {

@@ -63,7 +63,6 @@ import org.springframework.validation.Errors;
 
 import javax.jcr.Node;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map.Entry;
@@ -323,8 +322,8 @@ public class PSContentItemDao implements IPSContentItemDao
     }
 
     public PSContentItem save(PSContentItem contentItem) throws com.percussion.share.dao.IPSGenericDao.SaveException, DeleteException {
-        if (log.isDebugEnabled())
-            log.debug("Saving object: " + contentItem);
+
+        log.debug("Saving object: {}" , contentItem);
         
         boolean isNew = false;
         String id = null;
@@ -350,7 +349,7 @@ public class PSContentItemDao implements IPSContentItemDao
                 PSItemField f = coreItem.getFieldByName(nvp.getKey());
                 Object value = nvp.getValue();
                 if (f != null) {
-                    //CMS-7974 : For filte type asset. The value if null was giving attachment not found validation error.
+                    //CMS-7974 : For file type asset. The value if null was giving attachment not found validation error.
                     if (value == null) {
                         if(f !=null && f.getItemFieldMeta()!=null && f.getItemFieldMeta().isBinary()){
                             value = f.getValue();

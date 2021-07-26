@@ -1106,7 +1106,7 @@ class BasicCookieBox extends Frame
 
 	// wait for user input
 
-	try { wait(); } catch (InterruptedException e) { }
+	try { wait(); } catch (InterruptedException e) { Thread.currentThread().interrupt();}
 
 	setVisible(false);
 

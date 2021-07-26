@@ -154,7 +154,7 @@
 
             this.settings.query.criteria = [];
 
-            $.extend(this.settings, $.parseJSON($(this).attr('data-query')));
+            $.extend(this.settings, $.JSON.parse($(this).attr('data-query')));
 
             this.settings.query = $.extend(true, {}, this.settings.query); // Prevents overwrite of anything, but initializes it if it doesn't exist already.
 
@@ -202,7 +202,7 @@
                 {
                     try
                     {
-                        var obj = $.parseJSON(urlstring.query);
+                        var obj = $.JSON.parse(urlstring.query);
                         $.map(obj.criteria, function(n, i){
                             if ($.inArray(n, target.settings.query.criteria) === -1)
                             {

@@ -67,7 +67,8 @@
         timeout: 300000,
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("anti-csrf-token", csrf_token);
+                //TODO:  implement me
+                //xhr.setRequestHeader("anti-csrf-token", csrf_token);
             }
         }
     });

@@ -179,6 +179,7 @@ class PSCacheStatistics extends Thread
          catch(InterruptedException e)
          {
             m_run = false;
+            Thread.currentThread().interrupt();
          }
          catch(Throwable t)
          {

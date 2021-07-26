@@ -123,6 +123,11 @@
                 <entry key="allowPurgeRevisionsScheduledTask" value="true" default="true"/>
                 <entry key="enableDebugTools" default="false"/>
                 <entry key="sameSiteCookieMode" default="Strict"/>
+                <entry key="allowedOrigins" default="*"/>
+                <entry key="allowedMethods" default="GET,POST,OPTIONS,HEAD,PUT,DELETE,PATCH"/>
+                <entry key="allowedHeaders" default="Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-UA-Compatible, OWASP-CSRFTOKEN,User-Agent"/>
+                <entry key="allowCredentials" default="false"/>
+
                 <!-- Properties to remove if present -->
                 <entry key="optimizePublishWithMD5Check" operation="del"/>
                 <entry key="enableSQLTool" operation="del"/>
