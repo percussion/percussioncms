@@ -237,7 +237,6 @@ public class Main {
             //pass in known flags
             builder.environment().put(DEVELOPMENT, developmentFlag);
             builder.environment().put(PERCUSSION_VERSION, percVersion);
-
             //Pass on the temp dir if set
             builder.environment().put(JAVA_TEMP, System.getProperty("java.io.tmpdir"));
             Process process = builder.inheritIO().start();
@@ -289,25 +288,28 @@ public class Main {
                         }
                     });
 
-            streamReader.start();
+                    streamReader.start();
 
-            process.waitFor();
+                    process.waitFor();
 
-            //Shutdown threads and streams
-            streamReader.interrupt();
-            process.getInputStream().close();
-            process.getErrorStream().close();
+                    //Shutdown threads and streams
+                    streamReader.interrupt();
+                    process.getInputStream().close();
+                    process.getErrorStream().close();
 
-            streamReader.join();
-            updateUserSpringConfig(installDir);
-            updateCategoryXMLForUpgrade(installDir);
-            updateJettyServerPortAndSSLToPreUpgradeSettings(installDir);
-            processCode = process.exitValue();
-            if(processCode!=0){
-                error=true;
-            }
-
-        }
+                    streamReader.join();
+                    updateUserSpringConfig(installDir);
+                    updateCategoryXMLForUpgrade(installDir);
+                    updateJettyServerPortAndSSLToPreUpgradeSettings(installDir);
+                    processCode = process.exitValue();
+                    if(processCode!=0){
+                        error=true;
+                    }else{
+                        //If Upgrade was successfull... Rename server.xml file thus not read again
+                        // on re-upgrade from 5.3 => 5.4 ==> 8.0.
+                        renameServerConfigFile(installDir);
+                    }
+                }
             }
         }
 
@@ -389,9 +391,20 @@ public class Main {
         r.execute();
     }
 
+    public static void renameServerConfigFile(Path installDir) throws ParserConfigurationException, IOException, SAXException {
+        String oldServerXMLDir = installDir.toAbsolutePath().toString() + "/JBossServerXML_BAK/";
+        File oldServerXMLFile = new File(oldServerXMLDir + "server.xml");
+        File rename = new File(oldServerXMLDir + "server.xml-Done");
+        boolean flag = oldServerXMLFile.renameTo(rename);
+        if (flag == true) {
+            System.out.println("File Successfully Renamed");
+        }
+    }
+
     public static void updateJettyServerPortAndSSLToPreUpgradeSettings(Path installDir) throws ParserConfigurationException, IOException, SAXException {
         String oldServerXMLDir = installDir.toAbsolutePath().toString()+"/JBossServerXML_BAK/";
         File oldServerXMLFile=  new File(oldServerXMLDir+"server.xml");
+        log.info("In updateJettyServerPortAndSSLToPreUpgradeSettings");
         if(oldServerXMLFile.exists()) {
             DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
                     false
@@ -399,6 +412,7 @@ public class Main {
             dbf.setValidating(false);
             DocumentBuilder db = dbf.newDocumentBuilder();
             try (FileInputStream fis = new FileInputStream(oldServerXMLFile)) {
+                log.info("Updating connectors");
                 Document doc = db.parse(fis);
                 NodeList nodeList = doc.getElementsByTagName("Connector");
                 for (int i = 0; i < nodeList.getLength(); i++) {
@@ -411,17 +425,19 @@ public class Main {
                         writeInstallationPropertiesForJetty(installDir, "jetty.ssl.port=", e.getAttribute("port"));
                         String keyStorefileAttr = e.getAttribute("keystoreFile");
                         String keyStorefileName = "";
-                        String keyStoreFilePath = "";
                         String keystorePassWord = e.getAttribute("keystorePass");
-                        String[] splitArr;
-                        if (keyStorefileAttr != "") {
-                            splitArr = keyStorefileAttr.split("/");
-                            keyStorefileName = splitArr[splitArr.length - 1];
-                            if (System.getProperty("file.separator").equals("/")) {
-                                keyStoreFilePath = "etc/" + keyStorefileName;
-                            } else {
-                                String wPath = installDir.toAbsolutePath().toString().replace("\\", "\\\\");
-                                keyStoreFilePath = "etc\\\\" + keyStorefileName;
+                        String keyStoreFilePath = e.getAttribute("jetty.sslContext.keyStorePath");
+                        if(keyStoreFilePath == null || keyStoreFilePath.trim().equals("") ) {
+                            String[] splitArr;
+                            if (keyStorefileAttr != "") {
+                                splitArr = keyStorefileAttr.split("/");
+                                keyStorefileName = splitArr[splitArr.length - 1];
+                                if (System.getProperty("file.separator").equals("/")) {
+                                    keyStoreFilePath = "etc/" + keyStorefileName;
+                                } else {
+                                    String wPath = installDir.toAbsolutePath().toString().replace("\\", "\\\\");
+                                    keyStoreFilePath = "etc\\\\" + keyStorefileName;
+                                }
                             }
                         }
                         writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePath=", keyStoreFilePath);
@@ -429,10 +445,12 @@ public class Main {
                         writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePassword=", keystorePassWord);
                         writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyManagerPassword=", keystorePassWord);
                         writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePassword=", keystorePassWord);
-                        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=", e.getAttribute("protocols"));
+                        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=","TLSv1.2" );
                     }
                 }
             }
+        }else {
+            writeInstallationPropertiesForJetty(installDir,"perc.ssl.protocols=","TLSv1.2");
         }
     }
 
@@ -452,5 +470,4 @@ public class Main {
         File installationPropertiesFile = new File(installDir.toAbsolutePath().toString()+"/jetty/base/etc/installation.properties");
         replaceTokens(installationPropertiesFile,replaceString.get(),replaceValue.get());
     }
-
 }
