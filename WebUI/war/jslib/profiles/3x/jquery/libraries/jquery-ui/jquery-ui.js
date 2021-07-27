@@ -14052,7 +14052,7 @@
 						t < y1 + ( draggable.helperProportions.height / 2 ) && // Bottom Half
 						y2 - ( draggable.helperProportions.height / 2 ) < b ); // Top Half
 				case "pointer":
-					return isOverAxis( event.pageY, t, droppable.proportions().height ) ||
+					return isOverAxis( event.pageY, t, droppable.proportions().height ) &&
 						isOverAxis( event.pageX, l, droppable.proportions().width );
 				case "touch":
 					return (

@@ -278,10 +278,11 @@
                     // only interact with iframe draggables
                     scope: 'default',
                     tolerance : 'pointer',
+                    greedy: true,
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
 
-                        var parentRegionId = $(this).parent().parent().attr("id");
+                        var parentRegionId = $(this).attr("id");
 
                         overlapContentWidgets++;
 
@@ -366,9 +367,10 @@
             widget.droppable({
                 scope: 'default',
                 tolerance : 'pointer',
+                greedy: true,
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {
-                    var parentRegionId = $(this).parent().parent().attr("id");
+                    var parentRegionId = $(this).attr("id");
 
                     overlap++;
                     if(accepts(ui.draggable)) {
