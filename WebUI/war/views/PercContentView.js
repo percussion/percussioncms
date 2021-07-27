@@ -278,6 +278,7 @@
                     // only interact with iframe draggables
                     scope: 'default',
                     tolerance : 'pointer',
+                    greedy: true,
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
 
@@ -366,6 +367,7 @@
             widget.droppable({
                 scope: 'default',
                 tolerance : 'pointer',
+                greedy: true,
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {
                     var parentRegionId = $(this).attr("id");
