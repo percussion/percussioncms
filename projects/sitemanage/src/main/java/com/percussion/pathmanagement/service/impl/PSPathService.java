@@ -52,6 +52,7 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.PSSiteCopyUtils;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSUiService;
 import com.percussion.ui.service.impl.PSCm1ListViewHelper;
@@ -145,13 +146,17 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @GET
     @Path("/item/id/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPathItem findById(@PathParam("id") String id) throws PSPathServiceException {
+    public PSPathItem findById(@PathParam("id") String id) throws PSPathServiceException, PSParametersValidationException {
         try {
             if(!PSSecurityUtility.isValidGuidId(id))
                 throw new PSPathServiceException("Invalid id.");
 
             return folderHelper.findItemById(id);
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
+        }catch (PSParametersValidationException pve){
+            log.debug(pve.getMessage(), pve);
+            throw pve;
+        }
+        catch (IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
             log.error("Error: {} Id: {}",e.getMessage(), id);
             log.debug(e.getMessage(),e);
             throw new PSPathServiceException(e);
