@@ -281,7 +281,7 @@
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
 
-                        var parentRegionId = $(this).parent().parent().attr("id");
+                        var parentRegionId = $(this).attr("id");
 
                         overlapContentWidgets++;
 
@@ -368,7 +368,7 @@
                 tolerance : 'pointer',
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {
-                    var parentRegionId = $(this).parent().parent().attr("id");
+                    var parentRegionId = $(this).attr("id");
 
                     overlap++;
                     if(accepts(ui.draggable)) {
