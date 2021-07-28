@@ -115,6 +115,10 @@ function getAllPublishingServer(serverType) {
 
     publishingServerListDeferred.done(function(pslLst) {
         publishingServerList = pslLst;
+        $("#publishServer").empty();
+        for(var i in publishingServerList) {
+            $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
+        }
     });
 
 
@@ -777,10 +781,6 @@ function getPublishingServerBasedOnServerType(){
     serverType=$('#percServerType').val();
 
     getAllPublishingServer(serverType);
-    $("#publishServer").empty();
-    for(var i in publishingServerList) {
-        $('#publishServer').append(new Option(publishingServerList[i], publishingServerList[i]));
-    }
 
 }
 
