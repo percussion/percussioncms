@@ -481,8 +481,9 @@
                     var data = {};
                     data.colName = colName;
                     data.sortFunction = config.sortFunction;
-                    head.on("click",null,data, function(e){
-                        sortingHandler(e);
+                    head.on("click",function(e){
+                        e.data = data;
+                        sortingHandler(e,$(this));
                     });
 
                     //Avoid select text on double click in the headers.
@@ -510,8 +511,7 @@
         return table;
     }
 
-    function sortingHandler(event){
-        var head = $(this);
+    function sortingHandler(event,head){
         var element = event.data.colName;
         var callback = event.data.sortFunction;
         head.siblings().removeClass("sorting_asc").removeClass("sorting_desc");
@@ -531,7 +531,7 @@
         // custom column sorting for Change, Views, and Template column
         // checks to see if all data is the same and if so it changes it
         // so that it is unique to force it to sort in reverse order
-        /* $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
+         $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
             var aData = [];
             var data;
             $( 'td:eq('+iColumn+')', oSettings.api.rows().nodes() ).each( function () {
@@ -560,6 +560,5 @@
             });
             return aData;
         };
-        */
     }
 })(jQuery); 
