@@ -180,7 +180,6 @@
         <module>DTS-shared-dependencies</module>
         <module>tomcat-common</module>
         <module>common</module>
-        <module>caching</module>
         <module>comments</module>
         <module>feeds</module>
         <module>forms</module>
