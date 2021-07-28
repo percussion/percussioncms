@@ -38,15 +38,13 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -66,6 +64,7 @@ public class Main {
     public static final String DEVELOPMENT = "DEVELOPMENT";
     public static final String ANT_INSTALL = "install.xml";
     public static final String JAVA_TEMP = "java.io.tmpdir";
+    public static final String VERSION_PROPERTIES = "Version.properties";
     public static File tmpFolder;
 
     public static String developmentFlag = "false";
@@ -75,6 +74,8 @@ public class Main {
     public static volatile String debug="false";
     public static Integer processCode=0;
     public static Boolean error=false;
+    public static int majorVersion = 0;
+    public static int minorVersion = 0;
 
     public static void main(String[] args) {
         try {
@@ -229,7 +230,19 @@ public class Main {
             } else {
                 javabin = javaHome + "\\bin\\java.exe";
             }
-
+            Properties existingVersion = loadVersionProperties(installDir);
+            if(existingVersion != null) {
+                String major = existingVersion.getProperty("majorVersion");
+                String minor = existingVersion.getProperty("minorVersion");
+                log.info("Major Version Found:" + major);
+                log.info("Minor Version Found:" + minor);
+                try {
+                    majorVersion = Integer.parseInt(major);
+                    minorVersion = Integer.parseInt(minor);
+                }catch (NumberFormatException ne){
+                    log.info("Invalid Version Nos in Version File");
+                }
+            }
             //"-Dlistener=com.percussion.preinstall.AntBuildListener",
             ProcessBuilder builder = new ProcessBuilder(
                     javabin,"-Dfile.encoding=UTF-8","-Dsun.jnu.encoding=UTF-8", "-Dinstall.dir=" + installDir.toAbsolutePath().toString(), "-jar", jar.toAbsolutePath().toString(), "-f", ANT_INSTALL).directory(execPath.toFile());
@@ -300,14 +313,16 @@ public class Main {
                     streamReader.join();
                     updateUserSpringConfig(installDir);
                     updateCategoryXMLForUpgrade(installDir);
-                    updateJettyServerPortAndSSLToPreUpgradeSettings(installDir);
+                    //Loading JettyServerPort & SSL settings from server.xml for 5.3 and prior release
+                    //After that the properties are in Installation.properties, thus no need to load from that file.
+                    if(majorVersion == 5 && minorVersion < 4 ) {
+                        log.info("Updating JettyServerPortAndSSLToPreUpgradeSettings from 5.3" );
+                        updateJettyServerPortAndSSLToPreUpgradeSettings(installDir);
+                    }
+                    updateSSLProtocol(installDir);
                     processCode = process.exitValue();
                     if(processCode!=0){
                         error=true;
-                    }else{
-                        //If Upgrade was successfull... Rename server.xml file thus not read again
-                        // on re-upgrade from 5.3 => 5.4 ==> 8.0.
-                        renameServerConfigFile(installDir);
                     }
                 }
             }
@@ -320,6 +335,53 @@ public class Main {
             error=true;
         }
         return processCode;
+    }
+
+    private static Properties loadVersionProperties(Path installDir){
+        File versionFile = new File(installDir + File.separator + VERSION_PROPERTIES);
+        Properties rawVersionProperties = new Properties();
+        if (versionFile.exists())
+        {
+            try(FileInputStream versionfileStream = new FileInputStream(versionFile)){
+                rawVersionProperties.load(versionfileStream);
+                return rawVersionProperties;
+            } catch (IOException e) {
+                log.info("Loading Version.properties file failed",e.getMessage());
+            }
+        }
+        return rawVersionProperties;
+    }
+
+    private static void updateSSLProtocol(Path installDir){
+        String installationPropertiesFilePath = installDir.toAbsolutePath().toString()+"/jetty/base/etc/installation.properties";
+        File installationPropertiesFile = new File(installationPropertiesFilePath);
+        Properties installationProperties = new Properties();
+        String newProtocol = null;
+        if (installationPropertiesFile.exists())
+        {
+            try(FileInputStream versionfileStream = new FileInputStream(installationPropertiesFile)){
+                installationProperties.load(versionfileStream);
+                String protocols = installationProperties.getProperty("perc.ssl.protocols");
+                if(protocols != null) {
+                    String[] protocolArray = protocols.split(",");
+                    for (String pr : protocolArray) {
+                        if (!"".equals(pr) && !"TLSv1".equals(pr) && !"TLSv1.1".equals(pr)) {
+                            if (newProtocol == null) {
+                                newProtocol = pr;
+                            } else {
+                                newProtocol += "," + pr;
+                            }
+                        }
+                    }
+                    installationProperties.setProperty("perc.ssl.protocols", protocols);
+                    try (FileOutputStream os = new FileOutputStream(installationPropertiesFile)){
+                        installationProperties.store(os,"update ssl Protocol");
+                    }
+                }
+            } catch (IOException e) {
+                log.info("Loading Version.properties file failed",e.getMessage());
+            }
+        }
     }
 
     public static void updateUserSpringConfig(Path installDir){
@@ -391,16 +453,6 @@ public class Main {
         r.execute();
     }
 
-    public static void renameServerConfigFile(Path installDir) throws ParserConfigurationException, IOException, SAXException {
-        String oldServerXMLDir = installDir.toAbsolutePath().toString() + "/JBossServerXML_BAK/";
-        File oldServerXMLFile = new File(oldServerXMLDir + "server.xml");
-        File rename = new File(oldServerXMLDir + "server.xml-Done");
-        boolean flag = oldServerXMLFile.renameTo(rename);
-        if (flag == true) {
-            System.out.println("File Successfully Renamed");
-        }
-    }
-
     public static void updateJettyServerPortAndSSLToPreUpgradeSettings(Path installDir) throws ParserConfigurationException, IOException, SAXException {
         String oldServerXMLDir = installDir.toAbsolutePath().toString()+"/JBossServerXML_BAK/";
         File oldServerXMLFile=  new File(oldServerXMLDir+"server.xml");
@@ -427,6 +479,7 @@ public class Main {
                         String keyStorefileName = "";
                         String keystorePassWord = e.getAttribute("keystorePass");
                         String keyStoreFilePath = e.getAttribute("jetty.sslContext.keyStorePath");
+                        String sslProtocols= e.getAttribute("perc.ssl.protocols");
                         if(keyStoreFilePath == null || keyStoreFilePath.trim().equals("") ) {
                             String[] splitArr;
                             if (keyStorefileAttr != "") {
@@ -445,12 +498,26 @@ public class Main {
                         writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePassword=", keystorePassWord);
                         writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyManagerPassword=", keystorePassWord);
                         writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePassword=", keystorePassWord);
-                        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=","TLSv1.2" );
+                        String newProtocol = null;
+                        if(sslProtocols != null) {
+                            String[] protocolArray = sslProtocols.split(",");
+                            for (String pr : protocolArray) {
+                                if (!"".equals(pr) && !"TLSv1".equals(pr) && !"TLSv1.1".equals(pr)) {
+                                    if (newProtocol == null) {
+                                        newProtocol = pr;
+                                    } else {
+                                        newProtocol += "," + pr;
+                                    }
+                                }
+                            }
+                        }
+                        if(newProtocol == null){
+                            newProtocol = "";
+                        }
+                        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=", newProtocol);
                     }
                 }
             }
-        }else {
-            writeInstallationPropertiesForJetty(installDir,"perc.ssl.protocols=","TLSv1.2");
         }
     }
 
