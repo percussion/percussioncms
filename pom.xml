@@ -109,6 +109,7 @@
        <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
        <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
        <jasypt.version>1.9.3</jasypt.version>
+       <commons.math.version>3.6.1</commons.math.version>
        <maven.bundle.plugin.version>4.2.1</maven.bundle.plugin.version>
        <duplicate.finder.maven.plugin.version>1.4.0</duplicate.finder.maven.plugin.version>
        <maven.enforcer.plugin.version>3.0.0-M3</maven.enforcer.plugin.version>
@@ -130,6 +131,7 @@
        <maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
        <maven.resources.plugin.version>3.2.0</maven.resources.plugin.version>
        <maven.antrun.plugin.version>3.0.0</maven.antrun.plugin.version>
+       <commons.rng.version>1.3</commons.rng.version>
        <maven.execmaven.plugin.version>1.6.0</maven.execmaven.plugin.version>
        <batik.version>1.14</batik.version>
        <maven.shade.plugin.version>3.2.1</maven.shade.plugin.version>
@@ -2952,6 +2954,12 @@
                 <artifactId>bctls-jdk15to18</artifactId>
                 <version>${bc.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-math3</artifactId>
+                <version>${commons.math.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

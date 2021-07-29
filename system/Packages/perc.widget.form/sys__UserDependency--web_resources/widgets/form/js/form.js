@@ -23,7 +23,7 @@
  */
 
 (function($){
-    $(document).ready(function(){ 
+    $(function(){
             $( ".form-datepicker" ).datepicker({
                 showOn: "button",
                 buttonImage: "/web_resources/widgets/form/images/calendar.gif",
@@ -34,9 +34,7 @@
                 changeYear: true,
                 onClose: function(dateText, inst) {
                         $(this).trigger('focusout');     
-                                                }
-
-
+                }
             });
             
             /**
@@ -72,9 +70,18 @@
 				});
 				return nameResult;
 			}
-          
+
+			function getFreshToken(){
+                $( document ).ajaxSend(function( event, jqxhr, settings ) {
+                    if ( settings.url == "ajax/test.html" ) {
+                        $( ".log" ).text( "Triggered ajaxSend handler." );
+                    }
+                });
+            }
+
             $('.perc-form').find('form').each(function(){
-				//if the URL has a name parameter, it will set the default value of the send to option 
+
+                //if the URL has a name parameter, it will set the default value of the send to option
 				// to what is passed in by the URL
 				var name = getName(location.href),
 					length = 0;
@@ -100,6 +107,13 @@
                         attr("name", "perc_hostUrl").
                         attr("value", getLocation(location.href))
                     );
+
+                    let csrfToken = $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/form/csrf"));
+
+                    if(typeof csrfToken !== "undefined" && csrfToken != null) {
+                        //Add csrf token if available
+                        $(this).append('<input/>').attr("type", "hidden").attr("name", csrfToken.param).attr("value", csrfToken.token);
+                    }
                 }
                 
                 var myRules = {};

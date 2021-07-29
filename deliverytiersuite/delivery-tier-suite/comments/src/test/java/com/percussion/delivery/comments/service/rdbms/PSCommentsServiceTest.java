@@ -34,17 +34,16 @@ import com.percussion.delivery.comments.data.PSPageSummaries;
 import com.percussion.delivery.comments.data.PSPageSummary;
 import com.percussion.delivery.comments.data.PSRestComment;
 import com.percussion.delivery.comments.services.IPSCommentsService;
-import junit.framework.TestCase;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.SessionFactory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,10 +51,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+
+@RunWith(SpringRunner.class)
+@WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:test-beans.xml"})
-public class PSCommentsServiceTest extends TestCase
+public class PSCommentsServiceTest
 {
     
     private final String COMMENT1_PAGEPATH =  "/01_site1/folder/page1.html";
@@ -82,7 +88,6 @@ public class PSCommentsServiceTest extends TestCase
     @Before
     public void setUp() throws Exception
     {
-        super.setUp();
         PSComments comments = commentService.getComments(new PSCommentCriteria(),false);
         commentService.deleteComments(getCommnetIds(comments));
     }
@@ -94,14 +99,6 @@ public class PSCommentsServiceTest extends TestCase
             commnetIds.add(new String(cmt.getId()));
         }
         return commnetIds;
-    }
-
-    @After
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-       // if (session != null && session.isOpen())
-         //   session.close();
     }
 
 

@@ -24,12 +24,10 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xmlns:tx="http://www.springframework.org/schema/tx"
-   xmlns:context="http://www.springframework.org/schema/context"
-   xsi:schemaLocation="
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
       
    <context:annotation-config/>
@@ -51,7 +49,9 @@
             one defined wins
          -->
          <list>
-            <value>file:${catalina.home}/conf/perc/perc-encryption.properties</value>
+             <value>WEB-INF/perc-security.properties</value>
+             <value>WEB-INF/perc-integrations.properties</value>
+             <value>file:${catalina.home}/conf/perc/perc-encryption.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-integrations.properties</value>
              <value>file:${catalina.home}/conf/perc/perc-security.properties</value>
          </list>
@@ -72,7 +72,7 @@
 			<prop key="ems.mc.api.password"></prop>
 			<prop key="ems.mc.api.endpoint"></prop>
              <!-- default properties for Spring Security -->
-             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+             <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
          </props>
       </property>
    </bean>

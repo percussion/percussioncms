@@ -24,8 +24,15 @@
 
 package com.percussion.extensions.publishing;
 
-import com.percussion.extension.*;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSExtensionErrors;
+import com.percussion.extension.IPSWorkFlowContext;
+import com.percussion.extension.IPSWorkflowAction;
+import com.percussion.extension.PSDefaultExtension;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -46,7 +53,13 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a workflow action that runs an edition.
@@ -303,7 +316,14 @@ public class PSPublishContent
          ParserConfigurationException
    {
       DocumentBuilderFactory fact = PSSecureXMLUtils
-      .getSecuredDocumentBuilderFactory(false);
+      .getSecuredDocumentBuilderFactory( new PSXmlSecurityOptions(
+              true,
+              true,
+              true,
+              false,
+              true,
+              false
+      ));
 
       DocumentBuilder builder = fact.newDocumentBuilder();
       Document configfile = builder.parse(CONFIG_FILE);

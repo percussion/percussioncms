@@ -50,7 +50,6 @@
             one defined wins -->
          <list>
             <value>WEB-INF/perc-security.properties</value>
-            <value>WEB-INF/perc-datasources.properties</value>
             <value>WEB-INF/perc-form-processor.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-datasources.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-form-processor.properties</value>

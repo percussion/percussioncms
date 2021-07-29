@@ -24,8 +24,18 @@
 package com.percussion.membership.services.impl;
 
 import com.percussion.delivery.services.PSAbstractRestService;
-import com.percussion.membership.data.*;
+import com.percussion.membership.data.PSAccountCreateResult;
+import com.percussion.membership.data.PSAccountSummary;
+import com.percussion.membership.data.PSGetUserResult;
+import com.percussion.membership.data.PSLoginRequest;
+import com.percussion.membership.data.PSLoginResult;
+import com.percussion.membership.data.PSMembershipAccount;
+import com.percussion.membership.data.PSMembershipResult;
 import com.percussion.membership.data.PSMembershipResult.STATUS;
+import com.percussion.membership.data.PSResetRequest;
+import com.percussion.membership.data.PSUserGroup;
+import com.percussion.membership.data.PSUserSession;
+import com.percussion.membership.data.PSUserSummary;
 import com.percussion.membership.services.IPSMembershipRestService;
 import com.percussion.membership.services.IPSMembershipService;
 import com.percussion.membership.services.PSAuthenticationFailedException;
@@ -34,12 +44,18 @@ import com.percussion.membership.services.PSResetPwdException;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -64,9 +80,12 @@ import java.util.List;
 @Scope("singleton")
 public class PSMembershipRestService extends PSAbstractRestService implements IPSMembershipRestService
 {
+    @Autowired
     private IPSMembershipService membershipService;
-    private final static Logger log = LogManager.getLogger(PSMembershipRestService.class);
-    
+
+    private  static final Logger log = LogManager.getLogger(PSMembershipRestService.class);
+
+    public PSMembershipRestService(){}
     /**
      * Ctor, autowired by spring.
      * 
@@ -77,7 +96,17 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         Validate.notNull(service);
         membershipService = service;
     }
-    
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
+
+        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
+        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
+        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
+    }
+
     /* (non-Javadoc)
 	 * @see com.percussion.membership.services.impl.IPSMembershipRestService#createUser(com.percussion.membership.data.PSMembershipAccount, javax.ws.rs.core.HttpHeaders)
 	 */

@@ -28,11 +28,11 @@ import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.HEAD;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 
 @Path("/integrations")
 @Component
@@ -42,15 +42,9 @@ public class IntegrationsRestService {
         //NOOP
     }
 
-    @Inject
-    HttpServletRequest request;
-
-    @Inject
-    HttpServletResponse response;
-
     @HEAD
     @Path("/csrf")
-    public void csrf()  {
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
         CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
 
         response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());

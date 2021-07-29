@@ -309,6 +309,25 @@
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-metadata-services.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/perc-polls-services.xml"/>
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/conf/Catalina/localhost/feeds.xml"/>
+            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching.war" />
+            <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching" />
+
+            <propertyfile file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties">
+                <entry key="encryption.type" default="ENC" />
+                <entry key="contentSecurityPolicy" default="default-src 'self' *;" />
+                <entry key="cspReportOnly" default="false" />
+                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
+                <entry key="xssProtection" default="true" />
+                <entry key="accessControlAllowedOrigins" default="*" />
+                <entry key="hstsIncludeSubDomains" default="true" />
+                <entry key="hstsMaxAgeSeconds" default="31536000" />
+                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
+                <entry key="disableCSRFProtection" default="false" />
+                <entry key="referrerPolicy" default="strict-origin-when-cross-origin" />
+                <!-- Entries to remove -->
+                <entry key="Access-Control-Allow-Origin" operation="del" />
+                <entry key="ContentSecurityPolicy" operation="del" />
+            </propertyfile>
 
             <if>
                 <isfalse value="@{upgrade}"/>
@@ -699,6 +718,7 @@
             <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.bat" summary="yes"
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
             </replace>
+
 
         </sequential>
     </macrodef>

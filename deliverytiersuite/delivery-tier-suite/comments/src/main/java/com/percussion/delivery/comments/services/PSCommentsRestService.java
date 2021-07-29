@@ -40,14 +40,25 @@ import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.server.ContainerRequest;
-import org.glassfish.jersey.server.JSONP;
 import org.glassfish.jersey.server.internal.InternalServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.GenericEntity;
@@ -68,13 +79,12 @@ import java.util.Map;
  */
 @Path("/comment")
 @Component
-@Scope("singleton")
 @Consumes({"application/xml", "application/json"})
 public class PSCommentsRestService extends PSAbstractRestService implements IPSCommentRestService
 {
 
     private static final String CALLBACK_FN = "_jqjsp";
-    private final static Logger log = LogManager.getLogger(PSCommentsRestService.class);
+    private  static final Logger log = LogManager.getLogger(PSCommentsRestService.class);
     private static  final String iso8601ExtendedString = "yyyy-MM-dd'T'HH:mm:ss.SSSZZ";
 
     /**
@@ -83,10 +93,22 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      */
     private IPSCommentsService commentService;
 
+    public PSCommentsRestService(){}
+
     @Autowired
     public PSCommentsRestService(IPSCommentsService service)
     {
         commentService = service;
+    }
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
+
+        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
+        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
+        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
     }
 
     /* (non-Javadoc)
