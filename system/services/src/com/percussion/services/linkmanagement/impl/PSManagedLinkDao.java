@@ -255,7 +255,6 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
      Query query = session
            .createQuery("from PSManagedLink where childid = :childId ");
      query.setParameter("childId", childId);
-     query.addQueryHint(QueryHints.CACHEABLE);
      return  query.list();
    }
     
