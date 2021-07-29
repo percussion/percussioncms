@@ -534,11 +534,11 @@
          $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
             var aData = [];
             var data;
-            $( 'td:eq('+iColumn+')', oSettings.api.rows().nodes() ).each( function () {
-                data = $(this).text();
-                aData.push( data );
-            });
-            return aData;
+             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
+                 aData.push( $('input', td).val());
+             } );
+
+             return aData;
         };
 
         $.fn.dataTableExt.afnSortData['perc-type-numeric'] = $.fn.dataTableExt.afnSortData['perc-type-string'];
@@ -548,7 +548,7 @@
         // it will be forced to sort in reverse order
         $.fn.dataTableExt.afnSortData['perc-type-date'] = function  ( oSettings, iColumn ) {
             var aData = [];
-            $( 'td:eq('+iColumn+')', oSettings.rows(oSettings).nodes() ).each( function () {
+            this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
                 var dateTimeArray = Array("", "");
                 var divs = $(this).find('div');
 

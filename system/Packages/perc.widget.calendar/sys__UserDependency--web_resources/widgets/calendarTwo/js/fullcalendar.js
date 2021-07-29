@@ -60,7 +60,7 @@ $.fn.fullCalendar = function(options) {
 
 		// a method call
 		if (typeof options === 'string') {
-			if (calendar && $.isFunction(calendar[options])) {
+			if (calendar && typeof calendar[options] === 'function') {
 				singleRes = calendar[options].apply(calendar, args);
 				if (!i) {
 					res = singleRes; // record the first method call result
@@ -960,7 +960,7 @@ function isAtomic(val) {
 
 
 function applyAll(functions, thisObj, args) {
-	if ($.isFunction(functions)) {
+	if (typeof functions === 'function') {
 		functions = [ functions ];
 	}
 	if (functions) {
@@ -4636,7 +4636,7 @@ Grid.mixin({
 			// Test that the dragged element passes the dropAccept selector or filter function.
 			// FYI, the default is "*" (matches all)
 			accept = view.opt('dropAccept');
-			if ($.isFunction(accept) ? accept.call(el[0], el) : el.is(accept)) {
+			if ((typeof accept === 'function') ? accept.call(el[0], el) : el.is(accept)) {
 				if (!this.isDraggingExternal) { // prevent double-listening if fired twice
 					this.listenToExternalDrag(el, ev, ui);
 				}
@@ -9720,7 +9720,7 @@ function Calendar_constructor(element, overrides) {
 
 		if (t.options.handleWindowResize) {
 			windowResizeProxy = debounce(windowResize, t.options.windowResizeDelay); // prevents rapid calls
-			$(window).resize(windowResizeProxy);
+			$(window).on('resize', windowResizeProxy);
 		}
 	}
 
@@ -9748,7 +9748,7 @@ function Calendar_constructor(element, overrides) {
 		element.removeClass('fc fc-ltr fc-rtl fc-unthemed ui-widget');
 
 		if (windowResizeProxy) {
-			$(window).unbind('resize', windowResizeProxy);
+			$(window).off('resize', windowResizeProxy);
 		}
 	}
 
@@ -11071,7 +11071,7 @@ function EventManager() { // assumed to be a calendar
 
 		var events = source.events;
 		if (events) {
-			if ($.isFunction(events)) {
+			if (typeof events === 'function') {
 				t.pushLoading();
 				events.call(
 					t, // this, the Calendar object
@@ -11099,7 +11099,7 @@ function EventManager() { // assumed to be a calendar
 
 				// retrieve any outbound GET/POST $.ajax data from the options
 				var customData;
-				if ($.isFunction(source.data)) {
+				if (typeof source.data === 'function') {
 					// supplied as a function that returns a key/value object
 					customData = source.data();
 				}
@@ -11172,7 +11172,7 @@ function EventManager() { // assumed to be a calendar
 		var source;
 		var i;
 
-		if ($.isFunction(sourceInput) || Array.isArray(sourceInput)) {
+		if (typeof sourceInput === 'function' || Array.isArray(sourceInput)) {
 			source = { events: sourceInput };
 		}
 		else if (typeof sourceInput === 'string') {
@@ -11434,7 +11434,7 @@ function EventManager() { // assumed to be a calendar
 		if (filter == null) { // null or undefined. remove all events
 			filter = function() { return true; }; // will always match
 		}
-		else if (!$.isFunction(filter)) { // an event ID
+		else if (typeof filter !== 'function') { // an event ID
 			eventID = filter + '';
 			filter = function(event) {
 				return event._id == eventID;
@@ -11458,7 +11458,7 @@ function EventManager() { // assumed to be a calendar
 
 
 	function clientEvents(filter) {
-		if ($.isFunction(filter)) {
+		if (typeof filter === 'function') {
 			return $.grep(cache, filter);
 		}
 		else if (filter != null) { // not null, not undefined. an event ID
