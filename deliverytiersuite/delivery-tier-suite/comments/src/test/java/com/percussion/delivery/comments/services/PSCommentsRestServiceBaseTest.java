@@ -33,8 +33,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.ServletDeploymentContext;
-import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
+import org.glassfish.jersey.test.spi.TestContainerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -112,6 +112,7 @@ public abstract class PSCommentsRestServiceBaseTest extends JerseyTest {
 
     private static String MOD_STATE_PUT_URL="/comment/moderation/defaultModerationState";
     private static String MOD_STATE_GET_URL = "/comment/defaultModerationState/";
+
 
     @Ignore
     @Test

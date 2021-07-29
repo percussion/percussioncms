@@ -23,6 +23,18 @@
  */
 package com.percussion.ant.doc;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -34,18 +46,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import com.percussion.security.xml.PSSecureXMLUtils;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Read the mappings file and resolve the necessary java help topics to urls in
@@ -93,7 +93,7 @@ public class PSGenerateHelptopicMappingsTask extends Task
     * Record problems to be spat out at the end of the task. These are just
     * strings
     */
-   List<String> m_problems = new ArrayList<String>();
+   List<String> m_problems = new ArrayList<>();
 
    /**
     * Default ctor
@@ -142,15 +142,11 @@ public class PSGenerateHelptopicMappingsTask extends Task
          }
       }
 
-      Writer w = null;
-      PrintWriter out = null;
-
       handleOutput("Processing key file " + m_keysFile);
 
-      try
+      try(Writer w = new FileWriter(destFile))
       {
-         w = new FileWriter(destFile);
-         out = new PrintWriter(w);
+         try(PrintWriter out  = new PrintWriter(w)){
 
          out.println("#");
          out.println("# This is a machine generated file, do not edit");
@@ -158,7 +154,14 @@ public class PSGenerateHelptopicMappingsTask extends Task
          out.println("#");
 
          DocumentBuilderFactory fact = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                 false
+                 new PSXmlSecurityOptions(
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         false
+                 )
          );
          DocumentBuilder builder = fact.newDocumentBuilder();
 
@@ -166,81 +169,47 @@ public class PSGenerateHelptopicMappingsTask extends Task
          Map mappings = readMappings(builder, mapFile);
 
          Iterator kiter = topics.keySet().iterator();
-         while (kiter.hasNext())
-         {
+         while (kiter.hasNext()) {
             String key = (String) kiter.next();
             String desturl = (String) topics.get(key);
 
-            if (desturl.trim().length() == 0)
-            {
-               if (m_suppressError)
-               {
+            if (desturl.trim().length() == 0) {
+               if (m_suppressError) {
                   m_problems.add("Error, " + key
-                        + " is missing a destination url");
-               }
-               else
-               {
+                          + " is missing a destination url");
+               } else {
                   throw new BuildException("Error, " + key
-                        + " is missing a destination url");
+                          + " is missing a destination url");
                }
-            }
-            else
-            {
+            } else {
                String index = (String) mappings.get(desturl);
-               if (index != null)
-               {
+               if (index != null) {
                   out.println(key + "=" + index);
-               }
-               else
-               {
-                  if (m_suppressError)
-                  {
+               } else {
+                  if (m_suppressError) {
                      m_problems
-                           .add("Error, no mapping found for key: " + key);
-                  }
-                  else
-                  {
+                             .add("Error, no mapping found for key: " + key);
+                  } else {
                      throw new BuildException(
-                           "Error, no mapping found for key: " + key);
+                             "Error, no mapping found for key: " + key);
                   }
                }
             }
          }
-         if (m_problems.size() > 0)
-         {
+         if (!m_problems.isEmpty()) {
             handleErrorOutput("Problems while processing " + m_keysFile);
-            Iterator iter = m_problems.iterator();
-            while (iter.hasNext())
-            {
-               String message = (String) iter.next();
+            for (String message : m_problems) {
                handleErrorOutput(message);
             }
          }
          handleOutput("");
       }
+      }
       catch (Exception e)
       {
          throw new BuildException("Problem running helptopic mappings task ", e);
       }
-      finally
-      {
-         if (out != null)
-         {
-            out.close();
-         }
-         if (w != null)
-         {
-            try
-            {
-               w.close();
-            }
-            catch (IOException e1)
-            {
-               throw new BuildException(
-                     "Problem closing helptopic mappings file");
-            }
-         }
-      }
+
    }
 
    /**
@@ -272,7 +241,7 @@ public class PSGenerateHelptopicMappingsTask extends Task
       Document d = builder.parse(mapFile);
       NodeList nl = d.getElementsByTagName(nodeName);
       int len = nl.getLength();
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       for (int i = 0; i < len; i++)
       {
          Element el = (Element) nl.item(i);

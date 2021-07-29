@@ -107,7 +107,21 @@
                      <script >
                      window.addEventListener('DOMContentLoaded', function() {
                          validatePercForm();
+                         addCsrfProtection();
                      });
+
+                     function addCsrfProtection(){
+                         let csrfToken = $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/comment/csrf"));
+
+
+                        //Add csrf token if available
+                        if(typeof csrfToken !== "undefined" && csrfToken != null){
+                            $("[name=commentForm]").append('<input/>').
+                                attr("type","hidden").
+                                attr("name",csrfToken.param).
+                                attr("value",csrfToken.token);
+                        }
+                     }
 
                      function validatePercForm() {
                              if(!document.getElementById("topyenoh").value) {

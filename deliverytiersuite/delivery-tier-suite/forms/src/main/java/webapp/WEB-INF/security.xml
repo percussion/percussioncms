@@ -41,7 +41,7 @@
        <security:custom-filter position="PRE_AUTH_FILTER"
                                ref="myPreAuthenticationFilter" />
         <security:headers defaults-disabled="true" >
-            <security:referrer-policy policy="${referrerPolicy}" />
+            <!-- <security:referrer-policy policy="${referrerPolicy}" /> -->
             <security:content-type-options />
             <security:hsts
             include-subdomains="${hstsIncludeSubDomains}"
