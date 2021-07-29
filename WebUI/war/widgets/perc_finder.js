@@ -107,7 +107,7 @@ var assetPagination = null;
         function finder_do_goto_or_search (event) {
             event.preventDefault();
             var val, isGoto, $control, $input, isNotAllowed;
-            $control = $(this).parents('.perc-finder-goto-or-search');
+            $control = $(".perc-action-goto-or-search").parents('.perc-finder-goto-or-search');
             $input = $control.find('input.perc-finder-goto-or-search:first');
             val = $input.val();
             isGoto = /^\//.test(val);
