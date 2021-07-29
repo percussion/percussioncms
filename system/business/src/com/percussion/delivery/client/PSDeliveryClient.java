@@ -156,7 +156,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
             HeadMethod method = new HeadMethod(csrfUrl);
             int statusCode = this.executeMethod(method);
-            if(statusCode == 200) {
+            if(statusCode >= 200 && statusCode < 300) {
                 Header csrfHeader = method.getResponseHeader(CSRF_HEADER);
                 Header csrfTokenHeader = method.getResponseHeader(csrfHeader.getValue());
                 Header csrfParam = method.getResponseHeader(CSRF_PARAM_HEADER);
