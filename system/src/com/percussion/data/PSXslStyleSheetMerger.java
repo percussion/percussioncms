@@ -71,7 +71,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
    public void merge(
       PSRequest req, Document doc, OutputStream out, URL styleFile,
          String encoding)
-      throws   PSConversionException, PSUnsupportedConversionException
+      throws   PSConversionException
    {
       merge(req, doc, out, styleFile, null, encoding);
    }
@@ -109,7 +109,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
     */
    public void merge(PSRequest req, Document doc, OutputStream out,
                      URL styleFile, Iterator params, String encoding)
-      throws   PSConversionException, PSUnsupportedConversionException
+      throws   PSConversionException
    {
       if(doc == null)
          throw new IllegalArgumentException(
@@ -127,9 +127,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       ConcurrentHashMap ssCache = null;
 
       // see if params are passed
-      boolean hasParams = false;
-      if (params != null && params.hasNext())
-         hasParams = true;
+      boolean hasParams = params != null && params.hasNext();
 
       // get the cache from the apphandler
       if (req != null)
@@ -182,7 +180,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       }
       catch(Exception se)
       {
-         errorMsg.append(se.toString());
+         errorMsg.append(se);
 
          try {
             //For SAXParseException, styleFile has been sent as parameter
@@ -259,8 +257,8 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          if (watch != null)
          {
             watch.stop();
-            l.debug("Transforming stylesheet " + styleFile + " "
-                + watch.toString());
+            l.debug("Transforming stylesheet {} {}" , styleFile ,
+                 watch);
          }
          if (req != null)
             req.getRequestTimer().cont();
@@ -315,9 +313,9 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          }
 
          throwConversionException( doc, styleFile, errorMsg.toString() );
-      } catch (Throwable t)
+      } catch (Exception e)
       {
-         throwConversionException( doc, styleFile, t.toString() );
+         throwConversionException( doc, styleFile, e.toString() );
       }
    }
 
@@ -531,7 +529,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          throw new IllegalArgumentException(
             "The URL of style sheet to use can not be null.");
 
-      String urlText = null;
+      String urlText;
       String ssType;
 
       PSApplicationHandler ah = request.getApplicationHandler();

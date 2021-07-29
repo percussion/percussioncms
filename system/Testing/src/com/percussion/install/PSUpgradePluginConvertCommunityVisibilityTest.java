@@ -24,6 +24,7 @@
 package com.percussion.install;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.datasource.PSDatasourceMgrLocator;
@@ -79,7 +80,7 @@ public class PSUpgradePluginConvertCommunityVisibilityTest
    /**
     * Everything is joined to these.
     */
-   private static final int communities[] =
+   private static final int[] communities =
    {1001, 1003};
    
    /**
@@ -160,7 +161,14 @@ public class PSUpgradePluginConvertCommunityVisibilityTest
                "UnitTestResources/com/percussion/rxupgrade/rxupgrade.xml");
 
          DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                 false);
+                 new PSXmlSecurityOptions(
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         false
+                 ));
 
          DocumentBuilder builder = f.newDocumentBuilder();
          Document doc = builder.parse(stream);

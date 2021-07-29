@@ -1524,7 +1524,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <!-- Limits the file size (in MegaBytes) uploaded under web_resources -->
         <property name="maxFileSize" value="100"/>
     </bean>
-    <bean id="widgetItemIdGenerator" class="com.percussion.pagemanagement.dao.impl.PSWidgetItemIdGenerator"/>
 
     <bean id="designPathItemService" class="com.percussion.pathmanagement.service.impl.PSDesignPathItemService"
           autowire="constructor">
