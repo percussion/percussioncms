@@ -120,6 +120,20 @@ public class Main {
 
             System.out.println("Installation folder is " + installPath.toAbsolutePath().toString());
 
+            Properties existingVersion = loadVersionProperties(installPath);
+            if(existingVersion != null) {
+                String major = existingVersion.getProperty("majorVersion");
+                String minor = existingVersion.getProperty("minorVersion");
+                log.info("Major Version Found:" + major);
+                log.info("Minor Version Found:" + minor);
+                try {
+                    majorVersion = Integer.parseInt(major);
+                    minorVersion = Integer.parseInt(minor);
+                }catch (NumberFormatException ne){
+                    log.info("Invalid Version Nos in Version File");
+                }
+            }
+
             Path installSrc;
             Path currentJar = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             if (!Files.isDirectory(currentJar)) {
@@ -229,19 +243,6 @@ public class Main {
                 javabin = javaHome + "/bin/java";
             } else {
                 javabin = javaHome + "\\bin\\java.exe";
-            }
-            Properties existingVersion = loadVersionProperties(installDir);
-            if(existingVersion != null) {
-                String major = existingVersion.getProperty("majorVersion");
-                String minor = existingVersion.getProperty("minorVersion");
-                log.info("Major Version Found:" + major);
-                log.info("Minor Version Found:" + minor);
-                try {
-                    majorVersion = Integer.parseInt(major);
-                    minorVersion = Integer.parseInt(minor);
-                }catch (NumberFormatException ne){
-                    log.info("Invalid Version Nos in Version File");
-                }
             }
             //"-Dlistener=com.percussion.preinstall.AntBuildListener",
             ProcessBuilder builder = new ProcessBuilder(
@@ -479,7 +480,7 @@ public class Main {
                         String keyStorefileName = "";
                         String keystorePassWord = e.getAttribute("keystorePass");
                         String keyStoreFilePath = e.getAttribute("jetty.sslContext.keyStorePath");
-                        String sslProtocols= e.getAttribute("perc.ssl.protocols");
+                        String sslProtocols= e.getAttribute("protocols");
                         if(keyStoreFilePath == null || keyStoreFilePath.trim().equals("") ) {
                             String[] splitArr;
                             if (keyStorefileAttr != "") {
