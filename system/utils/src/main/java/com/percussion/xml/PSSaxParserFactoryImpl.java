@@ -24,6 +24,7 @@
 package com.percussion.xml;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.xml.PSEntityResolver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +52,15 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
     private static final ThreadLocal<SAXParserFactory> factoryThreadLocal = ThreadLocal.withInitial(() -> {
         try {
             SAXParserFactory factory = PSSecureXMLUtils.getSecuredSaxParserFactory(
-                    "org.apache.xerces.jaxp.SAXParserFactoryImpl", null,false);
+                    "org.apache.xerces.jaxp.SAXParserFactoryImpl", null,
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    ));
             factory.setNamespaceAware(true);
             factory.setFeature("http://xml.org/sax/features/namespaces",true);
 

@@ -190,11 +190,10 @@ public class PSStatementBlock implements IPSStatementBlock
       if (shouldThisBeOmitted(data))
          return bindStart;
 
-      for (int i = 0; i < m_blocks.size(); i++) {
-         Object cur = m_blocks.get(i);
+      for (Object cur : m_blocks) {
          if (cur instanceof PSStatementColumn) {
             bindStart
-               = ((PSStatementColumn)cur).setData(data, stmt, bindStart);
+                    = ((PSStatementColumn) cur).setData(data, stmt, bindStart);
          }
       }
 
@@ -204,11 +203,9 @@ public class PSStatementBlock implements IPSStatementBlock
    // see IPSStatementBlock.releaseColumnData()
    public void releaseColumnData()
    {
-      for (int i = 0; i < m_blocks.size(); i++)
-      {
-         Object cur = m_blocks.get(i);
+      for (Object cur : m_blocks) {
          if (cur instanceof PSStatementColumn)
-            ((PSStatementColumn)cur).releaseData();
+            ((PSStatementColumn) cur).releaseData();
       }
    }
 
@@ -228,12 +225,11 @@ public class PSStatementBlock implements IPSStatementBlock
       if (shouldThisBeOmitted(data))
          return;
 
-      for (int i = 0; i < m_blocks.size(); i++) {
-         Object cur = m_blocks.get(i);
+      for (Object cur : m_blocks) {
          if (cur instanceof PSStatementColumn)
-            buf.append(((PSStatementColumn)cur).getPlaceHolder(data));
+            buf.append(((PSStatementColumn) cur).getPlaceHolder(data));
          else
-            buf.append((String)cur);
+            buf.append((String) cur);
       }
    }
 
@@ -265,11 +261,10 @@ public class PSStatementBlock implements IPSStatementBlock
       java.util.ArrayList retList = new java.util.ArrayList();
       Object cur;
 
-      for (int i = 0; i < m_blocks.size(); i++) {
-         if ((cur = m_blocks.get(i)) instanceof PSStatementColumn)
-         {
+      for (Object m_block : m_blocks) {
+         if ((cur = m_block) instanceof PSStatementColumn) {
             retList.add(
-               ((PSStatementColumn)cur).getReplacementValueExtractor());
+                    ((PSStatementColumn) cur).getReplacementValueExtractor());
          }
       }
       return retList;
@@ -332,11 +327,9 @@ public class PSStatementBlock implements IPSStatementBlock
    {
       // if we're doing omit when null, check if we have any null values
       if (!m_isStatic) {
-         for (int i = 0; i < m_blocks.size(); i++) {
-            Object cur = m_blocks.get(i);
+         for (Object cur : m_blocks) {
             if ((cur instanceof PSStatementColumn) &&
-               ((PSStatementColumn)cur).isNull(data))
-            {
+                    ((PSStatementColumn) cur).isNull(data)) {
                return true;
             }
          }

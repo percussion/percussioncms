@@ -23,23 +23,22 @@
  */
 package com.percussion.utils.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author dougrand
@@ -51,9 +50,10 @@ import org.xml.sax.SAXException;
  * found, the default action will occur by the 
  * {@link #resolveEntity(String, String)} method returning <code>null</code>.
  */
-@SuppressWarnings(value={"unchecked"})
 public class PSEntityResolver implements EntityResolver
 {
+   private static final Logger log = LogManager.getLogger(PSEntityResolver.class);
+
    /**
     * 127.0.0.1
     */
@@ -210,17 +210,18 @@ public class PSEntityResolver implements EntityResolver
       {
          if (entityFile.exists())
          {
-            FileInputStream is = new FileInputStream(entityFile);
-            InputSource source = getInputSource(publicid, systemid, is);
-            return source;
+            try(FileInputStream is = new FileInputStream(entityFile)) {
+               return getInputSource(publicid, systemid, is);
+            }
+
          }
          else
          {
-            Logger logger = LogManager.getLogger(PSEntityResolver.class);
-            if (logger!=null)
-               logger.error("entityFile doesn't exist! file: " +
+
+               log.error("entityFile doesn't exist! file: {} Error: {}",
                   entityFile.getAbsolutePath(),
-                  ms_lastSetResolutionHomeStackTrace);
+                  ms_lastSetResolutionHomeStackTrace.getMessage());
+               log.debug(ms_lastSetResolutionHomeStackTrace);
          }
       }
       
@@ -340,10 +341,8 @@ public class PSEntityResolver implements EntityResolver
          ms_lastSetResolutionHomeStackTrace = 
             new Throwable("EntityResolver last setResolutionHome stack.");
       }
-               
-      Logger logger = LogManager.getLogger(PSEntityResolver.class);
-      if (logger!=null)
-         logger.info("Entity Resolution home set to:  " +
+
+         log.info("Entity Resolution home set to:  {} " ,
                dir.getAbsolutePath());
       
       ms_resolutionHome = dir;

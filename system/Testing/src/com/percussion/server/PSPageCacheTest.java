@@ -24,12 +24,14 @@
 
 package com.percussion.server;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import junit.framework.TestCase;
+import org.w3c.dom.Document;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import com.percussion.security.xml.PSSecureXMLUtils;
-import junit.framework.TestCase;
-import org.w3c.dom.Document;
 import static org.apache.commons.lang.exception.ExceptionUtils.getFullStackTrace;
 
 public class PSPageCacheTest extends TestCase
@@ -40,7 +42,14 @@ public class PSPageCacheTest extends TestCase
       PSPageCache cache = new PSPageCache();
 
       DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-              false
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              )
       );
 
       DocumentBuilder builder;

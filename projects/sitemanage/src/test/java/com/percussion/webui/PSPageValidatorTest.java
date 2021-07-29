@@ -24,17 +24,9 @@
 package com.percussion.webui;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.share.test.PSMatchers;
-import com.percussion.share.test.PSRestClient;
 import com.percussion.share.test.PSRestTestCase;
-
-import java.io.IOException;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.httpclient.HttpException;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -43,6 +35,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * The test methods in this class query the main pages from a running server and
@@ -139,7 +137,14 @@ import org.xml.sax.SAXException;
         src = fixupDoctype(src);
         
         DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                false
+                new PSXmlSecurityOptions(
+                        true,
+                        true,
+                        true,
+                        false,
+                        true,
+                        false
+                )
         );
         factory.setValidating(false);
 

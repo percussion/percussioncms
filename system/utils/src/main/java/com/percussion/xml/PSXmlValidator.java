@@ -24,6 +24,7 @@
 package com.percussion.xml;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -57,7 +58,6 @@ public class PSXmlValidator
     * May be <code>null</code>, in which case no errors will be stored.
     * @return <code>true</code> if xml is valid against schema and well formed.
     */
-   @SuppressWarnings("unchecked")
    public static boolean validateXmlAgainstSchema(
       File XmlFile, File SchemaFile, List<Exception> errors)
    {
@@ -68,7 +68,16 @@ public class PSXmlValidator
          throw new IllegalArgumentException(
             "SchemaFile cannot be null and must exist.");
       
-      DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
+      DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              )
+      );
       factory.setValidating(true);
       factory.setNamespaceAware(true);
       factory.setAttribute(
