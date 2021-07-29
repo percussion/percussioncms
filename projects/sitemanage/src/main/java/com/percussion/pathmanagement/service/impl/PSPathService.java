@@ -476,7 +476,12 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             throw new PSPathServiceException("Invalid path.");
 
         log.debug("Attempting to find existing path: {}",  path);
-        return super.validateEnteredPath(path);
+        try{
+            return super.validateEnteredPath(path);
+        }catch (PSPathServiceException pse){
+            log.debug(pse.getMessage(),pse);
+            throw pse;
+        }
     }
 
     @GET
