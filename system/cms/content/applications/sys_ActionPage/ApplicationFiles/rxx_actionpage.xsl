@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE xsl:stylesheet [
-		<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
+		<!ENTITY % HTMLlat1 SYSTEM "file:../../DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-		<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
+		<!ENTITY % HTMLsymbol SYSTEM "file:../../DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
+		<!ENTITY % HTMLspecial SYSTEM "file:../../DTD/HTMLspecialx.ent">
 		%HTMLspecial;
 ]>
 
@@ -12,7 +12,8 @@
    of valid modifications include different layouts and stylesheets. It is not recommended
    to override the underlying templates. -->
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
+                exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n">
 
 
    
