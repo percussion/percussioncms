@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -35,13 +35,13 @@
 
     <security:http pattern="/favicon.ico" security='none' />
 
+
     <security:http create-session="stateless" use-expressions="true"  auto-config="true">
        <security:csrf disabled="${disableCSRFProtection}" token-repository-ref="tokenRepository"/>
        <security:intercept-url pattern="/**" access="isAuthenticated()" />
        <security:custom-filter position="PRE_AUTH_FILTER"
                                ref="myPreAuthenticationFilter" />
         <security:headers defaults-disabled="true" >
-            <security:referrer-policy policy="${referrerPolicy}" />
             <security:content-type-options />
             <security:hsts
             include-subdomains="${hstsIncludeSubDomains}"
@@ -49,6 +49,9 @@
             <security:frame-options policy="${xframeOptionsPolicy}" />
             <security:content-security-policy policy-directives="${contentSecurityPolicy}" report-only="${cspReportOnly}"/>
             <security:xss-protection block="${xssProtection}"/>
+            <!-- TODO: For some reason in test context this property is failing to process
+            <security:referrer-policy policy="${referrerPolicy}"/>
+            -->
         </security:headers>
         <security:cors configuration-source-ref="corsSource" />
        <security:http-basic/>

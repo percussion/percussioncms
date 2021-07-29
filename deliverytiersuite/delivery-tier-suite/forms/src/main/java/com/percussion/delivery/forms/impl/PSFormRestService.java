@@ -31,10 +31,10 @@ import com.percussion.delivery.forms.data.PSFormSummaries;
 import com.percussion.delivery.forms.data.PSFormSummary;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSTlsSocketFactory;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -46,7 +46,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.glassfish.jersey.server.internal.InternalServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
@@ -56,6 +57,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -86,7 +88,6 @@ import java.util.Map.Entry;
  */
 @Path("/form")
 @Component
-@Scope("singleton")
 public class PSFormRestService extends PSAbstractRestService implements IPSFormRestService
 {
     /**
@@ -120,17 +121,16 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
     private static final String FORM_EMAIL_SUBJECT = "perc_emns";
 
-    private final static String FORM_PROCESSORURL = "perc_processorUrl";
+    private  static final String FORM_PROCESSORURL = "perc_processorUrl";
 
-    private final static String FORM_PROCESSORTYPE = "perc_processorType";
+    private  static final String FORM_PROCESSORTYPE = "perc_processorType";
 
     private final String USER_AGENT = "Mozilla/5.0";
 
     /**
      * Logger for this class.
      */
-    //public static final Logger log = LogManager.getLogger(PSFormRestService.class);
-    private final static Logger log = LogManager.getLogger(PSFormRestService.class);
+    private  static final Logger log = LogManager.getLogger(PSFormRestService.class);
 
 
     public PSFormRestService(){ //NOOP
@@ -142,6 +142,17 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         formService = service;
         formDataJoiner = new PSFormDataJoiner();
         this.enabledCiphers = enabledCiphers;
+    }
+
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
+
+        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
+        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
+        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
     }
 
     /* (non-Javadoc)
@@ -167,7 +178,6 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     /* (non-Javadoc)
      * @see com.percussion.delivery.forms.impl.IPSFormRestService#create(javax.ws.rs.core.MultivaluedMap, java.lang.String, javax.ws.rs.core.HttpHeaders, javax.servlet.http.HttpServletResponse)
      */
-    @SuppressWarnings("deprecation")
     @Override
     @POST
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
