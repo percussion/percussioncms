@@ -26,13 +26,19 @@ package com.percussion.delivery.forms.impl;
 
 import com.percussion.delivery.forms.data.IPSFormData;
 import com.percussion.delivery.forms.data.PSFormData;
+import com.percussion.delivery.utils.spring.PSNonValidatingGenericXMLContextLoader;
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.ContextHierarchy;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,11 +56,23 @@ import static org.junit.Assert.fail;
  * @author miltonpividori
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:test-beans.xml"})
+@RunWith(SpringRunner.class)
+@WebAppConfiguration(value = "src/test/webapp" )
+@ActiveProfiles({"dev", "integration"})
+@ContextHierarchy({
+        @ContextConfiguration(loader= PSNonValidatingGenericXMLContextLoader.class,locations={"file:src/test/webapp/WEB-INF/test-beans.xml"})
+})
+@TestPropertySource(inheritLocations = true, inheritProperties = true,
+        locations = {"file:src/test/webapp/WEB-INF/perc-security.properties",
+        "file:src/test/webapp/WEB-INF/perc-datasources.properties",
+        "file:src/test/webapp/WEB-INF/perc-form-processor.properties"})
 public class PSFormServiceTest extends PSBaseFormServiceTest
 {
 
+    @Before
+    public void setup(){
+
+    }
 
     @Test
     public void testSave_NullForm()

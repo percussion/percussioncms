@@ -35,17 +35,23 @@
 
     <security:http pattern="/favicon.ico" security='none' />
 
-    <security:http create-session="stateless" use-expressions="true"  auto-config="true">
-        <security:csrf disabled="true"/>
+    <security:http  create-session="stateless" use-expressions="true" auto-config="true">
+        <security:csrf disabled="false" token-repository-ref="tokenRepository"/>
+
        <security:intercept-url pattern="/**" access="isAuthenticated()" />
+
        <security:custom-filter position="PRE_AUTH_FILTER"
                                ref="myPreAuthenticationFilter" />
         <security:headers >
-            <security:content-security-policy policy-directives="${ContentSecurityPolicy}" />
+            <security:content-security-policy policy-directives="${contentSecurityPolicy}" />
         </security:headers>
         <security:cors configuration-source-ref="corsSource" />
        <security:http-basic/>
    </security:http>
+
+    <beans:bean id="tokenRepository"
+                class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"
+    />
 
     <beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
         <beans:property name="corsConfigurations">
@@ -70,12 +76,13 @@
                                 <beans:value>GET</beans:value>
                                 <beans:value>PUT</beans:value>
                                 <beans:value>DELETE</beans:value>
+                                <beans:value>HEAD</beans:value>
                                 <beans:value>OPTIONS</beans:value>
                             </beans:list>
                         </beans:property>
                         <beans:property name="allowedOrigins">
                             <beans:bean class="org.springframework.util.StringUtils" factory-method="commaDelimitedListToSet">
-                                <beans:constructor-arg type="java.lang.String" value="${Access-Control-Allow-Origin}"/>
+                                <beans:constructor-arg type="java.lang.String" value="${accessControlAllowedOrigins}"/>
                             </beans:bean>
                         </beans:property>
                         <beans:property name="exposedHeaders">
@@ -90,7 +97,7 @@
     </beans:bean>
 
     <beans:bean id="myPreAuthenticationFilter"
-                class="com.percussion.delivery.forms.PSPreAuthenticatedProcessingFilter">
+                class="com.percussion.delivery.PSPreAuthenticatedProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
 
@@ -100,7 +107,7 @@
 
     <beans:bean id="preauthAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
         <beans:property name="preAuthenticatedUserDetailsService">
-            <beans:bean class="com.percussion.delivery.forms.CustomAuthenticationProvider" />
+            <beans:bean class="com.percussion.delivery.CustomAuthenticationProvider" />
         </beans:property>
     </beans:bean>
 
@@ -113,4 +120,5 @@
         <beans:property name="allowUrlEncodedPeriod" value="true"/>
         <beans:property name="allowUrlEncodedDoubleSlash" value="true"/>
     </beans:bean>
+    <security:http-firewall ref="allowHttpFirewall"/>
 </beans:beans>
