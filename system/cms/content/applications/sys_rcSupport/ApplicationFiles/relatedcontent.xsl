@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE html [
-<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
+<!ENTITY % HTMLlat1 SYSTEM "file:../../DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
+	<!ENTITY % HTMLsymbol SYSTEM "file:../../DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
+	<!ENTITY % HTMLspecial SYSTEM "file:../../DTD/HTMLspecialx.ent">
 		%HTMLspecial;
 ]>
 
