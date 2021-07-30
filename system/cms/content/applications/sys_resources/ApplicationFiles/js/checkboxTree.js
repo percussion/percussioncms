@@ -129,7 +129,7 @@ return this.each(function() {
             var selNodes = dtnode.tree.getSelectedNodes();
             // convert to title/key array
             var selKeys = $.map(selNodes, function(node){
-                 return node.key;
+                 return node.data.key;
             });
             $('#' + inputId)[0].value = selKeys.join(separator);
             updateNodeAria(dtnode);
