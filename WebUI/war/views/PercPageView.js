@@ -128,18 +128,13 @@
             var $tabs = $("#perc-pageEditor-tabs");
             var currentTabIndex = $tabs.tabs('option','active');
             var defaultTabIndex = 0;
-            /* which tab to show when a page is first opened, 0 is content tab, 1 is layout tab */
-            if(currentTabIndex === null || typeof currentTabIndex === 'undefined'){
-                currentTabIndex = defaultTabIndex;
-                $tabs.tabs().trigger("activate",currentTabIndex);
-            }
 
             if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
             {
                 pageModel = P.pageModel($.perc_pagemanager, $.perc_templatemanager, pageId, function()
                 {
                     // enable all tabs and select the first tab
-                    $tabs.tabs(  "option", "disabled", [] ).trigger('activate', defaultTabIndex);
+                    $tabs.data('disabled.tabs', []).tabs("option", "active", defaultTabIndex);
                     $("#perc-pageEditor-tabs").find("li").each(function(i)
                     {
                         // Don't enable Layout and Style tabs if template type is UNASSIGNED
@@ -697,9 +692,9 @@
             {
                 // Disable all Layout and Style tabs at load time
                 disabled: [1, 2],
-                activate: function(event)
+                activate: function(event,ui)
                 {
-                    var idx = $('#perc-pageEditor-tabs').tabs('option','active');
+
                     // Ask for confirmation to navigate away from tab if the page has been modified
                     if (dirtyController.isDirty())
                     {
@@ -708,7 +703,8 @@
                         {
                             // if they click ok, then reset dirty flag and proceed to select the tab
                             setDirty(false);
-                            $('#perc-pageEditor-tabs').tabs("option", "active", idx );
+                            $('#perc-pageEditor-tabs').tabs("option", "active", ui.newTab.index() );
+                            loadTab(ui.newTab.index(), false);
                             //Reset the JavaScript Off/On menu to JavaScript Off
                             resetJavaScriptMenu();
                         });
@@ -720,7 +716,7 @@
                         resetJavaScriptMenu();
                     }
 
-                    loadTab(idx, true);
+                    loadTab(ui.newTab.index(), true);
                 }
             });
 

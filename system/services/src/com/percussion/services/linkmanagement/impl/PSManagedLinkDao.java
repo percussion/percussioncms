@@ -240,7 +240,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
       Session session = sessionFactory.getCurrentSession();
 
          Query query = session
-               .createQuery("from PSManagedLink " + " where parentid in (" + join(parentIds, ",") + ") ");
+               .createQuery("from PSManagedLink where parentid in (" + join(parentIds, ",") + ") ");
          List<PSManagedLink> results = query.list();
          return results;
 
@@ -253,9 +253,8 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
       Session session = sessionFactory.getCurrentSession();
 
      Query query = session
-           .createQuery("from PSManagedLink " + " where childId = :childid");
-     query.setInteger("childid", + childId);
-     query.addQueryHint(QueryHints.CACHEABLE);
+           .createQuery("from PSManagedLink where childid = :childId ");
+     query.setParameter("childId", childId);
      return  query.list();
    }
     

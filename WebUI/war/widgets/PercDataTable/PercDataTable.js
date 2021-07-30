@@ -481,8 +481,9 @@
                     var data = {};
                     data.colName = colName;
                     data.sortFunction = config.sortFunction;
-                    head.on("click",null,data, function(e){
-                        sortingHandler(e);
+                    head.on("click",function(e){
+                        e.data = data;
+                        sortingHandler(e,$(this));
                     });
 
                     //Avoid select text on double click in the headers.
@@ -510,8 +511,7 @@
         return table;
     }
 
-    function sortingHandler(event){
-        var head = $(this);
+    function sortingHandler(event,head){
         var element = event.data.colName;
         var callback = event.data.sortFunction;
         head.siblings().removeClass("sorting_asc").removeClass("sorting_desc");
@@ -531,14 +531,14 @@
         // custom column sorting for Change, Views, and Template column
         // checks to see if all data is the same and if so it changes it
         // so that it is unique to force it to sort in reverse order
-        /* $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
+         $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
             var aData = [];
             var data;
-            $( 'td:eq('+iColumn+')', oSettings.api.rows().nodes() ).each( function () {
-                data = $(this).text();
-                aData.push( data );
-            });
-            return aData;
+             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
+                 aData.push( $('input', td).val());
+             } );
+
+             return aData;
         };
 
         $.fn.dataTableExt.afnSortData['perc-type-numeric'] = $.fn.dataTableExt.afnSortData['perc-type-string'];
@@ -548,7 +548,7 @@
         // it will be forced to sort in reverse order
         $.fn.dataTableExt.afnSortData['perc-type-date'] = function  ( oSettings, iColumn ) {
             var aData = [];
-            $( 'td:eq('+iColumn+')', oSettings.rows(oSettings).nodes() ).each( function () {
+            this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
                 var dateTimeArray = Array("", "");
                 var divs = $(this).find('div');
 
@@ -560,6 +560,5 @@
             });
             return aData;
         };
-        */
     }
 })(jQuery); 

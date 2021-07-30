@@ -1299,8 +1299,10 @@
         // resize the width/height of the finder implemented in perc_finder.js
         finder.on('resize', function (event, ui) {
             //Refresh the arch view
-            if ($("#perc_site_map").length > 0) {
-                $("#perc_site_map",this).perc_site_map('layoutAll');
+            try {
+                $("#perc_site_map").perc_site_map('layoutAll');
+            }catch(error){
+                //Gettign Initialization error in case site not selected... needs to be ignored
             }
         });
 
