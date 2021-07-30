@@ -319,7 +319,11 @@ var assetPagination = null;
             fixHeight();
             // refresh Architecture view
             if( $("#perc_site_map").length > 0 )   {
-                $("#perc_site_map").perc_site_map('layoutAll');
+                try {
+                    $("#perc_site_map").perc_site_map('layoutAll');
+                }catch(error){
+                    //Gettign Initialization error in case site not selected... needs to be ignored
+                }
             }
         }
 
