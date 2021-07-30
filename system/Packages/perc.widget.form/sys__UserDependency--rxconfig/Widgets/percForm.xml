@@ -107,7 +107,7 @@
 #if($perc.isPreviewMode())
 <script>
 window.addEventListener('DOMContentLoaded', function() {
-jQuery("form").submit(function(){return false;});
+jQuery("form").trigger('submit',function(){return false;});
 jQuery("input[type = 'submit']").attr('disabled', 'disabled');
 });
 </script>
