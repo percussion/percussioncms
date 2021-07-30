@@ -709,6 +709,9 @@ DynaTreeNode.prototype = {
 			}
 			this.tree.persistence.activeKey = this.data.key;
 			$(this.span).addClass(opts.classNames.active);
+			if ( fireEvents && opts.onActivate ){
+				opts.onActivate.call(this.tree, this);
+			}
 			if ( fireEvents && opts.onClick ){
 				opts.onClick.call(this.tree, this);
 			}

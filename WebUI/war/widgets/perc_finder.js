@@ -107,7 +107,7 @@ var assetPagination = null;
         function finder_do_goto_or_search (event) {
             event.preventDefault();
             var val, isGoto, $control, $input, isNotAllowed;
-            $control = $(this).parents('.perc-finder-goto-or-search');
+            $control = $(".perc-action-goto-or-search").parents('.perc-finder-goto-or-search');
             $input = $control.find('input.perc-finder-goto-or-search:first');
             val = $input.val();
             isGoto = /^\//.test(val);
@@ -319,7 +319,11 @@ var assetPagination = null;
             fixHeight();
             // refresh Architecture view
             if( $("#perc_site_map").length > 0 )   {
-                $("#perc_site_map",this).perc_site_map('layoutAll');
+                try {
+                    $("#perc_site_map").perc_site_map('layoutAll');
+                }catch(error){
+                    //Gettign Initialization error in case site not selected... needs to be ignored
+                }
             }
         }
 

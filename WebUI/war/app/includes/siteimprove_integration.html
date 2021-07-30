@@ -13,6 +13,13 @@
 
 		function injectSiteImprove(siteName, finderPath) {
 
+			if( typeof $ !== 'undefined'){
+				ifSiteImproveEnabled(siteName,finderPath);
+			}
+		}
+
+		function injectSiteImproveJs(siteName, finderPath) {
+
 			var cook  = getSiteImproveCookie();
 			if(typeof cook !== "undefined" && cook !== null) {
 				var SITEIMPROVE_CREDENTIALS_ROOT = "/Rhythmyx/services/integrations/siteimprove/token";
@@ -75,6 +82,12 @@
 								}])
 							} // end else statement
 
+							// Only reference the plugin if it is actually enabled.
+							var s = document.createElement( 'script' );
+							s.setAttribute( 'src', 'https://cdn.siteimprove.net/cms/overlay.js' );
+							s.setAttribute('async','true');
+							document.body.appendChild( s );
+
 							$('.si-toggle-container').show();
 
 							//if(window._si !== undefined){window._si.push(['showlog','']);} -- Leaving this line. In case we want to check logs from siteimprove in future.
@@ -84,12 +97,39 @@
 						console.error(JSON.stringify(data));
 					}
 				});
-				// Only reference the plugin if it is actually enabled.
-				var s = document.createElement( 'script' );
-				s.setAttribute( 'src', 'https://cdn.siteimprove.net/cms/overlay.js' );
-				s.setAttribute('async')
-				document.body.appendChild( s );
+
 			}
+		}
+
+		function ifSiteImproveEnabled(siteName,finderPath){
+			var isSiteImproveEnabledURL = window.location.protocol + "//" + window.location.host  + "/Rhythmyx/services/integrations/siteimprove/publish/config/" + siteName;
+			// Make call to the PSSiteimprove.retrieveSiteImproveCredentials
+			$.ajax({
+				url: isSiteImproveEnabledURL,
+				method: "GET",
+				headers: {"Accept": "application/json"},
+				success: function (results) {
+					if (typeof results === "undefined" || !(results)
+							|| typeof results.metadata === 'undefined' || !(results.metadata)
+							|| typeof results.metadata.data === 'undefined' || !(results.metadata.data)) {
+						return;
+					} else {
+						var dataStr = results.metadata.data;
+						dataStr = dataStr.replace("\\",'');
+						//get our site info from the meta data
+						var parsedMetadata = JSON.parse(dataStr);
+
+						if(typeof parsedMetadata !== 'undefined' && parsedMetadata.isSiteImproveEnabled === true){
+							injectSiteImproveJs(siteName,finderPath);
+						}
+
+
+					}
+				},
+				error: function (data) {
+					console.error(JSON.stringify(data));
+				}
+			});
 		}
 
 		function getParameterByName(name) {
