@@ -32,7 +32,7 @@
         <dependency refid="percSystem.jquery"/>
     </file>
     <file path="/web_resources/cm/css/dynatree/skin/ui.dynatree.css" type="css" id="jquery-dynatree_css"/>
-    <file id="jquery-dynatree_js" path="/web_resources/cm/jslib/jquery.dynatree.min.js" type="javascript">
+    <file id="jquery-dynatree_js" path="/web_resources/cm/jslib/jquery.dynatree.js" type="javascript">
         <dependency refid="percSystem.jquery" />
         <dependency refid="percSystem.jquery-ui" />
     </file>
