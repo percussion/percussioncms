@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "./../../DTD/HTMLlat1x.ent">
+	<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "percussion:/DTD/HTMLlat1x.ent">
 	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "./../../DTD/HTMLsymbolx.ent">
+	<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "percussion:/DTD/HTMLsymbolx.ent">
 	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "./../../DTD/HTMLspecialx.ent">
+	<!ENTITY % HTMLspecial PUBLIC="-//W3C//ENTITIES_Special_for_XHTML//EN" "percussion:/DTD/HTMLspecialx.ent">
 	%HTMLspecial;
 ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
@@ -110,7 +110,7 @@
 				<table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr class="bannerbackground" height="75">
 						<td align="left" valign="top" width="100%">
-							<div xmlns:fo="http://www.w3.org/1999/XSL/Format" id="RhythmyxBanner" style="border-bottom:none;">
+                            <div id="RhythmyxBanner" style="border-bottom:none;">
 								<table cellpadding="0" cellspacing="0" class="banner-table" width="100%">
 									<tr>
 										<td width="220">

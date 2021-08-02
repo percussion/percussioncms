@@ -35,7 +35,6 @@ import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
@@ -51,7 +50,6 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
@@ -92,15 +90,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
    public static final String TOMCAT_USER="tomcat-user";
    public static final String TOMCAT_PASSWORD="tomcat-password";
 
-    /* CSRF Constants */
-    public static final String CSRF_HEADER="X-CSRF-HEADER";
-    public static final String  CSRF_PARAM_HEADER="X-CSRF-PARAM";
-    public static final String  CSRF_METADATA_PATH="/perc-metadata-services/metadata/csrf";
-    public static final String  CSRF_FORMS_PATH="/perc-form-processor/form/csrf";
-    public static final String  CSRF_POLLS_PATH="/perc-polls-services/polls/csrf";
-    public static final String  CSRF_INTEGRATION_PATH="/perc-integrations/integrations/csrf";
-    public static final String  CSRF_COMMENTS_PATH="/perc-comments-services/comment/csrf";
-    public static final String  CSRF_MEMBERSHIP_PATH="/perc-membership-services/membership/csrf";
 
    /**
     * License Override
@@ -111,68 +100,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * Logger for this service.
      */
     public static final Logger log = LogManager.getLogger(PSDeliveryClient.class);
-
-    private String csrfGetURLFromServiceCall(String url) throws MalformedURLException {
-        //Create a new link with the url as its href:
-        URL temp = new URL(url);
-        String ret=url;
-
-        if(temp.getPath().contains("/perc-metadata-services/"))
-            ret =  CSRF_METADATA_PATH;
-        else if(temp.getPath().contains("/perc-form-processor/"))
-            ret = CSRF_FORMS_PATH;
-        else if(temp.getPath().contains("/perc-polls-services"))
-            ret = CSRF_POLLS_PATH;
-        else if(temp.getPath().contains("/perc-integrations/"))
-            ret = CSRF_INTEGRATION_PATH;
-        else if(temp.getPath().contains("/perc-comments-services/"))
-            ret = CSRF_COMMENTS_PATH;
-        else if(temp.getPath().contains("/perc-membership-services/"))
-            ret = CSRF_MEMBERSHIP_PATH;
-
-        String port;
-        if(temp.getPort()==80 || temp.getPort() == 443)
-            port = "";
-        else
-            port = ":" +  temp.getPort();
-
-        return temp.getProtocol() + "://"+ temp.getHost() + port + ret;
-
-    }
-
-
-    private DeliveryCSRFToken csrfGetToken(String url)  {
-
-        DeliveryCSRFToken csrfToken=null;
-        try {
-            String csrfUrl = "";
-            if (!StringUtils.isEmpty(url) && !url.endsWith("/csrf")) {
-                    csrfUrl = csrfGetURLFromServiceCall(url);
-            }
-
-            if (StringUtils.isEmpty(csrfUrl)) {
-                return null;
-            }
-
-            HeadMethod method = new HeadMethod(csrfUrl);
-            int statusCode = this.executeMethod(method);
-            if(statusCode >= 200 && statusCode < 300) {
-                Header csrfHeader = method.getResponseHeader(CSRF_HEADER);
-                Header csrfTokenHeader = method.getResponseHeader(csrfHeader.getValue());
-                Header csrfParam = method.getResponseHeader(CSRF_PARAM_HEADER);
-
-                csrfToken = new DeliveryCSRFToken(csrfHeader.getValue(), csrfTokenHeader.getValue(), csrfParam.getValue());
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            log.debug(e);
-        }
-        return csrfToken;
-    }
-
-
-
-
 
     /**
      * The number of times a method will be retried.
@@ -761,10 +688,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
         DeleteMethod deleteMethod = new DeleteMethod(this.requestUrl);
 
-        DeliveryCSRFToken token = csrfGetToken(this.requestUrl);
-        if(token != null){
-            deleteMethod.setRequestHeader(token.getTokenHeader(),token.getToken());
-        }
         
         if (requestMessageBody instanceof NameValuePair[])
             deleteMethod.setQueryString((NameValuePair[]) requestMessageBody);
@@ -784,11 +707,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     {
         PutMethod putMethod = new PutMethod(this.requestUrl);
 
-        DeliveryCSRFToken token = csrfGetToken(this.requestUrl);
-        if(token != null){
-            putMethod.setRequestHeader(token.getTokenHeader(),token.getToken());
-        }
-
         return this.executeEntityEnclosingMethod(putMethod, requestMessageBodyContentType);
     }
     
@@ -805,10 +723,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     {
          PostMethod postMethod = new PostMethod(this.requestUrl);
 
-        DeliveryCSRFToken token = csrfGetToken(this.requestUrl);
-        if(token != null){
-            postMethod.setRequestHeader(token.getTokenHeader(),token.getToken());
-        }
 
         if (this.requestMessageBody instanceof Collection<?>)
         {

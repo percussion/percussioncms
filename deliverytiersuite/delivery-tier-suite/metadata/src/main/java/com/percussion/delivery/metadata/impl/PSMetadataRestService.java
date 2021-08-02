@@ -54,7 +54,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
@@ -89,7 +88,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Path("/metadata")
 @Component
-@Scope("singleton")
 public class PSMetadataRestService extends PSAbstractRestService implements IPSMetadataRestService
 {
     /**
@@ -134,7 +132,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     @HEAD
     @Path("/csrf")
     public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
-        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
 
         response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
         response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());

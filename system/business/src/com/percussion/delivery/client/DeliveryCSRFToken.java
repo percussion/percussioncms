@@ -55,13 +55,24 @@ public class DeliveryCSRFToken {
 
     private String tokenHeader;
 
+    private String cookie;
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
+    }
+
     public DeliveryCSRFToken() {
         //
     }
 
-    public DeliveryCSRFToken(String tokenHeader, String token, String param){
+    public DeliveryCSRFToken(String tokenHeader, String token, String param, String cookie){
         this.param = param;
         this.token = token;
         this.tokenHeader = tokenHeader;
+        this.cookie = cookie;
     }
 }

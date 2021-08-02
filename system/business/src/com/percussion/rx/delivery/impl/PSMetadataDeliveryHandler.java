@@ -35,12 +35,14 @@ import com.percussion.delivery.metadata.solr.impl.PSSolrDeliveryHandler;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
 import com.percussion.design.objectstore.PSContentTypeHelper;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.impl.PSPublishingJob;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSContentTypeSummary;
@@ -246,7 +248,8 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
         {
            String msg = "The metadata delivery handler cannot be run in non-transactional mode.";
            IllegalStateException e = new IllegalStateException(msg);
-           ms_log.error(msg, e);
+           ms_log.error("{} Error: {}",msg, PSExceptionUtils.getMessageForLog(e));
+           ms_log.debug(e);
 
            throw e;
        }
@@ -257,11 +260,11 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     {
         validateConfig();
         
-        log.debug("Preparing: " + jobId);
+        log.debug("Preparing: {}" ,jobId);
         
-        log.debug("Retry count for HTTP connections: " + retryCount);
-        log.debug("Connection timeout for HTTP connections: " + connectionTimeout);
-        log.debug("Operation timeout for HTTP connections: " + operationTimeout);
+        log.debug("Retry count for HTTP connections: {}" , retryCount);
+        log.debug("Connection timeout for HTTP connections: {}" , connectionTimeout);
+        log.debug("Operation timeout for HTTP connections: {}" , operationTimeout);
         PSDeliveryInfo deliveryServer;
         PSSolrDeliveryHandler solr;
         
@@ -318,7 +321,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
         if (!isEnabled(jobId))
             return;
 
-        log.debug("Releasing: " + jobId);
+        log.debug("Releasing: {}" , jobId);
         super.releaseForDelivery(jobId);
         Worker w = workers.remove(jobId);
         if (w != null)
@@ -361,7 +364,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
 
              if (isMimeTypeSupported(mimeType))
             {
-               log.debug("Posting " + description);
+               log.debug("Posting {}" , description);
                FileReader reader = null;
                try {
                    item.getFile().setSourceContentType(mimeType);
@@ -376,7 +379,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
             }
             else
             {
-               log.debug("Skipped because of mime type: " + description);
+               log.debug("Skipped because of mime type: {}" , description);
             }
          }
          // Metadata can not be added to non page asset templates for example files and images.
@@ -403,13 +406,13 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
       }
       catch (WorkerHttpException wh)
       {
-         log.error("Error for " + description, wh);
+         log.error("Error for {} Error:{}" , description, PSExceptionUtils.getMessageForLog(wh));
          return createErrorResult("Error for " + description + " caused by server responding: " + wh.getStatus()
                + "\nbody: " + wh.getError(), item, jobId, location);
       }
       catch (Exception e)
       {
-         log.error("Error for " + description, e);
+         log.error("Error for {} Error: {}" , description, PSExceptionUtils.getMessageForLog(e));
          return createErrorResult("Error for " + description + " caused by: " + e.getMessage(), item,
                jobId, location);
       }
@@ -644,9 +647,9 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
          if (!deliveryEnabled())
             return;
          
-         log.debug("Posting metadata: " + metadataEntry.getJson());
+         log.debug("Posting metadata: {}" ,metadataEntry.getJson());
          deliveryClient.push(
-               new PSDeliveryActionOptions().setDeliveryInfo(deliveryServer).setActionUrl(actionUrl + "/" + path)
+               new PSDeliveryActionOptions().setDeliveryInfo(deliveryServer).setActionUrl(actionUrl + "/" + SecureStringUtils.stripLeadingSlash(path))
                      .setAdminOperation(true).setSuccessfullHttpStatusCodes(Collections.singleton(202))
                      .setHttpMethod(HttpMethodType.POST), "application/json", metadataEntry.getJson());
       }
@@ -678,7 +681,8 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
          }
          catch (PSDeliveryException e)
          {
-            log.error("Failed to commit solr transaction:",e);
+            log.error("Failed to commit solr transaction: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
          }
       }
    }
