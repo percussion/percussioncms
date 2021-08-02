@@ -152,8 +152,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
 
           Query query = session.createQuery("from PSUserItem where itemId = :itemId");
           query.setParameter("itemId", itemId);
-          query.addQueryHint(QueryHints.CACHEABLE);
-          userItems = query.list(); 
+          userItems = query.list();
           return userItems;
 
    }
