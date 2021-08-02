@@ -194,7 +194,7 @@
        <pdfbox.version>2.0.24</pdfbox.version>
        <sqlite.version>3.28.0</sqlite.version>
        <swagger.version>1.6.2</swagger.version>
-       <commons.compress.version>1.20</commons.compress.version>
+       <commons.compress.version>1.21</commons.compress.version>
        <solr.version>8.5.0</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
