@@ -244,7 +244,7 @@
             opacity: 0.7,
             helper: function(ev,ele) {
                 var r = ele.clone();
-                r.find('input[type=radio].').attr('name','rename');
+                r.find('input[type=radio]').attr('name','rename');
                 return r;
             },
             snap:true,

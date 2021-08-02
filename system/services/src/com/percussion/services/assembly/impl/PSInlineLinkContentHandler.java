@@ -747,6 +747,12 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          if (target != null){
             String newHref = link.getLink(target);
             if (StringUtils.isNotBlank(newHref)) {
+               if(link.href != null) {
+                  String anchor = link.href.substring(link.href.lastIndexOf("#") + 1);
+                  if (anchor != null && anchor.trim() != "") {
+                     newHref = newHref + "#" + anchor;
+                  }
+               }
                link.overrides.put(PSSingleValueBuilder.HREF, newHref);
                return null;
             }
@@ -1252,7 +1258,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    }
    
     /**
-     * A convenient method that checks a server property called {@link #SERVER_PROPERTY_AUTO_MANAGE_LOCAL_PATHS} is available with a value of <code>true</code>
+     * A convenient method that checks a server property called  is available with a value of <code>true</code>
      * @return <code>true</code> or false based on the property.
      */
    private boolean doManageAll() {

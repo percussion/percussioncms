@@ -265,6 +265,8 @@
         <!-- jQuery.cookie-->
         <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
         <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.cookie.min.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.cookie.js"/>
+        <!-- jQuery.dynatree -->
+        <copy tofile="${assembly-directory}/web_resources/cm/jslib/jquery.dynatree.js" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/ui.dynatree.css" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/ui.dynatree.css"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/vline.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/vline.gif"/>
         <copy tofile="${assembly-directory}/web_resources/cm/css/dynatree/skin/loading.gif" file="${assembly-directory}/jetty/base/webapps/Rhythmyx/cm/css/dynatree/skin/loading.gif"/>

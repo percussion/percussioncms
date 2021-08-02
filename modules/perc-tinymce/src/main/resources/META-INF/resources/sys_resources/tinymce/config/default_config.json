@@ -5,6 +5,7 @@
 	"browser_spellcheck": true,
 	"plugins": "autosave,advlist,lists,table,searchreplace,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,anchor,charmap, hr,emoticons,code,textcolor,percadvlink,percmorelink,percglobalvariables,percadvimage",
 	"toolbar": "restoredraft | undo redo  | styleselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink | image",
-	"paste_word_valid_elements": "b,strong,i,em,h1,h2",
+	"paste_word_valid_elements": "b,strong,i,em,h1,h2,u,p,ol,ul,li,a[href],table,tr,td,style",
+	"paste_data_images": true,
 	"valid_elements": "*[*]"
 }]
