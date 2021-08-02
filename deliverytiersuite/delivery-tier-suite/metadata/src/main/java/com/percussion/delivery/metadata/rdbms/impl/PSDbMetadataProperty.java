@@ -43,6 +43,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Index;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Optional;
@@ -55,7 +56,10 @@ import java.util.Optional;
  */
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSMetadataProperty")
-@Table(name = "PERC_PAGE_METADATA_PROPERTIES")
+@Table(name = "PERC_PAGE_METADATA_PROPERTIES",indexes = {
+        @Index(columnList = "NAME,DATEVALUE", name = "name_date_hidx"),
+        @Index(columnList = "NAME,VALUE_HASH", name = "name_valuehash_hidx")}
+)
 public class PSDbMetadataProperty implements IPSMetadataProperty, Serializable
 {
     @Id
