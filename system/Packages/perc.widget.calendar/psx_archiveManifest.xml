@@ -258,12 +258,6 @@
          <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_fullcalendar-min-js\fullcalendar.min.js</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery-min-js">
-      <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\jquery.min.js</RxFile>
-         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery-min-js\jquery.min.js</ArchiveFile>
-      </PSXDependencyFile>
-   </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="SupportFile-rx_resources/stylesheets/controls/percCalendarWidgetControl.xsl">
       <PSXDependencyFile fileType="SUPPORT_FILE">
          <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarWidgetControl.xsl</RxFile>
@@ -294,12 +288,6 @@
          <RxFile>C:\Users\CHRISW~2\AppData\Local\Temp\percCalendarTwo.css</RxFile>
          <ArchiveFile>SupportFile-rx_resources\widgets\percCalendarTwo\css\percCalendarTwo.css\percCalendarTwo.css</ArchiveFile>
          <OriginalFile>widgets\percCalendarTwo\css\percCalendarTwo.css</OriginalFile>
-      </PSXDependencyFile>
-   </PSXDepFilesIdTypes>
-   <PSXDepFilesIdTypes DependencyKey="sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery--ui-custom-min-js">
-      <PSXDependencyFile fileType="SUPPORT_FILE">
-         <RxFile>C:\Percussion\web_resources\widgets\calendarTwo\js\jquery-ui.custom.min.js</RxFile>
-         <ArchiveFile>sys__UserDependency--web__resources_widgets_calendarTwo_js_jquery--ui-custom-min-js\jquery-ui.custom.min.js</ArchiveFile>
       </PSXDependencyFile>
    </PSXDepFilesIdTypes>
    <PSXDepFilesIdTypes DependencyKey="AclDef--4200511477578203065">

@@ -40,7 +40,7 @@
             <Description>A widget based on Full Calendar (https://fullcalendar.io/).  This widget includes Calendar 1.0 which contains basic calendar support and Calendar 2.0 which adds support for Google Calendar, and iCal support.</Description>
             <Publisher name="Percussion Software" url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="2.5.0"/>
-            <Version>2.4.3</Version>
+            <Version>2.4.4</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>
@@ -548,25 +548,9 @@
                            <RequiredClasses/>
                         </PSXDeployableObject>
                      </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/calendarTwo/js/jquery-ui.custom.min.js">
-                        <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/calendarTwo/js/jquery-ui.custom.min.js" dependencyType="User" displayName="jquery-ui.custom.min.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                              <Dependencies/>
-                           </PSXDependency>
-                           <RequiredClasses/>
-                        </PSXDeployableObject>
-                     </PSXUserDependency>
                      <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/calendarTwo/css/jquery-ui.min.css">
                         <PSXDeployableObject>
                            <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/calendarTwo/css/jquery-ui.min.css" dependencyType="User" displayName="jquery-ui.min.css" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
-                              <Dependencies/>
-                           </PSXDependency>
-                           <RequiredClasses/>
-                        </PSXDeployableObject>
-                     </PSXUserDependency>
-                     <PSXUserDependency parentId="sys_UserDependency" parentKey="Custom-sys_UserDependency" parentType="Custom" path="web_resources/widgets/calendarTwo/js/jquery.min.js">
-                        <PSXDeployableObject>
-                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="web_resources/widgets/calendarTwo/js/jquery.min.js" dependencyType="User" displayName="jquery.min.js" isAssociation="no" isIncluded="yes" objectType="sys_UserDependency" objectTypeName="User Dependency" supportsIdMapping="no" supportsIdTypes="no" supportsParentId="no" supportsUserDependencies="no">
                               <Dependencies/>
                            </PSXDependency>
                            <RequiredClasses/>
