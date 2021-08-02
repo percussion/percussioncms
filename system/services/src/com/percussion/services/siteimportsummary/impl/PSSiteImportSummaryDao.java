@@ -99,7 +99,6 @@ public class PSSiteImportSummaryDao implements IPSSiteImportSummaryDao
 
           Query query = session.createQuery("from PSSiteImportSummary where summaryId = :summaryId");
           query.setParameter("summaryId", summaryId);
-          query.addQueryHint(QueryHints.CACHEABLE);
 
           List<PSSiteImportSummary> results = query.list(); 
           if (!results.isEmpty())

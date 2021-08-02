@@ -115,7 +115,6 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
       Query query = session.createQuery("from PSContentChangeEvent where changeType = :changeType and siteId = :siteId");
       query.setParameter("changeType", changeType.name());
       query.setParameter("siteId", siteId);
-      query.addQueryHint(QueryHints.CACHEABLE);
 
       List<PSContentChangeEvent> results = query.list();
       List<Integer> changedContentIds = new ArrayList<>();
