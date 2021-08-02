@@ -91,13 +91,13 @@
             </fileset>
         </copy>
 
-        <copy todir="${assembly-directory}/rx_resources">
+        <copy todir="${assembly-directory}/rx_resources" overwrite="true" verbose="true">
             <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
             </fileset>
         </copy>
 
         <!-- TinyMCE config -->
-        <copy todir="${assembly-directory}/rx_resources" overwrite="false" verbose="true">
+        <copy todir="${assembly-directory}/rx_resources" overwrite="true" verbose="true">
             <fileset dir="${basedir}/../perc-tinymce/target/classes/META-INF/resources/rx_resources">
             </fileset>
         </copy>

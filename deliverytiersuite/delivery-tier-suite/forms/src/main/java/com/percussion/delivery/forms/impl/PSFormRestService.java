@@ -148,7 +148,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     @HEAD
     @Path("/csrf")
     public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
-        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
 
         response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
         response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());

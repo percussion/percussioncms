@@ -82,7 +82,7 @@ public class PSSecureXMLUtils {
 
         //Set each feature logging any errors as warnings for unsupported features.
         try{
-            dbf.setFeature(SECURE_PROCESSING_FEATURE,true);
+            dbf.setFeature(SECURE_PROCESSING_FEATURE,options.isEnableSecureProcessing());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     SECURE_PROCESSING_FEATURE);
@@ -96,49 +96,49 @@ public class PSSecureXMLUtils {
         }
 
         try{
-            dbf.setFeature(SAX_GENERAL_EXTERNAL_ENTITIES_FEATURE,false);
+            dbf.setFeature(SAX_GENERAL_EXTERNAL_ENTITIES_FEATURE, options.isEnableExternalEntities());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     SAX_GENERAL_EXTERNAL_ENTITIES_FEATURE);
         }
 
         try{
-            dbf.setFeature(X1_GENERAL_EXTERNAL_ENTITIES_FEATURE,false);
+            dbf.setFeature(X1_GENERAL_EXTERNAL_ENTITIES_FEATURE, options.isEnableExternalEntities());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     X1_GENERAL_EXTERNAL_ENTITIES_FEATURE);
         }
 
         try{
-            dbf.setFeature(X2_GENERAL_EXTERNAL_ENTITIES_FEATURE,false);
+            dbf.setFeature(X2_GENERAL_EXTERNAL_ENTITIES_FEATURE, options.isEnableExternalEntities());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     X2_GENERAL_EXTERNAL_ENTITIES_FEATURE);
         }
 
         try{
-            dbf.setFeature(X1_EXTERNAL_PARAMETER_ENTITIES_FEATURE,false);
+            dbf.setFeature(X1_EXTERNAL_PARAMETER_ENTITIES_FEATURE,options.isEnableExternalParameterEntities());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     X1_EXTERNAL_PARAMETER_ENTITIES_FEATURE);
         }
 
         try{
-            dbf.setFeature(X2_EXTERNAL_PARAMETER_ENTITIES_FEATURE,false);
+            dbf.setFeature(X2_EXTERNAL_PARAMETER_ENTITIES_FEATURE,options.isEnableExternalParameterEntities());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     X2_EXTERNAL_PARAMETER_ENTITIES_FEATURE);
         }
 
         try{
-            dbf.setFeature(SAX_EXTERNAL_PARAMETER_ENTITIES_FEATURE,false);
+            dbf.setFeature(SAX_EXTERNAL_PARAMETER_ENTITIES_FEATURE, options.isEnableExternalEntities());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     SAX_EXTERNAL_PARAMETER_ENTITIES_FEATURE);
         }
 
         try{
-            dbf.setFeature(LOAD_EXTERNAL_DTD,false);
+            dbf.setFeature(LOAD_EXTERNAL_DTD,options.isEnableExternalDtdReferences());
         } catch (ParserConfigurationException e) {
             log.debug(UNSUPPORTED_FEATURE_WARN,
                     LOAD_EXTERNAL_DTD);

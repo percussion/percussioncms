@@ -564,11 +564,11 @@ public class PSXmlDocumentBuilder {
             serverRoot = ".";
         }
 
-        return "\t<!ENTITY % HTMLlat1 SYSTEM \"" + serverRoot +
+        return "\t<!ENTITY % HTMLlat1 PUBLIC \"-//W3C//ENTITIES_Latin_1_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
         "/DTD/HTMLlat1x.ent\">" + NEWLINE + "\t\t%HTMLlat1;" + NEWLINE +
-        "\t<!ENTITY % HTMLsymbol SYSTEM \"" + serverRoot +
+        "\t<!ENTITY % HTMLsymbol PUBLIC \"-//W3C//ENTITIES_Symbols_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
         "/DTD/HTMLsymbolx.ent\">" + NEWLINE + "\t\t%HTMLsymbol;" + NEWLINE +
-        "\t<!ENTITY % HTMLspecial SYSTEM \"" + serverRoot +
+        "\t<!ENTITY % HTMLspecial PUBLIC \"-//W3C//ENTITIES_Special_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
         "/DTD/HTMLspecialx.ent\">" + NEWLINE + "\t\t%HTMLspecial;";
     }
 

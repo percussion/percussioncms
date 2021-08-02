@@ -24,6 +24,7 @@
 package com.percussion.membership.services.impl;
 
 import com.percussion.delivery.services.PSAbstractRestService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.membership.data.PSAccountCreateResult;
 import com.percussion.membership.data.PSAccountSummary;
 import com.percussion.membership.data.PSGetUserResult;
@@ -100,7 +101,7 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
     @HEAD
     @Path("/csrf")
     public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
-        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
 
         response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
         response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
@@ -129,7 +130,7 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         
         if(log.isDebugEnabled()){
-    		log.debug("Http Header in the service is :" + header.getRequestHeaders());
+    		log.debug("Http Header in the service is :{}" , header.getRequestHeaders());
     	}
         
         PSAccountCreateResult result;
@@ -144,17 +145,19 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (PSMemberExistsException e)
         {
-       		log.error("Membership exists exception : " + e.getLocalizedMessage());
+       		log.error("Membership exists exception : {}" , PSExceptionUtils.getMessageForLog(e));
             result = new PSAccountCreateResult(STATUS.MEMBER_EXISTS, e.getLocalizedMessage(), "");
         }
         catch (PSAuthenticationFailedException e)
         {
-       		log.error("Authentication failed exception : " + e.getLocalizedMessage());
+       		log.error("Authentication failed exception : {}" ,
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSAccountCreateResult(STATUS.AUTH_FAILED, e.getLocalizedMessage(), "");
         }
         catch (Exception e)
         {
-       		log.error("Exception during create user : " + e.getLocalizedMessage());
+       		log.error("Exception during create user : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSAccountCreateResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage(), "");
         }
         
@@ -180,7 +183,8 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (Exception e)
         {
-       		log.error("Could not change state account : " + e.getLocalizedMessage());
+       		log.error("Could not change state account : {}",
+                    PSExceptionUtils.getMessageForLog(e));
         	
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -201,7 +205,8 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (Exception e)
         {
-       		log.error("Exception while deleting account : " + e.getLocalizedMessage());
+       		log.error("Exception while deleting account : {}" ,
+                    PSExceptionUtils.getMessageForLog(e));
         	
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -228,13 +233,15 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
             PSUserSummary userSum = membershipService.getUser(sessionId);
             
             if(log.isDebugEnabled()){
-        		log.debug("The user email is " + userSum.getEmail() +" and the user status is : " + userSum.getStatus());
+        		log.debug("The user email is {} and the user status is : {}" ,
+                        userSum.getEmail() , userSum.getStatus());
         	}
             result = new PSGetUserResult(STATUS.SUCCESS, "", userSum);            
         }
         catch (Exception e)
         {
-       		log.error("Exception while getting user : " + e.getLocalizedMessage());
+       		log.error("Exception while getting user : {}" ,
+                    PSExceptionUtils.getMessageForLog(e));
 
             result = new PSGetUserResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage(), null);
         }
@@ -266,7 +273,7 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         
         if(log.isDebugEnabled()){
-    		log.debug("Email in the login request is :" + loginRequest.getEmail());
+    		log.debug("Email in the login request is : {}" , loginRequest.getEmail());
     	}
         
         PSLoginResult result;
@@ -277,12 +284,14 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (PSAuthenticationFailedException e)
         {
-       		log.error("Could not log in! Authentication failed : " + e.getLocalizedMessage());
+       		log.error("Could not log in! Authentication failed : {}" ,
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.AUTH_FAILED, e.getLocalizedMessage(), "");
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while login : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while login : {}" ,
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage(), "");
         }
         
@@ -313,7 +322,8 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while logout : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while logout : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSMembershipResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage());
         }
         
@@ -339,10 +349,10 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         
         if(log.isDebugEnabled()){
-    		log.debug("Http Header in the service is :" + header.getRequestHeaders());
+    		log.debug("Http Header in the service is : {}" , header.getRequestHeaders());
     	}
         
-        PSMembershipResult result = null;
+        PSMembershipResult result;
         try
         {
             String resetKey = membershipService.setResetKey(email, resetLinkUrl);
@@ -350,12 +360,14 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (PSAuthenticationFailedException e)
         {
-       		log.error("Authentication Failed! : " + e.getLocalizedMessage());
+       		log.error("Authentication Failed! : {}" ,
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSAccountCreateResult(STATUS.AUTH_FAILED, e.getLocalizedMessage(), "");
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while requesting password reset : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while requesting password reset : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSAccountCreateResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage(), "");
         }
         
@@ -388,17 +400,20 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (PSResetPwdException e)
         {
-       		log.error("Reset Password Exception! : " + e.getLocalizedMessage());
+       		log.error("Reset Password Exception! : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSGetUserResult(STATUS.INVALID_RESET_KEY, e.getLocalizedMessage(), null);
         }
         catch (PSAuthenticationFailedException e)
         {
-       		log.error("Authentication Failed! : " + e.getLocalizedMessage());
+       		log.error("Authentication Failed! : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSGetUserResult(STATUS.AUTH_FAILED, e.getLocalizedMessage(), null);
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while validating password reset : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while validating password reset : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSGetUserResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage(), null);
         }
        
@@ -433,17 +448,20 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (PSResetPwdException e)
         {
-       		log.error("Reset Password Exception! : " + e.getLocalizedMessage());
+       		log.error("Reset Password Exception! : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.INVALID_RESET_KEY, e.getLocalizedMessage(), "");
         }
         catch (PSAuthenticationFailedException e)
         {
-       		log.error("Authentication Failed! : " + e.getLocalizedMessage());
+       		log.error("Authentication Failed! : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.AUTH_FAILED, e.getLocalizedMessage(), "");
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while resetting password : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while resetting password : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage(), "");
         }
         
@@ -473,17 +491,20 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (PSResetPwdException e)
         {
-       		log.error("Reset Password Exception! : " + e.getLocalizedMessage());
+       		log.error("Reset Password Exception! : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.INVALID_RESET_KEY, e.getLocalizedMessage(), "");
         }
         catch (PSAuthenticationFailedException e)
         {
-       		log.error("Authentication Failed! : " + e.getLocalizedMessage());
+       		log.error("Authentication Failed! : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.AUTH_FAILED, e.getLocalizedMessage(), "");
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while registration confirmation : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while registration confirmation : {}" ,
+                    PSExceptionUtils.getMessageForLog(e));
             result = new PSLoginResult(STATUS.UNEXPECTED_ERROR, e.getLocalizedMessage(), "");
         }
         
@@ -506,7 +527,8 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while finding user groups : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while finding user groups : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -526,7 +548,7 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         String groups = userSummary.getGroups();
         
         if(log.isDebugEnabled()){
-    		log.debug("The user email is " + email + " and the groups are " + groups);
+    		log.debug("The user email is {} and the groups are {}",email , groups);
     	}
                 
         try
@@ -535,7 +557,8 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
         }
         catch (Exception e)
         {
-       		log.error("Exception occurred while updating user groups : " + e.getLocalizedMessage());
+       		log.error("Exception occurred while updating user groups : {}",
+                    PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -551,19 +574,20 @@ public class PSMembershipRestService extends PSAbstractRestService implements IP
     {
         return string != null && string.trim().length() > 0;
     }
-    
+
+    @Override
     public String getVersion() {
     	
     	String version = super.getVersion();
     	
-    	log.info("getVersion() from PSMembershipRestService ..." + version);
+    	log.info("getVersion() from PSMembershipRestService ...{}" , version);
     	
     	return version;
     }
 
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.debug("Nothing to do for membership service. Prev name is: " + prevSiteName);
+        log.debug("Nothing to do for membership service. Prev name is: {}" , prevSiteName);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }
