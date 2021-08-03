@@ -165,7 +165,7 @@
             <script>
             window.addEventListener('DOMContentLoaded', function() {
                 jQuery(".perc-login-form").on("submit", function(){return false;});
-                jQuery(".perc-login-form").find("input[type = 'submit']").attr('disabled', 'disabled');
+                jQuery(".perc-login-form").find("input[type = 'submit']").prop("disabled", true);
                 });
             </script>
         #end
