@@ -69,7 +69,7 @@
             // Configure the login form handler. The form is rendered only in render as form mode.
             $('.perc-login-form').each(function() {
                 var self = $(this);
-                self.submit(handleSubmitForm);
+                self.on("submit", handleSubmitForm);
             });
         });
     }
