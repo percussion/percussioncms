@@ -758,6 +758,12 @@
             </fileset>
         </copy>
 
+        <copy todir="${install.dir}/rxconfig/trusted_certificates/" overwrite="false" failonerror="false" flatten="true">
+            <fileset dir="${install.dir}/AppServer" casesensitive="false">
+                <include name="**/*.cert"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
         <delete dir="${install.dir}/AppServer" verbose="true" failonerror="false" />
     </target>
 
