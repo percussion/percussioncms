@@ -238,8 +238,8 @@
             <script>
             window.addEventListener('DOMContentLoaded', function() {
              #if($perc.isPreviewMode())
-                    jQuery("#perc-registration-form, #perc-registration-cform, #perc-password-request, #perc-password-reset").submit(function(){return false;});
-                    jQuery("#perc-registration-form, #perc-registration-cform, #perc-password-request, #perc-password-reset").find("input[type = 'submit']").attr('disabled', 'disabled');
+                    jQuery("#perc-registration-form, #perc-registration-cform, #perc-password-request, #perc-password-reset").on("submit", function(){return false;});
+                    jQuery("#perc-registration-form, #perc-registration-cform, #perc-password-request, #perc-password-reset").find("input[type = 'submit']").prop("disabled", true);
                 #end
                 jQuery("#perc-password-request, #perc-password-reset").show();
                 //var urlParams = jQuery.deparam.querystring();

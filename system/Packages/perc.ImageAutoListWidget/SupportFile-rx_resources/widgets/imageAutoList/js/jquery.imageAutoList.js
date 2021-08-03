@@ -174,7 +174,7 @@
             });    
     
             //Build query if mouse leaves the form, i.e when the user goes to click on the save button which is not part of the iframe
-            $('#perc-content-form').mouseleave(function(){
+            $('#perc-content-form').on("mouseleave", function(){
                 buildQuery();
             });
     

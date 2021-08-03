@@ -117,7 +117,7 @@
                 options.verReq = true;
             }
             self.data("options", options);
-            self.submit(handleSubmitForm);
+            self.on("submit", handleSubmitForm);
         });
         
         // Bind the submit button of password reset request form        
