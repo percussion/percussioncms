@@ -65,6 +65,8 @@ public class Main {
     public static final String ANT_INSTALL = "install.xml";
     public static final String JAVA_TEMP = "java.io.tmpdir";
     public static final String VERSION_PROPERTIES = "Version.properties";
+    private static final String INSTALLATION_PROPS_PATH = "/jetty/base/etc/installation.properties";
+    private static final String SERVER_PROPS_PATH = "/rxconfig/Server/server.properties";
     public static File tmpFolder;
 
     public static String developmentFlag = "false";
@@ -354,14 +356,14 @@ public class Main {
     }
 
     private static void updateSSLProtocol(Path installDir){
-        String installationPropertiesFilePath = installDir.toAbsolutePath().toString()+"/jetty/base/etc/installation.properties";
+        String installationPropertiesFilePath = installDir.toAbsolutePath().toString()+INSTALLATION_PROPS_PATH;
         File installationPropertiesFile = new File(installationPropertiesFilePath);
         Properties installationProperties = new Properties();
         String newProtocol = null;
         if (installationPropertiesFile.exists())
         {
-            try(FileInputStream versionfileStream = new FileInputStream(installationPropertiesFile)){
-                installationProperties.load(versionfileStream);
+            try(FileInputStream installationPropsfileStream = new FileInputStream(installationPropertiesFile)){
+                installationProperties.load(installationPropsfileStream);
                 String protocols = installationProperties.getProperty("perc.ssl.protocols");
                 if(protocols != null) {
                     String[] protocolArray = protocols.split(",");
@@ -380,7 +382,7 @@ public class Main {
                     }
                 }
             } catch (IOException e) {
-                log.info("Loading Version.properties file failed",e.getMessage());
+                log.info("Loading Installation.properties file failed",e.getMessage());
             }
         }
     }
@@ -475,58 +477,63 @@ public class Main {
                         writeInstallationPropertiesForJetty(installDir, "jetty.http.port=", e.getAttribute("port"));
                     }
                     if (hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("https")) {
-                        writeInstallationPropertiesForJetty(installDir, "jetty.ssl.port=", e.getAttribute("port"));
-                        String keyStorefileAttr = e.getAttribute("keystoreFile");
-                        String keyStorefileName = "";
-                        String keystorePassWord = e.getAttribute("keystorePass");
-                        String keyStoreFilePath = e.getAttribute("jetty.sslContext.keyStorePath");
-                        String sslProtocols= e.getAttribute("protocols");
-                        if(keyStoreFilePath == null || keyStoreFilePath.trim().equals("") ) {
-                            String[] splitArr;
-                            if (keyStorefileAttr != "") {
-                                splitArr = keyStorefileAttr.split("/");
-                                keyStorefileName = splitArr[splitArr.length - 1];
-                                if (System.getProperty("file.separator").equals("/")) {
-                                    keyStoreFilePath = "etc/" + keyStorefileName;
-                                } else {
-                                    String wPath = installDir.toAbsolutePath().toString().replace("\\", "\\\\");
-                                    keyStoreFilePath = "etc\\\\" + keyStorefileName;
-                                }
-                            }
-                        }
-                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePath=", keyStoreFilePath);
-                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePath=", keyStoreFilePath);
-                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePassword=", keystorePassWord);
-                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyManagerPassword=", keystorePassWord);
-                        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePassword=", keystorePassWord);
-                        String newProtocol = null;
-                        if(sslProtocols != null) {
-                            String[] protocolArray = sslProtocols.split(",");
-                            for (String pr : protocolArray) {
-                                if (!"".equals(pr) && !"TLSv1".equals(pr) && !"TLSv1.1".equals(pr)) {
-                                    if (newProtocol == null) {
-                                        newProtocol = pr;
-                                    } else {
-                                        newProtocol += "," + pr;
-                                    }
-                                }
-                            }
-                        }
-                        if(newProtocol == null){
-                            newProtocol = "";
-                        }
-                        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=", newProtocol);
+                        setSSLConnectorProperties(installDir,e);
+                        updateServerPropsForJettySSL(installDir);
                     }
                 }
             }
         }
     }
 
+    private static void setSSLConnectorProperties(Path installDir,Element e) throws IOException {
+        writeInstallationPropertiesForJetty(installDir, "jetty.ssl.port=", e.getAttribute("port"));
+        String keyStorefileAttr = e.getAttribute("keystoreFile");
+        String keyStorefileName = "";
+        String keystorePassWord = e.getAttribute("keystorePass");
+        String keyStoreFilePath = e.getAttribute("jetty.sslContext.keyStorePath");
+        String sslProtocols= e.getAttribute("protocols");
+        if(keyStoreFilePath == null || keyStoreFilePath.trim().equals("") ) {
+            String[] splitArr;
+            if (keyStorefileAttr != "") {
+                splitArr = keyStorefileAttr.split("/");
+                keyStorefileName = splitArr[splitArr.length - 1];
+                if (System.getProperty("file.separator").equals("/")) {
+                    keyStoreFilePath = "etc/" + keyStorefileName;
+                } else {
+                    String wPath = installDir.toAbsolutePath().toString().replace("\\", "\\\\");
+                    keyStoreFilePath = "etc\\\\" + keyStorefileName;
+                }
+            }
+        }
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePath=", keyStoreFilePath);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePath=", keyStoreFilePath);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePassword=", keystorePassWord);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyManagerPassword=", keystorePassWord);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePassword=", keystorePassWord);
+        String newProtocol = null;
+        if(sslProtocols != null) {
+            String[] protocolArray = sslProtocols.split(",");
+            for (String pr : protocolArray) {
+                if (!"".equals(pr) && !"TLSv1".equals(pr) && !"TLSv1.1".equals(pr)) {
+                    if (newProtocol == null) {
+                        newProtocol = pr;
+                    } else {
+                        newProtocol += "," + pr;
+                    }
+                }
+            }
+        }
+        if(newProtocol == null){
+            newProtocol = "";
+        }
+        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=", newProtocol);
+    }
+
     public static void writeInstallationPropertiesForJetty(Path installDir, String replaceToken, String value) throws IOException {
         AtomicReference<String> replaceString = new AtomicReference<>("");
         AtomicReference<String> replaceValue = new AtomicReference<>("");
 
-        String installationPropertiesFileDir = installDir.toAbsolutePath().toString()+"/jetty/base/etc/installation.properties";
+        String installationPropertiesFileDir = installDir.toAbsolutePath().toString()+INSTALLATION_PROPS_PATH;
 
         try (Stream<String> stream = Files.lines(Paths.get(installationPropertiesFileDir))) {
             stream.forEach(s ->{if(s.contains(replaceToken)){
@@ -535,7 +542,29 @@ public class Main {
             }
             });
         }
-        File installationPropertiesFile = new File(installDir.toAbsolutePath().toString()+"/jetty/base/etc/installation.properties");
+        File installationPropertiesFile = new File(installDir.toAbsolutePath().toString()+INSTALLATION_PROPS_PATH);
         replaceTokens(installationPropertiesFile,replaceString.get(),replaceValue.get());
+    }
+
+    public static void updateServerPropsForJettySSL(Path installDir) throws IOException {
+        String serverPropertiesFilePath = installDir.toAbsolutePath().toString()+SERVER_PROPS_PATH;
+        File serverPropertiesFile = new File(serverPropertiesFilePath);
+        Properties serverProperties = new Properties();
+        String newProtocol = null;
+        if (serverPropertiesFile.exists())
+        {
+            try(FileInputStream serverfileStream = new FileInputStream(serverPropertiesFile)){
+                serverProperties.load(serverfileStream);
+                String requireHTTPS = serverProperties.getProperty("requireHTTPS");
+                if(requireHTTPS != null) {
+                    serverProperties.setProperty("requireHTTPS", "true");
+                    try (FileOutputStream os = new FileOutputStream(serverPropertiesFile)){
+                        serverProperties.store(os,"updated requiredHTTPS Flag");
+                    }
+                }
+            } catch (IOException e) {
+                log.info("Loading Server.properties file failed",e.getMessage());
+            }
+        }
     }
 }
