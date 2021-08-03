@@ -49,7 +49,7 @@
             //Set the base URL to create the href for each item then
             let isEditMode = queryString.isEditMode;
             var baseURL = "";
-            if(isEditMode==="true"){
+            if(isEditMode === "true" || isPreviewMode === "true"){
                 var paths = window.location.pathname.split("/");
                 baseURL = "/" + paths[1] + "/" + paths[2];
             }else{

@@ -57,6 +57,7 @@ import java.util.Optional;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSMetadataProperty")
 @Table(name = "PERC_PAGE_METADATA_PROPERTIES",indexes = {
+        @Index(columnList = "ENTRY_ID", name = "entryId_hidx"),
         @Index(columnList = "NAME,DATEVALUE", name = "name_date_hidx"),
         @Index(columnList = "NAME,VALUE_HASH", name = "name_valuehash_hidx")}
 )
