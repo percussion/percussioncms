@@ -23,18 +23,18 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 <Widget>
-   <WidgetPrefs title="Page Auto List"
-        contenttype_name="percPageAutoList"
-        category="content,search"
-        description="Display a dynamic list of page links"
-        author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/pageAutoList/images/widgetIconLinkAutoList.png"
-        preferred_editor_width="800"
-        preferred_editor_height="685"
-        is_responsive="true"/>
+    <WidgetPrefs title="Page Auto List"
+                 contenttype_name="percPageAutoList"
+                 category="content,search"
+                 description="Display a dynamic list of page links"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/pageAutoList/images/widgetIconLinkAutoList.png"
+                 preferred_editor_width="800"
+                 preferred_editor_height="685"
+                 is_responsive="true"/>
     <Resource href="/perc-common-ui/js/perc_common_ui.js"
-        type="javascript"
-        placement="head" />
+              type="javascript"
+              placement="head" />
     <UserPref name="listType"
               display_name="List Type"
               required="false"
@@ -43,9 +43,9 @@
         <EnumValue value="ordered" display_value="Ordered List"/>
     </UserPref>
     <UserPref name="listTitleFormat"
-        display_name="Format of list title"
-        required="false"
-        datatype="enum" default_value="div">
+              display_name="Format of list title"
+              required="false"
+              datatype="enum" default_value="div">
         <EnumValue value="h1" display_value="Heading 1" />
         <EnumValue value="h2" display_value="Heading 2" />
         <EnumValue value="h3" display_value="Heading 3" />
@@ -56,12 +56,12 @@
         <EnumValue value="div" display_value="Div" />
     </UserPref>
     <UserPref name="autoListDivId"
-        display_name="Page Auto List div id"
-        datatype="string"/>
+              display_name="Page Auto List div id"
+              datatype="string"/>
     <UserPref name="itemTitleFormat"
-        display_name="Format of list items"
-        required="false"
-        datatype="enum" default_value="none">
+              display_name="Format of list items"
+              required="false"
+              datatype="enum" default_value="none">
         <EnumValue value="h1" display_value="Heading 1" />
         <EnumValue value="h2" display_value="Heading 2" />
         <EnumValue value="h3" display_value="Heading 3" />
@@ -73,92 +73,90 @@
         <EnumValue value="none" display_value="None" />
     </UserPref>
     <UserPref name="sortby"
-        display_name="Sort by"
-        required="true"
-        default_value="rx:resource_link_title"
-        datatype="enum">
+              display_name="Sort by"
+              required="true"
+              default_value="rx:resource_link_title"
+              datatype="enum">
         <EnumValue value="none" display_value="None" />
         <EnumValue value="rx:resource_link_title" display_value="Link text" />
         <EnumValue value="rx:page_title" display_value="Title" />
         <EnumValue value="rx:sys_title" display_value="File Name" />
-      <EnumValue value="rx:sys_contentcreateddate desc" display_value="Latest created date" />
-      <EnumValue value="rx:sys_contentcreateddate" display_value="Earliest created date" />
-      <EnumValue value="rx:sys_contentpostdate desc" display_value="Latest post date" />
-      <EnumValue value="rx:sys_contentpostdate" display_value="Earliest post date" />
+        <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
+        <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
     </UserPref>
     <UserPref name="sortDirection"
-      display_name="Sort Order (not used with created/post date sorting)"
-      required="true"
-      default_value="asc"
-      datatype="enum">
-      <EnumValue value="desc" display_value="Descending" />
-      <EnumValue value="asc" display_value="Ascending" />
+              display_name="Sort Order (not used with created/post date sorting)"
+              required="true"
+              default_value="asc"
+              datatype="enum">
+        <EnumValue value="desc" display_value="Descending" />
+        <EnumValue value="asc" display_value="Ascending" />
     </UserPref>
     <UserPref name="layout"
-        display_name="Layout"
-        required="true"
-        default_value="perc-list-vertical"
-        datatype="enum">
+              display_name="Layout"
+              required="true"
+              default_value="perc-list-vertical"
+              datatype="enum">
         <EnumValue value="perc-list-horizontal" display_value="Horizontal" />
         <EnumValue value="perc-list-vertical" display_value="Vertical" />
     </UserPref>
     <UserPref name="totalMaxResults"
-         display_name="Maximum number of total results"
-         default_value="500"
-         datatype="number" />
+              display_name="Maximum number of total results"
+              default_value="500"
+              datatype="number" />
     <UserPref name="maxlength"
-         display_name="Number of posts per page"
-         default_value="10"
-         datatype="number" />
+              display_name="Number of posts per page"
+              default_value="10"
+              datatype="number" />
     <UserPref name="pagingPagesText"
-      display_name="Text to use for &lt;em&gt;pages&lt;/em&gt; (X of Y &lt;strong&gt;pages&lt;/strong&gt;)"
-      default_value="pages"
-      datatype="string" />
+              display_name="Text to use for &lt;em&gt;pages&lt;/em&gt; (X of Y &lt;strong&gt;pages&lt;/strong&gt;)"
+              default_value="pages"
+              datatype="string" />
     <UserPref name="summary"
-        display_name="Show page summary"
-        default_value="false"
-        datatype="bool"/>
+              display_name="Show page summary"
+              default_value="false"
+              datatype="bool"/>
     <UserPref name="listAriaLabel"
-      display_name="Page Auto List aria-label"
-      datatype="string" />
+              display_name="Page Auto List aria-label"
+              datatype="string" />
     <UserPref name="listAriaRole"
-      display_name="Page Auto List aria-role"
-      datatype="string" />
+              display_name="Page Auto List aria-role"
+              datatype="string" />
     <UserPref name="perc_hide_when_empty"
-      display_name="Hide auto list when empty"
-      default_value="false"
-      datatype="bool" />
+              display_name="Hide auto list when empty"
+              default_value="false"
+              datatype="bool" />
     <UserPref name="target"
-        display_name="Link target"
-        datatype="string" />
+              display_name="Link target"
+              datatype="string" />
     <UserPref name="enable_rss_icon"
-        display_name="Include rss icon"
-        default_value="false"
-        datatype="bool"/>
+              display_name="Include rss icon"
+              default_value="false"
+              datatype="bool"/>
     <UserPref name="rssIconPosition"
-        display_name="RSS icon position"
-        default_value="perc-list-top"
-        datatype="enum">
+              display_name="RSS icon position"
+              default_value="perc-list-top"
+              datatype="enum">
         <EnumValue value="perc-list-top" display_value="Top of list" />
         <EnumValue value="perc-list-bottom" display_value="Bottom of list" />
     </UserPref>
     <UserPref name="rssLinkText"
-      display_name='Text to use for "RSS Link"'
-      default_value="RSS Link"
-      datatype="string" />
+              display_name='Text to use for "RSS Link"'
+              default_value="RSS Link"
+              datatype="string" />
     <UserPref name="showPostDate"
-        display_name="Show Post Date"
-        default_value="false"
-        datatype="bool"/>
+              display_name="Show Post Date"
+              default_value="false"
+              datatype="bool"/>
     <UserPref name="postDateTimeFormat"
-        display_name="Format of page post date"
-        default_value="EEEE MM dd, yyyy"
-        datatype="string" />
+              display_name="Format of page post date"
+              default_value="EEEE MM dd, yyyy"
+              datatype="string" />
     <UserPref name="locale"
-        display_name="Date Format Locale"
-        required="true"
-        default_value="en-US"
-        datatype="enum">
+              display_name="Date Format Locale"
+              required="true"
+              default_value="en-US"
+              datatype="enum">
         <EnumValue value="sq-AL" display_value="Albanian Albania (AL)"/>
         <EnumValue value="ar-DZ" display_value="Arabic Algeria (DZ)"/>
         <EnumValue value="ar-BH" display_value="Arabic Bahrain (BH)"/>
@@ -268,17 +266,17 @@
         <EnumValue value="vi-VN" display_value="Vietnamese Vietnam (VN)"/>
     </UserPref>
     <UserPref name="enableCalenderIcon"
-        display_name="Enable Calendar Icon"
-        default_value="false"
-        datatype="bool"/>
+              display_name="Enable Calendar Icon"
+              default_value="false"
+              datatype="bool"/>
     <CssPref name="rootclass"
-        display_name="CSS root class"
-        datatype="string" />
+             display_name="CSS root class"
+             datatype="string" />
     <CssPref name="summaryclass"
-        display_name="CSS page summary class"
-        datatype="string" />
+             display_name="CSS page summary class"
+             datatype="string" />
     <Code type="jexl">
-    <![CDATA[
+        <![CDATA[
     $isEditMode = $perc.isEditMode() || $perc.isPreviewMode();
     $linkContext = $perc.linkContext;
     $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
@@ -390,12 +388,8 @@
             }
         }
 
-        if($sortbyVal.contains('rx:sys_contentpostdate') || $sortbyVal.contains('rx:sys_contentcreateddate')) {
-            $query = $query + " order by " + $sortbyVal;
-        }
-        else {
-            $query = $query + " order by " + $sortbyVal + " " + $sortDirection;
-        }
+        $query = $query + " order by " + $sortbyVal + " " + $sortDirection;
+
 
         $params.put('query', $query);
         $params.put('max_results', $totalMaxResults);
@@ -568,12 +562,13 @@
         else if( $sortbyVal == "rx:sys_title" )  {
            $orderby = "name " + $sortDirection +", linktext_lower " + $sortDirection;
         }
-        else if($sortbyVal == null || $sortbyVal == "rx:sys_contentpostdate desc")
+        else if($sortbyVal == "rx:sys_contentcreateddate")
         {
-           $orderby = "dcterms:created desc, linktext_lower asc";
+           $orderby = "dcterms:date " + $sortDirection;
         }
-        else if($sortbyVal == "rx:sys_contentpostdate") {
-           $orderby = "dcterms:created asc, linktext_lower asc";
+        else if($sortbyVal == "rx:sys_contentpostdate")
+        {
+           $orderby = "dcterms:created " + $sortDirection;
         }
 
         ##Build the query string for the delivery side auto list
