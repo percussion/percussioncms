@@ -334,9 +334,7 @@
         $sortByVal = "rx:resource_link_title";
     }
     $sortDirection = $perc.widget.item.properties.get('sortDirection');
-    if($sortDirection == null){
-        $sortDirection = "desc";
-    }
+
     $pageTitle = $perc.page.title;
     if ($listAriaLabel == '' || $listAriaLabel == null) {
         if ($pageTitle != null && $pageTitle != '') {
@@ -403,7 +401,11 @@
         {
             $query = $query + " and rx:templateid = '" + $blogPostTempId + "'";
         }
-        $query = $query + " order by " + $sortByVal + " " + $sortDirection;
+         if($sortDirection == null){
+            $query = $query + " order by " + $sortByVal + "  desc";
+        }else{
+           $query = $query + " order by " + $sortByVal + " " + $sortDirection;
+        }
         if ($perc_max_post_entries == '' || $perc_max_post_entries == null) {
             $perc_max_post_entries = 10;
         }
@@ -466,19 +468,40 @@
         $orderby = "";
         if($sortByVal == "rx:resource_link_title")
         {
-             $orderby = "linktext_lower " + $sortDirection;
+            if($sortDirection == null){
+               $orderby = "linktext_lower asc";
+            }else{
+               $orderby = "linktext_lower " + $sortDirection;
+            }
+
         }
         else if ( $sortByVal == "rx:page_title")
       {
-             $orderby = "dcterms:title  " + $sortDirection +" , linktext_lower " + $sortDirection;
+            if($sortDirection == null){
+               $orderby = "dcterms:title asc, linktext_lower asc";
+            }else{
+               $orderby = "dcterms:title  " + $sortDirection +" , linktext_lower " + $sortDirection;
+            }
+
       }
        else if($sortbyVal == "rx:sys_contentcreateddate" )
         {
-           $orderby = "dcterms:date " + $sortDirection +" , linktext_lower " + $sortDirection;
+
+            if($sortDirection == null){
+               $orderby = "dcterms:date desc , linktext_lower asc";
+            }else{
+              $orderby = "dcterms:date " + $sortDirection +" , linktext_lower asc";
+            }
         }
         else if($sortbyVal == "rx:sys_contentpostdate" || $sortByVal == "none"  || $sortbyVal == null )
         {
-           $orderby = "dcterms:created " + $sortDirection +" , linktext_lower " + $sortDirection;
+
+             if($sortDirection == null){
+                  $orderby = "dcterms:created desc , linktext_lower asc";
+                }else{
+                  $orderby = "dcterms:created " + $sortDirection +" , linktext_lower asc";
+              }
+
         }
         
         ##Build the query string for the delivery side blog list

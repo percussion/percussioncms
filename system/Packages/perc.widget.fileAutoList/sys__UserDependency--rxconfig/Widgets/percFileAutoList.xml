@@ -283,9 +283,7 @@
       $listclass = $listclass.trim();
    }
    $sortDirection = $perc.widget.item.properties.get('sortDirection');
-   if($sortDirection == null){
-      $sortDirection = "asc";
-   }
+
    $maxlength = $perc.widget.item.properties.get('maxlength');
    if (empty($maxlength)) {
       $maxlength = 0;
@@ -299,7 +297,13 @@
       $params = $rx.string.stringToMap(null);
       $query = $assetItem.getNode().getProperty('query').String;
       if ($sortby != "none"  && $sortby != null) {
-        $query = $query + " order by " + $sortby + " " + $sortDirection;
+
+        if($sortDirection == null){
+               $query = $query + " order by " + $sortby + "  desc";
+            }else{
+               $query = $query + " order by " + $sortby + " " + $sortDirection;
+          }
+
       }
 
       $params.put('query', $query);

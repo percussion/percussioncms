@@ -311,7 +311,7 @@
 
    $sortDirection = $perc.widget.item.properties.get('sortDirection');
    if($sortDirection == null){
-       $sortDirection = "asc";
+       $sortDirection = "desc";
    }
    $renderingformat = $perc.widget.item.properties.get('renderingformat');
    $target = $perc.widget.item.properties.get('target');
