@@ -60,8 +60,9 @@
       <EnumValue value="none" display_value="None" />
       <EnumValue value="rx:resource_link_title" display_value="Link text" />
       <EnumValue value="rx:page_title" display_value="Title" />
-      <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
-      <EnumValue value="rx:sys_contentpostdate" display_value="Post Date" />
+        <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
+        <EnumValue value="rx:sys_contentpostdate" display_value="Post Date" />
+
     </UserPref>
     <UserPref name="sortDirection"
       display_name="Sort Order"
@@ -471,10 +472,14 @@
       {
              $orderby = "dcterms:title  " + $sortDirection +" , linktext_lower " + $sortDirection;
       }
-    else if($sortByVal == null || $sortByVal == "none" || $sortByVal == "rx:sys_contentpostdate")
-    {
-        $orderby = "dcterms:created " + $sortDirection + ", linktext_lower " + $sortDirection;
-    }
+       else if($sortbyVal == "rx:sys_contentcreateddate" )
+        {
+           $orderby = "dcterms:date " + $sortDirection +" , linktext_lower " + $sortDirection;
+        }
+        else if($sortbyVal == "rx:sys_contentpostdate" || $sortByVal == "none"  || $sortbyVal == null )
+        {
+           $orderby = "dcterms:created " + $sortDirection +" , linktext_lower " + $sortDirection;
+        }
         
         ##Build the query string for the delivery side blog list
         $dynamicListData = "{" + "&quot;criteria&quot;:" + $criteria;
