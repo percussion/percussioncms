@@ -29,6 +29,7 @@
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
       <style type="text/css">
         .perc-gadget-welcome-link, .perc-gadget-welcome-link:hover .perc-gadget-welcome-link:visited{
            color: #000000 !important;

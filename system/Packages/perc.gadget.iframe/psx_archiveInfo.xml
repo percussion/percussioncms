@@ -40,7 +40,7 @@
             <Description>The gadget displays the content for given URL in the iframe.</Description>
             <Publisher name="Percussion Software Inc." url="http://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="2.10.0"/>
-            <Version>1.1.3</Version>
+            <Version>1.1.4</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
