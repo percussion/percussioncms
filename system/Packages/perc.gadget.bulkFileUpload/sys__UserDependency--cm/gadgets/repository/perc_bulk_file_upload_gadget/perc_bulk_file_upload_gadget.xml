@@ -31,6 +31,7 @@
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
     <!-- All These files are for the PercFinderTree - Perhaps this should be a feature -->
     <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/cm/gadgets/repository/perc_bulk_file_upload_gadget/css/jquery.fileupload.css" type="text/css"/>

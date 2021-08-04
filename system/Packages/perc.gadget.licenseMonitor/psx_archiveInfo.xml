@@ -40,7 +40,7 @@
             <Description>Gadget that monitor the license status</Description>
             <Publisher name="Percusion Software Inc" url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="2.7.0"/>
-            <Version>1.1.5</Version>
+            <Version>1.1.6</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
