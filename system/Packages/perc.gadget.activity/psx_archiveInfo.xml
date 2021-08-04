@@ -40,7 +40,7 @@
             <Description>This gadget provides the activity details of the content.</Description>
             <Publisher name="Percussion" url="Percussion Software Inc."/>
             <CmsVersion max="9.0.0" min="1.5.0"/>
-            <Version>1.1.3</Version>
+            <Version>1.1.4</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

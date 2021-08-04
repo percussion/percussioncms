@@ -29,6 +29,7 @@
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
         <style type="text/css">
 
            .perc-ga-config-gadget {

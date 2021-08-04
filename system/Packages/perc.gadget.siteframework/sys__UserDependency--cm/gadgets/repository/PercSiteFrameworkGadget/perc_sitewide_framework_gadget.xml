@@ -31,6 +31,7 @@
     </ModulePrefs>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
         <link rel="stylesheet" type="text/css" href="/cm/css/perc_default.css" />
         <link href="/cm/gadgets/repository/PercSiteFrameworkGadget/perc_sitewide_framework_gadget.css" rel="stylesheet" type="text/css" />
         <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
