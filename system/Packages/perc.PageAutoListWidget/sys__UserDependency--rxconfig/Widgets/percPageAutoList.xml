@@ -83,9 +83,10 @@
         <EnumValue value="rx:sys_title" display_value="File Name" />
         <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
         <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
+
     </UserPref>
     <UserPref name="sortDirection"
-              display_name="Sort Order (not used with created/post date sorting)"
+              display_name="Sort Order"
               required="true"
               default_value="asc"
               datatype="enum">
@@ -564,11 +565,15 @@
         }
         else if($sortbyVal == "rx:sys_contentcreateddate")
         {
-           $orderby = "dcterms:date " + $sortDirection;
+           $orderby = "dcterms:date " + $sortDirection + ", linktext_lower asc";
         }
         else if($sortbyVal == "rx:sys_contentpostdate")
         {
-           $orderby = "dcterms:created " + $sortDirection;
+           $orderby = "dcterms:created " + $sortDirection + ", linktext_lower asc";
+        }
+        else if($sortbyVal == null)
+        {
+           $orderby = "dcterms:created desc , linktext_lower asc";
         }
 
         ##Build the query string for the delivery side auto list
