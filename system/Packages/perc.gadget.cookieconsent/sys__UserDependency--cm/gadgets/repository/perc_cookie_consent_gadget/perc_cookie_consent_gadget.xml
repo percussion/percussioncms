@@ -41,6 +41,7 @@
     </UserPref>
     <Content type="html">
         <![CDATA[
+        <!DOCTYPE html>
         <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
         <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
         <link href="/cm/gadgets/repository/perc_cookie_consent_gadget/cookie_consent_gadget.css" rel="stylesheet" type="text/css" />
