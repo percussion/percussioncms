@@ -49,7 +49,8 @@
  <UserPref name="value_threshold" display_name="Goal (Gains per page)" required="true" datatype="string" default_value="0"/>  
  <UserPref name="drill_down_path" datatype="hidden"/>
   <Content type="html">
-     <![CDATA[ 
+     <![CDATA[
+     <!DOCTYPE html>
     <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
     <style>
 
