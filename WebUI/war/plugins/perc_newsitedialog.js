@@ -139,7 +139,7 @@ var $perc_newSiteDialogLayout;
                     /////////////////////////////////////////
 
                     // Clear & reset fields validation errors
-                    urlField.removeAttr('readonly').removeAttr('disabled');
+                    urlField.prop('readonly', false).prop('disabled', false);
                     clearValidationErrorMessage(siteNameField);
                     clearValidationErrorMessage(urlField);
 
@@ -378,7 +378,7 @@ var $perc_newSiteDialogLayout;
 
         $.PercBlockUI();
         // Force the dialog close while blocking the UI
-        $(".ui-dialog-titlebar .ui-icon-closethick").click();
+        $(".ui-dialog-titlebar .ui-icon-closethick").trigger("click");
 
         $.ajax(
             {
