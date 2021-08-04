@@ -1494,7 +1494,7 @@
 
                 if(formData.config.processorType === "ExternalServer")
                 {
-                    formEditorHtml.find("input[name='perc-save-to'][value='LocalServer']").removeAttr("checked");
+                    formEditorHtml.find("input[name='perc-save-to'][value='LocalServer']").prop("checked", false);
                     formEditorHtml.find("input[name='perc-save-to'][value='ExternalServer']").attr("checked","checked").trigger("click").trigger("change");
                     formEditorHtml.find("input[name='perc-save-to-url']").val(formData.config.processorURL);
                 }
@@ -1514,12 +1514,12 @@
                 var flag = !formEditorHtml.find('#perc-form-metadata-email-notification').is(":checked");
                 formEditorHtml.find('#perc-formbuild-mail-to').prop('disabled', flag);
                 formEditorHtml.find('#perc-formbuild-mail-subject').prop('disabled', flag);
-                formEditorHtml.find("input[name='perc-email-form']").removeAttr("checked");
+                formEditorHtml.find("input[name='perc-email-form']").prop("checked", false);
             });
 
             formEditorHtml.find('#perc-form-metadata-email-form').on("click",function(){
                 var flag = !formEditorHtml.find('#perc-form-metadata-email-form').is(":checked");
-                formEditorHtml.find("input[name='perc-email-notification']").removeAttr("checked");
+                formEditorHtml.find("input[name='perc-email-notification']").prop("checked", false);
                 formEditorHtml.find('#perc-formbuild-mail-to').get(0).setAttribute('disabled', 'disabled');
                 formEditorHtml.find('#perc-formbuild-mail-subject').get(0).setAttribute('disabled', 'disabled');
             });
