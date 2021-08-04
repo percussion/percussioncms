@@ -378,7 +378,7 @@ var $perc_newSiteDialogLayout;
 
         $.PercBlockUI();
         // Force the dialog close while blocking the UI
-        $(".ui-dialog-titlebar .ui-icon-closethick").click();
+        $(".ui-dialog-titlebar .ui-icon-closethick").trigger("click");
 
         $.ajax(
             {
