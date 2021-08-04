@@ -39,7 +39,9 @@ import com.percussion.error.PSException;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
+import com.percussion.services.legacy.IPSCmsObjectMgrInternal;
 import com.percussion.services.legacy.IPSItemEntry;
+import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
@@ -63,6 +65,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,7 +129,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
 
       ms_instance = new PSFolderRelationshipCache();
       ms_itemcache = PSItemSummaryCache.getInstance();
-      
+
       IPSNotificationService srv = PSNotificationServiceLocator
             .getNotificationService();
       srv.addListener(EventType.RELATIONSHIP_CHANGED, ms_instance);
@@ -1102,13 +1105,19 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
 
       PSRelationship rel = new PSRelationship(rid, parent, child, config);
       IPSItemEntry item = getItem(Integer.valueOf(entry.m_childId));
-      if (item == null)
-         throw new IllegalStateException(
-               "child id, "
-                     + entry.m_childId
-                     + ", does not exist in item cache, "
-                     + "but it is a dependent of relationship id, "
-                     + rid);
+      if (item == null) {
+         List<IPSItemEntry> items = m_cmsObjectMgr.findItemEntries(Arrays.asList(entry.m_childId),null);
+         if(items.size() != 1) {
+            throw new IllegalStateException(
+                    "child id, "
+                            + entry.m_childId
+                            + ", does not exist in item cache, "
+                            + "but it is a dependent of relationship id, "
+                            + rid);
+         }else {
+            item = items.get(0);
+         }
+      }
       rel.setDependentCommunityId(item.getCommunityId());
       rel.setDependentObjectType(item.getObjectType());
       rel.setPersisted(true);
@@ -1700,16 +1709,26 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       IPSItemEntry item = getItem(Integer.valueOf(entry.getOwnerId()));
       if (item == null)
       {
+         List<IPSItemEntry> items = m_cmsObjectMgr.findItemEntries(Arrays.asList(entry.getOwnerId()),null);
+         if(items.size() != 1) {
          log.warn(
                "owner id, {} , does not exist in item cache, but it is an owner of a relationship id, {} , which has dependent id: {} ", entry.getOwnerId(), rid, entry.getDependentId());
          return null;
+         }else {
+            item = items.get(0);
+         }
       }
       IPSItemEntry dependent = getItem(Integer.valueOf(entry.getDependentId()));
       if (dependent == null)
       {
-         log.warn(
-               "child id, {} , does not exist in item cache, but it is a dependent of relationship id, {} ", entry.getDependentId(), rid);
-         return null;
+         List<IPSItemEntry> items = m_cmsObjectMgr.findItemEntries(Arrays.asList(entry.getDependentId()),null);
+         if(items.size() != 1) {
+            log.warn(
+                  "child id, {} , does not exist in item cache, but it is a dependent of relationship id, {} ", entry.getDependentId(), rid);
+            return null;
+         }else {
+            dependent = items.get(0);
+         }
       }
       
       PSRelationship rel = new PSRelationship(entry.getId(), 
@@ -1919,4 +1938,6 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
 
    //Property name for the maximum number of levels in the cache tree
    private static final String MAX_RECURSION_PROP = "maxFolderCacheLevels";
+
+   private IPSCmsObjectMgrInternal m_cmsObjectMgr = (IPSCmsObjectMgrInternal) PSCmsObjectMgrLocator.getObjectManager();;
 }
