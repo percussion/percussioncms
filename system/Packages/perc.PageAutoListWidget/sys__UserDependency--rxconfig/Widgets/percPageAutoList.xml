@@ -351,10 +351,6 @@
 
     $sortDirection = $perc.widget.item.properties.get('sortDirection');
 
-    if($sortDirection == null){
-        $sortDirection = "asc";
-    }
-
     if($autoListDivId == '' || $autoListDivId == null) {
         $autoListDivId = $perc.widget.item.id + "_list";
     }
@@ -364,6 +360,7 @@
 
     if($sortbyVal == null || $sortbyVal == "none"){
         $sortbyVal = "rx:resource_link_title";
+        $sortDirection = "asc";
     }
 
     $enableRssField = "";
@@ -389,7 +386,12 @@
             }
         }
 
-        $query = $query + " order by " + $sortbyVal + " " + $sortDirection;
+        if($sortDirection == null){
+            $query = $query + " order by " + $sortbyVal + " desc";
+        }else{
+           $query = $query + " order by " + $sortbyVal + " " + $sortDirection;
+        }
+
 
 
         $params.put('query', $query);
@@ -554,26 +556,53 @@
         $orderby = "";
         if($sortbyVal == "none" || $sortbyVal == "rx:resource_link_title")
         {
-             $orderby = "linktext_lower " + $sortDirection;
+             if($sortDirection == null){
+                $orderby = "linktext_lower asc";
+            }else{
+               $orderby = "linktext_lower " + $sortDirection;
+            }
+
         }
         else if ( $sortbyVal == "rx:page_title")
         {
-             $orderby = "dcterms:title " + $sortDirection +", linktext_lower " + $sortDirection;
+           if($sortDirection == null){
+                $orderby = "dcterms:title asc, linktext_lower asc";
+            }else{
+               $orderby = "dcterms:title " + $sortDirection +", linktext_lower " + $sortDirection;
+            }
+
         }
         else if( $sortbyVal == "rx:sys_title" )  {
-           $orderby = "name " + $sortDirection +", linktext_lower " + $sortDirection;
+            if($sortDirection == null){
+               $orderby = "name asc, linktext_lower asc";
+            }else{
+               $orderby = "name " + $sortDirection +", linktext_lower asc";
+            }
+
+
         }
         else if($sortbyVal == "rx:sys_contentcreateddate")
         {
-           $orderby = "dcterms:date " + $sortDirection + ", linktext_lower asc";
+           if($sortDirection == null){
+               $orderby = "dcterms:date desc, linktext_lower asc";
+            }else{
+               $orderby = "dcterms:date " + $sortDirection + ", linktext_lower asc";
+            }
+
         }
         else if($sortbyVal == "rx:sys_contentpostdate")
         {
-           $orderby = "dcterms:created " + $sortDirection + ", linktext_lower asc";
+
+          if($sortDirection == null){
+               $orderby = "dcterms:created desc , linktext_lower asc";
+            }else{
+               $orderby = "dcterms:created " + $sortDirection + ", linktext_lower asc";
+            }
+
         }
         else if($sortbyVal == null)
         {
-           $orderby = "dcterms:created desc , linktext_lower asc";
+            $orderby = "dcterms:created desc , linktext_lower asc";
         }
 
         ##Build the query string for the delivery side auto list

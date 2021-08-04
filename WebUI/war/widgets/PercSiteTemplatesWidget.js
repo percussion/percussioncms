@@ -730,19 +730,19 @@
             }
 
             function _changeTemplate(callbackData) {
-                var templateId = callbackData.templateId;
-                var pageId = callbackData.pageId;
+                var templateId = callbackData.data.templateId;
+                var pageId = callbackData.data.pageId;
                 $.PercChangeTemplateDialog().openDialog(pageId, templateId, $.PercNavigationManager.getSiteName(), function() {  window.location.reload(); });
             }
 
             function _openThisPage(callbackData) {
-                _openPage(callbackData.pageId);
+                _openPage(callbackData.data.pageId);
             }
 
             function _purgePage(callbackData) {
-                var templateId = callbackData.templateId;
+                var templateId = callbackData.data.templateId;
                 $.PercRecycleService.purgeItem(
-                    callbackData.pageId,
+                    callbackData.data.pageId,
                     $.perc_paths.PAGE_FORCE_PURGE,
                     function(status, data) {
                         if (status === $.PercServiceUtils.STATUS_ERROR) {
@@ -755,8 +755,8 @@
             }
 
             function _restorePage(callbackData) {
-                var templateId = callbackData.templateId;
-                var pageId = callbackData.pageId;
+                var templateId = callbackData.data.templateId;
+                var pageId = callbackData.data.pageId;
                 $.PercRecycleService.restoreItem(pageId,  $.perc_paths.PAGE_RESTORE, function(status, data) {
                     if (status === $.PercServiceUtils.STATUS_ERROR) {
                         $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
