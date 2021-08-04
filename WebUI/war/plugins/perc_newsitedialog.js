@@ -139,7 +139,7 @@ var $perc_newSiteDialogLayout;
                     /////////////////////////////////////////
 
                     // Clear & reset fields validation errors
-                    urlField.removeAttr('readonly').removeAttr('disabled');
+                    urlField.prop('readonly', false).prop('disabled', flase);
                     clearValidationErrorMessage(siteNameField);
                     clearValidationErrorMessage(urlField);
 
