@@ -174,12 +174,12 @@
                 if ($("#tabs-1 .perc-template-container").hasClass("perc-visible")) {
                     $("#tabs-1 .perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
                     $("#tabs-1 #perc-temp-lib-expander").removeClass("perc-whitebg");
-                    $("#tabs-1 #perc-temp-lib-minimizer").replaceWith('<a id="perc-temp-lib-maximizer" style="float: left;" href="#"></a>');
+                    $("#tabs-1 #perc-temp-lib-minimizer").replaceWith('<a id="perc-temp-lib-maximizer" style="float: left;" href="#" aria-label="Go to top"></a>');
                 }
                 else {
                     $("#tabs-1 .perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
                     $("#tabs-1 #perc-temp-lib-expander").addClass("perc-whitebg");
-                    $("#tabs-1 #perc-temp-lib-maximizer").replaceWith('<a id="perc-temp-lib-minimizer" style="float: left;" href="#"></a>');
+                    $("#tabs-1 #perc-temp-lib-maximizer").replaceWith('<a id="perc-temp-lib-minimizer" style="float: left;" href="#" aria-label="Go to top"></a>');
                 }
                 // Fix the User Template Library area Height
                 fixTemplateHeight();
