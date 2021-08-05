@@ -259,11 +259,12 @@ var layoutModel;
                         $.PercRegionCSSHandler.mergeRegionCSS();
                     $.unblockUI();
                     callback();
+                    setLayoutDirty(false);
                 },
                 widObj,
                 requireMigration
             );
-            setLayoutDirty(false);
+
         }
 
         function newWidgetObject() {

@@ -30,6 +30,7 @@
     $.PercTagListView = {
         updateTagList : updateTagList
     };
+
     function updateTagList()
     {
         $(".perc-tag-list").each(function(){
@@ -88,7 +89,7 @@
                     else{
                         listRoot.addClass("perc-list-vertical");
                     }
-                    currentTagList.append(listRoot);
+                    //currentTagList.append(listRoot);
                     //Loop through the tag entries and build the new list element as per the structure.
                     //Then add the newly created element to the list root.
                     for(var i=0;i<tagEntries.properties.length;i++)
@@ -125,6 +126,7 @@
                         }
                         listRoot.append(newListElem);
                     }
+                    currentTagList.append(listRoot);
                 }
                 else
                 {
