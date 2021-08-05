@@ -292,7 +292,7 @@
         ## only output slider content if valid slider values are selected ##
         #if( $validNumbers == 'true' )##
         <script>
-         window.addEventListener('DOMContentLoaded', function() {
+         $(function() {
                  /* main slider settings */
                 $('.${sliderName}-${sliderId}').slick({
                 #if( $perc_slide_layout == 'navigation')##
