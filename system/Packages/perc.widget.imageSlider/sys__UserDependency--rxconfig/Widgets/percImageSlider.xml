@@ -293,8 +293,7 @@
         #if( $validNumbers == 'true' )##
         <script>
          window.addEventListener('DOMContentLoaded', function() {
-              $(function(){
-                /* main slider settings */
+                 /* main slider settings */
                 $('.${sliderName}-${sliderId}').slick({
                 #if( $perc_slide_layout == 'navigation')##
                 asNavFor: ".${sliderName}-${sliderId}-navigation",
@@ -352,7 +351,6 @@
                   nextArrow: '<a class="slick-next $perc_next_arrow_class"></a>'#end##
                 });
                 #end
-              });
              });
         </script>
 

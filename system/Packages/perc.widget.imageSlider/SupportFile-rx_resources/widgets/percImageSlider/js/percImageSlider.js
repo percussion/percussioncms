@@ -461,7 +461,7 @@
 
         $.ajax({
             contentType: 'application/json',
-            async: false,
+            async: true,
             url: url,
             dataType: 'json',
             success: function(json) {
