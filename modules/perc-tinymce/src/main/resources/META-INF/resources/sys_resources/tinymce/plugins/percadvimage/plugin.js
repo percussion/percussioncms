@@ -738,7 +738,8 @@ tinymce.PluginManager.add('percadvimage', function(editor) {
                     data.alt = tempAltValue;
                 }
 
-                var imgPath = topFrJQ.trim(data.src),imgPathLower = imgPath.toLowerCase();
+                var dataSrc = data.src;
+                var imgPath = dataSrc.trim(),imgPathLower = imgPath.toLowerCase();
                 //Resolve manually entered internal links
                 if(imgPathLower.match('^//sites/') || imgPathLower.match('^//assets/') || imgPathLower.match('^/sites/') || imgPathLower.match('^/assets/') || imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {
                     if(imgPathLower.match('^sites/') || imgPathLower.match('^assets/')) {

@@ -117,7 +117,7 @@
 
         // Listen for a change event on either the image or external link fields
         // These change events are triggered by PercImageSelectionControl.js and PercPageSelectionControl.js
-        $(".perc-slider-image-path, .perc-slider-image-link, .perc-slider-image-link-setting-select").bind('change', function(event) {
+        $(".perc-slider-image-path, .perc-slider-image-link, .perc-slider-image-link-setting-select").on('change', function(event) {
             validateAssetItems();
         });
 

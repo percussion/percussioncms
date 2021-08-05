@@ -293,7 +293,7 @@
         #if( $validNumbers == 'true' )##
         <script>
          window.addEventListener('DOMContentLoaded', function() {
-              $(document).ready(function(){
+              $(function(){
                 /* main slider settings */
                 $('.${sliderName}-${sliderId}').slick({
                 #if( $perc_slide_layout == 'navigation')##

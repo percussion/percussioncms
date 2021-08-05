@@ -575,12 +575,12 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		.css("position", "absolute")
 		.appendTo(document.body);
 	
-		list = $("<ul/>").appendTo(element).mouseover( function(event) {
+		list = $("<ul/>").appendTo(element).on("mouseover", function(event) {
 			if(target(event).nodeName && target(event).nodeName.toUpperCase() == 'LI') {
 	            active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
 			    $(target(event)).addClass(CLASSES.ACTIVE);
 	        }
-		}).click(function(event) {
+		}).on("click", function(event) {
 			$(target(event)).addClass(CLASSES.ACTIVE);
 			select();
 			// TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
