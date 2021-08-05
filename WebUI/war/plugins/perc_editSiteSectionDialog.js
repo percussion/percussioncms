@@ -91,7 +91,7 @@
                 "</select>" +
                 "<input type='hidden' id='perc-site-id' name='site_id'/>" +
                 // render the list editor widget in the following div
-                "<div id='perc-site-permission-users'/>" +
+                "<div id='perc-site-permission-users'>" +
                 "</div>" +
                 '</div></div>' +
 
