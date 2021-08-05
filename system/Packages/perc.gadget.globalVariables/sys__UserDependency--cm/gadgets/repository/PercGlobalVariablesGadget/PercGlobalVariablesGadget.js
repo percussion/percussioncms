@@ -108,13 +108,13 @@
      */
     function _saveVariable(origName, varName, varValue, dialog)
     {
-        if(percJQuery.trim(varName) == "")
+        if(varName.trim() == "")
         {
             displayErrorMessage(dialog, "Name must not be blank.", "#perc_variable_name");
             return;
         }
         
-        if(percJQuery.trim(varValue) == "")
+        if(varValue.trim() == "")
         {
             displayErrorMessage(dialog, "Value must not be blank.", "#perc_variable_value");
             return;
