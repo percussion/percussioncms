@@ -72,7 +72,7 @@
             show : function() {
                 fixBottomHeight();
             },
-            activate : function(event, ui) {
+            beforeActivate: function( event, ui ){
 
                 // The persist method will check to see if the editor has been
                 // initialised.
@@ -96,11 +96,13 @@
                     );
                     return false;
                 }
-                else
-                {
+            },
+            activate : function(event, ui) {
+
+
                     //Reset the JavaScript Off/On menu to JavaScript Off
                     resetJavaScriptMenu()
-                }
+
                 deactivateRegionToolButton();
 
                 loadTab(ui.newTab.index());
