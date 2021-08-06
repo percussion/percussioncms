@@ -51,7 +51,9 @@ import java.util.Properties;
  * reference is not appropriate for this resolver or the reference is not
  * found, the default action will occur by the 
  * {@link #resolveEntity(String, String)} method returning <code>null</code>.
+ * @deprecated
  */
+@Deprecated
 public class PSEntityResolver implements EntityResolver
 {
    private static final Logger log = LogManager.getLogger(PSEntityResolver.class);

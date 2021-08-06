@@ -23,7 +23,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<!DOCTYPE PSXContentEditor SYSTEM "./../../DTD/sys_ContentEditorLocalDef.dtd">
+<!DOCTYPE PSXContentEditor SYSTEM "sys_ContentEditorLocalDef.dtd">
 <PSXContentEditor contentType="0" workflowId="0">
   <PSXDataSet id="768">
     <name>template</name>

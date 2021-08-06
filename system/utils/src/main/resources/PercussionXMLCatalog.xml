@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE catalog
+        PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+        "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<!-- This catalog is for any external DTD and Entity references.  We block external entities and DTD references that
+are not defined in this catalog file to prevent XXE vulnerabilities -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system" xml:base="file://@@rxdir@@" >
+
+    <!-- HTML Entities -->
+    <public publicId="-//W3C//ENTITIES_Latin_1_for_XHTML//EN" uri="file://@@rxdir@@/DTD/HTMLlat1x.ent"/>
+    <system systemId="https://www.percussion.com/DTD/HTMLlat1x.ent" uri="file://@@rxdir@@/DTD/HTMLlat1x.ent"/>
+
+    <public publicId="-//W3C//ENTITIES_Symbols_for_XHTML//EN" uri="file://@@rxdir@@/DTD/HTMLsymbolx.ent"/>
+    <system systemId="https://www.percussion.com/DTD/HTMLsymbolx.ent" uri="file://@@rxdir@@/DTD/HTMLsymbolx.ent"/>
+
+    <public publicId="-//W3C//ENTITIES_Special_for_XHTML//EN" uri="file://@@rxdir@@/DTD/HTMLspecialx.ent"/>
+    <system systemId="https://www.percussion.com/DTD/HTMLspecialx.ent" uri="file://@@rxdir@@/DTD/HTMLspecialx.ent"/>
+
+    <!-- Jetty Server -->
+    <public publicId="-//Jetty//Configure//EN" uri="file://@@rxdir@@/DTD/configure_9_3.dtd"/>
+    <system systemId="http://www.eclipse.org/jetty/configure_9_3.dtd" uri="file://@@rxdir@@/DTD/configure_9_3.dtd"/>
+
+    <!-- Percussion DTDs -->
+    <system systemId="sys_VisibilityContexts.dtd" uri="file://@@rxdir@@/DTD/sys_VisibilityContexts.dtd" />
+    <system systemId="sys_UiContexts.dtd" uri="file://@@rxdir@@/DTD/sys_UiContexts.dtd" />
+    <system systemId="sys_Tabledef.dtd" uri="file://@@rxdir@@/DTD/sys_Tabledef.dtd" />
+    <system systemId="sys_Tabledata.dtd" uri="file://@@rxdir@@/DTD/sys_Tabledata.dtd" />
+    <system systemId="sys_StoredActions.dtd" uri="file://@@rxdir@@/DTD/sys_StoredActions.dtd" />
+    <system systemId="sys_SearchResponse.dtd" uri="file://@@rxdir@@/DTD/sys_SearchResponse.dtd"/>
+    <system systemId="sys_RxRoles.dtd" uri="file://@@rxdir@@/DTD/sys_RxRoles.dtd"/>
+    <system systemId="sys_RequestHandlerDef.dtd" uri="file://@@rxdir@@/DTD/sys_RxRoles.dtd" />
+    <system systemId="sys_RelationshipConfig.dtd" uri="file://@@rxdir@@/DTD/sys_RelationshipConfig.dtd" />
+    <system systemId="sys_Props.dtd" uri="file://@@rxdir@@/DTD/sys_Props.dtd" />
+    <!--  TODO: sys_PortalPublishing may be unused - is referenced in rx_casPortalContent.xml -->
+    <system systemId="sys_PortalPublishing.dtd" uri="file://@@rxdir@@/DTD/sys_PortalPublishing.dtd" />
+    <!-- TODO: sys_PortalProperties.dtd may be unused -->
+    <system systemId="sys_PortalProperties.dtd" uri="file://@@rxdir@@/DTD/sys_PortalProperties.dtd" />
+    <system systemId="sys_Params.dtd" uri="file://@@rxdir@@/DTD/sys_Params.dtd"/>
+    <!-- TODO: sys_Node may be unused -->
+    <system systemId="sys_Node.dtd" uri="file://@@rxdir@@/DTD/sys_Node.dtd"/>
+    <!-- TODO: sys_Modes.dtd may be unused -->
+    <system systemId="sys_Lookup.dtd" uri="file://@@rxdir@@/DTD/sys_Lookup.dtd"/>
+    <system systemId="file:sys_Lookup.dtd" uri="file://@@rxdir@@/DTD/sys_Lookup.dtd"/>
+    <system systemId="sys_LibraryControlDef.dtd" uri="file://@@rxdir@@/DTD/sys_LibraryControlDef.dtd"/>
+    <system systemId="sys_library_loader.dtd" uri="file://@@rxdir@@/DTD/sys_library_loader.dtd"/>
+    <system systemId="sys_ItemValidation.dtd" uri="file://@@rxdir@@/DTD/sys_ItemValidation.dtd"/>
+    <system systemId="sys_ItemError.dtd" uri="file://@@rxdir@@/DTD/sys_ItemError.dtd"/>
+    <system systemId="sys_GlobalTemplateHandlerConfig.dtd" uri="file://@@rxdir@@/DTD/sys_GlobalTemplateHandlerConfig.dtd"/>
+    <system systemId="sys_DisplayChoices.dtd" uri="file://@@rxdir@@/DTD/sys_DisplayChoices.dtd"/>
+    <system systemId="file:sys_DisplayChoices.dtd" uri="file://@@rxdir@@/DTD/sys_DisplayChoices.dtd"/>
+    <system systemId="sys_DisplayChoices.dtd" uri="file://@@rxdir@@/DTD/sys_DisplayChoices.dtd"/>
+    <system systemId="sys_DatabaseFunctionDefs.dtd" uri="file://@@rxdir@@/DTD/sys_DatabaseFunctionDefs.dtd"/>
+    <!-- TODO: May be unused -->
+    <system systemId="sys_CustomView.dtd" uri="file://@@rxdir@@/DTD/sys_CustomView.dtd"/>
+    <system systemId="sys_ContentItemStatus.dtd" uri="file://@@rxdir@@/DTD/sys_CustomView.dtd"/>
+    <system systemId="file:sys_ContentItemStatus.dtd" uri="file://@@rxdir@@/DTD/sys_ContentItemStatus.dtd"/>
+    <system systemId="sys_ContentEditorSystemDef.dtd" uri="file://@@rxdir@@/DTD/sys_ContentEditorSystemDef.dtd"/>
+    <system systemId="sys_ContentEditorSharedDef.dtd" uri="file://@@rxdir@@/DTD/sys_ContentEditorSharedDef.dtd"/>
+    <system systemId="sys_ContentEditorLocalDef.dtd" uri="file://@@rxdir@@/DTD/sys_ContentEditorLocalDef.dtd"/>
+    <system systemId="sys_ContentEditor.dtd" uri="file://@@rxdir@@/DTD/sys_ContentEditor.dtd"/>
+    <system systemId="sys_Compare.dtd" uri="file://@@rxdir@@/DTD/sys_Compare.dtd"/>
+    <system systemId="sys_CloneHandlerConfig.dtd" uri="file://@@rxdir@@/DTD/sys_CloneHandlerConfig.dtd"/>
+    <system systemId="sys_CheckboxTreeControl.dtd" uri="file://@@rxdir@@/DTD/sys_CheckboxTreeControl.dtd"/>
+    <system systemId="file:sys_CheckboxTreeControl.dtd" uri="file://@@rxdir@@/DTD/sys_CheckboxTreeControl.dtd"/>
+   <!-- TODO: May be unused -->
+    <system systemId="sys_BeaContentlist.dtd" uri="file://@@rxdir@@/DTD/sys_BeaContentlist.dtd"/>
+    <system systemId="sys_BasicObjects.dtd" uri="file://@@rxdir@@/DTD/sys_BasicObjects.dtd"/>
+    <!-- TODO: May be unused -->
+    <system systemId="sys_AutoIndex.dtd" uri="file://@@rxdir@@/DTD/sys_AutoIndex.dtd"/>
+    <system systemId="sys_AssemblerInfo.dtd" uri="file://@@rxdir@@/DTD/sys_AssemblerInfo.dtd"/>
+    <system systemId="file:sys_AssemblerInfo.dtd" uri="file://@@rxdir@@/DTD/sys_AssemblerInfo.dtd"/>
+    <!-- TODO: May be unused -->
+    <system systemId="sys_AssemblerConfig.dtd" uri="file://@@rxdir@@/DTD/sys_AssemblerConfig.dtd"/>
+    <system systemId="sys_Action.dtd" uri="file://@@rxdir@@/DTD/sys_Action.dtd"/>
+    <!-- TODO: May be unused -->
+    <system systemId="stylesheetCleanupFilter.dtd" uri="file://@@rxdir@@/DTD/stylesheetCleanupFilter.dtd"/>
+    <system systemId="SearchResults.dtd" uri="file://@@rxdir@@/DTD/SearchResults.dtd"/>
+    <system systemId="SearchQueryDef.dtd" uri="file://@@rxdir@@/DTD/SearchQueryDef.dtd"/>
+    <system systemId="RxWebdavConfig.dtd" uri="file://@@rxdir@@/DTD/RxWebdavConfig.dtd"/>
+    <system systemId="PSXRelationshipSet.dtd" uri="file://@@rxdir@@/DTD/PSXRelationshipSet.dtd"/>
+    <system systemId="file:PSXRelationshipSet.dtd" uri="file://@@rxdir@@/DTD/PSXRelationshipSet.dtd"/>
+    <system systemId="PSXActiveAssemblerHandlerRequest.dtd" uri="file://@@rxdir@@/DTD/PSXActiveAssemblerHandlerRequest.dtd"/>
+    <system systemId="log4j.dtd" uri="file://@@rxdir@@/DTD/log4j.dtd"/>
+    <!-- TODO: May be unused -->
+    <system systemId="ListContentSelector.dtd" uri="file://@@rxdir@@/DTD/ListContentSelector.dtd"/>
+    <system systemId="contentlist.dtd" uri="file://@@rxdir@@/DTD/contentlist.dtd"/>
+    <system systemId="file:contentlist.dtd" uri="file://@@rxdir@@/DTD/contentlist.dtd"/>
+    <!-- TODO: May be unused -->
+    <system systemId="ContentConnectorDescriptor.dtd" uri="file://@@rxdir@@/DTD/ContentConnectorDescriptor.dtd"/>
+    <system systemId="ContentConnector.dtd" uri="file://@@rxdir@@/DTD/ContentConnector.dtd"/>
+    <!-- TODO: May be unused -->
+    <system systemId="ConfigDialog.dtd" uri="file://@@rxdir@@/DTD/ConfigDialog.dtd"/>
+    <!-- TODO: All of the error dtd's seems to not be referenced anywhere else -->
+    <system systemId="sys_PSXXmlProcessingError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXXmlProcessingError.dtd" />
+    <system systemId="sys_PSXValidationError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXValidationError.dtd" />
+    <system systemId="sys_PSXUnknownProcessingError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXUnknownProcessingError.dtd" />
+    <system systemId="sys_PSXServerUnavailableError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXServerUnavailableError.dtd" />
+    <system systemId="sys_PSXResponseSendError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXResponseSendError.dtd" />
+    <system systemId="sys_PSXRequestPreProcessingError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXRequestPreProcessingError.dtd" />
+    <system systemId="sys_PSXRequestHandlerNotFoundError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXRequestHandlerNotFoundError.dtd" />
+    <system systemId="sys_PSXRemoteConsoleError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXRemoteConsoleError.dtd" />
+    <system systemId="sys_PSXNonFatalError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXNonFatalError.dtd" />
+    <system systemId="sys_PSXInternalError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXInternalError.dtd" />
+    <system systemId="sys_PSXHtmlProcessingError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXHtmlProcessingError.dtd" />
+    <system systemId="sys_PSXHookRequestError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXHookRequestError.dtd" />
+    <system systemId="sys_PSXFatalError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXFatalError.dtd" />
+    <system systemId="sys_PSXDataConversionError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXDataConversionError.dtd" />
+    <system systemId="sys_PSXCatalogRequestError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXCatalogRequestError.dtd" />
+    <system systemId="sys_PSXBackEndUpdateProcessingError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXBackEndUpdateProcessingError.dtd" />
+    <system systemId="sys_PSXBackEndServerDownError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXBackEndServerDownError.dtd" />
+    <system systemId="sys_PSXBackEndQueryProcessingError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXBackEndQueryProcessingError.dtd" />
+    <system systemId="sys_PSXBackEndAuthorizationError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXBackEndAuthorizationError.dtd" />
+    <system systemId="sys_PSXApplicationDesignError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXApplicationDesignError.dtd" />
+    <system systemId="sys_PSXApplicationAuthorizationError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSXApplicationAuthorizationError.dtd" />
+    <system systemId="sys_PSRequestWaitTooLongError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSRequestWaitTooLongError.dtd" />
+    <system systemId="sys_PSPoorResponseTimeError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSPoorResponseTimeError.dtd" />
+    <system systemId="sys_PSLargeRequestQueueError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSLargeRequestQueueError.dtd" />
+    <system systemId="sys_PSLargeBackEndRequestQueueError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSLargeBackEndRequestQueueError.dtd" />
+    <system systemId="sys_PSLargeApplicationRequestQueueError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSLargeApplicationRequestQueueError.dtd" />
+    <system systemId="sys_defaultError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_defaultError.dtd" />
+
+    <uri name="file:sys_resources/stylesheets/sys_I18nUtils.xsl" uri="file:///@@rxdir@@/sys_resources/stylesheets/sys_I18nUtils.xsl"/>
+    <uri name="file:sys_resources/stylesheets/sys_Templates.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/sys_Templates.xsl" />
+    <uri name="file:sys_resources/stylesheets/customControlImports.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/customControlImports.xsl"/>
+    <uri name="file:rx_resources/stylesheets/rx_Templates.xsl" uri="file://@@rxdir@@/rx_resources/stylesheets/rx_Templates.xsl"/>
+    <uri name="file:sys_resources/stylesheets/ActionList.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/ActionList.xsl"/>
+
+
+</catalog>

@@ -141,6 +141,7 @@
         <echo>Specifying rxdeploydir in jvm.ini files...</echo>
         <replace file="${install.dir}/jetty/defaults/start.d/jvm.ini" token="@@rxdir@@" value="${install.dir}" />
         <replace file="${install.dir}/jetty/base/start.d/jvm.ini" token="@@rxdir@@" value="${install.dir}" />
+        <replace file="${install.dir}/PercussionXMLCatalog.xml" token="@@rxdir@@" value="${install.dir}" />
 
         <macrodef name="add-config-if-missing">
             <attribute name="srcFile"/>

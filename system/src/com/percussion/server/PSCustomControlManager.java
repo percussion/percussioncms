@@ -311,7 +311,7 @@ public class PSCustomControlManager extends PSBaseControlManager
                filePath
             };
             
-            PSConsole.printMsg(SUBSYSTEM,
+           PSConsole.printMsg(SUBSYSTEM,
                   IPSServerErrors.INVALID_CTRL_FILE_MISSING_CTRL, args);
          }
          else if (ctrls.size() > 1)
