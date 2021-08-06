@@ -145,7 +145,6 @@
 #if("$generateSkipLink"=="true" && ! $perc.isEditMode())##
 <script >
 window.addEventListener('DOMContentLoaded', function() {
-$( document ).ready(function() {
 // bind a click event to the 'skip' link
 $(".perc-navigation-skiplink").on("click",function(event) {
 // strip the leading hash and declare
@@ -158,7 +157,6 @@ $(skipTo).attr('tabindex', -1).on('blur focusout', function () {
 // remove the tabindex attribute
 $(this).removeAttr('tabindex');
 }).trigger("focus"); // focus on the content container
-});
 });
 });
 </script>

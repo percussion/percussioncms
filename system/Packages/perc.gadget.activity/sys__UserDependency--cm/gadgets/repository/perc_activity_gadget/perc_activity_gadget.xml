@@ -50,7 +50,7 @@
   <UserPref name="duration_value" display_name="How many" required="true" datatype="string" default_value="5"/>
   <Content type="html">
      <![CDATA[
-     
+     <!DOCTYPE html>
     <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
     <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
 

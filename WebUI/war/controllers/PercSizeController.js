@@ -137,7 +137,7 @@
         }
         
         function insideIframe( elem ) {
-            return iframe[0].contentWindow.jQuery( elem );
+            return iframe[0].contentWindow.$( elem );
         }
     };
 })(jQuery, jQuery.Percussion);

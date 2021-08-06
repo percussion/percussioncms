@@ -200,13 +200,10 @@
       datatype="enum">
 	  <EnumValue value="none" display_value="None" />
       <EnumValue value="rx:displaytitle" display_value="Title" />
-      <EnumValue value="rx:sys_contentcreateddate desc" display_value="Latest created date" />
-      <EnumValue value="rx:sys_contentcreateddate" display_value="Earliest created date" />
-      <EnumValue value="rx:sys_contentpostdate desc" display_value="Latest post date" />
-      <EnumValue value="rx:sys_contentpostdate" display_value="Earliest post date" />
+      <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
     </UserPref>
     <UserPref name="sortDirection"
-      display_name="Sort Order (not used with created/post date sorting)"
+      display_name="Sort Order"
       required="true"
       default_value="asc"
       datatype="enum">
@@ -286,31 +283,27 @@
       $listclass = $listclass.trim();
    }
    $sortDirection = $perc.widget.item.properties.get('sortDirection');
-   if($sortDirection == null){
-      $sortDirection = "asc";
-   }
+
    $maxlength = $perc.widget.item.properties.get('maxlength');
    if (empty($maxlength)) {
       $maxlength = 0;
    }
    $sortby = $perc.widget.item.properties.get('sortby');
-   if ($sortby != "none") {
-      $sortby = " order by "+$sortby;
-   } 
-   else {
-      $sortby = "";
-   }
+
    $target = $perc.widget.item.properties.get('target');
 
    if ( ! $assetItems.isEmpty() ) {
       $assetItem = $assetItems.get(0);
       $params = $rx.string.stringToMap(null);
       $query = $assetItem.getNode().getProperty('query').String;
-      if($sortby.contains('rx:sys_contentpostdate') || $sortby.contains('rx:sys_contentcreateddate') || $sortby == '') {
-          $query = $query + $sortby;
-      }
-      else {
-         $query = $query + $sortby + " " + $sortDirection;
+      if ($sortby != "none"  && $sortby != null) {
+
+        if($sortDirection == null){
+               $query = $query + " order by " + $sortby + "  desc";
+            }else{
+               $query = $query + " order by " + $sortby + " " + $sortDirection;
+          }
+
       }
 
       $params.put('query', $query);

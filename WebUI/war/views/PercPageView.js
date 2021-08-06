@@ -692,9 +692,7 @@
             {
                 // Disable all Layout and Style tabs at load time
                 disabled: [1, 2],
-                activate: function(event,ui)
-                {
-
+                beforeActivate: function( event, ui ){
                     // Ask for confirmation to navigate away from tab if the page has been modified
                     if (dirtyController.isDirty())
                     {
@@ -710,12 +708,11 @@
                         });
                         return false;
                     }
-                    else
-                    {
-                        //Reset the JavaScript Off/On menu to JavaScript Off
-                        resetJavaScriptMenu();
-                    }
-
+                },
+                activate: function(event,ui)
+                {
+                    //Reset the JavaScript Off/On menu to JavaScript Off
+                    resetJavaScriptMenu();
                     loadTab(ui.newTab.index(), true);
                 }
             });

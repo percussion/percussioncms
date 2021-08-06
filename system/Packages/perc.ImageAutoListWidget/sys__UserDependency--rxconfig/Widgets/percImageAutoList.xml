@@ -23,28 +23,28 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 <Widget>
-   <WidgetPrefs title="Image Auto List"
-        contenttype_name="percImageAutoList"
-        category="rich media,search"
-        description="Display an automated list of image assets"
-        author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/imageAutoList/images/widgetIconImageAutoList.png"
-        preferred_editor_width="780"
-        preferred_editor_height="665"
-		is_responsive="true"/>
+    <WidgetPrefs title="Image Auto List"
+                 contenttype_name="percImageAutoList"
+                 category="rich media,search"
+                 description="Display an automated list of image assets"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/imageAutoList/images/widgetIconImageAutoList.png"
+                 preferred_editor_width="780"
+                 preferred_editor_height="665"
+                 is_responsive="true"/>
     <UserPref name="renderingformat"
-      display_name="Rendering format" 
-      required="true"
-      default_value="image"
-      datatype="enum">
-      <EnumValue value="image" display_value="Normal image" />
-      <EnumValue value="thumbnail" display_value="Thumbnail" />
-      <EnumValue value="thumbnail_link" display_value="Thumbnail link" />
+              display_name="Rendering format"
+              required="true"
+              default_value="image"
+              datatype="enum">
+        <EnumValue value="image" display_value="Normal image" />
+        <EnumValue value="thumbnail" display_value="Thumbnail" />
+        <EnumValue value="thumbnail_link" display_value="Thumbnail link" />
     </UserPref>
     <UserPref name="listTitleFormat"
-        display_name="Format of list title"
-        required="false"
-        datatype="enum" default_value="div">
+              display_name="Format of list title"
+              required="false"
+              datatype="enum" default_value="div">
         <EnumValue value="h1" display_value="Heading 1" />
         <EnumValue value="h2" display_value="Heading 2" />
         <EnumValue value="h3" display_value="Heading 3" />
@@ -55,12 +55,12 @@
         <EnumValue value="div" display_value="Div" />
     </UserPref>
     <UserPref name="autoListDivId"
-        display_name="Image Auto List div id"
-        datatype="string"/>
+              display_name="Image Auto List div id"
+              datatype="string"/>
     <UserPref name="listItemFormat"
-        display_name="Format of list items"
-        required="false"
-        datatype="enum" default_value="none">
+              display_name="Format of list items"
+              required="false"
+              datatype="enum" default_value="none">
         <EnumValue value="h1" display_value="Heading 1" />
         <EnumValue value="h2" display_value="Heading 2" />
         <EnumValue value="h3" display_value="Heading 3" />
@@ -72,38 +72,36 @@
         <EnumValue value="none" display_value="None" />
     </UserPref>
     <UserPref name="sortby"
-      display_name="Sort by" 
-      required="true"
-      default_value="rx:displaytitle"
-      datatype="enum">
-	    <EnumValue value="none" display_value="None" />
-      <EnumValue value="rx:displaytitle" display_value="Title" />
-      <EnumValue value="rx:sys_contentcreateddate desc" display_value="Latest created date" />
-      <EnumValue value="rx:sys_contentcreateddate" display_value="Earliest created date" />
-      <EnumValue value="rx:sys_contentpostdate desc" display_value="Latest post date" />
-      <EnumValue value="rx:sys_contentpostdate" display_value="Earliest post date" />
+              display_name="Sort by"
+              required="true"
+              default_value="rx:displaytitle"
+              datatype="enum">
+        <EnumValue value="none" display_value="None" />
+        <EnumValue value="rx:displaytitle" display_value="Title" />
+        <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
+        <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
     </UserPref>
     <UserPref name="sortDirection"
-      display_name="Sort Order (not used with created/post date sorting)"
-      required="true"
-      default_value="asc"
-      datatype="enum">
-      <EnumValue value="desc" display_value="Descending" />
-      <EnumValue value="asc" display_value="Ascending" />
+              display_name="Sort Order"
+              required="true"
+              default_value="asc"
+              datatype="enum">
+        <EnumValue value="desc" display_value="Descending" />
+        <EnumValue value="asc" display_value="Ascending" />
     </UserPref>
     <UserPref name="showPostDate"
-        display_name="Show Post Date"
-        default_value="false"
-        datatype="bool"/>
+              display_name="Show Post Date"
+              default_value="false"
+              datatype="bool"/>
     <UserPref name="postDateTimeFormat"
-        display_name="Format of image post date"
-        default_value="EEEE MM dd, yyyy"
-        datatype="string" />
+              display_name="Format of image post date"
+              default_value="EEEE MM dd, yyyy"
+              datatype="string" />
     <UserPref name="locale"
-        display_name="Date Format Locale"
-        required="true"
-        default_value="en-US"
-        datatype="enum">
+              display_name="Date Format Locale"
+              required="true"
+              default_value="en-US"
+              datatype="enum">
         <EnumValue value="sq-AL" display_value="Albanian Albania (AL)"/>
         <EnumValue value="ar-DZ" display_value="Arabic Algeria (DZ)"/>
         <EnumValue value="ar-BH" display_value="Arabic Bahrain (BH)"/>
@@ -212,53 +210,53 @@
         <EnumValue value="uk-UA" display_value="Ukrainian Ukraine (UA)"/>
         <EnumValue value="vi-VN" display_value="Vietnamese Vietnam (VN)"/>
     </UserPref>
-    <UserPref name="maxlength" 
-      display_name="Max list length"
-      datatype="number" /> 
-    <UserPref name="caption" 
-      display_name="Show caption"
-      default_value="false"
-      datatype="bool"/> 
+    <UserPref name="maxlength"
+              display_name="Max list length"
+              datatype="number" />
+    <UserPref name="caption"
+              display_name="Show caption"
+              default_value="false"
+              datatype="bool"/>
     <UserPref name="listAriaLabel"
-      display_name="Image Auto List aria-label"
-      datatype="string" />
+              display_name="Image Auto List aria-label"
+              datatype="string" />
     <UserPref name="listAriaRole"
-      display_name="Image Auto List aria-role"
-      datatype="string" />
+              display_name="Image Auto List aria-role"
+              datatype="string" />
     <UserPref name="perc_hide_when_empty"
-      display_name="Hide auto list when empty"
-      default_value="false"
-      datatype="bool" />
+              display_name="Hide auto list when empty"
+              default_value="false"
+              datatype="bool" />
     <UserPref name="layout"
-      display_name="Layout"
-      required="true"
-      default_value="perc-list-vertical"
-      datatype="enum">
-      <EnumValue value="perc-list-horizontal" display_value="Horizontal" />
-      <EnumValue value="perc-list-vertical" display_value="Vertical" />
+              display_name="Layout"
+              required="true"
+              default_value="perc-list-vertical"
+              datatype="enum">
+        <EnumValue value="perc-list-horizontal" display_value="Horizontal" />
+        <EnumValue value="perc-list-vertical" display_value="Vertical" />
     </UserPref>
     <UserPref name="target"
-      display_name="Link target"
-      required="true"
-      default_value="_self"
-      datatype="enum">
-      <EnumValue value="_self" display_value="Current window" />
-      <EnumValue value="_blank" display_value="New window" />
-    </UserPref>  
+              display_name="Link target"
+              required="true"
+              default_value="_self"
+              datatype="enum">
+        <EnumValue value="_self" display_value="Current window" />
+        <EnumValue value="_blank" display_value="New window" />
+    </UserPref>
     <CssPref name="rootclass"
-      display_name="CSS root class" 
-      datatype="string" />
+             display_name="CSS root class"
+             datatype="string" />
     <CssPref name="listclass"
-      display_name="CSS image list class" 
-      datatype="string" />
+             display_name="CSS image list class"
+             datatype="string" />
     <CssPref name="thumblinkclass"
-      display_name="CSS thumbnail link class" 
-      datatype="string" />
+             display_name="CSS thumbnail link class"
+             datatype="string" />
     <CssPref name="captionclass"
-      display_name="CSS caption class" 
-      datatype="string" />
+             display_name="CSS caption class"
+             datatype="string" />
     <Code type="jexl">
-    <![CDATA[
+        <![CDATA[
    $linkContext = $perc.linkContext;
    $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
    $listTitleFormat = $perc.widget.item.properties.get('listTitleFormat');
@@ -271,13 +269,13 @@
    $perc_hide_when_empty = $perc.widget.item.properties.get('perc_hide_when_empty');
    $perc.setWidgetContents($assetItems);
    $target = $perc.widget.item.properties.get('target');
-   $layout = $perc.widget.item.properties.get('layout'); 
+   $layout = $perc.widget.item.properties.get('layout');
    $rootclass = $perc.widget.item.cssProperties.get('rootclass');
-   if (!empty($rootclass)) { 
+   if (!empty($rootclass)) {
       $rootclass = $rootclass;
    }
    $listclass = $perc.widget.item.cssProperties.get('listclass');
-   if (!empty($listclass)) { 
+   if (!empty($listclass)) {
       $listclass = $listclass.trim();
    }
    if ($listAriaRole == '' || $listAriaRole == null) {
@@ -291,18 +289,18 @@
    }
    $headerId = $autoListDivId + '_header';
    $thumblinkclass = $perc.widget.item.cssProperties.get('thumblinkclass');
-   if (!empty($thumblinkclass)) { 
+   if (!empty($thumblinkclass)) {
       $thumblinkclass = $thumblinkclass.trim();
    }
    else {
       $thumblinkclass = "";
    }
-   if (!empty($thumblinkclass)) { 
+   if (!empty($thumblinkclass)) {
       $thumblinkclass = 'class="' + $thumblinkclass + '"';
    }
    $caption = $perc.widget.item.properties.get('caption');
    $captionclass = $perc.widget.item.cssProperties.get('captionclass');
-   if (!empty($captionclass)) { 
+   if (!empty($captionclass)) {
       $captionclass = $captionclass.trim();
    }
    $maxlength = $perc.widget.item.properties.get('maxlength');
@@ -310,32 +308,24 @@
       $maxlength = 500;
    }
    $sortby = $perc.widget.item.properties.get('sortby');
-   if ($sortby != "none") {
-      $sortby = "order by " + $sortby;
-   } 
-   else {
-      $sortby = "";
-   }
+
    $sortDirection = $perc.widget.item.properties.get('sortDirection');
    if($sortDirection == null){
-       $sortDirection = "asc";
+       $sortDirection = "desc";
    }
    $renderingformat = $perc.widget.item.properties.get('renderingformat');
    $target = $perc.widget.item.properties.get('target');
 
    if ( ! $assetItems.isEmpty() ) {
-      $assetItem = $assetItems.get(0); 
+      $assetItem = $assetItems.get(0);
       $params = $rx.string.stringToMap(null);
       $query = $assetItem.getNode().getProperty('query').String;
-      if($sortby.contains('rx:sys_contentpostdate') || $sortby.contains('rx:sys_contentcreateddate') || $sortby == '') {
-          $query = $query + $sortby;
-      }
-      else {
-         $query = $query + $sortby + " " + $sortDirection;
+	  if ($sortby != "none"  && $sortby != null) {
+        $query = $query + " order by " + $sortby + " " + $sortDirection;
       }
 
       $params.put('query', $query);
-      $params.put('max_results', $maxlength); 
+      $params.put('max_results', $maxlength);
       $finderName =  "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
       $relresults=  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
       $title = $rx.pageutils.html($assetItem, 'displaytitle');
@@ -366,16 +356,16 @@
    else {
       ;
    }
-   
+
    $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
    if ($dsUrl.indexOf("http://localhost") != -1 )
       $dsUrl = "";
-   $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}"); 
+   $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
 
     ]]>
     </Code>
     <Content type="velocity">
-<![CDATA[
+        <![CDATA[
 #define($ariaLabelString)##
 #if($title && $title.length() > 0)##
 aria-labelledby="$!{headerId}"##
@@ -443,7 +433,7 @@ $!{itemFormatStartTag}<li class="$rowtag $!{firstrow} $!{lastrow} perc-list-elem
 #if($renderingformat == 'image')
 #set($img_height=$result.node.getProperty('rx:img_height').getString())##
 #set($img_width=$result.node.getProperty('rx:img_width').getString())##
-#if($img_height.length() > 0 && $img_width.length() > 0) 
+#if($img_height.length() > 0 && $img_width.length() > 0)
 <img src="$link" $img_title_attr alt="$img_alt" aria-label="$!{img_title}" height="$img_height" width="$img_width" />
 #else##
 <img src="$link" $img_title_attr />
@@ -456,9 +446,9 @@ $!{itemFormatStartTag}<li class="$rowtag $!{firstrow} $!{lastrow} perc-list-elem
 #else##
 #set($img_height=$result.node.getProperty('rx:img2_height').getString())##
 #set($img_width=$result.node.getProperty('rx:img2_width').getString())##
-#set($thumblink=$tools.esc.html($rx.pageutils.itemLink($linkContext, $result, "percSystem.imageThumbBinary")))## 
+#set($thumblink=$tools.esc.html($rx.pageutils.itemLink($linkContext, $result, "percSystem.imageThumbBinary")))##
 #if($renderingformat == 'thumbnail')##
-#if($img_height.length() > 0 && $img_width.length() > 0) 
+#if($img_height.length() > 0 && $img_width.length() > 0)
 <img src="$thumblink" $img_title_attr alt="$img_alt" height="$img_height" width="$img_width" />
 #else##
 <img src="$thumblink" $img_title_attr />
@@ -489,5 +479,5 @@ ${caption_text}
 #end
 </div>
 ]]>
-    </Content>    
+    </Content>
 </Widget>
