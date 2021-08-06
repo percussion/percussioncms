@@ -47,7 +47,7 @@
     <!-- Explore Orphaned Assets-->
     <div class="perc-lib-expander-div" >
         <span id="perc_orphan_assets_expander" style="display:none">
-            <a id="perc_orphan_assets_maximizer" href="#" style="float: left;"></a>
+            <a id="perc_orphan_assets_maximizer" href="#" aria-label="Web Accessibility Initiative" style="float: left;"></a>
             
             <span><i18n:message key = "perc.ui.content.toolbar@Unused Assets"/></span>
         </span>
