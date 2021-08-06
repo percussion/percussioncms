@@ -174,7 +174,10 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
 
             log.debug("Attempting to find item properties for path: {}", path);
             return super.findItemProperties(path);
-        } catch (PSPathServiceException | PSDataServiceException e) {
+        } catch (PSPathServiceException pse) {
+            log.debug(pse.getMessage(),pse);
+            throw pse;
+        }catch (PSDataServiceException e){
             log.error("Error: {} Path: {}",e.getMessage(),path);
             log.debug(e.getMessage(),e);
             throw new PSPathServiceException(e);
