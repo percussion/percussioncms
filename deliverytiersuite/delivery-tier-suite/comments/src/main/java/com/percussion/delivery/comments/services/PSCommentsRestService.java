@@ -47,6 +47,7 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -91,10 +92,10 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      * The comments service reference. Initialized in the ctor.
      * Never <code>null</code>.
      */
-    private IPSCommentsService commentService;
+    private final IPSCommentsService commentService;
 
-    public PSCommentsRestService(){}
 
+   @Inject
     @Autowired
     public PSCommentsRestService(IPSCommentsService service)
     {

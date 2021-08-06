@@ -170,7 +170,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         catch (Exception e)
         {
             log.error("Exception occurred while deleting form, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(e);
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
