@@ -548,7 +548,7 @@
      *           result would be one of ACCESS_XXX value. if the status is $.PercServiceUtils.STATUS_ERROR then result
      *           would be the error message.
      */
-    function getAccessLevel(type, itemId, callback, parentFolderPath, sync=false){
+    function getAccessLevel(type, itemId, callback, parentFolderPath){
         var reqObj;
         if (type != null)
         {
@@ -562,7 +562,7 @@
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_ACCESS_LEVEL,
             $.PercServiceUtils.TYPE_POST,
-            (typeof(sync) !== 'undefined' && sync !== null && sync) ? true : false,
+            false,
             function(status, result) {
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data.AccessLevel.accessLevel);

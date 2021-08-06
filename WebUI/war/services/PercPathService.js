@@ -418,12 +418,12 @@
      * return last existing path as it appears in the finder (no leading/trailing forward slashes)
      * or empty for root paths ("/Assets", "/Sites").
      */
-    function getLastExistingPath(path, callback, sync=false)
+    function getLastExistingPath(path, callback)
     {
         $.PercServiceUtils.makeRequest(
             $.perc_paths.PATH_LAST_EXISTING + path,
             $.PercServiceUtils.TYPE_GET,
-            (sync !== null && sync) ? true : false,
+            false,
             function(status, result)
             {
                 if(status === $.PercServiceUtils.STATUS_SUCCESS)
