@@ -645,8 +645,9 @@
             frame.attr("src", renderPath);
             frame.off("load").on("load",function(evt) {
                 loadAssetDropCriteria(function(){
+                    callback();
                 });
-                callback();
+
             });                
                 
             

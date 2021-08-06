@@ -269,8 +269,7 @@
                     else {
                         okCallback();
                     }
-            },
-            true);
+            });
         }
         
         /**

@@ -55,7 +55,7 @@
             //target:    '#response',  // target element(s) to be updated with server response
             success: imageUploadResponse,
             beforeSubmit: function(a,f,o) {
-                imageUpload.find('input[type="file"]').removeAttr("disabled");
+                imageUpload.find('input[type="file"]').prop("disabled", false);
                 $('#image_asset_upload_message').html('Uploading...');
             },
             iframe: true,

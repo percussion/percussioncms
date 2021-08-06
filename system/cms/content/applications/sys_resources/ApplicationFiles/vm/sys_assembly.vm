@@ -537,6 +537,7 @@ $__style
 #end##
 <meta property="dcterms:type" content="page"/>
 <meta property="dcterms:source" content="$tools.esc.html($!perc.template.name)"/>
+<meta property="dcterms:date" content="#perc_displayXdsDateTime('rx:sys_contentcreateddate')"/>
 <meta property="dcterms:created" content="#perc_displayXdsDateTime('rx:sys_contentpostdate')"/>
 #set( $postDateTz = $sys.item.getProperty('rx:sys_contentpostdatetz').String )##
 #if($postDateTz != "Default" && $postDateTz != "")##

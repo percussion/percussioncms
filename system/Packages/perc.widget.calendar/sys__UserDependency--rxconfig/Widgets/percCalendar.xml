@@ -245,7 +245,6 @@
                     <div class="perc-mini-calendar" id="perc-mini-calendar-$id"></div>
                     <script>
                     window.addEventListener('DOMContentLoaded', function() { 
-                        $(document).ready(function() {
                             tempDateArray = [];
                             dateWithData = [];
                             #if($perc.isEditMode() || $perc.isPreviewMode())
@@ -313,7 +312,6 @@
                                   }
                                   return [true, ''];
                             }
-                      });
                         });
                     </script>
                 #end##                
