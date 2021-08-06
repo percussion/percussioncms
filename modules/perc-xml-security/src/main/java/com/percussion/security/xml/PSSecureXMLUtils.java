@@ -26,6 +26,7 @@ package com.percussion.security.xml;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 
@@ -34,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLInputFactory;
+import java.io.StringReader;
 
 /**
  * Utility class for securing XML parses.
@@ -79,12 +81,14 @@ public class PSSecureXMLUtils {
     private static DocumentBuilderFactory enableDBFFeatures(DocumentBuilderFactory dbf, PSXmlSecurityOptions options){
         dbf.setXIncludeAware(XINCLUDE_AWARE);
         dbf.setExpandEntityReferences(EXPAND_ENTITY_REFERENCES);
+        PSXMLEntityResolverWrapper resolver = new PSXMLEntityResolverWrapper();
 
         //Set each feature logging any errors as warnings for unsupported features.
         try{
+            dbf.setAttribute("http://apache.org/xml/properties/internal/entity-resolver",resolver);
             dbf.setFeature(SECURE_PROCESSING_FEATURE,options.isEnableSecureProcessing());
         } catch (ParserConfigurationException e) {
-            log.debug(UNSUPPORTED_FEATURE_WARN,
+            log.error(UNSUPPORTED_FEATURE_WARN,
                     SECURE_PROCESSING_FEATURE);
         }
 
@@ -167,7 +171,8 @@ public class PSSecureXMLUtils {
      * @return The DocumentBuilderFactory with the secure features enabled.
      */
     public static DocumentBuilderFactory getSecuredDocumentBuilderFactory(PSXmlSecurityOptions options){
-         return enableDBFFeatures(DocumentBuilderFactory.newInstance(),options);
+
+        return enableDBFFeatures(DocumentBuilderFactory.newInstance(),options);
     }
 
     /**
@@ -331,4 +336,14 @@ public class PSSecureXMLUtils {
         return spf;
     }
 
+    /**
+     * Used to effectively block calls to external entities by the underlying parser.
+     *
+     * Should be called if local catalog resolution fails to return a result.
+     *
+     * @return A new InputSource based on an empty string reader
+     */
+    public  static InputSource getNoOpSource(){
+        return new InputSource(new StringReader(""));
+    }
 }

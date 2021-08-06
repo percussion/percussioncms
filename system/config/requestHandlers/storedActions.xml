@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE StoredActions SYSTEM "./../../DTD/sys_StoredActions.dtd">
+<!DOCTYPE StoredActions SYSTEM "sys_StoredActions.dtd">
 <StoredActions>
 	<ActionSet name="checkoutedit">
 		<!-- checks out, then edits a content item.  will not fail if item is already checked out -->

@@ -86,6 +86,12 @@
             </fileset>
         </copy>
 
+        <copy todir="${assembly-directory}">
+            <fileset dir="{basedir}/../../../system/utils/src/main/resources/">
+                <include name="PercussionXMLCatalog.xml"/>
+            </fileset>
+        </copy>
+
         <copy todir="${assembly-directory}/sys_resources">
             <fileset dir="${basedir}/../../system/cms/content/applications/sys_resources/ApplicationFiles">
             </fileset>

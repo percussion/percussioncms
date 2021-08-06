@@ -24,6 +24,7 @@
 
 package com.percussion.utils.xml;
 
+import com.percussion.security.xml.PSCatalogResolver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
@@ -55,8 +56,8 @@ public class PSEntityResolverTest {
 
     @Test
     public void testExternalEntityOutsideOfInstall() throws IOException {
-        PSEntityResolver resolver = PSEntityResolver.getInstance();
-        InputSource src = resolver.resolveEntity("-//W3C//ENTITIES_Latin_1_for_XHTML//EN","percussion:/DTD/HTMLlat1x.ent");
+        PSCatalogResolver resolver = new PSCatalogResolver();
+        InputSource src = resolver.resolveEntity("-//W3C//ENTITIES_Latin_1_for_XHTML//EN","https://www.percussion.com/DTD/HTMLlat1x.ent");
 
         assertNotNull(src);
 

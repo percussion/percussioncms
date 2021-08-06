@@ -25,17 +25,16 @@ package com.percussion.server;
 
 import com.percussion.design.objectstore.PSControlMeta;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * @author JaySeletz
@@ -96,6 +95,7 @@ public abstract class PSBaseControlManager
          fin = new FileInputStream(ctrlFile);
    
          Document doc = PSXmlDocumentBuilder.createXmlDocument(fin, false);
+
          NodeList nodes = doc.getElementsByTagName(
                PSControlMeta.XML_NODE_NAME);
          for (int i = 0; i < nodes.getLength(); i++) 

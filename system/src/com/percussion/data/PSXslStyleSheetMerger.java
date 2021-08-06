@@ -24,6 +24,7 @@
 
 package com.percussion.data;
 
+import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.util.PSStopwatch;
@@ -229,8 +230,10 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       try
       {
          transformer = ssTemplate.newTransformer();
-         //https://www.oxygenxml.com/archives/xsl-list/200305/msg01260.html
-         transformer.setURIResolver(new PSUriResolver());
+
+         PSCatalogResolver cr = new PSCatalogResolver();
+         cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+         transformer.setURIResolver(cr);
          transformer.setErrorListener( new PSTransformErrorListener() );
 
          // add any params supplied

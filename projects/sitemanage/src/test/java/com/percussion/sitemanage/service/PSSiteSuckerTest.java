@@ -184,6 +184,7 @@ public class PSSiteSuckerTest extends PSServletTestCase
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(ENTRIES_XML_FILE));
          

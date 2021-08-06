@@ -27,7 +27,7 @@ if (is_firefox || is_safari)
 {
    var pssessionScript = document.createElement('script');
    pssessionScript.type = 'text/javascript';
-   pssessionScript.src = '/Rhythmyx/util/getPSSessionID.jsp';
+   pssessionScript.src = '/util/getPSSessionID.jsp';
    document.getElementsByTagName('head')[0].appendChild(pssessionScript);
 }
 

@@ -24,10 +24,10 @@
 package com.percussion.xml;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.tools.IPSUtilsConstants;
-import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
 import org.apache.logging.log4j.LogManager;
@@ -221,9 +221,9 @@ public class PSXmlDocumentBuilder {
                                 true,
                                 true,
                                 true,
-                                false,
                                 true,
-                                false
+                                true,
+                                validating
                         ));
             }
         } catch (FactoryConfigurationError err) {
@@ -311,7 +311,10 @@ public class PSXmlDocumentBuilder {
                 DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
 
                 db = dbf.newDocumentBuilder();
-                db.setEntityResolver(PSEntityResolver.getInstance());
+
+                PSCatalogResolver resolver  = new PSCatalogResolver();
+
+                db.setEntityResolver(resolver);
                 returnDocumentBuilderFactory(dbf);
             }
 
@@ -462,9 +465,11 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException("errHandler may not be null");
         }
 
+        PSCatalogResolver resolver = new PSCatalogResolver();
+
         DocumentBuilder db = getDocumentBuilder(validate);
         db.setErrorHandler(errHandler);
-
+        db.setEntityResolver(resolver);
         Document doc = db.parse(in);
         returnDocumentBuilder(db);
 

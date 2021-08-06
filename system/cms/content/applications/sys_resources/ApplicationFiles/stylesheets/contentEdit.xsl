@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "percussion:/DTD/HTMLlat1x.ent">
+		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "percussion:/DTD/HTMLsymbolx.ent">
+		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "percussion:/DTD/HTMLspecialx.ent">
+		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
 		]>
 <!-- $ Id: $ -->
@@ -19,7 +19,7 @@
 	<xsl:variable name="systemLibraryDoc" select="document($systemLibrary)"/>
 	<xsl:variable name="userLibrary" select="'file:rx_resources/stylesheets/rx_Templates.xsl'"/>
 	<xsl:variable name="userLibraryDoc" select="document($userLibrary)"/>
-	<xsl:variable name="customControlImportsDoc" select="document('../sys_resources/stylesheets/customControlImports.xsl')"/>
+	<xsl:variable name="customControlImportsDoc" select="document('file:rx_resources/stylesheets/customControlImports.xsl')"/>
 	<xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
 	<xsl:template match="/">
 		<xsl:apply-templates select="ContentEditor"/>

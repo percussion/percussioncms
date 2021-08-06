@@ -706,12 +706,7 @@
       <dependency>
           <groupId>com.percussion</groupId>
           <artifactId>perc-exceptions-spring</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>com.percussion</groupId>
-          <artifactId>perc-exceptions-spring</artifactId>
           <version>${project.parent.version}</version>
-          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>com.github.javafaker</groupId>
@@ -734,6 +729,10 @@
           <groupId>org.owasp</groupId>
           <artifactId>csrfguard-jsp-tags</artifactId>
       </dependency>
-
+      <dependency>
+          <groupId>xml-resolver</groupId>
+          <artifactId>xml-resolver</artifactId>
+          <version>1.2</version>
+      </dependency>
   </dependencies>
 </project>
