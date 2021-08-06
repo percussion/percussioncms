@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -22,10 +22,9 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-package com.percussion.delivery.integrations.ems;
+package com.percussion.delivery.spring;
 
-import org.apache.catalina.users.MemoryRole;
-import org.apache.catalina.users.MemoryUser;
+import org.apache.catalina.realm.GenericPrincipal;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,9 +32,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class PSPreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedProcessingFilter  {
@@ -47,7 +44,7 @@ public class PSPreAuthenticatedProcessingFilter extends AbstractPreAuthenticated
 
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        return "ANONYMOUS";
+            return "ANONYMOUS";
     }
 
     @Override
@@ -60,21 +57,21 @@ public class PSPreAuthenticatedProcessingFilter extends AbstractPreAuthenticated
         @Override
         public PreAuthenticatedAuthenticationToken buildDetails(HttpServletRequest request) {
             // create container for pre-auth data
-            Principal principal = request.getUserPrincipal();
-            if(principal == null || !principal.getClass().isAssignableFrom( MemoryUser.class)) {
+            GenericPrincipal principal = (GenericPrincipal)request.getUserPrincipal();
+            if(principal == null ) {
                 return new PreAuthenticatedAuthenticationToken("ANONYMOUS","N/A");
             }else{
-                MemoryUser memoryUser = (MemoryUser) principal;
                 List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-                Iterator roles = memoryUser.getRoles();
-                while (roles.hasNext()){
-                    MemoryRole role = (MemoryRole) roles.next();
-                    String roleName = "ROLE_" + role.getName();
-                    grantedAuthorities.add(new SimpleGrantedAuthority(roleName));
+                String[] roles = principal.getRoles();
+                for (String role: roles){
+                    grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
                 }
-                return new PreAuthenticatedAuthenticationToken(memoryUser.getName(),memoryUser.getPassword(),grantedAuthorities);
+                String password = principal.getPassword();
+                if(password == null)
+                    password = "NO_PASSWORD";
+                return new PreAuthenticatedAuthenticationToken(principal.getName(),password,grantedAuthorities);
             }
         }
     }
 
-}
+    }

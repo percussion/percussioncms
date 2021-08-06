@@ -35,18 +35,30 @@
 
     <security:http pattern="/favicon.ico" security='none' />
     <security:http  create-session="stateless" use-expressions="true" auto-config="true">
-        <security:csrf disabled="true"/>
+        <security:csrf disabled="${disableCSRFProtection}" token-repository-ref="tokenRepository" request-matcher-ref="requestMatcher" />
         <security:intercept-url pattern="/**" access="isAuthenticated()" />
 
         <security:custom-filter position="PRE_AUTH_FILTER"
                                 ref="myPreAuthenticationFilter" />
-        <security:headers >
-            <security:content-security-policy policy-directives="${ContentSecurityPolicy}" />
-            <security:cache-control disabled="true" />
+        <security:headers defaults-disabled="true" >
+            <!-- <security:referrer-policy policy="${referrerPolicy}" /> -->
+            <security:content-type-options />
+            <security:hsts
+                    include-subdomains="${hstsIncludeSubDomains}"
+                    max-age-seconds="${hstsMaxAgeSeconds}" />
+            <security:frame-options policy="${xframeOptionsPolicy}" />
+            <security:content-security-policy policy-directives="${contentSecurityPolicy}" report-only="${cspReportOnly}"/>
+            <security:xss-protection block="${xssProtection}"/>
         </security:headers>
         <security:cors configuration-source-ref="corsSource" />
         <security:http-basic/>
     </security:http>
+
+    <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
+        <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
+        <beans:constructor-arg value="/indexer/entry/,/metadata/clean/,/metadata/consent/log,/metadata/delete,/metadata/updateOldSiteEntries/,/indexer/"/>
+        <beans:constructor-arg value="true"/>
+    </beans:bean>
 
     <beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
         <beans:property name="corsConfigurations">
@@ -71,12 +83,13 @@
                                 <beans:value>GET</beans:value>
                                 <beans:value>PUT</beans:value>
                                 <beans:value>DELETE</beans:value>
+                                <beans:value>HEAD</beans:value>
                                 <beans:value>OPTIONS</beans:value>
                             </beans:list>
                         </beans:property>
                         <beans:property name="allowedOrigins">
                             <beans:bean class="org.springframework.util.StringUtils" factory-method="commaDelimitedListToSet">
-                                <beans:constructor-arg type="java.lang.String" value="${Access-Control-Allow-Origin}"/>
+                                <beans:constructor-arg type="java.lang.String" value="${accessControlAllowedOrigins}"/>
                             </beans:bean>
                         </beans:property>
                         <beans:property name="exposedHeaders">
@@ -91,7 +104,7 @@
     </beans:bean>
 
     <beans:bean id="myPreAuthenticationFilter"
-                class="com.percussion.delivery.metadata.PSPreAuthenticatedProcessingFilter">
+                class="com.percussion.delivery.spring.PSPreAuthenticatedProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
 
@@ -99,9 +112,13 @@
         <security:authentication-provider ref="preauthAuthProvider" />
     </security:authentication-manager>
 
+    <beans:bean id="tokenRepository"
+                class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"
+    />
+
     <beans:bean id="preauthAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
         <beans:property name="preAuthenticatedUserDetailsService">
-            <beans:bean class="com.percussion.delivery.metadata.CustomAuthenticationProvider" />
+            <beans:bean class="com.percussion.delivery.spring.CustomAuthenticationProvider" />
         </beans:property>
     </beans:bean>
 
