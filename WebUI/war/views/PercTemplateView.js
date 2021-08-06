@@ -284,8 +284,8 @@
             //Used a random dummy parameter to avoid cache
             dialogMarkup.append(
                 $('<img height="0px" width="0px" src="//help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
-                    .error(handleUnreachableURL)
-                    .load(showVideoIframe)
+                    .on("error", handleUnreachableURL)
+                    .on("load", showVideoIframe)
             )
 
             var dialogButtons = {
