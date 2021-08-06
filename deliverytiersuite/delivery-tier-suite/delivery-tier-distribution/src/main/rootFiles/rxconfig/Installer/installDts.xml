@@ -317,6 +317,15 @@
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching.war" />
             <delete failonerror="false" file="${install.dir}${staging.dir}/Deployment/Server/webapps/perc-caching" />
 
+            <mkdir dir="${install.dir}${staging.dir}/Deployment/Server/conf/perc/"/>
+            <if>
+                <not>
+                    <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties"/>
+                </not>
+                <then>
+                    <touch file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties" verbose="true"/>
+                </then>
+            </if>
             <propertyfile file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties">
                 <entry key="encryption.type" default="ENC" />
                 <entry key="contentSecurityPolicy" default="default-src 'self' *;" />
