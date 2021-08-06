@@ -136,7 +136,11 @@
             var eWidth = element.width();
             var eHeight = element.height();
 
-            var data = JSON.parse(element.attr("data"));
+            var data;
+
+            if(typeof(element.attr("data"))!=="undefined"){
+                data = JSON.parse(element.attr("data"));
+            }
 
             // dont bother with empty data
             if (data === undefined || data === "" || data === null)
