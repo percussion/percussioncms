@@ -145,6 +145,11 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             log.error("Illegal argument passed. MetadataQuery cannot be null.");
             return searchResults;
         }
+        //Check FOR CMS-6530 Vulnerability ISSUE
+        if(metadataQuery.getOrderBy() != null && metadataQuery.getOrderBy().toUpperCase().contains(" OR ")){
+            log.error("Blind SQL Injection Vulnerability found.");
+            return searchResults;
+        }
         if(log.isDebugEnabled()){
             log.debug("Metadata query criteria in the service is : {}", metadataQuery.getCriteria());
         }
