@@ -138,7 +138,6 @@
 .sf-menu li.sfHover ul
 {
     left: 0;
-    top: 3.5em;
     z-index: 99;
 }
 
