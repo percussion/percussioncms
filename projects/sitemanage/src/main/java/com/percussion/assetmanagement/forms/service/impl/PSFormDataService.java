@@ -142,7 +142,7 @@ public class PSFormDataService implements IPSFormDataService
 
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             JSONObject getJson = new JSONObject();
-            getJson = deliveryClient.getJsonObject(new PSDeliveryActionOptions(server, FORM_INFO_URL,
+            getJson = deliveryClient.getJsonObject(new PSDeliveryActionOptions(server, FORM_INFO_URL + "/list",
                     HttpMethodType.GET, true));
             JSONArray formInfo = (JSONArray) getJson.get("formsInfo");
 
@@ -359,7 +359,7 @@ public class PSFormDataService implements IPSFormDataService
      * Url to get form information. Contains leading forward slash, but no
      * trailing forward slash.
      */
-    private static final String FORM_INFO_URL = "/perc-form-processor/form/";
+    private static final String FORM_INFO_URL = "/perc-form-processor/forms/form";
 
     /**
      * Logger for this service.

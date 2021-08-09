@@ -86,7 +86,7 @@ import java.util.Map.Entry;
  * @author leonardohildt
  *
  */
-@Path("/form")
+@Path("/forms")
 @Component
 public class PSFormRestService extends PSAbstractRestService implements IPSFormRestService
 {
@@ -160,7 +160,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @DELETE
-    @Path("/{formName}")
+    @Path("/form/{formName}")
     public void delete(@PathParam("formName") String formName)
     {
         try
@@ -179,15 +179,15 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      * @see com.percussion.delivery.forms.impl.IPSFormRestService#create(javax.ws.rs.core.MultivaluedMap, java.lang.String, javax.ws.rs.core.HttpHeaders, javax.servlet.http.HttpServletResponse)
      */
     @Override
+    @Path("/form/collect")
     @POST
     @Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
     public void create(@Context ContainerRequest containerRequest, @FormParam("action") String action,
                        @Context HttpHeaders header, @Context HttpServletRequest httpServletRequest, @Context HttpServletResponse resp) throws WebApplicationException, IOException
     {
 
-        if(log.isDebugEnabled()){
-            log.debug("Http Header in the service is : {}", header.getRequestHeaders());
-        }
+
+        log.debug("Http Header in the service is : {}", header.getRequestHeaders());
 
         Map<String, String[]> formFields = new HashMap<>();
         Map<String, String[]> percFields = new HashMap<>();
@@ -544,7 +544,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
-    @Path("/{formName}")
+    @Path("/form/{formName}")
     @Produces(
             {MediaType.APPLICATION_JSON})
     public PSFormSummaries get(@PathParam("formName") String formName)
@@ -593,6 +593,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
+    @Path("/form/list")
     @Produces(
             {MediaType.APPLICATION_JSON})
     public PSFormSummaries get()
@@ -629,7 +630,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
-    @Path("/{formName}/{csvFile}")
+    @Path("/form/{formName}/{csvFile}")
     @Produces(
             {"text/csv"})
     public Response export(@PathParam("formName") String formName, @PathParam("csvFile") String csvFile)

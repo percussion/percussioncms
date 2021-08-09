@@ -84,7 +84,7 @@
                         attr("value", getLocation(location.href))
                     );
 
-                    let csrfToken = $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/form/csrf"));
+                    let csrfToken = $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/forms/csrf"));
 
                     if(typeof csrfToken !== "undefined" && csrfToken != null) {
                         //Add csrf token if available

@@ -119,11 +119,301 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
     <system systemId="sys_PSLargeApplicationRequestQueueError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_PSLargeApplicationRequestQueueError.dtd" />
     <system systemId="sys_defaultError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_defaultError.dtd" />
 
+    <!-- System XSL Stylesheets -->
+
     <uri name="file:sys_resources/stylesheets/sys_I18nUtils.xsl" uri="file:///@@rxdir@@/sys_resources/stylesheets/sys_I18nUtils.xsl"/>
     <uri name="file:sys_resources/stylesheets/sys_Templates.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/sys_Templates.xsl" />
     <uri name="file:sys_resources/stylesheets/customControlImports.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/customControlImports.xsl"/>
     <uri name="file:rx_resources/stylesheets/rx_Templates.xsl" uri="file://@@rxdir@@/rx_resources/stylesheets/rx_Templates.xsl"/>
     <uri name="file:sys_resources/stylesheets/ActionList.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/ActionList.xsl"/>
+    
+    <rewriteURI
+            uriStartString="file:sys_resources/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_resources/" />
 
+    <rewriteURI
+            uriStartString="file:rx_resources/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/rx_resources/" />
+
+    <rewriteURI
+            uriStartString="file:sys_wfEditor/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_wfEditor/" />
+
+    <rewriteURI
+            uriStartString="file:sys_wfEditorDelete/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_wfEditorDelete/" />
+
+    <rewriteURI
+            uriStartString="file:sys_wfLookups/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_wfLookups/" />
+
+    <rewriteURI
+            uriStartString="file:sys_wfPreviewWorkflow/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_wfPreviewWorkflow/" />
+
+    <rewriteURI
+            uriStartString="file:sys_wfCloning/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_wfCloning/" />
+
+    <rewriteURI
+            uriStartString="file:sys_welcome/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_welcome/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpHelp/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpHelp/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpWfLeftnav/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpWfLeftnav/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cx/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cx/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ActionPage/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ActionPage/" />
+
+    <rewriteURI
+            uriStartString="file:sys_actionTranslate/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_actionTranslate/" />
+
+    <rewriteURI
+            uriStartString="file:sys_adminCataloger/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_adminCataloger/" />
+
+    <rewriteURI
+            uriStartString="file:sys_AutoTranslation/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_AutoTranslation/" />
+
+    <rewriteURI
+            uriStartString="file:sys_casSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_casSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ceDependency/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ceDependency/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ceInlineSearch/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ceInlineSearch/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ceInlineSearchWep/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ceInlineSearchWep/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ceSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ceSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_clientSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_clientSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpCaLeftnav/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpCaLeftnav/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpCaSavedSearches/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpCaSavedSearches/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpCaSaveSearch/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpCaSaveSearch/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpCaSearchBox/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpCaSearchBox/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpCommunities/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpCommunities/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpComponents/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpComponents/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpComponentSearchBox/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpComponentSearchBox/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpMenuViews/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpMenuViews/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpRxAdmin/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpRxAdmin/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpSysLeftnav/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpSysLeftnav/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpSysMenuVariants/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpSysMenuVariants/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpUserCommunity/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpUserCommunity/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cmpWfLeftnav/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cmpWfLeftnav/" />
+
+    <rewriteURI
+            uriStartString="file:sys_commCloning/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_commCloning/" />
+
+    <rewriteURI
+            uriStartString="file:sys_commSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_commSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_Compare/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_Compare/" />
+
+    <rewriteURI
+            uriStartString="file:sys_components/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_components/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ComponentSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ComponentSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ContentTypes/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ContentTypes/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cxDependencyTree/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cxDependencyTree/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cxItemAssembly/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cxItemAssembly/" />
+
+    <rewriteURI
+            uriStartString="file:sys_cxSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_cxSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_DisplayFormats/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_DisplayFormats/" />
+
+    <rewriteURI
+            uriStartString="file:sys_i18nSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_i18nSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_Keywords/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_Keywords/" />
+
+    <rewriteURI
+            uriStartString="file:sys_MultiServerManager/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_MultiServerManager/" />
+
+    <rewriteURI
+            uriStartString="file:sys_PortalSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_PortalSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxAnonymousCataloger/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxAnonymousCataloger/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxCataloger/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxCataloger/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxCms/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxCms/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxContentEditorCataloger/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxContentEditorCataloger/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxFTSearchSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxFTSearchSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxInternalSearches/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxInternalSearches/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxObjectSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxObjectSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxRelationshipSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxRelationshipSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxWebServices/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxWebServices/" />
+
+    <rewriteURI
+            uriStartString="file:sys_psxWorkflowCataloger/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_psxWorkflowCataloger/" />
+
+    <rewriteURI
+            uriStartString="file:sys_rcSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_rcSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_relatedSearch/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_relatedSearch/" />
+
+    <rewriteURI
+            uriStartString="file:sys_reports/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_reports/" />
+
+    <rewriteURI
+            uriStartString="file:sys_roleCataloger/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_roleCataloger/" />
+
+    <rewriteURI
+            uriStartString="file:sys_searchSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_searchSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_ServerUserRoleSearch/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_ServerUserRoleSearch/" />
+
+    <rewriteURI
+            uriStartString="file:sys_Slots/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_Slots/" />
+
+    <rewriteURI
+            uriStartString="file:sys_trFieldOverride/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_trFieldOverride/" />
+
+    <rewriteURI
+            uriStartString="file:sys_uiSupport/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_uiSupport/" />
+
+    <rewriteURI
+            uriStartString="file:sys_Variants/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_Variants/" />
+
+    <rewriteURI
+            uriStartString="file:sys_variantsCloning/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_variantsCloning/" />
+
+    <rewriteURI
+            uriStartString="file:sys_welcome/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_welcome/" />
+
+    <rewriteURI
+            uriStartString="file:sys_wfCloning/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_wfCloning/" />
+
+
+    <rewriteURI
+            uriStartString="file:sys_wfLookups/"
+            rewritePrefix="file://@@rxdir@@/cmsdev-august/sys_wfLookups/" />
 
 </catalog>
