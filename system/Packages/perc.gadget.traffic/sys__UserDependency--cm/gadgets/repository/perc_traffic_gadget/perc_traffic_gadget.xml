@@ -23,7 +23,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 <Module>
-  <ModulePrefs title="Traffic" category="analytics" description="This gadget provides Traffic and Activity graphs." thumbnail="images/gadgetIconTraffic.png" height="320">
+  <ModulePrefs title="Traffic" category="analytics" description="This gadget provides Traffic and Activity graphs." thumbnail="images/gadgetIconTraffic.png" height="350">
        <Require feature="perc_core"/>
        <Require feature="settitle" />
        <Require feature="perc_getDashboardColumn" />
@@ -151,7 +151,7 @@
         }
 
         #chart1 { margin-left : 7px; }
-        #chart2 { position : absolute; left : 1500; width : 200; height : 200}
+        #chart2 { margin-top : 7px;position : absolute; left : 1500; width : 200; height : 200}
 
         body { overflow : hidden }
         
@@ -266,7 +266,6 @@
         <div id="perc-label-left">Visits</div>
     </div>
     <div id="chart1"></div>
-    <div id="chart2"></div>
     <div id="perc-traffic-show-hide-details" style="display : none">
         Show details
     </div>
@@ -285,7 +284,8 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div>
+    <div id="chart2" style="margin-top: 4em;"></div>
      ]]>
   </Content> 
 </Module>

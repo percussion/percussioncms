@@ -14,6 +14,8 @@
     import="com.percussion.services.utils.jspel.*"
     import="com.percussion.i18n.PSI18nUtils"
     %>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 	<%
@@ -116,6 +118,30 @@ Parameters
                   out.println("\nQuery is " + qry.trim());
                }
                long before = System.currentTimeMillis();
+               //Checking for SQL Injection and return nothing incase found
+                String sqlStmtTest  = qry;
+               Pattern p = Pattern.compile("(.*?)" + "=" + "(.*)");
+               while (sqlStmtTest != null) {
+                  Matcher m = p.matcher(sqlStmtTest);
+                  if (m.matches()) {
+                     String firstSubString = m.group(1).trim();
+                     String firstWord = firstSubString.substring(firstSubString.lastIndexOf(" ") + 1);// may be empty
+                     String secondSubString = m.group(2).trim();
+                     String secondWord = secondSubString;
+                     int i = secondSubString.indexOf(' ');
+                     if (i != -1) {
+                        secondWord = secondSubString.substring(0, i);
+                     }
+                     // e.g 1 = 1 if found then return else check in rest string
+                     if (firstWord != null && firstWord.trim().equals(secondWord)) {
+                        return;
+                     } else {
+                        sqlStmtTest = secondSubString.trim();
+                     }
+                  } else {
+                     break;
+                  }
+               }
                Query query = mgr.createQuery(qry, Query.SQL);
                QueryResult qresults = mgr.executeQuery(query, -1, pmap);
                long after = System.currentTimeMillis();

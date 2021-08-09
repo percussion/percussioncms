@@ -432,7 +432,7 @@ public interface IPSConstants
     * \ / | < > ? " : *
     * </pre> 
     */
-   public static String INVALID_WINDOWS_FILE_CHARACTERS = "\\/|<>?\":*";
+   public static String INVALID_WINDOWS_FILE_CHARACTERS = "\\/|<>()?\":*";
    
    /**
     * Characters that should not be used as part of URL; otherwise it may cause

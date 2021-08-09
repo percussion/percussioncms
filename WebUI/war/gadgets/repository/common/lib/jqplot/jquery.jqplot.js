@@ -314,7 +314,7 @@
             else {
                 var canvas = $.jqplot.CanvasManager.canvases[idx];
                 canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-                $(canvas).unbind().removeAttr('class').removeAttr('style');
+                $(canvas).removeAttr('class').removeAttr('style');
                 // Style attributes seemed to be still hanging around.  wierd.  Some ticks
                 // still retained a left: 0px attribute after reusing a canvas.
                 $(canvas).css({left: '', top: '', position: ''});
@@ -2822,7 +2822,7 @@
         this.destroy = function() {
             this.canvasManager.freeAllCanvases();
             if (this.eventCanvas && this.eventCanvas._elem) {
-                this.eventCanvas._elem.unbind();
+               // this.eventCanvas._elem.unbind();
             }
             // Couple of posts on Stack Overflow indicate that empty() doesn't
             // always cear up the dom and release memory.  Sometimes setting
@@ -2891,7 +2891,7 @@
             this.target.trigger('jqplotPreRedraw');
             if (clear) {
                 this.canvasManager.freeAllCanvases();
-                this.eventCanvas._elem.unbind();
+                // this.eventCanvas._elem.unbind();
                 // Dont think I bind any events to the target, this shouldn't be necessary.
                 // It will remove user's events.
                 // this.target.unbind();

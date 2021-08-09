@@ -291,12 +291,12 @@
     ##result query ends
     ]]>
     </Code>
-    <Content type="velocity">
+  <Content type="velocity">
     <![CDATA[#if ($perc.isEditMode())##
         #createEmptyWidgetContent("most-read-sample-content", "This most read blog post widget is showing sample content.")##
-    #elseif ( ! $perc.isPreviewMode())##
+    #elseif ( ! $perc.isEditMode())##
         <div class="$!{rootclass} perc-most-read-blog-posts-view" data-query="$!{data}"$!{ariaLabel}$!{ariaRole}></div>
     #end##
     ]]>
-    </Content>
+  </Content>
 </Widget>
