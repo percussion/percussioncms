@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	      http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
+         version="3.0">
       
 	 <!-- Specify Application Context with perc-context.properties -->
        <context-param>
@@ -55,8 +55,12 @@
     <security-constraint>
       <web-resource-collection>
          <web-resource-name>NoSecure</web-resource-name>
-         <url-pattern>/form/*</url-pattern>
+         <url-pattern>/forms/collect/*</url-pattern>
       </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>NoSecure</web-resource-name>
+            <url-pattern>/forms/csrf</url-pattern>
+        </web-resource-collection>
       <user-data-constraint>
          <transport-guarantee>NONE</transport-guarantee>
       </user-data-constraint>
@@ -64,7 +68,7 @@
     <security-constraint>
       <web-resource-collection>
          <web-resource-name>Secure</web-resource-name>
-         <url-pattern>/form/*</url-pattern>
+         <url-pattern>/forms/form/*</url-pattern>
          <http-method>GET</http-method>
          <http-method>DELETE</http-method>
       </web-resource-collection>
@@ -89,7 +93,7 @@
    </security-constraint>
    <login-config>
       <auth-method>BASIC</auth-method>
-      <realm-name>form</realm-name>
+      <realm-name>forms</realm-name>
    </login-config>
    <security-role>
       <role-name>deliverymanager</role-name>

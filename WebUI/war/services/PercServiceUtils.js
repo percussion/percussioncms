@@ -65,7 +65,7 @@
 
     var CSRF_PARAM_HEADER="X-CSRF-PARAM";
     var CSRF_METADATA_PATH="/perc-metadata-services/metadata/csrf";
-    var CSRF_FORMS_PATH="/perc-form-processor/form/csrf";
+    var CSRF_FORMS_PATH="/perc-form-processor/forms/csrf";
     var CSRF_POLLS_PATH="/perc-polls-services/polls/csrf";
     var CSRF_INTEGRATION_PATH="/perc-integrations/integrations/csrf";
     var CSRF_COMMENTS_PATH="/perc-comments-services/comment/csrf";

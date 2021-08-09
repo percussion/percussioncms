@@ -734,5 +734,11 @@
           <artifactId>xml-resolver</artifactId>
           <version>1.2</version>
       </dependency>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-exceptions-spring</artifactId>
+          <version>8.0.3-SNAPSHOT</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 </project>
