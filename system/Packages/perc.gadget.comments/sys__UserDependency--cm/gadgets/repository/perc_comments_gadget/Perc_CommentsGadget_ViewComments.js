@@ -44,15 +44,21 @@
             append(
                 $('<div />').
                 attr('id', 'perc-gadget-comments-viewComments-articleSummary').
-                append($('<div />').
-                    append(article.title).
-                    text()
+                append(
+                    $('<span />').
+                    text(
+                        $('<div />').
+                        append(article.title).
+                        text()
+                    )
+                ).append(
+                    $('<span />').
+                    text(
+                        $('<div />').
+                        append(article.summary).
+                        text()
+                    )
                 )
-            ).append(
-                $('<div />').
-                append(article.summary).
-                text()
-
             ).append(
                 $('<div />').
                 attr('id', 'perc-gadget-comments-viewComments-numComments').
@@ -61,8 +67,17 @@
 
             var allModeration = newRejectApproveAllActions();
 
-            var row = { rowContent: [[{content: articleDesc.prop("outerHTML") }],
-                                     [{content: allModeration.prop("outerHTML") }]]};
+            var row =
+                {
+                    rowContent: [
+                        [
+                            {content: articleDesc.prop("outerHTML") }
+                        ],
+                        [
+                            {content: allModeration.prop("outerHTML") }
+                        ]
+                    ]
+                };
 
             percData.push(row);
 
@@ -94,8 +109,7 @@
                 var commentId = commentData.id;
                 var rejectApproveActions = newRejectApproveActions(commentData.approvalState, commentId, site);
 
-                var row = {rowContent: [[ {content: commentAggregate.prop("outerHTML")}],
-                                        [ {content: rejectApproveActions.prop("outerHTML")} ]] };
+                var row = {rowContent: [[ {content: commentAggregate.prop("outerHTML")}], [ {content: rejectApproveActions.prop("outerHTML")} ]] };
 
                 percData.push(row);
             });
@@ -114,17 +128,25 @@
                 iDisplayLength : itemsPerPage,
                 aoColumns: dataTypeCols,
                 percHeaderClasses : ["perc-datatable-cell-string perc-gadget-comments-viewComments-comment", "perc-datatable-cell-string perc-gadget-comments-viewComments-action"],
-                percHeaders : ["Title", "Action"],
+                percHeaders : ["<span>Title</span>", "<span>Action</span>"],
                 percData : percData,
                 oLanguage: {"sZeroRecords": "No Comments Found", "sInfo" : "Showing _START_ to _END_ of _TOTAL_ total results", "sInfoEmpty" : "No results found"},
-                percColumnWidths : [["82%", "18%"],["82%", "18%"]],
+                percColumnWidths : [["82%", "18%"]],
                 aaSorting : [],
                 singlePage: true
             };
 
             statusTable.PercDataTable(tableConfig);
 
+            console.log(statusTable);
 
+            statusTable.on("click", 'div.perc-gadget-comments-rejectAction-all', rejectAll);
+            statusTable.on("click", 'div.perc-gadget-comments-approveAction-all', approveAll);
+            statusTable.on("click", 'div.perc-gadget-comments-deleteAction-all', deleteAll);
+
+            statusTable.on("click", 'div.perc-gadget-comments-rejectAction', reject);
+            statusTable.on("click", 'div.perc-gadget-comments-approveAction', approve);
+            statusTable.on("click", 'div.perc-gadget-comments-deleteAction', deleteComment);
 
             // if the last row does not fill the bottom of the dialog
             // expand the height of the last row to the bottom of the dialog
@@ -158,16 +180,7 @@
             .append(approvalActionAllLabel)
             .addClass("perc-gadget-comments-default-all");
 
-        approvalActionRejectAction.on("click",rejectAll);
-        approvalActionApproveAction.on("click",approveAll);
         approvalActionDeleteAction.on("click", deleteAll);
-
-        /*var actions = [{content: approvalActionMenu.prop("outerHTML")},
-                        {content: approvalActionRejectAction.prop("outerHTML"), callback: rejectAll},
-                        {content: approvalActionApproveAction.prop("outerHTML"), callback: approveAll},
-                        {content: approvalActionDeleteAction.prop("outerHTML"), callback: deleteAll},
-                        {content: approvalActionAllLabel.prop("outerHTML")}
-                    ];*/
 
         return approvalActionMenu;
     }
@@ -237,10 +250,6 @@
             .addClass(approvalStateClass)
             .attr("currentState",  approvalState)
             .attr("originalState", approvalState);
-
-        approvalActionRejectAction.on("click",reject);
-        approvalActionApproveAction.on("click", approve);
-        approvalActionDeleteAction.on("click",deleteComment);
 
         return approvalActionMenu;
     }
