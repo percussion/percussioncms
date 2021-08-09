@@ -206,7 +206,7 @@ return this.each(function() {
         if(tree[0].children.length > 0){
             displayTree(tree);
         }else{
-            $("#page_categories_tree-tree").html("No Category exists!!").css({"text-align" : "center", "font-size" : "large"});
+            $("#page_categories_tree-tree").html("").css({"text-align" : "center", "font-size" : "large"});
         }
     });
 
