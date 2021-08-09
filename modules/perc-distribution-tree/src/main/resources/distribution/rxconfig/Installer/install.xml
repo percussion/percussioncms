@@ -761,6 +761,10 @@
         <copy todir="${install.dir}/rxconfig/trusted_certificates/" overwrite="false" failonerror="false" flatten="true">
             <fileset dir="${install.dir}/AppServer" casesensitive="false">
                 <include name="**/*.cert"/>
+                <include name="**/*.cer"/>
+                <include name="**/*.crt"/>
+                <include name="**/*.pem"/>
+                <include name="**/*.key"/>
                 <type type="file"/>
             </fileset>
         </copy>
