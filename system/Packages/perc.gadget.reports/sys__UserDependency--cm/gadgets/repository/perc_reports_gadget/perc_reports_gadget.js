@@ -67,7 +67,7 @@ function constructPath(endpoint) {
 }
 
 function requestReport(path) {
-    PercServiceUtils.makeRequest(path, 'GET', true, requestReportCallback);
+    PercServiceUtils.makeRequest(path, 'GET', false, requestReportCallback);
 }
 
 function requestReportCallback(status, result) {
