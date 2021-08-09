@@ -9,6 +9,8 @@
          import="org.owasp.encoder.Encode"
          import="com.percussion.server.PSServer"
 %>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
@@ -184,7 +186,32 @@ InitialContext ctx;
 
     if (request.getParameter("dbquery").toLowerCase().startsWith("select "))		// If we are querying...
     {
-    rs= stmt.executeQuery(request.getParameter("dbquery"));							// Run the query, build a table. (SEE LINES 72 to EOF)
+        String sqlStmt = request.getParameter("dbquery");
+        String sqlStmtTest  = sqlStmt;
+        //Checking for SQL Injection and return nothing incase found
+        Pattern p = Pattern.compile("(.*?)" + "=" + "(.*)");
+        while (sqlStmtTest != null) {
+            Matcher m = p.matcher(sqlStmtTest);
+            if (m.matches()) {
+                String firstSubString = m.group(1).trim();
+                String firstWord = firstSubString.substring(firstSubString.lastIndexOf(" ") + 1);// may be empty
+                String secondSubString = m.group(2).trim();
+                String secondWord = secondSubString;
+                int i = secondSubString.indexOf(' ');
+                if (i != -1) {
+                    secondWord = secondSubString.substring(0, i);
+                }
+                // e.g 1 = 1 if found then return else check in rest string
+                if (firstWord != null && firstWord.trim().equals(secondWord)) {
+                    return;
+                } else {
+                    sqlStmtTest = secondSubString.trim();
+                }
+            } else {
+                break;
+            }
+        }
+        rs= stmt.executeQuery(sqlStmt);							// Run the query, build a table. (SEE LINES 72 to EOF)
     }
     else
     {
