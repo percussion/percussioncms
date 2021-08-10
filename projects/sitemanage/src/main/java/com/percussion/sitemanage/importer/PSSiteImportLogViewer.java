@@ -112,7 +112,7 @@ public class PSSiteImportLogViewer extends HttpServlet  {
             }
 
             if (logs == null || logs.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't find import log");
+                response.sendError(HttpServletResponse.SC_NO_CONTENT, "Couldn't find import log");
                 return;
             }
 
