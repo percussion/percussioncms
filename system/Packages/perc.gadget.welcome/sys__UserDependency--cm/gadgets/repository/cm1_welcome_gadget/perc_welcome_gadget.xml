@@ -59,12 +59,12 @@
 	   <script src="/cm/gadgets/repository/cm1_welcome_gadget/PercWelcomeGadget.js"></script>
 
 	   <div class="perc-gadget perc-welcome-gadget">
-          <a href="https://www.percussion.com/products/cm1/overview" target="_blank" rel="noopener noreferrer"><img src="/cm/gadgets/repository/cm1_welcome_gadget/Welcome-Image.jpg" role="img" aria-label="Percussion Logo" style="border: none"/></a><br/>
+          <a href="https://www.percussion.com/products/cm1/overview" target="_blank" rel="noopener noreferrer" title="Product Overview"><img src="/cm/gadgets/repository/cm1_welcome_gadget/Welcome-Image.jpg" role="img" aria-label="Percussion Logo" style="border: none"/></a><br/>
           <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
-          <a class="perc-gadget-welcome-link" href="https://help.percussion.com" target="_blank" rel="noopener noreferrer">Documentation</a><br/>
+          <a class="perc-gadget-welcome-link" href="https://help.percussion.com" target="_blank" rel="noopener noreferrer" title="Documentation">Documentation</a><br/>
           <span class="perc-gadget-welcome-link-desc">All the basics on creating and maintaining your website(s) with Percussion CMS.</span><br/>
           <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
-          <a class="perc-gadget-welcome-link" href="https://community.percussion.com" target="_blank" rel="noopener noreferrer">Percussion Community</a><br/>
+          <a class="perc-gadget-welcome-link" href="https://community.percussion.com" target="_blank" rel="noopener noreferrer" title="Percussion Community">Percussion Community</a><br/>
           <span class="perc-gadget-welcome-link-desc">Ask questions and discuss ideas with fellow Percussion CMS users.</span><br/>
           <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
 		  <div id="perc-bookmark-container">
