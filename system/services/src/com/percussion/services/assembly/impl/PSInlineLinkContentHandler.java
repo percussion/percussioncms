@@ -748,9 +748,12 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
             String newHref = link.getLink(target);
             if (StringUtils.isNotBlank(newHref)) {
                if(link.href != null) {
-                  String anchor = link.href.substring(link.href.lastIndexOf("#") + 1);
-                  if (anchor != null && anchor.trim() != "") {
-                     newHref = newHref + "#" + anchor;
+                  int anchorindex = link.href.lastIndexOf("#");
+                  if(anchorindex != -1) {
+                     String anchor = link.href.substring(anchorindex+1);
+                     if (anchor != null && anchor.trim() != "") {
+                        newHref = newHref + "#" + anchor;
+                     }
                   }
                }
                link.overrides.put(PSSingleValueBuilder.HREF, newHref);
