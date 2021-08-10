@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percussion.com
+ *      https://www.percusssion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -64,10 +64,22 @@
                 attr('id', 'perc-gadget-comments-viewComments-numComments').
                 text(data.length + ((data.length>1)?' comments:':' comment:'))
             );
+
             var allModeration = newRejectApproveAllActions();
-            let newRow = statusTable.append('<tr>');
-            newRow.append('<td>').append(articleDesc);
-            newRow.append('<td>').append(allModeration);
+
+            var row =
+                {
+                    rowContent: [
+                        [
+                            {content: articleDesc.prop("outerHTML") }
+                        ],
+                        [
+                            {content: allModeration.prop("outerHTML") }
+                        ]
+                    ]
+                };
+
+            percData.push(row);
 
             $.each(data, function(){
                 var commentData = this;
@@ -78,10 +90,10 @@
                 var commentDate    = $('<span />').
                 addClass('perc-gadget-comments-viewComments-commentDate').
                 append(
-                    $('<span />').
-                    text(commentData.createdDate).
-                    attr('title', commentData.createdDate).
-                    timeago()
+                    $.timeago(
+                        $('<span />').
+                        text(commentData.createdDate).
+                        attr('title', commentData.createdDate))
                 ).append(
                     $('<span />').
                     text(
@@ -97,11 +109,9 @@
                 var commentId = commentData.id;
                 var rejectApproveActions = newRejectApproveActions(commentData.approvalState, commentId, site);
 
-                let newRow = statusTable.append('<tr>');
-                newRow.append('<td>').append(commentAggregate);
-                newRow.append('<td>').append(rejectApproveActions);
+                var row = {rowContent: [[ {content: commentAggregate.prop("outerHTML")}], [ {content: rejectApproveActions.prop("outerHTML")} ]] };
 
-
+                percData.push(row);
             });
 
             var dataTypeCols0 = [
@@ -115,41 +125,54 @@
             var dataTypeCols = isLargeColumn?dataTypeCols1:dataTypeCols0;
 
             var tableConfig = {
-                autoWidth: true,
-                ordering: true,
-                fixedHeader: true,
-                searching: false,
-                paging:false,
                 iDisplayLength : itemsPerPage,
                 aoColumns: dataTypeCols,
                 percHeaderClasses : ["perc-datatable-cell-string perc-gadget-comments-viewComments-comment", "perc-datatable-cell-string perc-gadget-comments-viewComments-action"],
-                percHeaders : ["Title", "Action"],
-                oLanguage: {"sZeroRecords": "&nbsp;", "sInfo" : "Showing _START_ to _END_ of _TOTAL_ total results", "sInfoEmpty" : "&nbsp;"},
-                percColumnWidths : [["82%", "18%"],["82%", "18%"]]
+                percHeaders : ["<span>Title</span>", "<span>Action</span>"],
+                percData : percData,
+                oLanguage: {"sZeroRecords": "No Comments Found", "sInfo" : "Showing _START_ to _END_ of _TOTAL_ total results", "sInfoEmpty" : "No results found"},
+                percColumnWidths : [["82%", "18%"]],
+                aaSorting : [],
+                singlePage: true
             };
 
+            statusTable.PercDataTable(tableConfig);
 
+            console.log(statusTable);
+
+            statusTable.on("click", 'div.perc-gadget-comments-rejectAction-all', rejectAll);
+            statusTable.on("click", 'div.perc-gadget-comments-approveAction-all', approveAll);
+            statusTable.on("click", 'div.perc-gadget-comments-deleteAction-all', deleteAll);
+
+            statusTable.on("click", 'div.perc-gadget-comments-rejectAction', reject);
+            statusTable.on("click", 'div.perc-gadget-comments-approveAction', approve);
+            statusTable.on("click", 'div.perc-gadget-comments-deleteAction', deleteComment);
 
             // if the last row does not fill the bottom of the dialog
             // expand the height of the last row to the bottom of the dialog
             var container = $("#perc-gadget-comments-viewComments-container");
             var containerHeight = container.height();
-            $('#perc-gadget-comments-viewComments-table').DataTable(tableConfig);
+            var lastRow = $("td.perc-gadget-comments-viewComments-action:last");
+            var lastRowTop = lastRow.position().top;
+            var lastRowHeight = lastRow.height();
+            var lastRowNewHeight = containerHeight - lastRowTop;
+            if(lastRowNewHeight > lastRowHeight)
+                lastRow.height(lastRowNewHeight);
 
             $(window).trigger('perc-datatable-doneLoading');
 
             updateApproveRejectAllActions();
         }, {});
-
     }
 
     function newRejectApproveAllActions() {
-        var approvalActionMenu          = $("<div class='perc-gadget-comments-actionMenu-all'>");
-        var approvalActionRejectAction  = $("<div class='perc-gadget-comments-rejectAction-all'  title='Reject All Comments'>");
-        var approvalActionApproveAction = $("<div class='perc-gadget-comments-approveAction-all' title='Approve All Comments'>");
-        var approvalActionDeleteAction  = $("<div class='perc-gadget-comments-deleteAction-all' title='Delete All Comments'>");
+        var approvalActionMenu          =  $("<div class='perc-gadget-comments-actionMenu-all'>");
+        var approvalActionRejectAction  = $("<div class='perc-gadget-comments-rejectAction-all'  title='Reject All Comments' />");
+        var approvalActionApproveAction = $("<div class='perc-gadget-comments-approveAction-all' title='Approve All Comments' />");
+        var approvalActionDeleteAction  = $("<div class='perc-gadget-comments-deleteAction-all' title='Delete All Comments' />");
 
-        var approvalActionAllLabel      = $("<div class='perc-gadget-comments-label-all'>ALL</div>");
+        var approvalActionAllLabel      = $("<div class='perc-gadget-comments-label-all'>ALL</div></div>");
+
         approvalActionMenu
             .append(approvalActionRejectAction)
             .append(approvalActionApproveAction)
@@ -157,21 +180,13 @@
             .append(approvalActionAllLabel)
             .addClass("perc-gadget-comments-default-all");
 
-        approvalActionRejectAction.on("click",function(evt){
-            rejectAll(evt);
-        });
-        approvalActionApproveAction.on("click",function(evt){
-            approveAll(evt);
-        });
-        approvalActionDeleteAction.on("click", function(evt){
-            deleteAll(evt);
-        });
+        approvalActionDeleteAction.on("click", deleteAll);
 
         return approvalActionMenu;
     }
 
-    function deleteAll(evt) {
-        var approvalActionMenu = $(evt.target).parent();
+    function deleteAll() {
+        var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "ALL_DELETED")
             .removeClass("perc-gadget-comments-approved-all")
@@ -186,8 +201,8 @@
             .addClass("perc-gadget-comments-deleted");
     }
 
-    function rejectAll(evt) {
-        var approvalActionMenu = $(evt.target).parent();
+    function rejectAll() {
+        var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "ALL_REJECTED")
             .removeClass("perc-gadget-comments-approved-all")
@@ -202,8 +217,8 @@
             .addClass("perc-gadget-comments-rejected");
     }
 
-    function approveAll(evt) {
-        var approvalActionMenu = $(evt.target).parent();
+    function approveAll() {
+        var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "ALL_APPROVED")
             .addClass("perc-gadget-comments-approved-all")
@@ -236,23 +251,11 @@
             .attr("currentState",  approvalState)
             .attr("originalState", approvalState);
 
-        approvalActionRejectAction.on("click",function (evt){
-            reject(evt);
-        });
-
-        approvalActionApproveAction.on("click", function(evt){
-            approve(evt);
-        });
-
-        approvalActionDeleteAction.on("click",function(evt){
-            deleteComment(evt);
-        });
-
         return approvalActionMenu;
     }
 
-    function reject(evt) {
-        var approvalActionMenu = $(evt.target).parent();
+    function reject() {
+        var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "REJECTED")
             .removeClass("perc-gadget-comments-approved")
@@ -261,8 +264,8 @@
         updateApproveRejectAllActions();
     }
 
-    function approve(evt) {
-        var approvalActionMenu = $(evt.target).parent();
+    function approve() {
+        var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "APPROVED")
             .addClass("perc-gadget-comments-approved")
@@ -271,8 +274,8 @@
         updateApproveRejectAllActions();
     }
 
-    function deleteComment(evt) {
-        var approvalActionMenu = $(evt.target).parent();
+    function deleteComment() {
+        var approvalActionMenu = $(this).parent();
         approvalActionMenu
             .attr("currentState", "DELETED")
             .addClass("perc-gadget-comments-deleted")
@@ -325,7 +328,7 @@
         }
     }
 
-    $(function(){
+    $(document).ready(function(){
 
         var site     = $(document).getUrlParam('site');
         var pagePath = $(document).getUrlParam('pagePath');

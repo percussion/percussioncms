@@ -203,7 +203,11 @@ return this.each(function() {
             rootItem.children = children;
         var tree = [rootItem];
         _testTree = tree;
-        displayTree(tree);
+        if(tree[0].children.length > 0){
+            displayTree(tree);
+        }else{
+            $("#page_categories_tree-tree").html("").css({"text-align" : "center", "font-size" : "large"});
+        }
     });
 
 });};

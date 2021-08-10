@@ -150,8 +150,8 @@
                 $tbody.append($rowHTML);
             }
 
-            $("#pubHistoryTable").DataTable({
-                "aaSorting": [[ 1, "desc" ]],
+            var table = $("#pubHistoryTable").DataTable({
+                "order": [[ 1, "desc" ]],
                 "bFilter" : false,
                 "bDestroy":true,
                 "autoWidth" : true,
@@ -185,7 +185,15 @@
                     }
                 }
             });
-
+            $('#pubHistoryTable tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    table.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            } );
         }
 
         /**

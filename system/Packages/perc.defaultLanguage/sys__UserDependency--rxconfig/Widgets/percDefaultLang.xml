@@ -58,15 +58,16 @@
 
         if( $percPageID != null && $percPageID != "" ){
             for($j : $jsonArray){
-                if ($.has("protocol")) {
-                    $protocol = $.getString("protocol");
+               if ($j.has("protocol")) {
+                    $protocol = $j.getString("protocol");
                 } else {
                     $protocol = "";
                 }
-                $sitename = $.getString("sitename");
-                $lang = $.getString("lang");
-                $country = $.getString("country");
-                $default = $.getString("defLang");
+                $sitename = $j.getString("sitename");
+                $lang = $j.getString("lang");
+                $country = $j.getString("country");
+                $default = $j.getString("defLang");
+
 
                 if($country != null && $country != ""){
                     $countryLang = $lang + "-" + $country;
