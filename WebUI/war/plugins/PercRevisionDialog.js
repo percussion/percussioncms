@@ -200,7 +200,7 @@
             }
 
             var table = $("#revisionsTable").dataTable({
-                "aaSorting": [[ 0, "desc" ]],
+                "order":[[ 0, "desc" ]],
                 "bFilter" : false,
                 "bAutoWidth" : false,
                 // turn on pagination and use sequential and random access pagination controls
@@ -211,14 +211,7 @@
                 "bInfo" : true,
                 // if table has no rows show the following error
                 "oLanguage": {"sZeroRecords": "No Revisions Found"},
-                // set custom column sorter data types
-                "aoColumns": [
-                    {"sType":"numeric", "sSortDataType":"perc-dom-text"},
-                    null,
-                    {"sType": "date" , "sSortDataType": "perc-dom-date"},
-                    null,
-                    {"bSortable":false}
-                ],
+
                 // if on first or last page, update the disabled color of the sequential pagination controls
                 "fnFooterCallback": function( nFoot, aasData, iStart, iEnd, aiDisplay ) {
                     // set them all to their default active color
