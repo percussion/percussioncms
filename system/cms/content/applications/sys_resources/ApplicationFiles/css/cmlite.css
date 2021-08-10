@@ -401,3 +401,9 @@ input.perc-rss-disabled, textarea.perc-rss-disabled {
 {
     visibility:hidden !important;
 }
+
+/*CMS-8212*/
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: inline-block !important;
+    margin: -8px !important;
+}
