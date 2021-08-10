@@ -2,9 +2,6 @@
 <%@page import="org.apache.commons.logging.Log"%>
 <%@page import="org.apache.commons.logging.LogFactory"%>
 <%@page import="java.util.Enumeration"%>
-<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
-<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
-
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <!--
 	Dynamically replace the following:
@@ -170,18 +167,18 @@ while(en.hasMoreElements())
 <div id="controls">
 	<fieldset id="modes">
 		<legend>Modes</legend>
-		<csrf:form name="formAction" id="formAction" method="post" action="ajax_image_undo.php">
+		<form name="formAction" id="formAction" method="post" action="ajax_image_undo.php">
 			<input name="file_path" id="file_path" value="uploaded/ajax_image_editor_demo.jpg" type="hidden">
 			<p>
 			<label>Retain aspect/ratio?</label> <input name="constraint" id="constraint" value="1" class="input" checked="checked" onclick="return toggleConstraint();" type="checkbox">
 			<input value="Select Full Image" onclick="selectFullImage();" type="button" />
 			<input value="Close Image Editor" onclick="editorClose();" type="button" />
 			</p>
-		</csrf:form>
+		</form>
 	</fieldset>
 	<fieldset id="imageInfo">
 		<legend id="imageInfoLegend">Image Information</legend>
-		<csrf:form name="formImageInfo" action="posted_info.jsp" method="post" id="formImageInfo">
+		<form name="formImageInfo" action="posted_info.jsp" method="post" id="formImageInfo">
 			<p><input name="mode" id="image_mode" value="crop" type="hidden">
 			<input name="path" id="path" value="<%=imageName%>" type="hidden">
 			<label>Width:</label> <input readonly="readonly" name="width" id="width" value="" class="input imageInput" type="text">
@@ -191,7 +188,7 @@ while(en.hasMoreElements())
 			<label>Ratio:</label> <input readonly="readonly" name="ratio" id="ratio" value="" class="input imageInput" type="text">
 			&nbsp;<input type="submit" value="Done" />
 			</p>
-		</csrf:form>
+		</form>
 	</fieldset>
 </div>
 <div id="imageArea">

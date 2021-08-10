@@ -127,6 +127,11 @@ table.perc-datatable tr.perc-datatable-row td.perc-datatable-column.perc-last {
     color : #006B9D;
 }
 
+
+table.dataTable tbody tr.selected {
+    background-color: #B0BED9;
+}
+
 td.perc-datatable-column.perc-type-numeric, .perc-datatable-head-row th.perc-type-numeric.perc-datatable-head-column {
     text-align : right;
 }

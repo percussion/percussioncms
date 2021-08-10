@@ -73,9 +73,7 @@
         configo = config;
         tableDom = buildTableDomFromData(config);
         $(this).append(tableDom);
-        tableDom
-            .dataTable(config)
-            .data("config",config);
+        tableDom.DataTable(config);
 
         // resize parent iframe's height to fit the table
         if(config.percExpandParentFrameVertically) {
@@ -154,7 +152,7 @@
             var currentPageNumber = Math.ceil(iEnd / itemsPerPage);
             var pageOfPages = currentPageNumber + " of " + pages + (pages === 1 ? " Page" : " Pages");
 
-            if(pages === 0)
+            if(pages === 0 || config.singlePage)
                 pageOfPages = "";
 
             var pInfo = $(".perc-datatables-info");
@@ -447,10 +445,14 @@
                     }
                 }
 
+
                 // if($.browser.browser.msie || $.browser.webkit)
                 //     columnWidth = parseInt(columnWidth) + 20;
 
-                columnWidth += "px";
+
+                if(columnWidth[columnWidth.length - 1] !== '%') {
+                    columnWidth += "px";
+                }
 
                 var headerClass = "";
                 if(config.percHeaderClasses && config.percHeaderClasses[index])
@@ -470,8 +472,9 @@
                     firstLast = "perc-last";
                 else
                     firstLast = "perc-middle";
-                var head = $("<th class='"+percType+" "+headerClass+" perc-datatable-head-column perc-index-"+index+" "+firstLast+"'>")
-                    .css('width', columnWidth);
+                var head = $("<th class='"+percType+" "+headerClass+" perc-datatable-head-column perc-index-"+index+" "+firstLast+"'>");
+
+                head.width(columnWidth);
 
                 var sortingDirection = $("<span class='perc-sort' style='padding: 0px 10px 0px 0px; border-bottom:none'>&nbsp;</span>");
 
@@ -531,14 +534,14 @@
         // custom column sorting for Change, Views, and Template column
         // checks to see if all data is the same and if so it changes it
         // so that it is unique to force it to sort in reverse order
-         $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
+        $.fn.dataTableExt.afnSortData['perc-type-string'] = function  ( oSettings, iColumn ) {
             var aData = [];
             var data;
-             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
-                 aData.push( $('input', td).val());
-             } );
+            this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
+                aData.push( $('input', td).val());
+            } );
 
-             return aData;
+            return aData;
         };
 
         $.fn.dataTableExt.afnSortData['perc-type-numeric'] = $.fn.dataTableExt.afnSortData['perc-type-string'];
