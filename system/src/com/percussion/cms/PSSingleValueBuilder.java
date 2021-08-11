@@ -829,8 +829,11 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             else
                url = fixedUrl;
          }
+         elem.setAttribute(linkAttr, url);
+      }else{
+         elem.setAttribute(linkAttr, href);
       }
-      elem.setAttribute(linkAttr, url);
+
    }
    
    private static boolean getLinkState(Element elem, int contentId)

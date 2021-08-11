@@ -78,7 +78,6 @@
               datatype="enum">
         <EnumValue value="none" display_value="None" />
         <EnumValue value="rx:displaytitle" display_value="Title" />
-        <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
         <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
     </UserPref>
     <UserPref name="sortDirection"
