@@ -156,6 +156,8 @@
         var listImage = config.percDropdownItemImage;
         var disabledListImage = config.percDropdownDisabledItemImage;
         var title = dropdown.find(".perc-dropdown-title");
+
+
         if(config.percDropdownTitleImage == null) {
             title
                 .css("cursor","default")
@@ -180,6 +182,12 @@
             var optionsList = dropdown.find(".perc-dropdown-option-list");
             optionsList.css("margin", "4px 0 0 0");
         }
+
+        if(typeof config.percAppendDropdownButton !== 'undefined' && config.percAppendDropdownButton === true) {
+
+            title.append($("<span class='sf-sub-indicator' />"));
+        }
+
         title
             .addClass("perc-dropdown-title-"+labels[0])
             .data("callback", callbacks[0])
