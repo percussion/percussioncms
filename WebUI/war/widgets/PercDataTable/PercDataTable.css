@@ -121,9 +121,14 @@ table.perc-datatable tr.perc-datatable-row td.perc-datatable-column.perc-last {
 
 .paginate_active {
     font-weight : bold;
+    text-decoration:none;
+}
+a.paginate_button.current{
+    font-weight : bold;
+    text-decoration:none;
 }
 
-.paginete_active, .paginate_button {
+.paginate_active, .paginate_button {
     color : #006B9D;
 }
 
