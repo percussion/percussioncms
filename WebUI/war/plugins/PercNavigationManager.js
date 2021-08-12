@@ -480,6 +480,8 @@
                         $.perc_finder().refresh();
                     }
                 });
+            }else{
+                window.location.href = url;
             }
             $.unblockUI();
         }
