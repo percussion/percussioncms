@@ -202,4 +202,5 @@ body * {
 
 .dataTables_info {
     position : relative !important;
+    display: none;
 }
