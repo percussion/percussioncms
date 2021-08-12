@@ -23,154 +23,154 @@
  */
 
 
-    #widget-tool {float: left; width: 60px; height: 60px; background-color : yellow}   
-    #perc-region-tool-menu .sf-menu a.sf-with-ul {
-        padding:0px;
-    }
+#widget-tool {float: left; width: 60px; height: 60px; background-color : yellow}
+#perc-region-tool-menu .sf-menu a.sf-with-ul {
+    padding: 0px;
+}
+
+#perc-region-tool-menu .sf-arrows .sf-with-ul:after {
+    content: none;
+}
 
 /*    .perc-vertical > .perc-region { clear : both } */
-    .perc-horizontal > .perc-region { float : left }
-    .perc-horizontal > .clear-float { clear : both }
+.perc-horizontal > .perc-region { float : left }
+.perc-horizontal > .clear-float { clear : both }
 
-    .perc-region-puff {border : 1px dotted grey; padding : 10px; position: relative; min-height:50px;}
-    .perc-widget-puff {border : 1px dotted grey; min-height : 25px}
+.perc-region-puff {border : 1px dotted grey; padding : 10px; position: relative; min-height:50px;}
+.perc-widget-puff {border : 1px dotted grey; min-height : 25px}
 
-        /* show feedback for the region-tool */
-        .perc-show-feedback { background: grey }
-    
+/* show feedback for the region-tool */
+.perc-show-feedback { background: grey }
+
 /*      .hovering { border : 1px solid black } */
-    .west { border-left : 10px solid grey ; padding-left : 1px}
-    .east { border-right : 10px solid grey ; padding-right : 1px}
-    .north { border-top : 10px solid grey ; padding-top : 1px}
-    .south { border-bottom : 10px solid grey ; padding-bottom : 1px}
-    
-    #content {height:100%}
-    .perc-region-overridable { background-color : Bisque ; top : 0px; left : 0px }
-    
-    #perc-insert-region-helper {display:none; background-color:grey; opacity:0.4; z-index : 5}
-    
-    #perc-region-tool-inspector
-    {
-        background-position: 0 0; 
-        width: 29px; height: 29px;
-        margin-top:13px;
-        margin-left:15px;
-        background:url('../images/images/buttonRegionInspector.png') ;
-        float:left;
-        cursor:pointer;
-    } 
-    
-    #perc-region-tool-inspector.buttonPressed, #perc-region-tool-inspector.buttonPressed:hover
-    {
-         background-position: 0 -68px;
-         width: 29px; height: 29px; 
-    } 
-    
-    #perc-region-tool-menu {
-        float:left;
-    }
-    
-    #perc-region-tool-menu .perc-dropdown .sf-sub-indicator
-    {     
-         width: 15px;
-         height: 31px;
-         float:left;
-         margin-top:auto;     
-         background:url('../images/images/buttonRegionInspector.png');
-         background-position: 0 -102px; 
-         top:7px;
-         left:0px;
-         z-index:9000;
-         background-repeat:no-repeat;
-     } 
-     
-    #perc-region-tool-menu .perc-dropdown .sf-sub-indicator:hover , #perc-region-tool-menu .perc-dropdown li.sfHover .sf-sub-indicator
-    {
-         background-position: 0 -138px;
-          width: 15px;
-          height: 29px; 
-          margin-top:auto;
-          top:8px;
-    }
-    
-    #perc-region-tool-wrapper {
-        margin:auto;
-        width:131px;
-        height:54px;    
-    } 
-    
-    #perc-region-tool-menu .perc-dropdown.sf-shadow ul {
-        left:-119px !important;    
-        top:37px;
-        left: -120px\9 !important;  /*IE 8 Hack */
-        top:36px\9; /* IE 8 Hack */
-    }
-    #perc-editor-errors {       
-        color:red;
-        float:left;
-        margin-top:20px;
-        cursor:pointer;
-    }
-        
-    #region-tool, #region-tool-disabled,  #undo-tool, #undo-tool-disabled {
-        float: left; margin-top: 12px;
-    }
-    
-    #perc-undo-tool, #perc-undo-tool-disabled  {
-        cursor: pointer;
-        float: left;
-        height: 31px;
-        margin-left: 5px;
-        margin-top: 12px;
-        width: 31px;
-        background: url("../images/images/undoNerror.png") repeat scroll 0 0 transparent;
-    }
-    
-    #perc-undo-tool {
-        background-position: 0 0;
-        width:31px;
-        height:31px;
-    }
-    
-    #perc-undo-tool:hover {
-        background-position: 0 -72px;
-    }
-    
-    
-    #perc-undo-tool-disabled {
-        background-position: 0 -36px;
-        cursor:default;
-    }
+.west { border-left : 10px solid grey ; padding-left : 1px}
+.east { border-right : 10px solid grey ; padding-right : 1px}
+.north { border-top : 10px solid grey ; padding-top : 1px}
+.south { border-bottom : 10px solid grey ; padding-bottom : 1px}
 
-    #perc-error-alert {
-        background: url("../images/images/iconAlert.gif") repeat scroll 0 0 transparent;
-        width: 18px;
-        height: 16px;
-        margin-top:19px;
-        margin-left:1px;
-        float:left;     
-        cursor:pointer;
-        margin-right:30px;
-    }
-    
-    #perc-error-wrapper {
-        padding-right:24px;
-    }
-    
-    #perc-error-wrapper ul {
-        background-color: #FDFDFD;
-    }
+#content {height:100%}
+.perc-region-overridable { background-color : Bisque ; top : 0px; left : 0px }
 
-    #perc-error-wrapper ul li {
-        border-bottom: 2px solid #E6E6E9;
-        font:11px verdana;
-        color:#333333;
-        padding:4px; 
-        layout: fixed;
-        overflow: hidden;
-        word-wrap: break-word;
-    }
+#perc-insert-region-helper {display:none; background-color:grey; opacity:0.4; z-index : 5}
 
-    body * {
-        font-family: 'Open Sans', sans-serif;
-    }
+#perc-region-tool-inspector
+{
+    background-position: 0 0;
+    width: 29px; height: 29px;
+    margin-top:13px;
+    margin-left:15px;
+    background:url('../images/images/buttonRegionInspector.png') ;
+    float:left;
+    cursor:pointer;
+}
+
+#perc-region-tool-inspector.buttonPressed, #perc-region-tool-inspector.buttonPressed:hover
+{
+    background-position: 0 -68px;
+    width: 29px; height: 29px;
+}
+
+#perc-region-tool-menu {
+    float:left;
+}
+
+#perc-region-tool-menu .perc-dropdown .sf-sub-indicator
+{
+    width: 15px;
+    height: 31px;
+    float:left;
+    background:url('../images/images/buttonRegionInspector.png');
+    background-position: 0 -102px;
+    top:7px;
+    left:0px;
+    z-index:9000;
+    background-repeat:no-repeat;
+    margin-top: 7px;
+}
+
+#perc-region-tool-menu .perc-dropdown .sf-sub-indicator:hover , #perc-region-tool-menu .perc-dropdown li.sfHover .sf-sub-indicator
+{
+    background-position: 0 -138px;
+}
+
+#perc-region-tool-wrapper {
+    margin:auto;
+    width:131px;
+    height:54px;
+}
+
+#perc-region-tool-menu .perc-dropdown.sf-shadow ul {
+    left:-119px !important;
+    top:37px;
+    left: -120px\9 !important;
+    top:36px\9;
+}
+#perc-editor-errors {
+    color:red;
+    float:left;
+    margin-top:20px;
+    cursor:pointer;
+}
+
+#region-tool, #region-tool-disabled,  #undo-tool, #undo-tool-disabled {
+    float: left; margin-top: 12px;
+}
+
+#perc-undo-tool, #perc-undo-tool-disabled  {
+    cursor: pointer;
+    float: left;
+    height: 31px;
+    margin-left: 5px;
+    margin-top: 12px;
+    width: 31px;
+    background: url("../images/images/undoNerror.png") repeat scroll 0 0 transparent;
+}
+
+#perc-undo-tool {
+    background-position: 0 0;
+    width:31px;
+    height:31px;
+}
+
+#perc-undo-tool:hover {
+    background-position: 0 -72px;
+}
+
+
+#perc-undo-tool-disabled {
+    background-position: 0 -36px;
+    cursor:default;
+}
+
+#perc-error-alert {
+    background: url("../images/images/iconAlert.gif") repeat scroll 0 0 transparent;
+    width: 18px;
+    height: 16px;
+    margin-top:19px;
+    margin-left:1px;
+    float:left;
+    cursor:pointer;
+    margin-right:30px;
+}
+
+#perc-error-wrapper {
+    padding-right:24px;
+}
+
+#perc-error-wrapper ul {
+    background-color: #FDFDFD;
+}
+
+#perc-error-wrapper ul li {
+    border-bottom: 2px solid #E6E6E9;
+    font:11px verdana;
+    color:#333333;
+    padding:4px;
+    layout: fixed;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+body * {
+    font-family: 'Open Sans', sans-serif;
+}

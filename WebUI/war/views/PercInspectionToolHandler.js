@@ -893,6 +893,7 @@
         layoutRegionToolMenu.PercDropdown({
             percDropdownRootClass: "perc-region-tool-menu",
             percDropdownOptionLabels: ["", "Stacked", "Side by Side"],
+            percAppendDropdownButton: true,
             percDropdownCallbacks: [function(){
             }, _splitRegionHorizontal, _splitRegionVertical],
             percDropdownCallbackData: ["", "Stacked", "Side by Side"],
