@@ -423,6 +423,7 @@ body {
 
 #perc-gadget-comments-viewComments > div.ui-dialog-titlebar{
     padding-left : 6px;
+    background: url(../images/images/tabAreaShadowBg.gif) repeat-x scroll center bottom #E6E6E9;
 }
 
 .perc-gadget[name="Pages By Status"]
@@ -465,4 +466,8 @@ body {
 .perc-gadget {
     border: 1px solid silver;
     border-radius: 8px;
+}
+
+#perc-gadget-comments-viewComments-frame{
+    height: 492.5px !important;
 }
