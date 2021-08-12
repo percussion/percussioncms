@@ -199,3 +199,7 @@ td.perc-gadget-comments-viewComments-action {
 body * {
     font-family: 'Open Sans', sans-serif;
 }
+
+.dataTables_info {
+    position : relative !important;
+}
