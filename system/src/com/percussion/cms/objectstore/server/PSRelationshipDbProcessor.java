@@ -1617,6 +1617,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
                int rid = PSRelationshipCommandHandler.getNextId();
                relationship.setId(rid);
             }
+
             if (!relationship.isPersisted()) {
                relationship.setPersisted(false);
                inserts.add(relationship);
@@ -1625,8 +1626,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          } else {
             if (!relationship.isPersisted()) {
                relationship.setPersisted(true);
-               if (log.isDebugEnabled())
-                  log.debug("Oops! persisted-flag=FLASE for an existing relationship id: {} ", relationship.getId());
+               log.debug("Oops! persisted-flag=FALSE for an existing relationship id: {} ", relationship.getId());
             }
             updates.add(relationship);
          }
