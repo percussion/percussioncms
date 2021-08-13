@@ -51,7 +51,7 @@ body
 #perc-gadget-comments-viewComments-table
 {
     background-color: #FFFFFF;
-    margin-bottom:25px;
+    margin-bottom:-20px;
     padding-left:5px;
 }
 #perc-gadget-comments-viewComments-table th
@@ -198,4 +198,17 @@ td.perc-gadget-comments-viewComments-action {
 }
 body * {
     font-family: 'Open Sans', sans-serif;
+}
+
+.dataTables_info {
+    position : relative !important;
+    display: none;
+}
+
+th.perc-gadget-comments-viewComments-action{
+    text-align : left !important;
+}
+
+#perc-gadget-comments-viewComments-table{
+    min-height : 492.5px !important;
 }

@@ -16,8 +16,9 @@
 3. Result setting Part renders the display format and max results.
 4. Buttons renders the buttons based on the type of search.
 -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:psxi18n="com.percussion.i18n.PSI18nUtils" extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:import href="file:sys_searchSupport/sys_searchTemplates.xsl"/>
 	<xsl:import href="file:sys_searchSupport/sys_searchJSGenerator.xsl"/>

@@ -43,7 +43,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
- * This class provides several utilty methods for internationalization support.
+ * This class provides several utility methods for internationalization support.
  * The primary objective of this class is to expose methods to XSL stylesheet
  * layer as XSLT extension functions. This class also provides definitions for
  * some string constants relevant to i18n. There is not much processing of data

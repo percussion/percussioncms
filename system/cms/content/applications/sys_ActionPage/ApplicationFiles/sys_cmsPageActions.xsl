@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-   xmlns:fo="http://www.w3.org/1999/XSL/Format" 
-   xmlns:psxlink="urn:www.percussion.com/com.percussion.services.utils.jspel.PSLinkUtilities"
-   exclude-result-prefixes="psxi18n,psxlink" 
-   xmlns:psxi18n="urn:www.percussion.com/i18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0"
+                xmlns:psxlink="urn:www.percussion.com/com.percussion.services.utils.jspel.PSLinkUtilities"
+                exclude-result-prefixes="psxi18n,psxlink"
+                extension-element-prefixes="psxi18n">
    <xsl:template match="Action[@name='Item_ViewDependents']" mode="table">
       <xsl:param name="contentid"/>
       <xsl:param name="revision"/>

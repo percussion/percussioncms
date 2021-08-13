@@ -31,7 +31,7 @@
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
 ]>
-<xsl:stylesheet exclude-result-prefixes="psxi18n" extension-element-prefixes="saxon" version="1.1" xmlns:psxi18n="urn:www.percussion.com/i18n" xmlns:saxon="http://icl.com/saxon" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet exclude-result-prefixes="psxi18n" extension-element-prefixes="saxon" version="1.1" xmlns:psxi18n="com.percussion.i18n.PSI18nUtils" extension-element-prefixes="psxi18n"  xmlns:saxon="http://icl.com/saxon" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="file:sys_resources/stylesheets/assemblers/sys_InlineLinks.xsl"/>
 	<xsl:import href="file:rx_resources/stylesheets/assemblers/rx_InlineLinks.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Slots.xsl"/>

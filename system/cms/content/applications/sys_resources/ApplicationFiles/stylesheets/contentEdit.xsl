@@ -8,7 +8,9 @@
 		%HTMLspecial;
 		]>
 <!-- $ Id: $ -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" xmlns:psxctl="URN:percussion.com/control"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/sys_Templates.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/customControlImports.xsl"/>
@@ -19,7 +21,7 @@
 	<xsl:variable name="systemLibraryDoc" select="document($systemLibrary)"/>
 	<xsl:variable name="userLibrary" select="'file:rx_resources/stylesheets/rx_Templates.xsl'"/>
 	<xsl:variable name="userLibraryDoc" select="document($userLibrary)"/>
-	<xsl:variable name="customControlImportsDoc" select="document('file:rx_resources/stylesheets/customControlImports.xsl')"/>
+	<xsl:variable name="customControlImportsDoc" select="document('file:sys_resources/stylesheets/customControlImports.xsl')"/>
 	<xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
 	<xsl:template match="/">
 		<xsl:apply-templates select="ContentEditor"/>

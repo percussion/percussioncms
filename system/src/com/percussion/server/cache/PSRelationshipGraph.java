@@ -23,18 +23,21 @@
  */
 package com.percussion.server.cache;
 
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSRelationship;
 
 /**
  * This class is used to 'plot' graphs for a specific relationship type, so
@@ -45,7 +48,10 @@ import com.percussion.design.objectstore.PSRelationship;
  */
 class PSRelationshipGraph
 {
-   
+   /**
+    * Reference to Log4j singleton object used to log any errors or debug info.
+    */
+   private static final Logger log = LogManager.getLogger("PSRelationshipGraph");
 
    public void addRelationship(Integer relationshipId, PSLocator parent, PSLocator child)
    {
@@ -55,7 +61,7 @@ class PSRelationshipGraph
    /**
     * Adds (or plots) the supplied parent & child relationship into the graph.
     *
-    * @param relatedObj the related object, never <code>null</code>.
+    * @param relationshipId the related object, never <code>null</code>.
     * @param parent the parent object, never <code>null</code>.
     * @param child the child object, never <code>null</code>.
     */
@@ -165,10 +171,16 @@ class PSRelationshipGraph
       ArrayList<PSGraphEntry> parents = m_childMapToParent.get(childLoc);
       if (parents != null && !parents.isEmpty()) {
          for (PSGraphEntry parent : parents) {
-            PSRelationship rel = PSFolderRelationshipCache.getInstance().getRelationship(parent.getrelationshipId());
-            if (!rel.getConfig().getName().equalsIgnoreCase(relationshipTypeName)) {
-               continue;
+            PSRelationship rel = null;
+            try {
+               rel = PSFolderRelationshipCache.getInstance().getRelationship(parent.getrelationshipId());
+               if (rel == null || !rel.getConfig().getName().equalsIgnoreCase(relationshipTypeName)) {
+                  continue;
+               }
+            } catch (PSNotFoundException e) {
+               log.warn("Relationship Not Found : {} : Error : {} " ,parent.getrelationshipId(), PSExceptionUtils.getMessageForLog(e));
             }
+
             List<PSGraphEntry> path = new ArrayList<>();
             getFolderPath(path, parent, relationshipTypeName);
             // reverse the path
@@ -233,7 +245,12 @@ class PSRelationshipGraph
       PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
       PSRelationship childRel = null;
       if (cache != null) {
-          childRel = cache.getRelationship(childFolder.getrelationshipId());
+         try {
+            childRel = cache.getRelationship(childFolder.getrelationshipId());
+         } catch (PSNotFoundException e) {
+            log.warn("Relationship Not Found : {} : Error : {} " ,childFolder.getrelationshipId(), PSExceptionUtils.getMessageForLog(e));
+            return;
+         }
       }
       if (childRel != null && childRel.getConfig().getName().equalsIgnoreCase(relationshipTypeName)) {
           path.add(childFolder);
@@ -249,10 +266,16 @@ class PSRelationshipGraph
           List<PSGraphEntry> filteredParents = new ArrayList<>();
           for (PSGraphEntry entry : parents) {
               if (cache != null) {
-                  PSRelationship rel = cache.getRelationship(entry.getrelationshipId());
-                  if (rel.getConfig().getName().equalsIgnoreCase(relationshipTypeName)) {
-                    filteredParents.add(entry);
-                  }
+                 PSRelationship rel = null;
+                 try {
+                    rel = cache.getRelationship(entry.getrelationshipId());
+                    if (rel != null && rel.getConfig().getName().equalsIgnoreCase(relationshipTypeName)) {
+                       filteredParents.add(entry);
+                    }
+                 } catch (PSNotFoundException e) {
+                    log.warn("Relationship Not Found : {} : Error : {} " ,entry.getrelationshipId(), PSExceptionUtils.getMessageForLog(e));
+                 }
+
               }
           }
 

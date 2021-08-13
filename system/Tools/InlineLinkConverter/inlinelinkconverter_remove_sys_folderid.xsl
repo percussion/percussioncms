@@ -35,7 +35,7 @@
 <!--
 override inlinelinkconverter.xsl with this file, then run the RhythmyxInlineLinkConverter.exe (or *.bin in unix) to remove the sys_folderid attributes fron the inline link in the content. User should also remove the sys_folderid relationship properties from the relationship table, which can be done with a simple SQL statement.
 -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:urlencoder="java.net.URLEncoder"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0"
                 exclude-result-prefixes="urlencoder">
 	<xsl:output method="xml"/>
 	<!-- main template -->

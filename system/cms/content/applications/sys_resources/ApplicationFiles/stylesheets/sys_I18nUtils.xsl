@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This is a generic file for consists of i18n related templates. -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:psxi18n="urn:www.percussion.com/com.percussion.i18n.PSI18nUtils" exclude-result-prefixes="psxi18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:psxi18n="com.percussion.i18n.PSI18nUtils" exclude-result-prefixes="psxi18n">
    <!-- Template to return localized text for the given keyword in the given language -->
    <xsl:template name="getLocaleString">
       <xsl:param name="key" select="''"/>

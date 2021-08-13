@@ -7,7 +7,9 @@
         %HTMLspecial;
 ]>
 
-<xsl:stylesheet extension-element-prefixes="saxon" version="1.1" xmlns:saxon="http://icl.com/saxon" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" ><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_InlineLinks.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_InlineLinks.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Slots.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Slots.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_ContextTemplates.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Globals.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Globals.xsl"/>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="xalan://com.percussion.i18n.PSI18nUtils"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n"><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_InlineLinks.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_InlineLinks.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Slots.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Slots.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_ContextTemplates.xsl"/><xsl:import href="file:sys_resources/stylesheets/assemblers/sys_Globals.xsl"/><xsl:import href="file:rx_resources/stylesheets/assemblers/rx_Globals.xsl"/>
 <!-- begin XSL -->
 <xsl:output method="xml" omit-xml-declaration="yes" />
 <!-- end XSL --><xsl:variable name="related" select="/*/sys_AssemblerInfo/RelatedContent"/><xsl:variable name="syscommand" select="//@sys_command"/><xsl:variable name="this" select="/"/><xsl:template match="/" name="xsplit_root"><html>

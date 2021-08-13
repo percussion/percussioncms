@@ -8,7 +8,7 @@
 		%HTMLspecial;
 ]>
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n"
-				xmlns:psxi18n="urn:www.percussion.com/i18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" exclude-result-prefixes="psxi18n"
+                extension-element-prefixes="psxi18n">
 <!-- for future use -->
 </xsl:stylesheet>

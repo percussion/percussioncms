@@ -23,8 +23,6 @@
  */
 package com.percussion.cms.objectstore.server;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSCataloger;
 import com.percussion.cms.objectstore.PSCmsObject;
@@ -72,7 +70,15 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -88,15 +94,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This class maintains a registry of all active content types. A content type
@@ -842,7 +840,7 @@ public class PSItemDefManager
          }
          catch (NumberFormatException e)
          {
-            // didn't find one
+            //TODO: Take Care of missing data
          }
       }
 

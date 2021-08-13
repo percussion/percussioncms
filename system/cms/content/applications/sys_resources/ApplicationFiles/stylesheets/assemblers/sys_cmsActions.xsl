@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" exclude-result-prefixes="psxi18n"
+                extension-element-prefixes="psxi18n">
 	<xsl:template match="Action[@name='Item_ViewDependents']" mode="popmenu">
 		<xsl:param name="contentid"/>
 		<xsl:param name="revision"/>
