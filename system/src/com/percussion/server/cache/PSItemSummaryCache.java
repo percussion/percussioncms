@@ -43,6 +43,7 @@ import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSUpdateColumn;
 import com.percussion.design.objectstore.PSUpdatePipe;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSInternalRequest;
@@ -235,7 +236,40 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     */
    private PSItemEntry getCachedItem(Integer id)
    {
-         return (PSItemEntry) m_items.get(id);
+      PSItemEntry item = (PSItemEntry) m_items.get(id);
+      //If Not found in cache, load the item.
+      if(item == null) {
+         item = loadItem(id);
+      }
+      return item;
+   }
+
+   /**
+    * Load the sys_pubFileName property value for given contentId  from the backend
+    * repository.
+    *
+    */
+
+   private PSItemEntry loadItem(int id) {
+
+      PSItemEntry item = null;
+      try {
+         IPSItemEntry itemEntry = (PSItemEntry) m_cmsObjectMgr.loadItemEntry(id);
+         synchronized (getCacheSyncObject(id)) {
+            if (itemEntry.getObjectType() == PSCmsObject.TYPE_FOLDER) {
+               item = new PSFolderEntry(itemEntry.getContentId(), itemEntry.getName(), itemEntry.getCommunityId(),
+                       itemEntry.getContentTypeId(), itemEntry.getObjectType());
+            } else {
+               item = (PSItemEntry) itemEntry;
+            }
+            m_items.put(itemEntry.getContentId(), item);
+         }
+      } catch (Exception e)
+      {
+         log.warn("Failed to Load Object From DB for ID: {} ERROR: {} ",id, PSExceptionUtils.getMessageForLog(e));
+      }
+      return item;
+
    }
    
    /**
@@ -620,7 +654,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    {
 
          int contentId = getInteger(itemInfo.mi_contentIdS);
-         Integer id = Integer.valueOf(contentId);
+         Integer id = contentId;
          PSItemEntry item = (PSItemEntry) m_items.get(id);
          if (item == null)
          {
@@ -925,7 +959,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       if (item == null)
          throw new IllegalArgumentException("item may not be null");
       
-      Integer key = Integer.valueOf(item.getContentId());
+      Integer key = item.getContentId();
       
       synchronized (getCacheSyncObject(key)) {
      
@@ -1020,7 +1054,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    {
       int contentId = getInteger(itemInfo.mi_contentIdS);
       synchronized (getCacheSyncObject(contentId)) {
-         m_items.remove(Integer.valueOf(contentId));
+         m_items.remove(contentId);
       }
 
       log.debug("delete item id: {} ", contentId);
@@ -1047,7 +1081,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       {
          PSItemEntry item = (PSItemEntry) items.next();
          if (item.isFolder())
-            idList.add(Integer.valueOf(item.getContentId()));
+            idList.add(item.getContentId());
       }
       
       loadFolderAcls(idList);
@@ -1090,7 +1124,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       List emptyAcls = new ArrayList(idList);
       for (int i=0; i<acls.length; i++)
       {
-         Integer id = Integer.valueOf(acls[i].getContentId());
+         Integer id = acls[i].getContentId();
          item = (PSItemEntry) m_items.get(id);
          if (item != null && (item instanceof PSFolderEntry))
          {
@@ -1187,7 +1221,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
             propName = rs.getString(2);
             propValue = rs.getString(3);
             
-            Object item = m_items.get(Integer.valueOf(contentId));
+            Object item = m_items.get(contentId);
             if (item != null && (item instanceof PSFolderEntry))
             {
                PSFolderEntry folder = (PSFolderEntry) item;

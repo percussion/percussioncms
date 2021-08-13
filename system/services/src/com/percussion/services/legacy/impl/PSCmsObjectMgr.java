@@ -1710,7 +1710,12 @@ public class PSCmsObjectMgr
 
       return itemEntry;
    }
-   
+
+   private static final String itemQuery = "select c.m_contentId, c.m_name, c.m_communityId, " +
+           "c.m_contentTypeId, c.m_objectType, c.m_contentCreatedBy, " +
+           "c.m_contentLastModifiedDate, c.m_contentPostDate, c.m_contentCreatedDate, " +
+           "c.m_workflowAppId, c.m_contentStateId, c.m_tipRevision, c.m_currRevision, " +
+           "c.m_publicRevision, c.m_contentLastModifier, c.m_checkoutUserName, c.m_contentPublishDate from PSComponentSummary c";
    /*
     * (non-Javadoc)
     * 
@@ -1720,10 +1725,7 @@ public class PSCmsObjectMgr
    {
       Session session = sessionFactory.getCurrentSession();
 
-         Query q = session.createQuery("select c.m_contentId, c.m_name, c.m_communityId, " + 
-               "c.m_contentTypeId, c.m_objectType, c.m_contentCreatedBy, " +
-               "c.m_contentLastModifiedDate, c.m_contentPostDate, c.m_contentCreatedDate, " +
-               "c.m_workflowAppId, c.m_contentStateId, c.m_tipRevision, c.m_currRevision, c.m_publicRevision, c.m_contentLastModifier, c.m_checkoutUserName, c.m_contentPublishDate from PSComponentSummary c");
+         Query q = session.createQuery(itemQuery);
          List<Object[]> listItems = q.list();
          
          List<IPSItemEntry> allEntries = new ArrayList<>();
@@ -1739,7 +1741,31 @@ public class PSCmsObjectMgr
          return allEntries;
 
       }
-   
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.percussion.services.legacy.IPSCmsObjectMgr#loadItemEntry(Integer id)
+     */
+    public IPSItemEntry loadItemEntry(Integer id)
+    {
+        Session session = sessionFactory.getCurrentSession();
+
+        Query q = session.createQuery(itemQuery + " where c.m_contentId=" + id);
+        List<Object[]> listItems = q.list();
+
+        Map<Integer, Map<Integer, String>> wfStateIdNameMap = new HashMap<>();
+        Map<Integer, String> ctTypeIdLabelMap = new HashMap<>();
+        if(listItems.size() > 0 ){
+            //Should never happen unless corruted data
+            if(listItems.size() > 1){
+                ms_log.warn("Duplicate records found for id: {} Returning 1st record" + id);
+            }
+            return createItemEntry(listItems.get(0), wfStateIdNameMap, ctTypeIdLabelMap);
+        }
+        return null;
+    }
+
    public void changeWorkflowForItem(int itemId, int workflowId, List<String> validStateNames) throws PSORMException
    {
       Validate.notNull(validStateNames);
