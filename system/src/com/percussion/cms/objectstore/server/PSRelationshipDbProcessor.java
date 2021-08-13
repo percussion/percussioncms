@@ -43,6 +43,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.server.IPSRequestContext;
@@ -57,6 +58,7 @@ import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.server.cache.PSItemSummaryCache;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.impl.nav.PSRelationshipSortOrderComparator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
@@ -384,9 +386,14 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    // get the relationships according to the query criteria
    if (relId!=-1)
    {
-      PSRelationship rel = relCache.getRelationship(relId);
-      if (rel != null)
-         rels.add(rel);
+      PSRelationship rel = null;
+      try {
+         rel = relCache.getRelationship(relId);
+         if (rel != null)
+            rels.add(rel);
+      } catch (PSNotFoundException e) {
+         log.warn("Relationship Not Found : {} : Error : {} " ,relId, PSExceptionUtils.getMessageForLog(e));
+      }
    }
    else if (owner != null) 
    {
@@ -815,9 +822,15 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       // get the relationships according to the query criteria
       if (params.m_relationshipId != -1)
       {
-         PSRelationship rel = relCache.getRelationship(params.m_relationshipId);
-         if (rel != null)
-            rels.add(rel);
+         PSRelationship rel = null;
+         try {
+            rel = relCache.getRelationship(params.m_relationshipId);
+            if (rel != null)
+               rels.add(rel);
+         } catch (PSNotFoundException e) {
+            log.warn("Relationship Not Found : {} : Error : {} " ,params.m_relationshipId, PSExceptionUtils.getMessageForLog(e));
+         }
+
       }
       else if (params.m_ownerId != -1) 
       {

@@ -7,7 +7,9 @@
         <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
         %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0"
+                xmlns:psxi18n="com.percussion.i18n.PSI18nUtils" extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
    <xsl:variable name="testcondition" select="'((not($related/../@relateditemid) and not($related/../@sys_activeitemid) and not($related/../@relateditemid and not($related/../@sys_activeitemid))) or $related/../@sys_activeitemid=$related/../@relateditemid)'"/>
    <!-- main template -->
    <xsl:template match="/">

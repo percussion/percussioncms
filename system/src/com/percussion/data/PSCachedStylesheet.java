@@ -150,6 +150,7 @@ public class PSCachedStylesheet
                   //using StreamSource with inputstream of stylesheet URL.
 
                   InputStream urlStream = m_ssUrl.openStream();
+                  PSXmlDocumentBuilder.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
                   doc = PSXmlDocumentBuilder.createXmlDocument(
                            new InputSource(urlStream),
                            false);

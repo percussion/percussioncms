@@ -3,7 +3,7 @@
 	List of test control meta objects used by the PSControlDependencyMapTest
 -->
 <Controls xmlns="http://www.w3.org/1999/xhtml" xmlns:psxctl="URN:percussion.com/control">
-	<psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_CalendarSimple" dimension="single" choiceset="none">
+	<psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_CalendarSimple" dimension="single" choiceset="none">
 		<psxctl:Description>A input box with icon to pop-up calendar picker</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -54,7 +54,7 @@
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 		</psxctl:AssociatedFileList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_CheckBoxGroup" dimension="array" choiceset="required">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_CheckBoxGroup" dimension="array" choiceset="required">
 		<psxctl:Description>a group of check boxes with the same HTML param name</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -82,7 +82,7 @@
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 		</psxctl:AssociatedFileList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_CheckBoxTree" dimension="array" choiceset="required">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_CheckBoxTree" dimension="array" choiceset="required">
 	      <psxctl:Description>Tree of check boxes</psxctl:Description>
 	      <psxctl:ParamList>
 	         <psxctl:Param name="width" datatype="String" paramtype="generic">
@@ -144,7 +144,7 @@
 	         </psxctl:Dependency>
 	      </psxctl:Dependencies>
 	     
-	   </psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_DropDownSingle" dimension="single" choiceset="required">
+	   </psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_DropDownSingle" dimension="single" choiceset="required">
 		<psxctl:Description>a drop down combo box for selecting a single value</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -170,7 +170,7 @@
 				<psxctl:Description>If set, this boolean attribute disables the control for user input.</psxctl:Description>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_EditBox" dimension="single" choiceset="none">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_EditBox" dimension="single" choiceset="none">
 		<psxctl:Description>The standard control for editing text:  an &lt;input type="text"&gt; tag.</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -194,7 +194,7 @@
 				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_EditLive" dimension="single" choiceset="none">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_EditLive" dimension="single" choiceset="none">
 		<psxctl:Description>Ephox EditLive HTML Editor</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="width" datatype="String" paramtype="generic">
@@ -292,7 +292,7 @@
 			</psxctl:Dependency>
 			
 		</psxctl:Dependencies>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_File" dimension="single" choiceset="none">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_File" dimension="single" choiceset="none">
 		<psxctl:Description>The standard control for uploading files:  an &lt;input type="file"&gt; tag.</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -326,7 +326,7 @@
 				</psxctl:Default>
 			</psxctl:Dependency>
 		</psxctl:Dependencies>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" choiceset="none" dimension="single" name="sys_FileWord">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" choiceset="none" dimension="single" name="sys_FileWord">
 		<psxctl:Description>a file upload input control with MS Word launcher</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param datatype="String" name="id" paramtype="generic">
@@ -377,7 +377,7 @@
 				</psxctl:Default>
 			</psxctl:Dependency>
 		</psxctl:Dependencies>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_HiddenInput" dimension="single" choiceset="none">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_HiddenInput" dimension="single" choiceset="none">
 		<psxctl:Description>a hidden input field</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -391,7 +391,7 @@
 				<psxctl:Description>This parameter specifies style information for the current element. The syntax of the value of the style attribute is determined by the default style sheet language.</psxctl:Description>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_HtmlEditor" dimension="single" choiceset="none" deprecate="yes" replacewith="sys_eWebEditPro">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_HtmlEditor" dimension="single" choiceset="none" deprecate="yes" replacewith="sys_eWebEditPro">
 		<psxctl:Description>WYSIWYG HTML Editor</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="NAME" datatype="String" paramtype="generic">
@@ -503,7 +503,7 @@
 				</psxctl:Default>
 			</psxctl:Dependency>
 		</psxctl:Dependencies>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_RadioButtons" dimension="single" choiceset="required">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_RadioButtons" dimension="single" choiceset="required">
 		<psxctl:Description>A set of radio buttons for selecting a single value</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="class" datatype="String" paramtype="generic">
@@ -520,7 +520,7 @@
 				<psxctl:Description>If set, this boolean attribute disables the control for user input.</psxctl:Description>
 			</psxctl:Param> -->
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_RelatedContentTable" dimension="table" choiceset="none">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_RelatedContentTable" dimension="table" choiceset="none">
 		<psxctl:Description>A related content table</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -553,7 +553,7 @@
 				<psxctl:DefaultValue>1</psxctl:DefaultValue>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_SingleCheckBox" dimension="single" choiceset="required">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_SingleCheckBox" dimension="single" choiceset="required">
 		<psxctl:Description>a group of check boxes with the same HTML param name</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -567,7 +567,7 @@
 				<psxctl:Description>XHTML 1.0 attribute</psxctl:Description>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_Table" dimension="table" choiceset="none">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_Table" dimension="table" choiceset="none">
 		<psxctl:Description>A simple table</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -596,7 +596,7 @@
 				<psxctl:DefaultValue>1</psxctl:DefaultValue>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_TextArea" dimension="single" choiceset="none">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_TextArea" dimension="single" choiceset="none">
 		<psxctl:Description>A simple text area</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -621,7 +621,7 @@
 				<psxctl:Description>This parameter specifies the position of the current element in the tabbing order for the current document. This value must be a number between 0 and 32767.</psxctl:Description>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_VariantDropDown" dimension="single" choiceset="optional" deprecated="yes">
+	</psxctl:ControlMeta><psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_VariantDropDown" dimension="single" choiceset="optional" deprecated="yes">
 		<psxctl:Description>a drop down combo box for selecting a single variant</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">
@@ -650,7 +650,8 @@
 				<psxctl:Description>This parameter selects the output format (snippet or page).</psxctl:Description>
 			</psxctl:Param>
 		</psxctl:ParamList>
-	</psxctl:ControlMeta><psxctl:ControlMeta xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" name="sys_webImageFX" dimension="single" choiceset="none">
+	</psxctl:ControlMeta>
+    <psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_webImageFX" dimension="single" choiceset="none">
 		<psxctl:Description>Custom Ektron control for editing and uploading image files:  an &lt;input type="file"&gt; tag.</psxctl:Description>
 		<psxctl:ParamList>
 			<psxctl:Param name="id" datatype="String" paramtype="generic">

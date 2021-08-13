@@ -27,7 +27,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
 import com.percussion.server.cache.PSFolderRelationshipCache;
-
+import com.percussion.services.error.PSNotFoundException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -142,8 +142,15 @@ public class PSConsoleCommandDumpFolderRelationshipCache extends PSConsoleComman
             throw new PSConsoleCommandException(
                   IPSServerErrors.RCONSOLE_INVALID_ARGS, args);
          }
-         
-         PSRelationship rel = cache.getRelationship(id);
+
+         PSRelationship rel = null;
+         try {
+            rel = cache.getRelationship(id);
+         } catch (PSNotFoundException e) {
+            throw new PSConsoleCommandException(
+                    IPSServerErrors.CANNOT_FIND_CACHED_FOLDER_RELATIONSHIP,
+                    new Object[] { new Integer(id) });
+         }
          if (rel != null)
          {
             cacheElm = rel.toXml(doc);

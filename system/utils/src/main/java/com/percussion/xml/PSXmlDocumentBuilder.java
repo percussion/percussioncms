@@ -24,6 +24,7 @@
 package com.percussion.xml;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.IPSInternalRequestURIResolver;
 import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
@@ -144,6 +145,16 @@ public class PSXmlDocumentBuilder {
      * the Xml Document will have DocType declaration.
      */
     public static final int FLAG_OMIT_DOC_TYPE = 8;
+
+    private static IPSInternalRequestURIResolver internalRequestURIResolver;
+
+    public static IPSInternalRequestURIResolver getInternalRequestURIResolver() {
+        return internalRequestURIResolver;
+    }
+
+    public static void setInternalRequestURIResolver(IPSInternalRequestURIResolver internalRequestURIResolver) {
+        PSXmlDocumentBuilder.internalRequestURIResolver = internalRequestURIResolver;
+    }
 
     /**
      * Create a new, empty XML document.
@@ -313,7 +324,9 @@ public class PSXmlDocumentBuilder {
                 db = dbf.newDocumentBuilder();
 
                 PSCatalogResolver resolver  = new PSCatalogResolver();
-
+                if(internalRequestURIResolver != null){
+                    resolver.setInternalRequestURIResolver(internalRequestURIResolver);
+                }
                 db.setEntityResolver(resolver);
                 returnDocumentBuilderFactory(dbf);
             }
@@ -466,10 +479,14 @@ public class PSXmlDocumentBuilder {
         }
 
         PSCatalogResolver resolver = new PSCatalogResolver();
+        if(internalRequestURIResolver!= null)
+            resolver.setInternalRequestURIResolver(internalRequestURIResolver);
 
         DocumentBuilder db = getDocumentBuilder(validate);
         db.setErrorHandler(errHandler);
         db.setEntityResolver(resolver);
+
+
         Document doc = db.parse(in);
         returnDocumentBuilder(db);
 

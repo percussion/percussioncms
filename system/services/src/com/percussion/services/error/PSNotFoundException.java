@@ -48,6 +48,11 @@ public class PSNotFoundException extends PSException
       Object[] args = { id.longValue(),
             PSTypeEnum.valueOf(id.getType()).getDisplayName() };
    }
+
+   public PSNotFoundException(int id)
+   {
+      Object[] args = { id};
+   }
    
    /**
     * Create an instance for cannot find object by name
