@@ -146,9 +146,10 @@
                     lastCol = "<span title='" + I18N.message("perc.ui.revisionDialog.tooltip@LatestRevision") + "'>"+ I18N.message("perc.ui.revisionDialog.label@Latest") +"</span>";
                 else
                 {
-                    lastCol = "<img alt='" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
+                    lastCol = "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
+                        "' alt='" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
                         "' revId='"+ revdata.revId + "' class='perc-revisions-preview-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/preview.png' />" +
-                        "<img alt='"+ restorableTitle +"' revId='"+ revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;' src='/cm/images/icons/editor/" + restorableIcon + "' />";
+                        "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@Restorable") + "' alt='"+ restorableTitle +"' revId='"+ revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;' src='/cm/images/icons/editor/" + restorableIcon + "' />";
                 }
                 var $rowHTML = $(
                     "<tr>" +
@@ -177,10 +178,11 @@
                     var eMsg = "Cannot preview unknown type.";
                     $.perc_utils.alert_dialog({title: 'Error', content: eMsg});
                 }
-            }).on("mouseenter", function(){
+            })
+            $("#revisionsTable").find(".perc-revisions-preview-img").on("mouseenter", function(){
                 $(this).attr("src", "/cm/images/icons/editor/previewOver.png");
             })
-                .on("mouseleave", function(){
+            $("#revisionsTable").find(".perc-revisions-preview-img").on("mouseleave", function(){
                     $(this).attr("src", "/cm/images/icons/editor/preview.png");
                 });
 
@@ -191,10 +193,10 @@
                     var revId = $(this).attr("revId");
                     $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
                 })
-                    .on("mouseenter", function(){
+                $("#revisionsTable").find(".perc-revisions-restore-img").on("mouseenter", function(){
                         $(this).attr("src", "/cm/images/icons/editor/restoreOver.png");
                     })
-                    .on("mouseleave", function(){
+                $("#revisionsTable").find(".perc-revisions-restore-img").on("mouseleave", function(){
                         $(this).attr("src", "/cm/images/icons/editor/restore.png");
                     });
             }
