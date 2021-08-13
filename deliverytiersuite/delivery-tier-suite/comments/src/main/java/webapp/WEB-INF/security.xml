@@ -37,7 +37,7 @@
     <security:http pattern="/favicon.ico" security='none' />
 
     <security:http  create-session="stateless" use-expressions="true" auto-config="true">
-        <security:csrf disabled="false" token-repository-ref="tokenRepository"/>
+        <security:csrf disabled="true"/>
 
        <security:intercept-url pattern="/**" access="isAuthenticated()" />
 
@@ -49,10 +49,6 @@
         <security:cors configuration-source-ref="corsSource" />
        <security:http-basic/>
    </security:http>
-
-    <beans:bean id="tokenRepository"
-                class="org.springframework.security.web.csrf.CookieCsrfTokenRepository"
-                p:cookieHttpOnly="false"/>
 
     <beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
         <beans:property name="corsConfigurations">
