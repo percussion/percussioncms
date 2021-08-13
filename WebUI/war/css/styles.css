@@ -3790,3 +3790,7 @@ input, select, textarea {
 
 select[name*="_up_"] { font-family: 'Open Sans',sans-serif !important; }
 
+#perc-gadget-comments-viewComments-frame-container {
+    min-height : 500px !important;
+    overflow-y : unset !important;
+}
