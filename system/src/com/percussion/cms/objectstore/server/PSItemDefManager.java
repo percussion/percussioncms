@@ -842,7 +842,7 @@ public class PSItemDefManager
          }
          catch (NumberFormatException e)
          {
-            //TODO: Take Csre of missing data
+            //TODO: Take Care of missing data
          }
       }
 
