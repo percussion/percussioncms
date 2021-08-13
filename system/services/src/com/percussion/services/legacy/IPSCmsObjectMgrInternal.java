@@ -41,4 +41,11 @@ public interface IPSCmsObjectMgrInternal extends IPSCmsObjectMgr
     * a properly configure system. 
     */
    Collection<IPSItemEntry> loadAllItemEntries();
+   /**
+    * Loads item for given Id from the repository. This is typically used by item cache,
+    * it should not be called for any other usage.
+    *
+    * @return item, if fiund in repository.
+    */
+   IPSItemEntry loadItemEntry(Integer id);
 }
