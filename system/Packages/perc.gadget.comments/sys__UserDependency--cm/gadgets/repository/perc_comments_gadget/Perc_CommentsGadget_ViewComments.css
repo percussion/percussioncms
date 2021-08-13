@@ -204,3 +204,11 @@ body * {
     position : relative !important;
     display: none;
 }
+
+th.perc-gadget-comments-viewComments-action{
+    text-align : left !important;
+}
+
+#perc-gadget-comments-viewComments-table{
+    min-height : 492.5px !important;
+}
