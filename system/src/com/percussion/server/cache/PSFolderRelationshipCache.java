@@ -36,8 +36,10 @@ import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSRelationshipPropertyData;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.server.IPSServerErrors;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgrInternal;
 import com.percussion.services.legacy.IPSItemEntry;
@@ -65,7 +67,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -98,7 +100,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       for (PSRelationship psRelationship : (Iterable<PSRelationship>) rset) {
          if (isDelete) {
             log.debug("deleting relationship from relationship cache: {} ", psRelationship.toString());
-            delete(psRelationship);
+            deleteFromCache(psRelationship);
          } else {
             log.debug("updating relationship from relationship cache: {} ", psRelationship.toString());
             update(psRelationship);
@@ -290,10 +292,10 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          Integer parent, child, configId;
          while (rs.next())
          {
-            key = Integer.valueOf(rs.getInt(1));
-            parent = Integer.valueOf(rs.getInt(2));
-            child = Integer.valueOf(rs.getInt(3));
-            configId = Integer.valueOf(rs.getInt(4));
+            key = rs.getInt(1);
+            parent = rs.getInt(2);
+            child = rs.getInt(3);
+            configId = rs.getInt(4);
             addRelationship(key, new PSLocator(parent), new PSLocator(child), configId);
          }
          cleanupFolders();
@@ -739,8 +741,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     */
    private void update(PSRelationship relationship)
    {
-      boolean isFolder = isFolderRelationship(relationship);
-      boolean isAa = isAARelationship(relationship);
+      boolean isFolder = isFolderRelationship(relationship.getConfig());
+      boolean isAa = isAARelationship(relationship.getConfig());
       if (!isFolder && !isAa)
          return;
 
@@ -761,7 +763,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
                || cache.m_childId != child.getId()
                || cache.m_configId != configId)  //include the relationship config id in case it has been changed.
          {
-            delete(relationship);
+            deleteFromCache(relationship);
             insertToCache = true;
          }
    
@@ -789,7 +791,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
                || cache.getDependentId() != child.getId() || cache.getDependentRevision() != relationship.getDependent().getRevision()
                || cache.getSlotId() != slotId)
                || cache.getConfigId() != configId) {
-            delete(relationship);
+            deleteFromCache(relationship);
             insertToCache = true;
          }
    
@@ -1047,7 +1049,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          Iterator<PSRelationship> it = relationships.iterator();
          while (it.hasNext())
          {
-            delete((PSRelationship) it.next());
+            deleteFromCache((PSRelationship) it.next());
          }
       }
       finally
@@ -1055,6 +1057,20 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          m_rwlock.writeLock().unlock();
       }
       
+   }
+
+   private void deleteFromCache(PSRelationshipData relationshipData)
+   {
+      if (isFolderRelationship(relationshipData.getConfig()) )
+      {
+         Integer rid = Integer.valueOf(relationshipData.getId());
+         deleteFolderRel(rid, true);
+      }
+      else if (isAARelationship(relationshipData.getConfig()) )
+      {
+         Integer rid = Integer.valueOf(relationshipData.getId());
+         deleteAaRel(rid,true);
+      }
    }
 
    /**
@@ -1068,8 +1084,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     * @throws IllegalStateException if the dependent of the relationship does
     *    not exist in item cache.
     */
-   public PSRelationship getRelationship(int rid)
-   {
+   public PSRelationship getRelationship(int rid) throws PSNotFoundException {
       m_rwlock.readLock().lock();
       try
       {
@@ -1085,8 +1100,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     * The same as {@link #getRelationship(int)}, except this method assumed
     * the caller own the read lock {@see m_rwlock.readLock().lock()}.
     */
-   private PSRelationship getRelationshipNoLock(int rid)
-   {
+   private PSRelationship getRelationshipNoLock(int rid) throws PSNotFoundException {
       FolderRelationship entry;
       entry = m_relationshipMap.get(Integer.valueOf(rid));
 
@@ -1104,19 +1118,12 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       PSLocator child = new PSLocator(entry.m_childId);
 
       PSRelationship rel = new PSRelationship(rid, parent, child, config);
-      IPSItemEntry item = getItem(Integer.valueOf(entry.m_childId));
+      IPSItemEntry item = getItem(entry.m_childId);
       if (item == null) {
-         List<IPSItemEntry> items = m_cmsObjectMgr.findItemEntries(Arrays.asList(entry.m_childId),null);
-         if(items.size() != 1) {
-            throw new IllegalStateException(
-                    "child id, "
-                            + entry.m_childId
-                            + ", does not exist in item cache, "
-                            + "but it is a dependent of relationship id, "
-                            + rid);
-         }else {
-            item = items.get(0);
-         }
+         //Relationship may be stale so, clear from cache
+         deleteFromCache(rel);
+        log.debug("Object Not Found with Id: {}",entry.m_childId);
+        throw new PSNotFoundException(entry.m_childId);
       }
       rel.setDependentCommunityId(item.getCommunityId());
       rel.setDependentObjectType(item.getObjectType());
@@ -1145,21 +1152,22 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       {
          List<PSGraphEntry> childObjs = m_graph.getChildrenList(parent);
 
-         PSRelationship rel;
+         PSRelationship rel = null;
          Integer rid;
          for (PSGraphEntry child : childObjs)
          {
             rid = (Integer) child.getrelationshipId();
-            rel = getRelationshipNoLock(rid.intValue());
-            if (!rel.getConfig().getName().equals(filter.getName())) {
-               continue;
+            try {
+               rel = getRelationshipNoLock(rid.intValue());
+               if(rel != null) {
+                  if (!rel.getConfig().getName().equals(filter.getName())) {
+                     continue;
+                  }
+                  rels.add(rel);
+               }
+            } catch (PSNotFoundException e) {
+               log.warn("Relationship Not Found : {} : Error : {} " ,rid, PSExceptionUtils.getMessageForLog(e));
             }
-            if (rel == null)
-               throw new IllegalStateException("Cannot find rid=" + rid
-                     + ", parentId=" + parent.getId() + ", childId="
-                     + child.getValue());
-
-            rels.add(rel);
          }
       }
       finally
@@ -1191,14 +1199,19 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          // For folder need to check revisionless
          PSLocator childLoc = child.getRevision()==-1 ? child : new PSLocator(child.getId());
          List<PSGraphEntry> parentObjs = m_graph.getParents(childLoc);
-
          PSRelationship rel;
          Integer rid;
          for (PSGraphEntry childEntry : parentObjs)
          {
             rid = childEntry.getrelationshipId();
-            rel = getRelationshipNoLock(rid.intValue());
-            rels.add(rel);
+            try {
+               rel = getRelationshipNoLock(rid);
+               if(rel != null) {
+                  rels.add(rel);
+               }
+            } catch (PSNotFoundException e) {
+               log.warn("Relationship Not Found : {} : Error : {} " ,rid, PSExceptionUtils.getMessageForLog(e));
+            }
          }
       }
       finally
@@ -1422,7 +1435,7 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          if (rels!=null)
          {
             for (PSRelationship rel :rels)
-               delete(rel);
+               deleteFromCache(rel);
          }
          
       }
@@ -1438,21 +1451,22 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     * @param relationship the to be deleted relationship, assume never
     *    <code>null</code>.
     */
-   private void delete(PSRelationship relationship)
+   private void deleteFromCache(PSRelationship relationship)
    {
-      if (isFolderRelationship(relationship) )
+      if (isFolderRelationship(relationship.getConfig()) )
       {
-         Integer rid = Integer.valueOf(relationship.getId());
+         Integer rid = relationship.getId();
          deleteFolderRel(rid, true);
       }
-      else if (isAARelationship(relationship) )
+      else if (isAARelationship(relationship.getConfig()) )
       {
-         Integer rid = Integer.valueOf(relationship.getId());
+         Integer rid = relationship.getId();
          deleteAaRel(rid,true);
       }
-   } 
-  
-  /*
+   }
+
+
+   /*
    * A convenience method, just like {@link #delete(PSRelationship)}, except
    * it accept a different parameters.
    *
@@ -1580,14 +1594,13 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     * Determines whether the supplied relationship is a folder type
     * relationship.
     *
-    * @param relationship the relationship object, assume not <code>null</code>.
+    * @param config the PSRelationshipConfig object, assume not <code>null</code>.
     *
     * @return <code>true</code> if it is a folder type relationship; otherwise
     *    return <code>false</code>.
     */
-   private boolean isFolderRelationship(PSRelationship relationship)
+   private boolean isFolderRelationship(PSRelationshipConfig config)
    {
-      PSRelationshipConfig config = relationship.getConfig();
       return config.getName().equalsIgnoreCase(
             PSRelationshipConfig.TYPE_FOLDER_CONTENT) ||
               config.getName().equalsIgnoreCase(PSRelationshipConfig.TYPE_RECYCLED_CONTENT);
@@ -1597,14 +1610,13 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     * Determines whether the supplied relationship is a Aa type
     * relationship.
     *
-    * @param relationship the relationship object, assume not <code>null</code>.
+    * @param config the PSRelationshipConfig object, assume not <code>null</code>.
     *
     * @return <code>true</code> if it is a folder type relationship; otherwise
     *    return <code>false</code>.
     */
-   private boolean isAARelationship(PSRelationship relationship)
+   private boolean isAARelationship(PSRelationshipConfig config)
    {
-      PSRelationshipConfig config = relationship.getConfig();
       return config.getCategory().equals(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
    }
    
@@ -1625,16 +1637,19 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          for (PSGraphEntry child : m_aa_graph.getChildrenList(parent))
          {
             rid = (Integer) child.getrelationshipId();
-            rel = getAaRelationshipNoLock(rid.intValue());
-            if (rel == null)
-            {
-               
-               log.debug("Cannot find rid= {} , parentId= {} , rev= {} , childId= {}", rid, parent.getId(), parent.getRevision(), child.getValue());
-               continue;
+            try {
+               rel = getAaRelationshipNoLock(rid.intValue());
+               if(rel != null) {
+                  String relSlot = rel.getProperty("sys_slotid");
+                  if (slot == null || StringUtils.equals(relSlot, slot)){
+                     rels.add(rel);
+                  }
+               }else{
+                  log.debug("Cannot find rid= {} , parentId= {} , rev= {} , childId= {}", rid, parent.getId(), parent.getRevision(), child.getValue());
+               }
+            } catch (PSNotFoundException e) {
+               log.warn("Relationship Not Found : rid= {} , parentId= {} , rev= {} , childId= {} :  Error : {} " ,rid, parent.getId(), parent.getRevision(), child.getValue(),  PSExceptionUtils.getMessageForLog(e));
             }
-            String relSlot = rel.getProperty("sys_slotid");
-            if (slot==null || StringUtils.equals(relSlot, slot))
-               rels.add(rel);
          }
       }
       finally
@@ -1662,12 +1677,13 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          for (PSGraphEntry parent : parentObjs)
          {
             rid = (Integer) parent.getrelationshipId();
-            rel = getAaRelationshipNoLock(rid.intValue());
-            if (rel==null)
-            {
-               
-               log.debug("Cannot find rel= {} for child {} ", rid, child.getId());
-            }else {
+            try {
+               rel = getAaRelationshipNoLock(rid);
+               //if this relationship not found, move to next one
+               if(rel == null){
+                  log.debug("Cannot find rel= {} for child {} ", rid, child.getId());
+                  continue;
+               }
                PSLocator owner = rel.getOwner();
                int revision = owner.getRevision();
                boolean slotMatch = (slot == null || StringUtils.equals(rel.getProperty("sys_slotid"), slot));
@@ -1682,8 +1698,10 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
                )) {
                   rels.add(rel);
                }
+
+            } catch (PSNotFoundException e) {
+               log.warn("Relationship Not Found : {} : Error : {} " ,rid, PSExceptionUtils.getMessageForLog(e));
             }
-            
          }
       }
       finally
@@ -1694,9 +1712,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
       return rels;
    }
 
-   private PSRelationship getAaRelationshipNoLock(int rid)
-   {
-      PSRelationshipData entry = m_aARelationshipMap.get(Integer.valueOf(rid));
+   private PSRelationship getAaRelationshipNoLock(int rid) throws PSNotFoundException {
+      PSRelationshipData entry = m_aARelationshipMap.get(rid);
 
       if (entry == null)
       {
@@ -1705,30 +1722,23 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
          return null;
       }
 
-   
-      IPSItemEntry item = getItem(Integer.valueOf(entry.getOwnerId()));
-      if (item == null)
-      {
-         List<IPSItemEntry> items = m_cmsObjectMgr.findItemEntries(Arrays.asList(entry.getOwnerId()),null);
-         if(items.size() != 1) {
-         log.warn(
-               "owner id, {} , does not exist in item cache, but it is an owner of a relationship id, {} , which has dependent id: {} ", entry.getOwnerId(), rid, entry.getDependentId());
-         return null;
-         }else {
-            item = items.get(0);
-         }
+      IPSItemEntry item = getItem(entry.getOwnerId());
+
+      if (item == null) {
+         //As Relationship might be stale
+         deleteFromCache( entry);
+         log.warn("owner id, {} , does not exist in item cache, but it is an owner of a relationship id, {} , which has dependent id: {} ", entry.getOwnerId(), rid, entry.getDependentId());
+         throw new PSNotFoundException(entry.getOwnerId());
       }
-      IPSItemEntry dependent = getItem(Integer.valueOf(entry.getDependentId()));
+
+      IPSItemEntry dependent = getItem(entry.getDependentId());
       if (dependent == null)
       {
-         List<IPSItemEntry> items = m_cmsObjectMgr.findItemEntries(Arrays.asList(entry.getDependentId()),null);
-         if(items.size() != 1) {
-            log.warn(
-                  "child id, {} , does not exist in item cache, but it is a dependent of relationship id, {} ", entry.getDependentId(), rid);
-            return null;
-         }else {
-            dependent = items.get(0);
-         }
+         //As Relationship might be stale
+         deleteFromCache( entry);
+            log.warn("child id, {} , does not exist in item cache, but it is a dependent of relationship id, {} ", entry.getDependentId(), rid);
+         throw new PSNotFoundException(entry.getDependentId());
+
       }
       
       PSRelationship rel = new PSRelationship(entry.getId(), 
