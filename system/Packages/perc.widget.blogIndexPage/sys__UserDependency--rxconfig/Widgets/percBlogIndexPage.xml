@@ -55,12 +55,11 @@
     <UserPref name="sortby"
               display_name="Sort by"
               required="true"
-              default_value="rx:resource_link_title"
+              default_value="rx:sys_contentpostdate"
               datatype="enum">
         <EnumValue value="none" display_value="None" />
         <EnumValue value="rx:resource_link_title" display_value="Link text" />
         <EnumValue value="rx:page_title" display_value="Title" />
-        <EnumValue value="rx:sys_contentcreateddate" display_value="Created date" />
         <EnumValue value="rx:sys_contentpostdate" display_value="Post Date" />
 
     </UserPref>
@@ -330,12 +329,11 @@
     $blogPostBylineText = $perc.widget.item.properties.get('blogPostBylineText');
     $results_title = $perc.widget.item.properties.get('blogListHeaderText');
     $sortByVal = $perc.widget.item.properties.get('sortby');
+    $sortDirection = $perc.widget.item.properties.get('sortDirection');
     if($sortByVal == null || $sortByVal == "none") {
         $sortByVal = "rx:sys_contentpostdate";
 		$sortDirection = "desc";
-    }else{
-		$sortDirection = $perc.widget.item.properties.get('sortDirection');
-	}
+    }
 
     $pageTitle = $perc.page.title;
     if ($listAriaLabel == '' || $listAriaLabel == null) {
@@ -477,38 +475,23 @@
             }
 
         }
-        else if ( $sortByVal == "rx:page_title")
+        else if ($sortByVal == "rx:page_title")
       {
             if($sortDirection == null){
                $orderby = "dcterms:title asc, linktext_lower asc";
             }else{
-               $orderby = "dcterms:title  " + $sortDirection +", linktext_lower " + $sortDirection;
+               $orderby = "dcterms:title  " + $sortDirection +", linktext_lower asc";
             }
 
       }
-       else if($sortbyVal == "rx:sys_contentcreateddate" )
+        else if($sortbyVal == "rx:sys_contentpostdate" || $sortbyVal == "none" || $sortbyVal == null)
         {
-
-            if($sortDirection == null){
-               $orderby = "dcterms:date desc, linktext_lower asc";
-            }else{
-              $orderby = "dcterms:date " + $sortDirection +", linktext_lower asc";
-            }
-        }
-        else if($sortbyVal == "rx:sys_contentpostdate")
-        {
-
-             if($sortDirection == null){
-                  $orderby = "dcterms:created desc , linktext_lower asc";
+             if($sortDirection == null || $sortDirection == "desc"){
+                  $orderby = "dcterms:created desc, linktext_lower asc";
                 }else{
-                  $orderby = "dcterms:created " + $sortDirection +", linktext_lower asc";
+                  $orderby = "dcterms:created asc, linktext_lower asc";
               }
 
-
-        }
-		 else if($sortbyVal == null)
-        {
-            $orderby = "dcterms:created desc, linktext_lower asc";
         }
 
 
