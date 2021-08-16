@@ -874,6 +874,7 @@ public class PSUserService implements IPSUserService
     protected void doValidation(PSUser user, boolean isCreateUser) throws PSValidationException
     {
         log.debug("validating user " + user);
+        user.setCreateUser(isCreateUser);
         PSUserValidator validator = new PSUserValidator(isCreateUser);
 
         validator.validate(user).throwIfInvalid();

@@ -69,6 +69,16 @@ public class PSUser extends PSAbstractNamedObject
     private String email = "";
     
     private PSUserProviderType providerType = PSUserProviderType.INTERNAL;
+
+    public boolean isCreateUser() {
+        return isCreateUser;
+    }
+
+    public void setCreateUser(boolean createUser) {
+        isCreateUser = createUser;
+    }
+
+    private boolean isCreateUser;
     
     /**
      * A user has to be in at least one roll.
@@ -101,7 +111,12 @@ public class PSUser extends PSAbstractNamedObject
     protected boolean isValidName(String name) {
         if (getProviderType() != PSUserProviderType.INTERNAL)
             return true;
-        return name.matches("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,18}[a-zA-Z0-9]$") && super.isValidName(name);
+        if(isCreateUser()){
+            return name.matches("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,18}[a-zA-Z0-9]$") && super.isValidName(name);
+        }else{
+            return super.isValidName(name);
+        }
+
     }
     
     /**
