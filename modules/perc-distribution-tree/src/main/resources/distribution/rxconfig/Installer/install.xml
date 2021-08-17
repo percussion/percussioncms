@@ -487,6 +487,7 @@
         <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
     </target>
 
     <target name="deleteOldJqueryUIJsFile">
@@ -494,6 +495,21 @@
             <available file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js" type="file" />
             <then>
                 <delete file="${install.dir}/web_resources/cm//jslib/jquery-ui.1.12.1.js"/>
+            </then>
+        </if>
+    </target>
+
+    <target name="deleteOldJqueryJsFile">
+        <if>
+            <available file="${install.dir}/web_resources/widgets/navBar/js/jquery-1.2.6.min.js" type="file" />
+            <then>
+                <delete file="${install.dir}/web_resources/widgets/navBar/js/jquery-1.2.6.min.js"/>
+            </then>
+        </if>
+        <if>
+            <available file="${install.dir}/rx_resources/js/jquery-2.1.4.js" type="file" />
+            <then>
+                <delete file="${install.dir}/rx_resources/js/jquery-2.1.4.js"/>
             </then>
         </if>
     </target>
