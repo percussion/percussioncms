@@ -32,6 +32,7 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSDataService.DataServiceSaveException;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.web.service.PSRestServicePathConstants;
@@ -83,10 +84,13 @@ public class PSTemplateRestService {
 
     @DELETE
     @Path("/{id}")
-    public void delete(@PathParam("id") String id)
+    public void delete(@PathParam("id") String id) throws PSParametersValidationException
     {
         try {
             templateService.delete(id);
+        } catch (PSParametersValidationException pve){
+            log.debug(pve.getMessage(),pve);
+            throw pve;
         } catch (PSNotFoundException | PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
