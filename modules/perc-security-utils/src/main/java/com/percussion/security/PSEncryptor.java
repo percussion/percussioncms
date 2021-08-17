@@ -154,10 +154,9 @@ public class PSEncryptor extends PSAbstractEncryptor {
             try {
                 Files.deleteIfExists(rotateFlag);
             } catch (IOException e) {
-               log.warn("Unable to remove the encryption key rotation flag file: {} .  They key will be rotated on restart unless this file is removed. Error was: {} ",rotateFlag.toAbsolutePath(), e.getMessage());
+                log.warn("Unable to remove the encryption key rotation flag file: {} .  They key will be rotated on restart unless this file is removed. Error was: {} ",rotateFlag.toAbsolutePath(), e.getMessage());
             }
         }
-
         key.setSecret(secureKey);
         return key;
     }
@@ -213,6 +212,26 @@ public class PSEncryptor extends PSAbstractEncryptor {
             }
 
             return instance;
+        }
+    }
+
+    /**
+     * This is an API for services which are not suppose to generate a key...
+     * should only be working if key is already generated...
+     * For E.g. Feeds Service is calling getInstance is creating a new key, when it is suppose to copy from CMS
+     * @param algorithm
+     * @param keyLocation
+     * @return
+     */
+    public static PSEncryptor getExistingInstance(String algorithm, String keyLocation){
+        if(algorithm==null || keyLocation==null)
+            throw new IllegalArgumentException("Algorithm and KeyLocation are required.");
+            return instance;
+    }
+
+    public static void rotateKey(String algorithm, String keyLocation){
+        synchronized (PSEncryptor.class) {
+            instance = new PSEncryptor(algorithm,keyLocation);
         }
     }
 

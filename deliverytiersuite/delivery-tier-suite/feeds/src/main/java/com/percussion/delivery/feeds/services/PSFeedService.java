@@ -57,7 +57,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -67,13 +74,23 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TimeZone;
 
 import static com.percussion.security.SecureStringUtils.stripNonHttpProtocols;
 
@@ -248,15 +265,16 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         log.debug("URL is: {}",feedUrl);
         
         try{
-            //If Secure File is not Copied to DTS Yet
-        	File secureFile = new File(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-        	if(secureFile == null || !secureFile.exists()){
-        	    return "";
-            }
-            String decryptedUrl = PSEncryptor.getInstance(
+            //If Secure File is not Copied to DTS Yet then returning
+            PSEncryptor encryptor = PSEncryptor.getExistingInstance(
                     "AES",
                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(feedUrl);
+            );
+        	if(encryptor == null){
+                log.info("Secure Key not set !! Need to do publish to set secure Key");
+        	    return "";
+            }
+            String decryptedUrl = encryptor.decrypt(feedUrl);
             log.debug("Decrypted URL is: {}" , decryptedUrl);
             decodedUrl = URLDecoder.decode(decryptedUrl, "UTF8");
             log.debug("Decoded URL is: {}",  decodedUrl);

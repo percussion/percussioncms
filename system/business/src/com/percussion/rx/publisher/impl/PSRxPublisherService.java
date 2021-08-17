@@ -303,7 +303,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       
       try{
          if (checkConnectivity(edition, job)) {
-             copySecureKeyToDeliveryServer(edition);
+             PSDeliveryInfoService.copySecureKeyToDeliveryServer(edition);
             m_jobs.put(job.getJobid(), job);
             job.startJob();
             return job.getJobid();
@@ -334,60 +334,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       return true;
    }
 
-   private void copySecureKeyToDeliveryServer(IPSGuid edition) throws PSNotFoundException {
-       IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
-       IPSEdition editionObject =  pubService.loadEdition(edition);
 
-       PSPubServer pubServer = PSPubServerDaoLocator.getPubServerManager()
-               .loadPubServer(editionObject.getPubServerId());
-       PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
-       List<PSDeliveryInfo> psDeliveryInfoServiceList = psDeliveryInfoService.findAll();
-       String secureKey= getSecureKey();
-       if(secureKey == null){
-           return;
-       }
-       //TODO: Sony Do Copy only for passed in ServerID
-       for(PSDeliveryInfo info : psDeliveryInfoServiceList) {
-       if (info.getAvailableServices().contains(PSDeliveryInfo.SERVICE_FEEDS)) {
-               PSDeliveryClient deliveryClient = new PSDeliveryClient();
-               try {
-                   Set<Integer> successfullHttpStatusCodes = new HashSet<>();
-                   successfullHttpStatusCodes.add(204);
-                   deliveryClient.push(
-                           new IPSDeliveryClient.PSDeliveryActionOptions()
-                                   .setActionUrl("/feeds/rss/rotateKey")
-                                   .setDeliveryInfo(info)
-                                   .setHttpMethod(IPSDeliveryClient.HttpMethodType.PUT)
-                                   .setSuccessfullHttpStatusCodes(successfullHttpStatusCodes)
-                                   .setAdminOperation(true),
-                           secureKey);
-                   ms_log.info("Updated security key pushed to DTS server: " + info.getAdminUrl());
-               } catch (Exception ex) {
-                   ms_log.warn("Unable to push updated security key to DTS server:{} ",info.getAdminUrl());
-                   ms_log.debug( "Unable to push updated security key to DTS server:{}  ERROR: {} ",info.getAdminUrl(), ex.getMessage(),ex);
-               }
-        }
-       }
-   }
-
-   private String getSecureKey() {
-
-       String keyLocation = PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR);
-       String SECURE_KEY_FILE = ".key";
-       String keyStr = null;
-       Path secureKeyFile = Paths.get(keyLocation + SECURE_KEY_FILE);
-       if (Files.exists(secureKeyFile)) {
-           //load key
-           try {
-               byte[] key = Files.readAllBytes(secureKeyFile);
-               keyStr = Base64.getEncoder().encodeToString(key);
-           } catch (IOException e) {
-               ms_log.error("Error reading instance secure key file");
-               ms_log.debug(e);
-           }
-       }
-       return keyStr;
-   }
        /**
 
     *  Check existing jobs to see if any can be reaped.

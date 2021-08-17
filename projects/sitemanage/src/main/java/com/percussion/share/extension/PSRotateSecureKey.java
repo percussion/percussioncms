@@ -24,6 +24,7 @@
 
 package com.percussion.share.extension;
 
+import com.percussion.delivery.service.impl.PSDeliveryInfoService;
 import com.percussion.security.PSEncryptor;
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
@@ -110,7 +111,9 @@ import java.util.concurrent.TimeUnit;
                 long diff = ft - now;
                 long days = TimeUnit.MILLISECONDS.toDays(diff);
                 if (days > rotationDays) {
-                    Files.createFile(Paths.get(keyLocation.concat(PSEncryptor.ROTATE_FLAG_FILE)));
+                    PSEncryptor.rotateKey("AES",
+                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+                    PSDeliveryInfoService.copySecureKeyToDeliveryServer(null);
                 }else{
                     //Set Timer for those many days to rotate
                     Timer timer = new Timer();
