@@ -57,13 +57,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -73,21 +67,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TimeZone;
+import java.util.*;
 
 import static com.percussion.security.SecureStringUtils.stripNonHttpProtocols;
 
@@ -262,7 +248,11 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         log.debug("URL is: {}",feedUrl);
         
         try{
-        	
+            //If Secure File is not Copied to DTS Yet
+        	File secureFile = new File(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+        	if(secureFile == null || !secureFile.exists()){
+        	    return "";
+            }
             String decryptedUrl = PSEncryptor.getInstance(
                     "AES",
                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -591,10 +581,15 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     }
 
     @Override
-    public void rotateKey(byte[] key) {
+    @PUT
+    @Path("/rotateKey")
+    @RolesAllowed("deliverymanager")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN})
+    public void rotateKey(String key) {
+        byte[] backToBytes = Base64.getDecoder().decode(key);
         PSEncryptor.getInstance("AES",
                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-        ).forceReplaceKeyFile(key,false);
+        ).forceReplaceKeyFile(backToBytes,false);
     }
     
     @Override
