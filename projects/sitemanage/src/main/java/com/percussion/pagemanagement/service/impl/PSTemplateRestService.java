@@ -92,7 +92,6 @@ public class PSTemplateRestService {
             log.debug(pve.getMessage(),pve);
             throw pve;
         } catch (PSNotFoundException | PSDataServiceException e) {
-            log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
         }
