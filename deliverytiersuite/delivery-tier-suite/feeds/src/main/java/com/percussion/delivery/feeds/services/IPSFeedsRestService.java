@@ -27,16 +27,11 @@ import com.percussion.delivery.feeds.data.PSFeedDTO;
 import com.percussion.delivery.feeds.data.PSFeedDescriptors;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
 import com.percussion.delivery.services.IPSRestService;
+import org.json.JSONObject;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -117,7 +112,8 @@ public interface IPSFeedsRestService extends IPSRestService {
 	@PUT
 	@Path("/rotateKey")
 	@RolesAllowed("deliverymanager")
-	public abstract void rotateKey(byte[] key);
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN})
+	public abstract void rotateKey(String key);
 
 	// Property key constants
 	public static final String PROP_DESCRIPTION = "dcterms:abstract";
