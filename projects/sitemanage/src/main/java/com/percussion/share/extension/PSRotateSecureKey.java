@@ -132,7 +132,7 @@ rotateKey();
                     timer.schedule(this, System.currentTimeMillis() + TimeUnit.DAYS.toMillis(days));
                 }
             }catch (Exception e){
-                log.error("PSRotateKey Failed");
+log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e);
                 log.debug("PSRotateKey Failed ERROR: {}",e.getMessage());
             }
         }
