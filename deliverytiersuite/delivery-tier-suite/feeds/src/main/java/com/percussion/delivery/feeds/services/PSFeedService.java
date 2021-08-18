@@ -295,13 +295,13 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             }
         }catch(PSEncryptionException e){
             //Means EncryptionKey Not generated yet
-            log.error(e.getMessage(),e);
-            log.debug(e.getMessage(), e);
+            log.error(e.getMessage());
+            log.debug(e);
             return "";
 
         }catch(Exception e){
-        	log.error(e.getMessage(),e);
-        	log.debug(e.getMessage(), e);
+        	log.error(e.getMessage());
+        	log.debug(e);
         	throw new WebApplicationException(403);
         }
         
@@ -334,7 +334,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         catch (Exception e)
         {
        		log.error("Exception during reading external feed : {}", e.getMessage());
-       		log.debug(e.getMessage(), e);
+       		log.debug(e);
         }
         finally
         {
@@ -526,7 +526,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         catch (Exception e)
         {
        		log.error("Exception during feed generation : {}" , e.getMessage());
-       		log.debug(e.getMessage(), e);
+       		log.debug(e);
             throw new FeedException(e.getMessage(), e);
         }
 
