@@ -95,7 +95,7 @@ import java.util.concurrent.TimeUnit;
                         PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
                 PSDeliveryInfoService.copySecureKeyToDeliveryServer(null);
              }catch (Exception e){
-                log.error("PSRotateKey Failed");
+log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e));
                 log.debug("PSRotateKey Failed ERROR: {}",e.getMessage());
             }
         }
