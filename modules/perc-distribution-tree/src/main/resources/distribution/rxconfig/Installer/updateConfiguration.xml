@@ -127,7 +127,7 @@
                 <entry key="allowedMethods" default="GET,POST,OPTIONS,HEAD,PUT,DELETE,PATCH"/>
                 <entry key="allowedHeaders" default="Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-UA-Compatible, OWASP-CSRFTOKEN,User-Agent"/>
                 <entry key="allowCredentials" default="false"/>
-                <entry key="SecureKeyRotationTime" default="90"/>
+<entry key="secureKeyRotationTime" default="90"/>
 
                 <!-- Properties to remove if present -->
                 <entry key="optimizePublishWithMD5Check" operation="del"/>
