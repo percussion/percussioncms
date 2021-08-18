@@ -31,6 +31,7 @@ import com.percussion.delivery.feeds.data.PSFeedItem;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSHttpClient;
+import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.security.ToDoVulnerability;
@@ -266,7 +267,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         
         try{
             //If Secure File is not Copied to DTS Yet then returning
-            PSEncryptor encryptor = PSEncryptor.getExistingInstance(
+            PSEncryptor encryptor = PSEncryptor.getInstance(
                     "AES",
                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             );
@@ -292,6 +293,11 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 throw new WebApplicationException("Invalid url supplied to getExternalFeed",
                         Status.NOT_ACCEPTABLE);
             }
+        }catch(PSEncryptionException e){
+            //Means EncryptionKey Not generated yet
+            log.error(e.getMessage(),e);
+            log.debug(e.getMessage(), e);
+            return "";
 
         }catch(Exception e){
         	log.error(e.getMessage(),e);

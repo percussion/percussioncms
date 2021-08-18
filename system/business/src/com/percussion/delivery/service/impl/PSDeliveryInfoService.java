@@ -175,11 +175,13 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
         return delInfo;
     }
     public static void copySecureKeyToDeliveryServer(IPSGuid edition) throws PSNotFoundException {
+        String publishServer = null;
         if(edition != null) {
             IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
             IPSEdition editionObject = pubService.loadEdition(edition);
             PSPubServer pubServer = PSPubServerDaoLocator.getPubServerManager()
                     .loadPubServer(editionObject.getPubServerId());
+            publishServer = pubServer.getProperty("publishServer").getValue();
         }
 
         PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
@@ -188,8 +190,12 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
         if(secureKey == null){
             return;
         }
-        //TODO: Sony Do Copy only for passed in ServerID
+
         for(PSDeliveryInfo info : psDeliveryInfoServiceList) {
+            //Copy only for passed in ServerID incase a serverId is passed.
+            if(publishServer != null && !publishServer.equals(info.getAdminUrl())){
+                continue;
+            }
             if (info.getAvailableServices().contains(PSDeliveryInfo.SERVICE_FEEDS)) {
                 PSDeliveryClient deliveryClient = new PSDeliveryClient();
                 try {
