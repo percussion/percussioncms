@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
     public class PSRotateSecureKey extends TimerTask implements IPSStartupProcess {
 
         private static final Logger log = LogManager.getLogger(PSRotateSecureKey.class.getName());
-        private static final String SECURE_KEY_ROTATION_TIME_PROP = "SecureKeyRotationTime";
+        private static final String SECURE_KEY_ROTATION_TIME_PROP = "secureKeyRotationTime";
         //Default Value is 90 days
         private static final int SECURE_KEY_ROTATION_TIME_DEFAULT = 90;
 
@@ -95,7 +95,7 @@ import java.util.concurrent.TimeUnit;
                         PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
                 PSDeliveryInfoService.copySecureKeyToDeliveryServer(null);
              }catch (Exception e){
-log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e));
+                log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e));
                 log.debug("PSRotateKey Failed ERROR: {}",e.getMessage());
             }
         }
@@ -132,8 +132,8 @@ rotateKey();
                     timer.schedule(this, System.currentTimeMillis() + TimeUnit.DAYS.toMillis(days));
                 }
             }catch (Exception e){
-log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e);
-log.debug(e);
+                log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
             }
         }
 
