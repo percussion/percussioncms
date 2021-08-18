@@ -124,7 +124,8 @@ log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLo
                 long diff = now - ft;
                 long days = TimeUnit.MILLISECONDS.toDays(diff);
                 if (days > rotationDays) {
-                   rotateKey();
+log.info("Rotating the system security key based as it is {} days old based on the policy setting {}={} ...",days,SECURE_KEY_ROTATION_TIME_PROP, rotationDays);
+rotateKey();
                 }else{
                     //Set Timer for those many days to rotate
                     Timer timer = new Timer();
