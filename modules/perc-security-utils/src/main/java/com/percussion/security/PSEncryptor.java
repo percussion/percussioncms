@@ -102,18 +102,18 @@ public class PSEncryptor extends PSAbstractEncryptor {
     private byte[] generateNewKeyFile(IPSKey key,Path secureKeyFile, byte[] secureKey,boolean notifyListeners){
 
         try {
-            //Notify any listeners that the key has changed.
-            pcs.firePropertyChange(
-                    SECRETKEY_PROPNAME,
-                    this.secretKey,  //old value
-                    secureKey //new value
-                    );
-
             File f = secureKeyFile.toFile();
             f.getParentFile().mkdirs();
             try(FileOutputStream writer = new FileOutputStream(f)) {
                 writer.write(secureKey);
             }
+            key.setSecret(secureKey);
+            //Notify any listeners that the key has changed.
+            pcs.firePropertyChange(
+                    SECRETKEY_PROPNAME,
+                    this.secretKey,  //old value
+                    secureKey //new value
+            );
         } catch (IOException e) {
             log.error("Error writing instance secure key file: (" + secureKeyFile.toAbsolutePath().toString() + ")" + ") :" + e.getMessage());
             log.debug(e);
@@ -215,24 +215,18 @@ public class PSEncryptor extends PSAbstractEncryptor {
         }
     }
 
-    /**
-     * This is an API for services which are not suppose to generate a key...
-     * should only be working if key is already generated...
-     * For E.g. Feeds Service is calling getInstance is creating a new key, when it is suppose to copy from CMS
-     * @param algorithm
-     * @param keyLocation
-     * @return
-     */
-    public static PSEncryptor getExistingInstance(String algorithm, String keyLocation){
-        if(algorithm==null || keyLocation==null)
-            throw new IllegalArgumentException("Algorithm and KeyLocation are required.");
-            return instance;
-    }
-
     public static void rotateKey(String algorithm, String keyLocation){
-        synchronized (PSEncryptor.class) {
-            instance = new PSEncryptor(algorithm,keyLocation);
+        Path rotateFlag = Paths.get(keyLocation + ROTATE_FLAG_FILE);
+        try {
+            Files.createFile(rotateFlag);
+            synchronized (PSEncryptor.class) {
+                instance = new PSEncryptor(algorithm,keyLocation);
+            }
+        } catch (IOException e) {
+            log.warn("Unable to rotate Key ERROR: {} .",e.getMessage());
+            log.debug("Unable to rotate Key ERROR: {} .",e.getMessage(),e);
         }
+
     }
 
 

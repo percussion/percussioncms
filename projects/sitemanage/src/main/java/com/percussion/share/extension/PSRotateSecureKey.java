@@ -65,9 +65,7 @@ import java.util.concurrent.TimeUnit;
 
         public void run()
         {
-            Properties props = new Properties();
-            props.setProperty(PSRotateSecureKey.class.getSimpleName(),"true");
-            doStartupWork(props);
+            rotateKey();
         }
 
         /***
@@ -87,6 +85,21 @@ import java.util.concurrent.TimeUnit;
                 log.debug(e.getMessage(), e);
             }
         }
+
+    /**
+     * This method triggers a rotateKey on PSEncryptor
+     */
+    private static void rotateKey(){
+            try {
+                PSEncryptor.rotateKey("AES",
+                        PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+                PSDeliveryInfoService.copySecureKeyToDeliveryServer(null);
+             }catch (Exception e){
+                log.error("PSRotateKey Failed");
+                log.debug("PSRotateKey Failed ERROR: {}",e.getMessage());
+            }
+        }
+
         @Override
         public void doStartupWork(Properties startupProps) {
 
@@ -108,12 +121,10 @@ import java.util.concurrent.TimeUnit;
                 }
                 long ft = lastModified.toMillis();
                 long now = System.currentTimeMillis();
-                long diff = ft - now;
+                long diff = now - ft;
                 long days = TimeUnit.MILLISECONDS.toDays(diff);
                 if (days > rotationDays) {
-                    PSEncryptor.rotateKey("AES",
-                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-                    PSDeliveryInfoService.copySecureKeyToDeliveryServer(null);
+                   rotateKey();
                 }else{
                     //Set Timer for those many days to rotate
                     Timer timer = new Timer();
