@@ -23,6 +23,11 @@
  */
 package com.percussion.rx.publisher.impl;
 
+import com.percussion.delivery.client.IPSDeliveryClient;
+import com.percussion.delivery.client.PSDeliveryClient;
+import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
+import com.percussion.delivery.service.impl.PSDeliveryInfoService;
 import com.percussion.rx.delivery.PSConnectivityCheck;
 import com.percussion.rx.publisher.IPSPublisherItemStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
@@ -32,6 +37,7 @@ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.data.PSDemandWork;
 import com.percussion.rx.publisher.data.PSPubItemStatus;
 import com.percussion.rx.publisher.jsf.nodes.PSPublishingStatusHelper;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -45,18 +51,27 @@ import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.utils.general.PSServiceConfigurationBean;
 import com.percussion.util.PSDateFormatISO8601;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.io.PathUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.ObjectFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.core.MediaType;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
@@ -288,6 +303,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       
       try{
          if (checkConnectivity(edition, job)) {
+             PSDeliveryInfoService.copySecureKeyToDeliveryServer(edition);
             m_jobs.put(job.getJobid(), job);
             job.startJob();
             return job.getJobid();
@@ -317,7 +333,10 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       }
       return true;
    }
-   /**
+
+
+       /**
+
     *  Check existing jobs to see if any can be reaped.
     */
    private void reapActiveJobs()

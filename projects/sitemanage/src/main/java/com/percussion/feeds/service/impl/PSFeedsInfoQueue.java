@@ -119,15 +119,11 @@ public class PSFeedsInfoQueue implements InitializingBean
      * @author erikserating
      *
      */
-    class QueueProcessor extends Thread implements PropertyChangeListener
+    class QueueProcessor extends Thread
     {
 
         public QueueProcessor(){
             super();
-
-            //Register to get notified if encryption key changes
-            PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).addPropertyChangeListener(this);
         }
 
         /*
@@ -158,9 +154,6 @@ public class PSFeedsInfoQueue implements InitializingBean
                         break;
                     }
 
-                    //Make sure secure key is up to date
-                    checkKeyExchange();
-
                     Collection<PSMetadata> prodResults = metadataService.findByPrefix(META_KEY_PREFIX);
                     Collection<PSMetadata> stagResults = metadataService.findByPrefix(META_KEY_STAGING_PREFIX);
 
@@ -183,9 +176,6 @@ public class PSFeedsInfoQueue implements InitializingBean
             }
             finally
             {
-                PSEncryptor.getInstance("AES",
-                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                ).removePropertyChangeListener(this);
                 log.info("Feed queue shutdown. interrupted="+Thread.currentThread().isInterrupted());
             }
 
@@ -284,77 +274,6 @@ public class PSFeedsInfoQueue implements InitializingBean
                 return false;
             }
         }
-
-        /**
-         * In the event that the DTS was down or a network error
-         * happened when posting the current key, reprocess the event
-         * so that we can be sure that the DTS servers have the current
-         * key.
-         */
-        private void checkKeyExchange() {
-            if (!keySuccessful && lastChangeEvent != null) {
-                propertyChange(lastChangeEvent);
-            }
-        }
-
-        /**
-         * This method gets called when a bound property is changed.
-         *
-         * @param evt A PropertyChangeEvent object describing the event source
-         *            and the property that has changed.
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-
-
-            //Event fired when the secure key used for encryption is changed
-            if( evt != null && evt.getPropertyName().equalsIgnoreCase(PSEncryptor.SECRETKEY_PROPNAME)){
-                    lastChangeEvent = evt;
-                    List<PSDeliveryInfo> servers = deliveryInfoService.findAll();
-                    List<String> processed = new ArrayList<>();
-                    //There can be more than one DTS server.  Make sure we process each one.
-                    boolean failed = false;
-                    for(PSDeliveryInfo info : servers) {
-                        if (info.getAvailableServices().contains(PSDeliveryInfo.SERVICE_FEEDS)) {
-                            if (!processed.contains(info.getAdminUrl())) {
-
-                                PSDeliveryClient deliveryClient = new PSDeliveryClient();
-
-                                try {
-                                    Set<Integer> successfullHttpStatusCodes = new HashSet<>();
-                                    successfullHttpStatusCodes.add(204);
-                                    deliveryClient.push(
-                                            new PSDeliveryActionOptions()
-                                                    .setActionUrl("/feeds/rotateKey")
-                                                    .setDeliveryInfo(info)
-                                                    .setHttpMethod(HttpMethodType.PUT)
-                                                    .setSuccessfullHttpStatusCodes(successfullHttpStatusCodes)
-                                                    .setAdminOperation(true),
-                                            (byte[]) evt.getNewValue());
-                                    processed.add(info.getAdminUrl());
-                                    log.info("Updated security key pushed to DTS server: " + info.getAdminUrl());
-                                } catch (Exception ex) {
-                                    failed = true;
-                                    log.warn("Unable to push updated security key to DTS server: " + info.getAdminUrl() + " Error was: " + ex.getMessage(), ex);
-                                }
-                            }
-                        }
-                    }
-                    //If we had any failures lets flag the key to be reposted.
-                    //TODO: Improve me. This would be more efficient if we only process the individual DTS instances that failed.
-                    keySuccessful = !failed;
-            }
-        }
-
-        /**
-         * The last change event for the secureKey
-         */
-        private PropertyChangeEvent lastChangeEvent;
-
-        /**
-         * Flag to indicate if we have had a successful key exchange with the DTS
-         */
-        private boolean keySuccessful = false;
     }
 
     /**
