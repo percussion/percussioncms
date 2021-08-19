@@ -93,8 +93,7 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
          csc.setExpiryDate(now);      
 
          csc.commit(connection);
-         
-         // System.out.println(csc.toString(true));     
+
          csc.close(); //release the JDBC resources
          csc = null;
          csc = new PSContentStatusContext(connection, m_nContentID);

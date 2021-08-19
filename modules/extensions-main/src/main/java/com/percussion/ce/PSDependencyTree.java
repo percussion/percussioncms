@@ -316,7 +316,7 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
          doc = pSDependencyTree.processResultDocument(null, null, doc);
 
          StringWriter sw = new  StringWriter();
-         System.out.print(sw.toString());
+         log.info(sw.toString());
       }
       catch(Exception e)
       {

@@ -25,6 +25,8 @@
 package com.percussion.preinstall;
 
 import org.apache.axis.utils.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +49,7 @@ public class MainDTSPreInstall {
     private static final String INSTALL_TEMPDIR="percDTSInstallTmp_";
     private static final String PERC_ANT_JAR="perc-ant";
     private static final String ANT_INSTALL="installDts.xml";
+    private static final Logger log = LogManager.getLogger(MainDTSPreInstall.class);
 
     /**
      * Find a jar by path pattern to avoid hard coding / forcing version.
@@ -67,7 +70,7 @@ public class MainDTSPreInstall {
             } else if (paths.size() == 1) {
                 return paths.get(0);
             } else {
-                System.out.println("Warning: Multiple " + fileNameWithPattern + " jars found, selecting the first one: " + paths.get(0).toAbsolutePath().toString());
+                log.info("Warning: Multiple {} jars found, selecting the first one: {}", fileNameWithPattern, paths.get(0).toAbsolutePath().toString());
                 return paths.get(0);
             }
         }
@@ -94,21 +97,21 @@ public class MainDTSPreInstall {
             if(percVersion== null)
                 percVersion="";
 
-            System.out.println("perc.java.home="+javaHome);
-            System.out.println("java.executable="+javabin);
-            System.out.println("perc.version=" + percVersion);
+            log.info("perc.java.home= {}", javaHome);
+            log.info("java.executable= {}", javabin);
+            log.info("perc.version= ()", percVersion);
 
             if (args.length<1)
             {
-                System.out.println("Must specify installation or upgrade folder");
+                log.info("Must specify installation or upgrade folder");
                 System.exit(0);
             }
 
-            System.out.println("Installation folder ="+args[0]);
+            log.info("Installation folder = {}", args[0]);
             Path installPath = Paths.get(args[0]);
             String isProduction="true";
             isProduction=System.getProperty("install.prod.dts");
-            System.out.println("====Will remove below code if value of is Production comes fine PSDeliveryTierServerTYpePanel"+isProduction);
+            log.info("====Will remove below code if value of is Production comes fine PSDeliveryTierServerTYpePanel {}", isProduction);
             String staging = installPath.toFile() + File.separator + "Staging";
             File f = new File(staging);
             String prod = installPath.toFile() + File.separator + "Deployment";
@@ -127,7 +130,7 @@ public class MainDTSPreInstall {
             Path currentJar = Paths.get(MainDTSPreInstall.class.getProtectionDomain().getCodeSource().getLocation().toURI());
             if (!Files.isDirectory(currentJar)) {
                 installSrc = Files.createTempDirectory(INSTALL_TEMPDIR);
-                System.out.println("install.tempdir=" + installSrc);
+                log.info("install.tempdir= {}", installSrc);
                 // add option to not delete for debugging
                 Runtime.getRuntime().addShutdownHook(new Thread() {
                     @Override
@@ -139,14 +142,15 @@ public class MainDTSPreInstall {
                                     .map(Path::toFile)
                                     .forEach(File::delete);
                         } catch (IOException ex) {
-                            System.out.println("An error occurred processing installation files. " +  ex.getMessage());
+                            log.debug(ex.getMessage(), ex);
+                            log.error("An error occurred processing installation files. {}",  ex.getMessage());
                         }
                     }
                 });
 
                 extractArchive(currentJar, installSrc, DISTRIBUTION_DIR);
             } else {
-                System.out.println("Running from extracted jar");
+                log.info("Running from extracted jar");
                 installSrc = currentJar.resolve(DISTRIBUTION_DIR);
             }
 
@@ -159,10 +163,11 @@ public class MainDTSPreInstall {
             exitCode =  execJar(installAntJarPath,execPath,installPath,isProduction);
 
         } catch (Exception e) {
-            System.out.println("An unexpected error occurred processing installation files. " + e.getMessage());
+            log.debug(e.getMessage(), e);
+            log.info("An unexpected error occurred processing installation files. {}", e.getMessage());
             throw  new AntJobFailedException(String.format("Installation failed. %s", e.getMessage()));
         }
-        System.out.println(String.format("Done extracting exit code %d", exitCode));
+        log.info(String.format("Done extracting exit code %d", exitCode));
         if(exitCode != 0){
             throw  new AntJobFailedException(String.format("Installation failed. Exit code: %d ",exitCode));
         }
@@ -197,7 +202,7 @@ public class MainDTSPreInstall {
                     Files.createDirectory(entryDest);
                     continue;
                 }
-                System.out.println("Creating file "+entryDest);
+                log.info("Creating file {}", entryDest);
                 Files.copy(archive.getInputStream(entry), entryDest);
             }
         }
@@ -218,9 +223,9 @@ public class MainDTSPreInstall {
         else {
             javabin = javaHome + "/bin/java.exe";
         }
-        System.out.println("isProduction:" + isProduction);
-        System.out.println("Install Dir:" + dir);
-        System.out.println("Java Executable:" + javabin);
+        log.info("isProduction: {}", isProduction);
+        log.info("Install Dir: {}", dir);
+        log.info("Java Executable: {}", javabin);
 
 
         ProcessBuilder builder = new ProcessBuilder(

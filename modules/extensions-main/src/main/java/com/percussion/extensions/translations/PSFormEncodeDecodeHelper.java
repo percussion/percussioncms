@@ -30,6 +30,8 @@ import au.id.jericho.lib.html.OutputDocument;
 import au.id.jericho.lib.html.Source;
 import au.id.jericho.lib.html.StartTag;
 import au.id.jericho.lib.html.StringOutputSegment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -46,6 +48,8 @@ import java.util.regex.Pattern;
  */
 public class PSFormEncodeDecodeHelper
 {
+
+   private static final Logger log = LogManager.getLogger(PSFormEncodeDecodeHelper.class);
    /**
     * Looks for form tags and turns them into div tags with a special rxFormTagMarker
     * attribute that indicates the div tag is being used as a form tag placeholder.
@@ -214,9 +218,9 @@ public class PSFormEncodeDecodeHelper
    {
       String encoded = encode(ms_test_string);
       String decoded = decode(encoded);
-      System.out.println(encoded);
-      System.out.println("\n========================================\n");
-      System.out.println(decoded);
+      log.info(encoded);
+      log.info("\n========================================\n");
+      log.info(decoded);
    }
    
    /**

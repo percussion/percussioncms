@@ -24,6 +24,8 @@
 package com.percussion.xmldom;
 
 import com.percussion.server.PSServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -57,6 +59,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ProcessServerPageTags extends Object
 {
+
+    private static final Logger log = LogManager.getLogger(ProcessServerPageTags.class);
+
    /**
     * Constructs and initializes the state machine.
     *
@@ -120,71 +125,6 @@ public class ProcessServerPageTags extends Object
    /**
     * This goes through the map created in the pre process and replaces the
     * XSpLit markups with its original server page code.
-    * Every <xsl:... top element found in this map will be moved right after
-    * the <xsl:stylsheet...
-    *
-    * @param source the source XSL node
-    * @return the processed XSL document
-    */
-   /* todo: use DOM parser!?
-   public Document postProcess(Document source)
-   {
-      if (source != null)
-         processNode(source.getElementsByTagName("xsl:stylesheet").item(0));
-
-      return source;
-   }
-
-   private void processNode(Node node)
-   {
-      if (node != null)
-      {
-         NodeList nodes = node.getChildNodes();
-         for (int i=0; i<nodes.getLength(); i++)
-         {
-            Node child = nodes.item(i);
-            if (child.getNodeType() == Node.COMMENT_NODE)
-            {
-               String strComment = ((Comment) child).getData();
-               if (strComment.trim().startsWith(m_keyPrefix))
-               {
-                  System.out.println("...comment= " + strComment);
-               }
-            }
-
-            NamedNodeMap attrs = child.getAttributes();
-            if (attrs != null)
-            {
-               for (int j=0; j<attrs.getLength(); j++)
-               {
-                  Node attr = attrs.item(j);
-                  if (attr.getNodeType() != Node.ATTRIBUTE_NODE)
-                     continue;
-
-                  Attr attribute = (Attr) attr;
-                  if (attribute != null)
-                  {
-                     String strAttr = attribute.getValue();
-                     if (strAttr.trim().startsWith(m_keyPrefix))
-                     {
-                        System.out.println("...attr= " + strAttr);
-                     }
-                     else
-                        System.out.println("...attr???= " + strAttr);
-                  }
-               }
-            }
-
-            if (child.hasChildNodes())
-               processNode(child);
-         }
-      }
-   }
-   */
-
-   /**
-    * This goes through the map created in the pre process and replaces the
-    * XSpLit markups with its original server page code.
     *
     * @param xslSource the source XSL string
     * @return the processed XSL string
@@ -223,7 +163,7 @@ public class ProcessServerPageTags extends Object
             if (pos != -1)
                xslTarget.replace(pos, pos+key.length(), serverPageBlock);
             else
-               System.out.println("ERROR - postProcess: missing XSpLit markup key!" + key);
+               log.info("ERROR - postProcess: missing XSpLit markup key! {}", key);
          }
       }
 
@@ -309,7 +249,7 @@ public class ProcessServerPageTags extends Object
       {
          // skip this and report error
          m_current = m_nextOpen+strOpeningTag.length();
-         System.out.println("ERROR - scriptIt: illegal source HTML! Missing closing tag.");
+         log.info("ERROR - scriptIt: illegal source HTML! Missing closing tag.");
       }
 
       while (nextOpening != -1 && (nextClosing > nextOpening || nextClosing == -1))
@@ -336,7 +276,7 @@ public class ProcessServerPageTags extends Object
       {
          // make sure we skip this and report error
          m_current = m_nextOpen+strOpeningTag.length();
-         System.out.println("ERROR - scriptIt: illegal source HTML! Unbalanced closing tags.");
+         log.info("ERROR - scriptIt: illegal source HTML! Unbalanced closing tags.");
       }
    }
 
@@ -416,7 +356,7 @@ public class ProcessServerPageTags extends Object
          m_htmlTarget.append(m_htmlSource.substring(oldCurrent, m_current));
       }
       else
-         System.out.println("ERROR - skipIt: illegal state!");
+         log.info("ERROR - skipIt: illegal state!");
    }
 
    /**
