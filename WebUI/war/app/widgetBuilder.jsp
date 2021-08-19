@@ -142,7 +142,7 @@
                         <a id="perc-wb-button-deploy" class="perc-font-icon icon-download-alt fas fa-upload ui-disabled"
                            title="Click to deploy selected widget" href="#" role="button"></a>
                         <a id="perc-wb-button-package-manager" class="perc-font-icon icon-folder-open fas fa-folder-open"
-                           title="Click to access Package Manager" href="/cm/packages" role="button" target="_blank"></a>
+                           title="Click to access Package Manager" href="/cm/packages" role="button" target="_blank" rel = "noopener noreferrer"></a>
                     </div>
                 </td>
             </tr>

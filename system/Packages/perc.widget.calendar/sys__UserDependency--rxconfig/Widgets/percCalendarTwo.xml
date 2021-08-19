@@ -464,7 +464,7 @@
                 <div class="perc-date-dd">DD</div>
             </div>
             <div class="perc-event-info">
-                <div class="perc-event-title"><$perc_event_title_tag_type><a class="perc-event-title-link" href="" target="_blank">Event Title</a></$perc_event_title_tag_type></div>
+                <div class="perc-event-title"><$perc_event_title_tag_type><a class="perc-event-title-link" href="" target="_blank" rel = "noopener noreferrer">Event Title</a></$perc_event_title_tag_type></div>
         <div class="perc-event-date">mm/dd/yyyy</div>
                 <div class="perc-event-time">Event Time</div>
                 </div>

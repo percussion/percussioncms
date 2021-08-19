@@ -116,7 +116,7 @@
           <xsl:apply-templates select="variant/@variantid"/>)
         </td>
         <td class="datacell1font" valign="top" align="center" width="10%">
-          <a href="http://10.10.10.156:9992/Rhythmyx/xr_casFeatures/featuresnip.html?rxcontext=0&amp;authtype=0&amp;contentid=31&amp;variantid=203" target="_blank">
+          <a href="http://10.10.10.156:9992/Rhythmyx/xr_casFeatures/featuresnip.html?rxcontext=0&amp;authtype=0&amp;contentid=31&amp;variantid=203" target="_blank"  rel = "noopener noreferrer">
             <img src="../sys_resources/images/eye.gif" alt="Preview" align="top" width="16" height="16" border="0"/>
           </a>
 

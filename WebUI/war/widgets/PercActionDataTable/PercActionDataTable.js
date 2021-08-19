@@ -90,6 +90,7 @@
             $(this).attr("href", percJQuery.perc_paths.ASSET_FORMS_EXPORT +"/"+rowData.formSummary.site  + "/" + rowData.formSummary.name + ".csv");
             $(this).attr("target", "_blank");
             $(this).addClass("perc-datatable-form-tracker-export-action");
+            $(this).attr("rel", "noopener noreferrer");
         });
         
         if(rowData)
