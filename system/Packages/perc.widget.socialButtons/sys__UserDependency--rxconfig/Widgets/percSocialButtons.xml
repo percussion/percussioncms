@@ -445,7 +445,7 @@
                    iframeClass="fab fa-fw";
                 }
 
-                $('.perc-social-button-container').append('<a href="" target="_blank" data-enablepush="" data-pushvalue="" ><button class="perc-social-button"><i class="'+iframeClass+'" aria-hidden="true"></i></button></a>');
+                $('.perc-social-button-container').append('<a href="" target="_blank" rel = "noopener noreferrer" data-enablepush="" data-pushvalue="" ><button class="perc-social-button"><i class="'+iframeClass+'" aria-hidden="true"></i></button></a>');
                 if( percButtonConfiguration.buttonType == 'share' ) {
                   $('.perc-social-button-container a').last().attr("href", value.shareLink);
                 }

@@ -83,7 +83,7 @@
     <xsl:for-each select=".">
       <tr>
         <td>
-          <a target="_blank">
+          <a target="_blank" rel = "noopener noreferrer">
             <xsl:attribute name="href">
               <xsl:value-of select="itemurl"/>
             </xsl:attribute>

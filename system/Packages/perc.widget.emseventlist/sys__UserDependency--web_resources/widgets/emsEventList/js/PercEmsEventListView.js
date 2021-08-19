@@ -151,7 +151,7 @@ var dEventDate  = new Date(eventDate);
 var timeOptions = { hour: 'numeric', minute: 'numeric'}		
 		
 		
-		listItem = $("<li>").addClass("ui-perc-list-element").append('<a href="' + settings.baseEmsEventLink + eventId + '" title="' + eventName + '" target="_blank" class="perc-emseventlist-eventtitle">' + eventName + '</a>');
+		listItem = $("<li>").addClass("ui-perc-list-element").append('<a href="' + settings.baseEmsEventLink + eventId + '" title="' + eventName + '" target="_blank" rel = "noopener noreferrer" class="perc-emseventlist-eventtitle">' + eventName + '</a>');
         
 		if(settings.enableCalenderIcon){
 			listItem.append('<div class="perc-emseventlist-calicon"> <div class="perc-emseventlist-calicon-month">'+ dEventDate.toLocaleDateString(settings.locale, calOptions) + '</div><div class="perc-emseventlist-calicon-day">' +dEventDate.getDate() + '</div></div>');

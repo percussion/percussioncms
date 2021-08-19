@@ -68,7 +68,7 @@
                   		<p class = "perc-warning-message">${rxcomp:i18ntext('jsp_unsupported@warning message part1',locale)}</p><p class = "perc-warning-message">${rxcomp:i18ntext('jsp_unsupported@warning message part2',locale)}<p>
 						<p class="perc-warning-message">
 						${rxcomp:i18ntext('jsp_unsupported@warning message part3',locale)} <a href="mailto:support@percussion.com">${rxcomp:i18ntext('jsp_unsupported@the technical support team',locale)}.</a></p>
-						<p class = "perc-warning-message">${rxcomp:i18ntext('jsp_unsupported@warning message part4',locale)} <a href="${rxcomp:i18ntext('jsp_unsupported@supported browser link',locale)}" target="_blank" title="${rxcomp:i18ntext('jsp_unsupported@supported browser link title',locale)}">${rxcomp:i18ntext('jsp_unsupported@supported browser link text',locale)}</a>.</p>	
+						<p class = "perc-warning-message">${rxcomp:i18ntext('jsp_unsupported@warning message part4',locale)} <a href="${rxcomp:i18ntext('jsp_unsupported@supported browser link',locale)}" target="_blank" rel = "noopener noreferrer" title="${rxcomp:i18ntext('jsp_unsupported@supported browser link title',locale)}">${rxcomp:i18ntext('jsp_unsupported@supported browser link text',locale)}</a>.</p>
                     </div>
                 </td>
             </tr>
