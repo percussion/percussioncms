@@ -152,7 +152,7 @@
 
              dialogMarkup.append(
                 $('<div>')
-                    .append('<p class="hint">Ask questions. Get answers. Visit the <a target="_blank" href="https://community.percussion.com" title="Percussion Community">Percussion Community</a> to access Video Tutorials, Forums, and more.</p>')
+                    .append('<p class="hint">Ask questions. Get answers. Visit the <a target="_blank" rel = "noopener noreferrer" href="https://community.percussion.com" title="Percussion Community">Percussion Community</a> to access Video Tutorials, Forums, and more.</p>')
             );
 
             if (config.showVideo === true)
