@@ -1,225 +1,197 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
-<!--
-   [percCalendarTwo - Version 1.1.0]
-   
--->
 <Widget>
-   <WidgetPrefs title="Calendar 2.0"
-        contenttype_name="percCalendarAsset"
-        description="Enables integration of Google Calendar with Percussion"
-        category="Other"
-        author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/percCalendarTwo/images/calendarIcon.png"
-        preferred_editor_width="900"
-        preferred_editor_height="600"
-        is_responsive="true"/>
+    <WidgetPrefs title="Calendar 2.0"
+                 contenttype_name="percCalendarAsset"
+                 description="Enables integration of Google Calendar with Percussion"
+                 category="Other"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/percCalendarTwo/images/calendarIcon.png"
+                 preferred_editor_width="900"
+                 preferred_editor_height="600"
+                 is_responsive="true"/>
 
     <UserPref name="perc_layout_type"
-      display_name="Choose layout type"
-      default_value="Calendar"
-      datatype="enum">
-      <EnumValue value="calendar" display_value="Calendar" />
-      <EnumValue value="list" display_value="Event List" />
+              display_name="Choose layout type"
+              default_value="Calendar"
+              datatype="enum">
+        <EnumValue value="calendar" display_value="Calendar" />
+        <EnumValue value="list" display_value="Event List" />
     </UserPref>
 
     <UserPref name="perc_enable_view_toggle_buttons"
-      display_name="Enable view toggle buttons"
-      default_value="false"
-      datatype="bool"/>
+              display_name="Enable view toggle buttons"
+              default_value="false"
+              datatype="bool"/>
 
     <UserPref name="perc_max_results"
-      display_name="&lt;span style=&quot;font-size:125%;&quot;&gt;&lt;br&gt;&lt;b&gt;Event List View Options&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;Event List Limit"
-      default_value="5"
-      datatype="number"/>
+              display_name="&lt;span style=&quot;font-size:125%;&quot;&gt;&lt;br&gt;&lt;b&gt;Event List View Options&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;Event List Limit"
+              default_value="5"
+              datatype="number"/>
 
     <UserPref name="perc_event_title_tag_type"
-      display_name="Format for event title"
-      default_value="p"
-      datatype="enum">
-      <EnumValue value="p" display_value="Paragraph" />
-      <EnumValue value="h2" display_value="Heading 2" />
-      <EnumValue value="h3" display_value="Heading 3" />
-      <EnumValue value="h4" display_value="Heading 4" />
-      <EnumValue value="h5" display_value="Heading 5" />
-      <EnumValue value="h6" display_value="Heading 6" />
+              display_name="Format for event title"
+              default_value="p"
+              datatype="enum">
+        <EnumValue value="p" display_value="Paragraph" />
+        <EnumValue value="h2" display_value="Heading 2" />
+        <EnumValue value="h3" display_value="Heading 3" />
+        <EnumValue value="h4" display_value="Heading 4" />
+        <EnumValue value="h5" display_value="Heading 5" />
+        <EnumValue value="h6" display_value="Heading 6" />
     </UserPref>
-  
+
     <UserPref name="enableCalenderIcon"
-      display_name="Enable calendar icon"
-      default_value="false"
-      datatype="bool"/>
+              display_name="Enable calendar icon"
+              default_value="false"
+              datatype="bool"/>
 
     <UserPref name="showEventDate"
-      display_name="Show event date"
-      default_value="true"
-      datatype="bool"/>
+              display_name="Show event date"
+              default_value="true"
+              datatype="bool"/>
 
     <UserPref name="eventDateFormat"
-      display_name="Format of event date"
-      default_value="dddd, MMMM Do YYYY"
-      datatype="string" />
+              display_name="Format of event date"
+              default_value="dddd, MMMM Do YYYY"
+              datatype="string" />
 
     <UserPref name="showEventTime"
-      display_name="Show event time"
-      default_value="true"
-      datatype="bool"/>
+              display_name="Show event time"
+              default_value="true"
+              datatype="bool"/>
 
     <UserPref name="eventTimeFormat"
-       display_name="Format of event time"
-       default_value="h:mmA"
-       datatype="string" />
+              display_name="Format of event time"
+              default_value="h:mmA"
+              datatype="string" />
 
-    <UserPref name="perc_calendar_view" 
-      display_name="&lt;span style=&quot;font-size:125%;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Calendar View Options&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;Choose calendar view"
-      default_value="full"
-      datatype="enum">
-      <EnumValue value="full" display_value="Full calendar" />
-      <EnumValue value="mini" display_value="Mini calendar" />
-     </UserPref>
-
-    <UserPref name="perc_calendar_type" 
-      display_name="Default calendar type"
-      default_value="month"
-      datatype="enum">
-      <EnumValue value="Day" display_value="Day" />
-      <EnumValue value="Week" display_value="Week" />
-      <EnumValue value="month" display_value="Month" />
+    <UserPref name="perc_calendar_view"
+              display_name="&lt;span style=&quot;font-size:125%;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Calendar View Options&lt;/b&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;Choose calendar view"
+              default_value="full"
+              datatype="enum">
+        <EnumValue value="full" display_value="Full calendar" />
+        <EnumValue value="mini" display_value="Mini calendar" />
     </UserPref>
 
-    <UserPref name="perc_calendar_detail" 
-      display_name="Detail Level"
-      default_value="basic"
-      datatype="enum">
-      <EnumValue value="basic" display_value="Basic (times not displayed for week and day views)" />
-      <EnumValue value="agenda" display_value="Agenda" />
+    <UserPref name="perc_calendar_type"
+              display_name="Default calendar type"
+              default_value="month"
+              datatype="enum">
+        <EnumValue value="Day" display_value="Day" />
+        <EnumValue value="Week" display_value="Week" />
+        <EnumValue value="month" display_value="Month" />
+    </UserPref>
+
+    <UserPref name="perc_calendar_detail"
+              display_name="Detail Level"
+              default_value="basic"
+              datatype="enum">
+        <EnumValue value="basic" display_value="Basic (times not displayed for week and day views)" />
+        <EnumValue value="agenda" display_value="Agenda" />
     </UserPref>
 
     <UserPref name="perc_show_page_summary"
-      display_name="Show summary"
-      default_value="false"
-      datatype="bool" />
+              display_name="Show summary"
+              default_value="false"
+              datatype="bool" />
 
-    <UserPref name="perc_start_day" 
-      display_name="Start week with"
-      default_value="Day_0"
-      datatype="enum">
-      <EnumValue value="Day_0" display_value="Sunday" />
-      <EnumValue value="Day_1" display_value="Monday" />
-      <EnumValue value="Day_2" display_value="Tuesday" />
-      <EnumValue value="Day_3" display_value="Wednesday" />
-      <EnumValue value="Day_4" display_value="Thursday" />
-      <EnumValue value="Day_5" display_value="Friday" />
-      <EnumValue value="Day_6" display_value="Saturday" />
+    <UserPref name="perc_start_day"
+              display_name="Start week with"
+              default_value="Day_0"
+              datatype="enum">
+        <EnumValue value="Day_0" display_value="Sunday" />
+        <EnumValue value="Day_1" display_value="Monday" />
+        <EnumValue value="Day_2" display_value="Tuesday" />
+        <EnumValue value="Day_3" display_value="Wednesday" />
+        <EnumValue value="Day_4" display_value="Thursday" />
+        <EnumValue value="Day_5" display_value="Friday" />
+        <EnumValue value="Day_6" display_value="Saturday" />
     </UserPref>
 
-    <UserPref name="perc_time_format" 
-      display_name="Time format"
-      default_value="ampm"
-      datatype="enum">
-      <EnumValue value="ampm" display_value="12 hour" />
-      <EnumValue value="military" display_value="24 hour" />
+    <UserPref name="perc_time_format"
+              display_name="Time format"
+              default_value="ampm"
+              datatype="enum">
+        <EnumValue value="ampm" display_value="12 hour" />
+        <EnumValue value="military" display_value="24 hour" />
     </UserPref>
 
-    <UserPref name="perc_calendar_display_language" 
-      display_name="Language"
-      default_value="en"
-      datatype="enum">
-      <EnumValue value="en" display_value="English United States (US)" />
-      <EnumValue value="ar-ma" display_value="Arabic Morocco (MA)" />
-      <EnumValue value="ar-sa" display_value="Arabic Saudi Arabia (SA)" />
-      <EnumValue value="ar-tn" display_value="Arabic Tunisia (TN)" />
-      <EnumValue value="bg" display_value="Bulgarian Bulgaria (BG)" />
-      <EnumValue value="ca" display_value="Catalan Spain (ES)" />
-      <EnumValue value="cs" display_value="Czech Czech Republic (CZ)" />
-      <EnumValue value="da" display_value="Danish Denmark (DK)" />
-      <EnumValue value="de-at" display_value="German Austria (AT)" />
-      <EnumValue value="de" display_value="German Germany (DE)" />
-      <EnumValue value="el" display_value="Greek Greece (GR)" />
-      <EnumValue value="en-au" display_value="English Australia (AU)" />
-      <EnumValue value="en-ca" display_value="English Canada (CA)" />
-      <EnumValue value="en-gb" display_value="English United Kingdom (GB)" />
-      <EnumValue value="en-ie" display_value="English Ireland (IE)" />
-      <EnumValue value="en-nz" display_value="English New Zealand (NZ)" />
-      <EnumValue value="es" display_value="Spanish Spain (ES)" />
-      <EnumValue value="fi" display_value="Finnish Finland (FI)" />
-      <EnumValue value="fr-ca" display_value="French Canada (CA)" />
-      <EnumValue value="fr-ch" display_value="French Switzerland (CH)" />
-      <EnumValue value="fr" display_value="French France (FR)" />
-      <EnumValue value="he" display_value="Hebrew Israel (IL)" />
-      <EnumValue value="hi" display_value="Hindi India (IN)" />
-      <EnumValue value="hr" display_value="Croatian Croatia (HR)" />
-      <EnumValue value="hu" display_value="Hungarian Hungary (HU)" />
-      <EnumValue value="id" display_value="Indonesian Indonesia (ID)" />
-      <EnumValue value="is" display_value="Icelandic Iceland (IS)" />
-      <EnumValue value="it" display_value="Italian Italy (IT)" />
-      <EnumValue value="ja" display_value="Japanese Japan (JP)" />
-      <EnumValue value="ko" display_value="Korean South Korea (KR)" />
-      <EnumValue value="lb" display_value="Arabic Lebanon (LB)" />
-      <EnumValue value="lt" display_value="Lithuanian Lithuania (LT)" />
-      <EnumValue value="lv" display_value="Latvian Latvia (LV)" />
-      <EnumValue value="nb" display_value="Norwegian Bokmål Norway (NO)" />
-      <EnumValue value="nl" display_value="Dutch Netherlands (NL)" />
-      <EnumValue value="nn" display_value="Norwegian Nynorsk Norway (NO)" />
-      <EnumValue value="pl" display_value="Polish Poland (PL)" />
-      <EnumValue value="pt-br" display_value="Portuguese Brazil (BR)" />
-      <EnumValue value="pt" display_value="Portuguese Portugal (PT)" />
-      <EnumValue value="ro" display_value="Romanian Romania (RO)" />
-      <EnumValue value="ru" display_value="Russian Russia (RU)" />
-      <EnumValue value="sk" display_value="Slovak Slovakia (SK)" />
-      <EnumValue value="sl" display_value="Slovenian Slovenia (SI)" />
-      <EnumValue value="sr" display_value="Serbian Serbia (RS)" />
-      <EnumValue value="sv" display_value="Swedish Sweden (SE)" />
-      <EnumValue value="th" display_value="Thai Thailand (TH)" />
-      <EnumValue value="tr" display_value="Turkish Turkey (TR)" />
-      <EnumValue value="uk" display_value="Ukrainian Ukraine (UA)" />
-      <EnumValue value="vi" display_value="Vietnamese Vietnam (VN)" />
-      <EnumValue value="zh-cn" display_value="Chinese China (CN)" />
-      <EnumValue value="zh-tw" display_value="Chinese Taiwan (TW)" />
+    <UserPref name="perc_calendar_display_language"
+              display_name="Language"
+              default_value="en"
+              datatype="enum">
+        <EnumValue value="en" display_value="English United States (US)" />
+        <EnumValue value="ar-ma" display_value="Arabic Morocco (MA)" />
+        <EnumValue value="ar-sa" display_value="Arabic Saudi Arabia (SA)" />
+        <EnumValue value="ar-tn" display_value="Arabic Tunisia (TN)" />
+        <EnumValue value="bg" display_value="Bulgarian Bulgaria (BG)" />
+        <EnumValue value="ca" display_value="Catalan Spain (ES)" />
+        <EnumValue value="cs" display_value="Czech Czech Republic (CZ)" />
+        <EnumValue value="da" display_value="Danish Denmark (DK)" />
+        <EnumValue value="de-at" display_value="German Austria (AT)" />
+        <EnumValue value="de" display_value="German Germany (DE)" />
+        <EnumValue value="el" display_value="Greek Greece (GR)" />
+        <EnumValue value="en-au" display_value="English Australia (AU)" />
+        <EnumValue value="en-ca" display_value="English Canada (CA)" />
+        <EnumValue value="en-gb" display_value="English United Kingdom (GB)" />
+        <EnumValue value="en-ie" display_value="English Ireland (IE)" />
+        <EnumValue value="en-nz" display_value="English New Zealand (NZ)" />
+        <EnumValue value="es" display_value="Spanish Spain (ES)" />
+        <EnumValue value="fi" display_value="Finnish Finland (FI)" />
+        <EnumValue value="fr-ca" display_value="French Canada (CA)" />
+        <EnumValue value="fr-ch" display_value="French Switzerland (CH)" />
+        <EnumValue value="fr" display_value="French France (FR)" />
+        <EnumValue value="he" display_value="Hebrew Israel (IL)" />
+        <EnumValue value="hi" display_value="Hindi India (IN)" />
+        <EnumValue value="hr" display_value="Croatian Croatia (HR)" />
+        <EnumValue value="hu" display_value="Hungarian Hungary (HU)" />
+        <EnumValue value="id" display_value="Indonesian Indonesia (ID)" />
+        <EnumValue value="is" display_value="Icelandic Iceland (IS)" />
+        <EnumValue value="it" display_value="Italian Italy (IT)" />
+        <EnumValue value="ja" display_value="Japanese Japan (JP)" />
+        <EnumValue value="ko" display_value="Korean South Korea (KR)" />
+        <EnumValue value="lb" display_value="Arabic Lebanon (LB)" />
+        <EnumValue value="lt" display_value="Lithuanian Lithuania (LT)" />
+        <EnumValue value="lv" display_value="Latvian Latvia (LV)" />
+        <EnumValue value="nb" display_value="Norwegian Bokmål Norway (NO)" />
+        <EnumValue value="nl" display_value="Dutch Netherlands (NL)" />
+        <EnumValue value="nn" display_value="Norwegian Nynorsk Norway (NO)" />
+        <EnumValue value="pl" display_value="Polish Poland (PL)" />
+        <EnumValue value="pt-br" display_value="Portuguese Brazil (BR)" />
+        <EnumValue value="pt" display_value="Portuguese Portugal (PT)" />
+        <EnumValue value="ro" display_value="Romanian Romania (RO)" />
+        <EnumValue value="ru" display_value="Russian Russia (RU)" />
+        <EnumValue value="sk" display_value="Slovak Slovakia (SK)" />
+        <EnumValue value="sl" display_value="Slovenian Slovenia (SI)" />
+        <EnumValue value="sr" display_value="Serbian Serbia (RS)" />
+        <EnumValue value="sv" display_value="Swedish Sweden (SE)" />
+        <EnumValue value="th" display_value="Thai Thailand (TH)" />
+        <EnumValue value="tr" display_value="Turkish Turkey (TR)" />
+        <EnumValue value="uk" display_value="Ukrainian Ukraine (UA)" />
+        <EnumValue value="vi" display_value="Vietnamese Vietnam (VN)" />
+        <EnumValue value="zh-cn" display_value="Chinese China (CN)" />
+        <EnumValue value="zh-tw" display_value="Chinese Taiwan (TW)" />
     </UserPref>
 
     <UserPref name="perc_show_perc_events_button"
-        display_name="Display show/hide button for Percussion events"
-        required="true"
-        datatype="enum" default_value="N">
+              display_name="Display show/hide button for Percussion events"
+              required="true"
+              datatype="enum" default_value="N">
         <EnumValue value="N" display_value="No" />
         <EnumValue value="Y" display_value="Yes" />
     </UserPref>
 
     <UserPref name="perc_event_button_label"
-      display_name="Percussion event button label"
-      default_value="Other"
-      datatype="string" />
-      <CssPref name="rootclass"
-      display_name="CSS root class" 
-      datatype="string" />
+              display_name="Percussion event button label"
+              default_value="Other"
+              datatype="string" />
+    <CssPref name="rootclass"
+             display_name="CSS root class"
+             datatype="string" />
 
     <Code type="jexl">
-    <!-- This section is used to set up data that will be used in the content section -->
-    <![CDATA[##Widget properties
+        <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[##Widget properties
       $widgetProps = $perc.widget.item.properties;
       $perc_layout_type = $widgetProps.get("perc_layout_type");
       $perc_max_results = $widgetProps.get("perc_max_results");
@@ -263,7 +235,7 @@
           $pagesInCal = $rx.pageutils.getPagesForCalendar($calName).toString();
           $data = $assetItem.Node.getProperty('rx:googleSetupData').getString();
           $json = $rx.pageutils.createJsonObject($data);
-          $googleCalendarArray = $json.getJSONArray("config");            
+          $googleCalendarArray = $json.getJSONArray("config");
           $calendarContentId = $assetItem.Node.getProperty('rx:sys_contentid').getString();
       }
 
@@ -277,10 +249,10 @@
 
       $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
     ]]>
-  </Code>
-  <Content type="velocity">
-    <!-- This section defines the rendered content -->
-    <![CDATA[
+    </Code>
+    <Content type="velocity">
+        <!-- This section defines the rendered content -->
+        <![CDATA[
 <div class="$!{rootclass} perc-calendar" data="$!dynamicListData">
 #if( ! $perc.widgetContents.isEmpty() )##
 #set($googleSourceCount = 0)##
@@ -302,8 +274,8 @@
 ##
       <link rel="stylesheet" href="$resourcePrefix/web_resources/widgets/calendarTwo/css/fullcalendar.print.css" type="text/css" media="print" />
       <style>
-      @media only screen 
-      and (max-width: 480px) 
+      @media only screen
+      and (max-width: 480px)
       {
         .fc-left {
           float: left !important;
@@ -331,7 +303,7 @@
       }
 
       .perc-full-calendar {
-      
+
         margin: 0 auto;
         font-size: 14px;
       }
@@ -370,7 +342,7 @@
         background-color: #3a87ad;
         color: #ffffff;
       }
-      
+
 #foreach($googleSource in $googleCalendarArray)##
         .perc-$googleSource.getString("className") {
         background-color: $googleSource.getString("backgroundColor") !important;
@@ -428,20 +400,20 @@
         padding: 5px;
       }
 
-      </style>        
-      
+      </style>
+
       <script>
-      window.addEventListener('DOMContentLoaded', function() { 
+      window.addEventListener('DOMContentLoaded', function() {
       function hideCalendarSource(calendarClass) {
         $('#'+calendarClass+'-button').toggleClass("perc-disabled-calendar-button");
         $('.'+calendarClass).toggleClass("perc-hide-calendar");
       };
       });
-      </script>         
-      
+      </script>
+
       #if($perc_calendar_view == "full")##
       <div class ="perc-full-calendar" id="calendar-${calendarContentId}-${widgetId}"></div>
-      
+
       #if( ($googleSourceCount >= 1 || $perc_show_perc_events_button == 'Y'))
       <form>
       <div id="perc-button-container-${calendarContentId}-${widgetId}" class="perc-button-container">
@@ -475,7 +447,7 @@
     <ul></ul>
 </div>
       <script>
-      window.addEventListener('DOMContentLoaded', function() { 
+      window.addEventListener('DOMContentLoaded', function() {
       /**
       * Extremely important note:
       * The fullcalendar.js file has been modified to make the event list available
@@ -489,9 +461,9 @@
       **/
 
 
-      
+
         $('#perc-event-list-${calendarContentId}-${widgetId}').hide();
-      
+
         // These variables are for event list functionality
         if(!window.Perc) {
             window.Perc = {};
@@ -510,7 +482,7 @@
         var percShowCalIcon = '$perc_enable_calendar_icon';
         var percShowEventDate = '$perc_show_event_date';
         var percShowEventTime = '$perc_show_event_time';
-      
+
         initializeCalendar();
 
         if( layoutType == 'calendar' ) {
@@ -520,7 +492,7 @@
         function initializeCalendar() {
 
         $("#calendar-${calendarContentId}-${widgetId}").fullCalendar({
-      
+
             timeFormat: '${perc_time_format}',
             #if($calStartDate != "")
             defaultDate: '$calStartDate',
@@ -533,7 +505,7 @@
                 center: 'prev,next today',
                 right: 'month,${perc_calendar_detail}Week,${perc_calendar_detail}Day'
             },
-        
+
             eventSources: [
             #if($googleSourceCount > 0)
             #foreach($googleSource in $googleCalendarArray)
@@ -544,14 +516,14 @@
                 }#if($velocityCount <= $googleSourceCount),#end
             #end
             #end
-            
+
                 {
                     events: function(start, end, timezone, callback)
           {
               #if($perc.isEditMode() || $perc.isPreviewMode())
                   callback($pagesInCal);
               #else
-                  /* 
+                  /*
                     * get the results from delivery tier service and return
                     * below we are looking to restrict the amount of information
                     * pulled back from the DTS.  The dates are found and used to
@@ -600,25 +572,25 @@
               #end
           },
         className: 'perc-calendar-other',
-        
+
         }
             ],
             editable: false,
-            
+
       dayClick: function(date, allDay, jsEvent, view) {
       if(typeof(percCalenderDayClick) === typeof(Function)){
-      // if you need to bind to the dayClick even, define a function with a definition that 
+      // if you need to bind to the dayClick even, define a function with a definition that
       // looks like function percCalenderDayClick(div_id, object,date,allDay,jsEvent,view)
       percCalenderDayClick("#calendar-${calendarContentId}-${widgetId}",$(this),date,allDay,jsEvent,view);
       }
       },
       eventRender: function(event, element) {
-      #if($perc_show_page_summary) 
+      #if($perc_show_page_summary)
       event['allDay'] = false;
       if(event.summary !='' && event.summary != null && event.summary != 'undefined') {
       element.qtip({
       content: event.summary,
-      style: { 
+      style: {
       name: 'light', // Inherit from preset style,
       tip: true
       },
@@ -627,12 +599,12 @@
       tooltip: 'bottomMiddle', // Use the corner...
       target: 'topMiddle' // ...and opposite corner
       }
-      }     
+      }
       });
       }
       #end
       }
-     
+
       });
 
       } //end initialize calendar
@@ -649,28 +621,28 @@
         function percProcessEventList(eventObject, maxResults) {
 
             $('#perc-event-list-${calendarContentId}-${widgetId}').fadeIn();
-      
+
             //  fullcalendar does not presort the event dates
             eventObject.sort(function(x, y){
                 return x.start - y.start;
       });
-      
+
             percCurrentDate = new Date();
-       
+
             //  indentifies the target for the event list, and the template to clone
             var percTargetEventList = $('#perc-event-list-${calendarContentId}-${widgetId}');
             var percEventStructureListRoot = $('#perc-event-list-template-${calendarContentId}-${widgetId} ul li');
             var percEventListElem = percEventStructureListRoot.clone();
             var eventCount = 0;
             var eventIterator = 0;
-      
+
             // Count the total number of possible events to show so later on we can determine if we are on the last event
             jQuery.each(eventObject, function( index, event ){
                 if( !(moment(event.start).isBefore(percCurrentDate, 'day')) ) {
                     eventCount++;
                 }
       });
-      
+
             jQuery.each(eventObject, function( index, event ){
 
                 //  we only want to show the events in list view that are today's date or later, and no more
@@ -756,18 +728,18 @@
         });
     });
       </script>
-      
+
 
     #else##
     #set($caljQuery="$")##
                     <div class="perc-mini-calendar" id="perc-mini-calendar-$id"></div>
                     <script>
-                    window.addEventListener('DOMContentLoaded', function() { 
+                    window.addEventListener('DOMContentLoaded', function() {
                             tempDateArray = [];
                             dateWithData = [];
                             #if($perc.isEditMode() || $perc.isPreviewMode())
-                               tempDateArray = $pagesInCal; 
-                               
+                               tempDateArray = $pagesInCal;
+
                                // prepare a temp array of dates which has event associated with it
                                for (var i = 0; i < tempDateArray.length; i++) {
                                    dateWithData.push(tempDateArray[i].start);
@@ -784,7 +756,7 @@
                                            clickedDate = dateText.replace(/\//g, ',');
                                            var fullCalendarPage = '$fullCalendarPage';
                                            window.location.href =  fullCalendarPage + "?startDate=" + clickedDate;
-                                       #end    
+                                       #end
                                    }
                                });
 
@@ -813,7 +785,7 @@
                                                  clickedDate = dateText.replace(/\//g, ',');
                                                  var fullCalendarPage = '$fullCalendarPage';
                                                  window.location.href =  fullCalendarPage + "?startDate=" + clickedDate;
-                                             #end    
+                                             #end
                                          }
                                      });
                                     }
@@ -825,8 +797,8 @@
                                 }, dataObj);
                             #end
 
-                        
-                            //Higlight the date in mini-calendar which has event associated with it.
+
+                            //hi-light the date in mini-calendar which has event associated with it.
                             function highlightDays(date) {
                                 for (var i = 0; i < dateWithData.length; i++) {
                                     if (new Date(dateWithData[i]).toString().substring(0, 15) == date.toString().substring(0, 15)) {
@@ -838,13 +810,13 @@
 
                      });
                     </script>
-      
-      
+
+
       #end##
 
       #elseif ($perc.isEditMode())
       #createEmptyWidgetContent("calendar-sample-content", "This Calendar widget is showing sample content.")
       #end
       </div>]]>
-  </Content>
+    </Content>
 </Widget>

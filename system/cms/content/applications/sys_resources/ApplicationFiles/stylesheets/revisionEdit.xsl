@@ -6,9 +6,14 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0"
-                xmlns:psxi18n="com.percussion.i18n.PSI18nUtils" extension-element-prefixes="psxi18n"
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
+		]>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
@@ -42,7 +47,7 @@
 				<script language="javascript" src="../sys_resources/js/browser.js">;</script>
 				<script language="javascript" src="../sys_resources/js/href.js">;</script>
 				<script language="javascript" src="../sys_resources/js/popmenu.js">;</script>
-				<script language="javascript">
+				<script>
 					<![CDATA[
 
 					   var textWin = null;

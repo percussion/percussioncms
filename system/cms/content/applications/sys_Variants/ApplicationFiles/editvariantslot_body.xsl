@@ -8,9 +8,9 @@
         %HTMLspecial;
 ]>
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 <xsl:template mode="editvariantslot_mainbody" match="*">
 <xsl:variable name="userroles" select="document(userrolesurl)/UserStatus" /> 
 <xsl:variable name="componentcontext" select="document(contexturl)/componentcontext/context"/>

@@ -3,10 +3,11 @@
 <!DOCTYPE xsl:stylesheet [
         <!ENTITY nbsp "&#160;">
         ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns:psxctl="urn:percussion.com/control" xmlns:psxctl="urn:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="xalan://com.percussion.i18n.PSI18nUtils"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:psxctl="urn:percussion.com/control"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <!-- write the xml header according to XHTML 1.0 spec -->
    <xsl:output method="xml" indent="yes" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" doctype-system="DTD/xhtml1-strict.dtd"/>
@@ -22,7 +23,7 @@
       <html>
          <head>
             <title>Control Library Test</title>
-            <script src="../sys_resources/js/textedit.js">;</script>
+            <script src="/sys_resources/js/textedit.js">;</script>
          </head>
          <body>
             <xsl:for-each select="/ContentEditor/ItemContent/DisplayField">
@@ -496,14 +497,14 @@ accept      %ContentTypes; #IMPLIED
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
-       <xsl:variable name="fileName">
-           <xsl:for-each select="/*/ItemContent/DisplayField">
-               <xsl:if test="Control/@paramName='item_file_attachment_filename'">
-                   <xsl:value-of select="concat('&amp;fileName=',Control/Value)"/>
-               </xsl:if>
-           </xsl:for-each>
-       </xsl:variable>
-       <xsl:variable name="url">
+      <xsl:variable name="fileName">
+         <xsl:for-each select="/*/ItemContent/DisplayField">
+            <xsl:if test="Control/@paramName='item_file_attachment_filename'">
+               <xsl:value-of select="concat('&amp;fileName=',Control/Value)"/>
+            </xsl:if>
+         </xsl:for-each>
+      </xsl:variable>
+      <xsl:variable name="url">
          <xsl:choose>
             <xsl:when test="contains(/ContentEditor/@submitHref, '.html')">
                <!-- exclude the extension, as it causes IE to ignore the content-type header -->
@@ -595,8 +596,8 @@ accept      %ContentTypes; #IMPLIED
             <psxctl:DefaultValue>400</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
-            <psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. The default value is "../rx_resources/webimagefx/ImageEditConfig.xml".</psxctl:Description>
-            <psxctl:DefaultValue>../rx_resources/webimagefx/ImageEditConfig.xml</psxctl:DefaultValue>
+            <psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. The default value is "/rx_resources/webimagefx/ImageEditConfig.xml".</psxctl:Description>
+            <psxctl:DefaultValue>/rx_resources/webimagefx/ImageEditConfig.xml</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="cleartext" datatype="String" paramtype="custom">
             <psxctl:Description>This parameter determines the text that will be displayed along with a checkbox when the field supports being cleared.  The default value is 'Clear'.</psxctl:Description>
@@ -617,7 +618,7 @@ accept      %ContentTypes; #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="webimagefx.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../rx_resources/webimagefx/webimagefx.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/rx_resources/webimagefx/webimagefx.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -676,7 +677,7 @@ accept      %ContentTypes; #IMPLIED
                   <xsl:call-template name="sys_imageclear"/>
                </xsl:if>
             </xsl:if>
-            <script language="JavaScript"><![CDATA[
+            <script><![CDATA[
       <!--
 
          if(WifxLicenseKeys != "")
@@ -1058,7 +1059,7 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="selectall.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/selectall.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/selectall.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -1140,11 +1141,11 @@ onchange    %Script;       #IMPLIED
             <xsl:when test="$Control/@isReadOnly = 'yes'">
                <xsl:choose>
                   <xsl:when test="@selected = 'yes'">
-                     <img src="../sys_resources/images/checked.gif" height="16" width="16"/>
+                     <img src="/sys_resources/images/checked.gif" height="16" width="16"/>
                      <input type="hidden" name="{$Control/@paramName}" id="perc-content-edit-{$Control/@paramName}" value="{Value}"/>
                   </xsl:when>
                   <xsl:otherwise>
-                     <img src="../sys_resources/images/unchecked.gif" height="16" width="16"/>
+                     <img src="/sys_resources/images/unchecked.gif" height="16" width="16"/>
                   </xsl:otherwise>
                </xsl:choose>
                &nbsp;<xsl:value-of select="DisplayLabel"/>
@@ -1219,11 +1220,11 @@ onchange    %Script;       #IMPLIED
          <td class="datadisplay" valign="top" align="left" width="{$columnwidth}">
             <xsl:choose>
                <xsl:when test="$readonly='yes' and @selected = 'yes'">
-                  <img src="../sys_resources/images/checked.gif" height="16" width="16"/>
+                  <img src="/sys_resources/images/checked.gif" height="16" width="16"/>
                   <input type="hidden" name="{$Control/@paramName}" id="perc-content-edit-{$Control/@paramName}" value="{Value}"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
                </xsl:when>
                <xsl:when test="$readonly='yes' and @selected != 'yes'">
-                  <img src="../sys_resources/images/unchecked.gif" height="16" width="16"/>
+                  <img src="/sys_resources/images/unchecked.gif" height="16" width="16"/>
                   <input type="hidden" name="{$Control/@paramName}" id="perc-content-edit-{$Control/@paramName}" value="{Value}"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
                </xsl:when>
                <xsl:otherwise>
@@ -1260,11 +1261,11 @@ onchange    %Script;       #IMPLIED
          <td class="datadisplay" valign="top" align="left" width="{$columnwidth}">
             <xsl:choose>
                <xsl:when test="$readonly='yes' and @selected = 'yes'">
-                  <img src="../sys_resources/images/checked.gif" height="16" width="16"/>
+                  <img src="/sys_resources/images/checked.gif" height="16" width="16"/>
                   <input type="hidden" name="{$Control/@paramName}" id="perc-content-edit-{$Control/@paramName}" value="{Value}"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
                </xsl:when>
                <xsl:when test="$readonly='yes' and @selected != 'yes'">
-                  <img src="../sys_resources/images/unchecked.gif" height="16" width="16"/>
+                  <img src="/sys_resources/images/unchecked.gif" height="16" width="16"/>
                   <input type="hidden" name="{$Control/@paramName}" id="perc-content-edit-{$Control/@paramName}" value="{Value}"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
                </xsl:when>
                <xsl:otherwise>
@@ -1347,7 +1348,7 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="PercContentChecker.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/PercContentChecker.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/PercContentChecker.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -1405,8 +1406,8 @@ onchange    %Script;       #IMPLIED
             <psxctl:DefaultValue>Calendar Pop-up</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="src" datatype="String" paramtype="img">
-            <psxctl:Description>This parameter specifies the location of the image resource used for the calendar picker icon. The default value is "../sys_resources/images/cal.gif"</psxctl:Description>
-            <psxctl:DefaultValue>../sys_resources/images/cal.gif</psxctl:DefaultValue>
+            <psxctl:Description>This parameter specifies the location of the image resource used for the calendar picker icon. The default value is "/sys_resources/images/cal.gif"</psxctl:Description>
+            <psxctl:DefaultValue>/sys_resources/images/cal.gif</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="height" datatype="String" paramtype="img">
             <psxctl:Description>This parameter specifies the height of the calendar picker icon. This parameter may be either a pixel or a percentage of the available vertical space. The default value is 20.</psxctl:Description>
@@ -1445,7 +1446,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:FileDescriptor>
 
          <psxctl:FileDescriptor name="jquery-ui-1.8.9.custom.css" type="css" mimetype="text/css">
-            <psxctl:FileLocation>../../cm/themes/smoothness/jquery-ui-1.8.9.custom.css</psxctl:FileLocation>
+            <psxctl:FileLocation>/cm/themes/smoothness/jquery-ui-1.8.9.custom.css</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -1454,8 +1455,6 @@ onchange    %Script;       #IMPLIED
       <xsl:variable name="calendar_id" select="concat('perc-content-edit-', @paramName)" />
       <xsl:variable name="value" select="Value" />
 
-      <!-- link rel="stylesheet" type="text/css" href="../sys_resources/js/jquery/jquery_ui_datepicker/timepicker_plug/css/style.css" / -->
-      <!-- link rel="stylesheet" type="text/css" href="../sys_resources/js/jquery/jquery_ui_datepicker/smothness/jquery_ui_datepicker.css" / -->
       <input id="{$calendar_id}" name="{@paramName}" style="display:none;" type="text" value="{Value}" />
       <input class="perc-datetime-picker" id="{concat($calendar_id,'-display')}" name="{concat(@paramName,'-display')}" type="text" value="" />
 
@@ -1478,7 +1477,7 @@ onchange    %Script;       #IMPLIED
          </xsl:text>
          $('#' + options.display).datepicker({
          altTimeField: '',
-         buttonImage: '../rx_resources/controls/percQueryControl/images/calendar.gif',
+         buttonImage: '/rx_resources/controls/percQueryControl/images/calendar.gif',
          buttonImageOnly: true,
          buttonText: '',
          changeMonth:true,
@@ -1572,8 +1571,8 @@ onchange    %Script;       #IMPLIED
             </psxctl:ChoiceList>
          </psxctl:Param>
          <psxctl:Param name="SRC" datatype="String" paramtype="generic">
-            <psxctl:Description>This parameter specifies the location of the HTML that will populate the inline frame. The default value is "../sys_resources/texteditor/deditor.html".</psxctl:Description>
-            <psxctl:DefaultValue>../sys_resources/texteditor/deditor.html</psxctl:DefaultValue>
+            <psxctl:Description>This parameter specifies the location of the HTML that will populate the inline frame. The default value is "/sys_resources/texteditor/deditor.html".</psxctl:Description>
+            <psxctl:DefaultValue>/sys_resources/texteditor/deditor.html</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="formname" datatype="String" paramtype="jscript">
             <psxctl:Description>This parameter specifies the name of the form that contains this control. It is used by the editor's JavaScript. The default value is "EditForm"</psxctl:Description>
@@ -1606,7 +1605,7 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="textedit.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/textedit.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/textedit.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -2046,7 +2045,7 @@ onchange    %Script;       #IMPLIED
          <xsl:value-of select="slot"/>&#160;</td>
       <td class="datacell1font" valign="top" align="center">
          <a href="{previewurl}" target="_blank">
-            <img src="../sys_resources/images/eye.gif" alt="Preview" align="top" width="16" height="16" border="0"/>
+            <img src="/sys_resources/images/eye.gif" alt="Preview" align="top" width="16" height="16" border="0"/>
          </a>
       </td>
    </xsl:template>
@@ -2345,7 +2344,7 @@ onchange    %Script;       #IMPLIED
                <xsl:value-of select="ParamList/Param[@name='InlineLinkSlot']"/>
             </xsl:when>
             <xsl:otherwise>
-               <xsl:value-of select="document('../rx_resources/stylesheets/rx_Templates.xsl')/*/psxctl:ControlMeta[@name='sys_FileWord']/psxctl:ParamList/psxctl:Param[@name='InlineLinkSlot']/psxctl:DefaultValue"/>
+               <xsl:value-of select="document('/rx_resources/stylesheets/rx_Templates.xsl')/*/psxctl:ControlMeta[@name='sys_FileWord']/psxctl:ParamList/psxctl:Param[@name='InlineLinkSlot']/psxctl:DefaultValue"/>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
@@ -2355,11 +2354,11 @@ onchange    %Script;       #IMPLIED
                <xsl:value-of select="ParamList/Param[@name='InlineImageSlot']"/>
             </xsl:when>
             <xsl:otherwise>
-               <xsl:value-of select="document('../rx_resources/stylesheets/rx_Templates.xsl')/*/psxctl:ControlMeta[@name='sys_FileWord']/psxctl:ParamList/psxctl:Param[@name='InlineImageSlot']/psxctl:DefaultValue"/>
+               <xsl:value-of select="document('/rx_resources/stylesheets/rx_Templates.xsl')/*/psxctl:ControlMeta[@name='sys_FileWord']/psxctl:ParamList/psxctl:Param[@name='InlineImageSlot']/psxctl:DefaultValue"/>
             </xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
-      <script language="javaScript"><![CDATA[
+      <script><![CDATA[
          function launchWordandPreview(contentid,revision) {
             //call ephox pre submit to update the hidden parameter
             if(hasEditLiveControls)
@@ -2448,8 +2447,8 @@ onchange    %Script;       #IMPLIED
             <xsl:with-param name="lang" select="$lang"/>
          </xsl:call-template>
       </a>
-      <object id="MSXML4" classid="clsid:88d969c0-f192-11d4-a65f-0040963251e5" codebase="../sys_resources/word/msxml4.cab#version=4,00,9004,0" type="application/x-oleobject" style="display: none"/>
-      <object id="word" classid="clsid:DA87CB4F-8EDF-4087-8F04-87EC3C938202" codebase="../rx_resources/word/rxwordocx.cab#version=6,0,0,5" type="application/x-oleobject" style="display: none">
+      <object id="MSXML4" classid="clsid:88d969c0-f192-11d4-a65f-0040963251e5" codebase="/sys_resources/word/msxml4.cab#version=4,00,9004,0" type="application/x-oleobject" style="display: none"/>
+      <object id="word" classid="clsid:DA87CB4F-8EDF-4087-8F04-87EC3C938202" codebase="/rx_resources/word/rxwordocx.cab#version=6,0,0,5" type="application/x-oleobject" style="display: none">
          <param name="ContentEditorURL" value="{$contenteditorurl}"/>
          <param name="WordTemplateURL" value="{$wordtemplateurl}"/>
          <param name="EncodingParam" value="{$encoding}"/>
@@ -2523,7 +2522,7 @@ onchange    %Script;       #IMPLIED
                            <table border="0">
                               <tr>
                                  <td class="datadisplay" align="left">
-                                    <img class="perc-readonly-checkbox" src="../sys_resources/images/checked.gif" height="16" width="16"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
+                                    <img class="perc-readonly-checkbox" src="/sys_resources/images/checked.gif" height="16" width="16"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
                                     <input type="hidden" name="{$Control/@paramName}" id="perc-content-edit-{$Control/@paramName}" value="{Value}"/>
                                  </td>
                               </tr>
@@ -2533,7 +2532,7 @@ onchange    %Script;       #IMPLIED
                            <table border="0">
                               <tr>
                                  <td class="datadisplay" align="left">
-                                    <img class="perc-readonly-checkbox" src="../sys_resources/images/unchecked.gif" height="16" width="16"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
+                                    <img class="perc-readonly-checkbox" src="/sys_resources/images/unchecked.gif" height="16" width="16"/>&nbsp;<xsl:value-of select="DisplayLabel"/>
                                     <input type="hidden" name="{$Control/@paramName}" id="perc-content-edit-{$Control/@paramName}" value="{Value}"/>
                                  </td>
                               </tr>
@@ -2621,7 +2620,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="tree_src_url" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the relative location of the xml that will defines the tree</psxctl:Description>
-            <psxctl:DefaultValue>../rx_resources/treedef.xml</psxctl:DefaultValue>
+            <psxctl:DefaultValue>/rx_resources/treedef.xml</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="formname" datatype="String" paramtype="jscript">
             <psxctl:Description>This parameter specifies the name of the form that contains this control, defaults to EditForm.</psxctl:Description>
@@ -2768,8 +2767,8 @@ onchange    %Script;       #IMPLIED
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("id", <xsl:value-of select="$name"/><![CDATA[_name]]>);
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("width", <xsl:value-of select="$name"/><![CDATA[_width]]>);
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("height", <xsl:value-of select="$name"/><![CDATA[_height]]>);
-         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebase", "../sys_resources/AppletJars");
-         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("archive", "../sys_resources/AppletJars/rxCheckboxTree.jar");
+         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebase", "/sys_resources/AppletJars");
+         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("archive", "/sys_resources/AppletJars/rxCheckboxTree.jar");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("code", "com.percussion.controls.contenteditor.checkboxtree.PSCheckboxTreeApplet");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("classid", "clsid:8AD9C840-044E-11D1-B3E9-00805F499D93");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebaseattr", "http://java.sun.com/products/plugin/autodl/jinstall-1_4-windows-i586.cab#Version=1,4,0,0");
@@ -2866,7 +2865,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="tree_src_url" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the relative location of the xml that will defines the tree</psxctl:Description>
-            <psxctl:DefaultValue>../rx_resources/treedef.xml</psxctl:DefaultValue>
+            <psxctl:DefaultValue>/rx_resources/treedef.xml</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="rootpath" datatype="String" paramtype="generic">
             <psxctl:Description>The path to the root category to select from</psxctl:Description>
@@ -2874,30 +2873,24 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
-         <!--
-         <psxctl:FileDescriptor name="ui.cookie.js" type="script" mimetype="text/javascript">
-             <psxctl:FileLocation>../sys_resources/js/jquery/dynatree/jquery/jquery.cookie.js</psxctl:FileLocation>
-             <psxctl:Timestamp/>
-         </psxctl:FileDescriptor>
-         -->
          <psxctl:FileDescriptor name="ui.dynatree.css" type="css" mimetype="text/css">
-            <psxctl:FileLocation>../web_resources/cm/css/dynatree/skin/ui.dynatree.css</psxctl:FileLocation>
+            <psxctl:FileLocation>/web_resources/cm/css/dynatree/skin/ui.dynatree.css</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="tree.css" type="css" mimetype="text/css">
-            <psxctl:FileLocation>../sys_resources/css/checkboxTree/tree.css</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/css/checkboxTree/tree.css</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="ui.core.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="checkboxTree.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/checkboxTree.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/checkboxTree.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="checkboxTreeReadonly.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/checkboxTreeReadonly.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/checkboxTreeReadonly.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -3151,7 +3144,7 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="selectall.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/selectall.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/selectall.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -3317,7 +3310,7 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="PercImageSelectionControl.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/PercImageSelectionControl.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/PercImageSelectionControl.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -3398,7 +3391,7 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="PercFileSelectionControl.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/PercFileSelectionControl.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/PercFileSelectionControl.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -3467,7 +3460,7 @@ onchange    %Script;       #IMPLIED
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
          <psxctl:FileDescriptor name="PercPageSelectionControl.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/PercPageSelectionControl.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/PercPageSelectionControl.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -3516,7 +3509,7 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
          <psxctl:Param name="config_src_url" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the config.xml that will the control will use for configuration. This file must be in the /rx_resources/ephox folder.  The default value is "config.xml".</psxctl:Description>
-            <psxctl:DefaultValue>../sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
+            <psxctl:DefaultValue>/sys_resources/tinymce/config/default_config.json</psxctl:DefaultValue>
          </psxctl:Param>
          <psxctl:Param name="css_file" datatype="String" paramtype="generic">
             <psxctl:Description>This parameter specifies the location of the customer defined css file. This file must be in the /rx_resources/tinymce folder.</psxctl:Description>
@@ -3552,26 +3545,20 @@ onchange    %Script;       #IMPLIED
          </psxctl:Param>
       </psxctl:ParamList>
       <psxctl:AssociatedFileList>
-         <!--
-             <psxctl:FileDescriptor name="dojo.js" type="script" mimetype="text/javascript">
-                 <psxctl:FileLocation>../sys_resources/dojo/dojo.js</psxctl:FileLocation>
-                 <psxctl:Timestamp/>
-             </psxctl:FileDescriptor>
- -->
          <psxctl:FileDescriptor name="bluebird.min.js" type="script" mimetype="text/javascript">
             <psxctl:FileLocation>https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="tinymce.min.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/tinymce/js/tinymce/tinymce.min.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/tinymce/js/tinymce/tinymce.min.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="tinymce_init.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/tinymce/js/tinymce_init.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/tinymce/js/tinymce_init.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="editorinline.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/editorinline.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/editorinline.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="timepicker.js" type="script" mimetype="text/javascript">
@@ -3579,11 +3566,11 @@ onchange    %Script;       #IMPLIED
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="jquery.tinymce.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/tinymce/js/PercCustomStylesService.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/tinymce/js/PercCustomStylesService.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
          <psxctl:FileDescriptor name="PercContentChecker.js" type="script" mimetype="text/javascript">
-            <psxctl:FileLocation>../sys_resources/js/PercContentChecker.js</psxctl:FileLocation>
+            <psxctl:FileLocation>/sys_resources/js/PercContentChecker.js</psxctl:FileLocation>
             <psxctl:Timestamp/>
          </psxctl:FileDescriptor>
       </psxctl:AssociatedFileList>
@@ -3754,7 +3741,7 @@ onchange    %Script;       #IMPLIED
             <xsl:otherwise>false</xsl:otherwise>
          </xsl:choose>
       </xsl:variable>
-      <script language="JavaScript">
+      <script>
      <xsl:text disable-output-escaping="yes">
      //&lt;![CDATA[<![CDATA[
 

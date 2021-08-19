@@ -24,11 +24,13 @@
 package com.percussion.server;
 
 import com.percussion.design.objectstore.PSControlMeta;
+import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -88,12 +90,10 @@ public abstract class PSBaseControlManager
    protected List<PSControlMeta> getControls(File ctrlFile)
    {
       List<PSControlMeta> ctrls = new ArrayList<>();
-      FileInputStream fin = null;
       
-      try
+      try(FileInputStream fin = new FileInputStream(ctrlFile))
       {
-         fin = new FileInputStream(ctrlFile);
-   
+
          Document doc = PSXmlDocumentBuilder.createXmlDocument(fin, false);
 
          NodeList nodes = doc.getElementsByTagName(
@@ -103,26 +103,11 @@ public abstract class PSBaseControlManager
             Element control = (Element) nodes.item(i);
             ctrls.add(new PSControlMeta(control));
          }
-      }
-      catch (Exception e)
-      {
+      } catch (SAXException | PSUnknownNodeTypeException | IOException e) {
          PSConsole.printMsg(getSubSystem(), e);
       }
-      finally
-      {
-         if (fin != null)
-         {
-            try
-            {
-               fin.close();
-            }
-            catch (IOException e)
-            {
-               
-            }
-         }
-      }
-      
+
+
       return ctrls;
    }
 

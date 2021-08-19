@@ -6,7 +6,7 @@
    For the default choices fieldname_id and fieldname_value arrays will be created.
    Javascript functions will be created to handle the onchange events.
 -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
    <xsl:template match="KeywordDependencies" mode="kwjs1">
       <xsl:call-template name="StartScript"/>
       <xsl:for-each select="KeywordField">

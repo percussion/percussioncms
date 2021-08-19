@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" xmlns:psxctl="URN:percussion.com/control"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
                 xmlns="http://www.w3.org/1999/xhtml">
    <xsl:variable name="rxroot" select="/"/>
    <xsl:variable name="systemp" select="document('../sys_resources/stylesheets/sys_Templates.xsl')/*"/>

@@ -21,7 +21,7 @@
         <script src="../sys_resources/js/href.js">;</script>
 
         <title>Rhythmyx - Publisher - Publication Status Details</title>
-        <script language="javascript">
+        <script>
            function Reload()
            {
               var loc = document.location.href;

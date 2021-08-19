@@ -16,6 +16,9 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
     <public publicId="-//W3C//ENTITIES_Special_for_XHTML//EN" uri="file://@@rxdir@@/DTD/HTMLspecialx.ent"/>
     <system systemId="https://www.percussion.com/DTD/HTMLspecialx.ent" uri="file://@@rxdir@@/DTD/HTMLspecialx.ent"/>
 
+    <!-- W3C combined entities -->
+    <public publicId="-//W3C//ENTITIES Combined Set//EN//XML" uri="file://@@rxdir@@/DTD/w3centities-f.ent"/>
+    <system systemId="http://www.w3.org/2003/entities/2007/w3centities-f.ent" uri="file://@@rxdir@@/DTD/w3centities-f.ent"/>
     <!-- Jetty Server -->
     <public publicId="-//Jetty//Configure//EN" uri="file://@@rxdir@@/DTD/configure_9_3.dtd"/>
     <system systemId="http://www.eclipse.org/jetty/configure_9_3.dtd" uri="file://@@rxdir@@/DTD/configure_9_3.dtd"/>

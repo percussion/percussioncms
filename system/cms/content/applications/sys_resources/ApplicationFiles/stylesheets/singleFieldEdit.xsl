@@ -8,8 +8,8 @@
         %HTMLspecial;
 ]>
 <!-- $ Id: $ -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" xmlns:psxctl="URN:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n.PSI18nUtils"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:import href="file:sys_resources/stylesheets/sys_Templates.xsl"/>
@@ -60,7 +60,7 @@
             <script src="../sys_resources/js/AddFormParameters.js">;</script>
             <script src="../sys_resources/js/formValidation.js">;</script>
             <script src="../sys_resources/js/formChangeCheck.js">;</script>
-            <script language="Javascript"><![CDATA[
+            <script><![CDATA[
       		  var hasEditLiveControls = false;
       		  function updateFieldOnAaPage()
       		  {
@@ -90,7 +90,7 @@
                   return (false]]><xsl:apply-templates select="/*/ItemContent/DisplayField[@displayType='sys_normal']" mode="psxcontrol-customcontrol-isdirty"/><![CDATA[); 
                }]]></script>
             <xsl:if test="$isEditLive or $isEditLiveDynamic">
-               <script language="Javascript"><![CDATA[
+               <script><![CDATA[
       		  hasEditLiveControls = true;
          		]]></script>
             </xsl:if>
@@ -111,7 +111,7 @@
                <script src="../sys_resources/js/href.js">;</script>
                <script src="../rx_resources/webimagefx/rx_wifx.js">;</script>
             </xsl:if>
-            <script language="javascript">
+            <script>
                var canSubmit = true;
             </script>
          </head>

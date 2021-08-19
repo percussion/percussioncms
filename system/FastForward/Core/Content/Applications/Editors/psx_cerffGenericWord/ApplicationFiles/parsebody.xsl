@@ -23,7 +23,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:html="http://www.w3.org/TR/REC-html40" exclude-result-prefixes="v o w dt"
                 extension-element-prefixes="psxi18n">
 <xsl:import href="../psx_cerffGenericWord/contentfilter.xsl" /> 	

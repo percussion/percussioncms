@@ -1,78 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
 <Widget>
-   <WidgetPrefs title="jQuery UI Widget"
-        contenttype_name=""
-        category="Design"
-        description="Select your desired version of jQuery UI"
-        author="Percussion Software, Inc."
-        thumbnail="/rx_resources/widgets/percJQueryUIWidget/images/widgeticonjqueryui.png"
-        preferred_editor_width="800"
-        preferred_editor_height="685"
-        is_responsive="true"/>
+    <WidgetPrefs title="jQuery UI Widget"
+                 contenttype_name=""
+                 category="Design"
+                 description="Select your desired version of jQuery UI"
+                 author="Percussion Software, Inc."
+                 thumbnail="/rx_resources/widgets/percJQueryUIWidget/images/widgeticonjqueryui.png"
+                 preferred_editor_width="800"
+                 preferred_editor_height="685"
+                 is_responsive="true"/>
     <UserPref name="jQueryUILocation"
-      display_name="jQuery UI CDN Link (http or https):"
-      default_value="/web_resources/cm/jslib/jquery-ui.js"
-      required="true"
-      datatype="string" />
-      <UserPref name="jQueryUILocationIntegrity" display_name="jQuery UI SRI Hash" default_value=""
-      required="false"
-      datatype="string"/>
-      <UserPref name="jQueryUILocationCrossOrigin" display_name="jQuery UI Cross Origin" default_value=""
-      required="false"
-      datatype="string"/>
+              display_name="jQuery UI CDN Link (http or https):"
+              default_value="/web_resources/cm/jslib/jquery-ui.js"
+              required="true"
+              datatype="string" />
+    <UserPref name="jQueryUILocationIntegrity" display_name="jQuery UI SRI Hash" default_value=""
+              required="false"
+              datatype="string"/>
+    <UserPref name="jQueryUILocationCrossOrigin" display_name="jQuery UI Cross Origin" default_value=""
+              required="false"
+              datatype="string"/>
 
     <UserPref name="jQueryUICSSTheme" display_name="jQuery UI CSS" default_value="/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css"
               required="true"
               datatype="string"/>
     <UserPref name="isUIDeferred"
-      display_name="Defer Loading"
-      default_value="no"
-      required="true"
-      datatype="enum">
-      <EnumValue value="no" display_value="No" />
-      <EnumValue value="yes" display_value="Yes" />
+              display_name="Defer Loading"
+              default_value="no"
+              required="true"
+              datatype="enum">
+        <EnumValue value="no" display_value="No" />
+        <EnumValue value="yes" display_value="Yes" />
     </UserPref>
     <UserPref name="scriptUILocation"
-      display_name="Script Location"
-      default_value="additionalHeadContent"
-      required="true"
-      datatype="enum">
-      <EnumValue value="additionalHeadContent" display_value="Head" />
-      <EnumValue value="afterBodyStart" display_value="After Body Start" />
-      <EnumValue value="beforeBodyClose" display_value="Before Body Close" />
+              display_name="Script Location"
+              default_value="additionalHeadContent"
+              required="true"
+              datatype="enum">
+        <EnumValue value="additionalHeadContent" display_value="Head" />
+        <EnumValue value="afterBodyStart" display_value="After Body Start" />
+        <EnumValue value="beforeBodyClose" display_value="Before Body Close" />
     </UserPref>
     <UserPref name="includeUIOnPublishedPage"
-      display_name="Include on Published Page"
-      default_value="yes"
-      datatype="enum">
-      <EnumValue value="no" display_value="No" />
-      <EnumValue value="yes" display_value="Yes" />
+              display_name="Include on Published Page"
+              default_value="yes"
+              datatype="enum">
+        <EnumValue value="no" display_value="No" />
+        <EnumValue value="yes" display_value="Yes" />
     </UserPref>
     <Code type="jexl">
-    <![CDATA[
+        <![CDATA[
     $jQueryUILocation = $perc.widget.item.properties.get('jQueryUILocation');
     $isUIDeferred = $perc.widget.item.properties.get('isUIDeferred');
     $scriptUILocation = $perc.widget.item.properties.get('scriptUILocation');
@@ -80,11 +57,10 @@
     ]]>
     </Code>
     <Content type="velocity">
-    <![CDATA[
+        <![CDATA[
     #if ($perc.isEditMode())##
         #createEmptyWidgetContent("jquery-ui-widget-sample-content", "This jQuery UI widget is showing sample content.","height: 32px;background: transparent url(/Rhythmyx/rx_resources/widgets/percJQueryUIWidget/images/widgeticonjqueryuiempty.png) no-repeat scroll center center;filter: alpha(opacity=50);opacity: .50;")##
     #end##
     ]]>
     </Content>
 </Widget>
-

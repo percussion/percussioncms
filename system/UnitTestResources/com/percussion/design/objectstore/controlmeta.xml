@@ -2,7 +2,7 @@
 <!--
 	List of test control meta objects used by the PSControlDependencyMapTest
 -->
-<Controls xmlns="http://www.w3.org/1999/xhtml" xmlns:psxctl="URN:percussion.com/control">
+<Controls xmlns="http://www.w3.org/1999/xhtml" xmlns:psxctl="urn:percussion.com/control">
 	<psxctl:ControlMeta extension-element-prefixes="psxi18n" name="sys_CalendarSimple" dimension="single" choiceset="none">
 		<psxctl:Description>A input box with icon to pop-up calendar picker</psxctl:Description>
 		<psxctl:ParamList>

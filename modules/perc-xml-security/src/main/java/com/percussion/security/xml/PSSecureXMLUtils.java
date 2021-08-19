@@ -45,7 +45,7 @@ public class PSSecureXMLUtils {
     private PSSecureXMLUtils(){
         //hidden ctor
     }
-
+    //  http://xml.org/sax/features/namespaces
     // Set to true
     public static final String SECURE_PROCESSING_FEATURE = XMLConstants.FEATURE_SECURE_PROCESSING;
 
