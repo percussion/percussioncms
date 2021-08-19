@@ -6,9 +6,14 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="xalan://com.percussion.i18n.PSI18nUtils"
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
+		]>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_bannerTemplate.xsl"/>
 	<xsl:import href="file:rx_resources/stylesheets/rx_bannerTemplate.xsl"/>
@@ -103,7 +108,7 @@
 					<xsl:text>);</xsl:text>
 				</xsl:element>
 				<!-- end XSL -->
-			<script language="javascript">
+			<script>
 	         function cancelFunc() {
 	           document.location.href=document.editconfiguration.doccancelurl.value+"?	sys_componentname="+document.editconfiguration.sys_componentname.value+"&amp;sys_pagename="+document.editconfiguration.sys_pagename.value;
 	         }

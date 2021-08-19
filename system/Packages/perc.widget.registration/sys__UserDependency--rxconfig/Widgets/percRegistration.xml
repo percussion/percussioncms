@@ -1,68 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-<!DOCTYPE Widget [
-<!ENTITY defaultDateFormat "D M d, yy 'at' hh:nn">
-]>
 <Widget>
     <WidgetPrefs title="Registration"
-        contenttype_name="percRegistrationAsset"
-        category="integration"
-        description="Widget to build and render a registration form"
-        author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/registration/images/widgetIconRegistration.gif"
-        preferred_editor_width="800"
-        preferred_editor_height="450"
-		is_responsive="true"/>
-          
-    <UserPref name="perc-label-layout" 
-        display_name="Label layout"
-        default_value="align_above"
-        datatype="enum">
-        <EnumValue value="align_above" display_value="Align above the field" />       
-        <EnumValue value="align_left" display_value="Align to the left of the field" /> 
+                 contenttype_name="percRegistrationAsset"
+                 category="integration"
+                 description="Widget to build and render a registration form"
+                 author="Percussion Software Inc"
+                 thumbnail="/rx_resources/widgets/registration/images/widgetIconRegistration.gif"
+                 preferred_editor_width="800"
+                 preferred_editor_height="450"
+                 is_responsive="true"/>
+
+    <UserPref name="perc-label-layout"
+              display_name="Label layout"
+              default_value="align_above"
+              datatype="enum">
+        <EnumValue value="align_above" display_value="Align above the field" />
+        <EnumValue value="align_left" display_value="Align to the left of the field" />
     </UserPref>
-    <UserPref name="perc-registration-mode" 
-        display_name="Registration mode"
-        default_value="registration"
-        datatype="enum">
-        <EnumValue value="registration" display_value="Registration" />       
-        <EnumValue value="password_request" display_value="Password request" /> 
-        <EnumValue value="password_reset" display_value="Password reset" /> 
+    <UserPref name="perc-registration-mode"
+              display_name="Registration mode"
+              default_value="registration"
+              datatype="enum">
+        <EnumValue value="registration" display_value="Registration" />
+        <EnumValue value="password_request" display_value="Password request" />
+        <EnumValue value="password_reset" display_value="Password reset" />
     </UserPref>
-    <UserPref name="perc-email-verification-required" 
-      display_name="Email verification required"
-      default_value="true"
-      datatype="bool"/>
-    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->  
+    <UserPref name="perc-email-verification-required"
+              display_name="Email verification required"
+              default_value="true"
+              datatype="bool"/>
+    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->
     <CssPref name="rootclass"
-        display_name="CSS root class" 
-        datatype="string" />
-    
+             display_name="CSS root class"
+             datatype="string" />
+
     <Code type="jexl">
-    <!-- This section is used to set up data that will be used in the content section -->
-    <![CDATA[
+        <!-- This section is used to set up data that will be used in the content section -->
+        <![CDATA[
         $pageId = $perc.page.id;
         $widgetId = $perc.widget.item.id;
         $widgetProps =  $perc.widget.item.properties;
@@ -119,10 +93,10 @@
 			$dsUrl = "";
     ]]>
     </Code>
-    
+
     <Content type="velocity">
-    <!-- This section defines the rendered content -->
-    <![CDATA[
+        <!-- This section defines the rendered content -->
+        <![CDATA[
     <div class="$!{rootclass} percRegistration" data="{&quot;homePageLink&quot;:&quot;$homePageLink&quot;,&quot;deliveryurl&quot;:&quot;$dsUrl&quot;}">
         #if( ! $perc.widgetContents.isEmpty())
             #if($percregMode == "registration")
@@ -247,5 +221,5 @@
             </script>
         #end
     </div>]]>
-    </Content>    
+    </Content>
 </Widget>

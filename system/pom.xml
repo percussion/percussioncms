@@ -1459,6 +1459,18 @@
             <groupId>xml-resolver</groupId>
             <artifactId>xml-resolver</artifactId>
         </dependency>
+        <!-- JNLP support -->
+        <dependency>
+            <groupId>jardiff</groupId>
+            <artifactId>jardiff</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jnlp-servlet</groupId>
+            <artifactId>jnlp-servlet</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
     <distributionManagement>
         <snapshotRepository>

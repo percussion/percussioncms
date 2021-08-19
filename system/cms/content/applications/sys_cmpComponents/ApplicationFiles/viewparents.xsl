@@ -8,9 +8,9 @@
 		%HTMLspecial;
 ]>
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 <xsl:include href="file:sys_resources/stylesheets/viewpaging.xsl" />
    <xsl:variable name="this" select="/"/>
    <xsl:template match="/">
@@ -23,7 +23,7 @@
      <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
 	<script src="../sys_resources/js/formValidation.js"/>
 	</head>
-   <script language="javascript">
+   <script>
    function editComponent(editurl)
    {
       if(!window.opener || window.opener.closed)

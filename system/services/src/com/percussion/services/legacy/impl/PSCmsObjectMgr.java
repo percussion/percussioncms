@@ -1591,7 +1591,7 @@ public class PSCmsObjectMgr
       Map<Integer, String> map = new HashMap<>();
       if (wf == null)
       {
-         ms_log.warn("Failed to load workflow id = " + wfId);
+         ms_log.warn("Failed to load workflow id = {}" , wfId);
          wfStateIdNameMap.put(wfId, map);         
          return map;
       }
@@ -1616,8 +1616,7 @@ public class PSCmsObjectMgr
    {
       IPSWorkflowService svc = PSWorkflowServiceLocator.getWorkflowService();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
-      PSWorkflow wf = svc.loadWorkflow(gmgr.makeGuid(wfId, PSTypeEnum.WORKFLOW));
-      return wf;
+      return svc.loadWorkflow(gmgr.makeGuid(wfId, PSTypeEnum.WORKFLOW));
    }
    
    /**
@@ -1649,7 +1648,7 @@ public class PSCmsObjectMgr
       }
       catch (PSInvalidContentTypeException e)
       {
-         ms_log.warn("Invalid content type id (" + contentTypeId + ") for contentId = " + item.getContentId());
+         ms_log.warn("Invalid content type id ({}) for contentId = {}",contentTypeId  , item.getContentId());
       }
    }
    

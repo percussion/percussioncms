@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:html="http://www.w3.org/TR/REC-html40" exclude-result-prefixes="psxi18n"
                 extension-element-prefixes="psxi18n">
 <xsl:import href="../rx_ceArticleWord/contentfilter.xsl" /> 

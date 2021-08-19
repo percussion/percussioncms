@@ -7,9 +7,9 @@
 	<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0" xmlns:xalan="http://xml.apache.org/xalan"
-                xmlns="http://www.w3.org/1999/xhtml" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 <xsl:output method="xml"/>
 <xsl:template match="/"> 
 <xsl:variable name="pagename" select="/*/pagename"/>
@@ -18,7 +18,7 @@
    <title>Rhythmyx System Administrator - Search Box</title>
 </head>
 <body>
-<script language="javascript">
+<script>
 <![CDATA[
 function search_onclick() {
 	if(document.componentsearch.cmpname_display.value!=''){
@@ -130,7 +130,7 @@ function search_onclick() {
     </tr>
   </table>
 </form>
-<script language="javascript">
+<script>
 	parseAndDisplayFormFiledsFromUrl('componentsearch');
 </script>
 </body>

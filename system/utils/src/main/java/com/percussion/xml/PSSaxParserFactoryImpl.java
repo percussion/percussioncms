@@ -36,6 +36,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
+
 /**
  * @author dougrand
  *
@@ -60,7 +61,9 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
                             false
                     ));
             factory.setNamespaceAware(true);
+            factory.setValidating(false);
             factory.setFeature("http://xml.org/sax/features/namespaces",true);
+            factory.setFeature("http://xml.org/sax/features/namespace-prefixes",false);
 
             return factory;
         } catch (Exception e) {

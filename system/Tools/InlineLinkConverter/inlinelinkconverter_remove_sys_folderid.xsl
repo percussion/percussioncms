@@ -30,12 +30,17 @@
 		%HTMLsymbol;
 		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-]>
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
+		]>
 <!--Inline link converter xsl to remove the sys_folderid attributes from the inline elements.-->
 <!--
 override inlinelinkconverter.xsl with this file, then run the RhythmyxInlineLinkConverter.exe (or *.bin in unix) to remove the sys_folderid attributes fron the inline link in the content. User should also remove the sys_folderid relationship properties from the relationship table, which can be done with a simple SQL statement.
 -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/XSL/Transform/1.0"
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 exclude-result-prefixes="urlencoder">
 	<xsl:output method="xml"/>
 	<!-- main template -->

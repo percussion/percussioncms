@@ -73,6 +73,10 @@
 
 
     function csrfGetURLFromServiceCall(url){
+
+        if(typeof url === "undefined" || url == null)
+            return null;
+
         //Create a new link with the url as its href:
         var ret;
         var a = $('<a>', {
@@ -92,13 +96,19 @@
             path = CSRF_COMMENTS_PATH;
         else if(path.contains("/perc-membership-services/"))
             path = CSRF_MEMBERSHIP_PATH;
+        else
+            path = null;
 
-        return a.prop("protocol") + a.prop("hostname") + ":" + a.prop("port") + path;
+        if(path!= null){
+            return a.prop("protocol") + a.prop("hostname") + ":" + a.prop("port") + path;
+        }else{
+            return null;
+        }
 
     }
 
 
-    function csrfGetToken(url){
+    async function csrfGetToken(url,callback){
 
         let csrfToken;
 
@@ -108,33 +118,29 @@
             }
         }
 
-        var options = {
-            url: url,
-            cache:false,
-            method: TYPE_HEAD
+
+        let init = {
+            method: TYPE_HEAD, // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'omit', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                "Accept": "text/plain"
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'origin-when-cross-origin'
         };
 
-        var jqhr = $.ajax(options)
-            .done(function(data, textStatus, jqXHR) {
-                var tokenHeader = jqXHR.getResponseHeader(CSRF_HEADER);
-                if(typeof tokenHeader !== "undefined" && tokenHeader != null ){
-                    var token = jqXHR.getResponseHeader(tokenHeader);
-                    var param = jqXHR.getResponseHeader(CSRF_PARAM_HEADER);
+        const response = await fetch(url, init);
 
-                    csrfToken.tokenHeader = tokenHeader;
-                    csrfToken.token = token;
-                    csrfToken.param = param;
-                }
-
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-               // csrf token fetch failed.
-            })
-            .always(function() {
-                //csrf token fetch is complete
-            });
-
-        return csrfToken;
+        response.text().then(data => {
+            if(response.ok) {
+                callback(response);
+            }else{
+                console.debug(response.text);
+            }
+        });
     }
 
     function csrfSafeMethod(method) {
@@ -147,10 +153,24 @@
         timeout: 300000,
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                var csrf = csrfGetToken(xhr.url);
-                if(typeof(csrf) !== "undefined" && csrf !== null){
-                    xhr.setRequestHeader(csrf.tokenHeader,csrf.token);
+                let u = csrfGetURLFromServiceCall(xhr.url);
+                if(u != null){
+                    csrfGetToken(u,function(response){
+                        if(typeof response !== 'undefined' && response != null)
+                            var tokenHeader = response.headers.get(CSRF_HEADER);
+                        if(typeof tokenHeader !== "undefined" && tokenHeader != null ){
+                            var token = jqXHR.getResponseHeader(tokenHeader);
+                            var param = jqXHR.getResponseHeader(CSRF_PARAM_HEADER);
+                            if(typeof(token) !== "undefined" && token !== null){
+                                xhr.setRequestHeader(tokenHeader,token);
+                            }
+
+                        }
+
+
+                    });
                 }
+
             }
         }
     });

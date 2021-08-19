@@ -193,7 +193,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<input type="hidden" name="{@paramName}" value="{Value}"/>
-		<script language="JavaScript">
+		<script>
 			<xsl:if test="@isReadOnly='yes'">
 	eWebEditPro.parameters.readOnly = true;
       		</xsl:if><![CDATA[eWebEditPro.parameters.config = "]]><xsl:value-of select="$config_src_url"/><![CDATA[";

@@ -1610,7 +1610,7 @@
             var formRenderedHtml;
             if ($.PercFormVariables.IsHoneypotEnabled === 1 || $.PercFormVariables.IsRecaptchaEnabled === 1) {
                 formRenderedHtml = $("<form name='" + formData.config.name +"' method='post' action='" +
-                    formAction + "' onsubmit=\'return validatePercForm()\'></form>");
+                    formAction + "' onsubmit=\'return validatePercForm();\'></form>");
             }
             else {
                 formRenderedHtml = $("<form name='" + formData.config.name +"' method='post' action='" + formAction + "'></form>");
