@@ -35,6 +35,8 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSRelationshipUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -48,6 +50,9 @@ import java.util.Map;
 public class PSTranslationConstraint extends PSDefaultExtension
    implements IPSRequestPreProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSTranslationConstraint.class);
+
    /**
     * Pre processes the supplied request and throws a
     * <code>PSRequestValidationException</code> if a translation for the
@@ -78,7 +83,7 @@ public class PSTranslationConstraint extends PSDefaultExtension
       {
          String depId = request.getParameter(IPSHtmlParameters.SYS_DEPENDENTID,
                "").trim();
-         System.out.println("depId = " + depId);
+         log.info("depId = {}", depId);
          if(depId.length() > 0) //Dependent already known, no need to validate
             return;
 

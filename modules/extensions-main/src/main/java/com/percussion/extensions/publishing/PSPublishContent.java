@@ -81,6 +81,9 @@ public class PSPublishContent
    extends PSDefaultExtension
    implements IPSWorkflowAction
 {
+
+   private static final Logger log = LogManager.getLogger(PSPublishContent.class);
+
    /**
     * Key to lookup an edition id from a workflow and transition
     */
@@ -527,7 +530,7 @@ public class PSPublishContent
                   (InputStream) obj, false);
                NodeList nl = doc.getElementsByTagName("response");
                code = ((Element) nl.item(0)).getAttribute("code");
-               System.out.println("code = " + code);
+               log.info("code = {}", code);
             }
             while (code.equalsIgnoreCase("inprogress"));
       }

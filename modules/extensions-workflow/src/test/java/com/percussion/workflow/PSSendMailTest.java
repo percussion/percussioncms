@@ -25,6 +25,8 @@ package com.percussion.workflow;
 
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.workflow.model.PSMessagePackage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -39,6 +41,7 @@ import java.util.List;
 @Category(IntegrationTest.class)
 public class PSSendMailTest extends PSAbstractWorkflowTest 
 {
+   private static final Logger log = LogManager.getLogger(PSSendMailTest.class);
    /**
     * Constructor specifying command line arguments
     *
@@ -53,7 +56,7 @@ public class PSSendMailTest extends PSAbstractWorkflowTest
   public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("\nExecuting test of "
+      log.info("\nExecuting test of "
                          + "PSExitNotifyAssignees.sendMail\n");
       Exception except = null;
       String exceptionMessage = "";
@@ -72,49 +75,43 @@ public class PSSendMailTest extends PSAbstractWorkflowTest
             if (m_sArgs[i].equals("-f") || m_sArgs[i].equals("-from"))
             {
                msgFrom =  m_sArgs[++i];
-               //System.out.println("Message From = " + msgFrom);
             }
          
             if (m_sArgs[i].equals("-t") || m_sArgs[i].equals("-to"))
             {
                msgTo =  m_sArgs[++i];
-               //System.out.println("Message To = " + msgTo);
             }
 
             if (m_sArgs[i].equals("-c") || m_sArgs[i].equals("-cc"))
             {
                msgCc =  m_sArgs[++i];
-               //System.out.println("Message Cc = " + msgCc);
             }         
             if (m_sArgs[i].equals("-s") || m_sArgs[i].equals("-subject"))
             {
                mailSubject =  m_sArgs[++i];
-               //System.out.println("Mail Subject = " + mailSubject);
             }
          
             if (m_sArgs[i].equals("-b") || m_sArgs[i].equals("-body"))
             {
                mailBody =  m_sArgs[++i];
-               //System.out.println("Mail Body = " + mailBody);
             }
 
          
             if (m_sArgs[i].equals("-u") || m_sArgs[i].equals("-url"))
             {
                mailURL =  m_sArgs[++i];
-               //System.out.println("Mail URL =    " + mailURL);
             }
          
             if (m_sArgs[i].equals("-h") || m_sArgs[i].equals("-help"))
             {         
-               System.out.println("Options are:");
-               System.out.println("   -f, -from      MessageFrom");
-               System.out.println("   -t, -to        MessageTo");
-               System.out.println("   -c, -cc        MessageCc");            
-               System.out.println("   -s, -subject   MailSubject");
-               System.out.println("   -b, -body      MailBody");
-               System.out.println("   -u, -url       MailURL");
-               System.out.println("   -h, -help      help");
+               log.info("Options are:");
+               log.info("   -f, -from      MessageFrom");
+               log.info("   -t, -to        MessageTo");
+               log.info("   -c, -cc        MessageCc");
+               log.info("   -s, -subject   MailSubject");
+               log.info("   -b, -body      MailBody");
+               log.info("   -u, -url       MailURL");
+               log.info("   -h, -help      help");
                return;
             }          
          } // End for (int i = 0; i < m_sArgs.length; i++)
@@ -142,7 +139,7 @@ public class PSSendMailTest extends PSAbstractWorkflowTest
       }*/
       finally 
       {
-         System.out.println("\nEnd test of PSExitNotifyAssignees.sendMail\n");
+         log.info("\nEnd test of PSExitNotifyAssignees.sendMail\n");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,
