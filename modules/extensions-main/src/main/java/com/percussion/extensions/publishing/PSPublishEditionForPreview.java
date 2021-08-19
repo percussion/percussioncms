@@ -231,21 +231,16 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       // get session id for the puburl
       String userSession = request.getUserSessionId();
       request.printTraceMessage("usersession " + userSession);
-      //System.out.println("usersession " + userSession );
 
       //Compare the previewvariantid and the sys_variantid in the request
       //if they are equal continue. If not then the user clicked on the wrong
       // variant
       request.printTraceMessage("previewvariant  " + previewVariantId
             + " and sys_variant " + variantId);
-      //System.out.println("previewvariant "+ previewVariantId +" and
-      // sys_variant " + variantId );
       if (previewVariantId != null)
       {
          if (!(previewVariantId.trim().equalsIgnoreCase(variantId)))
          {
-            //System.out.println("previewvariant does not equal "+
-            // previewVariantId +" and sys_variant " + variantId );
             request.printTraceMessage("previewvariant does not equal "
                   + previewVariantId + " and sys_variant " + variantId);
 
