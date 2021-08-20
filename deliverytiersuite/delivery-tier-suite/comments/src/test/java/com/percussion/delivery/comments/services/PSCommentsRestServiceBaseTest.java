@@ -29,6 +29,8 @@ import com.percussion.delivery.test.FakeRegistrant;
 import com.percussion.delivery.test.PSFakeDataGenerator;
 import com.percussion.delivery.utils.PSVersionHelper;
 import com.percussion.delivery.utils.spring.PSConfigurableApplicationContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.DeploymentContext;
 import org.glassfish.jersey.test.JerseyTest;
@@ -62,7 +64,8 @@ import java.util.List;
  *
  */
 public abstract class PSCommentsRestServiceBaseTest extends JerseyTest {
-	
+
+    private static final Logger log = LogManager.getLogger(PSCommentsRestServiceBaseTest.class);
 	private static String PERCUSSION_LIC="2012-07-04-12344";
 	private static int NUM_TENANTS = 10;
 	private List<FakeRegistrant> tenants;
@@ -172,13 +175,13 @@ public abstract class PSCommentsRestServiceBaseTest extends JerseyTest {
             webTarget.queryParam(IPSCommentRestService.FORM_PARAM_TITLE, "Tenant " + i + "tests");
             webTarget.queryParam(IPSCommentRestService.FORM_PARAM_URL, "http://www." + p.getDomain() + "/index");
             webTarget.queryParam(IPSCommentRestService.FORM_PARAM_USERNAME, p.getUsername());
-	    	System.out.println("Tenant ID:" + p.getGUID());
+	    	log.info("Tenant ID: {}", p.getGUID());
 
 	    //   response = webResource.path("/comment").entity(queryParams).type("application/x-www-form-urlencoded").header(PSTenantSecurityFilter.TENANTID_PARAM_NAME, p.getGUID()).post(ClientResponse.class);
             Response response = invocationBuilder.get();
 	       Assert.assertNotNull(response);
 
-	       System.out.println(response.getEntity());
+	       log.info(response.getEntity());
 	       //Assert.assertEquals(200, response.getStatus());
 
 
@@ -227,7 +230,7 @@ public abstract class PSCommentsRestServiceBaseTest extends JerseyTest {
         webTarget.queryParam(IPSCommentRestService.FORM_PARAM_TITLE, "Good license tests");
         webTarget.queryParam(IPSCommentRestService.FORM_PARAM_URL, "http://www." + p.getDomain() + "/index");
         webTarget.queryParam(IPSCommentRestService.FORM_PARAM_USERNAME, p.getUsername());
-    	System.out.println("Tenant ID:" + PERCUSSION_LIC);
+    	log.info("Tenant ID: {}", PERCUSSION_LIC);
         Response response = invocationBuilder.get();
       // response = webResource.path("/comment").entity(queryParams).type("application/x-www-form-urlencoded").header(PSTenantSecurityFilter.TENANTID_PARAM_NAME, PERCUSSION_LIC).post(ClientResponse.class);
 
@@ -254,7 +257,7 @@ public abstract class PSCommentsRestServiceBaseTest extends JerseyTest {
 	private String testGetVersion(){
 		String version = PSVersionHelper.getVersion(this.getClass());
 		Assert.assertNotNull(version);
-		System.out.print(version);
+		log.info(version);
 		return version;
 	}
     @Override

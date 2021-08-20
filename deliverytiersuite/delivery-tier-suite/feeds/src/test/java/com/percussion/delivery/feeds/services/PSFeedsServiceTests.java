@@ -29,6 +29,8 @@ import com.percussion.delivery.utils.security.PSHttpClient;
 
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,6 +51,8 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(locations =
 {"classpath:test-beans.xml"})
 public class PSFeedsServiceTests{
+
+    private static final Logger log = LogManager.getLogger(PSFeedsServiceTests.class);
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -93,7 +97,7 @@ public class PSFeedsServiceTests{
 
         feedDTO.setFeedsUrl(url);
         String xml = svc.readExternalFeed(feedDTO);
-    	System.out.println(xml);
+    	log.info(xml);
     	assertTrue(xml != null);
     	assertTrue(xml.toLowerCase().contains("nasa"));
 

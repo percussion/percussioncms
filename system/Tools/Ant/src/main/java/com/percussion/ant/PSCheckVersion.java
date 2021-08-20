@@ -31,7 +31,10 @@ import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.percussion.install.PSPreUpgradePluginCheckOracleVersion;
 import com.percussion.utils.io.PathUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -65,6 +68,9 @@ import org.apache.tools.ant.Task;
 @Deprecated
 public class PSCheckVersion extends Task
 {
+
+   private static final Logger log = LogManager.getLogger(PSCheckVersion.class);
+
    @Override
    public void execute() throws BuildException
    {
@@ -145,7 +151,8 @@ public class PSCheckVersion extends Task
             }
             catch (IOException e)
             {
-               System.out.println("An unexpected error occurred: " + e.getMessage());
+               log.debug(e.getMessage(), e);
+               log.error(e.getMessage());
             }
          }
       }
