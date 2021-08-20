@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 /**
@@ -43,6 +45,9 @@ import org.junit.Test;
  */
 public class PSInvalidateRequestTest
 {
+
+    private static final Logger log = LogManager.getLogger(PSInvalidateRequestTest.class);
+
     @Test
     public void testMarshalling() throws Exception
     {
@@ -58,7 +63,7 @@ public class PSInvalidateRequestTest
         props.put("testprop2", "5");
         req.setCustomProperties(props);
         String xml = PSJaxbUtils.marshall(req, true);
-        System.out.println(xml);
+        log.info(xml);
 
         InputStream is = new ByteArrayInputStream(xml.getBytes());
         PSInvalidateRequest reqClone = null;
