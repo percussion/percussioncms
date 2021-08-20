@@ -24,7 +24,8 @@
 
 package com.percussion.rest.roles;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.Collection;
 
 
 @XmlRootElement(name = "RoleList")
-@ApiModel(description = "A List of Role")
+@ArraySchema(schema = @Schema(implementation = Role.class))
 public class RoleList extends ArrayList<Role> {
     public RoleList(Collection<? extends Role> c) {
         super(c);

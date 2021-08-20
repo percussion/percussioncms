@@ -24,7 +24,8 @@
 
 package com.percussion.rest.contexts;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.Collection;
 
 
 @XmlRootElement(name = "Context")
-@ApiModel(description = "A List of ContextsPublishing ")
+@ArraySchema(schema=@Schema(implementation = Context.class))
 public class ContextList extends ArrayList<Context> {
     public ContextList(Collection<? extends Context> c) {
         super(c);

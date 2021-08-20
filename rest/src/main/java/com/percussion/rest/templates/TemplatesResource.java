@@ -25,8 +25,8 @@
 package com.percussion.rest.templates;
 
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.GET;
@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @PSSiteManageBean(value="restTemplatesResource")
 @Path("/templates")
 @XmlRootElement
-@Api(value = "/templates", description = "Template operations")
+@Tag(name = "Templates", description = "Template operations")
 public class TemplatesResource {
 
     @Autowired
@@ -46,7 +46,7 @@ public class TemplatesResource {
 
     //@TODO: Replace me
     @GET
-    @ApiOperation(value="Ping placeholder")
+    @Operation(summary="Ping placeholder")
     public String ping(){
         return "pong";
     }

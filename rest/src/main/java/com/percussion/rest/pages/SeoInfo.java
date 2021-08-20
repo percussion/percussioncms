@@ -24,32 +24,30 @@
 
 package com.percussion.rest.pages;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "SeoInfo")
-@ApiModel(value="SeoInfo",description="Represents information about the seo.")
+@Schema(name="SeoInfo",description="Represents information about the seo.")
 public class SeoInfo
 {
-    @ApiModelProperty(value="browserTitle", required=false,notes="Title shown in the browser.")
+    @Schema(name="browserTitle", required=false,description="Title shown in the browser.")
     private String browserTitle;
 
-    @ApiModelProperty(value="metaDescription", required=false,notes="Description of the Meta Data of the page.")
+    @Schema(name="metaDescription", required=false,description="Description of the Meta Data of the page.")
     private String metaDescription;
 
-    @ApiModelProperty(value="hideSearch", required=false,notes="Flag to mark as searchable.")
+    @Schema(name="hideSearch", required=false,description="Flag to mark as searchable.")
     private Boolean hideSearch;
 
-    @ApiModelProperty(value="tags", required=false,notes="List of tags marking the page.")
+    @Schema(name="tags", required=false,description="List of tags marking the page.")
     private List<String> tags;
 
-    @ApiModelProperty(value="categories", required=false,notes="List of categories within the page.")
+    @Schema(name="categories", required=false,description="List of categories within the page.")
     private List<String> categories;
 
     public String getBrowserTitle()

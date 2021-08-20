@@ -26,55 +26,54 @@ package com.percussion.rest.actions;
 
 import com.percussion.cms.objectstore.PSAction;
 import com.percussion.rest.Guid;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement(name = "ActionMenu")
-@ApiModel(description="Represents an Action Menu")
+@Schema(description="Represents an Action Menu")
 public class ActionMenu {
 
-    @ApiModelProperty(notes="The id of the menu.\n" +
+    @Schema(description="The id of the menu.\n" +
             "It may be -1 if the id has not been assigned.")
     private int id;
-    @ApiModelProperty(notes="The universally unique id of the menu, never null")
+    @Schema(description="The universally unique id of the menu, never null")
     private Guid guid;
-    @ApiModelProperty(notes="The name of the action. Never null.",required = true)
+    @Schema(description="The name of the action. Never null.",required = true)
     private String name;
-    @ApiModelProperty(notes="Display label for this action. Can be used to set the label for\n" +
+    @Schema(description="Display label for this action. Can be used to set the label for\n" +
             "dynamic context menu actions.")
     private String label;
-    @ApiModelProperty(notes="The action menu description.")
+    @Schema(description="The action menu description.")
     private String description;
-    @ApiModelProperty(notes="The action url that is relative to the document base for the page hosting the menu/.")
+    @Schema(description="The action url that is relative to the document base for the page hosting the menu/.")
     private String url;
-    @ApiModelProperty(notes="Sort rank of this Menu Action in its parent's children actions.")
+    @Schema(description="Sort rank of this Menu Action in its parent's children actions.")
     private int sortRank;
 
-    @ApiModelProperty(notes="The menu type, never null or empty, must be\n" +
+    @Schema(description="The menu type, never null or empty, must be\n" +
             "a valid menu type.", allowableValues = PSAction.TYPE_MENU + ","+ PSAction.TYPE_CONTEXTMENU +","+PSAction.TYPE_MENUITEM +",DYNAMICMENU" )
     private String menuType;
-    @ApiModelProperty(notes="Finds whether the action to be handled by client or not. An action that\n" +
+    @Schema(description="Finds whether the action to be handled by client or not. An action that\n" +
             "can not be handled by client is handled by server.")
     private String handler;
 
-    @ApiModelProperty(notes=" Gets children actions of this action. Should be called only if the action\n" +
+    @Schema(description=" Gets children actions of this action. Should be called only if the action\n" +
             "represents a menu as indicated by {@link #isCascadedMenu()} or\n" +
             " isDynamicMenu.\n" +
             " \n" +
             " If this action represents a menu, then a valid object is returned,\n" +
             "otherwise, it may be empty, but never null<.")
     private ActionMenuList children;
-    @ApiModelProperty(notes="A collection of action url parameters.")
+    @Schema(description="A collection of action url parameters.")
     private ActionMenuParameter[] parameters;
-    @ApiModelProperty(notes="Set the visibility contexts that is used to control when this action will\n" +
+    @Schema(description="Set the visibility contexts that is used to control when this action will\n" +
             "be visible.")
     private ActionMenuVisibilityContext[] visibilityContexts;
-    @ApiModelProperty(notes="Gets the list of mode-uicontexts with the action")
+    @Schema(description="Gets the list of mode-uicontexts with the action")
     private ActionMenuModeUIContext[] uiContexts;
-    @ApiModelProperty(notes="An array of the Properties defined for this menu.   <table>\n" +
+    @Schema(description="An array of the Properties defined for this menu.   <table>\n" +
             "  <th><td>Property</td><td>Description</td><td>Allowed Values</td></th>\n" +
             "  <tr><td>AcceleratorKey</td><td>Defines accelerator key for this action</td><td></td></tr>\n" +
             "  <tr><td>MnemonicKey</td><td>Defines mnemonic key for this action</td><td></td></tr>\n" +

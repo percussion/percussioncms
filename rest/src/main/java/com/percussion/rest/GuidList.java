@@ -25,7 +25,7 @@
 package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.Collection;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "GuidList")
-@ApiModel(description = "A list of Guids, commonly used for bulk operations")
+@Schema(description = "A list of Guids, commonly used for bulk operations")
 public class GuidList extends ArrayList<Guid> {
     public GuidList(Collection<? extends Guid> c) {
         super(c);

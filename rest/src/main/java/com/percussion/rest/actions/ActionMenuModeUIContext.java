@@ -25,16 +25,14 @@
 package com.percussion.rest.actions;
 
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ActionMenuModeUIContext")
-@ApiModel(description = "Represents a UI Context that can be used to scope a Menu")
+@Schema(description = "Represents a UI Context that can be used to scope a Menu")
 public class ActionMenuModeUIContext {
 
-    @ApiModelProperty(notes="")
     private String modeId;
     private String modeName;
     private String contextId;

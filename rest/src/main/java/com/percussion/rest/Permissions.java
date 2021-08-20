@@ -24,10 +24,10 @@
 
 package com.percussion.rest;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 
-@ApiModel(description = "Indicates the permissions that the given subject / role can have to an object")
+@Schema(description = "Indicates the permissions that the given subject / role can have to an object")
 public enum Permissions {
 
     /**

@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:cxf="http://cxf.apache.org/core"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -88,8 +64,25 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="springWebApplicationContextSetter"
           class="com.percussion.share.spring.PSSpringWebApplicationContextSetter"/>
 
-    <bean id="apiListingResource" class="io.swagger.jaxrs.listing.ApiListingResource"/>
-    <bean id="swaggerSerializers" class="io.swagger.jaxrs.listing.SwaggerSerializers" scope="singleton"/>
+    <!-- CXF OpenApiFeature -->
+    <bean id="openApiFeature" class="org.apache.cxf.jaxrs.openapi.OpenApiFeature">
+        <property name="title" value="Percussion CMS REST API"/>
+        <property name="version" value="8.0.3"/>
+        <property name="description" value="Public REST API"/>
+        <property name="contactEmail" value="support@percussion.com"/>
+        <property name="runAsFilter" value="false" />
+        <property name="license" value="Percussion Standard Agreement"/>
+        <property name="licenseUrl" value="https://www.percussion.com/legal/"/>
+        <property name="supportSwaggerUi" value="true"/>
+        <property name="swaggerUiVersion" value="3.51.2"/>
+        <property name="swaggerUiMavenGroupAndArtifact" value="org.webjars.swagger-ui"/>
+        <property name="scan" value="false" />
+        <property name="readAllResources" value="false" />
+        <property name="resourcePackages" value="com.percussion.rest" />
+        <property name="useContextBasedConfig" value="true"/>
+        <property name="prettyPrint" value="true"/>
+        <property name="scannerClass" value="io.swagger.v3.oas.integration.GenericOpenApiScanner"/>
+    </bean>
 
     <!-- Rest API -->
     <jaxrs:server id="rest-jax-rs" address="/">
@@ -121,8 +114,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <entry key="xml" value="application/xml" />
         </jaxrs:extensionMappings>
         <jaxrs:providers>
-            <ref bean="apiListingResource" />
-            <ref bean="swaggerSerializers" />
             <ref bean="PSJsonProcessingExceptionMapper" />
             <ref bean="validationExceptionMapper" />
             <ref bean="constraintsViolatedExceptionMapper" />
@@ -131,27 +122,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver" />
         </jaxrs:providers>
         <jaxrs:features>
-             <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-                 <property name="title" value="Percussion CMS REST API"/>
-                 <property name="version" value="8.0.2"/>
-                 <property name="description" value="Public REST API"/>
-                 <property name="contact" value="support@percussion.com"/>
-
-            <!--   <property name="resourcePackage" value="org.app.rest.api.service"/>-->
-            <property name="scanAllResources" value="false"/>
-             <property name="runAsFilter" value="false" />
-             <property name="license" value="Percussion Standard Agreement"/>
-             <property name="licenseUrl" value="https://www.percussion.com/legal/"/>
-             <property name="supportSwaggerUi" value="true"/>
-             <property name="basePath" value="/rest"/>
-            <property name="activateOnlyIfJaxrsSupported" value="true"/>
-            <property name="customizer">
-                <bean id="swagger2customizer" class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                    <property name="dynamicBasePath" value="true"/>
-                    <property name="replaceTags" value="true"/>
-                </bean>
-            </property>
-        </bean>
+                <ref bean="openApiFeature" />
             <cxf:logging/>
         </jaxrs:features>
     </jaxrs:server>
@@ -180,22 +151,6 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="jacksonContextResolver"/>
         </jaxrs:providers>
         <jaxrs:features>
-            <!--  <bean class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-               <property name="title" value="Test"/>
-               <property name="version" value="1.0"/>
-               <property name="description" value="Test 1.0"/>
-               <property name="contact" value="help@percussion.com"/>
-
-              <property name="resourcePackage" value="org.app.rest.api.service"/>
-                <property name="scanAllResources" value="true"/>
-                <property name="activateOnlyIfJaxrsSupported" value="true"/>
-                <property name="customizer">
-                    <bean id="swagger2customizer" class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-                        <property name="dynamicBasePath" value="true"/>
-                        <property name="replaceTags" value="true"/>
-                    </bean>
-                </property>
-            </bean> -->
         </jaxrs:features>
 
     </jaxrs:server>
