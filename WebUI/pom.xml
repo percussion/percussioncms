@@ -172,7 +172,7 @@
                         </resource>
                         <resource>
                             <directory>../projects/sitemanage/src/main/resources/Rhythmyx/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/spring/projects</directory>
-                            <filtering>false</filtering>
+                            <filtering>true</filtering>
                             <targetPath>WEB-INF/config/spring/projects</targetPath>
                             <excludes>
 

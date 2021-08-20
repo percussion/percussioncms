@@ -67,14 +67,14 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <!-- CXF OpenApiFeature -->
     <bean id="openApiFeature" class="org.apache.cxf.jaxrs.openapi.OpenApiFeature">
         <property name="title" value="Percussion CMS REST API"/>
-        <property name="version" value="8.0.3"/>
+        <property name="version" value="${project.parent.version}"/>
         <property name="description" value="Public REST API"/>
         <property name="contactEmail" value="support@percussion.com"/>
         <property name="runAsFilter" value="false" />
         <property name="license" value="Percussion Standard Agreement"/>
         <property name="licenseUrl" value="https://www.percussion.com/legal/"/>
         <property name="supportSwaggerUi" value="true"/>
-        <property name="swaggerUiVersion" value="3.51.2"/>
+        <property name="swaggerUiVersion" value="${swagger.ui.version}"/>
         <property name="swaggerUiMavenGroupAndArtifact" value="org.webjars.swagger-ui"/>
         <property name="scan" value="false" />
         <property name="readAllResources" value="false" />
