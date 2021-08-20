@@ -35,10 +35,7 @@ import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.PSWebserviceUtils;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.Contact;
-import io.swagger.annotations.Info;
-import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.queryparser.flexible.standard.QueryParserUtil;
@@ -57,18 +54,7 @@ import java.util.Map;
 
 @Path("/search")
 @Component("searchRestService")
-@Api(value = "/search")
-@SwaggerDefinition(
-        info = @Info(
-                description = "Search Rest Service",
-                version="1.0.0",
-                title = "Search Rest Service",
-                contact = @Contact(
-                        name = "Percussion Software",
-                        email = "support@percussion.com"
-                )
-        )
-)
+@Tag(name = "/search")
 public class PSSearchRestService
 {
     private static final String SEARCH_TYPE_MY_PAGES = "MyPages";

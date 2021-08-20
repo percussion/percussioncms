@@ -25,14 +25,15 @@
 package com.percussion.share.data;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 
 @JsonRootName(value = "ItemProperties")
-@ApiModel(description = "A List of PSItemProperties")
+@ArraySchema(schema=@Schema(implementation = PSItemProperties.class))
 public class PSItemPropertiesList extends ArrayList<PSItemProperties> {
     public PSItemPropertiesList(Collection<? extends PSItemProperties> c) {
         super(c);

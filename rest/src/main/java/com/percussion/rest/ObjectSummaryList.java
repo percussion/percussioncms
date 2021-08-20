@@ -25,7 +25,8 @@
 package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import java.util.Collection;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "ObjectSummaryList")
-@ApiModel(description="Represents a list of ObjectSummaries")
+@ArraySchema(schema=@Schema(implementation = ObjectSummary.class))
 public class ObjectSummaryList  extends ArrayList<ObjectSummary> {
     public ObjectSummaryList(Collection<? extends ObjectSummary> c) {
         super(c);

@@ -26,12 +26,26 @@ package com.percussion.rest.deliverytypes;
 
 import com.percussion.rest.Status;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -42,7 +56,7 @@ import java.util.List;
 @PSSiteManageBean(value="restDeliveryTypesResource")
 @Path("/deliverytypes")
 @XmlRootElement
-@Api(value = "/deliverytypes", description = "Delivery Type operations")
+@Tag(name = "Delivery Types", description = "Delivery Type operations")
 public class DeliveryTypesResource {
 
 	@Autowired
@@ -59,10 +73,13 @@ public class DeliveryTypesResource {
 	    @Path("/{id}")
 	    @Produces(
 	    {MediaType.APPLICATION_JSON})
-        @ApiOperation(value="Get a DeliveryType by id",notes="ID is expected to be in Guid untyped String form")
-    @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "No DeliveryType found"),
-            @ApiResponse(code = 500, message = "Error searching for DeliveryType")
+        @Operation(summary="Get a DeliveryType by id. ID is expected to be in Guid untyped String form"
+    , responses = {
+                @ApiResponse(responseCode = "404", description = "No DeliveryType found"),
+                @ApiResponse(responseCode = "500", description = "Error searching for DeliveryType"),
+                @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                        schema=@Schema(implementation = DeliveryType.class)
+                ))
     })
     public DeliveryType getDeliveryTypeById(@PathParam("id") String id) {
         DeliveryType ret;
@@ -80,12 +97,13 @@ public class DeliveryTypesResource {
 	     @Path("/{id}")
 	     @Consumes(MediaType.APPLICATION_JSON)
 	     @Produces(MediaType.APPLICATION_JSON)
-	     @ApiOperation(value = "Delete a DeliveryType", response = Status.class, notes="ID should be in untyped Guid String form")
+	     @Operation(summary = "Delete a DeliveryType. ID should be in untyped Guid String form")
 	     @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "DeliveryType not found"),
-            @ApiResponse(code = 500, message = "Error deleting DeliveryType")
+            @ApiResponse(responseCode = "404", description = "DeliveryType not found",
+            content=@Content(schema=@Schema(implementation = Status.class))),
+            @ApiResponse(responseCode = "500", description = "Error deleting DeliveryType")
 	     })
-	  	 public Status deleteDeliveryType(@ApiParam(value= "The untyped Guid string of the DeliveryType to delete" ,  name="id") @PathParam("id")
+	  	 public Status deleteDeliveryType(@Parameter(description= "The untyped Guid string of the DeliveryType to delete" ,  name="id") @PathParam("id")
 	     String id){
         try {
 			 deliveryTypeAdaptor.deleteDeliveryTypeById(uriInfo.getBaseUri(), id);
@@ -107,12 +125,16 @@ public class DeliveryTypesResource {
 	     @Path("/")
 	     @Consumes(MediaType.APPLICATION_JSON)
 	     @Produces(MediaType.APPLICATION_JSON)
-	     @ApiOperation(value = "Create or update a delivery type"
-	             , response = DeliveryType.class)
-	     @ApiResponses(value = {
-	       @ApiResponse(code = 404, message = "DeliveryType not found") 
-	     })
-	     public DeliveryType updateDeliveryType(@ApiParam(value= "The body containing a JSON payload" ,  name="body" )DeliveryType deliveryType){
+	     @Operation(summary = "Create or update a delivery type"
+	             , responses = {
+                 @ApiResponse(responseCode = "404", description = "No DeliveryType found"),
+                 @ApiResponse(responseCode = "500", description = "Error searching for DeliveryType"),
+                 @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                         schema=@Schema(implementation = DeliveryType.class)
+                 ))
+         })
+	     public DeliveryType updateDeliveryType(@Parameter(description= "The body containing a JSON payload" ,
+                 name="body" )DeliveryType deliveryType){
         DeliveryType ret;
         try{
             ret = deliveryTypeAdaptor.updateDeliveryType(uriInfo.getBaseUri(), deliveryType);
@@ -127,11 +149,14 @@ public class DeliveryTypesResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "List all Delivery Types available on the system."
-            , response = DeliveryType.class, responseContainer = "List")
-    @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "No DeliveryTypes found"),
-            @ApiResponse(code = 500, message = "Error searching for Delivery Types")
+    @Operation(summary = "List all Delivery Types available on the system."
+            ,
+    responses = {
+            @ApiResponse(responseCode = "404", description = "No DeliveryTypes found"),
+            @ApiResponse(responseCode = "500", description = "Error searching for Delivery Types"),
+            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    array=@ArraySchema(schema=@Schema(implementation = DeliveryType.class))
+            ))
     })
     public List<DeliveryType> getDeliveryTypes() {
         List<DeliveryType> ret;

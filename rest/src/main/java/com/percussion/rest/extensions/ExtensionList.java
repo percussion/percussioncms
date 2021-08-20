@@ -24,7 +24,8 @@
 
 package com.percussion.rest.extensions;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ import java.util.Collection;
 
 
 @XmlRootElement(name = "ExtensionList")
-@ApiModel(description = "A List of Extensions")
+@ArraySchema(schema=@Schema(implementation = Extension.class))
 public class ExtensionList extends ArrayList<Extension> {
     public ExtensionList(Collection<? extends Extension> c) {
         super(c);
