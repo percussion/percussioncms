@@ -207,7 +207,7 @@ public class PSMostReadServiceTest extends TestCase {
     }
     
     @Test
-	@Ignore("Test randomly fails - TODO:  Fix me")
+    @Ignore("Test is intermittently failing, TODO: Fix Me!")
     public void testE() throws Exception {
     	// tests many items in DB
     	addManyEntries();
