@@ -105,7 +105,7 @@
                 <entry key="importPageMax" default="-1"/>
                 <entry key="importTimeOut" default="30"/>
                 <entry key="assignmentTypeCalculationFilterCommunityRoles" default="false"/>
-                <entry key="loginAutoComplete" default="off"/>
+                <entry key="loginAutoComplete" default="off" value="off"/>
                 <entry key="sendErrorStackToClient" default="false"/>
                 <entry key="disableCrossSiteRequestForgeryCheck" default="false"/>
                 <entry key="clientSessionWarning" default="5"/>
@@ -127,6 +127,7 @@
                 <entry key="allowedMethods" default="GET,POST,OPTIONS,HEAD,PUT,DELETE,PATCH"/>
                 <entry key="allowedHeaders" default="Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-UA-Compatible, OWASP-CSRFTOKEN,User-Agent"/>
                 <entry key="allowCredentials" default="false"/>
+                <entry key="secureKeyRotationTime" default="90"/>
 
                 <!-- Properties to remove if present -->
                 <entry key="optimizePublishWithMD5Check" operation="del"/>

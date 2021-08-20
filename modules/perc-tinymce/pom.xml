@@ -177,6 +177,9 @@
                                 <move todir="${destDir}">
                                     <fileset dir="${project.build.directory}/tinymce/js/tinymce" />
                                 </move>
+                                <move todir="${destDir}/skins/lightgray">
+                                    <fileset dir="${destDir}/../../css" />
+                                </move>
                             </target>
                         </configuration>
                     </execution>

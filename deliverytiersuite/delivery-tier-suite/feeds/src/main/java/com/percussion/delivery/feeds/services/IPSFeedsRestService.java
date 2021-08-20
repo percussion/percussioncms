@@ -30,6 +30,7 @@ import com.percussion.delivery.services.IPSRestService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -117,7 +118,8 @@ public interface IPSFeedsRestService extends IPSRestService {
 	@PUT
 	@Path("/rotateKey")
 	@RolesAllowed("deliverymanager")
-	public abstract void rotateKey(byte[] key);
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN})
+	public abstract void rotateKey(String key);
 
 	// Property key constants
 	public static final String PROP_DESCRIPTION = "dcterms:abstract";

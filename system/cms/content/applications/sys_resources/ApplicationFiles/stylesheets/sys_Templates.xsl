@@ -526,7 +526,7 @@ accept      %ContentTypes; #IMPLIED
          '&amp;sys_submitname=',@paramName,'&amp;sys_childrowid=',$childkey)"/>
          <!-- childid if it exists -->
       </xsl:variable>
-      <a href="{$url}{$fileName}" target="_blank"  class="perc-preview-file-link" id="perc-content-edit-{@paramName}">
+      <a href="{$url}{$fileName}" target="_blank"  rel = "noopener noreferrer" class="perc-preview-file-link" id="perc-content-edit-{@paramName}">
          <xsl:call-template name="getLocaleString">
             <xsl:with-param name="key" select="'psx.contenteditor.sys_templates@Preview File'"/>
             <xsl:with-param name="lang" select="$lang"/>
@@ -2044,7 +2044,7 @@ onchange    %Script;       #IMPLIED
       <td class="datacell1font" valign="top" align="left">
          <xsl:value-of select="slot"/>&#160;</td>
       <td class="datacell1font" valign="top" align="center">
-         <a href="{previewurl}" target="_blank">
+         <a href="{previewurl}" target="_blank" rel = "noopener noreferrer">
             <img src="/sys_resources/images/eye.gif" alt="Preview" align="top" width="16" height="16" border="0"/>
          </a>
       </td>

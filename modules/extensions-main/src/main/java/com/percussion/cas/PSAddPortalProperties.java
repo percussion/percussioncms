@@ -251,7 +251,7 @@ public class PSAddPortalProperties extends PSSimpleJavaUdfExtension
       try
       {
          Element properties = (Element) test.processUdf(params, null);
-         System.out.println(PSXmlDocumentBuilder.toString(properties));
+         log.info(PSXmlDocumentBuilder.toString(properties));
       }
       catch (Throwable e)
       {
