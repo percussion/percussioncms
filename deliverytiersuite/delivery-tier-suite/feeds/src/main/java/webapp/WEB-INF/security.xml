@@ -32,7 +32,7 @@
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
         <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
-        <beans:constructor-arg value="/rss/csrf, /rss/updateOldSiteEntries/,/rss/descriptors"/>
+        <beans:constructor-arg value="/feeds/rss/csrf, /feeds/rss/updateOldSiteEntries/,/feeds/rss/descriptors,/feeds/rotateKey"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
 
