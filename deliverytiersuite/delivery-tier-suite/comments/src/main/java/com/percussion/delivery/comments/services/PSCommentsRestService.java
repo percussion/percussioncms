@@ -53,7 +53,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -102,7 +101,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         commentService = service;
     }
 
-    @HEAD
+    @POST
     @Path("/csrf")
     public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
         CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
@@ -117,6 +116,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      */
     @Override
     @POST
+    @Path("/comment/list")
     @Produces(MediaType.APPLICATION_JSON)
     public PSComments getComments(PSCommentCriteria criteria)
     {
