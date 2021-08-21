@@ -346,4 +346,15 @@ public class PSSecureXMLUtils {
     public  static InputSource getNoOpSource(){
         return new InputSource(new StringReader(""));
     }
+
+    /**
+     * Initialize JAXP properties to use specific parsers / transformers.  Generally used by unit tests
+     * that do not have access to the jvm.ini settings when running.
+     */
+    public static void setupJAXPDefaults(){
+        System.setProperty("javax.xml.transform.TransformerFactory","org.apache.xalan.xsltc.trax.SmartTransformerFactoryImpl");
+        System.setProperty("javax.xml.parsers.SAXParserFactory","com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl");
+        System.setProperty("javax.xml.datatype.DatatypeFactory","com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl");
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory","com.percussion.xml.PSDocumentBuilderFactoryImpl");
+    }
 }

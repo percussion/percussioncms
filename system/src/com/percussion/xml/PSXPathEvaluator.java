@@ -32,12 +32,11 @@ import com.icl.saxon.expr.XPathException;
 import com.icl.saxon.om.AbstractNode;
 import com.icl.saxon.om.NodeEnumeration;
 import com.icl.saxon.om.NodeInfo;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
+import com.percussion.data.PSInternalRequestURIResolver;
+import com.percussion.security.xml.PSCatalogResolver;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -45,10 +44,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Uses the SAXON transformer to evaluate XPath expressions against a given
@@ -103,7 +103,11 @@ public class PSXPathEvaluator
 
       // make a new identity transform
       TransformerFactory tfactory = TransformerFactory.newInstance();
+      PSCatalogResolver cr = new PSCatalogResolver();
+      cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+      tfactory.setURIResolver(cr);
       Transformer idt = tfactory.newTransformer();
+
       // transform just copies the nodes
       idt.transform(ds, dr);
 
@@ -202,7 +206,7 @@ public class PSXPathEvaluator
     * Gets the string value of an XPath expression applied to the XML object
     * that was provided when this <code>PSXPathEvaluator</code> was constructed.
     *
-    * @param the XPath expression to evaluate, may not be <code>null</code> or
+    * @param xpath XPath expression to evaluate, may not be <code>null</code> or
     * empty
     *
     * @return the string value of the specified xpath, will be empty if the
@@ -215,8 +219,8 @@ public class PSXPathEvaluator
          throw new IllegalArgumentException("xpath may not be null or empty");
 
       Expression expr = Expression.make( xpath, m_standAloneContext );
-      String result = expr.evaluateAsString( m_nodeContext );
-      return result;
+      return expr.evaluateAsString( m_nodeContext );
+
    }
 
    /**
