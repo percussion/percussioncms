@@ -37,7 +37,7 @@ import java.io.IOException;
 
 import static com.percussion.security.xml.PSSecureXMLUtils.getNoOpSource;
 
-public class PSXMLEntityResolverWrapper implements XMLEntityResolver {
+public class PSXMLEntityResolverWrapper implements XMLEntityResolver,com.sun.org.apache.xerces.internal.xni.parser.XMLEntityResolver {
 
     private CatalogResolver resolver = new CatalogResolver();
     private static final Logger log = LogManager.getLogger(PSXMLEntityResolverWrapper.class);
@@ -52,14 +52,19 @@ public class PSXMLEntityResolverWrapper implements XMLEntityResolver {
         return source;
     }
 
+    private com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource getSunXmlInput(InputSource is){
+        com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource source = new com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource(is.getPublicId(),is.getSystemId(),null);
+        source.setByteStream(is.getByteStream());
+        source.setCharacterStream(is.getCharacterStream());
+        source.setEncoding(is.getEncoding());
+        return source;
+    }
     /**
      * Resolves an external parsed entity. If the entity cannot be
      * resolved, this method should return null.
      *
      * @param resourceIdentifier location of the XML resource to resolve
      * @throws XNIException Thrown on general error.
-     * @throws IOException  Thrown if resolved entity stream cannot be
-     *                      opened or some other i/o error occurs.
      * @see XMLResourceIdentifier
      */
     @Override
@@ -82,6 +87,40 @@ public class PSXMLEntityResolverWrapper implements XMLEntityResolver {
         source.setByteStream(is.getByteStream());
         source.setCharacterStream(is.getCharacterStream());
         source.setEncoding(is.getEncoding());
+        return source;
+    }
+
+    /**
+     * Resolves an external parsed entity. If the entity cannot be
+     * resolved, this method should return null.
+     *
+     * @param resourceIdentifier location of the XML resource to resolve
+     * @throws XNIException Thrown on general error.
+     * @throws IOException  Thrown if resolved entity stream cannot be
+     *                      opened or some other i/o error occurs.
+     * @see com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier
+     */
+    @Override
+    public com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource resolveEntity(com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier resourceIdentifier) throws com.sun.org.apache.xerces.internal.xni.XNIException, IOException {
+        InputSource is = resolver.resolveEntity(resourceIdentifier.getPublicId(),resourceIdentifier.getLiteralSystemId());
+        try{
+            if(is == null){
+                log.warn("Unable to resolve external resource from local XML Catalog.  PUBLIC: {} SYSTEM_ID: {}",
+                        resourceIdentifier.getPublicId(),resourceIdentifier.getLiteralSystemId());
+                return getSunXmlInput(getNoOpSource());
+            }
+        }catch(Exception e){
+            log.warn("Error resolving external resource from local XML Catalog.  PUBLIC: {} SYSTEM_ID: {} Error:{}",
+                    resourceIdentifier.getPublicId(),resourceIdentifier.getLiteralSystemId(), e.getMessage());
+            return getSunXmlInput(getNoOpSource());
+        }
+
+        //We were able to resolve from the local Catalog so this resource is ok to return.
+        com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource source = new com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource(is.getPublicId(),is.getSystemId(),null);
+        source.setByteStream(is.getByteStream());
+        source.setCharacterStream(is.getCharacterStream());
+        source.setEncoding(is.getEncoding());
+
         return source;
     }
 }
