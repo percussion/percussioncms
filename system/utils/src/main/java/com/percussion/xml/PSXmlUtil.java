@@ -58,7 +58,7 @@ public class PSXmlUtil {
         try {
             Transformer transformer = transformerFactory.newTransformer();
             PSCatalogResolver cr = new PSCatalogResolver();
-            cr.validating=false;
+
             //TODO: This may need moved to perc-system to handle resolving internal XML server requests.
             transformer.setURIResolver(cr);
 
