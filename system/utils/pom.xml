@@ -153,6 +153,13 @@
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
+            <artifactId>perc-xml-security</artifactId>
+            <version>${project.parent.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
             <artifactId>perc-legacy</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

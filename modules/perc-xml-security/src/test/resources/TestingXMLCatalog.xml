@@ -9,5 +9,6 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
     <!-- HTML Entities -->
     <public publicId="-//W3C//ENTITIES_Latin_1_for_XHTML//EN" uri="file://@@rxdir@@/DTD/HTMLlat1x.ent"/>
     <system systemId="https://www.percussion.com/DTD/HTMLlat1x.ent" uri="DTD/HTMLlat1x.ent"/>
+    <uri name="https://www.percussion.com/HTMLlat1x.ent" uri="DTD/HTMLlat1x.ent"/>
 
    </catalog>
