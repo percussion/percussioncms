@@ -37,7 +37,11 @@ import com.percussion.security.xml.PSCatalogResolver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -52,7 +56,7 @@ import java.util.Properties;
 
 /**
  * Uses the SAXON transformer to evaluate XPath expressions against a given
- * XML source.
+ * XML source.  TODO: Update to use plain JAXP.
  */
 public class PSXPathEvaluator
 {
@@ -70,13 +74,25 @@ public class PSXPathEvaluator
     * <code>null</code>.
     * @throws TransformerException if <code>source</code> could not be parsed.
     */
-   public PSXPathEvaluator(InputStream source) throws TransformerException
-   {
+   public PSXPathEvaluator(InputStream source) throws TransformerException, ParserConfigurationException, SAXException {
       if (source == null)
          throw new IllegalArgumentException("source may not be null");
 
-      init(new Controller().makeBuilder().build(
-         new SAXSource(new InputSource(source))));
+      PSCatalogResolver cr = new PSCatalogResolver();
+      cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+      Controller ctrl = new Controller();
+      ctrl.setURIResolver(cr);
+      InputSource is = new InputSource(source);
+      SAXSource saxIs = new SAXSource(is);
+      if(saxIs.getXMLReader()!= null) {
+         saxIs.getXMLReader().setEntityResolver(cr);
+      }else{
+         XMLReader xr = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+         xr.setEntityResolver(cr);
+         saxIs.setXMLReader(xr);
+      }
+      init(ctrl.makeBuilder().build(
+         saxIs));
    }
 
    /**
@@ -102,7 +118,8 @@ public class PSXPathEvaluator
       DOMResult dr = new DOMResult();
 
       // make a new identity transform
-      TransformerFactory tfactory = TransformerFactory.newInstance();
+      TransformerFactory tfactory = TransformerFactory.newInstance("com.icl.saxon.TransformerFactoryImpl",
+              this.getClass().getClassLoader());
       PSCatalogResolver cr = new PSCatalogResolver();
       cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
       tfactory.setURIResolver(cr);
@@ -140,7 +157,8 @@ public class PSXPathEvaluator
       DOMResult dr = new DOMResult();
 
       // make a new identity transform
-      TransformerFactory tfactory = TransformerFactory.newInstance();
+      TransformerFactory tfactory = TransformerFactory.newInstance("com.icl.saxon.TransformerFactoryImpl",
+              this.getClass().getClassLoader());
       Transformer idt = tfactory.newTransformer();
       Properties defaultProps = idt.getOutputProperties();
       
