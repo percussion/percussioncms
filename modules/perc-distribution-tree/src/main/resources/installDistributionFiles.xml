@@ -64,14 +64,14 @@
         </copy>
 
         <copy todir="${assembly-directory}">
-            <fileset dir="{basedir}/../perc-xml-security/src/main/resources/">
+            <fileset dir="{basedir}/../../perc-xml-security/src/main/resources/">
                 <include name="PercussionXMLCatalog.xml"/>
             </fileset>
         </copy>
 
         <mkdir dir="${assembly-directory}/var/config"/>
         <copy todir="${assembly-directory}/var/config">
-            <fileset dir="{basedir}/../perc-xml-security/src/main/resources/">
+            <fileset dir="{basedir}/../../perc-xml-security/src/main/resources/">
                 <include name="CustomXMLCatalog.xml"/>
             </fileset>
         </copy>
