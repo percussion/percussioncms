@@ -29,11 +29,21 @@ import com.percussion.rest.extensions.ExtensionFilterOptions;
 import com.percussion.rest.extensions.ExtensionList;
 import com.percussion.rest.extensions.IExtensionAdaptor;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -46,7 +56,7 @@ import java.util.List;
 @Path("/contentlists")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-@Api(value = "/contentlists", description = "Content List operations")
+@Tag(name = "Content Lists", description = "Content List operations")
 public class ContentListsResource {
 
     private IContentListsAdaptor adaptor;
@@ -61,9 +71,13 @@ public class ContentListsResource {
     @Path("/{id}")
     @Produces(
             {MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Get a ContentList by id", notes = "Will return a ContentList if it exists."
-            , response = ContentList.class, responseContainer = "List")
-    public ContentList getContentListById(@PathParam("id") @ApiParam(name = "id", value = "The id of the Content List to lookup.") long id) {
+    @Operation(summary = "Get a ContentList by id. Will return a ContentList if it exists."
+            , responses = {
+            @ApiResponse(responseCode="200", description="OK", content = @Content(
+                   schema=@Schema(implementation = ContentList.class))
+            ),
+            @ApiResponse(responseCode="500", description = "Error")})
+    public ContentList getContentListById(@PathParam("id") @Parameter(name = "id", description = "The id of the Content List to lookup.") long id) {
         return adaptor.getContentListById(id);
     }
 
@@ -74,8 +88,12 @@ public class ContentListsResource {
     @GET
     @Path("/generators")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Get a list of available Content List Generators", notes = "Will return a list of all Content List Generators registerd on the system"
-            , response = Extension.class, responseContainer = "List")
+    @Operation(summary = "Get a list of available Content List Generators.  Will return a list of all Content List Generators registered on the system"
+            , responses = {
+            @ApiResponse(responseCode="200", description="OK", content=@Content(
+                    array = @ArraySchema(schema=@Schema(implementation = Extension.class))
+            )),
+            @ApiResponse(responseCode = "500", description = "Error")})
     public List<Extension> getContentListGenerators() {
         ExtensionFilterOptions filter = new ExtensionFilterOptions();
 
@@ -90,8 +108,12 @@ public class ContentListsResource {
     @GET
     @Path("/expanders")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Get a list of available Template Expanders", notes = "Will return a list of all Content List Template Expanders registered on the system"
-            , response = Extension.class, responseContainer = "List")
+    @Operation(summary = "Get a list of available Template Expanders.  Will return a list of all Content List Template Expanders registered on the system",
+            responses = {
+            @ApiResponse(responseCode="200", description="OK", content=@Content(
+                    array = @ArraySchema(schema=@Schema(implementation = Extension.class))
+            )),
+            @ApiResponse(responseCode = "500", description = "Error")})
     public List<Extension> getTemplateExpanders() {
         ExtensionFilterOptions filter = new ExtensionFilterOptions();
         filter.setInterfacePattern("com.percussion.services.publisher.IPSTemplateExpander");
@@ -106,9 +128,13 @@ public class ContentListsResource {
     @GET
     @Path("/by-edition/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Get a list of Content Lists defined for the specified Edition", notes = "Will return a list of all Content Lists linked to the specified Edition"
-            , response = ContentList.class, responseContainer = "List")
-    public List<ContentList> getContentListsByEditionId(@PathParam(value = "id") @ApiParam(name = "id", value = "The id of the Edition to retrieve content lists for.") long editionId) {
+    @Operation(summary = "Get a list of Content Lists defined for the specified Edition.  Will return a list of all Content Lists linked to the specified Edition",
+            responses = {
+            @ApiResponse(responseCode="200", description="OK", content=@Content(
+                    array = @ArraySchema(schema=@Schema(implementation = ContentList.class))
+            )),
+            @ApiResponse(responseCode = "500", description = "Error")})
+    public List<ContentList> getContentListsByEditionId(@PathParam(value = "id") @Parameter(name = "id", description = "The id of the Edition to retrieve content lists for.") long editionId) {
         return new ContentListList(adaptor.getContentListsByEditionId(editionId));
     }
 
@@ -119,9 +145,13 @@ public class ContentListsResource {
     @GET
     @Path("/unused/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Get a list of Content Lists defined for the specified Edition", notes = "Will return a list of all Content Lists linked to the specified Edition"
-            , response = ContentList.class, responseContainer = "List")
-    public List<ContentList> getUnusedContentLists(@PathParam(value = "id") @ApiParam(name = "id", value = "A valid Site ID") long siteId) {
+    @Operation(summary = "Get a list of Content Lists defined for the specified Edition.  Will return a list of all Content Lists linked to the specified Edition",
+            responses = {
+                    @ApiResponse(responseCode="200", description="OK", content=@Content(
+                            array = @ArraySchema(schema=@Schema(implementation = ContentList.class))
+                    )),
+                    @ApiResponse(responseCode = "500", description = "Error")})
+    public List<ContentList> getUnusedContentLists(@PathParam(value = "id") @Parameter(name = "id", description = "A valid Site ID") long siteId) {
         return new ContentListList(adaptor.getUnusedContentLists(siteId));
     }
 
@@ -134,8 +164,13 @@ public class ContentListsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
-    @ApiOperation(value = "Create or Update the specified ContentList", notes = "Will return the updated ContentList", response = ContentList.class)
-    public ContentList createOrUpdateContentList(@ApiParam(allowEmptyValue = false, readOnly = false, name = "body") ContentList cl) {
+    @Operation(summary = "Create or Update the specified ContentList.  Will return the updated ContentList",
+            responses = {
+            @ApiResponse(responseCode="200", description="OK", content = @Content(
+                    schema=@Schema(implementation = ContentList.class))
+            ),
+            @ApiResponse(responseCode="500", description = "Error")})
+    public ContentList createOrUpdateContentList(@Parameter(allowEmptyValue = false, name = "body") ContentList cl) {
         return adaptor.createOrUpdateContentList(cl);
     }
 
@@ -145,8 +180,8 @@ public class ContentListsResource {
      */
     @DELETE
     @Path("/{id}")
-    @ApiOperation(value = "Deletes the ContentList with the specified id")
-    public void deleteContentList(@PathParam(value = "id") @ApiParam(name = "id", required = true, value = "The id of the ContentList to delete.  Must exist.") long id) {
+    @Operation(summary = "Deletes the ContentList with the specified id")
+    public void deleteContentList(@PathParam(value = "id") @Parameter(name = "id", required = true, description = "The id of the ContentList to delete.  Must exist.") long id) {
         adaptor.deleteContentList(id);
     }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE catalog
+        PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN"
+        "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system" xml:base="file://@@rxdir@@" >
+<!-- Add any custom DTD, Entity, Namespace, XSL (import, include, document) URI's to this catalog file.
+The system will only process XML references that are defined in @@rxdir@@/PercussionXMLCatalog.xml or this file.
+This policy is to protect against XXE vulnerabilities.
+-->
+</catalog>

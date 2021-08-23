@@ -24,6 +24,12 @@
 
 package com.percussion.rest.sites;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "Site")
+@Schema(name="Site")
 public class Site {
 
     public Site(){}

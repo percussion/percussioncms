@@ -26,14 +26,15 @@ package com.percussion.rest.acls;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "AclEntryList")
-@ApiModel(description = "A List of Acl Entries")
+@ArraySchema(schema = @Schema(implementation = AclEntry.class))
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AclEntryList extends ArrayList<AclEntry> {
     public AclEntryList(Collection<? extends AclEntry> c) {

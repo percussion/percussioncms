@@ -1,27 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
 <Widget>
 	<WidgetPrefs title="Iframe"
 				 contenttype_name=""
@@ -71,14 +48,14 @@
 			  display_name="Referrer-Policy"
 			  datatype="enum">
 		<EnumValue value="no-referrer" display_value="no-referrer" />
-        <EnumValue value="no-referrer-when-downgrade" display_value="no-referrer-when-downgrade" />
-        <EnumValue value="origin" display_value="origin" />
-        <EnumValue value="origin-when-cross-origin" display_value="origin-when-cross-origin" />
-        <EnumValue value="same-origin" display_value="same-origin" />
-        <EnumValue value="strict-origin" display_value="strict-origin" />
-        <EnumValue value="strict-origin-when-cross-origin" display_value="strict-origin-when-cross-origin" />
-        <EnumValue value="unsafe-url" display_value="unsafe-url" />
-</UserPref>
+		<EnumValue value="no-referrer-when-downgrade" display_value="no-referrer-when-downgrade" />
+		<EnumValue value="origin" display_value="origin" />
+		<EnumValue value="origin-when-cross-origin" display_value="origin-when-cross-origin" />
+		<EnumValue value="same-origin" display_value="same-origin" />
+		<EnumValue value="strict-origin" display_value="strict-origin" />
+		<EnumValue value="strict-origin-when-cross-origin" display_value="strict-origin-when-cross-origin" />
+		<EnumValue value="unsafe-url" display_value="unsafe-url" />
+	</UserPref>
 
 	<UserPref name="scrollbar"
 			  display_name="Scrolling"

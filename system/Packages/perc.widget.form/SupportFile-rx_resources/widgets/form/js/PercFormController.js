@@ -1606,11 +1606,11 @@
             var localserver = true;
             var formConfig = formData.config;
             var formName = formData.config.name;
-            var formAction = "/perc-form-processor/form/";
+            var formAction = "/perc-form-processor/forms/form/";
             var formRenderedHtml;
             if ($.PercFormVariables.IsHoneypotEnabled === 1 || $.PercFormVariables.IsRecaptchaEnabled === 1) {
                 formRenderedHtml = $("<form name='" + formData.config.name +"' method='post' action='" +
-                    formAction + "' onsubmit=\'return validatePercForm()\'></form>");
+                    formAction + "' onsubmit=\'return validatePercForm();\'></form>");
             }
             else {
                 formRenderedHtml = $("<form name='" + formData.config.name +"' method='post' action='" + formAction + "'></form>");

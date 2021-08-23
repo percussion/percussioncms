@@ -24,11 +24,11 @@
 package com.percussion.utils.xml;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import junit.framework.TestCase;
 import org.w3c.dom.Document;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParser;
@@ -70,8 +70,27 @@ public class PSSaxCopierTest extends TestCase
     */
    public void testCopier() throws Exception
    {
-      DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
-      SAXParserFactory spf = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
+      DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              )
+      );
+
+      SAXParserFactory spf = PSSecureXMLUtils.getSecuredSaxParserFactory(
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              )
+      );
       StringWriter stringWriter = new StringWriter();
 
       DocumentBuilder db = dbf.newDocumentBuilder();

@@ -25,6 +25,7 @@ package com.percussion.services.assembly.impl;
 
 import com.percussion.data.PSStylesheetCleanupFilter;
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -34,20 +35,18 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.utils.xml.PSSaxHelper;
+import org.apache.commons.lang.StringUtils;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.lang.StringUtils;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 /**
  * Cleanup namespaces declarations that are not configured for the site (if
@@ -61,7 +60,16 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
    /**
     * Parser factory
     */
-   static final SAXParserFactory ms_fact = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
+   static final SAXParserFactory ms_fact = PSSecureXMLUtils.getSecuredSaxParserFactory(
+           new PSXmlSecurityOptions(
+                   true,
+                   true,
+                   true,
+                   false,
+                   true,
+                   false
+           )
+   );
 
    /**
     * Copier handler that strips namespaces for all but the topmost element. The

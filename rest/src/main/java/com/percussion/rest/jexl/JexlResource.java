@@ -29,8 +29,12 @@ import com.percussion.rest.extensions.ExtensionFilterOptions;
 import com.percussion.rest.extensions.ExtensionList;
 import com.percussion.rest.extensions.IExtensionAdaptor;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.GET;
@@ -47,7 +51,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @PSSiteManageBean(value="restJexlResource")
 @Path("/jexl")
 @XmlRootElement
-@Api(value = "/jexl", description = "Jexl related operations")
+@Tag(name = "JEXL Language Extensions", description = "Jexl related operations")
 public class JexlResource {
 
     @Autowired
@@ -61,7 +65,13 @@ public class JexlResource {
     @GET
     @Path("/extensions")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="Returns a list of all registered Jexl extensions on the System", response= Extension.class, responseContainer = "List")
+    @Operation(summary="Returns a list of all registered Jexl extensions on the System",
+            responses={
+            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    array = @ArraySchema(schema=@Schema(implementation = Extension.class))
+            )),
+                    @ApiResponse(responseCode = "500", description = "Error")
+            })
     public ExtensionList listLocationSchemeGenerators(){
         ExtensionFilterOptions filter = new ExtensionFilterOptions();
 

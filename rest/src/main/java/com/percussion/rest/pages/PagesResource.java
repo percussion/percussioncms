@@ -32,13 +32,26 @@ import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -53,7 +66,7 @@ import java.util.regex.Pattern;
 @PSSiteManageBean(value="restPagesResource")
 @Path("/pages")
 @XmlRootElement
-@Api(value = "/pages", description = "Page Operations")
+@Tag(name = "Pages", description = "Page Operations")
 public class PagesResource
 {
 
@@ -85,14 +98,17 @@ public class PagesResource
     @Path("/by-path/{pagepath:.+}")
     @Produces(
     {MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Retrieve page by site, path, and pagename", notes = "Get page with site name, path, and page name."
+    @Operation(summary = "Retrieve page by site, path, and pagename", description = "Get page with site name, path, and page name."
             + "<br/> Simply send a GET request using the site name, path to the page, and page name in the URL."
             + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/pages/by-path/MySite/FolderA/FolderB/MyPage ."
-            + "<br/>", response = Page.class)
-    @ApiResponses(value = {
-      @ApiResponse(code = 404, message = "Page not found") 
+            + "<br/>", responses={
+                @ApiResponse(responseCode = "404", description = "Page not found"),
+                @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                        schema=@Schema(implementation = Page.class)
+                ))
     })
-    public Page getPage(@ApiParam(value= "The path from the site to the page." ,  name="pagepath" ) @PathParam("pagepath")
+    public Page getPage(@Parameter(description= "The path from the site to the page." ,
+            name="pagepath" ) @PathParam("pagepath")
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -133,16 +149,20 @@ public class PagesResource
     @Path("/by-path/{pagepath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Create or Update page by site page and pagename", notes = "Create or Update page using site name, path, and page name."
+    @Operation(summary = "Create or Update page by site page and pagename", description = "Create or Update page using site name, path, and page name."
             + "<br/> Simply send a PUT request using the site name, the path to the page, and page name in the URL along with a JSON payload of the page."
             + "<br/> <b>Note:</b> When creating a new Page do not include the id field. The template and page name can not be changed with this method.  See the rename and change-template resources."
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/pages/by-path/MySite/FolderA/FolderB/MyPage .", response = Page.class)
-    @ApiResponses(value = {
-      @ApiResponse(code = 404, message = "Page not found") 
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/pages/by-path/MySite/FolderA/FolderB/MyPage .",
+    responses={
+            @ApiResponse(responseCode = "404", description = "Page not found") ,
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                    schema=@Schema(implementation = Page.class)
+            ))
     })
-    public Page updatePage(@ApiParam(value= "The body containing a JSON payload" ,  name="body" )Page page,
-    @ApiParam(value= "The path from the site to the page." ,  name="pagepath" ) @PathParam("pagepath")
-    String path)
+    public Page updatePage(@Parameter(description= "The body containing a JSON payload" ,
+            name="body" ) Page page,
+                            @Parameter(description= "The path from the site to the page." ,
+                                    name="pagepath" ) @PathParam("pagepath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
@@ -163,8 +183,6 @@ public class PagesResource
             apiPath = StringUtils.defaultString(m.group(3));
             pageName = StringUtils.defaultString(m.group(5));
         }
-        
-    
 
         String objectName = page.getName();
         String objectPath = page.getFolderPath();
@@ -209,14 +227,17 @@ public class PagesResource
     @Path("/rename/{pagepath:.+}/{name}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Rename a page.", notes = "Rename a page to a new a new name using site name, path, and page name."
+    @Operation(summary = "Rename a page.", description = "Rename a page to a new a new name using site name, path, and page name."
             + "<br/> Simply send a POST request using the site name, the path to the page, and current page name, and the New name"
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/pages/rename/MySite/FolderA/FolderB/MyPage/NewName .", response = Page.class)
-    @ApiResponses(value = {
-      @ApiResponse(code = 404, message = "Page not found") 
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/pages/rename/MySite/FolderA/FolderB/MyPage/NewName .",
+    responses = {
+      @ApiResponse(responseCode = "404", description = "Page not found"),
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                    schema=@Schema(implementation = Page.class)
+            ))
     })
-    public Page renamePage(@ApiParam(value= "The path from the site to the page." , name="pagepath" ) @PathParam("pagepath") String path,
-    		@ApiParam(value= "The new name for the Page", name="name") @PathParam("name") String name)
+    public Page renamePage(@Parameter(description= "The path from the site to the page." , name="pagepath" ) @PathParam("pagepath") String path,
+    		@Parameter(description= "The new name for the Page", name="name") @PathParam("name") String name)
     {
     	 // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
@@ -251,13 +272,16 @@ public class PagesResource
     @Path("/by-path/{pagepath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Delete page by site, path and pagename", notes = "Delete a page below the site."
+    @Operation(summary = "Delete page by site, path and pagename", description = "Delete a page below the site."
             + "<br/> Simple send a DELETE request using the site name, path from the site to the page, and the page name."
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/pages/by-path/MySite/FolderA/FolderB/MyPage .", response = Status.class)
-    @ApiResponses(value = {
-      @ApiResponse(code = 404, message = "Page not found") 
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/pages/by-path/MySite/FolderA/FolderB/MyPage .",
+   responses = {
+            @ApiResponse(responseCode = "404", description = "Page not found") ,
+            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    schema=@Schema(implementation = Status.class)
+            ))
     })
-    public Status deletePage(@ApiParam(value= "The path for the page." ,  name="pagepath" ) @PathParam("pagepath")
+    public Status deletePage(@Parameter(description= "The path for the page." ,  name="pagepath" ) @PathParam("pagepath")
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -303,11 +327,12 @@ public class PagesResource
     @POST
     @Path("/approve-all/{folderPath:.+}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Approves every Page on the system that are not in an Archive state and that live in the specified folder.", notes = "Example /Passing the root folder will result in all Pages being approved.  Will override any checkout status and approve the Pages as the method caller.", 
-    response = Status.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
-            @ApiResponse(code = 200, message = "Update OK")})
+    @Operation(summary = "Approves every Page on the system that are not in an Archive state and that live in the specified folder.", description = "Example /Passing the root folder will result in all Pages being approved.  Will override any checkout status and approve the Pages as the method caller.", 
+    responses = {
+            @ApiResponse(responseCode = "500", description = "An unexpected exception occurred."),
+            @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
+                    schema = @Schema(implementation = Status.class)
+            ))})
     public Status approveAllPages(@PathParam("folderPath")String folderPath){
     	Status status = new Status("OK");
 
@@ -323,11 +348,12 @@ public class PagesResource
     @POST
     @Path("/submit-all/{folderPath:.+}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Submits every Page on the system that live in the specified folder to the Review state", notes = "Example /Passing the root folder will result in all Pages being Submitted.  Will override any checkout status and Submit the Pages as the method caller.", 
-    response = Status.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
-            @ApiResponse(code = 200, message = "Update OK")})
+    @Operation(summary = "Submits every Page on the system that live in the specified folder to the Review state", description = "Example /Passing the root folder will result in all Pages being Submitted.  Will override any checkout status and Submit the Pages as the method caller.", 
+    responses = {
+            @ApiResponse(responseCode = "500", description = "An unexpected exception occurred."),
+            @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
+                    schema=@Schema(implementation = Status.class)
+            ))})
     public Status submitAllPages(@PathParam("folderPath")String folderPath){
     	try {
             Status status = new Status("OK");
@@ -343,11 +369,12 @@ public class PagesResource
     @POST
     @Path("/archive-all/{folderPath:.+}")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Archives every Page on the system that live in the specified folder.", notes = "Example /Passing the root folder will result in all Pages being Archived.  Will override any checkout status and Archives the Pages as the method caller.", 
-    response = Status.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
-            @ApiResponse(code = 200, message = "Update OK")})
+    @Operation(summary = "Archives every Page on the system that live in the specified folder.", description = "Example /Passing the root folder will result in all Pages being Archived.  Will override any checkout status and Archives the Pages as the method caller.", 
+    responses = {
+            @ApiResponse(responseCode = "500", description = "An unexpected exception occurred."),
+            @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
+                    schema=@Schema(implementation = Status.class)
+            ))})
     public Status archiveAllPages(@PathParam("folderPath")String folderPath){
     	try {
             Status status = new Status("OK");
@@ -364,11 +391,12 @@ public class PagesResource
     @POST
     @Path("/change-template")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Change the template for the posted page.",
-    response = Page.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
-            @ApiResponse(code = 200, message = "Update OK")})
+    @Operation(summary = "Change the template for the posted page.",
+    responses=
+    {@ApiResponse(responseCode = "500", description = "An unexpected exception occurred."),
+            @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
+                    schema=@Schema(implementation = Page.class)
+            ))})
     public Page changePageTemplate(Page p){
         try {
             return pageAdaptor.changePageTemplate(uriInfo.getBaseUri(), p);
@@ -381,9 +409,12 @@ public class PagesResource
     @Path("/reports/all-pages/{siteFolderPath:.+}")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @ApiOperation(value = "Returns a report in CSV format listing all Pages in the system.", response = Response.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 404, message = "Path not found")})
+    @Operation(summary = "Returns a report in CSV format listing all Pages in the system.",
+            responses = {
+            @ApiResponse(responseCode = "404", description = "Path not found"),
+            @ApiResponse(responseCode= "200", description = "OK", content = @Content(
+                    schema = @Schema(implementation = Response.class)
+            ))})
     public Response allPagesReport(@PathParam("siteFolderPath") String sitePath)
     {    	
     	PSCSVStreamingOutput out = null;

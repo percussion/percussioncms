@@ -41,8 +41,8 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSRole;
 import com.percussion.design.objectstore.PSRoleConfiguration;
-import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSSystemValidationException;
+import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
 import com.percussion.error.PSException;
 import com.percussion.i18n.PSLocale;
@@ -156,7 +156,7 @@ public class PSCmsObjectMgr
    private static final String WHERE_NULL = " and cs.%s is null";
 
     private static final String UPDATE_DATE_ONLY_ONCE = "update PSComponentSummary cs set cs.%s = :dateToSet where cs.m_contentId in (:ids) and cs.%s is null";
-   private static Object DATE_UPDATE_SYNC_OBJECT = new Object();
+    private static final Object DATE_UPDATE_SYNC_OBJECT = new Object();
 
    /**
     * Logger
@@ -1591,7 +1591,7 @@ public class PSCmsObjectMgr
       Map<Integer, String> map = new HashMap<>();
       if (wf == null)
       {
-         ms_log.warn("Failed to load workflow id = " + wfId);
+         ms_log.warn("Failed to load workflow id = {}" , wfId);
          wfStateIdNameMap.put(wfId, map);         
          return map;
       }
@@ -1616,8 +1616,7 @@ public class PSCmsObjectMgr
    {
       IPSWorkflowService svc = PSWorkflowServiceLocator.getWorkflowService();
       IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
-      PSWorkflow wf = svc.loadWorkflow(gmgr.makeGuid(wfId, PSTypeEnum.WORKFLOW));
-      return wf;
+      return svc.loadWorkflow(gmgr.makeGuid(wfId, PSTypeEnum.WORKFLOW));
    }
    
    /**
@@ -1649,7 +1648,7 @@ public class PSCmsObjectMgr
       }
       catch (PSInvalidContentTypeException e)
       {
-         ms_log.warn("Invalid content type id (" + contentTypeId + ") for contentId = " + item.getContentId());
+         ms_log.warn("Invalid content type id ({}) for contentId = {}",contentTypeId  , item.getContentId());
       }
    }
    

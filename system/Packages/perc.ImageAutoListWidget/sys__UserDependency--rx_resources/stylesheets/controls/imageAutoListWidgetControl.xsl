@@ -1,46 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <!DOCTYPE xsl:stylesheet [
-        <!ENTITY % HTMLlat1 SYSTEM "../../../DTD/HTMLlat1x.ent">
-        %HTMLlat1;
-        <!ENTITY % HTMLsymbol SYSTEM "../../../DTD/HTMLsymbolx.ent">
-        %HTMLsymbol;
-        <!ENTITY % HTMLspecial SYSTEM "../../../DTD/HTMLspecialx.ent">
-        %HTMLspecial;
-        ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+		%HTMLspecial;
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
+		]>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:psxctl="urn:percussion.com/control"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+
 	<xsl:template match="/" />
-    <!--
+	<!--
          imageAutoListWidgetControl
      -->
-    <psxctl:ControlMeta name="imageAutoListWidgetControl" dimension="single" choiceset="none">
+	<psxctl:ControlMeta name="imageAutoListWidgetControl" dimension="single" choiceset="none">
 		<psxctl:Description>The control for building the JCR query for the Image Auto List Widget:</psxctl:Description>
 		<psxctl:ParamList>
 		</psxctl:ParamList>
-        <!-- Add Extension here
+		<!-- Add Extension here
         <psxctl:Dependencies>
             <psxctl:Dependency status="readyToGo" occurrence="single">
                 <psxctl:Default>
@@ -51,107 +36,107 @@
             </psxctl:Dependency>
         </psxctl:Dependencies>
         -->
-        <!-- CSS perc_webmgt.packed.css contains all css for jquery datepicker and Site/Save As control-->
-        <psxctl:AssociatedFileList>
+		<!-- CSS perc_webmgt.packed.css contains all css for jquery datepicker and Site/Save As control-->
+		<psxctl:AssociatedFileList>
 			<psxctl:FileDescriptor name="PercDatetimePicker.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../../cm/css/PercDatetimePicker.css</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/css/PercDatetimePicker.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery-ui-1.8.9.custom.css     " type="css" mimetype="text/css">
-				<psxctl:FileLocation>../../cm/themes/smoothness/jquery-ui-1.8.9.custom.css     </psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/themes/smoothness/jquery-ui-1.8.9.custom.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="ui.datepicker.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../../cm/themes/smoothness/ui.datepicker.css</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/themes/smoothness/ui.datepicker.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_webmgt.packed.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../../cm/css/dynatree/skin/ui.dynatree.css</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/css/dynatree/skin/ui.dynatree.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_webmgt.packed.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>../rx_resources/widgets/imageAutoList/css/jquery.imageAutoList.css</psxctl:FileLocation>
+				<psxctl:FileLocation>/rx_resources/widgets/imageAutoList/css/jquery.imageAutoList.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 
-            <!-- JavaScript -->
-            <psxctl:FileDescriptor name="jquery-ui.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js</psxctl:FileLocation>
+			<!-- JavaScript -->
+			<psxctl:FileDescriptor name="jquery-ui.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.percutils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_path_constants.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_path_constants.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/perc_path_constants.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_utils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_utils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/perc_utils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.layout.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-layout/jquery.layout_and_plugins.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.metadata.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.metadata.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.metadata.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable-1.1.2.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable-1.1.2.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="tools.scrollable.mousewheel-1.0.1.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.validate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-validation/jquery.validate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-            <!-- SimpleDateFormat JS-->
-            <psxctl:FileDescriptor name="date.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/perc-retiredjs/date.js</psxctl:FileLocation>
+			<!-- SimpleDateFormat JS-->
+			<psxctl:FileDescriptor name="date.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/libraries/perc-retiredjs/date.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_extend_jQueryValidate.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_extend_jQueryValidate.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/perc_extend_jQueryValidate.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-            <!-- Site Picker Control JS-->
-            <psxctl:FileDescriptor name="perc_path_manager.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/perc_path_manager.js</psxctl:FileLocation>
+			<!-- Site Picker Control JS-->
+			<psxctl:FileDescriptor name="perc_path_manager.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/cm/plugins/perc_path_manager.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.dynatree.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.text-overflow.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="jquery.jeditable.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercServiceUtils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/services/PercServiceUtils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/services/PercServiceUtils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercFinderTree.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/widgets/PercFinderTree.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/widgets/PercFinderTree.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercExtendUiDialog.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../../cm/plugins/PercExtendUiDialog.js</psxctl:FileLocation>
+				<psxctl:FileLocation>/cm/plugins/PercExtendUiDialog.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
-            <!-- Image Auto List Control JS-->
-            <psxctl:FileDescriptor name="jquery.imageAutoList.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>../rx_resources/widgets/imageAutoList/js/jquery.imageAutoList.js</psxctl:FileLocation>
+			<!-- Image Auto List Control JS-->
+			<psxctl:FileDescriptor name="jquery.imageAutoList.js" type="script" mimetype="text/javascript">
+				<psxctl:FileLocation>/rx_resources/widgets/imageAutoList/js/jquery.imageAutoList.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 		</psxctl:AssociatedFileList>
@@ -193,13 +178,13 @@
 			// mark the asset as dirty
 			$.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
 			},
-			showOn: 'button', buttonImage: '../rx_resources/widgets/imageAutoList/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd'
+			showOn: 'button', buttonImage: '/rx_resources/widgets/imageAutoList/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd'
 			});
 
 			$('#display_end_date').datepicker({
 			onSelect:
 			function(value, date) {
-			$(this).focus();
+			$(this).trigger("focus");
 			var p_start_date = new Date($('[name="start_date"]').val());
 			var p_end_date = new Date(value);
 			<xsl:text disable-output-escaping="yes">
@@ -222,7 +207,7 @@
 			// mark the asset as dirty
 			$.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
 			},
-			showOn: 'button', buttonImage: '../rx_resources/widgets/imageAutoList/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd'
+			showOn: 'button', buttonImage: '/rx_resources/widgets/imageAutoList/images/calendar.gif', buttonImageOnly: true, altFormat: 'yy-mm-dd'
 			});
 
 			$('#perc-content-form').imageAutoListControl({});
@@ -232,12 +217,12 @@
 		</script>
 
 		<script >
-			$(document).ready(function(){
-                $("#autolist-title").on("click",function () {
-                    $("#criteria_for_list").toggle();
-                    $("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
-                });
-            });
+			$(function(){
+				$("#autolist-title").on("click",function () {
+					$("#criteria_for_list").toggle();
+					$("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
+				});
+			});
 		</script>
 		<div id = "perc-autolist-wrapper">
 			<div id = "autolist-title-wrapper">
@@ -283,19 +268,19 @@
 	<xsl:template match="Control[@name='imageAutoListWidgetControl' and @isReadOnly='yes']" priority='10' mode="psxcontrol">
 		<script >
 	<![CDATA[
-            $(document).ready(function(){
-                $("#autolist-title").on("click",function () {
-                    $("#criteria_for_list").toggle();
-                    $("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
-                });
+			$(document).ready(function(){
+				$("#autolist-title").on("click",function () {
+					$("#criteria_for_list").toggle();
+					$("#autolist-title").toggleClass("autolist-expand-image autolist-close-image");
+				});
 
-                // Put asset library value in appropriate field
-                var assetlibrarypath = $("#perc_asset_library_path").val().substring(26);
-                var splitPath = assetlibrarypath.split("/");
+				// Put asset library value in appropriate field
+				var assetlibrarypath = $("#perc_asset_library_path").val().substring(26);
+				var splitPath = assetlibrarypath.split("/");
 
-                $("#perc_display_asset_library_path").text(assetlibrarypath);
-            });
-            ]]>
+				$("#perc_display_asset_library_path").text(assetlibrarypath);
+			});
+			]]>
    </script>
 		<div id = "perc-autolist-wrapper" >
 			<div id = "autolist-title-wrapper">

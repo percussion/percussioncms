@@ -30,8 +30,7 @@ import java.util.Date;
 
 /***
  * Useful shared utility methods. 
- * 
- * @author natechadwick
+ *
  *
  */
 public class APIUtilities {

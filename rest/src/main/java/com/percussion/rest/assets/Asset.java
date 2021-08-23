@@ -28,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.percussion.rest.LinkRef;
 import com.percussion.rest.pages.WorkflowInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -39,12 +38,12 @@ import java.util.Map;
 
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
-@Api(description = "Represents a shared asset")
+@Schema(description = "Represents a shared asset")
 public class Asset
 {
-    @ApiModelProperty(value = "fields")
+    @Schema(description = "fields")
 	private Map<String, String> fields = new HashMap<>();
-	@ApiModelProperty(value = "id", notes = "id must match the id of the item for the same server path, usually best not to send id to server.")
+	@Schema(description = "id must match the id of the item for the same server path, usually best not to send id to server.")
 	private String id;
 	private String name;
 	private String type;

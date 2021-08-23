@@ -1,210 +1,184 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-<!DOCTYPE Widget [
-<!ENTITY defaultDateFormat "EEE MMM d, yyyy hh:mm a">
-]>
 <Widget>
-   <WidgetPrefs title="Result"
-        contenttype_name=""
-        category="search"
-        description="Display the result of a search"
-        author="Percussion Software Inc"
-        thumbnail="/rx_resources/widgets/result/images/widgetIconLinkResult.png"
-        preferred_editor_width="800"
-        preferred_editor_height="685"
-		is_responsive="true"/>
-    <Resource href="/perc-common-ui/js/perc_common_ui.js"
-        type="javascript"
-        placement="head" />
-    <UserPref name="summary"
-      display_name="Show page summary"
-      default_value="false"
-      datatype="bool"/>
-    <UserPref name="sortby"
-      display_name="Sort by"
-      required="true"
-      default_value="rx:sys_contentpostdate desc"
-      datatype="enum">
-      <EnumValue value="none" display_value="None" />
-      <EnumValue value="rx:page_title" display_value="Title" />
-      <EnumValue value="rx:sys_contentpostdate desc" display_value="Latest date" />
-      <EnumValue value="rx:sys_contentpostdate" display_value="Earliest date" />
-    </UserPref>
-    <UserPref name="resultDateTimeFormat"
-      display_name="Format of result post date"
-      default_value="&defaultDateFormat;"
-      datatype="string" />
-    <UserPref name="locale"
-      display_name="Date Format Locale"
-      required="true"
-      default_value="en-US"
-      datatype="enum">
-      <EnumValue value="sq-AL" display_value="Albanian Albania (AL)"/>
-      <EnumValue value="ar-DZ" display_value="Arabic Algeria (DZ)"/>
-      <EnumValue value="ar-BH" display_value="Arabic Bahrain (BH)"/>
-      <EnumValue value="ar-EG" display_value="Arabic Egypt (EG)"/>
-      <EnumValue value="ar-IQ" display_value="Arabic Iraq (IQ)"/>
-      <EnumValue value="ar-JO" display_value="Arabic Jordan (JO)"/>
-      <EnumValue value="ar-KW" display_value="Arabic Kuwait (KW)"/>
-      <EnumValue value="ar-LB" display_value="Arabic Lebanon (LB)"/>
-      <EnumValue value="ar-LY" display_value="Arabic Libya (LY)"/>
-      <EnumValue value="ar-MA" display_value="Arabic Morocco (MA)"/>
-      <EnumValue value="ar-OM" display_value="Arabic Oman (OM)"/>
-      <EnumValue value="ar-QA" display_value="Arabic Qatar (QA)"/>
-      <EnumValue value="ar-SA" display_value="Arabic Saudi Arabia (SA)"/>
-      <EnumValue value="ar-SD" display_value="Arabic Sudan (SD)"/>
-      <EnumValue value="ar-SY" display_value="Arabic Syria (SY)"/>
-      <EnumValue value="ar-TN" display_value="Arabic Tunisia (TN)"/>
-      <EnumValue value="ar-AE" display_value="Arabic United Arab Emirates (AE)"/>
-      <EnumValue value="ar-YE" display_value="Arabic Yemen (YE)"/>
-      <EnumValue value="be-BY" display_value="Belarusian Belarus (BY)"/>
-      <EnumValue value="bg-BG" display_value="Bulgarian Bulgaria (BG)"/>
-      <EnumValue value="ca-ES" display_value="Catalan Spain (ES)"/>
-      <EnumValue value="zh-CN" display_value="Chinese China (CN)"/>
-      <EnumValue value="zh-SG" display_value="Chinese Singapore (SG)"/>
-      <EnumValue value="zh-HK" display_value="Chinese Hong Kong (HK)"/>
-      <EnumValue value="zh-TW" display_value="Chinese Taiwan (TW)"/>
-      <EnumValue value="hr-HR" display_value="Croatian Croatia (HR)"/>
-      <EnumValue value="cs-CZ" display_value="Czech Czech Republic (CZ)"/>
-      <EnumValue value="da-DK" display_value="Danish Denmark (DK)"/>
-      <EnumValue value="nl-BE" display_value="Dutch Belgium (BE)"/>
-      <EnumValue value="nl-NL" display_value="Dutch Netherlands (NL)"/>
-      <EnumValue value="en-AU" display_value="English Australia (AU)"/>
-      <EnumValue value="en-CA" display_value="English Canada (CA)"/>
-      <EnumValue value="en-IN" display_value="English India (IN)"/>
-      <EnumValue value="en-IE" display_value="English Ireland (IE)"/>
-      <EnumValue value="en-MT" display_value="English Malta (MT)"/>
-      <EnumValue value="en-NZ" display_value="English New Zealand (NZ)"/>
-      <EnumValue value="en-PH" display_value="English Philippines (PH)"/>
-      <EnumValue value="en-SG" display_value="English Singapore (SG)"/>
-      <EnumValue value="en-ZA" display_value="English South Africa (ZA)"/>
-      <EnumValue value="en-GB" display_value="English United Kingdom (GB)"/>
-      <EnumValue value="en-US" display_value="English United States (US)"/>
-      <EnumValue value="et-EE" display_value="Estonian Estonia (EE)"/>
-      <EnumValue value="fi-FI" display_value="Finnish Finland (FI)"/>
-      <EnumValue value="fr-BE" display_value="French Belgium (BE)"/>
-      <EnumValue value="fr-CA" display_value="French Canada (CA)"/>
-      <EnumValue value="fr-FR" display_value="French France (FR)"/>
-      <EnumValue value="fr-LU" display_value="French Luxembourg (LU)"/>
-      <EnumValue value="fr-CH" display_value="French Switzerland (CH)"/>
-      <EnumValue value="de-AT" display_value="German Austria (AT)"/>
-      <EnumValue value="de-DE" display_value="German Germany (DE)"/>
-      <EnumValue value="de-LU" display_value="German Luxembourg (LU)"/>
-      <EnumValue value="de-CH" display_value="German Switzerland (CH)"/>
-      <EnumValue value="el-CY" display_value="Greek Cyprus (CY)"/>
-      <EnumValue value="el-GR" display_value="Greek Greece (GR)"/>
-      <EnumValue value="iw-IL" display_value="Hebrew Israel (IL)"/>
-      <EnumValue value="hi-IN" display_value="Hindi India (IN)"/>
-      <EnumValue value="hu-HU" display_value="Hungarian Hungary (HU)"/>
-      <EnumValue value="is-IS" display_value="Icelandic Iceland (IS)"/>
-      <EnumValue value="in-ID" display_value="Indonesian Indonesia (ID)"/>
-      <EnumValue value="ga-IE" display_value="Irish Ireland (IE)"/>
-      <EnumValue value="it-IT" display_value="Italian Italy (IT)"/>
-      <EnumValue value="it-CH" display_value="Italian Switzerland (CH)"/>
-      <EnumValue value="ja-JP" display_value="Japanese Japan (JP)"/>
-      <EnumValue value="ko-KR" display_value="Korean South Korea (KR)"/>
-      <EnumValue value="lv-LV" display_value="Latvian Latvia (LV)"/>
-      <EnumValue value="lt-LT" display_value="Lithuanian Lithuania (LT)"/>
-      <EnumValue value="mk-MK" display_value="Macedonian Macedonia (MK)"/>
-      <EnumValue value="ms-MY" display_value="Malay Malaysia (MY)"/>
-      <EnumValue value="mt-MT" display_value="Maltese (mt)	Malta (MT)"/>
-      <EnumValue value="no-NO" display_value="Norwegian Norway (NO)"/>
-      <EnumValue value="nb-NO" display_value="Norwegian Bokmal Norway (NO)"/>
-      <EnumValue value="nn-NO" display_value="Norwegian Nynorsk Norway (NO)"/>
-      <EnumValue value="pl-PL" display_value="Polish Poland (PL)"/>
-      <EnumValue value="pt-BR" display_value="Portuguese Brazil (BR)"/>
-      <EnumValue value="pt-PT" display_value="Portuguese Portugal (PT)"/>
-      <EnumValue value="ro-RO" display_value="Romanian Romania (RO)"/>
-      <EnumValue value="ru-RU" display_value="Russian Russia (RU)"/>
-      <EnumValue value="sr-BA" display_value="Serbian Bosnia and Herzegovina (BA)"/>
-      <EnumValue value="sr-ME" display_value="Serbian Montenegro (ME)"/>
-      <EnumValue value="sr-RS" display_value="Serbian Serbia (RS)"/>
-      <EnumValue value="sk-SK" display_value="Slovak Slovakia (SK)"/>
-      <EnumValue value="sl-SI" display_value="Slovenian Slovenia (SI)"/>
-      <EnumValue value="es-AR" display_value="Spanish Argentina (AR)"/>
-      <EnumValue value="es-BO" display_value="Spanish Bolivia (BO)"/>
-      <EnumValue value="es-CL" display_value="Spanish Chile (CL)"/>
-      <EnumValue value="es-CO" display_value="Spanish Colombia (CO)"/>
-      <EnumValue value="es-CR" display_value="Spanish Costa Rica (CR)"/>
-      <EnumValue value="es-DO" display_value="Spanish Dominican Republic (DO)"/>
-      <EnumValue value="es-EC" display_value="Spanish Ecuador (EC)"/>
-      <EnumValue value="es-SV" display_value="Spanish El Salvador (SV)"/>
-      <EnumValue value="es-GT" display_value="Spanish Guatemala (GT)"/>
-      <EnumValue value="es-HN" display_value="Spanish Honduras (HN)"/>
-      <EnumValue value="es-MX" display_value="Spanish Mexico (MX)"/>
-      <EnumValue value="es-NI" display_value="Spanish Nicaragua (NL)"/>
-      <EnumValue value="es-PA" display_value="Spanish Panama (PA)"/>
-      <EnumValue value="es-PY" display_value="Spanish Paraguay (PY)"/>
-      <EnumValue value="es-PE" display_value="Spanish Peru (PE)"/>
-      <EnumValue value="es-PR" display_value="Spanish Puerto Rico (PR)"/>
-      <EnumValue value="es-ES" display_value="Spanish Spain (ES)"/>
-      <EnumValue value="es-US" display_value="Spanish United States (US)"/>
-      <EnumValue value="es-UY" display_value="Spanish Uruguay (UY)"/>
-      <EnumValue value="es-VE" display_value="Spanish Venezuela (VE)"/>
-      <EnumValue value="sv-SE" display_value="Swedish Sweden (SE)"/>
-      <EnumValue value="th-TH" display_value="Thai Thailand (TH)"/>
-      <EnumValue value="tr-TR" display_value="Turkish Turkey (TR)"/>
-      <EnumValue value="uk-UA" display_value="Ukrainian Ukraine (UA)"/>
-      <EnumValue value="vi-VN" display_value="Vietnamese Vietnam (VN)"/>
-    </UserPref>
-    <UserPref name="totalMaxResults"
-         display_name="Maximum number of total results"
-         default_value="500"
-         datatype="number" />
-    <UserPref name="maxResultsPerPage"
-      display_name="Number of items per page"
-      default_value="10"
-      datatype="number" />
-    <UserPref name="pagingOfText"
-      display_name="Text to use for &lt;em&gt;of&lt;/em&gt; (X &lt;strong&gt;of&lt;/strong&gt; Y pages)"
-      default_value="of"
-      datatype="string" />
-    <UserPref name="pagingPagesText"
-      display_name="Text to use for &lt;em&gt;pages&lt;/em&gt; (X of Y &lt;strong&gt;pages&lt;/strong&gt;)"
-      default_value="pages"
-      datatype="string" />
-    <UserPref name="resultHeaderText"
-      display_name="Text to use for result header"
-      default_value="Results for"
-      datatype="string" />
-    <UserPref name="resultEntriesTextPlural"
-      display_name='Text for "entries" in results count'
-      default_value="entries"
-      datatype="string" />
-    <UserPref name="resultEntriesTextSingular"
-      display_name='Text for "entry" when one result is returned'
-      default_value="entry"
-      datatype="string" />
-    <UserPref name="readMoreLink"
-      display_name='Text to use for "more link"'
-      default_value="more..."
-      datatype="string" />
-    <CssPref name="rootclass"
-      display_name="CSS root class"
-      datatype="string" />
-    <Code type="jexl">
+  <WidgetPrefs title="Result"
+               contenttype_name=""
+               category="search"
+               description="Display the result of a search"
+               author="Percussion Software Inc"
+               thumbnail="/rx_resources/widgets/result/images/widgetIconLinkResult.png"
+               preferred_editor_width="800"
+               preferred_editor_height="685"
+               is_responsive="true"/>
+  <Resource href="/perc-common-ui/js/perc_common_ui.js"
+            type="javascript"
+            placement="head" />
+  <UserPref name="summary"
+            display_name="Show page summary"
+            default_value="false"
+            datatype="bool"/>
+  <UserPref name="sortby"
+            display_name="Sort by"
+            required="true"
+            default_value="rx:sys_contentpostdate desc"
+            datatype="enum">
+    <EnumValue value="none" display_value="None" />
+    <EnumValue value="rx:page_title" display_value="Title" />
+    <EnumValue value="rx:sys_contentpostdate desc" display_value="Latest date" />
+    <EnumValue value="rx:sys_contentpostdate" display_value="Earliest date" />
+  </UserPref>
+  <UserPref name="resultDateTimeFormat"
+            display_name="Format of result post date"
+            default_value="EEE MMM d, yyyy hh:mm a"
+            datatype="string" />
+  <UserPref name="locale"
+            display_name="Date Format Locale"
+            required="true"
+            default_value="en-US"
+            datatype="enum">
+    <EnumValue value="sq-AL" display_value="Albanian Albania (AL)"/>
+    <EnumValue value="ar-DZ" display_value="Arabic Algeria (DZ)"/>
+    <EnumValue value="ar-BH" display_value="Arabic Bahrain (BH)"/>
+    <EnumValue value="ar-EG" display_value="Arabic Egypt (EG)"/>
+    <EnumValue value="ar-IQ" display_value="Arabic Iraq (IQ)"/>
+    <EnumValue value="ar-JO" display_value="Arabic Jordan (JO)"/>
+    <EnumValue value="ar-KW" display_value="Arabic Kuwait (KW)"/>
+    <EnumValue value="ar-LB" display_value="Arabic Lebanon (LB)"/>
+    <EnumValue value="ar-LY" display_value="Arabic Libya (LY)"/>
+    <EnumValue value="ar-MA" display_value="Arabic Morocco (MA)"/>
+    <EnumValue value="ar-OM" display_value="Arabic Oman (OM)"/>
+    <EnumValue value="ar-QA" display_value="Arabic Qatar (QA)"/>
+    <EnumValue value="ar-SA" display_value="Arabic Saudi Arabia (SA)"/>
+    <EnumValue value="ar-SD" display_value="Arabic Sudan (SD)"/>
+    <EnumValue value="ar-SY" display_value="Arabic Syria (SY)"/>
+    <EnumValue value="ar-TN" display_value="Arabic Tunisia (TN)"/>
+    <EnumValue value="ar-AE" display_value="Arabic United Arab Emirates (AE)"/>
+    <EnumValue value="ar-YE" display_value="Arabic Yemen (YE)"/>
+    <EnumValue value="be-BY" display_value="Belarusian Belarus (BY)"/>
+    <EnumValue value="bg-BG" display_value="Bulgarian Bulgaria (BG)"/>
+    <EnumValue value="ca-ES" display_value="Catalan Spain (ES)"/>
+    <EnumValue value="zh-CN" display_value="Chinese China (CN)"/>
+    <EnumValue value="zh-SG" display_value="Chinese Singapore (SG)"/>
+    <EnumValue value="zh-HK" display_value="Chinese Hong Kong (HK)"/>
+    <EnumValue value="zh-TW" display_value="Chinese Taiwan (TW)"/>
+    <EnumValue value="hr-HR" display_value="Croatian Croatia (HR)"/>
+    <EnumValue value="cs-CZ" display_value="Czech Czech Republic (CZ)"/>
+    <EnumValue value="da-DK" display_value="Danish Denmark (DK)"/>
+    <EnumValue value="nl-BE" display_value="Dutch Belgium (BE)"/>
+    <EnumValue value="nl-NL" display_value="Dutch Netherlands (NL)"/>
+    <EnumValue value="en-AU" display_value="English Australia (AU)"/>
+    <EnumValue value="en-CA" display_value="English Canada (CA)"/>
+    <EnumValue value="en-IN" display_value="English India (IN)"/>
+    <EnumValue value="en-IE" display_value="English Ireland (IE)"/>
+    <EnumValue value="en-MT" display_value="English Malta (MT)"/>
+    <EnumValue value="en-NZ" display_value="English New Zealand (NZ)"/>
+    <EnumValue value="en-PH" display_value="English Philippines (PH)"/>
+    <EnumValue value="en-SG" display_value="English Singapore (SG)"/>
+    <EnumValue value="en-ZA" display_value="English South Africa (ZA)"/>
+    <EnumValue value="en-GB" display_value="English United Kingdom (GB)"/>
+    <EnumValue value="en-US" display_value="English United States (US)"/>
+    <EnumValue value="et-EE" display_value="Estonian Estonia (EE)"/>
+    <EnumValue value="fi-FI" display_value="Finnish Finland (FI)"/>
+    <EnumValue value="fr-BE" display_value="French Belgium (BE)"/>
+    <EnumValue value="fr-CA" display_value="French Canada (CA)"/>
+    <EnumValue value="fr-FR" display_value="French France (FR)"/>
+    <EnumValue value="fr-LU" display_value="French Luxembourg (LU)"/>
+    <EnumValue value="fr-CH" display_value="French Switzerland (CH)"/>
+    <EnumValue value="de-AT" display_value="German Austria (AT)"/>
+    <EnumValue value="de-DE" display_value="German Germany (DE)"/>
+    <EnumValue value="de-LU" display_value="German Luxembourg (LU)"/>
+    <EnumValue value="de-CH" display_value="German Switzerland (CH)"/>
+    <EnumValue value="el-CY" display_value="Greek Cyprus (CY)"/>
+    <EnumValue value="el-GR" display_value="Greek Greece (GR)"/>
+    <EnumValue value="iw-IL" display_value="Hebrew Israel (IL)"/>
+    <EnumValue value="hi-IN" display_value="Hindi India (IN)"/>
+    <EnumValue value="hu-HU" display_value="Hungarian Hungary (HU)"/>
+    <EnumValue value="is-IS" display_value="Icelandic Iceland (IS)"/>
+    <EnumValue value="in-ID" display_value="Indonesian Indonesia (ID)"/>
+    <EnumValue value="ga-IE" display_value="Irish Ireland (IE)"/>
+    <EnumValue value="it-IT" display_value="Italian Italy (IT)"/>
+    <EnumValue value="it-CH" display_value="Italian Switzerland (CH)"/>
+    <EnumValue value="ja-JP" display_value="Japanese Japan (JP)"/>
+    <EnumValue value="ko-KR" display_value="Korean South Korea (KR)"/>
+    <EnumValue value="lv-LV" display_value="Latvian Latvia (LV)"/>
+    <EnumValue value="lt-LT" display_value="Lithuanian Lithuania (LT)"/>
+    <EnumValue value="mk-MK" display_value="Macedonian Macedonia (MK)"/>
+    <EnumValue value="ms-MY" display_value="Malay Malaysia (MY)"/>
+    <EnumValue value="mt-MT" display_value="Maltese (mt)	Malta (MT)"/>
+    <EnumValue value="no-NO" display_value="Norwegian Norway (NO)"/>
+    <EnumValue value="nb-NO" display_value="Norwegian Bokmal Norway (NO)"/>
+    <EnumValue value="nn-NO" display_value="Norwegian Nynorsk Norway (NO)"/>
+    <EnumValue value="pl-PL" display_value="Polish Poland (PL)"/>
+    <EnumValue value="pt-BR" display_value="Portuguese Brazil (BR)"/>
+    <EnumValue value="pt-PT" display_value="Portuguese Portugal (PT)"/>
+    <EnumValue value="ro-RO" display_value="Romanian Romania (RO)"/>
+    <EnumValue value="ru-RU" display_value="Russian Russia (RU)"/>
+    <EnumValue value="sr-BA" display_value="Serbian Bosnia and Herzegovina (BA)"/>
+    <EnumValue value="sr-ME" display_value="Serbian Montenegro (ME)"/>
+    <EnumValue value="sr-RS" display_value="Serbian Serbia (RS)"/>
+    <EnumValue value="sk-SK" display_value="Slovak Slovakia (SK)"/>
+    <EnumValue value="sl-SI" display_value="Slovenian Slovenia (SI)"/>
+    <EnumValue value="es-AR" display_value="Spanish Argentina (AR)"/>
+    <EnumValue value="es-BO" display_value="Spanish Bolivia (BO)"/>
+    <EnumValue value="es-CL" display_value="Spanish Chile (CL)"/>
+    <EnumValue value="es-CO" display_value="Spanish Colombia (CO)"/>
+    <EnumValue value="es-CR" display_value="Spanish Costa Rica (CR)"/>
+    <EnumValue value="es-DO" display_value="Spanish Dominican Republic (DO)"/>
+    <EnumValue value="es-EC" display_value="Spanish Ecuador (EC)"/>
+    <EnumValue value="es-SV" display_value="Spanish El Salvador (SV)"/>
+    <EnumValue value="es-GT" display_value="Spanish Guatemala (GT)"/>
+    <EnumValue value="es-HN" display_value="Spanish Honduras (HN)"/>
+    <EnumValue value="es-MX" display_value="Spanish Mexico (MX)"/>
+    <EnumValue value="es-NI" display_value="Spanish Nicaragua (NL)"/>
+    <EnumValue value="es-PA" display_value="Spanish Panama (PA)"/>
+    <EnumValue value="es-PY" display_value="Spanish Paraguay (PY)"/>
+    <EnumValue value="es-PE" display_value="Spanish Peru (PE)"/>
+    <EnumValue value="es-PR" display_value="Spanish Puerto Rico (PR)"/>
+    <EnumValue value="es-ES" display_value="Spanish Spain (ES)"/>
+    <EnumValue value="es-US" display_value="Spanish United States (US)"/>
+    <EnumValue value="es-UY" display_value="Spanish Uruguay (UY)"/>
+    <EnumValue value="es-VE" display_value="Spanish Venezuela (VE)"/>
+    <EnumValue value="sv-SE" display_value="Swedish Sweden (SE)"/>
+    <EnumValue value="th-TH" display_value="Thai Thailand (TH)"/>
+    <EnumValue value="tr-TR" display_value="Turkish Turkey (TR)"/>
+    <EnumValue value="uk-UA" display_value="Ukrainian Ukraine (UA)"/>
+    <EnumValue value="vi-VN" display_value="Vietnamese Vietnam (VN)"/>
+  </UserPref>
+  <UserPref name="totalMaxResults"
+            display_name="Maximum number of total results"
+            default_value="500"
+            datatype="number" />
+  <UserPref name="maxResultsPerPage"
+            display_name="Number of items per page"
+            default_value="10"
+            datatype="number" />
+  <UserPref name="pagingOfText"
+            display_name="Text to use for &lt;em&gt;of&lt;/em&gt; (X &lt;strong&gt;of&lt;/strong&gt; Y pages)"
+            default_value="of"
+            datatype="string" />
+  <UserPref name="pagingPagesText"
+            display_name="Text to use for &lt;em&gt;pages&lt;/em&gt; (X of Y &lt;strong&gt;pages&lt;/strong&gt;)"
+            default_value="pages"
+            datatype="string" />
+  <UserPref name="resultHeaderText"
+            display_name="Text to use for result header"
+            default_value="Results for"
+            datatype="string" />
+  <UserPref name="resultEntriesTextPlural"
+            display_name='Text for "entries" in results count'
+            default_value="entries"
+            datatype="string" />
+  <UserPref name="resultEntriesTextSingular"
+            display_name='Text for "entry" when one result is returned'
+            default_value="entry"
+            datatype="string" />
+  <UserPref name="readMoreLink"
+            display_name='Text to use for "more link"'
+            default_value="more..."
+            datatype="string" />
+  <CssPref name="rootclass"
+           display_name="CSS root class"
+           datatype="string" />
+  <Code type="jexl">
     <![CDATA[
     $isEditMode="false";
     $summary = $perc.widget.item.properties.get('summary');
@@ -306,13 +280,13 @@
     ##result query ends
 
     ]]>
-    </Code>
-    <Content type="velocity">
+  </Code>
+  <Content type="velocity">
     <![CDATA[#if ($perc.isEditMode())##
         #createEmptyWidgetContent("result-sample-content", "This result widget is showing sample content.")##
     #else##
         <div class="$!{rootclass} perc-result-view" data-query="$!{data}"></div>
     #end##
     ]]>
-    </Content>
+  </Content>
 </Widget>

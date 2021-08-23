@@ -24,6 +24,7 @@
 package com.percussion.services.assembly.impl.plugin;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
@@ -63,7 +64,14 @@ public class PSDatabaseAssemblerTest extends PSBaseXmlConfigTest
    public void testDBAssembly() throws Exception
    {
       DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-             false);
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              ));
 
       DocumentBuilder builder = f.newDocumentBuilder();
 

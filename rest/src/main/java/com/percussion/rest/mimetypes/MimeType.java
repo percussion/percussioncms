@@ -25,22 +25,21 @@
 package com.percussion.rest.mimetypes;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 /***
  * Represents a Mime Type registered on the system.
  */
-@ApiModel(value = "MimeType",description = "A mime type registered on the system")
+@Schema(name = "MimeType",description = "A mime type registered on the system")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "MimeType")
 public class MimeType {
 
-    @ApiModelProperty(name="extension",value="File extension associated with the type")
+    @Schema(name="extension",description="File extension associated with the type")
     private String extension;
-    @ApiModelProperty(name="type",value="The Mime Type string")
+    @Schema(name="type",description="The Mime Type string")
     private String type;
 
     public MimeType(){}

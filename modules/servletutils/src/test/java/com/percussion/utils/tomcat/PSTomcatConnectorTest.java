@@ -24,6 +24,7 @@
 package com.percussion.utils.tomcat;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.util.FunctionalUtils;
 import com.percussion.utils.container.IPSConnector;
 import com.percussion.utils.container.PSAbstractConnector;
@@ -34,7 +35,6 @@ import org.junit.experimental.categories.Category;
 import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
@@ -123,7 +123,14 @@ public class PSTomcatConnectorTest extends TestCase
       int port = 9992;
       PSAbstractConnector tc = PSAbstractConnector.getBuilder().setPort(9992).build();
       DocumentBuilder db =
-              PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false)
+              PSSecureXMLUtils.getSecuredDocumentBuilderFactory(new PSXmlSecurityOptions(
+                              true,
+                              true,
+                              true,
+                              false,
+                              true,
+                              false
+                      ))
                       .newDocumentBuilder();
 
       Element e = (Element) tc.toXml(tc.getProperties()).getElementsByTagName(PSTomcatConnector.CONNECTOR_NODE_NAME).item(0);

@@ -27,6 +27,7 @@ package com.percussion.server;
 import com.percussion.cms.handlers.PSContentEditorHandler;
 import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.data.IPSInternalRequestHandler;
+import com.percussion.data.PSCachedStylesheet;
 import com.percussion.data.PSDataHandler;
 import com.percussion.data.PSQueryHandler;
 import com.percussion.data.PSUpdateHandler;
@@ -252,9 +253,8 @@ public class PSApplicationHandler implements IPSRootedHandler
       if (dataSets != null)
       {
          PSDataSet ds;
-         for (int i = 0; i < dataSets.size(); i++)
-         {
-            ds = (PSDataSet)dataSets.get(i);
+         for (Object dataSet : dataSets) {
+            ds = (PSDataSet) dataSet;
             if (name.equalsIgnoreCase(ds.getName()))
                return ds;
          }
@@ -293,17 +293,11 @@ public class PSApplicationHandler implements IPSRootedHandler
             
             foundOne = true;
          }
-         catch (PSIllegalArgumentException e)
+         catch (PSIllegalArgumentException | PSNotFoundException e)
          {
             throw new PSSystemValidationException(
                e.getErrorCode(), e.getErrorArguments(), m_application, ds);
-         }
-         catch (PSNotFoundException e)
-         {
-            throw new PSSystemValidationException(
-               e.getErrorCode(), e.getErrorArguments(), m_application, ds);
-         }
-         catch (SQLException e)
+         } catch (SQLException e)
          {
             Object[] args = { ds.getName(), m_name, e.toString() };
             throw new PSSystemValidationException(
@@ -1819,7 +1813,7 @@ public class PSApplicationHandler implements IPSRootedHandler
     * @return a ConcurrentHashMap containing stylesheets cached using a URL object that
     * identifies the stylesheet as a key.
     */
-   public ConcurrentHashMap getStylesheetCache()
+   public ConcurrentHashMap<URL, PSCachedStylesheet> getStylesheetCache()
    {
       return m_ssCache;
    }
@@ -2272,7 +2266,7 @@ public class PSApplicationHandler implements IPSRootedHandler
     * application is restarted, the cache is cleared and any new version of
     * underlying stylesheets are then used.
     */
-   private ConcurrentHashMap m_ssCache = new ConcurrentHashMap();
+   private ConcurrentHashMap<URL,PSCachedStylesheet> m_ssCache = new ConcurrentHashMap<>();
 
    private static final String REQUEST_TYPE_UNKNOWN_STRING   = "-unknown-";
    private static final String REQUEST_TYPE_QUERY_STRING     = "query";

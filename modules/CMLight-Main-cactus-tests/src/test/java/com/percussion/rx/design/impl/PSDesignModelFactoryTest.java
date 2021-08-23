@@ -375,7 +375,7 @@ public class PSDesignModelFactoryTest extends ServletTestCase
             "]>\n" +
             "<xsl:stylesheet version=\"1.1\" " +
             "xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" " +
-            "xmlns:psxctl=\"URN:percussion.com/control\" " +
+            "xmlns:psxctl=\"urn:percussion.com/control\" " +
             "xmlns=\"http://www.w3.org/1999/xhtml\" " +
             "exclude-result-prefixes=\"psxi18n\" " +
             "xmlns:psxi18n=\"urn:www.percussion.com/i18n\" >\n" +

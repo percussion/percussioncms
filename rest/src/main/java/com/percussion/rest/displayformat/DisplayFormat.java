@@ -25,20 +25,19 @@
 package com.percussion.rest.displayformat;
 
 import com.percussion.rest.Guid;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
 
 @XmlRootElement(name = "DisplayFormat")
-@ApiModel(description="Represents a DisplayFormat.")
+@Schema(description="Represents a DisplayFormat.")
 public class DisplayFormat{
 
-    @ApiModelProperty(notes="The global unique id for this item.")
+    @Schema(description="The global unique id for this item.")
     private Guid guid;
 
-    @ApiModelProperty(notes="The name of this Display Format")
+    @Schema(description="The name of this Display Format")
     private String name;
     private String label;
     private boolean validForRelatedContent;

@@ -24,16 +24,15 @@
 
 package com.percussion.rest.acls;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@ApiModel("Principal")
+@Schema(description = "Principal")
 public class Principal {
 
-    @ApiModelProperty("name")
+    @Schema(description = "name")
     private String name;
 
     public String getName() {

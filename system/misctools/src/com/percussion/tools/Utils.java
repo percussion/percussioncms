@@ -25,7 +25,10 @@
 package com.percussion.tools;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,9 +36,6 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
 * This class is a place holder for all utility functions that do not need classes
@@ -95,7 +95,15 @@ public class Utils
       try
       {
          DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-          false);
+                 new PSXmlSecurityOptions(
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         false
+                 ));
+
          dbf.setNamespaceAware(true);
          dbf.setValidating(false);
          return dbf.newDocumentBuilder();

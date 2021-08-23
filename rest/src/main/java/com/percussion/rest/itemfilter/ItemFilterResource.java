@@ -25,9 +25,11 @@
 package com.percussion.rest.itemfilter;
 
 import com.percussion.util.PSSiteManageBean;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PSSiteManageBean(value="restItemFilterResource")
+@Tag(name="Item Filters")
 public class ItemFilterResource {
 
     @Autowired

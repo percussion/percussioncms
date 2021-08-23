@@ -48,7 +48,7 @@ String basePath = request.getScheme() + "://"
 	<script language="javascript" src="../sys_resources/js/browser.js">;</script>
 	<script language="javascript" src="../sys_resources/js/href.js">;</script>
 	<script language="javascript" src="../sys_resources/js/popmenu.js">;</script>
-	<script language="javascript">
+	<script>
       			var actionPageRefresh = "true";
       			         			
       			function doroll(el)

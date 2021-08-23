@@ -24,7 +24,7 @@
   -->
 
 	<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by JB (Percussion Software) -->
-	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="https://www.percussion.com/DTD/PSWidgetDefinition.xsd" version="1.0">
 	<xs:element name="Widget">
 		<xs:complexType>
 			<xs:sequence>

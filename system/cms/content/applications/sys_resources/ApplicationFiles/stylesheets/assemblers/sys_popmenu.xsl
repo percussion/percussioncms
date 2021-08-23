@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<!--Main Template to initiate the Javascript based action menus -->
 	<xsl:template match="ActionList" mode="mainmenu">
 		<xsl:param name="sessionid"/>
@@ -23,7 +25,7 @@
 		<xsl:variable name="isLoginUserCheckoutUser">
 			<xsl:if test="$chkoutuser=$loginuser">yes</xsl:if>
 		</xsl:variable>
-		<script language="JavaScript">
+		<script>
 			PSCreateMenu('<xsl:value-of select="$actionsetid"/>',<xsl:apply-templates select="." mode="popmenu">
 				<xsl:with-param name="sessionid" select="$sessionid"/>
 				<xsl:with-param name="actionsetid" select="$actionsetid"/>
