@@ -97,3 +97,7 @@ fabric.properties
 /.idea/sonarlint/issuestore/
 /cui/.grunt/
 /modules/perc-security-utils/null/
+/deliverytiersuite/delivery-tier-suite/common/rxconfig/secure/
+/deployer/rxconfig/secure/
+/system/rxconfig/secure/
+/system/utils/rxconfig/secure/
