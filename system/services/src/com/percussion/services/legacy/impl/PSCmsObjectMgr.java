@@ -1755,10 +1755,10 @@ public class PSCmsObjectMgr
 
         Map<Integer, Map<Integer, String>> wfStateIdNameMap = new HashMap<>();
         Map<Integer, String> ctTypeIdLabelMap = new HashMap<>();
-        if(listItems.size() > 0 ){
-            //Should never happen unless corruted data
+        if(!listItems.isEmpty() ){
+            //Should never happen unless corrupted data
             if(listItems.size() > 1){
-                ms_log.warn("Duplicate records found for id: {} Returning 1st record" + id);
+                ms_log.warn("Duplicate records found for id: {} Returning 1st record" , id);
             }
             return createItemEntry(listItems.get(0), wfStateIdNameMap, ctTypeIdLabelMap);
         }
