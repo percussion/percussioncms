@@ -643,7 +643,7 @@ public class PSHttpConnection
    /**
     * The URL used to retrieve the PS Session ID from server.
     */
-   private static String GET_SESSIONID_URL = "../util/getPSSessionID.jsp";
+   private static final String GET_SESSIONID_URL = "/util/getPSSessionID.jsp";
    
    /**
     * Set the boundary for posting data of type "multipart/form-data"

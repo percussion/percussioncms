@@ -46,19 +46,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.percussion.deliverytier</groupId>
-            <artifactId>perc-delivery-common</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.percussion.deliverytier</groupId>
-            <artifactId>perc-delivery-common</artifactId>
-            <version>${project.parent.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
             <version>${derby.version}</version>
@@ -314,6 +301,12 @@
             <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
             <version>${jersey.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion.deliverytier</groupId>
+            <artifactId>perc-delivery-common</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>provided</scope>
         </dependency>
    </dependencies>
     <build>

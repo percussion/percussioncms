@@ -24,12 +24,5 @@
   -->
 
 <Resources>
-    <asset primary="true" id="flashBinary" contentType="percFlashAsset" legacyTemplate="perc.fileBinary">
-        <linkAndLocations type="jexl">
-        <![CDATA[
-        $rx.resourceHelper.createDefaultLinkAndLocations($perc);
-        ]]>  
-        </linkAndLocations>         
-    </asset>
 	<file id="swfobject_js" path="/web_resources/widgets/flash/js/swfobject.js" type="javascript"/>
 </Resources>

@@ -37,6 +37,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
@@ -316,27 +317,29 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
          filter.setProperty(IPSHtmlParameters.SYS_SLOTID, slotId + "");
       try {
          PSRelationshipSet relSet = processor.getRelationships(filter);
-         for (int i = 0; i < relSet.size(); i++)
-         {
-            PSRelationship rel1 = (PSRelationship) relSet.get(i);
-            if(rel1.getConfig().equals(rel.getConfig())){
-               if(rel1.getDependent().getRevision() == rel.getDependent().getRevision()){
-                  if(rel1.getOwner().getRevision() == rel.getOwner().getRevision()){
-                      //Checking this slot id to resolve the page summary issue if same image is uploaded in page summary and image widget for the same page (CMS-7800).
-                      if(rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID) != null && rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID) != null){
-                          if(rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue().equalsIgnoreCase(rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue())){
-                              return rel1;
-                          }
-                      }else{
-                          return rel1;
-                      }
+         if(relSet == null){
+            return null;
+         }
+         for (Object o : relSet) {
+            PSRelationship rel1 = (PSRelationship) o;
+            if (rel1.getConfig().equals(rel.getConfig())) {
+               if (rel1.getDependent().getRevision() == rel.getDependent().getRevision()) {
+                  if (rel1.getOwner().getRevision() == rel.getOwner().getRevision()) {
+                     //Checking this slot id to resolve the page summary issue if same image is uploaded in page summary and image widget for the same page (CMS-7800).
+                     if (rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID) != null && rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID) != null) {
+                        if (rel1.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue().equalsIgnoreCase(rel.getUserProperty(PSRelationshipConfig.PDU_SLOTID).getValue())) {
+                           return rel1;
+                        }
+                     } else {
+                        return rel1;
+                     }
                   }
                }
             }
          }
       } catch (PSCmsException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
       }
       return null;
    }

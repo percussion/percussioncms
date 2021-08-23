@@ -24,15 +24,16 @@
 
 package com.percussion.pubserver.data;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.swagger.annotations.ApiModel;
-
 
 @XmlRootElement(name = "serverInfo")
-@ApiModel(description = "A List of PSPublishServerInfo")
+@ArraySchema(schema=@Schema(implementation = PSPublishServerInfo.class))
 public class PSPublishServerInfoList extends ArrayList<PSPublishServerInfo> {
     public PSPublishServerInfoList(Collection<? extends PSPublishServerInfo> c) {
         super(c);

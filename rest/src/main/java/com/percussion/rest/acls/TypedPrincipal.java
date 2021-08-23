@@ -25,19 +25,18 @@
 package com.percussion.rest.acls;
 
 import com.percussion.security.IPSTypedPrincipal;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement
-@ApiModel("Typed Principal")
+@Schema(description = "Typed Principal")
 public class TypedPrincipal implements  IPSTypedPrincipal{
 
-    @ApiModelProperty(value="name", required=true)
+    @Schema(description="name", required=true)
     private String name;
-    @ApiModelProperty(value="type", required = true, dataType = "string")
+    @Schema(description="type", required = true)
     private IPSTypedPrincipal.PrincipalTypes type;
 
     public String getName() {

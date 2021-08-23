@@ -31,8 +31,6 @@ import au.id.jericho.lib.html.Source;
 import au.id.jericho.lib.html.StartTag;
 import au.id.jericho.lib.html.StringOutputSegment;
 import au.id.jericho.lib.html.Tag;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,8 +53,6 @@ import java.util.TreeMap;
  */
 public class PSHelpHintFileCreator
 {
-
-   private static final Logger log = LogManager.getLogger(PSHelpHintFileCreator.class);
 
    /**
     * Ctor
@@ -207,7 +203,7 @@ public class PSHelpHintFileCreator
          if(fieldname == null)
             continue;
          String theKey = key + "." + fieldname.toLowerCase().trim().replace(' ', '_');
-         log.info("Creating help hint entry for: {}", theKey);
+         System.out.println("Creating help hint entry for: " + theKey);
          final Map<String, String> attribs =
                Collections.singletonMap(ATTR_KEY, theKey); 
          StringBuilder sb = new StringBuilder();
@@ -525,7 +521,7 @@ public class PSHelpHintFileCreator
    private void debug(String str)
    {
       if(m_debug)
-         log.info("[DEBUG] -> {}", str);
+         System.out.println("[DEBUG] -> " + str);
    }
    
    /**

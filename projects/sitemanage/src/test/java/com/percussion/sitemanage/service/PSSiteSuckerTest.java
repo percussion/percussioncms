@@ -23,9 +23,8 @@
  */
 package com.percussion.sitemanage.service;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.PSServer;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSite;
@@ -34,7 +33,24 @@ import com.percussion.sitemanage.service.impl.PSSiteDataService;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.PSSecurityWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,24 +64,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.experimental.categories.Category;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
 
 /**
  * Tool to create sites from urls from a file at a known location.
@@ -128,7 +127,14 @@ public class PSSiteSuckerTest extends PSServletTestCase
             File xsltFile = new File(ENTRIES_TEMPLATE_FILE);
             
             DocumentBuilderFactory docFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                    false
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    )
             );
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             
@@ -178,6 +184,7 @@ public class PSSiteSuckerTest extends PSServletTestCase
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(ENTRIES_XML_FILE));
          

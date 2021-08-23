@@ -34,11 +34,12 @@ import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
 import com.percussion.hooks.PSUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.utils.servlet.PSServletUtils;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.soap.Body;
 import org.apache.soap.Constants;
 import org.apache.soap.Envelope;
@@ -287,7 +288,14 @@ public class PSWebServices
       try
       {
          DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                 false);
+                 new PSXmlSecurityOptions(
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         false
+                 ));
 
          DocumentBuilder db = dbf.newDocumentBuilder();
          // set up the header

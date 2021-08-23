@@ -25,7 +25,9 @@ package com.percussion.delivery.utils.spring;
 
 
 import com.percussion.delivery.utils.security.PSSecureProperty;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
+import javax.annotation.Nonnull;
 
 /**
  * @author erikserating
@@ -33,7 +35,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  */
 public class PSPropertyPlaceholderConfigurer
       extends
-         PropertyPlaceholderConfigurer
+        PropertySourcesPlaceholderConfigurer
 {
 
    protected String key = null;
@@ -42,7 +44,8 @@ public class PSPropertyPlaceholderConfigurer
     * @see org.springframework.beans.factory.config.PropertyResourceConfigurer#convertPropertyValue(java.lang.String)
     */
    @Override
-   protected String convertPropertyValue(String originalValue)
+   @Nonnull
+   protected String convertPropertyValue(@Nonnull String originalValue)
    {
       if(PSSecureProperty.isValueClouded(originalValue))
          return PSSecureProperty.getValue(originalValue, key);

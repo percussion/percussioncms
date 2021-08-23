@@ -27,9 +27,11 @@ import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
 import com.percussion.pagemanagement.data.PSRegionWidgets;
 import com.percussion.pagemanagement.data.PSWidgetItem;
-import org.apache.commons.lang.RandomStringUtils;
+import com.percussion.util.PSSiteManageBean;
+import com.percussion.utils.security.PSSecurityUtility;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.owasp.csrfguard.util.RandomGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +40,7 @@ import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.Validate.notNull;
 
-
+@PSSiteManageBean("widgetItemIdGenerator")
 public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
 {
 
@@ -47,7 +49,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
      */
     public Long generateId(PSRegionWidgetAssociations widgets, PSWidgetItem item)
     {
-        Long id = Long.parseLong(RandomStringUtils.randomNumeric(10));
+        Long id = Long.parseLong(RandomGenerator.generateRandomId(PSSecurityUtility.getSecureRandom(),10));
         log.debug("Generated widget item id: {} for widget: {}",id, item);
         return id;
     }
@@ -101,7 +103,7 @@ public class PSWidgetItemIdGenerator implements IPSWidgetItemIdGenerator
                 {
                     String id = wi.getId();
                     if (ids.contains(id))
-                        log.error("Widget ID ({}) is not unique. The widget is: {}" ,id, wi.toString());
+                        log.error("Widget ID ({}) is not unique. The widget is: {}" ,id, wi);
                     
                     ids.add(id); 
                 }

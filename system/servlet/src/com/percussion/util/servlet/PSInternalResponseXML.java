@@ -24,6 +24,7 @@
 package com.percussion.util.servlet;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -155,7 +156,14 @@ class PSInternalResponseXML
     */
    static {
       ms_dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-false);
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              ));
 
       ms_dbf.setNamespaceAware(true);
       ms_dbf.setValidating(false);

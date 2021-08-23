@@ -25,7 +25,8 @@
 package com.percussion.sitemanage.data;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import java.util.Collection;
 
 
 @XmlRootElement(name = "SiteBlogProperties")
-@ApiModel(description = "A List of PSSiteBlogProperties")
+@ArraySchema(schema=@Schema(implementation = PSSiteBlogProperties.class))
 @JsonRootName("SiteBlogProperties")
 public class PSSiteBlogPropertiesList extends ArrayList<PSSiteBlogProperties> {
     public PSSiteBlogPropertiesList(Collection<? extends PSSiteBlogProperties> c) {

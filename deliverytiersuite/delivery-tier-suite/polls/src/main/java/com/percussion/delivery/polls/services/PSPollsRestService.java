@@ -24,12 +24,24 @@
 
 package com.percussion.delivery.polls.services;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.percussion.delivery.polls.data.IPSPoll;
+import com.percussion.delivery.polls.data.IPSPollAnswer;
+import com.percussion.delivery.polls.data.PSPollsResponse;
+import com.percussion.delivery.polls.data.PSPollsResponse.PollResponseStatus;
+import com.percussion.delivery.polls.data.PSRestPoll;
+import com.percussion.delivery.services.PSAbstractRestService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -38,36 +50,40 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import com.percussion.delivery.polls.data.IPSPoll;
-import com.percussion.delivery.polls.data.IPSPollAnswer;
-import com.percussion.delivery.polls.data.PSPollsResponse;
-import com.percussion.delivery.polls.data.PSPollsResponse.PollResponseStatus;
-import com.percussion.delivery.polls.data.PSRestPoll;
-import com.percussion.delivery.services.PSAbstractRestService;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * REST service for polls feature implementation.
  */
 @Path("/polls")
 @Component
-@Scope("singleton")
+
 public class PSPollsRestService extends PSAbstractRestService implements IPSPollsRestService
 {
     private static final String SERVER_ERROR_MESSAGE = "Failed to process you request due to an unexpected error.";
-    private final static Logger log = LogManager.getLogger(PSPollsRestService.class);
+    private  static final Logger log = LogManager.getLogger(PSPollsRestService.class);
     private IPSPollsService pollsService;
+
+    public PSPollsRestService(){
+
+    }
 
     @Autowired
     public PSPollsRestService(IPSPollsService pollsService)
     {
         this.pollsService = pollsService;
+    }
+
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
+
+        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
+        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
+        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
     }
 
     /* (non-Javadoc)

@@ -30,7 +30,7 @@
       corresponding "ActionSet" element is missing.
    -->
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-   <xsl:output doctype-system="./../../DTD/sys_StoredActions.dtd"/>
+   <xsl:output doctype-system="sys_StoredActions.dtd"/>
    <!-- main template -->
    <xsl:template match="/">
       <xsl:apply-templates select="." mode="copy"/>

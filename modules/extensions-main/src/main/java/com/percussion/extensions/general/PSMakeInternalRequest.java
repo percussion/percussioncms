@@ -25,10 +25,11 @@ package com.percussion.extensions.general;
 
 import com.percussion.data.PSCachedStylesheet;
 import com.percussion.data.PSConversionException;
+import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
-import com.percussion.data.PSUriResolver;
 import com.percussion.error.PSException;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
+import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSStylesheetCacheManager;
@@ -222,7 +223,10 @@ public class PSMakeInternalRequest extends PSSimpleJavaUdfExtension
          Transformer transformer = 
             stylesheet.getStylesheetTemplate().newTransformer();
          transformer.setErrorListener(errorListener);
-         transformer.setURIResolver(new PSUriResolver());
+
+         PSCatalogResolver cr = new PSCatalogResolver();
+         cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+         transformer.setURIResolver(cr);
    
          DOMResult res = new DOMResult();
          transformer.transform(new DOMSource(doc), res);

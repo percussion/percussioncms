@@ -23,8 +23,6 @@
  */
 package com.percussion.ant;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -41,8 +39,6 @@ import java.io.IOException;
  */
 public class PSAddJavaDocErrorSupression extends Task
 {
-
-   private static final Logger log = LogManager.getLogger(PSAddJavaDocErrorSupression.class);
    
    /**
     * The directory where the javadoc is contained
@@ -64,7 +60,8 @@ public class PSAddJavaDocErrorSupression extends Task
             " be a valid directory.");
       try
       {
-         log.info("Adding error suppression to: {}", new File(m_dir, INDEX_HTML_FILE).getAbsolutePath());
+         System.out.println("Adding error suppression to: " + 
+            new File(m_dir, INDEX_HTML_FILE).getAbsolutePath());
          StringBuilder contents = getContents();
          int idx = indexOfIgnoreCase(contents, "</TITLE>");
          if(idx != -1)

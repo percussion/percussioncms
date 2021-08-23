@@ -24,17 +24,17 @@
 
 package com.percussion.utils.servlet;
 
-import java.io.File;
-import java.io.IOException;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.mock.web.MockHttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Initialized by the servlet during its initialization, provides utility
@@ -43,6 +43,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * called once before any other methods may be called.  This should be done by
  * the servlet during its initialization.
  */
+@SuppressFBWarnings("REQUESTDISPATCHER_FILE_DISCLOSURE")
 public class PSServletUtils
 {
    /**
