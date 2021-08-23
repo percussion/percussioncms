@@ -25,6 +25,7 @@
 package com.percussion.server;
 
 import com.percussion.util.IOTools;
+import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -223,7 +224,7 @@ public class PSCustomControlManagerTest
       "]>\n" +
       "<xsl:stylesheet version=\"1.1\" " +
       "xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" " +
-      "xmlns:psxctl=\"urn:percussion.com/control\" " +
+      "xmlns:psxctl=\"URN:percussion.com/control\" " +
       "xmlns=\"http://www.w3.org/1999/xhtml\" " +
       "exclude-result-prefixes=\"psxi18n\" " +
       "xmlns:psxi18n=\"urn:www.percussion.com/i18n\" >\n" +

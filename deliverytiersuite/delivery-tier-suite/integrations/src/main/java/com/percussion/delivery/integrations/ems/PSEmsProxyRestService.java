@@ -24,19 +24,11 @@
 
 package com.percussion.delivery.integrations.ems;
 
-import com.percussion.delivery.integrations.ems.model.Booking;
-import com.percussion.delivery.integrations.ems.model.Building;
-import com.percussion.delivery.integrations.ems.model.EventType;
-import com.percussion.delivery.integrations.ems.model.GroupType;
-import com.percussion.delivery.integrations.ems.model.MCCalendar;
-import com.percussion.delivery.integrations.ems.model.MCEventDetail;
-import com.percussion.delivery.integrations.ems.model.MCEventType;
-import com.percussion.delivery.integrations.ems.model.MCGrouping;
-import com.percussion.delivery.integrations.ems.model.MCLocation;
-import com.percussion.delivery.integrations.ems.model.Status;
+import com.percussion.delivery.integrations.ems.model.*;
 import com.percussion.delivery.utils.lookup.PSLookup;
 import com.percussion.delivery.utils.lookup.PSXEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
@@ -47,14 +39,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-/**
+/***
+ * @see IPSEmsProxyRestService
  *
  * Provides a lightweight wrapper proxy for the EMS SOAP API.
- *
+ * 
+ * @author natechadwick
  *
  */
 @Path("/integrations/ems")
 @Component
+@Scope("singleton")
 public class PSEmsProxyRestService{
 
     @Autowired

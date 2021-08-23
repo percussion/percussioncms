@@ -23,7 +23,15 @@
  */
 package com.percussion.utils.xml;
 
-import com.percussion.security.xml.PSCatalogResolver;
+import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
@@ -31,14 +39,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.DefaultHandler2;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
 
 /**
  * A sax content handler that outputs the input SAX events to a new XML document
@@ -289,7 +289,7 @@ public class PSSaxCopier extends DefaultHandler2
    @Override
    public InputSource resolveEntity(String publicId, String systemId) throws IOException, SAXException
    {
-      PSCatalogResolver resolver = new PSCatalogResolver();
+      PSEntityResolver resolver = PSEntityResolver.getInstance();
       return resolver.resolveEntity(publicId, systemId);
    }
 
@@ -412,7 +412,7 @@ public class PSSaxCopier extends DefaultHandler2
    @Override
    public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId) throws SAXException, IOException
    {
-      PSCatalogResolver resolver = new PSCatalogResolver();
+      PSEntityResolver resolver = PSEntityResolver.getInstance();
       return resolver.resolveEntity(publicId, systemId);
    }
 

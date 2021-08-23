@@ -26,18 +26,19 @@ package com.percussion.rest.folders;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@Schema(description="Represents a request to copy a folder or item")
+@ApiModel(value="Represents a request to copy a folder or item")
 public class CopyFolderItemRequest {
 
-    @Schema(name="targetFolderPath", required=true,description="path")
+    @ApiModelProperty(value="targetFolderPath", required=true,notes="path")
     private String targetFolderPath;
 
-    @Schema(name="itemPath", required=true,description="path")
+    @ApiModelProperty(value="itemPath", required=true,notes="path")
     private String itemPath;
 
     public CopyFolderItemRequest(){}

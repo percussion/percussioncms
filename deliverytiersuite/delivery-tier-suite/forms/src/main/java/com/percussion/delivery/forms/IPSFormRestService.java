@@ -23,9 +23,7 @@
  */
 package com.percussion.delivery.forms;
 
-import com.percussion.delivery.forms.data.PSFormSummaries;
-import com.percussion.delivery.services.IPSRestService;
-import org.glassfish.jersey.server.ContainerRequest;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,13 +39,18 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
+
+import com.percussion.delivery.forms.data.PSFormSummaries;
+import com.percussion.delivery.services.IPSRestService;
+import org.glassfish.jersey.server.ContainerRequest;
 
 /**
+ * @author natechadwick
  *
  */
-@Path("/forms")
+@Path("/form")
 public interface IPSFormRestService extends IPSRestService{
 
 	/**
@@ -65,7 +68,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@DELETE
-	@Path("/form/{formName}")
+	@Path("/{formName}")
 	public abstract void delete(@PathParam("formName") String formName);
 
 	/**
@@ -73,17 +76,20 @@ public interface IPSFormRestService extends IPSRestService{
 	 * form addition the form redirects back to the referer.
 	 * <p>
 	 * 
-	 * @url /perc-form-processor/forms/collect
+	 * @url /perc-form-processor/form/
 	 * @httpverb POST
 	 * @nullipotent yes (read-only method).
 	 * @secured no.
+	 * @param params the multivaluedmap of all parameters passed in by the form.
+	 *            Never <code>null</code>, may be empty.
+	 * @param headers the multivaluedmap of request header parameters. Never
+	 *            <code>null</code>, may be empty.
 	 * @throws IOException
 	 * @throws WebApplicationException
 	 * @httpcodeonsuccess HTTP 200.
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@POST
-	@Path("/collect")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public abstract void create(@Context ContainerRequest containerRequest,
 			@FormParam("action") String action, @Context HttpHeaders header,@Context HttpServletRequest request,
@@ -104,7 +110,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/form/{formName}")
+	@Path("/{formName}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public abstract PSFormSummaries get(@PathParam("formName") String formName);
 
@@ -122,7 +128,6 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/form/list")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public abstract PSFormSummaries get();
 
@@ -142,7 +147,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/form/{formName}/{csvFile}")
+	@Path("/{formName}/{csvFile}")
 	@Produces({ "text/csv" })
 	public abstract Response export(@PathParam("formName") String formName,
 			@PathParam("csvFile") String csvFile);

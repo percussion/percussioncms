@@ -23,9 +23,6 @@
  */
 package com.percussion.delivery.utils.spring;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
@@ -39,6 +36,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Provides a configurable Context loader that can be used as the contextClass param
@@ -75,27 +74,8 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
     private static final Logger log = LogManager.getLogger(PSConfigurableApplicationContext.class);
 
     PSConfigurableApplicationContext(){
-        super();
+
     }
-
-    /**
-     * Initialize the bean definition reader used for loading the bean
-     * definitions of this context. Default implementation is empty.
-     * <p>Can be overridden in subclasses, e.g. for turning off XML validation
-     * or using a different XmlBeanDefinitionParser implementation.
-     *
-     * @param beanDefinitionReader the bean definition reader used by this context
-     * @see XmlBeanDefinitionReader#setValidationMode
-     * @see XmlBeanDefinitionReader#setDocumentReaderClass
-     */
-    @Override
-    protected void initBeanDefinitionReader(XmlBeanDefinitionReader beanDefinitionReader) {
-        beanDefinitionReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
-        beanDefinitionReader.setValidating(false);
-
-        super.initBeanDefinitionReader(beanDefinitionReader);
-    }
-
     /***
      * A convenience method for unit tests to use when testing multiple 
      * contexts.  This should be called prior to loading the context in 

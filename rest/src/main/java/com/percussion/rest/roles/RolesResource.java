@@ -26,26 +26,14 @@ package com.percussion.rest.roles;
 
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
+import com.percussion.rest.users.User;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -60,7 +48,7 @@ import java.util.List;
 @Path("/roles")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-@Tag(name = "Roles", description = "Role operations")
+@Api(value = "/roles", description = "Role operations")
 public class RolesResource {
 
 	private static final Logger log = LogManager.getLogger(RolesResource.class);
@@ -77,14 +65,11 @@ public class RolesResource {
 	    @Path("/{roleName}")
 	    @Produces(
 	    {MediaType.APPLICATION_JSON})
-	    @Operation(summary = "Get a Role",
-				description = "Will get the Role specified by the roleName.",
-				responses = {
-	      @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-	      		schema=@Schema(implementation = Role.class)
-		  )),
-	      @ApiResponse(responseCode = "404", description = "Role not found"),
-	      @ApiResponse(responseCode = "500", description = "Error message") 
+	    @ApiOperation(value = "Get a Role", notes = "Will get the Role specified by the roleName.", response = User.class)
+	    @ApiResponses(value = {
+	      @ApiResponse(code = 200, message = "OK"),		
+	      @ApiResponse(code = 404, message = "Role not found"),
+	      @ApiResponse(code = 500, message = "Error message") 
 	    })
 	    public Role getRoleByName(@PathParam("roleName") String roleName)
 	    {
@@ -106,21 +91,18 @@ public class RolesResource {
 	    @Path("/{roleName}")
 	    @Consumes(MediaType.APPLICATION_JSON)
 	    @Produces(MediaType.APPLICATION_JSON)
-	    @Operation(summary = "Delete a Role",
-				description = "Will delete the specified roleName from the system.  If the Role is a Directory based Group, the link to the directory is removed but the Group will not be removed from the remote Directory."
-	         , responses = {
-	      @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-	      		schema=@Schema(implementation = Status.class)
-		  )),
-	      @ApiResponse(responseCode = "404", description = "Role not found"),
-	      @ApiResponse(responseCode = "500", description = "Error message") 
+	    @ApiOperation(value = "Delete a Role", notes = "Will delete the specified roleName from the system.  If the Role is a Directory based Group, the link to the directory is removed but the Group will not be removed from the remote Directory."
+	          , response = Status.class)
+	    @ApiResponses(value = {
+	      @ApiResponse(code = 200, message = "OK"),		
+	      @ApiResponse(code = 404, message = "Role not found"),
+	      @ApiResponse(code = 500, message = "Error message") 
 	    })
-	    public Status deleteRole(@Parameter(description= "The roleName of the Role to delete." ,
-				name="roleName" ) @PathParam("roleName")
+	    public Status deleteRole(@ApiParam(value= "The roleName of the Role to delete." ,  name="roleName" ) @PathParam("roleName")
 	    String roleName)
 	    {
 	    	int retCode = 404;
-	    	String message = "Role not found";
+	    	String message = "User not found";
 	    	
 	        // Path param should be url decoded by default.  CXF jars interacting when running in cm1
 	        try
@@ -149,16 +131,13 @@ public class RolesResource {
 	    @Path("/")
 	    @Consumes(MediaType.APPLICATION_JSON)
 	    @Produces(MediaType.APPLICATION_JSON)
-	    @Operation(summary = "Create or update a Role",
-				description = "Creates or Updates the specified Role.  Returns the resulting Role.",
-				responses= {
-	      @ApiResponse(responseCode = "500", description = "Error"),
-	      @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-	      		schema=@Schema(implementation = Role.class)
-		  ))
+	    @ApiOperation(value = "Create or update a Role", notes = "Creates or Updates the specified Role.  Returns the resulting Role.", response = Role.class)
+	    @ApiResponses(value = {
+	      @ApiResponse(code = 500, message = "Error"),
+	      @ApiResponse(code = 200, message = "OK")
 	      
 	    })
-	    public Role updateRole(@Parameter(description= "The body containing a JSON payload" ,
+	    public Role updateRole(@ApiParam(value= "The body containing a JSON payload" ,
                 name="body" ) Role role)
 	    {
 	    	Role ret = null;
@@ -173,14 +152,6 @@ public class RolesResource {
 	    @Path("/list/{pattern}")
 	    @Produces(
 	    {MediaType.APPLICATION_JSON})
-		@Operation(summary = "Find available roles on the system by % wild card pattern",
-		responses = {
-				@ApiResponse(responseCode = "200", description = "OK", content=@Content(
-						array=@ArraySchema(schema = @Schema(implementation = Role.class))
-				)),
-				@ApiResponse(responseCode = "500", description = "Error")
-		})
-
 	    public RoleList findRoles()
 	    {
 	    	try {

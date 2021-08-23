@@ -23,9 +23,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
 	<!-- Stylesheet to upgrade 5.7 or lower rx_bannerTemplate.xsl to work with 6.0 which uses JSPs for other components -->
 	<xsl:template match="/">
@@ -48,7 +46,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<!-- otherwise, add div tag and then copy the children -->
-                    <div id="RhythmyxBanner">
+					<div xmlns:fo="http://www.w3.org/1999/XSL/Format" id="RhythmyxBanner">
 						<xsl:apply-templates select="* | comment()" mode="copy"/>
 					</div>
 				</xsl:otherwise>

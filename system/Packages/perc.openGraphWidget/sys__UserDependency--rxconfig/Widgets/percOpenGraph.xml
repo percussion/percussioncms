@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
 <Widget>
     <WidgetPrefs title="Facebook Open Graph"
                  contenttype_name="percOpenGraph"
@@ -318,7 +342,7 @@
 		}
 	}
 
-
+			
 	if(! empty($image_height_override)){
 		$use_image_height = $tools.esc.html($image_height_override);
 	}else{
@@ -328,19 +352,19 @@
 	}
 
 	$meta_image_height='<meta property="og:image:height" content="' + $use_image_height + '" />';
-
-
+	 
+			
 	if(! empty($image_width_override)){
 		$use_image_width = $tools.esc.html($image_width_override);
 	}else{
 	    if(! empty($og_image_width)){
 			$use_image_width = $tools.esc.html($og_image_width);
 		}
-
+		
 	}
-
+	
 	$meta_image_width='<meta property="og:image:width" content="' + $use_image_width + '" />';
-
+	
 
 	$baseURL = $perc.linkContext.getSite().getSiteProtocol() + "://";
 	$pubSiteName = $perc.linkContext.getSite().getName();
@@ -380,7 +404,7 @@
 	}else{
 		$meta_image="";
 	}
-
+	
 
 	if( empty($perc.page.getAdditionalHeadContent())){
 		$perc.page.setAdditionalHeadContent("");
@@ -424,7 +448,7 @@
 			$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead,$meta_image_height));
 		}
 	}
-
+		
 	if(!empty($use_locale)){
 		$addlHead = $perc.page.getAdditionalHeadContent();
 		$perc.page.setAdditionalHeadContent($nl.format("%s%n%s", $addlHead, $meta_locale));

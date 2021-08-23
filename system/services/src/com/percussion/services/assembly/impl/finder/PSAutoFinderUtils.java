@@ -24,7 +24,12 @@
 package com.percussion.services.assembly.impl.finder;
 
 
-import com.percussion.error.PSExceptionUtils;
+import static com.percussion.services.assembly.IPSContentFinder.PARAM_QUERY;
+import static com.percussion.services.assembly.IPSContentFinder.PARAM_TYPE;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getLocale;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.setSiteFolderId;
+
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.impl.finder.PSContentFinderBase.ContentItem;
 import com.percussion.services.assembly.impl.finder.PSContentFinderBase.ContentItemOrder;
@@ -32,30 +37,23 @@ import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.data.PSQuery;
-import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
-import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.utils.collections.PSFacadeMap;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.exception.DataException;
 
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.query.QueryResult;
-import javax.jcr.query.Row;
-import javax.jcr.query.RowIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.percussion.services.assembly.IPSContentFinder.PARAM_QUERY;
-import static com.percussion.services.assembly.IPSContentFinder.PARAM_TYPE;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getLocale;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.setSiteFolderId;
+import javax.jcr.Value;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.DataException;
 
 /**
  * This class provides various helper methods for auto content finders.
@@ -100,13 +98,14 @@ public class PSAutoFinderUtils
     * The items can be re-ordered with {@link ContentItemOrder}. 
     */   
    public Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
-         long slotId, Map<String, Object> params, IPSGuid templateId) throws PSSiteManagerException, PSNotFoundException, RepositoryException {
+         long slotId, Map<String, Object> params, IPSGuid templateId)
+   {
       Set<ContentItem> rval = new TreeSet<>(new ContentItemOrder());
       String type;
       String query = "";
       String locale = getLocale(sourceItem, params);
       type = getValue(params, PARAM_TYPE, "sql").toLowerCase();
-
+      //template = getValue(selectors, PARAM_TEMPLATE, null);
       query = getValue(params, PARAM_QUERY, null);
       String cslink = getValue(params,
             PARAM_MAY_HAVE_CROSS_SITE_LINKS, null);
@@ -162,18 +161,18 @@ public class PSAutoFinderUtils
       }
       catch (DataException se)
       {
-         log.error("Exception during query: {} for slot id: {} the formatted sql is: {} Error: {}",
-                 query,
-                 slotId,
-                 se.getSQL(),
-                 PSExceptionUtils.getMessageForLog(se));
-         throw se;
+         String errMsg = "Exception during query \"" + query + "\" for slot id=" + slotId + ", the formatted sql is: "
+         + se.getSQL();
+         ms_log.error(errMsg, se);
+         throw new RuntimeException(errMsg, se);
 
-      } catch (PSSiteManagerException | PSNotFoundException | RepositoryException e) {
-         log.error(PSExceptionUtils.getMessageForLog(e));
-         throw(e);
       }
-
+      catch (Exception e)
+      {
+         String errMsg = "Exception during query \"" + query + "\" for slot id=" + slotId;
+         ms_log.error(errMsg, e);
+         throw new RuntimeException(errMsg, e);
+      }
       return rval;
    }
 
@@ -187,5 +186,5 @@ public class PSAutoFinderUtils
    /**
     * Logger
     */
-   private static final Logger log = LogManager.getLogger(PSAutoFinderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAutoFinderUtils.class);
 }

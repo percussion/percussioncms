@@ -62,7 +62,7 @@
                         if (u.status === "SUCCESS") {
                             if (o === "Cookie") {
                                 var q = h.pollName;
-                                a.cookie("PercPoll-" + m, "voted", { expires: 7,sameSite: "None",secure:true ,httpOnly="false"});
+                                a.cookie("PercPoll-" + m, "voted", { expires: 7 });
                             }
                             var s = u.result;
                             e(s);

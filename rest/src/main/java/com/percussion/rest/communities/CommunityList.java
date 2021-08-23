@@ -25,15 +25,14 @@
 package com.percussion.rest.communities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "CommunityList")
-@ArraySchema(schema=@Schema(implementation = Community.class))
+@ApiModel(description = "A List of Communities")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommunityList extends ArrayList<Community> {
     public CommunityList(Collection<? extends Community> c) {

@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+		<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+		<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-		<!ENTITY % w3centities-f PUBLIC
-				"-//W3C//ENTITIES Combined Set//EN//XML"
-				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
-				>
-		%w3centities-f;
 		]>
 <!-- $ Id: $ -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/sys_Templates.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/customControlImports.xsl"/>
@@ -27,7 +19,7 @@
 	<xsl:variable name="systemLibraryDoc" select="document($systemLibrary)"/>
 	<xsl:variable name="userLibrary" select="'file:rx_resources/stylesheets/rx_Templates.xsl'"/>
 	<xsl:variable name="userLibraryDoc" select="document($userLibrary)"/>
-	<xsl:variable name="customControlImportsDoc" select="document('file:sys_resources/stylesheets/customControlImports.xsl')"/>
+	<xsl:variable name="customControlImportsDoc" select="document('../sys_resources/stylesheets/customControlImports.xsl')"/>
 	<xsl:variable name="lang" select="/*/UserStatus/@xml:lang"/>
 	<xsl:template match="/">
 		<xsl:apply-templates select="ContentEditor"/>
@@ -39,14 +31,23 @@
 		<xsl:variable name="syspageid" select="/*/ActionLinkList/ActionLink/Param[@name='sys_pageid']"/>
 		<html>
 			<head>
-				<script src="/tmx/tmx.jsp?/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang={$lang}"><xsl:value-of select="' '"/></script>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"><xsl:value-of select="' '"/></script>
-				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"><xsl:value-of select="' '"/></script>
-				<script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"><xsl:value-of select="' '"/></script>
-				<script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"><xsl:value-of select="' '"/></script>
-				<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"><xsl:value-of select="' '"/></script>
-				<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"><xsl:value-of select="' '"/></script>
-				<script src="/sys_resources/js/cm/init.js"><xsl:value-of select="' '"/></script>
+				<xsl:text>&#10;</xsl:text>
+				<script language="javascript" src="../tmx/tmx.jsp?/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang={$lang}">;</script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../../cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../../cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script  src="../../cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../../cm/jslib/profiles/3x/libraries/bowser/es5.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../../cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../../cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"></script>
+				<xsl:text>&#10;</xsl:text>
+				<script src="../sys_resources/js/cm/init.js"></script>
+				<xsl:text>&#10;</xsl:text>
 				<xsl:variable name="scripttags">
 					<xsl:apply-templates select="ControlNameSet/ControlName" mode="scriptfiles"/>
 				</xsl:variable>
@@ -59,15 +60,18 @@
 				<xsl:call-template name="createControlStyleTags">
 					<xsl:with-param name="styletags" select="$styletags"/>
 				</xsl:call-template>
-				<link rel="stylesheet" href="/cm/widgets/PercDataTable/PercDataTable.css"/>
-				<link rel="stylesheet" href="/cm/widgets/PercActionDataTable/PercActionDataTable.css"/>
-				<link rel="stylesheet" href="/cm/widgets/PercPageDataTable/PercPageDataTable.css"/>
-				<link rel="stylesheet" href="/cm/widgets/PercSimpleMenu/PercSimpleMenu.css"/>
-				<link rel="stylesheet" href="/sys_resources/css/cmlite.css"/>
+				<link rel="stylesheet" href="../../cm/widgets/PercDataTable/PercDataTable.css"/>
+				<link rel="stylesheet" href="../../cm/widgets/PercActionDataTable/PercActionDataTable.css"/>
+				<link rel="stylesheet" href="../../cm/widgets/PercPageDataTable/PercPageDataTable.css"/>
+				<link rel="stylesheet" href="../../cm/widgets/PercSimpleMenu/PercSimpleMenu.css"/>
+				<link rel="stylesheet" href="../sys_resources/css/cmlite.css"/>
 				<link rel="stylesheet" href="/web_resources/cm/themes/smoothness/jquery-ui-1.8.9.custom.css"/>
-				<script src="{concat('/web_resources/cm/common/js/PercGlobalVariablesData.js?_',@currentTimeStamp)}"><xsl:value-of select="' '"/></script>
+				<xsl:text>&#10;</xsl:text>
+				<script language="javascript" src="{concat('../web_resources/cm/common/js/PercGlobalVariablesData.js?_',@currentTimeStamp)}">;</script>
+				<xsl:text>&#10;</xsl:text>
 				<script>
 					$(function(){
+
 					if(!$("#perc-content-edit-metadata-link").hasClass('noClick')) {
 					$(".perc-content-edit-data").hide();
 					$("#perc-content-edit-metadata-link, #perc-content-edit-site-link").on("click",function () {
@@ -75,12 +79,12 @@
 					$(this).toggleClass('perc-spacer perc-tab-open');
 					});
 					}
-
 					// Add class 'perc-shared-asset' to body tag if asset is shared one
-					if($('body').find('#perc-content-edit-sys_title').length){
+					if($('body').find('#perc-content-edit-sys_title').length)
+					{
 					var getFieldType = $('#perc-content-edit-sys_title').attr('type');
 					if(getFieldType == 'text') {
-					$('body').addClass('perc-shared-asset');
+						$('body').addClass('perc-shared-asset');
 					}
 					}
 					<xsl:if test="@commandName='edit'">
@@ -89,7 +93,11 @@
 					</xsl:if>
 					});
 				</script>
+				<xsl:text>&#10;</xsl:text>
 				<title><xsl:value-of select="//DisplayField/Control[@paramName='sys_title']/Value"/></title>
+				<xsl:text>&#10;</xsl:text>
+			</head>
+			<body>
 				<style type="text/css">
 					.perc-required-legend{
 						position: relative; float: right; padding-right: 9px; margin-top: 3px;
@@ -109,9 +117,9 @@
 						padding-right:35px;
 						padding-bottom:30px;
 					}
+
+
 				</style>
-			</head>
-			<body>
 				<form method="post" action="{@submitHref}" id="perc-content-form" name="perc-content-form" encType="multipart/form-data">
 					<xsl:if test="//DisplayField[@displayType='sys_normal']/Control[@isRequired = 'yes' and @isReadOnly='no' and @name != 'sys_HiddenInput']">
 						<span class="perc-required-legend"><label>* - denotes required field</label></span>
@@ -134,7 +142,7 @@
 		</xsl:if>
 		<div id="perc-content-edit-content" class = "asset-details" >
 			<!-- The following is a place-holder at the top for additional client specific content -->
-			<div id="perc-content-edit-content-top-placeholder"></div>
+			<div id="perc-content-edit-content-top-placeholder" style="display:none"></div>
 			<xsl:apply-templates select="DisplayField[@fieldValueType='content'] | DisplayField[@fieldValueType='unknown' and Control/@dataType!='sys_system']"/>
 		</div>
 		<xsl:variable name="metaCount" select="count(DisplayField[@fieldValueType='meta'] | DisplayField[@fieldValueType='unknown' and DisplayField[@fieldValueType!='content'] and @displayType='sys_normal' and Control/@dataType='sys_system' and Control/@name!='sys_HiddenInput'])"/>
@@ -147,9 +155,10 @@
 
 				<xsl:apply-templates select="DisplayField[@fieldValueType='meta'] | DisplayField[@fieldValueType='unknown' and Control/@dataType='sys_system']"/>
 			</div>
+			<div id="perc-content-edit-metadata-sep"/>
 		</div>
-		<div id="perc-content-edit-metadata-sep"/>
-		<div id="perc-site-impact-panel">
+
+		<div id="perc-site-impact-panel" style = "display:none">
 			<div id="perc-content-edit-site-link" class = "perc-spacer">
 				<span id="perc-content-edit-site-icon" />Site Impact</div>
 			<div class="perc-content-edit-data">

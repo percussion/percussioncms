@@ -25,9 +25,9 @@
 package com.percussion.rest;
 
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
-@Schema(description ="The supported object types on the system.")
+@ApiModel(description ="The supported object types on the system.")
 public enum ObjectTypeEnum {
     /**
      * Used for internal objects that require a unique id, but are not exposed

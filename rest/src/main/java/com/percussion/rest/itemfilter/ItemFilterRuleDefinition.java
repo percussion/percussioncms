@@ -25,13 +25,13 @@
 package com.percussion.rest.itemfilter;
 
 import com.percussion.rest.Guid;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement(name = "ItemFilterRuleDefinition")
-@Schema( description = "Represents an ItemFilter Rule")
+@ApiModel( description = "Represents an ItemFilter Rule")
 public class ItemFilterRuleDefinition {
 
     private Guid ruleId;

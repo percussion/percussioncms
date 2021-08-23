@@ -25,7 +25,6 @@ package com.percussion.utils.service.impl;
 
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -747,6 +746,8 @@ public class PSSiteConfigUtils
      *
      * @param sitename the name of the site. Assumed not blank.
      * @param loginPage the login page set for the site. May be blank.
+     * @param loginErrorPage the error page for the login failure set for the
+     *            site. May be blank.
      * @param sectionNode the root node of the section tree. Assumed not
      *            <code>null</null>
      * @throws TransformerException if an error occurs when writing the file.
@@ -813,6 +814,7 @@ public class PSSiteConfigUtils
      *
      * @param sitename the name of the site. Assumed not blank.
      * @param loginPage the login page set for the site. May be blank.
+     * @param loginErrorPage the error page for the login failure. May be blank.
      * @param sectionNode the root node of the section tree for the site.
      *            Assumed not <code>null</code>
      * @param useHttpsForSecureSite if <code>true</code>
@@ -968,14 +970,7 @@ public class PSSiteConfigUtils
              File baseSecurityFile = getBaseSecureXmlFile(securityData.getSitename());
 
             DocumentBuilderFactory documentBuilderFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                    new PSXmlSecurityOptions(
-                            true,
-                            true,
-                            true,
-                            false,
-                            true,
-                            false
-                    )
+                    false
             );
 
             DocumentBuilder documentBuilder = null;

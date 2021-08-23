@@ -29,15 +29,15 @@ import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.Consumes;
@@ -63,11 +63,11 @@ import java.util.regex.Pattern;
 @PSSiteManageBean(value="restFoldersResource")
 @Path("/folders")
 @XmlRootElement
-@Tag(name = "Folders", description = "Folder and Section operations")
+@Api(value = "/folders", description = "Folder and Section operations")
 public class FoldersResource
 {
     private Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
-    private static final Logger log = LogManager.getLogger(FoldersResource.class);
+    private Logger log = LogManager.getLogger(this.getClass());
 
     private IFolderAdaptor folderAdaptor;
 
@@ -83,14 +83,7 @@ public class FoldersResource
     @Path("/{guid}")
     @Produces(
     {MediaType.APPLICATION_JSON})
-    @Operation(summary="Get the specified folder by it's guid",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Folder not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-                            schema=@Schema(implementation = Folder.class)
-                    ))
-            })
+    @ApiOperation(value="Get the specified folder by it's guid",response = Folder.class)
     public Folder getFolderById(@PathParam("guid") String guid)
     {
         try {
@@ -107,18 +100,14 @@ public class FoldersResource
     @Path("/by-path/{folderpath:.+}")
     @Produces(
     {MediaType.APPLICATION_JSON})
-    @Operation(summary = "Retrieve folder by Path", description = "Get folder with site name path and folder name."
+    @ApiOperation(value = "Retrieve folder by Path", notes = "Get folder with site name path and folder name."
             + "<br/> Simply send a GET request using the site name, path to the folder, and folder name in the URL."
             + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder ."
-            + "<br/> <p> To work with Asset folders, replace MySite with Assets in the path, for example: http://localhost:9992/Rhythmyx/rest/folders/by-path/Assets/uploads",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Folder not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-                            schema=@Schema(implementation = Folder.class)
-                    ))
+            + "<br/> <p> To work with Asset folders, replace MySite with Assets in the path, for example: http://localhost:9992/Rhythmyx/rest/folders/by-path/Assets/uploads", response = Folder.class)
+    @ApiResponses(value = {
+      @ApiResponse(code = 404, message = "Folder not found") 
     })
-    public Folder getFolder(@Parameter(description= "The path from the site to the folder." ,  name="folderpath" )@PathParam("folderpath")
+    public Folder getFolder(@ApiParam(value= "The path from the site to the folder." ,  name="folderpath" )@PathParam("folderpath")
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -155,19 +144,15 @@ public class FoldersResource
     @Path("/by-path/{folderpath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Create or update folder below root of site", description = "Create or update folder using site name, path, and folder name."
+    @ApiOperation(value = "Create or update folder below root of site", notes = "Create or update folder using site name, path, and folder name."
             + "<br/> Simply send a PUT request using the site name, the path to the folder, and folder name in the URL along with a JSON payload of the folder."
             + "<br/> <b>Note:</b> When sending a PUT request do not include the id field. "
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Folder not found"),
-                @ApiResponse(responseCode = "500", description = "Error"),
-                @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-                        schema=@Schema(implementation = Folder.class)
-                ))
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .", response = Folder.class)
+    @ApiResponses(value = {
+      @ApiResponse(code = 404, message = "Folder not found") 
     })
-    public Folder updateFolder(@Parameter(description= "The body containing a JSON payload" ,  name="body" )Folder folder,
-            @Parameter(description= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
+    public Folder updateFolder(@ApiParam(value= "The body containing a JSON payload" ,  name="body" )Folder folder, 
+            @ApiParam(value= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -214,16 +199,12 @@ public class FoldersResource
     @Path("/item/{itempath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Delete a folder item below root of site", description = "Delete a folder item below the first level of the site."
+    @ApiOperation(value = "Delete a folder item below root of site", notes = "Delete a folder item below the first level of the site."
             + "<br/> Simple send a DELETE request using the site name, path to the folder, and the folder name."
             + "<br/>"
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/item/MySite/FolderA/FolderB/MyFolder/myitem.html .",
-          responses = {
-                @ApiResponse(responseCode = "404", description = "Folder not found"),
-                @ApiResponse(responseCode= "500", description = "Error"),
-                  @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                          schema=@Schema(implementation = Status.class)
-                  ))
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/item/MySite/FolderA/FolderB/MyFolder/myitem.html .", response = Status.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Folder not found")
     })
     public Status deleteFolderItem(@PathParam(value="itempath") String itempath){
         Status ret = new Status(500,"Error");
@@ -249,19 +230,15 @@ public class FoldersResource
     @Path("/by-path/{folderpath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Delete a folder below root of site", description = "Delete a folder below the first level of the site."
+    @ApiOperation(value = "Delete a folder below root of site", notes = "Delete a folder below the first level of the site."
             + "<br/> Simple send a DELETE request using the site name, path to the folder, and the folder name."
             + "<br/> <b>Note:</b> If the folder has subfolders then to delete the request must include the <b>\"includeSubFolders\" : \"True\"</b> header. "
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Folder not found"),
-                @ApiResponse(responseCode = "500", description = "Error"),
-                @ApiResponse(responseCode = "200", description = "OK", content = @Content(
-                        schema=@Schema(implementation = Status.class)
-                ))
-     })
-    public Status deleteFolder(@Parameter(description= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
-    String path,@Parameter(description= "Boolean to delete subfolders along with the folder." ,  name="includeSubFolders" ) @DefaultValue("false") @QueryParam("includeSubFolders") boolean includeSubFolders)
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .", response = Status.class)
+    @ApiResponses(value = {
+      @ApiResponse(code = 404, message = "Folder not found") 
+    })
+    public Status deleteFolder(@ApiParam(value= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
+    String path,@ApiParam(value= "Boolean to delete subfolders along with the folder." ,  name="includeSubFolders" ) @DefaultValue("false") @QueryParam("includeSubFolders") boolean includeSubFolders)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try {
@@ -290,11 +267,9 @@ public class FoldersResource
     @Path("/move/item")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Moves the specified item in the MoveFolderItem request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage",
-            responses= {
-                @ApiResponse(responseCode = "404", description = "Item not found"),
-                @ApiResponse(responseCode = "200", description = "Moved OK", content=@Content(
-                        schema=@Schema(implementation = Status.class)))})
+    @ApiOperation(value = "Moves the specified item in the MoveFolderItem request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage", response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Item not found"), @ApiResponse(code = 200, message = "Moved OK")})
     public Status moveFolderItem(MoveFolderItem moveRequest)
     {
         try {
@@ -312,12 +287,9 @@ public class FoldersResource
     @Path("/move/folder")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Moves the specified Folder in the MoveFolderItem request to the target path.  Path should include the full path to the source Folder and Target folder, for example /Sites/MySite/MyFolder/MySubFolder",
-            responses= {
-                @ApiResponse(responseCode = "404", description = "Item not found"),
-                @ApiResponse(responseCode = "200", description = "Moved OK", content=@Content(
-                        schema=@Schema(implementation = Status.class)
-                ))})
+    @ApiOperation(value = "Moves the specified Folder in the MoveFolderItem request to the target path.  Path should include the full path to the source Folder and Target folder, for example /Sites/MySite/MyFolder/MySubFolder", response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Item not found"), @ApiResponse(code = 200, message = "Moved OK")})
     public Status moveFolder(MoveFolderItem moveRequest)
     {
         try {
@@ -334,14 +306,11 @@ public class FoldersResource
     @Path("/copy/item")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Copies the specified item in the CopyFolderItemRequest request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Item not found"),
-                @ApiResponse(responseCode = "200", description = "Copied OK", content=@Content(
-                        schema=@Schema(implementation = Status.class)
-                )),
-                @ApiResponse(responseCode= "500", description= "Error")
-    })
+    @ApiOperation(value = "Copies the specified item in the CopyFolderItemRequest request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage", response = Status.class)
+    @ApiResponses(value =
+            {@ApiResponse(code = 404, message = "Item not found"),
+                    @ApiResponse(code = 200, message = "Copied OK"),
+            @ApiResponse(code=500, message="Error")})
     public Status copyFolderItem(CopyFolderItemRequest request)
     {
         try {
@@ -358,14 +327,10 @@ public class FoldersResource
     @Path("/copy/folder")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Moves the specified Folder in the CopyFolderItem request to the target path.  Path should include the full path to the folder, for example /Sites/MySite/MyFolder",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Folder not found"),
-                @ApiResponse(responseCode = "200", description = "Copied OK", content=@Content(
-                        schema = @Schema(implementation = Status.class)
-                )),
-                @ApiResponse(responseCode="500", description="Error")
-        })
+    @ApiOperation(value = "Moves the specified Folder in the CopyFolderItem request to the target path.  Path should include the full path to the folder, for example /Sites/MySite/MyFolder", response = Status.class)
+    @ApiResponses(value =
+            {@ApiResponse(code = 404, message = "Folder not found"), @ApiResponse(code = 200, message = "Copied OK"),
+            @ApiResponse(code=500,message="Error")})
     public Status copyFolder(CopyFolderItemRequest request)
     {
         try {
@@ -384,13 +349,9 @@ public class FoldersResource
     @Path("/rename/{folderPath:.+}/{name}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Rename the specified Folder.",
-            description = "Renames the Folder at the given path.",
-            responses= {
-                @ApiResponse(responseCode = "404", description = "Folder not found"),
-                @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
-                        schema=@Schema(implementation = Folder.class)
-                ))})
+    @ApiOperation(value = "Rename the specified Folder.", notes = "Renames the Folder at the given path.", response = Folder.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Folder not found"), @ApiResponse(code = 200, message = "Update OK")})
     public Folder renameFolder( @PathParam("folderPath") String path, @PathParam("name") String newName)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1

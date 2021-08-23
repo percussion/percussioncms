@@ -24,12 +24,12 @@
 
 package com.percussion.rest.actions;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@Schema
+@ApiModel
 public class AllowedTemplateMenusRequest {
 
     private int[] contentIds;

@@ -24,7 +24,6 @@
 package com.percussion.rx.delivery.impl;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -217,14 +216,7 @@ public class PSDatabaseDeliveryHandlerTest
       XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
       SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(
-              new PSXmlSecurityOptions(
-                      true,
-                      true,
-                      true,
-                      false,
-                      true,
-                      false
-              ));
+              false);
 
       SAXParser parser = f.newSAXParser();
       DefaultHandler dh = new PSDatabaseDeliveryHandler.UnpublishingContentHandler(

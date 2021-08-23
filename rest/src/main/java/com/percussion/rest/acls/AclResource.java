@@ -29,11 +29,11 @@ import com.percussion.rest.Guid;
 import com.percussion.rest.GuidList;
 import com.percussion.rest.Status;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.logging.log4j.LogManager;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -54,7 +54,7 @@ import java.util.List;
 @PSSiteManageBean(value="restAclResource")
 @Path("/acls")
 @XmlRootElement
-@Tag(name = "ACLS", description = "ACL operations")
+@Api(value = "acls", description = "ACL operations")
 @Lazy
 public class AclResource {
 
@@ -69,8 +69,8 @@ public class AclResource {
     @Path("/object")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @Operation(summary="retrieves the acl for the object with the supplied id")
-    public UserAccessLevel getUserAccessLevel(@Parameter(description="The guid of the object for which the current user's effective access level needs to be computed. Must not be null.",
+    @ApiOperation(value="retrieves the acl for the object with the supplied id")
+    public UserAccessLevel getUserAccessLevel(@ApiParam(value="The guid of the object for which the current user's effective access level needs to be computed. Must not be null.",
             required = true) Guid objectGuid){
 
         try{
@@ -87,7 +87,7 @@ public class AclResource {
     @Path("/user/{aclGuid}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @Operation(summary="Computes the current user's effective access level to the object protected\n" +
+    @ApiOperation(value="Computes the current user's effective access level to the object protected\n" +
             "by the supplied ACL. The effective access level of a user is the highest\n" +
             "permission he or she can get on the associated object based on all entries\n" +
             "in the ACL.")
@@ -107,8 +107,8 @@ public class AclResource {
     @Path("/")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @Operation(summary="Create an acl for the specified object.")
-    public Acl createAcl(@Parameter(required=true, description="A valid CreateAclRequest object") CreateAclRequest request){
+    @ApiOperation(value="Create an acl for the specified object.")
+    public Acl createAcl(@ApiParam(required=true, value="A valid CreateAclRequest object") CreateAclRequest request){
 
         try {
             return adaptor.createAcl(request.getObjectGuid(), request.getOwner());
@@ -124,7 +124,7 @@ public class AclResource {
     @Path("/bulk")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    @Operation(summary="Load ACLs for given list of ACL GUIDs. These objects are cached and shared\n" +
+    @ApiOperation(value="Load ACLs for given list of ACL GUIDs. These objects are cached and shared\n" +
             "    * between threads and should be treated read-only. See the class description\n" +
             "    * for more details.")
     public AclList loadAcls(GuidList aclGuids){

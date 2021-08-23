@@ -1,14 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
 <Widget>
-    <WidgetPrefs title="File Auto List"
-                 contenttype_name="percFileAutoList"
-                 category="rich media,search"
-                 description="Display a list of files"
-                 author="Percussion Software Inc"
-                 thumbnail="/rx_resources/widgets/fileAutoList/images/widgetIconFileAutoList.png"
-                 preferred_editor_width="780"
-                 preferred_editor_height="665"
-                 is_responsive="true"/>
+   <WidgetPrefs title="File Auto List"
+        contenttype_name="percFileAutoList"
+        category="rich media,search"
+        description="Display a list of files"
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/fileAutoList/images/widgetIconFileAutoList.png"
+        preferred_editor_width="780"
+        preferred_editor_height="665"
+		is_responsive="true"/>
     <UserPref name="listType"
               display_name="List Type"
               required="false"
@@ -17,9 +40,9 @@
         <EnumValue value="ordered" display_value="Ordered List"/>
     </UserPref>
     <UserPref name="listTitleFormat"
-              display_name="Format of list title"
-              required="false"
-              datatype="enum" default_value="div">
+        display_name="Format of list title"
+        required="false"
+        datatype="enum" default_value="div">
         <EnumValue value="h1" display_value="Heading 1" />
         <EnumValue value="h2" display_value="Heading 2" />
         <EnumValue value="h3" display_value="Heading 3" />
@@ -30,12 +53,12 @@
         <EnumValue value="div" display_value="Div" />
     </UserPref>
     <UserPref name="autoListDivId"
-              display_name="File Auto List div id"
-              datatype="string"/>
+        display_name="File Auto List div id"
+        datatype="string"/>
     <UserPref name="listItemFormat"
-              display_name="Format of list items"
-              required="false"
-              datatype="enum" default_value="none">
+        display_name="Format of list items"
+        required="false"
+        datatype="enum" default_value="none">
         <EnumValue value="h1" display_value="Heading 1" />
         <EnumValue value="h2" display_value="Heading 2" />
         <EnumValue value="h3" display_value="Heading 3" />
@@ -47,18 +70,18 @@
         <EnumValue value="none" display_value="None" />
     </UserPref>
     <UserPref name="showPostDate"
-              display_name="Show Post Date"
-              default_value="false"
-              datatype="bool"/>
+        display_name="Show Post Date"
+        default_value="false"
+        datatype="bool"/>
     <UserPref name="postDateTimeFormat"
-              display_name="Format of page post date"
-              default_value="EEEE MM dd, yyyy"
-              datatype="string" />
+        display_name="Format of page post date"
+        default_value="EEEE MM dd, yyyy"
+        datatype="string" />
     <UserPref name="locale"
-              display_name="Date Format Locale"
-              required="true"
-              default_value="en-US"
-              datatype="enum">
+        display_name="Date Format Locale"
+        required="true"
+        default_value="en-US"
+        datatype="enum">
         <EnumValue value="sq-AL" display_value="Albanian Albania (AL)"/>
         <EnumValue value="ar-DZ" display_value="Arabic Algeria (DZ)"/>
         <EnumValue value="ar-BH" display_value="Arabic Bahrain (BH)"/>
@@ -167,62 +190,62 @@
         <EnumValue value="uk-UA" display_value="Ukrainian Ukraine (UA)"/>
         <EnumValue value="vi-VN" display_value="Vietnamese Vietnam (VN)"/>
     </UserPref>
-    <UserPref name="maxlength"
-              display_name="Max list length"
-              datatype="number" />
+    <UserPref name="maxlength" 
+      display_name="Max list length"
+      datatype="number" /> 
     <UserPref name="sortby"
-              display_name="Sort by"
-              required="true"
-              default_value="rx:displaytitle"
-              datatype="enum">
-        <EnumValue value="none" display_value="None" />
-        <EnumValue value="rx:displaytitle" display_value="Title" />
-        <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
+      display_name="Sort by" 
+      required="true"
+      default_value="rx:displaytitle"
+      datatype="enum">
+	  <EnumValue value="none" display_value="None" />
+      <EnumValue value="rx:displaytitle" display_value="Title" />
+      <EnumValue value="rx:sys_contentpostdate" display_value="Post date" />
     </UserPref>
     <UserPref name="sortDirection"
-              display_name="Sort Order"
-              required="true"
-              default_value="asc"
-              datatype="enum">
-        <EnumValue value="desc" display_value="Descending" />
-        <EnumValue value="asc" display_value="Ascending" />
+      display_name="Sort Order"
+      required="true"
+      default_value="asc"
+      datatype="enum">
+      <EnumValue value="desc" display_value="Descending" />
+      <EnumValue value="asc" display_value="Ascending" />
     </UserPref>
     <UserPref name="listAriaLabel"
-              display_name="File Auto List aria-label"
-              datatype="string" />
+      display_name="File Auto List aria-label"
+      datatype="string" />
     <UserPref name="listAriaRole"
-              display_name="File Auto List aria-role"
-              datatype="string" />
+      display_name="File Auto List aria-role"
+      datatype="string" />
     <UserPref name="perc_hide_when_empty"
-              display_name="Hide auto list when empty"
-              default_value="false"
-              datatype="bool" />
+      display_name="Hide auto list when empty"
+      default_value="false"
+      datatype="bool" />
     <UserPref name="layout"
-              display_name="Layout"
-              required="true"
-              default_value="perc-list-vertical"
-              datatype="enum">
-        <EnumValue value="perc-list-horizontal" display_value="Horizontal" />
-        <EnumValue value="perc-list-vertical" display_value="Vertical" />
-    </UserPref>
-    <UserPref name="target"
-              display_name="Link target"
-              required="true"
-              default_value="_self"
-              datatype="enum">
-        <EnumValue value="_self" display_value="Current window" />
-        <EnumValue value="_blank" display_value="New window" />
-    </UserPref>
+      display_name="Layout"
+      required="true"
+      default_value="perc-list-vertical"
+      datatype="enum">
+      <EnumValue value="perc-list-horizontal" display_value="Horizontal" />
+      <EnumValue value="perc-list-vertical" display_value="Vertical" />
+    </UserPref>    
+	<UserPref name="target"
+      display_name="Link target"
+      required="true"
+      default_value="_self"
+      datatype="enum">
+      <EnumValue value="_self" display_value="Current window" />
+      <EnumValue value="_blank" display_value="New window" />
+    </UserPref>  
     <CssPref name="rootclass"
-             display_name="CSS root class"
-             datatype="string" />
+      display_name="CSS root class" 
+      datatype="string" />
     <CssPref name="listclass"
-             display_name="CSS file list class"
-             datatype="string" />
+      display_name="CSS file list class" 
+      datatype="string" />
 
 
     <Code type="jexl">
-        <![CDATA[
+    <![CDATA[
    $linkContext = $perc.linkContext;
    $rendering = $perc.widget.item.properties.get('listType');
    $listTitleFormat = $perc.widget.item.properties.get('listTitleFormat');
@@ -242,7 +265,7 @@
       $locale = "en-US";
    }
    $rootclass = $perc.widget.item.cssProperties.get('rootclass');
-   if (!empty($rootclass)) {
+   if (!empty($rootclass)) { 
       $rootclass = $rootclass;
    }
    if($autoListDivId == '' || $autoListDivId == null) {
@@ -256,7 +279,7 @@
    }
    $headerId = $autoListDivId + '_header';
    $listclass = $perc.widget.item.cssProperties.get('listclass');
-   if (!empty($listclass)) {
+   if (!empty($listclass)) { 
       $listclass = $listclass.trim();
    }
    $sortDirection = $perc.widget.item.properties.get('sortDirection');
@@ -285,7 +308,7 @@
 
       $params.put('query', $query);
       $params.put('max_results', $maxlength);
-      $finderName="Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder";
+      $finderName="Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder"; 
       $relresults=  $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, $finderName, $params);
       $title = $rx.pageutils.html($assetItem, 'displaytitle');
       $rowtag = $tools.alternator.auto('perc-list-odd', 'perc-list-even');
@@ -316,12 +339,12 @@
 
    $dsUrl = $rx.pageutils.getDeliveryServer($sys.assemblyItem.PubServerId);
 
-   $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}");
+   $dynamicListData = $tools.esc.html("{ deliveryurl : '" + $dsUrl + "'}"); 
 
     ]]>
     </Code>
     <Content type="velocity">
-        <![CDATA[
+<![CDATA[
 #define($ariaLabelString)##
 #if($title && $title.length() > 0)##
 aria-labelledby="$!{headerId}"##
@@ -387,7 +410,7 @@ $!{titleFormatStartTag}$title$!{titleFormatEndTag}
 #set( $analyticsId_firstChar = $analyticsId_Array.get(0).toString() )##
 #if( $analyticsId_firstChar == "?" )##
 #set( $analyticsId = "?" + $tools.esc.url( $analyticsId_raw.substring( 1, $analyticsId_raw.length() ) ) )##
-#else##
+#else## 
 #set( $analyticsId = $tools.esc.url( $analyticsId_raw ) )##
 #end##
 #end##

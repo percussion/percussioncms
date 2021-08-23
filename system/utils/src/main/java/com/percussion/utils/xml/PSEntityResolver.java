@@ -23,41 +23,37 @@
  */
 package com.percussion.utils.xml;
 
-import com.percussion.utils.string.PSFolderStringUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.InputSource;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URI;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 /**
  * @author dougrand
  *
- * This entity resolver allows references files in the rhythmyx root
+ * This entity resolver allows references to files in the rhythmyx root
  * directory by looking for the initial string /Rhythmyx/. It then resolves
  * the rest of the string to a path in the resolution directory. If the passed
  * reference is not appropriate for this resolver or the reference is not
  * found, the default action will occur by the 
  * {@link #resolveEntity(String, String)} method returning <code>null</code>.
- * @deprecated
  */
-@Deprecated
+@SuppressWarnings(value={"unchecked"})
 public class PSEntityResolver implements EntityResolver
 {
-   private static final Logger log = LogManager.getLogger(PSEntityResolver.class);
-
    /**
     * 127.0.0.1
     */
@@ -73,7 +69,7 @@ public class PSEntityResolver implements EntityResolver
     * never <code>null</code>.
     * Initialized by {@link #setResolutionHome(File)}. 
     */
-   private static Throwable lastSetResolutionHomeStackTrace = new Throwable();
+   private static Throwable ms_lastSetResolutionHomeStackTrace = new Throwable();
    
    /**
     * Assumed entity root reference string.
@@ -84,20 +80,20 @@ public class PSEntityResolver implements EntityResolver
     * Initialized in the {@link #getInstance()} method, never changed
     * afterward.
     */
-   private static PSEntityResolver singleton = null;
+   private static PSEntityResolver ms_singleton = null;
    
    /**
     * The directory to resolve references from. This is the current working
     * directory by default, but can be overridden.
     */
-   private static volatile File resolutionHome = new File(System.getProperty("rxdeploydir","."));
+   private static volatile File ms_resolutionHome = new File("."); 
    
    /**
     * Map of public ids to local resource files containing the DTD, never 
     * <code>null</code>, may be empty.  
     */
-   private static final Map<String, String> localResources =
-      new HashMap<>();
+   private static Map<String, String> ms_localResources = 
+      new HashMap<String, String>(); 
    
    static
    {
@@ -107,11 +103,11 @@ public class PSEntityResolver implements EntityResolver
       {
          props.load(PSEntityResolver.class.getResourceAsStream(
             "PSLocalDTDResources.properties"));
-         Enumeration<?> keys = props.propertyNames();
+         Enumeration keys = props.propertyNames();
          while(keys.hasMoreElements())
          {
             String key = (String) keys.nextElement();
-            localResources.put(key, props.getProperty(key));
+            ms_localResources.put(key, props.getProperty(key));
          }
       }
       catch (IOException e)
@@ -137,96 +133,76 @@ public class PSEntityResolver implements EntityResolver
     */
    public static synchronized PSEntityResolver getInstance()
    {
-      if (singleton == null)
+      if (ms_singleton == null)
       {
-         singleton = new PSEntityResolver();
+         ms_singleton = new PSEntityResolver();
       }
-      return singleton;
-   }
-
-
-   private String stripHeaderAndTrailingSlashes(String header, String arg){
-      // Remove "file:", and any extra leading slashes
-      final int HEADER_LEN = header.length();
-      int i = HEADER_LEN;
-      for(; i < arg.length(); i++)
-      {
-         if (arg.charAt(i) != '/') break;
-      }
-      return arg.substring(i == HEADER_LEN ? HEADER_LEN : i - 1);
+      return ms_singleton;
    }
 
    /* (non-Javadoc)
     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
     */
    public InputSource resolveEntity(String publicid, String systemid)
-      throws IOException
+      throws SAXException, IOException
    {
-      if (systemid == null) {
-         return null;
+      if (publicid != null); // We ignore public ids 
+      
+      if (systemid == null) return null;
+      
+      try
+      {
+         URI url = new URI(systemid);
+         if (url.getScheme().startsWith(HTTP_PROTOCOL))
+         {
+            // ignore external urls
+            if (!(url.getHost().equals("localhost") || url.getHost().equals(
+               LOCALHOST_IP_ADDRESS)))
+               return getLocalSource(publicid, systemid, true);
+         }
       }
-
-      //Resolve local entities first
-      InputSource rval = getLocalSource(publicid, systemid, true);
-      if (rval != null) {
-         return rval;
+      catch (Exception e)
+      {
+         // ignore, not a url, try the public id anyway, and return if we
+         // find it. Used for local references from xhtml strict, but fine
+         // for other files that are referenced with a public id
+         InputSource rval = getLocalSource(publicid, systemid, false);
+         if (rval != null)
+         {
+            return rval;
+         }
       }
-
-      final String FILE_PROTO_HEADER = "file:";
-      final String PERCUSSION_HEADER = "percussion:";
-      String header=null;
-
-      if (systemid.startsWith(FILE_PROTO_HEADER)) {
-         header = FILE_PROTO_HEADER;
-      }else if(systemid.startsWith(PERCUSSION_HEADER)) {
-         header = PERCUSSION_HEADER;
-      }
-
-      if(header != null){
-         systemid = stripHeaderAndTrailingSlashes(header, systemid);
+      
+      final String FILE_PROTO_HEADER = "file:"; 
+      if (systemid.startsWith(FILE_PROTO_HEADER))
+      {
+         // Remove "file:", and any extra leading slashes
+         final int HEADER_LEN = FILE_PROTO_HEADER.length(); 
+         int i = HEADER_LEN;
+         for(; i < systemid.length(); i++)
+         {
+            if (systemid.charAt(i) != '/') break;
+         }
+         systemid = systemid.substring(i == HEADER_LEN ? HEADER_LEN : i - 1);
       }
       else if(systemid.startsWith(HTTP_PROTOCOL + "://" + LOCALHOST_IP_ADDRESS))
       {
          int index = systemid.indexOf(RXROOT);
          systemid = systemid.substring(index);
       }
-
+      
       File entityFile = null;
       
       if (systemid.startsWith(RXROOT))
       {
          // Entities that appear to be in the Rhythmyx directory
-         entityFile = new File(resolutionHome,
+         entityFile = new File(ms_resolutionHome,
             systemid.substring(RXROOT.length()));
       }
-      else if (systemid.startsWith("/"))
+      else if (!systemid.startsWith("/"))
       {
-         Path p;
-         if(!systemid.startsWith(resolutionHome.getPath())) {
-            p = Paths.get(resolutionHome.getPath(), systemid);
-         }else{
-            p = Paths.get(systemid);
-         }
-         if(!p.toFile().exists()){
-            return null;
-         }
-
-         if(!PSFolderStringUtils.isChildOfFilePath(resolutionHome.toPath(), p)){
-            log.warn("Blocking external entity reference: {} as it is outside of the installation folder: {}.",
-                    systemid,resolutionHome.getAbsolutePath());
-            return null;
-         }
-
-         entityFile = p.toFile();
-      }else{
-        Path p =  Paths.get(resolutionHome.getAbsolutePath(),systemid);
-        if(!PSFolderStringUtils.isChildOfFilePath(resolutionHome.toPath(), p)){
-           return null;
-        }
-
-        if(Files.exists(p)){
-           entityFile = p.toFile();
-        }
+         // Relative paths
+         entityFile = new File(ms_resolutionHome, systemid);
       }
          
       // For any of the above that matched, we try and resolve
@@ -234,16 +210,17 @@ public class PSEntityResolver implements EntityResolver
       {
          if (entityFile.exists())
          {
-               FileInputStream is = new FileInputStream(entityFile);
-               return getInputSource(publicid, systemid, is);
-
+            FileInputStream is = new FileInputStream(entityFile);
+            InputSource source = getInputSource(publicid, systemid, is);
+            return source;
          }
          else
          {
-               log.error("entityFile doesn't exist! file: {} Error: {}",
+            Logger logger = LogManager.getLogger(PSEntityResolver.class);
+            if (logger!=null)
+               logger.error("entityFile doesn't exist! file: " +
                   entityFile.getAbsolutePath(),
-                  lastSetResolutionHomeStackTrace.getMessage());
-               log.debug(lastSetResolutionHomeStackTrace);
+                  ms_lastSetResolutionHomeStackTrace);
          }
       }
       
@@ -291,7 +268,7 @@ public class PSEntityResolver implements EntityResolver
       if (StringUtils.isBlank(publicid))
          return source;
       
-      String localResource = localResources.get(publicid.replace(' ', '_'));
+      String localResource = ms_localResources.get(publicid.replace(' ', '_'));
       if (!StringUtils.isBlank(localResource))
       {
          InputStream in = this.getClass().getResourceAsStream(localResource);
@@ -304,7 +281,7 @@ public class PSEntityResolver implements EntityResolver
             if (warnIfMissing)
             {
                LogManager.getLogger(this.getClass()).warn(
-                  "Failed to load local resource for entity resolution: {}" ,
+                  "Failed to load local resource for entity resolution: " + 
                   localResource);
             }
          }
@@ -314,7 +291,7 @@ public class PSEntityResolver implements EntityResolver
          if (warnIfMissing)
          {
             LogManager.getLogger(this.getClass()).warn(
-                  "Failed to locate matching local resource for public id: {}" ,
+                  "Failed to locate matching local resource for public id: " +
                   publicid);
          }
       }
@@ -326,9 +303,9 @@ public class PSEntityResolver implements EntityResolver
     * @return the current resolution home. This is used to resolve entity
     *         reference that the resolver recognizes.
     */
-   public static synchronized File getResolutionHome()
+   public File getResolutionHome()
    {
-      return resolutionHome;
+      return ms_resolutionHome;
    }
 
    /**
@@ -340,34 +317,36 @@ public class PSEntityResolver implements EntityResolver
     * @param dir a new resolution home, must never be <code>null</code> and
     * must point to a valid directory.
     */
-   public static synchronized  void setResolutionHome(File dir)
+   public synchronized static void setResolutionHome(File dir)
    {
       if (dir == null)
       {
          throw new IllegalArgumentException("dir must never be null");
       }
-      if (!dir.exists())
+      if (dir.exists() == false)
       {
          throw new IllegalArgumentException(
             "dir must exist: " + dir.getAbsolutePath());
       }
-      if (!dir.isDirectory())
+      if (dir.isDirectory() == false)
       {
          throw new IllegalArgumentException(
             "dir must be a directory: " + dir.getAbsolutePath());
       }
       
-      if (!resolutionHome.getAbsolutePath().equals(dir.getAbsolutePath()))
+      if (!ms_resolutionHome.getAbsolutePath().equals(dir.getAbsolutePath()))
       {
          //remember who set it, so that we could trace later
-         lastSetResolutionHomeStackTrace =
+         ms_lastSetResolutionHomeStackTrace = 
             new Throwable("EntityResolver last setResolutionHome stack.");
       }
-
-         log.info("Entity Resolution home set to:  {} " ,
+               
+      Logger logger = LogManager.getLogger(PSEntityResolver.class);
+      if (logger!=null)
+         logger.info("Entity Resolution home set to:  " +
                dir.getAbsolutePath());
       
-      resolutionHome = dir;
+      ms_resolutionHome = dir;
    }
 
 }

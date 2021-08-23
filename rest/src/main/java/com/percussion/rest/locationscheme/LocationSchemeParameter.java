@@ -25,25 +25,26 @@
 package com.percussion.rest.locationscheme;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "LocationSchemeParameter")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Represents a Location Scheme Parameter")
+@ApiModel(description = "Represents a Location Scheme Parameter")
 public class LocationSchemeParameter {
 
-    @Schema(name="name", description="The globally unique name of this parameter")
+    @ApiModelProperty(name="name", value="The globally unique name of this parameter")
     String name;
 
-    @Schema(name = "sequence", description = "The order of this parameter")
+    @ApiModelProperty(name = "sequence", value = "The order of this parameter")
     Integer sequence;
 
-    @Schema(name = "type", description = "The type of this parameter")
+    @ApiModelProperty(name = "type", value = "The type of this parameter")
     String type;
 
-    @Schema(name="value",description="The value for this parameter")
+    @ApiModelProperty(name="value",value="The value for this parameter")
     String value;
 
     public LocationSchemeParameter(){}

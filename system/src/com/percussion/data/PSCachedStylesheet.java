@@ -23,8 +23,6 @@
  */
 package com.percussion.data;
 
-import com.percussion.error.PSExceptionUtils;
-import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -83,12 +81,10 @@ public class PSCachedStylesheet
       m_cachedTime = 0;
       m_ssTemplate = null;
       m_listener = new PSTransformErrorListener();
-
+      
       m_transformFactory =  TransformerFactory.newInstance();
 
-      PSCatalogResolver cr = new PSCatalogResolver();
-      cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
-      m_transformFactory.setURIResolver(cr);
+      m_transformFactory.setURIResolver(new PSUriResolver());
 
       if("file".equalsIgnoreCase(m_ssUrl.getProtocol()))
          m_ssFile = new File(m_ssUrl.getFile());        
@@ -147,10 +143,9 @@ public class PSCachedStylesheet
                {
                   //Reason for using DOMSource is creating document using
                   //PSXMLDocumentBuilder is giving better error message than
-                  //using StreamSource with inputstream of stylesheet URL.
+                  //using StreamSource with inputstream of stlesheet URL.
 
                   InputStream urlStream = m_ssUrl.openStream();
-                  PSXmlDocumentBuilder.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
                   doc = PSXmlDocumentBuilder.createXmlDocument(
                            new InputSource(urlStream),
                            false);
@@ -161,19 +156,24 @@ public class PSCachedStylesheet
                   m_lastEncoding = encoding;
                   overrideXSLCharacterEncoding(doc, encoding);
                }
-                  PSCatalogResolver cr = new PSCatalogResolver();
-                  cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
-                  m_transformFactory.setURIResolver(cr);
                   m_transformFactory.setErrorListener(m_listener);
-
                   m_ssTemplate =
                      m_transformFactory.newTemplates(
                         new DOMSource(doc, m_ssUrl.toString()));
                }
-               catch (SAXException | IOException| TransformerConfigurationException e)
+               catch (TransformerConfigurationException e)
                {
-                  l.error("Error loading: {} Error: {}" , m_ssUrl,
-                          PSExceptionUtils.getMessageForLog(e));
+                  l.error("transformer error loading " + m_ssUrl, e);
+                  throw e;
+               }
+               catch (IOException e)
+               {
+                  l.error("io error loading " + m_ssUrl, e);
+                  throw e;
+               }
+               catch (SAXException e)
+               {
+                  l.error("sax error loading " + m_ssUrl, e);
                   throw e;
                }
             }

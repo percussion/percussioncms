@@ -24,25 +24,26 @@
 
 package com.percussion.rest.pages;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 @XmlRootElement(name = "Region")
-@Schema(name="Region",description="Represents a region of a page either defined locally or by the template.")
+@ApiModel(value="Region",description="Represents a region of a page either defined locally or by the template.")
 public class Region
 {
-    @Schema(name="name",description="Name of the region.")
+    @ApiModelProperty(value="name",notes="Name of the region.")
     private String name;
 
-    @Schema(name="type", description="Type of region.",allowableValues = "TEMPLATE,LOCAL")
+    @ApiModelProperty(value="type", notes="Type of region.",allowableValues = "TEMPLATE,LOCAL")
     private String type;
 
-    @Schema(name="editable", description="Denotes if region is editable.")
+    @ApiModelProperty(value="editable", notes="Denotes if region is editable.")
     private boolean editable;
 
-    @Schema(name="widgets", description="List of widgets within the region."  )
+    @ApiModelProperty(value="widgets", notes="List of widgets within the region."  )
     private List<Widget> widgets;
 
     public String getName()

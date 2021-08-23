@@ -71,7 +71,7 @@
     }
 
 
-    $(function(){
+    $(document).ready(function(){
         //Change the form action url to point to the right server
         deliveryServicesURL = getDeliveryServicesDomain(".perc-comments-view");
         var version = typeof($.getCMSVersion) === "function" ?$.getCMSVersion():"";
@@ -158,9 +158,9 @@
                 }
                 else
                 {
-                    console.error('Error retrieving comments from DTS service.');
+                    console.error('Error retrieveing comments from DTS service.');
                 }
-                var lastComment = $('.perc-coment-highlight');
+                var lastComment = $('.perc-comment-highlight');
                 if (lastComment.position()) {
                     $('html,body').animate({ scrollTop : lastComment.position().top }, 200 );
                 }
@@ -188,9 +188,21 @@
     */
     function getComments(callback)
     {
+        /*$.jsonp({
+            url: getUrl(),
+            data: '',
+            success: function(data, status){
+                callback(true, data);
+            },
+            error: function(xOptions, error)
+            {
+                callback(false);
+            }
+        });
+*/
         var fullLink =  getUrl();
         var splittedLink = fullLink.split("?");
-        var href = splittedLink[0] + "/list"
+        var href = splittedLink[0];
         var qs = splittedLink[1];
         var splittedQs = qs.split('&');
         var body = {};

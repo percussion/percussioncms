@@ -25,11 +25,6 @@
 package com.percussion.xml;
 
 import com.icl.saxon.expr.XPathException;
-import com.percussion.security.xml.PSSecureXMLUtils;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -37,21 +32,40 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * Tests that {@link PSXPathEvaluator} operates correctly.
  */
-public class PSXPathEvaluatorTest
+public class PSXPathEvaluatorTest extends TestCase
 {
-
-   public PSXPathEvaluatorTest()
+   /**
+    * Constructs an instance of this class to run the test implemented by the
+    * named method.
+    *
+    * @param methodName name of the method that implements a test
+    */
+   public PSXPathEvaluatorTest(String name)
    {
-      PSSecureXMLUtils.setupJAXPDefaults();
+      super( name );
    }
 
-
+   /**
+    * Collects all the tests implemented by this class into a single suite.
+    */
+   public static Test suite()
+   {
+      TestSuite suite = new TestSuite();
+      suite.addTest( new PSXPathEvaluatorTest( "testStream" ) );
+      suite.addTest( new PSXPathEvaluatorTest( "testDOM" ) );
+      suite.addTest( new PSXPathEvaluatorTest( "testNode" ) );
+      return suite;
+   }
 
    /**
     * Builds an evaluator from an input stream. Obtains an iterator over nodes
@@ -59,8 +73,6 @@ public class PSXPathEvaluatorTest
     * <code>PSXPathEvaluator</code> object for each node and evaluate XPath
     * expressions against each node.
     */
-   @Test
-   @Ignore("TODO: Update for XML Catalog resolver")
    public void testNode() throws Exception
    {
       PSXPathEvaluator xp = new PSXPathEvaluator(
@@ -106,8 +118,6 @@ public class PSXPathEvaluatorTest
     * evaluated correctly.  Also makes sure that an exception is thrown when
     * input is invalid.
     */
-   @Test
-   @Ignore("TODO: Update for XML Catalog resolver")
    public void testStream() throws Exception
    {
       PSXPathEvaluator xp = new PSXPathEvaluator(
@@ -132,8 +142,6 @@ public class PSXPathEvaluatorTest
     * evaluated correctly.  Also makes sure that an exception is thrown when
     * input is invalid.
     */
-   @Test
-   @Ignore("TODO: Update for XML Catalog resolver")
    public void testDOM() throws Exception
    {
       Document doc = PSXmlDocumentBuilder.createXmlDocument(
@@ -162,7 +170,8 @@ public class PSXPathEvaluatorTest
     * Applies several valid and invalid XPath expressions to make sure the
     * appropriate results are returned.
     */
-   private void testXPaths(PSXPathEvaluator xp) throws XPathException {
+   private void testXPaths(PSXPathEvaluator xp) throws XPathException
+   {
       assertEquals( "edit", xp.evaluate( "/*/@commandName" ) );
       assertEquals( "3", xp.evaluate("//Control[@paramName='authornames']//ActionLinkList/ActionLink[DisplayLabel='Edit']/Param[@name='sys_childrowid']") );
       assertEquals( "", xp.evaluate("/*/horsey") );

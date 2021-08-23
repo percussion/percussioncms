@@ -26,25 +26,24 @@ package com.percussion.rest.communities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.Guid;
-import com.percussion.rest.ObjectSummary;
 import com.percussion.rest.ObjectSummaryList;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@Schema
+@ApiModel("CommunityVisibility")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommunityVisibility {
 
 
-    @Schema(description= "The id of the Community")
+    @ApiModelProperty(value = "The id of the Community")
     private long id;
-    @Schema(description="The Guid of the community")
+    @ApiModelProperty(value="The Guid of the community")
     private Guid guid;
 
-    @ArraySchema(schema=@Schema(implementation = ObjectSummary.class))
+    @ApiModelProperty("A list of objects that are visible to this community")
     ObjectSummaryList visibleObjects;
 
     public CommunityVisibility(){}

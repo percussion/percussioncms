@@ -25,15 +25,14 @@
 package com.percussion.share.data;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 
 @JsonRootName(value = "psobj")
-@ArraySchema(schema=@Schema(implementation = PSLightWeightObjectList.class))
+@ApiModel(description = "A List of PSLightWeightObject")
 public class PSLightWeightObjectList extends ArrayList<PSLightWeightObject> {
     public PSLightWeightObjectList(Collection<? extends PSLightWeightObject> c) {
         super(c);

@@ -27,7 +27,6 @@ import com.percussion.hooks.IPSServletErrors;
 import com.percussion.hooks.PSConnectionFactory;
 import com.percussion.hooks.PSServletBase;
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.tools.PSInputStreamReader;
 import org.apache.logging.log4j.LogManager;
@@ -712,14 +711,7 @@ public class RhythmyxServlet extends PSServletBase
             readHttpHeaders(in, null);
             
             DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                    new PSXmlSecurityOptions(
-                            true,
-                            true,
-                            true,
-                            false,
-                            true,
-                            false
-                    ));
+               false);
 
             factory.setNamespaceAware(true);
             factory.setValidating(false);

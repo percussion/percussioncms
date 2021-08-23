@@ -24,23 +24,24 @@
 
 package com.percussion.rest.pages;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 @XmlRootElement(name = "CalendarInfo")
-@Schema(name="CalendarInfo",description="Represents Calendar information.")
+@ApiModel(value="CalendarInfo",description="Represents Calendar information.")
 public class CalendarInfo
 {
-    @Schema(name="startDate", required=false,description="Starting Date.")
+    @ApiModelProperty(value="startDate", required=false,notes="Starting Date.",dataType="Date")
     private Date startDate;
 
-    @Schema(name="endDate", required=false,description="Ending Date.")
+    @ApiModelProperty(value="endDate", required=false,notes="Ending Date.",dataType="Date")
     private Date endDate;
 
-    @Schema(name="calendars", required=false,description="List of calendars.")
+    @ApiModelProperty(value="calendars", required=false,notes="List of calendars.")
     private List<String> calendars;
 
     public Date getStartDate()

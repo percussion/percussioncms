@@ -23,14 +23,15 @@
  */
 package com.percussion.pagemanagement.dao;
 
-import com.percussion.pagemanagement.dao.impl.PSWidgetDao;
-import com.percussion.pagemanagement.data.PSWidgetDefinition;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.percussion.pagemanagement.dao.impl.PSWidgetDao;
+import com.percussion.pagemanagement.data.PSWidgetDefinition;
 
 public class PSWidgetDaoTest
 {
@@ -61,7 +62,7 @@ public class PSWidgetDaoTest
     public void shouldFindAllWidgets() throws Exception
     {
         List<PSWidgetDefinition> widgets = widgetDao.findAll();
-        assertEquals(3, widgets.size());
+        assertEquals(2, widgets.size());
     }
     
     @Test

@@ -24,12 +24,12 @@
 
 package com.percussion.rest.acls;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@Schema(description="AclEntry")
+@ApiModel("AclEntry")
 public class AclEntry {
 
     private long id;

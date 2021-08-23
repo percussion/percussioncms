@@ -24,7 +24,6 @@
 package com.percussion.utils.xml;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -60,15 +59,7 @@ public class PSSaxHelper
     * Parser factory used in the static helper methods here. The
     */
    static final SAXParserFactory ms_factory = PSSecureXMLUtils.getSecuredSaxParserFactory(
-           new PSXmlSecurityOptions(
-                   true,
-                   true,
-                   true,
-                   false,
-                   true,
-                   false
-           )
-           );
+           false);
 
    /**
     * This method instantiates the passed content handler with the arguments

@@ -122,7 +122,7 @@
              <!-- default properties for encryption -->
              <prop key="encryption.type">ENC</prop>
              <!-- default properties for Spring Security -->
-             <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
+             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
 
             <!--  Blog post visit scheduler properties -->
             <!--  setting to 1 second so it runs during test. PSMostReadServiceTest sets

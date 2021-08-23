@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!--
+   [percDefaultLang - Version 2.0]
+-->
 <Widget>
- <WidgetPrefs title="Default Language"
-              contenttype_name="percDefaultLanguage"
-              description="For SEO with International sites. When added to a Page or a Template adds the necessary href-lang markup for Google."
-              author="Nate Chadwick"
-              thumbnail="/rx_resources/widgets/percDefaultLang/images/percDefaultLangIcon.png"
-              preferred_editor_width="780"
-              preferred_editor_height="600"/>
- <Code type="jexl">
-  <!-- This section is used to set up data that will be used in the content section -->
-  <![CDATA[
+   <WidgetPrefs title="Default Language"
+                contenttype_name="percDefaultLanguage"
+                description="For SEO with International sites. When added to a Page or a Template adds the necessary href-lang markup for Google."
+                author="Nate Chadwick"
+                thumbnail="/rx_resources/widgets/percDefaultLang/images/percDefaultLangIcon.png"
+                preferred_editor_width="780"
+                preferred_editor_height="600"/>
+    <Code type="jexl">
+    <!-- This section is used to set up data that will be used in the content section -->
+     <![CDATA[
     $linkContext = $perc.linkContext;
 
     $assets = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
@@ -92,8 +119,8 @@
         }
     }
     ]]>
- </Code>
- <Content type="velocity"><![CDATA[#if($perc.isEditMode())##
+    </Code>
+    <Content type="velocity"><![CDATA[#if($perc.isEditMode())##
 <div style="height: 32px;background: transparent url(/Rhythmyx/rx_resources/widgets/percDefaultLang/images/percDefaultLangPlaceholder.png) no-repeat scroll center center;filter: alpha(opacity=50);opacity: .50;" title="Default Language Widget">
 #if( "$!configured}" != "" && "$!{percPageID}" != "" )##
 <b>Configured International Sites:</b> ($!{configured})
@@ -107,5 +134,5 @@
 $perc.page.setAdditionalHeadContent("$!{addlHead}$!{newline}$!{l}")##
 #end##
 ]]>
- </Content>
+</Content>
 </Widget>

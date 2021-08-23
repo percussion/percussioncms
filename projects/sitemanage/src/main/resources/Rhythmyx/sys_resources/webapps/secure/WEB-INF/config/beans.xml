@@ -25,8 +25,11 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
    <bean id="propertyPlaceholderProps" class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
       <property name="ignoreResourceNotFound" value="true" />
@@ -63,7 +66,7 @@ http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 			<prop key="ldap.domain.name">test.local</prop>
             <prop key="ldap.url">ldap://adserver.test.local/</prop>
             <prop key="perc.use.ldap">no</prop>
-			 <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
+			 <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
          </props>
       </property>
 	  

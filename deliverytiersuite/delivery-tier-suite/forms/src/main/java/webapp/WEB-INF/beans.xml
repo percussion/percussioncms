@@ -24,12 +24,14 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
    <context:component-scan base-package="com.percussion.delivery.forms.impl" />
 
@@ -49,8 +51,6 @@
             the same name override based on the order the file appears in the list last 
             one defined wins -->
          <list>
-            <value>WEB-INF/perc-security.properties</value>
-            <value>WEB-INF/perc-form-processor.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-datasources.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-form-processor.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-email.properties</value>
@@ -76,6 +76,11 @@
             <prop key="hibernate.cache.use_second_level_cache">false</prop>
             <prop key="hibernate.cache.use_query_cache">false</prop>
             <prop key="hibernate.hbm2ddl.auto">update</prop>
+            
+            <!-- default properties for encryption -->
+            <prop key="encryption.type">ENC</prop>
+            <!-- default properties for Spring Security -->
+            <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
                         
             <!-- default properties for email service -->
             <prop key="email.hostName"></prop>
@@ -90,7 +95,7 @@
             <prop key="recaptcha.on">false</prop>
             <prop key="recaptcha.secret"></prop>
             <prop key="recaptcha.url">https://www.google.com/recaptcha/api/siteverify</prop>
-            <prop key="recaptcha.userAgent">Mozilla/5.0</prop>
+            <prop key="recaptcha.userAgent">Mozilla/5.0</prop>   
             <prop key="enabledCiphers">TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA,TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA,SSL_RSA_WITH_3DES_EDE_CBC_SHA,TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA,TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA,TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,TLS_ECDHE_RSA_WITH_RC4_128_SHA,SSL_RSA_WITH_RC4_128_SHA,TLS_ECDH_ECDSA_WITH_RC4_128_SHA,TLS_ECDH_RSA_WITH_RC4_128_SHA,SSL_RSA_WITH_RC4_128_MD5,TLS_EMPTY_RENEGOTIATION_INFO_SCSV</prop>
          </props>
       </property>

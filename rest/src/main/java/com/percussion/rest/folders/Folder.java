@@ -25,7 +25,8 @@
 package com.percussion.rest.folders;
 
 import com.percussion.rest.LinkRef;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,7 +36,7 @@ import java.util.List;
 
 
 @XmlRootElement(name = "Folder")
-@Schema(description="Represents a folder or section based on a folder")
+@ApiModel(description="Represents a folder or section based on a folder")
 public class Folder
 {
     public static final String ACCESS_LEVEL_ADMIN = "ADMIN";
@@ -43,54 +44,54 @@ public class Folder
     public static final String ACCESS_LEVEL_WRITE = "WRITE";
     public static final String ACCESS_LEVEL_VIEW = "VIEW";
 
-    @Schema(name="id", description="id must match the id of the item for the same server path, usually best not to send id to server.")
+    @ApiModelProperty(value="id", notes="id must match the id of the item for the same server path, usually best not to send id to server.")
     private String id;
     
-    @Schema(name="name",description="Name of the folder.")
+    @ApiModelProperty(value="name",notes="Name of the folder.")
     private String name;
 
-    @Schema(name="siteName", description="Name of the site the folder lies under.")
+    @ApiModelProperty(value="siteName", notes="Name of the site the folder lies under.")
     private String siteName;
     
-    @Schema(name="path",description="String of the path from the site to the folder.")
+    @ApiModelProperty(value="path",notes="String of the path from the site to the folder.")
     private String path;
 
-    @Schema(name="workflow", description="Workflow state (Generally not needed for folder).")
+    @ApiModelProperty(value="workflow", notes="Workflow state (Generally not needed for folder).")
     private String workflow;
 
-    @Schema(name="accessLevel", description="Access level of site or folder defining access to users", allowableValues = "ADMIN,READ,WRITE,VIEW")
+    @ApiModelProperty(value="accessLevel", notes="Access level of site or folder defining access to users", allowableValues = "ADMIN,READ,WRITE,VIEW")
     private String accessLevel; 
     
-    @Schema(name="editUsers", description="List of users that can edit this folder.")
+    @ApiModelProperty(value="editUsers", notes="List of users that can edit this folder.")
     private List<String> editUsers;
     
     private SectionInfo sectionInfo;
 
-   @Schema(name="pages",description="Pages within the folder.")
+   @ApiModelProperty(value="pages",notes="Pages within the folder.")
     private List<LinkRef> pages;
    
-    @Schema(name="assets", description="Assets within the folder.")
+    @ApiModelProperty(value="assets", notes="Assets within the folder.")
     private List<LinkRef> assets;
 
-	@Schema(name="subfolders", description="Links to sub-folders.")
+	@ApiModelProperty(value="subfolders", notes="Links to sub-folders.")
     private List<LinkRef> subfolders;
 
-    @Schema(name="subsections", description="Links to sub-sections (This folder must also be a section to link to sub-sections).")
+    @ApiModelProperty(value="subsections", notes="Links to sub-sections (This folder must also be a section to link to sub-sections).")
     private List<SectionLinkRef> subsections;
     
-    @Schema(name="recentUsers", description="A list of users that have recently acessed the folder.")
+    @ApiModelProperty(value="recentUsers", notes="A list of users that have recently acessed the folder.")
     private List<String> recentUsers;
 
-    @Schema(name="communityId", description = "The default community id to use for this folder")
+    @ApiModelProperty(value="communityId", notes = "The default community id to use for this folder")
     private int communityId;
 
-    @Schema(name="communityName", description = "The default community name to use for this folder")
+    @ApiModelProperty(value="communityName", notes = "The default community name to use for this folder")
     private String communityName;
 
-    @Schema(name="defaultDisplayFormatName",  description = "The default Display Format to use when rendering the contents of this folder")
+    @ApiModelProperty(value="defaultDisplayFormatName",  notes = "The default Display Format to use when rendering the contents of this folder")
     private String defaultDisplayFormatName;
 
-    @Schema(name="locale", description = "The default Locale to use for this folder")
+    @ApiModelProperty(value="locale", notes = "The default Locale to use for this folder")
     private String locale;
 
     public int getCommunityId() {

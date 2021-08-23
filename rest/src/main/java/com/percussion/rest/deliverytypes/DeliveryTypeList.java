@@ -24,8 +24,7 @@
 
 package com.percussion.rest.deliverytypes;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import java.util.Collection;
 
 
 @XmlRootElement(name = "DeliveryType")
-@ArraySchema(schema=@Schema(implementation = DeliveryType.class))
+@ApiModel(description = "A List of DeliveryType")
 public class DeliveryTypeList extends ArrayList<DeliveryType> {
     public DeliveryTypeList(Collection<? extends DeliveryType> c) {
         super(c);

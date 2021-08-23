@@ -24,12 +24,11 @@
 
 package com.percussion.data;
 
+import java.net.URL;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.ProcessingInstruction;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 
 /**

@@ -238,7 +238,7 @@ public abstract class PSContentFinderBase<T extends Object>
     */   
    @SuppressWarnings({"cast"})
    abstract protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
-         T slot, Map<String, Object> params) throws PSNotFoundException, RepositoryException, PSFilterException, PSAssemblyException;
+         T slot, Map<String, Object> params) throws PSNotFoundException;
 
    @SuppressWarnings({"unchecked"})
    public List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem,

@@ -37,7 +37,7 @@
 
         <security:csrf disabled="true"/>
         <security:headers >
-            <security:content-security-policy policy-directives="${contentSecurityPolicy}" />
+            <security:content-security-policy policy-directives="${ContentSecurityPolicy}" />
         </security:headers>
         <security:cors configuration-source-ref="corsSource" />
         <security:http-basic/>
@@ -70,7 +70,7 @@
                         </beans:property>
                         <beans:property name="allowedOrigins">
                             <beans:bean class="org.springframework.util.StringUtils" factory-method="commaDelimitedListToSet">
-                                <beans:constructor-arg type="java.lang.String" value="${accessControlAllowedOrigins}"/>
+                                <beans:constructor-arg type="java.lang.String" value="${Access-Control-Allow-Origin}"/>
                             </beans:bean>
                         </beans:property>
                         <beans:property name="exposedHeaders">

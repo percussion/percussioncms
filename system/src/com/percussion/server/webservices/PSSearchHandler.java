@@ -47,8 +47,8 @@ import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSExtensionRunner;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
+import com.percussion.data.PSUriResolver;
 import com.percussion.data.PSXslStyleSheetMerger;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSContentEditor;
@@ -81,7 +81,6 @@ import com.percussion.search.objectstore.PSWSSearchField;
 import com.percussion.search.objectstore.PSWSSearchParams;
 import com.percussion.search.objectstore.PSWSSearchRequest;
 import com.percussion.security.PSUserEntry;
-import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSApplicationHandler;
@@ -1551,9 +1550,7 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
 
          Transformer nt = m_styleSheet.getStylesheetTemplate().newTransformer();
          nt.setErrorListener(errorListener);
-         PSCatalogResolver cr = new PSCatalogResolver();
-         cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
-         nt.setURIResolver(cr);
+         nt.setURIResolver(new PSUriResolver());
 
          Source src = new DOMSource(doc);
          ByteArrayOutputStream bout = new ByteArrayOutputStream();

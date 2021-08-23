@@ -61,7 +61,7 @@
 	</tr>
 	<tr>
 		<td class="field">${fn:escapeXml(rxcomp:i18ntext("jsp_userstatus@Roles",locale))}:</td>
-		<td><script>
+		<td><script language="javascript">
 				   var textWin = null;
 				   function textWindow(s)
 				   {

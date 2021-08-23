@@ -26,43 +26,44 @@ package com.percussion.rest.locationscheme;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.Guid;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "LocationScheme")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description="Represents a Location Scheme")
+@ApiModel(description="Represents a Location Scheme")
 public class LocationScheme {
 
-	@Schema(name="schemeId",description="A unique guid for the Location scheme.")
+	@ApiModelProperty(name="schemeId",value="A unique guid for the Location scheme.")
 	private Guid schemeId;
 
-	@Schema(name="name",description="A unique name for this location scheme.", required=true)
+	@ApiModelProperty(name="name",value="A unique name for this location scheme.", required=true)
 	private
 	String name;
 
-	@Schema(name="description", description="Human friendly description describing the location scheme")
+	@ApiModelProperty(name="description", value="Human friendly description describing the location scheme")
 	private
 	String description;
 
-	@Schema(name="template", description="The Template that this location scheme is configured for")
+	@ApiModelProperty(name="template", value="The Template that this location scheme is configured for")
 	private
 	long templateId;
 
-	@Schema(name="contentType", description= "The Content Type id that this location scheme is configured for")
+	@ApiModelProperty(name="contentType", value= "The Content Type id that this location scheme is configured for")
 	private
 	long contentTypeId;
 
-	@Schema(name="context", description="The Publishing Context that this location scheme is linked to")
+	@ApiModelProperty(name="context", value="The Publishing Context that this location scheme is linked to")
 	private
 	Guid context;
 
-	@Schema(name = "locationSchemeGenerator", description="The Location Scheme Generator")
+	@ApiModelProperty(name = "locationSchemeGenerator", value="The Location Scheme Generator")
 	private
 	String locationSchemeGenerator;
 
-	@Schema(name ="parameters", description="Location Scheme Parameters" )
+	@ApiModelProperty(name ="parameters", value="Location Scheme Parameters" )
 	private
 	LocationSchemeParameterList parameters;
 

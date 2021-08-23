@@ -32,8 +32,8 @@ import com.percussion.membership.data.PSAccountSummary;
 import com.percussion.membership.data.rdbms.impl.PSMembership;
 import com.percussion.membership.services.IPSMembershipDao;
 import com.percussion.membership.services.PSMemberExistsException;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import junit.framework.TestCase;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -96,7 +96,6 @@ public class PSMembershipDaoTest extends TestCase
         super.tearDown();
     }
     
-    @SuppressFBWarnings("HARD_CODE_PASSWORD")
     @Test
     public void testMembership() throws Exception
     {
@@ -112,7 +111,6 @@ public class PSMembershipDaoTest extends TestCase
         assertEquals(other, membership);
     }
     
-    @SuppressFBWarnings("HARD_CODE_PASSWORD")
     @Test
     public void testCreateAndFind() throws Exception
     {
@@ -226,7 +224,6 @@ public class PSMembershipDaoTest extends TestCase
         assertEquals(members, found);
     }
     
-    @SuppressFBWarnings("PREDICTABLE_RANDOM")
     @Test
     public void testChangeStatusAccount() throws Exception
     {
@@ -258,7 +255,6 @@ public class PSMembershipDaoTest extends TestCase
         membershipDao.deleteAccount(userId);
     }
     
-    @SuppressFBWarnings("PREDICTABLE_RANDOM")
     @Test
     public void testDeleteAccount() throws Exception
     {

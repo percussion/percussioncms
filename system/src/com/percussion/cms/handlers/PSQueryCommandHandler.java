@@ -72,10 +72,6 @@ import com.percussion.server.PSUserSession;
 import com.percussion.util.PSBaseHttpUtils;
 import com.percussion.util.PSIteratorUtils;
 import com.percussion.util.PSXMLDomUtil;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.ProcessingInstruction;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -90,6 +86,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.ProcessingInstruction;
 
 /**
  * This class encapsulates behavior that is common to all query command
@@ -274,7 +275,7 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
       throws PSRequestValidationException, PSNotFoundException,
          PSDataExtractionException
    {
-      int pageId = getPageId(data);
+      int pageId = getPageId(data).intValue();
       PSEditorDocumentBuilder builder = getDocumentBuilder(pageId, data);
       if (null == builder)
       {
@@ -389,7 +390,7 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
                resultDoc = runOutputTranslations(data, resultDoc);
             }
             
-            // Request is successful but we are serving an error page
+            // Request is successfull but we are serving an error page
             resp.setStatus(IPSHttpErrors.HTTP_INTERNAL_SERVER_ERROR);
             stylesheet = req.getParameter(
                PSContentEditorHandler.USE_STYLESHEET);
@@ -459,10 +460,6 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
 
                   case PSRequest.PAGE_TYPE_XML:
                      mimeType = IPSMimeContentTypes.MIME_TYPE_TEXT_XML;
-                     break;
-
-                  case PSRequest.PAGE_TYPE_JSON:
-                     mimeType = IPSMimeContentTypes.MIME_TYPE_JSON;
                      break;
                }
 

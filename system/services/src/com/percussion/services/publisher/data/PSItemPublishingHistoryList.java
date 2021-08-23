@@ -24,16 +24,15 @@
 
 package com.percussion.services.publisher.data;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import io.swagger.annotations.ApiModel;
+
 
 @XmlRootElement(name = "ItemPublishingHistory")
-@ArraySchema(schema=@Schema(implementation = PSItemPublishingHistory.class, description = "A List of PSItemPublishingHistory"))
+@ApiModel(description = "A List of PSItemPublishingHistory")
 public class PSItemPublishingHistoryList extends ArrayList<PSItemPublishingHistory> {
     public PSItemPublishingHistoryList(Collection<? extends PSItemPublishingHistory> c) {
         super(c);

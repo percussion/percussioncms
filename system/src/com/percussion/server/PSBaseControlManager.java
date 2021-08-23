@@ -24,19 +24,18 @@
 package com.percussion.server;
 
 import com.percussion.design.objectstore.PSControlMeta;
-import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * @author JaySeletz
@@ -90,12 +89,13 @@ public abstract class PSBaseControlManager
    protected List<PSControlMeta> getControls(File ctrlFile)
    {
       List<PSControlMeta> ctrls = new ArrayList<>();
+      FileInputStream fin = null;
       
-      try(FileInputStream fin = new FileInputStream(ctrlFile))
+      try
       {
-
+         fin = new FileInputStream(ctrlFile);
+   
          Document doc = PSXmlDocumentBuilder.createXmlDocument(fin, false);
-
          NodeList nodes = doc.getElementsByTagName(
                PSControlMeta.XML_NODE_NAME);
          for (int i = 0; i < nodes.getLength(); i++) 
@@ -103,11 +103,26 @@ public abstract class PSBaseControlManager
             Element control = (Element) nodes.item(i);
             ctrls.add(new PSControlMeta(control));
          }
-      } catch (SAXException | PSUnknownNodeTypeException | IOException e) {
+      }
+      catch (Exception e)
+      {
          PSConsole.printMsg(getSubSystem(), e);
       }
-
-
+      finally
+      {
+         if (fin != null)
+         {
+            try
+            {
+               fin.close();
+            }
+            catch (IOException e)
+            {
+               
+            }
+         }
+      }
+      
       return ctrls;
    }
 

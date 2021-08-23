@@ -26,7 +26,7 @@ package com.percussion.rest.sites;
 
 
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Path("/sites")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-@Tag(name = "Sites", description = "Site operations")
+@Api(value = "/sites", description = "Site operations")
 @Lazy
 public class SitesResource {
 

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
    <!--
 This file contains the templates for all matching fields by name that override the display field vale. This scheme is useful when one wants to override the field display value that is normally computed by the content editor. For example in Related Content Search Results, we want to display the variant using thumbnail. We can define the variant field (name for example id sys_variant) in the Content Editor System Definition as shown below:
 -->

@@ -23,18 +23,20 @@
  */
 package com.percussion.controls.contenteditor.checkboxtree;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 /**
  * Tree model with extensions for loading the model data from an xml document.
@@ -243,7 +245,7 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
    /**
     * The URL used to retrieve the PS Session ID from server.
     */
-   private static String GET_SESSIONID_URL = "/util/getPSSessionID.jsp";
+   private static String GET_SESSIONID_URL = "../util/getPSSessionID.jsp";
    
 
    /**

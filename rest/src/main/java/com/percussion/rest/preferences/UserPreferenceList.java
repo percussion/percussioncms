@@ -26,15 +26,14 @@ package com.percussion.rest.preferences;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name="UserPreferenceList")
-@ArraySchema(schema = @Schema(implementation = UserPreference.class))
+@ApiModel(value="A list of User Preferences")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserPreferenceList extends ArrayList<UserPreference> {
     public UserPreferenceList(Collection<? extends UserPreference> c) {

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html [
-   <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+   <!ENTITY % HTMLlat1 SYSTEM "./../../DTD/HTMLlat1x.ent">
    %HTMLlat1;
-   <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+   <!ENTITY % HTMLsymbol SYSTEM "./../../DTD/HTMLsymbolx.ent">
    %HTMLsymbol;
-   <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+   <!ENTITY % HTMLspecial SYSTEM "./../../DTD/HTMLspecialx.ent">
    %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n" >
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@xml:lang"/>
    <xsl:include href="file:sys_resources/stylesheets/relatedcontentctrl.xsl"/>
@@ -32,7 +30,7 @@
 			<script src="../sys_resources/dojo/dojo.js">;</script>
 			<script src="../sys_resources/ps/content/History.js">;</script>
 			<script src="../sys_resources/ps/content/SelectTemplates.js">;</script>
-            <script><![CDATA[
+            <script language="javascript"><![CDATA[
 			    /**
                  * Global variables needed for the browse dialog
                  */

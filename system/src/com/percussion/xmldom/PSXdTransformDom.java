@@ -24,15 +24,14 @@
 package com.percussion.xmldom;
 
 import com.percussion.data.PSCachedStylesheet;
-import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
+import com.percussion.data.PSUriResolver;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.security.PSAuthorizationException;
-import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.server.PSServer;
@@ -295,9 +294,7 @@ public class PSXdTransformDom extends PSDefaultExtension implements
       {
          Transformer nt = styleCached.getStylesheetTemplate().newTransformer();
          nt.setErrorListener(errorListener);
-         PSCatalogResolver cr = new  PSCatalogResolver();
-         cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
-         nt.setURIResolver(cr);
+         nt.setURIResolver(new PSUriResolver());
 
          DOMSource src =
                new DOMSource((Node) xmlDoc);

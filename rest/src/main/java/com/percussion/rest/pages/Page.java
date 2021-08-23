@@ -24,7 +24,8 @@
 
 package com.percussion.rest.pages;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,52 +36,52 @@ import java.util.List;
 
 //@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @XmlRootElement(name = "Page")
-@Schema(name = "Page", description = "Represents a page.")
+@ApiModel(value = "Page", description = "Represents a page.")
 public class Page
 {
-    @Schema(name="id", description="Id of the page.")
+    @ApiModelProperty(value="id", notes="Id of the page.")
     private String id;
 
-    @Schema(name="name",description="Name of the page.")
+    @ApiModelProperty(value="name",notes="Name of the page.")
     private String name;
 
-    @Schema(name="siteName", description="Name of the site the page belongs to.")
+    @ApiModelProperty(value="siteName", notes="Name of the site the page belongs to.")
     private String siteName;
 
-    @Schema(name="folderPath", description="Path from the site to the page.")
+    @ApiModelProperty(value="folderPath", notes="Path from the site to the page.")
     private String folderPath;
 
-    @Schema(name="displayName", description="Name that will be displayed in the browser.")
+    @ApiModelProperty(value="displayName", notes="Name that will be displayed in the browser.")
     private String displayName;
 
-    @Schema(name="templateName",description="Name of the template for the page. Read-Only.  See the change-template resource.")
+    @ApiModelProperty(value="templateName",notes="Name of the template for the page. Read-Only.  See the change-template resource.")
     private String templateName;
 
-    @Schema(name="summary", description="Summary of the page.")
+    @ApiModelProperty(value="summary", notes="Summary of the page.")
     private String summary;
 
-    @Schema(name="overridePostDate", description="Override post date.")
+    @ApiModelProperty(value="overridePostDate", notes="Override post date.")
     private Date overridePostDate;
 
-    @Schema(name="workflow", description="Information on the workflow the page belongs to.")
+    @ApiModelProperty(value="workflow", notes="Information on the workflow the page belongs to.")
     private WorkflowInfo workflow;
 
-    @Schema(name="seo", description="Information on the seo of the page.")
+    @ApiModelProperty(value="seo", notes="Information on the seo of the page.")
     private SeoInfo seo;
 
-    @Schema(name="calendar", description="Information on the calendar")
+    @ApiModelProperty(value="calendar", notes="Information on the calendar")
     private CalendarInfo calendar;
 
-    @Schema(name="code", description="Information on the code.")
+    @ApiModelProperty(value="code", notes="Information on the code.")
     private CodeInfo code;
 
-    @Schema(name="body", description="Body of the page.")
+    @ApiModelProperty(value="body", notes="Body of the page.")
     private List<Region> body;
     
-    @Schema(name="recentUsers", description="A list of users names that have recently used this Page")
+    @ApiModelProperty(value="recentUsers", notes="A list of users names that have recently used this Page")
     private List<String> recentUsers;
 
-    @Schema(name="bookmarkedUsers", description="A list of user names that have bookmarked the page.")
+    @ApiModelProperty(value="bookmarkedUsers", notes="A list of user names that have bookmarked the page.")
     private List<String> bookmarkedUsers;
 
     public List<String> getRecentUsers() {

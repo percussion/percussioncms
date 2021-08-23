@@ -476,22 +476,7 @@
         <servlet-class>com.percussion.sitemanage.importer.PSSiteImportLogViewer</servlet-class>
     </servlet>
 
-    <servlet>
-        <servlet-name>JnlpDownloadServlet</servlet-name>
-        <servlet-class>jnlp.sample.servlet.JnlpDownloadServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>JnlpDownloadServlet</servlet-name>
-        <url-pattern>*.jnlp</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>JnlpDownloadServlet</servlet-name>
-        <url-pattern>*.jar</url-pattern>
-    </servlet-mapping>
-
-        <!-- catch all other requests -->
+    <!-- catch all other requests -->
 
     <servlet-mapping>
         <servlet-name>CXFServlet</servlet-name>

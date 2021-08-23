@@ -24,16 +24,14 @@
 
 package com.percussion.rest.assets;
 
-import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.util.APIUtilities;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.logging.log4j.LogManager;
@@ -73,7 +71,7 @@ import java.util.regex.Pattern;
 @PSSiteManageBean(value="restAssetResource")
 @Path("/assets")
 @XmlRootElement
-@Tag(name = "Assets", description = "Operations related to Asset content types.")
+@Api(value = "/assets")
 @Lazy
 public class AssetsResource
 {
@@ -86,7 +84,7 @@ public class AssetsResource
     
     private final Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
 
-    private static final Logger log = LogManager.getLogger(AssetsResource.class);
+    public static Logger log = LogManager.getLogger(AssetsResource.class);
 
     private static class TikaConfigHolder {
         public static final TikaConfig INSTANCE = TikaConfig.getDefaultConfig();
@@ -102,13 +100,9 @@ public class AssetsResource
     @Path("/by-path/{assetpath:.+}")
     @Produces(
     {MediaType.APPLICATION_JSON})
-    @Operation(summary = "Get asset metadata at specified path. Get asset with path e.g. Assets/uploads/file1.jpg",
-            responses = {
-                @ApiResponse(responseCode = "200", description = "OK", content =
-                    @Content(schema=@Schema(implementation = Asset.class))),
-                @ApiResponse(responseCode = "404", description = "Path not found"),
-                @ApiResponse(responseCode = "500", description = "Error")
-            })
+    @ApiOperation(value = "Get asset metadata at specified path", notes = "Get asset with path e.g. Assets/uploads/file1.jpg", response = Asset.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Path not found")})
     public Asset findByPath(@PathParam("assetpath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -127,13 +121,9 @@ public class AssetsResource
     @Path("/import")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Previews an import option with the supplied options.  A CSV file is generated listing the Assets that would be imported.", description = "Useful to run before running an import of Assets to determine the impact of the import. The report will also indicate the Asset type that files would be imported to, currently Image, File, or Flash assets are supported.",
-            responses ={
-            @ApiResponse(responseCode="200", description = "OK", content=@Content(schema=
-            @Schema(implementation = Response.class))),
-            @ApiResponse(responseCode = "404", description = "Path not found"),
-            @ApiResponse(responseCode = "500", description = "Error")
-            })
+    @ApiOperation(value = "Previews an import option with the supplied options.  A CSV file is generated listing the Assets that would be imported.", notes = "Useful to run before running an import of Assets to determine the impact of the import. The report will also indicate the Asset type that files would be imported to, currently Image, File, or Flash assets are supported.", response = Response.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Path not found")})
     public Response importPreview(@QueryParam("osPath") String osPath, 
     		@QueryParam("assetPath") String assetPath, @QueryParam("replace") boolean replace, @QueryParam("onlyIfDifferent") boolean onlyIfDifferent, @QueryParam("autoApprove") boolean autoApprove)
     {
@@ -162,16 +152,14 @@ public class AssetsResource
     @Path("/binary/{assetpath:.+}/{forceCheckOut}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Operation(summary = "Creates a binary asset by uploading the binary", description = "Create a new asset by uploading a binary file. "
+    @ApiOperation(value = "Creates a binary asset by uploading the binary", notes = "Create a new asset by uploading a binary file. "
             + "Asset type will be based upon the file type.  Images will create image assets, flash files will"
             + " create flash assets and everything else will create file assets.  Optional assetType query parameter can be passed "
             + "to override this default (Options are file, flash, or image).  An asset cannot be updated "
-            + "with this method.", responses=
-            {
-                    @ApiResponse(responseCode = "500", description = "Could not check out asset as it is checked out by another user."),
-                    @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
-                            schema=@Schema(implementation = Asset.class)
-                    ))})
+            + "with this method.", response = Asset.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 500, message = "Could not check out asset as it is checked out by another user."),
+            @ApiResponse(code = 200, message = "Update OK")})
     public Asset uploadBinaryToAsset(
             @PathParam("assetpath") String path, @PathParam("forceCheckOut") Boolean forceCheckOut, @QueryParam("assetType") String assetType,
             List<Attachment> body) throws IOException
@@ -210,16 +198,12 @@ public class AssetsResource
 
     @GET
     @Path("/binary/{assetpath:.+}")
-    @Operation(summary = "Retrieve a binary file.", 
-            description = "Get the binary for an image, flash or file asset. " +
+    @ApiOperation(value = "Retrieve a binary file.", 
+            notes = "Get the binary for an image, flash or file asset. " +
                     "Returns a javax.ws.rs.core.Response object.", 
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Asset not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Response.class)
-                    ))
-    })
+            response = Object.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Asset not found")})
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getBinary(@PathParam("assetpath") String path/*, @Context HttpServletRequest request*/)
     {
@@ -268,14 +252,11 @@ public class AssetsResource
     @Path("/by-path/{assetpath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Create or updates a shared Asset by path", description = "Creates a new shared Asset or updates the asset at a given path. "
+    @ApiOperation(value = "Create or updates a shared Asset by path", notes = "Creates a new shared Asset or updates the asset at a given path. "
             + "As the /binary/{path:.+} method cannot update binaries on existing assets, these types should normally created with that method first. An example path would be /Assets/MyFolder/MyAssetName"
-            + "Fields are type specific, it is useful to get an existing item of the required type first to identify the available field names.",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Asset not found"),
-                @ApiResponse(responseCode = "200", description = "Update OK", content = @Content(
-                        schema=@Schema(implementation = Asset.class)
-                ))})
+            + "Fields are type specific, it is useful to get an existing item of the required type first to identify the available field names.", response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Asset not found"), @ApiResponse(code = 200, message = "Update OK")})
     public Asset upsertAssetByPath(Asset asset, @PathParam("assetpath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -304,11 +285,10 @@ public class AssetsResource
     @Path("/by-path/{assetpath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Delete asset by path", description = "Delete asset by path",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Asset not found"),
-                @ApiResponse(responseCode = "200", description = "Delete OK", content=@Content(
-                        schema=@Schema(implementation = Status.class)))})
+    @ApiOperation(value = "Delete asset by path", notes = "Delete asset by path", response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Asset not found"), @ApiResponse(code = 200, message = "Delete OK"),
+            @ApiResponse(code = 204, message = "Delete OK")})
     public Status deleteSingleAsset(@PathParam("assetpath") String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -335,15 +315,9 @@ public class AssetsResource
     @Path("/rename/{assetpath:.+}/{name}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Rename the specified Asset.",
-            description = "Renames the asset at the given path.",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Asset not found"),
-                @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
-                        schema=@Schema(implementation = Asset.class)
-                )),
-                @ApiResponse(responseCode = "500", description = "Error")
-    })
+    @ApiOperation(value = "Rename the specified Asset.", notes = "Renames the asset at the given path.", response = Asset.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Asset not found"), @ApiResponse(code = 200, message = "Update OK")})
     public Asset renameAsset(@PathParam("assetpath") String path, @PathParam("name") String newName)
     {
    	 	// Path param should be url decoded by default.  CXF jars interacting when running in cm1
@@ -379,15 +353,9 @@ public class AssetsResource
     @GET
     @Path("/reports/non-ada-compliant-images")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    @Operation(summary = "Returns a report in CSV format listing all Images in the system that have detactable ADA Compliance issues.",
-            description = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ",
-            responses = {
-                @ApiResponse(responseCode = "404", description = "Path not found"),
-                @ApiResponse(responseCode = "500", description = "Error"),
-                @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                        schema=@Schema(implementation = Response.class)
-                ))
-    })
+    @ApiOperation(value = "Returns a report in CSV format listing all Images in the system that have detactable ADA Compliance issues.", notes = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ", response = Response.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Path not found")})
     public Response nonADACompliantImagesReport()
     {
         // Added logger | CMS-3216
@@ -402,8 +370,9 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", e);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 			return Response.serverError().build();
 		}
 		// check for empty resultset, if empty then return No Content message | CMS-3216
@@ -424,15 +393,9 @@ public class AssetsResource
     @Path("/reports/non-ada-compliant-files")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all File assets in the system that have detactable ADA Compliance issues.",
-            description = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Response.class)
-                    ))
-    })
+    @ApiOperation(value = "Returns a report in CSV format listing all File assets in the system that have detactable ADA Compliance issues.", notes = "Current rules look for empty Alt Text, Empty title, Alt Text or Title with Filename, ", response = Response.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Path not found")})
     public Response nonadacompliantFilesReport()
     {
         // Added logger | CMS-3216
@@ -447,8 +410,9 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-		    log.error("Error occurred while generating Non ADA compliant files report, cause: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+		    log.error("Error occurred while generating Non ADA compliant files report, cause: {}", e);
+            log.error(e.getMessage());
+            log.debug(e.getMessage(), e);
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -470,15 +434,9 @@ public class AssetsResource
     @Path("/reports/all-images")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all Images in the system.",
-            description = "NOTE:  This report can take a very long time to run, on a system with allot of images.  Be sure to set timeouts accordingly if requesting programatically.",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Response.class)
-                    ))
-    })
+    @ApiOperation(value = "Returns a report in CSV format listing all Images in the system.", notes = "NOTE:  This report can take a very long time to run, on a system with allot of images.  Be sure to set timeouts accordingly if requesting programatically.", response = Response.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Path not found")})
     public Response allImagesReport()
     {
         // Added logger | CMS-3216
@@ -493,9 +451,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-            log.error("Error occurred while generating All images report, cause: {}",
-                    PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.error("Error occurred while generating All images report, cause: {}", e);
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -516,15 +472,9 @@ public class AssetsResource
     @Path("/reports/all-files")
     @Produces(
     {MediaType.APPLICATION_OCTET_STREAM})
-    @Operation(summary = "Returns a report in CSV format listing all Files in the system.",
-            description = "",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Response.class)
-                    ))
-    })
+    @ApiOperation(value = "Returns a report in CSV format listing all Files in the system.", notes = "", response = Response.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 404, message = "Path not found")})
     public Response allFilesReport()
     {
         // Added logger | CMS-3216
@@ -539,9 +489,7 @@ public class AssetsResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-            log.error("Error occurred while generating All files report, cause: {}",
-                    PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.error("Error occurred while generating All files report, cause: {}", e);
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -565,13 +513,11 @@ public class AssetsResource
     @Path("/reports/non-ada-compliant-images")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Operation(summary = "Bulk updates File assets based on values in the report"
-    , responses = {
-            @ApiResponse(responseCode = "404", description = "Path not found"),
-            @ApiResponse(responseCode = "500", description = "Error"),
-            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                    schema=@Schema(implementation = Status.class)
-            ))})
+    @ApiOperation(value = "Bulk updates File assets based on values in the report", notes = ""
+    , response = Status.class)
+    @ApiResponses(value =
+    {
+    		@ApiResponse(code = 200, message = "Update OK")})
     public Status bulkupdateNonADACompliantImages(List<Attachment> atts)
     {
     	  if (atts == null || atts.isEmpty())
@@ -595,14 +541,9 @@ public class AssetsResource
     @Path("/reports/non-ada-compliant-files")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Operation(summary = "Bulk updates File assets based on values in the report",
-            description = "Edit the CSV file generated by the GET on this resource, then post the changed file to bulk update.",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Status.class)
-                    ))})
+    @ApiOperation(value = "Bulk updates File assets based on values in the report", notes = "Edit the CSV file generated by the GET on this resource, then post the changed file to bulk update.", response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 200, message = "Update OK")})
     public Status bulkupdateNonADACompliantFiles(List<Attachment> atts) throws IOException
     {
       
@@ -628,14 +569,10 @@ public class AssetsResource
     @Path("/reports/all-images")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Operation(summary = "Bulk updates Image assets based on values in the report", description = "Edit the CSV file generated by the GET on this resource, then post the changed file to bulk update.",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Status.class)
-                    ))
-    })
+    @ApiOperation(value = "Bulk updates Image assets based on values in the report", notes = "Edit the CSV file generated by the GET on this resource, then post the changed file to bulk update.", 
+    response = Status.class)
+    @ApiResponses(value =
+    { @ApiResponse(code = 200, message = "Update OK")})
     public Status bulkupdateImageAssets(List<Attachment> atts) throws IOException
     {
         if (atts == null || atts.isEmpty())
@@ -659,13 +596,11 @@ public class AssetsResource
     @Path("/reports/all-files")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Operation(summary = "Bulk updates File assets based on values in the report", description = "Edit the CSV file generated by the GET on this resource, then post the changed file to bulk update.",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Status.class)
-                    ))})
+    @ApiOperation(value = "Bulk updates File assets based on values in the report", notes = "Edit the CSV file generated by the GET on this resource, then post the changed file to bulk update.", 
+    response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 500, message = "Could not check out asset as it is checked out by another user."),
+            @ApiResponse(code = 200, message = "Update OK")})
     public Status bulkupdateFileAssets(List<Attachment> atts) throws IOException
     {
     	  if (atts == null || atts.isEmpty())
@@ -688,14 +623,11 @@ public class AssetsResource
     @POST
     @Path("/approve-all/{folderPath:.+}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Approves every shared Asset on the system that are not in an Archive state and that live in the specified folder.", description = "Passing the root folder will result in all Assets being approved.  Will override any checkout status and approve the Assets as the method caller.",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Status.class)
-                    ))
-    })
+    @ApiOperation(value = "Approves every shared Asset on the system that are not in an Archive state and that live in the specified folder.", notes = "Passing the root folder will result in all Assets being approved.  Will override any checkout status and approve the Assets as the method caller.", 
+    response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
+            @ApiResponse(code = 200, message = "Update OK")})
     public Status approveAllAssets(@PathParam("folderPath") String folder){
     	Status status = new Status("OK");
 
@@ -714,13 +646,11 @@ public class AssetsResource
     @POST
     @Path("/archive-all/{folderPath:.+}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Archives every shared Asset on the system that live in the specified folder.", description = "Passing the root folder will result in all Assets being Archived.  Will override any checkout status and Archive the Assets as the method caller.",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Status.class)
-                    ))})
+    @ApiOperation(value = "Archives every shared Asset on the system that live in the specified folder.", notes = "Passing the root folder will result in all Assets being Archived.  Will override any checkout status and Archive the Assets as the method caller.", 
+    response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
+            @ApiResponse(code = 200, message = "Update OK")})
     public Status archiveAllAssets(@PathParam("folderPath") String folder){
     	Status status = new Status("OK");
 
@@ -742,13 +672,11 @@ public class AssetsResource
     @POST
     @Path("/submit-all/{folderPath:.+}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Submits every shared Asset on the system that lives in the specified folder to the Review state.", description = "Passing the root folder will result in all Assets being submitted.  Will override any checkout status and Submit the Assets as the method caller.",
-            responses = {
-                    @ApiResponse(responseCode = "404", description = "Path not found"),
-                    @ApiResponse(responseCode = "500", description = "Error"),
-                    @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                            schema=@Schema(implementation = Status.class)
-                    ))})
+    @ApiOperation(value = "Submits every shared Asset on the system that lives in the specified folder to the Review state.", notes = "Passing the root folder will result in all Assets being submitted.  Will override any checkout status and Submit the Assets as the method caller.", 
+    response = Status.class)
+    @ApiResponses(value =
+    {@ApiResponse(code = 500, message = "An unexpected exception occurred."),
+            @ApiResponse(code = 200, message = "Update OK")})
     public Status submitAllAssets(@PathParam("folderPath") String folder){
     	Status status = new Status("OK");
     	try {

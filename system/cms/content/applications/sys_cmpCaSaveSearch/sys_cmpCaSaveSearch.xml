@@ -172,7 +172,7 @@
 						<PSXExtensionParamValue id="0">
 							<value>
 								<PSXTextLiteral id="0">
-									<text>/ui/userstatus.jsp</text>
+									<text>../ui/userstatus.jsp</text>
 								</PSXTextLiteral>
 							</value>
 						</PSXExtensionParamValue>

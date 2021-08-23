@@ -25,18 +25,19 @@
 package com.percussion.rest.acls;
 
 import com.percussion.rest.Guid;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="CreateAclRequest")
-@Schema(description="A request to create an acl")
+@ApiModel(value="A request to create an acl")
 public class CreateAclRequest {
 
-    @Schema(required = true, description="A valid object guid.")
+    @ApiModelProperty(required = true, value="A valid object guid.")
     private Guid objectGuid;
 
-    @Schema(required = true, description="A valid Typed Principal")
+    @ApiModelProperty(required = true, value="A valid Typed Principal")
     private TypedPrincipal owner;
 
     public CreateAclRequest() {

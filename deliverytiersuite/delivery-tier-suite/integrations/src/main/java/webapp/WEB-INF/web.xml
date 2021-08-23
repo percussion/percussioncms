@@ -73,8 +73,64 @@
    </servlet-mapping>
 
    <!-- Security constraints -->
-   <security-constraint/>
-
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Metadata save method</web-resource-name>
+         <url-pattern>/metadata</url-pattern>
+         <http-method>POST</http-method>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>deliverymanager</role-name>
+      </auth-constraint>
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Metadata</web-resource-name>
+         <url-pattern>/metadata</url-pattern>
+      </web-resource-collection>
+      <user-data-constraint>
+         <transport-guarantee>NONE</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Metadata clean method</web-resource-name>
+         <url-pattern>/metadata/clean</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>deliverymanager</role-name>
+      </auth-constraint>
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Metadata delete method</web-resource-name>
+         <url-pattern>/metadata/delete</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>deliverymanager</role-name>
+      </auth-constraint>
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
+   <security-constraint>
+      <web-resource-collection>
+         <web-resource-name>Metadata extractor</web-resource-name>
+         <url-pattern>/indexer/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>deliverymanager</role-name>
+      </auth-constraint>
+      <user-data-constraint>
+         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+      </user-data-constraint>
+   </security-constraint>
    <login-config>
       <auth-method>BASIC</auth-method>
       <realm-name>metadata</realm-name>

@@ -127,7 +127,7 @@
             return dirtyController.navigationEvent();
         }
         //Initialization code
-        $(function () {
+        $(document).ready(function () {
             $.Percussion.PercFinderView();
             $.PercWorkflowView();
             $.PercUserView();
@@ -241,12 +241,12 @@
 </div>
 <div class="perc-workflow-container">
     <div id="tabs" style="min-width:500px;">
-        <div role="tablist">
-           <button role="tab" id="perc-tab-workflow" aria-controls="tabs-1" href="#tabs-1"><i18n:message key = "perc.ui.navMenu.workflow@Workflow" /></button>
-            <button role="tab" id="perc-tab-roles" aria-controls="tabs-2" href="#tabs-2"><i18n:message key = "perc.ui.perc.role.view@Roles" /></button>
-            <button role="tab" id="perc-tab-users" aria-controls="tabs-3" href="#tabs-3"><i18n:message key = "perc.ui.editSiteSectionDialog.label@Users" /></button>
-            <button role="tab" id="perc-tab-category" aria-controls="tabs-4" href="#tabs-4"><i18n:message key = "perc.ui.admin.workflow@Categories"/></button>
-        </div>
+        <ul role="tablist">
+            <li role="presentation"><a role="tab" id="perc-tab-workflow" href="#tabs-1"><i18n:message key = "perc.ui.navMenu.workflow@Workflow" /></a></li>
+            <li role="presentation"><a role="tab" id="perc-tab-roles" href="#tabs-2"><i18n:message key = "perc.ui.perc.role.view@Roles" /></a></li>
+            <li role="presentation"><a role="tab" id="perc-tab-users" href="#tabs-3"><i18n:message key = "perc.ui.editSiteSectionDialog.label@Users" /></a></li>
+            <li role="presentation"><a role="tab" id="perc-tab-category" href="#tabs-4"><i18n:message key = "perc.ui.admin.workflow@Categories"/></a></li>
+        </ul>
         <div id="tabs-1" role="tabpanel">
             <jsp:include page="percWorkflow.jsp" flush="true"></jsp:include>
         </div>

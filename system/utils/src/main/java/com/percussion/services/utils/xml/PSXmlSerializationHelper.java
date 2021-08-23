@@ -24,7 +24,6 @@
 package com.percussion.services.utils.xml;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
@@ -34,11 +33,7 @@ import org.apache.commons.betwixt.IntrospectionConfiguration;
 import org.apache.commons.betwixt.XMLIntrospector;
 import org.apache.commons.betwixt.io.BeanReader;
 import org.apache.commons.betwixt.io.BeanWriter;
-import org.apache.commons.betwixt.io.read.BeanCreationChain;
-import org.apache.commons.betwixt.io.read.BeanCreationList;
-import org.apache.commons.betwixt.io.read.ChainedBeanCreator;
-import org.apache.commons.betwixt.io.read.ElementMapping;
-import org.apache.commons.betwixt.io.read.ReadContext;
+import org.apache.commons.betwixt.io.read.*;
 import org.apache.commons.betwixt.strategy.HyphenatedNameMapper;
 import org.apache.commons.betwixt.strategy.NameMapper;
 import org.apache.commons.betwixt.strategy.PropertySuppressionStrategy;
@@ -53,12 +48,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.beans.IntrospectionException;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -528,16 +518,7 @@ public class PSXmlSerializationHelper
                "xmlsource may not be null or empty");
       }
       FindIdAttribute fia = new FindIdAttribute();
-      SAXParserFactory fact = PSSecureXMLUtils.getSecuredSaxParserFactory(
-              new PSXmlSecurityOptions(
-                      true,
-                      true,
-                      true,
-                      false,
-                      true,
-                      false
-              )
-      );
+      SAXParserFactory fact = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
 
       try
       {

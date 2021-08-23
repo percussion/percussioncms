@@ -24,33 +24,38 @@
  */
 package com.percussion.secure.services;
 
-import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.servlet.ServletContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.Collection;
+
+import com.percussion.security.xml.PSSecureXMLUtils;
+import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.ContextLoader;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServlet;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
 * Class to handle User Details Mapping for authorization.
@@ -81,7 +86,8 @@ public class PSLdapUserDetailsMapper extends LdapUserDetailsMapper
             }
        }
 
-       return new User(
+       User newUser = 
+               new User( 
                originalUser.getUsername(), 
                originalUser.getPassword() != null? originalUser.getPassword():"", 
                originalUser.isEnabled(), 
@@ -90,6 +96,7 @@ public class PSLdapUserDetailsMapper extends LdapUserDetailsMapper
                originalUser.isAccountNonLocked(), 
                allAuthorities );
 
+               return newUser;
    }
    
    public List<String> getAccessGroupsFromXML() {
@@ -106,14 +113,7 @@ public class PSLdapUserDetailsMapper extends LdapUserDetailsMapper
         File accessGroupFile = new File(filePath);
         
         DocumentBuilderFactory dbFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                new PSXmlSecurityOptions(
-                        true,
-                        true,
-                        true,
-                        false,
-                        true,
-                        false
-                )
+                false
         );
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(accessGroupFile);

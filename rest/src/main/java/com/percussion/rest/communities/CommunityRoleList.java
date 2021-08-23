@@ -25,8 +25,7 @@
 package com.percussion.rest.communities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.Collection;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement(name = "CommunityRoleList")
-@ArraySchema(schema=@Schema(implementation = CommunityRole.class,description = "A List of CommunityRole associations"))
+@ApiModel(description = "A List of CommunityRole associations")
 public class CommunityRoleList extends ArrayList<CommunityRole> {
     public CommunityRoleList(Collection<? extends CommunityRole> c) {
         super(c);

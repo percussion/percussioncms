@@ -23,20 +23,15 @@
  */
 package com.percussion.services.assembly.impl.finder;
 
-import com.percussion.error.PSExceptionUtils;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
+
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSTemplateSlot;
-import com.percussion.services.error.PSNotFoundException;
-import com.percussion.services.sitemgr.PSSiteManagerException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import javax.jcr.RepositoryException;
 import java.util.Map;
 import java.util.Set;
 
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * The auto slot content finder allows a slot to be filled with items returned
@@ -80,8 +75,6 @@ import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.
  */
 public class PSAutoSlotContentFinder extends PSSlotContentFinderBase
 {
-
-   private static Logger log = LogManager.getLogger(PSAutoSlotContentFinder.class);
    /*
     * (non-Javadoc)
     * 
@@ -95,22 +88,15 @@ public class PSAutoSlotContentFinder extends PSSlotContentFinderBase
    @Override
    @SuppressWarnings("unused")
    protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
-         IPSTemplateSlot slot, Map<String, Object> selectors) throws PSNotFoundException, RepositoryException {
+         IPSTemplateSlot slot, Map<String, Object> selectors)
+   {
       String template = getValue(selectors, PARAM_TEMPLATE, null);
       if (StringUtils.isBlank(template))
       {
          throw new IllegalArgumentException("template is a required argument");
       }
-
-      try {
-         return utils.getContentItems(sourceItem, slot.getGUID().longValue(), selectors, null);
-      } catch (PSSiteManagerException e) {
-         log.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RepositoryException(e);
-      } catch (PSNotFoundException | RepositoryException e) {
-         log.error(PSExceptionUtils.getMessageForLog(e));
-         throw e;
-      }
+      
+      return utils.getContentItems(sourceItem, slot.getGUID().longValue(), selectors, null);
    }
 
    /**

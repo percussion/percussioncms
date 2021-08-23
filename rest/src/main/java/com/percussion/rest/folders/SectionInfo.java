@@ -27,7 +27,7 @@ package com.percussion.rest.folders;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.percussion.rest.LinkRef;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -35,25 +35,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @JsonInclude(Include.NON_NULL)
 public class SectionInfo
 {
-    @Schema(name="type", description="Type of the section (leave blank for type section).", allowableValues = "sectionlink,externallink")
+    @ApiModelProperty(value="type", notes="Type of the section (leave blank for type section).", allowableValues = "sectionlink,externallink")
     private String type;
 
-    @Schema(name="displayTitle", description="The title that displays in the browser.")
+    @ApiModelProperty(value="displayTitle", notes="The title that displays in the browser.")
     private String displayTitle;
 
-    @Schema(name="targetWindow", description="Defines where the window will display.", allowableValues = "_self,_top,_blank")
+    @ApiModelProperty(value="targetWindow", notes="Defines where the window will display.", allowableValues = "_self,_top,_blank")
     private String targetWindow;
 
-    @Schema(name="navClass",  description="Defines what navigation class for the section.")
+    @ApiModelProperty(value="navClass",  notes="Defines what navigation class for the section.")
     private String navClass;
 
-    @Schema(name="templateName",  description="Name of template the section will use for its landing page.")
+    @ApiModelProperty(value="templateName",  notes="Name of template the section will use for its landing page.")
     private String templateName;
 
-    @Schema(name="landingPage", description="Link to the landing page for this section.")
+    @ApiModelProperty(value="landingPage", notes="Link to the landing page for this section.")
     private LinkRef landingPage;
     
-    @Schema(name="externalLinkUrl", description="Link to the external source.")
+    @ApiModelProperty(value="externalLinkUrl", notes="Link to the external source.")
     private String externalLinkUrl;
 
     public String getType()

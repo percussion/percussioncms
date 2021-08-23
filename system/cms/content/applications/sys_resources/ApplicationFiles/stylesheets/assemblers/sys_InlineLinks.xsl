@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+		<!ENTITY % HTMLlat1 SYSTEM "../../DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+		<!ENTITY % HTMLsymbol SYSTEM "../../DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+		<!ENTITY % HTMLspecial SYSTEM "../../DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-		<!ENTITY % w3centities-f PUBLIC
-				"-//W3C//ENTITIES Combined Set//EN//XML"
-				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
-				>
-		%w3centities-f;
-		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:html="http://www.w3.org/TR/REC-html40" xmlns:urldecoder="java.net.URLDecoder"
-                exclude-result-prefixes="urldecoder"
->
+]>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:html="http://www.w3.org/TR/REC-html40" xmlns:urldecoder="java.net.URLDecoder" exclude-result-prefixes="urldecoder" xmlns:psxi18n="urn:www.percussion.com/i18n" xmlns:psxSingleValueBuilder="urn:www.percussion.com/com.percussion.cms.PSSingleValueBuilder">
 	<!--Old template for anchor tags -->
 	<xsl:template match="html:a[@sys_contentid] | a[@sys_contentid]" mode="rxbodyfield" priority="5">
 		<!--Get the siteid and folderid from the url and pass it to the link generator-->

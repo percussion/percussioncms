@@ -22,7 +22,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<controls xmlns:psxctl="urn:percussion.com/control" >
+<controls xmlns:psxctl="URN:percussion.com/control" >
    <psxctl:ControlMeta name="sys_tinymce" dimension="single" choiceset="none">
       <psxctl:Description>A simple WYSIWYG</psxctl:Description>
       <psxctl:ParamList>

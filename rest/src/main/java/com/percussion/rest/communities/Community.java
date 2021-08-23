@@ -27,24 +27,25 @@ package com.percussion.rest.communities;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.Guid;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema
+@ApiModel()
 public class Community {
 
     private long id;
 
-    @Schema
+    @ApiModelProperty()
     private Guid guid;
 
-    @Schema
+    @ApiModelProperty
     private String name;
 
-    @Schema
+    @ApiModelProperty
     private String description;
 
     private String label;

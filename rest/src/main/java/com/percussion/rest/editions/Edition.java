@@ -25,13 +25,13 @@
 package com.percussion.rest.editions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Edition")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description="Represents a Publishing Edition")
+@ApiModel(description="Represents a Publishing Edition")
 public class Edition {
 
     public Edition(){}

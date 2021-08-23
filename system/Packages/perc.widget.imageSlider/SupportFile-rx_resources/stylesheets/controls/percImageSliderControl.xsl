@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xsl:stylesheet [
-		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
-		%HTMLlat1;
-		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
-		%HTMLsymbol;
-		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
-		%HTMLspecial;
-		<!ENTITY % w3centities-f PUBLIC
-				"-//W3C//ENTITIES Combined Set//EN//XML"
-				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
-				>
-		%w3centities-f;
-		]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:psxctl="urn:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
-                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
 
+<!DOCTYPE xsl:stylesheet [
+		<!ENTITY % HTMLlat1 SYSTEM "../../../DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol SYSTEM "../../../DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial SYSTEM "../../../DTD/HTMLspecialx.ent">
+		%HTMLspecial;
+		]>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:template match="/"/>
 	<!--
@@ -54,43 +69,43 @@
 		</psxctl:ParamList>
 		<psxctl:AssociatedFileList>
 			<psxctl:FileDescriptor name="PercImageSelectionControl.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/sys_resources/js/PercImageSelectionControl.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../sys_resources/js/PercImageSelectionControl.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercPageSelectionControl.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/sys_resources/js/PercPageSelectionControl.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../sys_resources/js/PercPageSelectionControl.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="all" type="css" mimetype="text/css">
-				<psxctl:FileLocation>/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/jslib/profiles/3x/libraries/fontawesome/css/all.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="percImageSlider.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/rx_resources/widgets/percImageSlider/js/percImageSlider.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../rx_resources/widgets/percImageSlider/js/percImageSlider.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="percImageSlider.css" type="css" mimetype="text/css">
-				<psxctl:FileLocation>/rx_resources/widgets/percImageSlider/css/percImageSlider.css</psxctl:FileLocation>
+				<psxctl:FileLocation>../rx_resources/widgets/percImageSlider/css/percImageSlider.css</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_path_constants.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/cm/plugins/perc_path_constants.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/plugins/perc_path_constants.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_path_manager.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/cm/plugins/perc_path_manager.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/plugins/perc_path_manager.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="perc_utils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/cm/plugins/perc_utils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/plugins/perc_utils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercSiteService.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/cm/services/PercSiteService.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/services/PercSiteService.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 			<psxctl:FileDescriptor name="PercServiceUtils.js" type="script" mimetype="text/javascript">
-				<psxctl:FileLocation>/cm/services/PercServiceUtils.js</psxctl:FileLocation>
+				<psxctl:FileLocation>../../cm/services/PercServiceUtils.js</psxctl:FileLocation>
 				<psxctl:Timestamp/>
 			</psxctl:FileDescriptor>
 		</psxctl:AssociatedFileList>

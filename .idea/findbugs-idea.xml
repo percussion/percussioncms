@@ -9,6 +9,7 @@
       <category name="EXPERIMENTAL" />
       <category name="I18N" />
       <category name="NOISE" />
+      <category name="PERFORMANCE" />
       <category name="STYLE" />
     </hiddenBugCategory>
     <plugins>

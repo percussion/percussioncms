@@ -24,21 +24,22 @@
 
 package com.percussion.rest.pages;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @XmlRootElement(name = "WorkflowInfo")
-@Schema(name="WorkflowInfo",description="Represents information on the workflow.")
+@ApiModel(value="WorkflowInfo",description="Represents information on the workflow.")
 public class WorkflowInfo
 {
-    @Schema(name="name", description="Name of the workflow.")
+    @ApiModelProperty(value="name", notes="Name of the workflow.")
     private String name;
-    @Schema(name="state", description="State within the workflow.")
+    @ApiModelProperty(value="state", notes="State within the workflow.")
     private String state;
-    @Schema(name="checkedOut", description="Flag if the item is checked out.")
+    @ApiModelProperty(value="checkedOut", notes="Flag if the item is checked out.")
     private Boolean checkedOut;
-    @Schema(name="checkedOutUser", description="User that has the item checked out.")
+    @ApiModelProperty(value="checkedOutUser", notes="User that has the item checked out.")
     private String checkedOutUser;
 
     public String getName()

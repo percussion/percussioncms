@@ -26,7 +26,8 @@ package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -38,13 +39,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author yubingchen
  */
 @XmlRootElement(name = "MoveFolderItem")
-@Schema(description="Represents a requeust to move a folder item.")
+@ApiModel(value="Represents a requeust to move a folder item.")
 public class MoveFolderItem
 {
-	@Schema(required=true,description="path")
+	@ApiModelProperty(value="targetFolderPath", required=true,notes="path")
     private String targetFolderPath;
     
-	@Schema(required=true,description="path")
+	@ApiModelProperty(value="itemPath", required=true,notes="path")
     private String itemPath;
     
 	

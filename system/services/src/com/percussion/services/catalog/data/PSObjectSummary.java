@@ -34,12 +34,15 @@ import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.IPSXmlSerialization;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Container which holds common information available for all design objects.
@@ -181,12 +184,10 @@ public class PSObjectSummary implements IPSCatalogSummary
       if (StringUtils.isBlank(summary.getName()))
          throw new IllegalArgumentException(
             "summary.getName() cannot return a null or empty string");
-
-      String label;
+      
       if (StringUtils.isBlank(summary.getLabel()))
-            label = summary.getName();
-      else
-            label = summary.getLabel();
+         throw new IllegalArgumentException(
+            "summary.getLabel() cannot return a null or empty string");
       
       setGUID(summary.getGUID());
       setName(summary.getName());

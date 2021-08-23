@@ -24,22 +24,23 @@
 
 package com.percussion.rest.actions;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ActionMenuProperty")
-@Schema(description = "Represents an Action Menu property")
+@ApiModel(description = "Represents an Action Menu property")
 public class ActionMenuProperty {
 
-    @Schema(description="The action to which this property belongs.")
+    @ApiModelProperty(notes="The action to which this property belongs.")
     private int actionId;
 
-    @Schema(description="The name of the property")
+    @ApiModelProperty(notes="The name of the property")
     private String name;
-    @Schema(description="The value of the property")
+    @ApiModelProperty(notes="The value of the property")
     private String value;
-    @Schema(description="The description of the property")
+    @ApiModelProperty(notes="The description of the property")
     private String description;
 
     public ActionMenuProperty(){}

@@ -28,14 +28,12 @@ import com.percussion.rest.extensions.Extension;
 import com.percussion.rest.extensions.ExtensionFilterOptions;
 import com.percussion.rest.extensions.ExtensionList;
 import com.percussion.rest.extensions.IExtensionAdaptor;
+import com.percussion.util.PSBaseBean;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -43,6 +41,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
@@ -52,7 +52,7 @@ import java.util.List;
 @PSSiteManageBean(value="restVelocityResource")
 @Path("/velocity")
 @XmlRootElement
-@Tag(name = "Velocity Template Engine", description = "Velocity related operations")
+@Api(value = "/velocity", description = "Velocity related operations")
 public class VelocityResource {
 
     @Autowired
@@ -64,12 +64,7 @@ public class VelocityResource {
     @GET
     @Path("/tools")
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary="Returns a list of all registered Jexl extensions on the System",
-            responses= {
-            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                    array=@ArraySchema(schema=@Schema(implementation = Extension.class))
-            ))
-            })
+    @ApiOperation(value="Returns a list of all registered Jexl extensions on the System", response= Extension.class, responseContainer = "List")
     public List<Extension> listVelocityExtensions(){
         ExtensionFilterOptions filter = new ExtensionFilterOptions();
 

@@ -31,17 +31,13 @@ import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -51,6 +47,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * REST/Webservice layer for metadata extractor services.
@@ -59,22 +56,13 @@ import java.util.Collections;
  */
 @Path("/indexer")
 @Component
+@Scope("singleton")
 public class PSMetadataExtractorRestService
 {
     public static final Logger log = LogManager.getLogger(PSMetadataExtractorRestService.class);
 
     private final PSPropertyDatatypeMappings datatypeMappings;
     private IPSMetadataIndexerService indexer;
-
-    @HEAD
-    @Path("/csrf")
-    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
-        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
-
-        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
-        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
-        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
-    }
 
     @Inject
     @Autowired
@@ -99,17 +87,19 @@ public class PSMetadataExtractorRestService
 
             if (entry != null){
                 // Get property value type
-
-                for (IPSMetadataProperty ipsMetadataProperty : entry.getProperties()) {
-                    PSMetadataProperty prop = (PSMetadataProperty) ipsMetadataProperty;
-
+                
+                Iterator<IPSMetadataProperty> it = entry.getProperties().iterator();
+                while (it.hasNext())
+                {
+                    PSMetadataProperty prop = (PSMetadataProperty)it.next();
+                    
                     // Namespace prefix is not being used in datatype lookup.
-
+                    
                     String testval = prop.getName();
                     int indx = testval.indexOf(':');
-                    if (indx > 0)
-                        testval = testval.substring(indx + 1);
-
+                    if(indx>0)
+                        testval = testval.substring(indx+1);
+                    
                     VALUETYPE propertyValueType = datatypeMappings.getDatatype(testval);
                     prop.setValuetype(propertyValueType);
                 }
