@@ -30,6 +30,7 @@ import com.percussion.delivery.integrations.ems.model.EventType;
 import com.percussion.delivery.integrations.ems.model.GroupType;
 import com.percussion.delivery.integrations.ems.model.Status;
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -119,7 +120,14 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	private List<Status> parseStatusXML(String xml) {
 		List<Status> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-				false);
+				new PSXmlSecurityOptions(
+						true,
+						true,
+						true,
+						false,
+						true,
+						false
+				));
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
 		DocumentBuilder db = null;
@@ -240,7 +248,14 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 	private List<Booking>parseBookingXML(String xml){
 		List<Booking> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-				false);
+				new PSXmlSecurityOptions(
+						true,
+						true,
+						true,
+						false,
+						true,
+						false
+				));
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
 		DocumentBuilder db = null;

@@ -33,17 +33,16 @@ import com.percussion.util.PSFileFilter;
 import com.percussion.util.PSFilteredFileList;
 import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * This class handles generation of translation unit keys from all XSL
@@ -184,7 +183,6 @@ public class PSXslStylesheetsSectionHandler extends PSIdleDotter
          NodeList nl = doc.getElementsByTagName("psxi18n:lookupkeys");
          if(nl==null || nl.getLength() < 1)
          {
-//            PSCommandLineProcessor.logMessage("noKeysDefinedSkipping", "");
             continue;
          }
          PSXmlDocumentBuilder.copyTree(keysDoc, keysDoc.getDocumentElement(),

@@ -25,8 +25,8 @@
 package com.percussion.rest.mimetypes;
 
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.GET;
@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @PSSiteManageBean(value="restMimeTypesResource")
 @Path("/mimetypes")
 @XmlRootElement
-@Api(value = "/mimetypes", description = "Mime Type operations")
+@Tag(name = "Mime Types", description = "Mime Type operations")
 public class MimeTypeResource {
 
     @Autowired
@@ -49,7 +49,7 @@ public class MimeTypeResource {
 
     //@TODO: Replace me
     @GET
-    @ApiOperation(value="Ping placeholder")
+    @Operation(summary="Ping placeholder")
     public String ping(){
         return "pong";
     }

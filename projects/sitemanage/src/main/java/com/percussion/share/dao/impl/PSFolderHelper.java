@@ -215,8 +215,7 @@ public class PSFolderHelper implements IPSFolderHelper
     protected class PSCreateBaseFoldersNotificationListener implements IPSNotificationListener
     {
 
-        private String errorMessage = "The server could not reset the security on the base asset folders. "
-            + "This is very bad!";
+        private String errorMessage = "The server could not reset the security on the base asset folders.";
         
 
         @Override

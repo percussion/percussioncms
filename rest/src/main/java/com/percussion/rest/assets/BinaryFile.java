@@ -26,14 +26,13 @@ package com.percussion.rest.assets;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import io.swagger.annotations.ApiModel;
-
 @XmlRootElement(name = "BinaryFile")
 @JsonInclude(Include.NON_NULL)
-@ApiModel(value="BinaryFile",description="Represents a binary file.")
+@Schema(description="Represents a binary file.")
 public class BinaryFile
 {
 	private String filename;

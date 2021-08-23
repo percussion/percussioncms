@@ -54,14 +54,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -85,7 +88,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Path("/metadata")
 @Component
-@Scope("singleton")
 public class PSMetadataRestService extends PSAbstractRestService implements IPSMetadataRestService
 {
     /**
@@ -125,6 +127,16 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         this.dao = dao;
         this.visitService = visitService;
         this.cookieService = cookieService;
+    }
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
+
+        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
+        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
+        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
     }
 
     /* (non-Javadoc)

@@ -29,8 +29,12 @@ import com.percussion.rest.extensions.ExtensionFilterOptions;
 import com.percussion.rest.extensions.ExtensionList;
 import com.percussion.rest.extensions.IExtensionAdaptor;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.GET;
@@ -45,7 +49,7 @@ import java.util.List;
 @PSSiteManageBean(value="restLocationSchemeResource")
 @Path("/locationschemes")
 @XmlRootElement
-@Api(value = "/locationschemes", description = "Location Scheme operations")
+@Tag(name = "Location Schemes", description = "Location Scheme operations")
 public class LocationSchemesResource {
 
     @Autowired
@@ -62,7 +66,13 @@ public class LocationSchemesResource {
     @GET
     @Path("/generators")
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="Return a list of registered Location Scheme generators on the system", response=Extension.class, responseContainer = "List")
+    @Operation(summary="Return a list of registered Location Scheme generators on the system",
+            responses={
+            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                    array = @ArraySchema(schema=@Schema(implementation = Extension.class))
+            )),
+                    @ApiResponse(responseCode = "500", description = "Error")
+    })
     public List<Extension> listLocationSchemeGenerators(){
         ExtensionFilterOptions filter = new ExtensionFilterOptions();
 

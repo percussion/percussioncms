@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 <!--	This xsl file is applied on the ResultDocument of sys_casSupport/casSupport resources to add slot name and link urls.
 	The slot id is a row value of PSX_RELATIONSHIPPROPERTIES table with a data type of nvarchar and when mapped to RXSLOTTYPE tables 	slotid column with a data type of integer is giving errors on DB2. To add the slot name and linkurl this xsl will be applied on the ResultDocument.
 	It gets the slots info and variants info from sys_rcSupport/slotsinfo and sys_rcSupport/variantsifo resources respectively.

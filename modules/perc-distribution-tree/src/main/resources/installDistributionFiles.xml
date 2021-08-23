@@ -1,27 +1,4 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- Build file for Rhythmyx repository install -->
 <project name="install" default="install" basedir="..\..\..">
 
@@ -86,18 +63,30 @@
             </fileset>
         </copy>
 
+        <copy todir="${assembly-directory}">
+            <fileset dir="{basedir}/../../perc-xml-security/src/main/resources/">
+                <include name="PercussionXMLCatalog.xml"/>
+            </fileset>
+        </copy>
+
+        <mkdir dir="${assembly-directory}/var/config"/>
+        <copy todir="${assembly-directory}/var/config">
+            <fileset dir="{basedir}/../../perc-xml-security/src/main/resources/">
+                <include name="CustomXMLCatalog.xml"/>
+            </fileset>
+        </copy>
         <copy todir="${assembly-directory}/sys_resources">
             <fileset dir="${basedir}/../../system/cms/content/applications/sys_resources/ApplicationFiles">
             </fileset>
         </copy>
 
-        <copy todir="${assembly-directory}/rx_resources">
+        <copy todir="${assembly-directory}/rx_resources" overwrite="true" verbose="true">
             <fileset dir="${basedir}/../../system/cms/content/applications/rx_resources/ApplicationFiles">
             </fileset>
         </copy>
 
         <!-- TinyMCE config -->
-        <copy todir="${assembly-directory}/rx_resources" overwrite="false" verbose="true">
+        <copy todir="${assembly-directory}/rx_resources" overwrite="true" verbose="true">
             <fileset dir="${basedir}/../perc-tinymce/target/classes/META-INF/resources/rx_resources">
             </fileset>
         </copy>

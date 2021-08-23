@@ -25,7 +25,7 @@
 package com.percussion.rest.templates;
 
 import com.percussion.rest.Guid;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 @XmlRootElement(name = "Template")
-@ApiModel(value = "Template", description = "Represents an assembly Template")
+@Schema(name = "Template", description = "Represents an assembly Template")
 public class Template {
     /**
      * The template's id

@@ -23,6 +23,9 @@
  */
 package com.percussion.ant;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,13 +33,6 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import com.percussion.install.PSPreUpgradePluginCheckOracleVersion;
-import com.percussion.utils.io.PathUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
 
 /**
  * This task compares the version of a specified Rhythmyx installation with that
@@ -68,9 +64,6 @@ import org.apache.tools.ant.Task;
 @Deprecated
 public class PSCheckVersion extends Task
 {
-
-   private static final Logger log = LogManager.getLogger(PSCheckVersion.class);
-
    @Override
    public void execute() throws BuildException
    {
@@ -151,8 +144,7 @@ public class PSCheckVersion extends Task
             }
             catch (IOException e)
             {
-               log.debug(e.getMessage(), e);
-               log.error(e.getMessage());
+               System.out.println("An unexpected error occurred: " + e.getMessage());
             }
          }
       }

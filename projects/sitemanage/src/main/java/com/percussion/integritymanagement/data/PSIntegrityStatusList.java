@@ -24,15 +24,16 @@
 
 package com.percussion.integritymanagement.data;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.swagger.annotations.ApiModel;
-
 
 @XmlRootElement(name = "integritystatus")
-@ApiModel(description = "A List of PSIntegrityStatus")
+@ArraySchema(schema=@Schema(implementation = PSIntegrityStatus.class))
 public class PSIntegrityStatusList extends ArrayList<PSIntegrityStatus> {
     public PSIntegrityStatusList(Collection<? extends PSIntegrityStatus> c) {
         super(c);

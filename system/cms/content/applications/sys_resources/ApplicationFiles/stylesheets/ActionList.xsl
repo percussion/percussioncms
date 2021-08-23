@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:template match="ActionLinkList" mode="actionlist">
 		<xsl:param name="separator">
@@ -49,42 +51,42 @@
 		<xsl:variable name="rowCount" select="count(../../RowData/Row)"/>
 		<xsl:if test="not (($isDisabled ='yes') or (@isDisabled = 'yes'))">
 			<xsl:if test="not(($isLast='yes' and DisplayLabel='Dn') or ($isFirst='yes'  and DisplayLabel='Up'))">
-            <xsl:variable name="syspageid" select="/*/ActionLinkList/ActionLink/Param[@name='sys_pageid']"/>
-			<input type="submit" value="{DisplayLabel}" class="nav_body" accesskey="{DisplayLabel/@accessKey}">
-				<xsl:choose>
-					<xsl:when test="@imageHref">
-						<xsl:attribute name="type">image</xsl:attribute>
-						<xsl:attribute name="src"><xsl:value-of select="@imageHref"/></xsl:attribute>
-						<xsl:attribute name="alt"><xsl:call-template name="childtableactionimagealt"><xsl:with-param name="alttext" select="DisplayLabel"/></xsl:call-template></xsl:attribute>
-						<xsl:attribute name="title"><xsl:call-template name="childtableactionimagealt"><xsl:with-param name="alttext" select="DisplayLabel"/></xsl:call-template></xsl:attribute>
-						<xsl:attribute name="onclick">modifyFormParams(<xsl:value-of select="$formref"/><xsl:apply-templates select="Param" mode="actionlist"/>)</xsl:attribute>
-					</xsl:when>
-                    <xsl:when test="$container = 'Table' and $rowCount = 0 and $syspageid and not($syspageid='0')">
-						<xsl:attribute name="type">button</xsl:attribute>
-						<xsl:attribute name="name">addNewButton</xsl:attribute>
-						<xsl:variable name="pageid" select="./Param[@name='sys_pageid']"/>
-						<xsl:if test="$pageid">
-							<xsl:attribute name="onclick">addNewChildItem(<xsl:value-of select="$pageid"/>);</xsl:attribute>
-						</xsl:if>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:variable name="pageid" select="./Param[@name='sys_pageid']"/>
-						<xsl:attribute name="type">submit</xsl:attribute>
-						<xsl:attribute name="name">submitButton</xsl:attribute>
-						<xsl:if test="$container != 'Table'">
-						<xsl:attribute name="id">rxCESubmit</xsl:attribute>
-						</xsl:if>
-						<xsl:if test="$pageid">
-							<xsl:attribute name="onclick">modifyPageId(<xsl:value-of select="$formref"/>, <xsl:value-of select="$pageid"/>);</xsl:attribute>
-						</xsl:if>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:if test="$isDisabled ='yes' or @isDisabled = 'yes'">
-					<xsl:attribute name="Disabled">Disabled</xsl:attribute>
-				</xsl:if>
-			</input>
-			<xsl:if test="position() != last()">
-				<xsl:copy-of select="$separator"/>
+				<xsl:variable name="syspageid" select="/*/ActionLinkList/ActionLink/Param[@name='sys_pageid']"/>
+				<input type="submit" value="{DisplayLabel}" class="nav_body" accesskey="{DisplayLabel/@accessKey}">
+					<xsl:choose>
+						<xsl:when test="@imageHref">
+							<xsl:attribute name="type">image</xsl:attribute>
+							<xsl:attribute name="src"><xsl:value-of select="@imageHref"/></xsl:attribute>
+							<xsl:attribute name="alt"><xsl:call-template name="childtableactionimagealt"><xsl:with-param name="alttext" select="DisplayLabel"/></xsl:call-template></xsl:attribute>
+							<xsl:attribute name="title"><xsl:call-template name="childtableactionimagealt"><xsl:with-param name="alttext" select="DisplayLabel"/></xsl:call-template></xsl:attribute>
+							<xsl:attribute name="onclick">modifyFormParams(<xsl:value-of select="$formref"/><xsl:apply-templates select="Param" mode="actionlist"/>)</xsl:attribute>
+						</xsl:when>
+						<xsl:when test="$container = 'Table' and $rowCount = 0 and $syspageid and not($syspageid='0')">
+							<xsl:attribute name="type">button</xsl:attribute>
+							<xsl:attribute name="name">addNewButton</xsl:attribute>
+							<xsl:variable name="pageid" select="./Param[@name='sys_pageid']"/>
+							<xsl:if test="$pageid">
+								<xsl:attribute name="onclick">addNewChildItem(<xsl:value-of select="$pageid"/>);</xsl:attribute>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:variable name="pageid" select="./Param[@name='sys_pageid']"/>
+							<xsl:attribute name="type">submit</xsl:attribute>
+							<xsl:attribute name="name">submitButton</xsl:attribute>
+							<xsl:if test="$container != 'Table'">
+								<xsl:attribute name="id">rxCESubmit</xsl:attribute>
+							</xsl:if>
+							<xsl:if test="$pageid">
+								<xsl:attribute name="onclick">modifyPageId(<xsl:value-of select="$formref"/>, <xsl:value-of select="$pageid"/>);</xsl:attribute>
+							</xsl:if>
+						</xsl:otherwise>
+					</xsl:choose>
+					<xsl:if test="$isDisabled ='yes' or @isDisabled = 'yes'">
+						<xsl:attribute name="Disabled">Disabled</xsl:attribute>
+					</xsl:if>
+				</input>
+				<xsl:if test="position() != last()">
+					<xsl:copy-of select="$separator"/>
 				</xsl:if>
 			</xsl:if>
 		</xsl:if>

@@ -24,15 +24,16 @@
 
 package com.percussion.pagemanagement.data;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.swagger.annotations.ApiModel;
-
 
 @XmlRootElement(name = "psResourceLinkAndLocation")
-@ApiModel(description = "A List of PSResourceLinkAndLocation")
+@ArraySchema(schema=@Schema(implementation = PSResourceLinkAndLocation.class))
 public class PSResourceLinkAndLocationList extends ArrayList<PSResourceLinkAndLocation> {
     public PSResourceLinkAndLocationList(Collection<? extends PSResourceLinkAndLocation> c) {
         super(c);

@@ -23,6 +23,8 @@
  */
 package com.percussion.install;
 
+import org.w3c.dom.Element;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,8 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-
-import org.w3c.dom.Element;
 /**
  * This plugin has been written to add the DocType to the ContentEditorSystemDef
  * XML file. The upgrade process updates this file and by doing so, it is
@@ -75,7 +75,7 @@ public class PSUpgradePluginAddDocTypeCEDef implements IPSUpgradePlugin
          String docStr = bos.toString();
          
          docStr = InstallUtil.addDocType(docStr, "ContentEditorSystemDef",
-               "SYSTEM", "./../../DTD/sys_ContentEditorSystemDef.dtd");
+               "SYSTEM", "sys_ContentEditorSystemDef.dtd");
          pw = new PrintWriter(new FileOutputStream(file));
          pw.write(docStr);
          file =  new File(RxUpgrade.getRxRoot() +

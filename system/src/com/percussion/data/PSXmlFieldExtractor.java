@@ -27,13 +27,12 @@ package com.percussion.data;
 import com.percussion.server.PSRequest;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -62,7 +61,7 @@ public class PSXmlFieldExtractor extends PSDataExtractor
    /**
     * Extract a data value using the run-time data.
     *
-    * @param   execData    the execution data associated with this request.
+    * @param   data    the execution data associated with this request.
     *                      This includes all context data, result sets, etc.
     *
     * @return               the associated value; <code>null</code> if a
@@ -77,7 +76,7 @@ public class PSXmlFieldExtractor extends PSDataExtractor
    /**
     * Extract a data value using the run-time data.
     *
-    * @param   execData    the execution data associated with this request.
+    * @param   data    the execution data associated with this request.
     *                      This includes all context data, result sets, etc.
     *
     * @param   defValue      the default value to use if a value is not found

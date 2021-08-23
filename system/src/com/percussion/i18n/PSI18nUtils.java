@@ -24,6 +24,7 @@
 
 package com.percussion.i18n;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSDataTypeConverter;
 import com.percussion.util.PSStringOperation;
 import org.apache.commons.lang.StringUtils;
@@ -43,7 +44,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
- * This class provides several utilty methods for internationalization support.
+ * This class provides several utility methods for internationalization support.
  * The primary objective of this class is to expose methods to XSL stylesheet
  * layer as XSLT extension functions. This class also provides definitions for
  * some string constants relevant to i18n. There is not much processing of data
@@ -84,7 +85,7 @@ public class PSI18nUtils implements IPSI18nUtils {
    }
 
    /**
-    * Gets a list of all of the keys for the provided language.
+    * Gets a list of all the keys for the provided language.
     *
     * @param language string, if <code>null</code> or <code>empty</code>,
     * default language is assumed.
@@ -92,8 +93,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>null</code> if language is not supported.
     * @see PSTmxResourceBundle
     */
-   @SuppressWarnings("unchecked")
-   static public Iterator getKeys(String language)
+   public static  Iterator getKeys(String language)
    {
       return PSTmxResourceBundle.getInstance().getKeys(language);
    }
@@ -109,7 +109,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>empty</code>.
     * @see PSTmxResourceBundle
     */
-   static public String getString(String key, String language)
+   public static String getString(String key, String language)
    {
          return PSTmxResourceBundle.getInstance().getString(key, language);
    }
@@ -125,7 +125,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>empty</code>.
     * @see PSTmxResourceBundle
     */
-   static public String getHtmlString(String key, String language)
+   public static  String getHtmlString(String key, String language)
    {
       String localizedString = getString(key, language);
       String mnemonic = getMnemonic(key, language);
@@ -159,7 +159,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * @return the mnemonic or an empty string if no mnemonic is defined
     * @see PSTmxResourceBundle
     */
-   static public String getMnemonic(String key, String language)
+   public static  String getMnemonic(String key, String language)
    {
       return getMnemonic(key, language, 0);
    }
@@ -175,21 +175,21 @@ public class PSI18nUtils implements IPSI18nUtils {
     * as the value, or an empty string if the default is <code>0</code>
     * @see PSTmxResourceBundle
     */
-   static public String getMnemonic(String key, String language, int def)
+   public static  String getMnemonic(String key, String language, int def)
    {
       int mnemonic 
          = PSTmxResourceBundle.getInstance().getMnemonic(key, language);
       
       if (mnemonic != 0)
       {
-         char arr[] = new char[] {(char) mnemonic };
+         char[] arr = new char[] {(char) mnemonic };
          return new String(arr);
       }
       else
       {
          if (def != 0)
          {
-            char arr[] = new char[] {(char) def };
+            char[] arr = new char[] {(char) def };
             return new String(arr);
          }
          else
@@ -207,8 +207,8 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>empty</code> in which case default langugae is assumed.
     * @return the tooltip or <code>null</code> if no tooltip is defined
     * @see PSTmxResourceBundle
-    */   
-   static public String getTooltip(String key, String language)
+    */
+   public static  String getTooltip(String key, String language)
    {
       return PSTmxResourceBundle.getInstance().getTooltip(key, language);
    }
@@ -226,7 +226,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>empty</code> in which case default langugae is assumed.
     * @return the mnemonic string
     */
-   static public String getMnemonicString(String key, String mnemonickey, 
+   public static  String getMnemonicString(String key, String mnemonickey,
       String language)
    {
       String localestring = getString(key, language);
@@ -293,7 +293,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * invalid.
     * @throws ParseException if parsing the input date string is failed.
     */
-   static public String formatDate(
+   public static  String formatDate(
       String inputDate, String inputPattern, String inputLanguage,
       String outputPattern, String outputLanguage
       )
@@ -302,13 +302,9 @@ public class PSI18nUtils implements IPSI18nUtils {
       Locale inputLocale = getLocaleFromString(inputLanguage);
       Locale outputLocale = getLocaleFromString(outputLanguage);
 
-      Date inDate = null;
-      String result = null;
+      return formatDate(parseStringToDate(inputDate, inputPattern, inputLocale),
+              outputPattern, outputLocale);
 
-      inDate = parseStringToDate(inputDate, inputPattern, inputLocale);
-      result = formatDate(inDate, outputPattern, outputLocale);
-
-      return result;
    }
 
    /**
@@ -316,10 +312,10 @@ public class PSI18nUtils implements IPSI18nUtils {
     * the  locale string supplied. The locale string must be in the syntax of
     * <language>-<country>-<varaint>, e.g. "en-us"
     * or "ja-jp". The language and country strings must follow the ISO codes.
-    * @param languageString
+    * @param languageString e.g. "en-us"
     * @return <code>Locale</code> object
     */
-   static public Locale getLocaleFromString(String languageString)
+   public static  Locale getLocaleFromString(String languageString)
    {
       if(languageString == null || languageString.trim().length() < 1)
          return null;
@@ -360,7 +356,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * @throws IllegalArgumentException
     * @see PSDataTypeConverter
     */
-   static public Date parseStringToDate(String inputDateString,
+   public  static  Date parseStringToDate(String inputDateString,
       Locale inputLocale)
    {
       if(inputDateString == null || inputDateString.trim().length() < 1)
@@ -400,7 +396,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>null</code> or empty.
     * @throws ParseException
     */
-   static public Date parseStringToDate(String inpuDateString,
+   public static  Date parseStringToDate(String inpuDateString,
       String inputPattern, Locale inputLocale)
       throws ParseException
    {
@@ -469,18 +465,17 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>empty</code>
     */
 
-   @SuppressWarnings("unchecked")
    public static String formatMessage(String messageKey, String argList,
       String languageString)
    {
       if(messageKey == null || messageKey.length() < 1)
          return "";
 
-      List list = null;
+      List<String> list = null;
       //parse the argument list string to a list.
       if(argList != null && argList.length() > 0)
       {
-         list = new ArrayList();
+         list = new ArrayList<>();
          StringTokenizer tokenizer = new StringTokenizer(argList, "|");
          while(tokenizer.hasMoreTokens())
             list.add(tokenizer.nextToken());
@@ -538,17 +533,16 @@ public class PSI18nUtils implements IPSI18nUtils {
     * @see #LOOKUP_KEY_SEPARATOR
     * @see #LOOKUP_KEY_SEPARATOR_LAST
     */
-   @SuppressWarnings("unchecked")
-   static public String makeLookupKey(List subkeys)
+   public static  String makeLookupKey(List<String> subkeys)
    {
       StringBuilder buf = new StringBuilder();
-      if(subkeys == null || subkeys.size() < 1)
+      if(subkeys == null || !subkeys.isEmpty())
          return buf.toString();
       //Make sure to remove all null/empty keys out of the list
       int index = subkeys.size()-1;
       while( index > -1 &&
             (subkeys.get(index) == null ||
-             subkeys.get(index).toString().length() < 1))
+             subkeys.get(index).length() < 1))
       {
          subkeys.remove(index--);
       }
@@ -560,7 +554,7 @@ public class PSI18nUtils implements IPSI18nUtils {
          obj = subkeys.get(i);
          if(obj == null)
             continue;
-         temp = obj.toString().toString();
+         temp = obj.toString();
          if(temp.trim().length() < 1)
             continue;
          //if it is not in the beginning add the key separator
@@ -575,7 +569,7 @@ public class PSI18nUtils implements IPSI18nUtils {
       }
       String res = buf.toString();
       //Make sure to append @ at the end if missing for crazy reasons
-      if(res.indexOf(PSI18nUtils.LOOKUP_KEY_SEPARATOR_LAST) == -1)
+      if(!res.contains(PSI18nUtils.LOOKUP_KEY_SEPARATOR_LAST))
          res = res + PSI18nUtils.LOOKUP_KEY_SEPARATOR_LAST;
       return res;
    }
@@ -585,14 +579,14 @@ public class PSI18nUtils implements IPSI18nUtils {
     * of for example, <b>psx.key1.key2.key3@keyLast</b>. The string "." in this
     * the lookup key separator.
     */
-   static public final String LOOKUP_KEY_SEPARATOR = ".";
+   public static  final String LOOKUP_KEY_SEPARATOR = ".";
 
    /**
     * String constant for last lookup key separator. Text lookup key is has a
     * syntax of for example, <b>psx.key1.key2.key3@keyLast</b>. The String "@"
     * in this the lookup key separator.
     */
-   static public final String LOOKUP_KEY_SEPARATOR_LAST = "@";
+   public static  final String LOOKUP_KEY_SEPARATOR_LAST = "@";
 
    /**
     * String constant for the name of the key to get the user logged in language
@@ -601,7 +595,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * request.getUserContextInformation(USER_CONTEXT_VAR_SYS_LANG, "")
     * </p>.
     */
-   static public final String USER_CONTEXT_VAR_SYS_LANG =
+   public static  final String USER_CONTEXT_VAR_SYS_LANG =
       "User/SessionObject/sys_lang";
 
    /**
@@ -613,13 +607,13 @@ public class PSI18nUtils implements IPSI18nUtils {
     * PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG)
     * </p>.
     */
-   static public final String USER_SESSION_OBJECT_SYS_LANG = "sys_lang";
+   public static  final String USER_SESSION_OBJECT_SYS_LANG = "sys_lang";
 
    /**
     * String constant representing prefix for the lookup key for Content Editor
     * actions such as , New Version, Insert, Edit, Preview etc..
     */
-   static public final String PSX_CE_ACTION =
+   public static  final String PSX_CE_ACTION =
       "psx" + LOOKUP_KEY_SEPARATOR +
       "ce" + LOOKUP_KEY_SEPARATOR + "action";
 
@@ -627,28 +621,27 @@ public class PSI18nUtils implements IPSI18nUtils {
     * String constant representing prefix for translation key for workflow
     * transitions
     */
-   static public final String PSX_WORKFLOW_TRANSITION =
+   public static  final String PSX_WORKFLOW_TRANSITION =
       "psx" + LOOKUP_KEY_SEPARATOR +
       "workflow" + LOOKUP_KEY_SEPARATOR + "transition";
 
    /**
     * String constant representing the language US English.
     */
-   static public final String LANG_EN_US = "en-us";
+   public static  final String LANG_EN_US = "en-us";
 
    /**
     * Default language used in the process of i18n.
     */
-   static public final String DEFAULT_LANG = LANG_EN_US;
+   public static  final String DEFAULT_LANG = LANG_EN_US;
 
    /**
     * main method for testing
     * @param args
     */
-   @SuppressWarnings("unchecked")
-   static public void main(String[] args)
+   public static  void main(String[] args)
    {
-      ArrayList list = new ArrayList();
+      List<String> list = new ArrayList<>();
       list.add("psx.workflow.state");
       list.add("");
       
@@ -668,8 +661,8 @@ public class PSI18nUtils implements IPSI18nUtils {
       }
       catch(Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug( e);
       }
    }
 }

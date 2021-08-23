@@ -26,59 +26,58 @@ package com.percussion.rest.displayformat;
 
 
 import com.percussion.cms.objectstore.PSDisplayColumn;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "DisplayFormatColumn")
-@ApiModel(description="Represents a column configured in a Display Format")
+@Schema(description="Represents a column configured in a Display Format")
 public class DisplayFormatColumn {
 
-    @ApiModelProperty(notes="This value allows the UI engine to determine how the associated data\n" +
+    @Schema(description="This value allows the UI engine to determine how the associated data\n" +
             "should be displayed.",allowableValues=DATATYPE_TEXT + "," + DATATYPE_DATE +"," + DATATYPE_IMAGE +"," +DATATYPE_IMAGE)
     private String renderType;
-    @ApiModelProperty(notes="Is the column type text?")
+    @Schema(description="Is the column type text?")
     private boolean textType;
-    @ApiModelProperty(notes="Is the column type number?")
+    @Schema(description="Is the column type number?")
     private boolean numberType;
-    @ApiModelProperty(notes="Is the column type date?")
+    @Schema(description="Is the column type date?")
     private boolean dateType;
-    @ApiModelProperty(notes="Is the column type image?")
+    @Schema(description="Is the column type image?")
     private boolean imageType;
-    @ApiModelProperty(notes="Gets the display id that is a parent of this column.")
+    @Schema(description="Gets the display id that is a parent of this column.")
     private String displayId;
-    @ApiModelProperty(notes="Get the source id attribute of this object.")
+    @Schema(description="Get the source id attribute of this object.")
     private String source;
-    @ApiModelProperty(notes="Gets the display name of column.")
+    @Schema(description="Gets the display name of column.")
     private String displayName;
-    @ApiModelProperty(notes="Get the description attribute of this object")
+    @Schema(description="Get the description attribute of this object")
     private String description;
-    @ApiModelProperty(notes="A column can either be 'flat' or categorized. A categorized column allows\n" +
+    @Schema(description="A column can either be 'flat' or categorized. A categorized column allows\n" +
             "rows w/ the same value for this property to be grouped together. This\n" +
             "is usually represented by a 'virtual' folder in a UI. Non-categorized\n" +
             "columns are used in the list view of the UI. If this column has been defined to be\n" +
             "displayed as a category, false if defined to be displayed as a list header")
     private boolean categorized;
 
-    @ApiModelProperty(notes="Each column has 0 or more rows associated with it. This value specifies\n" +
+    @Schema(description="Each column has 0 or more rows associated with it. This value specifies\n" +
             "what the default ordering should be. Defaults to true")
     private boolean ascendingSort;
-    @ApiModelProperty(notes="Opposite of ascendingSort.")
+    @Schema(description="Opposite of ascendingSort.")
     private boolean descendingSort;
-    @ApiModelProperty(notes="The position of this column relative to other columns being\n" +
+    @Schema(description="The position of this column relative to other columns being\n" +
             "displayed. Columns are sequenced from left to right, with the first\n" +
             "index being 0. Defaults to 0. The order of columns that have the same\n" +
             "sequence value is implementation dependent. Must be a value > 0.")
     private int position;
-    @ApiModelProperty(notes="See categorized for details. Determines whether this col\n" +
+    @Schema(description="See categorized for details. Determines whether this col\n" +
             "is categorized or flat.")
     private int groupingType;
-    @ApiModelProperty(notes="See ascendingSort for details.\n" +
+    @Schema(description="See ascendingSort for details.\n" +
             "set to true if you wish the default sorting to be ascending,\n" +
             "false will set the default to descending.")
     private boolean sortOrder;
-    @ApiModelProperty(notes="Get the width to use to when this column is displayed.\n" +
+    @Schema(description="Get the width to use to when this column is displayed.\n" +
             "Returns the width, greater than zero if specified, -1 if no width has\n" +
             "been specified.")
     private int width;

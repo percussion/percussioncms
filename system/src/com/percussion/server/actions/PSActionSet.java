@@ -34,8 +34,8 @@ import com.percussion.data.PSConversionException;
 import com.percussion.data.PSDataExtractionException;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSExtensionRunner;
+import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
-import com.percussion.data.PSUriResolver;
 import com.percussion.data.PSUrlRequestExtractor;
 import com.percussion.data.PSXslStyleSheetMerger;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
@@ -45,6 +45,7 @@ import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.error.PSException;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.security.IPSSecurityErrors;
+import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.IPSHttpErrors;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
@@ -60,7 +61,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.Result;
@@ -619,9 +619,11 @@ public class PSActionSet
 
          Transformer nt = styleCached.getStylesheetTemplate().newTransformer();
          nt.setErrorListener( errorListener );
-         nt.setURIResolver( new PSUriResolver() );
+         PSCatalogResolver cr = new PSCatalogResolver();
+         cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+         nt.setURIResolver(  cr);
 
-         Source src = new DOMSource( (Node) actionSetResult.toXml() );
+         Source src = new DOMSource( actionSetResult.toXml() );
          ByteArrayOutputStream bout = new ByteArrayOutputStream();
          Result res = new StreamResult( bout );
 
