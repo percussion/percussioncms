@@ -144,10 +144,19 @@
         <pathconvert pathsep="/" property="normalized.install.dir" targetos="unix">
             <path location="${install.dir}"/>
         </pathconvert>
+        <if>
+           <isset property="isWindows"/>
+            <then>
+                <property name="lead.slash" value="/"/>
+            </then>
+            <else>
+                <property name="lead.slash" value=""/>
+            </else>
+        </if>
         <replace file="${install.dir}/jetty/defaults/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
         <replace file="${install.dir}/jetty/base/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
-        <replace file="${install.dir}/PercussionXMLCatalog.xml" token="@@rxdir@@" value="${normalized.install.dir}" />
-        <replace file="${install.dir}/var/config/CustomXMLCatalog.xml" token="@@rxdir@@" value="${normalized.install.dir}" />
+        <replace file="${install.dir}/PercussionXMLCatalog.xml" token="@@rxdir@@" value="${lead.slash}${normalized.install.dir}" />
+        <replace file="${install.dir}/var/config/CustomXMLCatalog.xml" token="@@rxdir@@" value="${lead.slash}${normalized.install.dir}" />
 
         <macrodef name="add-config-if-missing">
             <attribute name="srcFile"/>
