@@ -23,11 +23,8 @@
  */
 package com.percussion.rx.publisher.impl;
 
-import com.percussion.delivery.client.IPSDeliveryClient;
-import com.percussion.delivery.client.PSDeliveryClient;
-import com.percussion.delivery.data.PSDeliveryInfo;
-import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
 import com.percussion.delivery.service.impl.PSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.PSConnectivityCheck;
 import com.percussion.rx.publisher.IPSPublisherItemStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
@@ -37,7 +34,6 @@ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.data.PSDemandWork;
 import com.percussion.rx.publisher.data.PSPubItemStatus;
 import com.percussion.rx.publisher.jsf.nodes.PSPublishingStatusHelper;
-import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -45,33 +41,43 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.jms.IPSQueueSender;
-import com.percussion.services.publisher.*;
+import com.percussion.services.publisher.IPSEdition;
+import com.percussion.services.publisher.IPSPubItemStatus;
+import com.percussion.services.publisher.IPSPubStatus;
+import com.percussion.services.publisher.IPSPublisherService;
+import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.pubserver.PSPubServerDaoLocator;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.utils.general.PSServiceConfigurationBean;
 import com.percussion.util.PSDateFormatISO8601;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.io.PathUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.ObjectFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.awt.*;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
@@ -130,8 +136,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
                               state.isTerminal())
                         {
                            jobid = startPublishingJob(edition, null);
-                           ms_log.debug("Started demand edition " + edition + 
-                                 " job " + jobid);
+                           ms_log.debug("Started demand edition {} job {}" , edition ,jobid);
                         }
                      }
                   }
@@ -142,11 +147,11 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
                      m_demandWork.wait(DEMAND_WAIT_TIME);
                   }
             }
+         } catch (InterruptedException e) {
+             ms_log.warn(PSExceptionUtils.getMessageForLog(e));
+             Thread.currentThread().interrupt();
          }
-         catch(Exception e)
-         {
-            ms_log.error("Problem in monitor thread", e);
-         } 
+
       }
    }
    
@@ -280,10 +285,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
             PSPublishingJob job = m_jobs.get(key);
             if (edition.equals(job.getEdition()) && ! job.isFinished())
             {
-               // do not rerun for cm1
-               // job.setRerun(true);
-               
-               ms_log.debug("edition :"+job.getEdition().getUUID()+" is currently running, marked to rerun after completion");
+               ms_log.debug("edition :{}  is currently running, marked to rerun after completion.", job.getEdition().getUUID());
                // Now we are throwing exception when this could be counted as normal
                // processing.  Should use other mechanism.
                throw new IllegalStateException(
@@ -308,12 +310,12 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
             job.startJob();
             return job.getJobid();
          }
-      } catch (Exception e){
-         job.cancel(true);
-         throw new IllegalStateException(
-               "Cannot connect to FTP Server - check configuration",e);
+      } catch (PSNotFoundException e) {
+              job.cancel(true);
+              throw new IllegalStateException(
+                      "Cannot connect to publishing server - check configuration: " + e.getMessage(),e);
       }
-      jobid = job.getJobid();
+          jobid = job.getJobid();
       }
       return jobid;
    }
@@ -506,7 +508,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          if (item!=null)
             persistStatuses.add(item);
          
-         if (persistStatuses.size() > 0)
+         if (!persistStatuses.isEmpty())
          {
             svc.updatePublishingInfo(persistStatuses);
          }
@@ -639,7 +641,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       Long jobid = getEditionJobId(editionid);
       
       Queue<PSDemandWork> q = getDemandQueueForEdition(edition, isRetrieveOnly);
-      if (q == null || q.size() == 0)
+      if (q == null || q.isEmpty())
       {
          return Collections.emptyList();
       }
@@ -672,7 +674,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
    private Queue<PSDemandWork> getDemandQueueForEdition(int edition, boolean isRetrieveOnly)
    {      
       Queue<PSDemandWork> q = m_demandWork.get(edition);
-      if (q == null || q.size() == 0 || (!isRetrieveOnly))
+      if (q == null || q.isEmpty() || (!isRetrieveOnly))
          return q;
       
       Queue<PSDemandWork> qCloned = new LinkedList<>();
@@ -694,15 +696,15 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       }
       else
       {
-         ms_log.debug("getDemandWorkStatus for request " + requestId + 
-               " job " + jobid);
+         ms_log.debug("getDemandWorkStatus for request {} job {}" , requestId
+               ,jobid);
          PSPublishingJob job = m_jobs.get(jobid);
          if (job == null)
          {
             return null;
          }
          job.resetLastAccessTime();
-         ms_log.debug("job state is " + job.getState());
+         ms_log.debug("job state is {}" ,job.getState());
          return job.getState();
       }
    }
@@ -890,7 +892,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
 
       File archive = new File(archiveDir, filename);
       OutputStream os = new FileOutputStream(archive);
-      Writer archiveWriter = new OutputStreamWriter(os, "UTF-8");
+      Writer archiveWriter = new OutputStreamWriter(os, StandardCharsets.UTF_8);
       PSDateFormatISO8601 fmt = new PSDateFormatISO8601();
       IPSPublisherService psvc = PSPublisherServiceLocator
          .getPublisherService();
