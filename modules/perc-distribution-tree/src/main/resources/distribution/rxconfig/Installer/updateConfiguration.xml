@@ -140,10 +140,14 @@
 
         <!-- Specify the rxdir in jetty default jvm -->
         <echo>Specifying rxdeploydir in jvm.ini files...</echo>
-        <replace file="${install.dir}/jetty/defaults/start.d/jvm.ini" token="@@rxdir@@" value="${install.dir}" />
-        <replace file="${install.dir}/jetty/base/start.d/jvm.ini" token="@@rxdir@@" value="${install.dir}" />
-        <replace file="${install.dir}/PercussionXMLCatalog.xml" token="@@rxdir@@" value="${install.dir}" />
-        <replace file="${install.dir}/var/config/CustomXMLCatalog.xml" token="@@rxdir@@" value="${install.dir}" />
+        <!-- Convert path so that all slashes are forward -->
+        <pathconvert pathsep="/" property="normalized.install.dir" targetos="unix">
+            <path location="${install.dir}"/>
+        </pathconvert>
+        <replace file="${install.dir}/jetty/defaults/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
+        <replace file="${install.dir}/jetty/base/start.d/jvm.ini" token="@@rxdir@@" value="${normalized.install.dir}" />
+        <replace file="${install.dir}/PercussionXMLCatalog.xml" token="@@rxdir@@" value="${normalized.install.dir}" />
+        <replace file="${install.dir}/var/config/CustomXMLCatalog.xml" token="@@rxdir@@" value="${normalized.install.dir}" />
 
         <macrodef name="add-config-if-missing">
             <attribute name="srcFile"/>
