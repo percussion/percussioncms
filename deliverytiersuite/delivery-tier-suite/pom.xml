@@ -93,7 +93,7 @@
         <bc.version>1.64</bc.version>
         <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
         <jackson.version>2.12.1</jackson.version>
-        <jsoup.version>1.11.3</jsoup.version>
+        <jsoup.version>1.14.2</jsoup.version>
         <json.version>20201115</json.version>
         <junit.version>4.12</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
