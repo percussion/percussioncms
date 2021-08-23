@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,7 +54,17 @@ public class PSDispatcherFilter implements Filter {
     private static final Pattern pattern = Pattern.compile("^.+\\/\\/[^\\/]+\\/Sites\\/([^\\/]*)", Pattern.MULTILINE);
 
     private static final String[] bannedPaths = new String[]{
-            "/WEB-INF/"
+            "/WEB-INF/",
+            "/lib/",
+            "/bin/",
+            "/backups/",
+            "/jetty/",
+            "/logs/",
+            "/temp/",
+            "/util/",
+            "/user/",
+            "/patch/",
+            "/css/"
     };
 
     private static final String[] resourcePaths = new String[] {
@@ -113,8 +123,9 @@ public class PSDispatcherFilter implements Filter {
         String strippedPath = path.startsWith(RHYTHMYX) ? StringUtils.substringAfter(path,RHYTHMYX) : path;
         String newPath = path;
 
-        if(Stream.of(bannedPaths).anyMatch(strippedPath::contains)){
-            ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_FORBIDDEN);
+        if(Stream.of(bannedPaths).anyMatch(strippedPath::startsWith)){
+     //       ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_NOT_FOUND);
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
@@ -150,7 +161,7 @@ public class PSDispatcherFilter implements Filter {
                 String site =null;
                 try {
 
-                    List<NameValuePair> params = URLEncodedUtils.parse(new URI(referrer), Charset.forName("UTF-8"));
+                    List<NameValuePair> params = URLEncodedUtils.parse(new URI(referrer), StandardCharsets.UTF_8);
                     NameValuePair siteParam = null;
                     /*NameValuePair siteParam = params.stream()
                             .filter(p -> p.getName().equals("site"))
