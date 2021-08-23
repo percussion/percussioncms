@@ -124,7 +124,6 @@ public class PSDispatcherFilter implements Filter {
         String newPath = path;
 
         if(Stream.of(bannedPaths).anyMatch(strippedPath::startsWith)){
-     //       ((HttpServletResponse) response).setStatus(HttpServletResponse.SC_NOT_FOUND);
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
