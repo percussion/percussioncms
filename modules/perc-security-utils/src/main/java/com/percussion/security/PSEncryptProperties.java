@@ -109,7 +109,7 @@ public class PSEncryptProperties {
                     log.debug("Encrypting property: " + prop);
                     StringBuilder sb = new StringBuilder();
                     sb.append(PREFIX);
-                    sb.append(PSEncryptor.getInstance("AES", secureDir).encrypt(propValue));
+                    sb.append(PSEncryptor.encryptProperty(propsFile.getAbsolutePath(),prop,propValue));
                     sb.append(SUFFIX);
                     props.setProperty(prop, sb.toString());
                     isModified = true;
@@ -168,7 +168,7 @@ public class PSEncryptProperties {
     private static String decrypt(String encrypted, String key,  String secureDir, PSAbstractEncryptor legacyDecryptor){
         String ret = "";
         try {
-            ret = PSEncryptor.getInstance("AES", secureDir).decrypt(encrypted);
+            ret = PSEncryptor.decryptString(secureDir,encrypted);
         }catch(PSEncryptionException | IllegalArgumentException e){
             try {
                 ret = legacyDecryptor.decrypt(encrypted, key, legacyDecryptor);

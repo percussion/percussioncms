@@ -401,9 +401,7 @@ public class PSLegacyBackEndCredential extends PSComponent
    private String makeLasagna(String pwd)
    {
       try {
-         return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).encrypt(pwd);
+         return PSEncryptor.encryptString(pwd);
       } catch (PSEncryptionException e) {
          return "";
       }

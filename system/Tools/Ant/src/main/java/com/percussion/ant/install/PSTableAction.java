@@ -130,18 +130,24 @@ public class PSTableAction extends PSAction
 
          String pw = props.getProperty("PWD");
          try{
-            pw = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(pw);
-         }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-            pw = PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey(),null);
+            pw = PSEncryptor.decryptProperty(getRepositoryLocation(),"PWD",pw);
+         }catch(PSEncryptionException ee) {
+            try {
+               pw = PSEncryptor.decryptWithOldKey(pw);
+            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+               pw = PSLegacyEncrypter.getInstance(
+                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+               ).decrypt(pw,
+                       PSJdbcDbmsDef.getPartOneKey(), null);
+            }
+            try {
+               //Try to encrypt password with new key, if fails set decoded password
+               props.setProperty("PWD", PSEncryptor.encryptProperty(getRepositoryLocation(), "PWD", pw));
+            } catch (PSEncryptionException psEncryptionException) {
+               props.setProperty("PWD", pw);
+            }
+            props.store(new FileOutputStream(getRepositoryLocation()), null);
          }
-
-
-
          //get table def files
          String[] tableDef = getTableDef();
          for (int i = 0; i < tableDef.length; i++)

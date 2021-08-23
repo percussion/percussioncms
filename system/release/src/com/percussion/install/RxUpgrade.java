@@ -891,9 +891,7 @@ public class RxUpgrade
       Properties props = getRxRepositoryProps();
       String password;
       try{
-         password = PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).decrypt(props.getProperty("PWD"));
+         password = PSEncryptor.decryptString(props.getProperty("PWD"));
       }catch(Exception e){
          password = PSLegacyEncrypter.getInstance(
                  PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)

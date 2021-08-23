@@ -41,6 +41,7 @@ import com.percussion.services.security.data.PSCommunity;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCharSets;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -687,10 +688,7 @@ public class PSUserSession
    public void addAuthentication(String uid, String auth)
    {
       try {
-         m_authentications.put(uid, PSEncryptor.getInstance(
-                 "AES",PSServer.getRxDir().getAbsolutePath().concat(
-                         PSEncryptor.SECURE_DIR)
-         ).encrypt(auth));
+         m_authentications.put(uid, PSEncryptor.encryptString(auth));
       } catch (PSEncryptionException e) {
          ms_log.error("Error encrypting authentication: " + e.getMessage(),e);
          m_authentications.put(uid,"");

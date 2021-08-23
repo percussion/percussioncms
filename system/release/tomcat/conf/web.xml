@@ -120,6 +120,19 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <servlet>
+        <servlet-name>secureKeyCheck</servlet-name>
+        <servlet-class>com.percussion.tomcat.SecureKeyServlet</servlet-class>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>listings</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
 
   <!-- The JSP page compiler and execution servlet, which is the mechanism  -->
   <!-- used by Tomcat to support JSP pages.  Traditionally, this servlet    -->
