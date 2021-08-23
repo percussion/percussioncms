@@ -23,14 +23,12 @@ import="com.percussion.server.PSServer"
 		isEnabled="false";
 
 	if(isEnabled.equalsIgnoreCase("false")){
-		response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
-				+ "/ui/RxNotAuthorized.jsp"));
+		response.sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
 	String fullrolestr = PSRoleUtilities.getUserRoles();
 
 	if (!fullrolestr.contains("Admin"))
-		response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
-				+ "/ui/RxNotAuthorized.jsp"));
+		response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
 %>
 <%!
@@ -60,9 +58,8 @@ response.setHeader("Content-Disposition", "attachment; filename=unusedassets.csv
 IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
 String fullrolestr = PSRoleUtilities.getUserRoles();
 
-if (fullrolestr.contains("Admin") == false)
-   	response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
-      	+ "/ui/RxNotAuthorized.jsp"));
+if (!fullrolestr.contains("Admin"))
+   	response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
 String dburl="java:jdbc/RhythmyxData";
 
