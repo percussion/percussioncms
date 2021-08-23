@@ -338,9 +338,7 @@ public class PSCataloger
    public String prepareCredentials(String uid, String pw)
    {
       try {
-         return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).encrypt(pw);
+         return PSEncryptor.encryptString(pw);
       } catch (PSEncryptionException e) {
          logger.error("Error encrypting password: {}", e.getMessage());
          logger.debug(e);

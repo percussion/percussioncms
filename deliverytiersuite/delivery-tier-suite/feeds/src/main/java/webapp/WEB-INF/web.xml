@@ -69,7 +69,6 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-
     <servlet-mapping>
         <servlet-name>Jersey Spring Web Application</servlet-name>
         <url-pattern>/*</url-pattern>

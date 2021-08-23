@@ -111,9 +111,7 @@ public class PSDeliveryInfoLoader
             {
                 String decryptedPassword = "";
                 try{
-                    decryptedPassword = PSEncryptor.getInstance("AES",
-                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                    ).decrypt(pwdVal);
+                    decryptedPassword = PSEncryptor.decryptString(pwdVal);
                 }catch(Exception e){
                      decryptedPassword = PSLegacyEncrypter.getInstance(
                              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -128,9 +126,7 @@ public class PSDeliveryInfoLoader
 
             String enc = "";
             try {
-                enc = PSEncryptor.getInstance("AES",
-                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                ).encrypt(pwdVal);
+                enc = PSEncryptor.encryptString(pwdVal);
             } catch (PSEncryptionException e) {
                 log.error("Error encrypting password: " + e.getMessage(),e);
             }

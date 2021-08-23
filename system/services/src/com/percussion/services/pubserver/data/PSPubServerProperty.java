@@ -28,6 +28,7 @@ import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.share.data.PSAbstractDataObject;
+import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -172,10 +173,8 @@ public class PSPubServerProperty extends PSAbstractDataObject
    {
       if (isEncodedProperty()) {
          try {
-            PSEncryptor encryptor = PSEncryptor.getInstance(
-                    "AES",
-                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-            return StringUtils.isEmpty(value) ? value : encryptor.decrypt(value);
+
+            return StringUtils.isEmpty(value) ? value : PSEncryptor.decryptString(value);
          } catch (PSEncryptionException e) {
             return StringUtils.isEmpty(value) ? value : decode(value);
          }
@@ -191,11 +190,9 @@ public class PSPubServerProperty extends PSAbstractDataObject
    public void setValue(String value)
    {
       if (isEncodedProperty()) {
-         PSEncryptor encryptor = PSEncryptor.getInstance(
-                 "AES",
-                 PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
          try {
-            this.value = StringUtils.isEmpty(value) ? value : encryptor.encrypt(value);
+            String enc = PSEncryptor.encryptString(value);
+            this.value = StringUtils.isEmpty(value) ? value : enc;
          } catch (PSEncryptionException e) {
             log.error("Unable to encrypt encoded property: {} Error: {}", this.name,
                     PSExceptionUtils.getMessageForLog(e));

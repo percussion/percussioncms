@@ -101,40 +101,34 @@ public class PSMakeLasagna extends Task
       FileOutputStream out = null;
       try
       {
-         PSProperties props = new PSProperties(m_root + File.separator +
-         "rxconfig/Installer/rxrepository.properties");
+         String propFilePath = m_root + File.separator +
+                 "rxconfig/Installer/rxrepository.properties";
+         PSProperties props = new PSProperties(propFilePath);
          String encryptedPWDProp = props.getProperty(
                PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY,"N");
          String pwd = props.getProperty(PSJdbcDbmsDef.PWD_PROPERTY);
          if (!StringUtils.isEmpty(pwd) && encryptedPWDProp.equalsIgnoreCase("Y"))
          {
             String decryptPwd = "";
-             try{
-                decryptPwd = PSEncryptor.getInstance("AES",
-                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                ).decrypt(pwd);
-             }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                decryptPwd = PSLegacyEncrypter.getInstance(
-                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                ).decrypt(pwd, PSServer.getPartOneKey(),null);
+             try {
+                decryptPwd = PSEncryptor.decryptProperty(propFilePath, PSJdbcDbmsDef.PWD_PROPERTY, pwd);
+             }catch (PSEncryptionException pe) {
+                try {
+                   decryptPwd = PSEncryptor.decryptWithOldKey(pwd);
+                } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+                   decryptPwd = PSLegacyEncrypter.getInstance(
+                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                   ).decrypt(pwd, PSServer.getPartOneKey(), null);
+                }
              }
+         }
+         pwd = PSEncryptor.encryptProperty(propFilePath,PSJdbcDbmsDef.PWD_PROPERTY,pwd );
+         props.setProperty(PSJdbcDbmsDef.PWD_PROPERTY, pwd);
+         props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
+         out = new FileOutputStream(m_root + File.separator +
+         "rxconfig/Installer/rxrepository.properties");
+         props.store(out, null);
 
-             if (decryptPwd.equals(pwd))
-             {
-                 encryptedPWDProp="N";
-             }
-         }
-         if (encryptedPWDProp.equals("N"))
-         {
-            pwd = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).encrypt(pwd);
-            props.setProperty(PSJdbcDbmsDef.PWD_PROPERTY, pwd);
-            props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY,"Y");
-            out = new FileOutputStream(m_root + File.separator +
-            "rxconfig/Installer/rxrepository.properties");
-            props.store(out, null);
-         }
       }
       catch (Exception e)
       {

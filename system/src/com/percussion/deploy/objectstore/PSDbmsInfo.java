@@ -233,9 +233,7 @@ public class PSDbmsInfo implements IPSDeployComponent
          pwd = decryptPwd(m_uid, pwd);
       }else if(encrypted){
          try {
-            pwd = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).encrypt(m_pw);
+            pwd = PSEncryptor.encryptString(m_pw);
          } catch (PSEncryptionException e) {
             logger.warn("Error encrypting datasource password: {}", e.getMessage());
             logger.debug(e.getMessage(),e);
@@ -571,9 +569,7 @@ public class PSDbmsInfo implements IPSDeployComponent
          return "";
 
       try {
-         return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).encrypt(pwd);
+         return PSEncryptor.encryptString(pwd);
       } catch (PSEncryptionException e) {
          logger.error("Error encrypting password: {}", e.getMessage());
          logger.debug(e);
@@ -604,9 +600,7 @@ public class PSDbmsInfo implements IPSDeployComponent
             : uid;
 
       try {
-         return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).decrypt(pwd);
+         return PSEncryptor.decryptString(pwd);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
          ).INVALID_CRED(), key, pwd);

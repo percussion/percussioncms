@@ -286,9 +286,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             if (emailNotifToVals != null && emailNotifToVals[0] != null && emailNotifToVals[0].trim().length() > 0)
             {
                 try {
-                    emailNotifTo = PSEncryptor.getInstance("AES",
-                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                    ).decrypt(emailNotifToVals[0]);
+                    emailNotifTo = PSEncryptor.decryptString(emailNotifToVals[0]);
                 }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                     emailNotifTo = PSLegacyEncrypter.getInstance(
                             PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -313,10 +311,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             if (emailNotifSubjectVals != null && emailNotifSubjectVals[0] != null && emailNotifSubjectVals[0].trim().length() > 0 && !isFormEmail)
             {
                 try {
-                    emailNotifSubject = PSEncryptor.getInstance(
-                            "AES",
-                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                    ).decrypt(emailNotifSubjectVals[0]);
+                    emailNotifSubject = PSEncryptor.decryptString(emailNotifSubjectVals[0]);
                 }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                     emailNotifSubject = PSLegacyEncrypter.getInstance(
                             PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -494,10 +489,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         {
                 if(encryptExist) {
                     try {
-                        successRedirect = PSEncryptor.getInstance(
-                                "AES",
-                                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                        ).decrypt(successRedirect);
+                        successRedirect = PSEncryptor.decryptString(successRedirect);
                     } catch (PSEncryptionException e) {
                         successRedirect = PSLegacyEncrypter.getInstance(
                                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -684,9 +676,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         {
             if(isEncrypted) {
                 try {
-                    urlErrorPage = PSEncryptor.getInstance("AES",
-                            PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                    ).decrypt(redirect);
+                    urlErrorPage = PSEncryptor.decryptString(redirect);
                 } catch (PSEncryptionException e) {
                     urlErrorPage = PSLegacyEncrypter.getInstance(
                             PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)

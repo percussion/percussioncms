@@ -51,6 +51,7 @@ import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -403,10 +404,8 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
     private String decrypt(String dstr) {
 
         try {
-            PSEncryptor encryptor = PSEncryptor.getInstance(
-                    "AES",
-                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-            return encryptor.decrypt(dstr);
+
+            return PSEncryptor.decryptString(dstr);
         } catch (PSEncryptionException e) {
             log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
             try {

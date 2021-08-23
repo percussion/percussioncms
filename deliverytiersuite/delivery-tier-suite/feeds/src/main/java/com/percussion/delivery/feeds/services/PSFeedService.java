@@ -281,15 +281,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         
         try{
             //If Secure File is not Copied to DTS Yet then returning
-            PSEncryptor encryptor = PSEncryptor.getInstance(
-                    "AES",
-                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            );
-        	if(encryptor == null){
-                log.info("Secure Key not set !! Need to do publish to set secure Key");
-        	    return "";
-            }
-            String decryptedUrl = encryptor.decrypt(feedUrl);
+
+            String decryptedUrl = PSEncryptor.decryptString(feedUrl);
             log.debug("Decrypted URL is: {}" , decryptedUrl);
             decodedUrl = URLDecoder.decode(decryptedUrl, "UTF8");
             log.debug("Decoded URL is: {}",  decodedUrl);

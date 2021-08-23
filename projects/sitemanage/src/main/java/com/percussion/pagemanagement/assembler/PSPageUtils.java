@@ -2345,9 +2345,7 @@ public class PSPageUtils extends PSJexlUtilBase
 
     public String encryptString(String str){
         try {
-            return PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).encrypt(str);
+            return PSEncryptor.encryptString(str);
         } catch (PSEncryptionException e) {
             log.error("Error encrypting string: {}",e.getMessage());
             log.debug(e);
@@ -2420,9 +2418,7 @@ public class PSPageUtils extends PSJexlUtilBase
 
                     String encryptEmail = "";
                     try {
-                        encryptEmail = PSEncryptor.getInstance("AES",
-                                PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                        ).encrypt(email);
+                        encryptEmail = PSEncryptor.encryptString(email);
                     } catch (PSEncryptionException e) {
                        log.error("Error encrypting email address: {}", e.getMessage());
                     }
