@@ -23,9 +23,22 @@
  */
 package com.percussion.share.test.xml;
 
+import static java.util.Collections.unmodifiableCollection;
+import static org.apache.commons.lang.Validate.notNull;
+
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.share.test.PSMatchers;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.EntityResolver;
@@ -33,18 +46,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import static java.util.Collections.unmodifiableCollection;
-import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Validates XHTML
@@ -99,14 +100,7 @@ public class PSXhtmlValidator {
     private void initializeParser() {
         try {
             DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                    new PSXmlSecurityOptions(
-                            true,
-                            true,
-                            true,
-                            false,
-                            true,
-                            false
-                    )
+                    false
             );
             factory.setValidating(true);
             parser = factory.newDocumentBuilder();

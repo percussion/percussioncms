@@ -69,7 +69,7 @@ public class PSViewExtractor implements IPSDataExtractor
     * returning <code>null</code> or empty, the <code>defValue</code> parameter
     * will not ever be utilized.
     *
-    * @param data  The execution data associated with this request.
+    * @param execData  The execution data associated with this request.
     *
     * @param defValue The default value to use if a value is not found.
     * Currently has no effect.

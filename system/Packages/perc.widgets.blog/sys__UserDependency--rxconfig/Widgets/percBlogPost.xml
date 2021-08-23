@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!DOCTYPE Widget [
+        <!ENTITY defaultDateFormat "EEE MMM d, yyyy 'at' hh:mm a">
+        ]>
 <Widget>
     <WidgetPrefs title="Blog Post"
                  contenttype_name="percBlogPostAsset"
@@ -23,7 +49,7 @@
     </UserPref>
     <UserPref name="blogPostDateTimeFormat"
               display_name="Format of blog post date"
-              default_value="EEE MMM d, yyyy 'at' hh:mm a"
+              default_value="&defaultDateFormat;"
               datatype="string" />
     <UserPref name="locale"
               display_name="Date Format Locale"

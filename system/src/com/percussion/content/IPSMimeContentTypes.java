@@ -88,9 +88,4 @@ public interface IPSMimeContentTypes
     */
    public static final String MIME_TYPE_OCTET_STREAM = 
       "application/octet-stream";
-
-   /**
-    * JSON mime type
-    */
-   public static final String MIME_TYPE_JSON = "application/json";
 }

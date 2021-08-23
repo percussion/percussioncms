@@ -25,7 +25,6 @@
 package com.percussion.preinstall;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -463,14 +462,7 @@ public class Main {
         log.info("In updateJettyServerPortAndSSLToPreUpgradeSettings");
         if(oldServerXMLFile.exists()) {
             DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                    new PSXmlSecurityOptions(
-                            true,
-                            true,
-                            true,
-                            false,
-                            true,
-                            false
-                    )
+                    false
             );
             dbf.setValidating(false);
             DocumentBuilder db = dbf.newDocumentBuilder();

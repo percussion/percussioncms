@@ -25,21 +25,19 @@
 package com.percussion.rest;
 
 import com.percussion.rest.struct.AdaptorBase;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.servers.Server;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.percussion.rest.struct.IAdaptor;
+
+import java.net.URI;
 
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.net.URI;
+
+import io.swagger.annotations.Api;
 
 @XmlRootElement
 @Path("/")
-@Tag(name = "/", description = "Root of api")
-@OpenAPIDefinition(
-        servers = { @Server(url="/rest")}
-)
+@Api(value = "/", description = "Root of api")
 public class Root extends AdaptorBase {
 
     @XmlElement

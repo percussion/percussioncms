@@ -24,9 +24,7 @@
 
 package com.percussion.ant.install;
 
-import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.utils.container.adapters.DtsConnectorConfigurationAdapterTest;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -51,11 +49,6 @@ public class TestUpdateDTSConfiguration {
 
     private static String STAGING_PATH = "Staging/Deployment";
     private static String STAGING_PATH_WIN = "Staging\\Deployment";
-
-    @Before
-    public void setup(){
-        PSSecureXMLUtils.setupJAXPDefaults();
-    }
 
     @Test
     public void testCompare(){

@@ -26,34 +26,35 @@ package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.acls.UserAccessLevel;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement
-@Schema(description="ObjectSummary is a generic object representing high level information, including security acl's about an object on the system.  See ObjectType for the possible object types.")
+@ApiModel(description="ObjectSummary is a generic object representing high level information, including security acl's about an object on the system.  See ObjectType for the possible object types.")
 public class ObjectSummary {
 
-    @Schema(description="Legacy id of the object if available")
+    @ApiModelProperty(notes="Legacy id of the object if available")
     long id;
-    @Schema(description="The Guid for this object")
+    @ApiModelProperty(notes="The Guid for this object")
     Guid guid;
-    @Schema(description="The name of this object.  Unique for a given object type.")
+    @ApiModelProperty(notes="The name of this object.  Unique for a given object type.")
     String name;
-    @Schema(description="The label of this object.  May be null or empty.")
+    @ApiModelProperty(notes="The label of this object.  May be null or empty.")
     String label;
-    @Schema(description="The description of this object.")
+    @ApiModelProperty(notes="The description of this object.")
     String descripion;
-    @Schema(description="The type of this Object.  Must be a valid type")
+    @ApiModelProperty(notes="The type of this Object.  Must be a valid type", dataType = "string")
     ObjectTypeEnum type;
-    @Schema(description="When true, the object is locked by another user / session")
+    @ApiModelProperty(notes="When true, the object is locked by another user / session")
     boolean objectLocked;
 
-    @Schema(description="If the Object is locked, will contain information about the lock.  May be null or empty if the object is not locked.")
+    @ApiModelProperty(notes="If the Object is locked, will contain information about the lock.  May be null or empty if the object is not locked.")
     ObjectLockSummary lockSummary;
 
-    @Schema(description = "The permissions for this object.")
+    @ApiModelProperty("The permissions for this object.")
     private UserAccessLevel permissions;
 
     public long getId() {

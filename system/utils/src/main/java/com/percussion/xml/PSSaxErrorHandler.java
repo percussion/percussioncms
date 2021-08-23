@@ -23,14 +23,14 @@
  */
 package com.percussion.xml;
 
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * An error handler for SAX parsers which keeps the errors in
@@ -46,11 +46,11 @@ public class PSSaxErrorHandler implements ErrorHandler
     * You can change the throw behavior of the error handler
     * using the throwOnFatalErrors and similar methods.
     */
-   public PSSaxErrorHandler()
+   PSSaxErrorHandler()
    {
-      m_errors = new ArrayList<>();
-      m_fatalErrors = new ArrayList<>();
-      m_warnings = new ArrayList<>();
+      m_errors = new ArrayList<SAXParseException>();
+      m_fatalErrors = new ArrayList<SAXParseException>();
+      m_warnings = new ArrayList<SAXParseException>();
       m_printWriter = null;
    }
 
@@ -58,7 +58,7 @@ public class PSSaxErrorHandler implements ErrorHandler
     * Use this constructor when parser errors should be "printed", usually to
     * a log or trace file.
     */
-   public PSSaxErrorHandler(PrintWriter pw)
+   PSSaxErrorHandler(PrintWriter pw)
    {
       this();
       m_printWriter = pw;

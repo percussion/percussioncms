@@ -1,40 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+<!DOCTYPE Widget [
+<!ENTITY defaultDateFormat "D M d, yy 'at' hh:nn">
+]>
 <Widget>
     <WidgetPrefs title="Login"
-                 contenttype_name="percLoginAsset"
-                 category="integration"
-                 description="User login for membership services."
-                 author="Percussion Software Inc"
-                 thumbnail="/rx_resources/widgets/login/images/widgetIconLogin.gif"
-                 preferred_editor_width="780"
-                 preferred_editor_height="500"
-                 is_responsive="true"/>
+        contenttype_name="percLoginAsset"
+        category="integration"
+        description="User login for membership services."
+        author="Percussion Software Inc"
+        thumbnail="/rx_resources/widgets/login/images/widgetIconLogin.gif" 
+        preferred_editor_width="780"
+        preferred_editor_height="500"
+		is_responsive="true"/>
 
-    <UserPref name="perc-label-layout"
-              display_name="Label layout"
-              default_value="align_above"
-              datatype="enum">
-        <EnumValue value="align_above" display_value="Align above the field" />
-        <EnumValue value="align_left" display_value="Align to the left of the field" />
+    <UserPref name="perc-label-layout" 
+        display_name="Label layout"
+        default_value="align_above"
+        datatype="enum">
+        <EnumValue value="align_above" display_value="Align above the field" />       
+        <EnumValue value="align_left" display_value="Align to the left of the field" /> 
     </UserPref>
-
-    <UserPref name="perc-render-mode"
-              display_name="Render mode"
-              default_value="show_as_link"
-              datatype="enum">
-        <EnumValue value="show_as_link" display_value="Show as link/text" />
-        <EnumValue value="show_login_form" display_value="Show login form" />
+    
+    <UserPref name="perc-render-mode" 
+        display_name="Render mode"
+        default_value="show_as_link"
+        datatype="enum">
+        <EnumValue value="show_as_link" display_value="Show as link/text" />       
+        <EnumValue value="show_login_form" display_value="Show login form" /> 
     </UserPref>
-
-    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->
-    <!-- Generally we always provide root and summary class css fields -->
+   
+    <!-- CssPrefs are input fields exposed in the CSS config for a widget -->  
+    <!-- Generally we always provide root and summary class css fields -->     
     <CssPref name="rootclass"
-             display_name="CSS root class"
-             datatype="string" />
+      display_name="CSS root class" 
+      datatype="string" />
 
     <Code type="jexl">
-        <!-- This section is used to set up data that will be used in the content section -->
-        <![CDATA[
+    <!-- This section is used to set up data that will be used in the content section -->
+    <![CDATA[
         $pageId = $perc.page.id;
         $widgetId = $perc.widget.item.id;
 
@@ -84,9 +110,9 @@
     ]]>
     </Code>
 
-    <!-- This section defines the rendered content -->
+    <!-- This section defines the rendered content -->    
     <Content type="velocity">
-        <![CDATA[
+    <![CDATA[
         #loadRelatedWidgetContents()
         <div class="$!{rootclass} percLogin" data="{&quot;notLoggedInMessage&quot;:&quot;$notLoggedInMessage&quot;
                                                     ,&quot;loggedInMessage&quot;:&quot;$loggedInMessage&quot;
@@ -145,5 +171,5 @@
         #end
         </div>
     ]]>
-    </Content>
+    </Content>    
 </Widget>

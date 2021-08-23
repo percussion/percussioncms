@@ -25,32 +25,33 @@
 package com.percussion.rest.preferences;
 
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="UserPreference")
-@Schema(description="UserPreference")
+@ApiModel(value="UserPreference")
 public class UserPreference {
 
-    @Schema(description="Property Name", required = true)
+    @ApiModelProperty(value="Property Name", required = true)
     private String name;
 
-    @Schema(description="Property Value", required=true)
+    @ApiModelProperty(value="Property Value", required=true)
     private String value;
 
-    @Schema(description="The category type, which is an arbitrary string used to group related\n" +
+    @ApiModelProperty(value="The category type, which is an arbitrary string used to group related\n" +
             "properties together. All categories beginning with sys_ are reserved by\n" +
             "the system. The category for session variables is sys_session.")
     private String category;
 
-    @Schema(description="The context to which the property belongs. May be null or empty. system or private")
+    @ApiModelProperty(value="The context to which the property belongs. May be null or empty. system or private")
     private String context;
 
-    @Schema(description="Extra Parameter / Action")
+    @ApiModelProperty(value="Extra Parameter / Action")
     private String extraParam;
 
-    @Schema(description="The user name of the user to who this property belongs.", required=true)
+    @ApiModelProperty(value="The user name of the user to who this property belongs.", required=true)
     private String userName;
 
     public UserPreference(){}

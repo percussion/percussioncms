@@ -26,18 +26,19 @@ package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 @XmlRootElement(name = "LinkRef")
-@Schema(description="LinkRef")
+@ApiModel(value="LinkRef")
 public class LinkRef
 {
-    @Schema(required=false,description="link")
+    @ApiModelProperty(value="name", required=false,notes="link")
     private String name;
 
-    @Schema(required=false,description="href to section or external source")
+    @ApiModelProperty(value="href", required=false,notes="href to section or external source")
     private String href;
 
     public LinkRef()

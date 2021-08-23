@@ -24,17 +24,16 @@
 
 package com.percussion.pagemanagement.data;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+import io.swagger.annotations.ApiModel;
+
 
 @XmlRootElement(name = "TemplateSummary")
-@ArraySchema(schema=@Schema(implementation =PSTemplateSummary.class))
+@ApiModel(description = "A List of PSTemplateSummary")
 @JsonRootName("TemplateSummary")
 public class PSTemplateSummaryList extends ArrayList<PSTemplateSummary> {
     public PSTemplateSummaryList(Collection<PSTemplateSummary> c) {

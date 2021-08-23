@@ -25,22 +25,23 @@
 package com.percussion.rest.extensions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ExtensionFilterOptions")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description="Represents options when filtering for extensions. ")
+@ApiModel(description="Represents options when filtering for extensions. ")
 public class ExtensionFilterOptions {
 	
-	@Schema(name="handlerNamePattern", description="A case-sensitive SQL-like pattern for the extension handler name. An extension will be returned only if itshandler's name matches this pattern. If null, then this criteria is dropped from the search.")
+	@ApiModelProperty(value="handlerNamePattern", notes="A case-sensitive SQL-like pattern for the extension handler name. An extension will be returned only if itshandler's name matches this pattern. If null, then this criteria is dropped from the search.")
 	private String handlerNamePattern;
-	@Schema(name="context", description="The context in which to search inside each handler. This is not a pattern -- it is a literal context whose canonicalized version will be used to further narrow down the list of extensions. If null, this criteria will be dropped from the search (will return extensions from all contexts within each handler).")
+	@ApiModelProperty(value="context", notes="The context in which to search inside each handler. This is not a pattern -- it is a literal context whose canonicalized version will be used to further narrow down the list of extensions. If null, this criteria will be dropped from the search (will return extensions from all contexts within each handler).")
 	private String context;
-	@Schema(name="interfacePattern", description="A case-sensitive SQL-like pattern for the interfaces implemented by the extension. Only extensions which implement an interface whose name matches this pattern will be returned. If null, then this criteria is dropped from the search.")
+	@ApiModelProperty(value="interfacePattern", notes="A case-sensitive SQL-like pattern for the interfaces implemented by the extension. Only extensions which implement an interface whose name matches this pattern will be returned. If null, then this criteria is dropped from the search.")
 	private String interfacePattern;
-	@Schema(name="extensionNamePattern",description="A case-sensitive SQL-like pattern for the name of the extension. Only extensions whose name matches this pattern will be returned. If null, then this criteria will be dropped from the search.")
+	@ApiModelProperty(value="extensionNamePattern",notes="A case-sensitive SQL-like pattern for the name of the extension. Only extensions whose name matches this pattern will be returned. If null, then this criteria will be dropped from the search.")
 	private String extensionNamePattern;
 
 	public ExtensionFilterOptions(){}

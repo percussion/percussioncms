@@ -25,8 +25,7 @@
 package com.percussion.pathmanagement.data;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.Collection;
 
 
 @XmlRootElement(name = "PathItem")
-@ArraySchema(schema=@Schema(implementation = PSPathItem.class))
+@ApiModel(description = "A List of PSPathItem")
 @JsonRootName("PathItem")
 public class PSPathItemList extends ArrayList<PSPathItem> {
     public PSPathItemList(Collection<? extends PSPathItem> c) {

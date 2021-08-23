@@ -1,5 +1,29 @@
+/*
+ *     Percussion CMS
+ *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     Mailing Address:
+ *
+ *      Percussion Software, Inc.
+ *      PO Box 767
+ *      Burlington, MA 01803, USA
+ *      +01-781-438-9900
+ *      support@percussion.com
+ *      https://www.percussion.com
+ *
+ *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ */
+
 (function($){
-    $(function(){
+    $(document).ready(function(){ 
             $( ".form-datepicker" ).datepicker({
                 showOn: "button",
                 buttonImage: "/web_resources/widgets/form/images/calendar.gif",
@@ -10,7 +34,9 @@
                 changeYear: true,
                 onClose: function(dateText, inst) {
                         $(this).trigger('focusout');     
-                }
+                                                }
+
+
             });
             
             /**
@@ -46,18 +72,9 @@
 				});
 				return nameResult;
 			}
-
-			function getFreshToken(){
-                $( document ).ajaxSend(function( event, jqxhr, settings ) {
-                    if ( settings.url == "ajax/test.html" ) {
-                        $( ".log" ).text( "Triggered ajaxSend handler." );
-                    }
-                });
-            }
-
+          
             $('.perc-form').find('form').each(function(){
-
-                //if the URL has a name parameter, it will set the default value of the send to option
+				//if the URL has a name parameter, it will set the default value of the send to option 
 				// to what is passed in by the URL
 				var name = getName(location.href),
 					length = 0;
@@ -83,13 +100,6 @@
                         attr("name", "perc_hostUrl").
                         attr("value", getLocation(location.href))
                     );
-
-                    let csrfToken = $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/forms/csrf"));
-
-                    if(typeof csrfToken !== "undefined" && csrfToken != null) {
-                        //Add csrf token if available
-                        $(this).append('<input/>').attr("type", "hidden").attr("name", csrfToken.param).attr("value", csrfToken.token);
-                    }
                 }
                 
                 var myRules = {};

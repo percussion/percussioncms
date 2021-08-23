@@ -27,10 +27,6 @@ package com.percussion.server;
 import com.percussion.design.objectstore.PSControlMeta;
 import com.percussion.util.IOTools;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -42,6 +38,11 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * Singleton class that will manage custom control resources.  This class will
@@ -114,6 +115,8 @@ public class PSCustomControlManager extends PSBaseControlManager
                + "initialized");
       }
       
+      FileWriter fw = null;
+      
       try
       {
          // load current control imports
@@ -128,28 +131,26 @@ public class PSCustomControlManager extends PSBaseControlManager
          rxTempStr = rxTempStr.substring(0, index);
          
          // add imports for custom controls 
-         StringBuilder importStr = new StringBuilder();
-
+         String importStr = "";
          List<File> ctrlFiles = getControlFiles();
          for (File ctrlFile : ctrlFiles)
          {
             String relPath = CUSTOM_CONTROLS_DIR + '/' + ctrlFile.getName();
             
-            if (importStr.length() > 0)
+            if (importStr.trim().length() > 0)
             {
-               importStr.append('\n');
+               importStr += '\n';               
             }
             
-            importStr.append(createImport(relPath).trim());
+            importStr += createImport(relPath);
          }
          
-         rxTempStr += importStr.append('\n').append(XSL_STYLESHEET_CLOSE_TAG).toString();
-
-         try(FileWriter fw = new FileWriter(rxTempFile)) {
-            fw.write(rxTempStr);
-            fw.flush();
-         }
-
+         rxTempStr += importStr + '\n' + XSL_STYLESHEET_CLOSE_TAG;
+         
+         fw = new FileWriter(rxTempFile);
+         fw.write(rxTempStr);
+         fw.flush();
+         
          // touch necessary files so changes will be picked up
          for (String path : ms_touchFiles)
          {
@@ -162,7 +163,20 @@ public class PSCustomControlManager extends PSBaseControlManager
       {
          PSConsole.printMsg(SUBSYSTEM, e); 
       }
-
+      finally
+      {
+         if (fw != null)
+         {
+            try
+            {
+               fw.close();
+            }
+            catch (IOException e)
+            {
+               
+            }
+         }
+      }
    }
    
    /**
@@ -260,11 +274,11 @@ public class PSCustomControlManager extends PSBaseControlManager
       if (ctrlsDir.exists() && ctrlsDir.isDirectory())
       {
          File[] ctrlFiles = ctrlsDir.listFiles();
-         if(ctrlFiles !=null) {
-            for (File ctrlFile : ctrlFiles) {
-               if (isControlFile(ctrlFile)) {
-                  files.add(ctrlFile);
-               }
+         for (File ctrlFile : ctrlFiles)
+         {
+            if (isControlFile(ctrlFile))
+            {
+               files.add(ctrlFile);
             }
          }
       }
@@ -311,7 +325,7 @@ public class PSCustomControlManager extends PSBaseControlManager
                filePath
             };
             
-           PSConsole.printMsg(SUBSYSTEM,
+            PSConsole.printMsg(SUBSYSTEM,
                   IPSServerErrors.INVALID_CTRL_FILE_MISSING_CTRL, args);
          }
          else if (ctrls.size() > 1)

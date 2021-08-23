@@ -134,9 +134,9 @@ public class PSHtmlProcessingError extends PSLogError {
    }
 
 
-   private final String      m_sessId;
-   private final int         m_errorCode;
-   private final Object[]   m_errorArgs;
-   private final String      m_styleSheet;
+   private String      m_sessId;
+   private int         m_errorCode;
+   private Object[]   m_errorArgs;
+   private String      m_styleSheet;
 }
 

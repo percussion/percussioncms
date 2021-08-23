@@ -23,8 +23,9 @@
  */
 
 package com.percussion.rest.roles;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -32,19 +33,19 @@ import java.util.List;
 
 
 @XmlRootElement(name = "Role")
-@Schema(name = "Role", description = "Represents a system Role that a user may belong to.")
+@ApiModel(value = "Role", description = "Represents a system Role that a user may belong to.")
 public class Role {
 
-	@Schema(name="name", required=true,description="A unique name for the role.")	
+	@ApiModelProperty(value="name", required=true,notes="A unique name for the role.")	
 	private String name;
 	
-	@Schema(name="description", required=true,description="A friendly description of the Role's purpose.")	
+	@ApiModelProperty(value="description", required=true,notes="A friendly description of the Role's purpose.")	
 	private String description;
 	
-	@Schema(name="homePage", required=true,description="The default home page for the Role.  Valid values are: Dashboard, Editor, or Home")
+	@ApiModelProperty(value="homePage", required=true,notes="The default home page for the Role.  Valid values are: Dashboard, Editor, or Home")	
 	private String homePage;
 	
-	@ArraySchema(schema=@Schema(implementation = String.class,name="users", required=true,description="A list of the user name's linked to this role."))
+	@ApiModelProperty(value="users", required=true,notes="A list of the user name's linked to this role.")
 	private List<String> users;
 	
 	

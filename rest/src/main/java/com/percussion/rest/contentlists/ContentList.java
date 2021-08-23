@@ -28,51 +28,52 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.Guid;
 import com.percussion.rest.extensions.Extension;
 import com.percussion.rest.itemfilter.ItemFilter;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ContentList")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Represents a Content List")
+@ApiModel(description = "Represents a Content List")
 public class ContentList {
 
-    @Schema(required = false, description = "The unique ID for this ContentList.")
+    @ApiModelProperty(value = "contentListId", required = false, notes = "The unique ID for this ContentList.")
     private
     Guid contentListId;
 
-    @Schema(required = false, description = "Ignored.")
+    @ApiModelProperty(value = "version", required = false, notes = "Ignored.")
     private Integer version;
 
-    @Schema( required = false, description = "The name of the Content List. Must be unique.")
+    @ApiModelProperty(value = "name", required = false, notes = "The name of the Content List. Must be unique.")
     private
     String name;
 
-    @Schema(name = "description", required = false, description = "A human friendly description of the Content List.")
+    @ApiModelProperty(value = "description", required = false, notes = "A human friendly description of the Content List.")
     private
     String description;
 
-    @Schema(name = "type", required = false, description = "The type of the ContentList.", allowableValues = "[Normal,Incremental]")
+    @ApiModelProperty(value = "type", required = false, notes = "The type of the ContentList.", allowableValues = "[Normal,Incremental]")
     private
     String type = "Normal";
 
-    @Schema(name = "url", required = false, description = "The URL for this ContentList")
+    @ApiModelProperty(value = "url", required = false, notes = "The URL for this ContentList")
     private
     String url;
 
-    @Schema(name = "generator", required = false, description = "The ContentList Generator configured for this ContentList")
+    @ApiModelProperty(value = "generator", required = false, notes = "The ContentList Generator configured for this ContentList")
     private
     Extension generator;
 
-    @Schema(name = "expander", required = false, description = "The ContentList Template Expander configured for this ContentList")
+    @ApiModelProperty(value = "expander", required = false, notes = "The ContentList Template Expander configured for this ContentList")
     private
     Extension expander;
 
-    @Schema(name = "editionType", required = true, description = "Indicates the type of Edition (Publish or Unpublish then Publish)", allowableValues = "[Publish,Unpublish Then Publish]")
+    @ApiModelProperty(value = "editionType", required = true, notes = "Indicates the type of Edition (Publish or Unpublish then Publish)", allowableValues = "[Publish,Unpublish Then Publish]")
     private
     String editionType;
 
-    @Schema(name = "itemFilter", required = true, description = "The ItemFilter used to filter content returned by this Content List.")
+    @ApiModelProperty(value = "itemFilter", required = true, notes = "The ItemFilter used to filter content returned by this Content List.")
     private
     ItemFilter itemFilter = null;
 

@@ -25,52 +25,53 @@
 package com.percussion.rest.itemfilter;
 
 import com.percussion.rest.Guid;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Set;
 
 @XmlRootElement(name = "ItemFilter")
-@Schema(description = "Represents an ItemFilter")
+@ApiModel(description = "Represents an ItemFilter")
 public class ItemFilter {
 
     /**
      * Primary key for an item filter
      */
-    @Schema(name = "filterId", description="The unique Item Filter GUID")
+    @ApiModelProperty(name = "filterId", value = "The unique Item Filter GUID")
     private Guid filterId;
 
     /**
      * Name of the filter rule, never <code>null</code> or empty after
      * construction
      */
-    @Schema(name = "name", description="A system unique name for this Item Filter", required = true)
+    @ApiModelProperty(name = "name", value = "A system unique name for this Item Filter", required = true)
     private String name;
 
     /**
      * Description of the rule, may be <code>null</code> or empty
      */
-    @Schema(name = "description", description="A human friendly description for the Item Filter")
+    @ApiModelProperty(name = "description", value = "A human friendly description for the Item Filter")
     private String description;
 
     /**
      * The associated authtype, may be <code>null</code>
      */
-    @Schema(name = "legacyAuthtype", allowableValues = "[0,1,2,101]", description = "Values map to All Content, All Public Content,Custom, Site Folder")
+    @ApiModelProperty(name = "legacyAuthtype", value = "Legacy AuthType", allowableValues = "[0,1,2,101]", notes = "Values map to All Content, All Public Content,Custom, Site Folder")
     private Integer legacyAuthtype;
 
     /**
      * The filter is an aggregation of rules to be applied to the items being
      * filtered.
      */
-    @Schema(name = "rules")
+    @ApiModelProperty(name = "rules")
     private Set<ItemFilterRuleDefinition> rules;
 
     /**
      * Item filters can be changed, this member points to the parent filter,
      * if there is one
      */
-    @Schema(name = "parentFilter", description="The Parent Item Filter if there is a parent configured.")
+    @ApiModelProperty(name = "parentFilter", value = "The Parent Item Filter if there is a parent configured.")
     private ItemFilter parentFilter;
 
     public ItemFilter(){}

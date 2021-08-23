@@ -38,6 +38,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -48,7 +49,7 @@ public class PSSecurityFilter extends GenericFilterBean {
     private static final Logger log = LogManager.getLogger(PSSecurityFilter.class);
 
     private static String PERC_SECURITY_PROPS_ROOT = "/conf/perc/perc-security.properties";
-    private String CONTENT_SECURITY_POLICY_NAME= "contentSecurityPolicy";
+    private String CONTENT_SECURITY_POLICY_NAME= "ContentSecurityPolicy";
     private String CONTENT_SECURITY_POLICY_VALUE= "default-src 'self'";
     private static String CATALINA_BASE = "catalina.base";
 

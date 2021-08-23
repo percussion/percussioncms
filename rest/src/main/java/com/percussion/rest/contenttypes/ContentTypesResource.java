@@ -25,12 +25,10 @@
 package com.percussion.rest.contenttypes;
 
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.GET;
@@ -46,7 +44,7 @@ import java.util.List;
 @PSSiteManageBean(value="restContentTypesResource")
 @Path("/contenttypes")
 @XmlRootElement
-@Tag(name = "Content Types", description = "Content Type operations")
+@Api(value = "/contenttypes", description = "Content Type operations")
 public class ContentTypesResource {
 
     @Autowired
@@ -61,12 +59,10 @@ public class ContentTypesResource {
     @Path("/")
     @Produces(
             {MediaType.APPLICATION_JSON})
-    @Operation(summary = "List available ContentTypes", description = "Lists all available Content Types on the system.  Not filtered by security."
-            , responses = {
-             @ApiResponse(responseCode = "200", description = "OK",
-             content = @Content(array = @ArraySchema( schema = @Schema(implementation = ContentType.class)))),
-             @ApiResponse(responseCode = "404", description = "No Content Types found"),
-             @ApiResponse(responseCode = "500", description = "Error")
+    @ApiOperation(value = "List available ContentTypes", notes = "Lists all available Content Types on the system.  Not filtered by security."
+            , response = ContentType.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "No Content Types found")
     })
     public List<ContentType> getContentTypes()
     {
@@ -77,12 +73,10 @@ public class ContentTypesResource {
     @Path("/by-site/{id}")
     @Produces(
             {MediaType.APPLICATION_JSON})
-    @Operation(summary = "List available Content Types by Site", description = "Lists Content Types available for a site."
-            , responses = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content(array = @ArraySchema( schema = @Schema(implementation = ContentType.class)))),
-            @ApiResponse(responseCode = "404", description = "No Content Types found"),
-            @ApiResponse(responseCode = "500", description = "Error")
+    @ApiOperation(value = "List available Content Types by Site", notes = "Lists Content Types available for a site."
+         , response = ContentType.class, responseContainer = "List")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "No Content Types found")
     })
     public List<ContentType> getContentTypesBySite( @PathParam("id") int siteId)
     {

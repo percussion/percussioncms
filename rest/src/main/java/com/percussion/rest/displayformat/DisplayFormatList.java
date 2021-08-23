@@ -24,15 +24,14 @@
 
 package com.percussion.rest.displayformat;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "DisplayFormatList")
-@ArraySchema(schema=@Schema(implementation = DisplayFormat.class))
+@ApiModel(description="Represents a cList of Display Formats")
 public class DisplayFormatList extends ArrayList<DisplayFormat> {
     public DisplayFormatList(Collection<? extends DisplayFormat> c) {
         super(c);

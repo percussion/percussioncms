@@ -26,41 +26,42 @@ package com.percussion.rest.contenttypes;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.Guid;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ContentType")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description="Represents a Content Type")
+@ApiModel(description="Represents a Content Type")
 public class ContentType {
 
-    @Schema(required=true,description="The Content Type Id")
+    @ApiModelProperty(value="objectType", required=true,notes="The Content Type Id")
     private Guid guid;
 
 
-	@Schema(required=false,description="Guid for the Object Type content Type")
+	@ApiModelProperty(value="objectType", required=false,notes="Guid for the Object Type content Type")
 	private Guid objectType;
 
-	@Schema(required=false,description="A system unique name for the Content Type")
+	@ApiModelProperty(value="name", required=false,notes="A system unique name for the Content Type")
 	private String name;
 
-	@Schema(required=false,description="A human friendly label for this Content Type")
+	@ApiModelProperty(value="label", required=false,notes="A human friendly label for this Content Type")
 	private String label;
 
-	@Schema(required=false,description="A human friendly Description of this Content Type's purpose")
+	@ApiModelProperty(value="description", required=false,notes="A human friendly Description of this Content Type's purpose")
 	private String description;
 
-	@Schema(required=false,description="The url to use to request a new Item of this Content Type")
+	@ApiModelProperty(value="newRequest", required=false,notes="The url to use to request a new Item of this Content Type")
 	private String newRequest;
 
-	@Schema(required=false,description="The url to use when searching for Items of this Content Type")
+	@ApiModelProperty(value="queryRequest", required=false,notes="The url to use when searching for Items of this Content Type")
 	private String queryRequest;
 
-	@Schema(required=false,description="The url to use for updating an Item of this Content Type")
+	@ApiModelProperty(value="updateRequest", required=false,notes="The url to use for updating an Item of this Content Type")
 	private String updateRequest;
 
-	@Schema(required=false,description="When true, this Content Type should be hidden from the user interface")
+	@ApiModelProperty(value="hideFromMenu", required=false,notes="When true, this Content Type should be hidden from the user interface")
 	private boolean hideFromMenu;
 
     public ContentType(){}

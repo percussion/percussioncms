@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
 	<psxi18n:lookupkeys>
 		<key name="psx.generic@No entries found">Message that will be shown when no entries found for a query.</key>
 		<key name="psx.generic@Close">Label for close button in dialog boxes.</key>

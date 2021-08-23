@@ -24,17 +24,16 @@
 
 package com.percussion.comments.data;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+import io.swagger.annotations.ApiModel;
+
 
 @XmlRootElement(name = "comments")
-@ArraySchema(schema=@Schema(implementation = PSComment.class))
+@ApiModel(description = "A List of PSComment")
 @JsonRootName("comments")
 public class PSCommentList extends ArrayList<PSComment> {
     public PSCommentList(Collection<? extends PSComment> c) {

@@ -25,22 +25,22 @@
 package com.percussion.rest.extensions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement(name = "ExtensionMethod")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Represents an Extension Method")
+@ApiModel(description = "Represents an Extension Method")
 public class ExtensionMethod {
 
-    @Schema(name="name", description="The name of the Extension Method")
+    @ApiModelProperty(name="name", value="name", notes="The name of the Extension Method")
     private String name;
-    @Schema(name="description", description="The description of the Extension method")
+    @ApiModelProperty(name="description", value="description", notes="The description of the Extension method")
     private String description = null;
-    @ArraySchema(schema = @Schema(implementation = ExtensionParameter.class))
+    @ApiModelProperty(name="parameters", value="parameters", notes="A list of ExtensionParamater objects holding the parameters required by the method")
     private List<ExtensionParameter> parameters;
 
     public ExtensionMethod(){}

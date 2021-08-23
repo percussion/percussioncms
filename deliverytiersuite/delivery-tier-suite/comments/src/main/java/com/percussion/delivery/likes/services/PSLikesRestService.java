@@ -27,9 +27,9 @@ import com.percussion.delivery.services.PSAbstractRestService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -45,6 +45,7 @@ import javax.ws.rs.core.Response;
  */
 @Path("/likes")
 @Component
+@Scope("singleton")
 public class PSLikesRestService extends PSAbstractRestService
 {
 
@@ -55,7 +56,6 @@ public class PSLikesRestService extends PSAbstractRestService
     private IPSLikesService likesService;
     private static final Logger log = LogManager.getLogger(PSLikesRestService.class);
 
-    @Inject
     @Autowired
     public PSLikesRestService(IPSLikesService service)
     {
@@ -135,7 +135,7 @@ public class PSLikesRestService extends PSAbstractRestService
 
     @Override
     public Response updateOldSiteEntries(String prevSiteName, String newSiteName) {
-        log.info("Attempting to update likes service with site name: {}" , prevSiteName);
+        log.info("Attempting to update likes service with site name: " + prevSiteName);
         likesService.updateLikesForSiteAfterRename(prevSiteName, newSiteName);
         return Response.status(Response.Status.NO_CONTENT).build();
     }

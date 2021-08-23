@@ -33,11 +33,13 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.xml.PSXPathEvaluator;
-import org.w3c.dom.Document;
 
-import javax.xml.transform.TransformerException;
 import java.net.MalformedURLException;
 import java.util.HashMap;
+
+import javax.xml.transform.TransformerException;
+
+import org.w3c.dom.Document;
 
 /**
  * This UDF is a hybrid of makeIntLink and CasGenPubLocation. This UDF will
@@ -52,13 +54,13 @@ public class PSGenerateAssemblerLink extends PSSimpleJavaUdfExtension
     * assembler resource name is obtained by querying the sys_casSupport
     * application.
     * 
-    * @param params [0] the variantid of the variant for which the location url
+    * @param params[0] the variantid of the variant for which the location url
     *           is generated, not <code>null</code> or empty.
-    *        params [1] the contentid for which the location url is generated.
+    * @param params[1] the contentid for which the location url is generated.
     *           Optional, but required if revisionid is passed.
-    *       params [2] the revisionid of the content for which the location url
+    * @param params[2] the revisionid of the content for which the location url
     *           is generated. Optional, but required if contentid is passed.
-    *      params [3] the sys_authtype parameter to be added to the assembler
+    * @param params[3] the sys_authtype parameter to be added to the assembler
     *           url. Optional. If not supplied, the value will be obtained from
     *           the request context.
     *           <li>sys_context (optional)

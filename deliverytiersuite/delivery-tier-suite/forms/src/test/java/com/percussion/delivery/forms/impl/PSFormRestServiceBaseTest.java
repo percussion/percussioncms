@@ -58,6 +58,8 @@ public class PSFormRestServiceBaseTest extends JerseyTest {
 	/***
 	 * Takes the context file as an arg and spins up grizzly to
 	 * test rest methods.
+	 *
+	 * @param appContext
 	 */
 	@Override
 	protected Application configure() {
@@ -83,7 +85,7 @@ public class PSFormRestServiceBaseTest extends JerseyTest {
 	@Ignore
 	public void testGetRestVersion(){
 		Client client = ClientBuilder.newClient();
-		WebTarget webTarget = client.target("/forms/version");
+		WebTarget webTarget = client.target("/form/version");
 		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
 		Response response = invocationBuilder.get();
         Assert.assertNotNull(response);
@@ -97,16 +99,6 @@ public class PSFormRestServiceBaseTest extends JerseyTest {
 		Assert.assertNotNull(version);
 		System.out.print(version);
 		return version;
-	}
-
-	@Test
-	@Ignore ("Integration tests are failing")
-	public void testCSRF(){
-		Client client = ClientBuilder.newClient();
-		WebTarget webTarget = client.target("/forms/csrf");
-		Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
-		Response response = invocationBuilder.get();
-		System.out.println(response.getEntity());
 	}
 
 }

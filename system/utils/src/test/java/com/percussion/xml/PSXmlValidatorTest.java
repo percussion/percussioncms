@@ -23,26 +23,22 @@
  */
 package com.percussion.xml;
 
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.lang.StringUtils;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * Test the xml validator class.
  *
  */
-public class PSXmlValidatorTest
+public class PSXmlValidatorTest extends TestCase
 {  
    
    /**
@@ -53,25 +49,31 @@ public class PSXmlValidatorTest
       super();     
    }
 
-   @Test
-   @Ignore("TODO: Add namespace to test catalog")
+   /**
+    * @param name
+    */
+   public PSXmlValidatorTest(String name)
+   {
+      super(name);      
+   }
+   
    public void testValidation() throws Exception
    {
       List<Exception> errors = new ArrayList<Exception>();
       assertTrue(PSXmlValidator.validateXmlAgainstSchema(
          m_goodFile, m_xsdFile, errors));
-      assertEquals(0, errors.size());
+      assertTrue(errors.size() == 0);
       errors = new ArrayList<Exception>();
-      assertFalse(PSXmlValidator.validateXmlAgainstSchema(
-              m_badFile, m_xsdFile, errors));
-      assertEquals(1, errors.size());
+      assertTrue(!PSXmlValidator.validateXmlAgainstSchema(
+         m_badFile, m_xsdFile, errors));
+      assertTrue(errors.size() == 1);
    }
 
    /* (non-Javadoc)
     * @see junit.framework.TestCase#setUp()
     */
-   @Before
-   public void setUp() throws Exception
+   @Override
+   protected void setUp() throws Exception
    {
       if(!DIR.exists())
          DIR.mkdirs();
@@ -114,15 +116,23 @@ public class PSXmlValidatorTest
    /* (non-Javadoc)
     * @see junit.framework.TestCase#tearDown()
     */
-   @After
-   public void tearDown() throws Exception
+   @Override
+   protected void tearDown() throws Exception
    {
       m_xsdFile.delete();
       m_goodFile.delete();
       m_badFile.delete();
       DIR.delete();
    }
-
+   
+// collect all tests into a TestSuite and return it
+   public static Test suite()
+   {
+      TestSuite suite = new TestSuite();
+      suite.addTest(new PSXmlValidatorTest("testValidation"));      
+      return suite;
+   }
+   
    private File m_xsdFile;
    private File m_goodFile;
    private File m_badFile;

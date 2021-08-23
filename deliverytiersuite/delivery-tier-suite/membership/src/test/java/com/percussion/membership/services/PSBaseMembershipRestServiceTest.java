@@ -59,6 +59,7 @@ public  class PSBaseMembershipRestServiceTest extends JerseyTest
      * Takes the context file as an arg and spins up grizzly to
      * test rest methods.
      *
+     * @param appContext
      */
     @Override
     protected Application configure() {

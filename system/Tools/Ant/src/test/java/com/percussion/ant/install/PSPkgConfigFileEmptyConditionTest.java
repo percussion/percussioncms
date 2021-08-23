@@ -23,9 +23,7 @@
  */
 package com.percussion.ant.install;
 
-import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.utils.testing.UnitTest;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -55,11 +53,6 @@ public class PSPkgConfigFileEmptyConditionTest
     */
    private static final String TEST_CFG_FILE_EMPTY =
       "/com/percussion/ant/install/perc.SystemObjects_defaultConfig_Empty.xml";
-
-   @Before
-   public void setup(){
-      PSSecureXMLUtils.setupJAXPDefaults();
-   }
 
    @Test
    public void testEval() throws IOException

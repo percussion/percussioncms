@@ -23,12 +23,9 @@
  */
 package com.percussion.xml;
 
-import com.percussion.error.PSExceptionUtils;
-import com.percussion.security.xml.IPSInternalRequestURIResolver;
-import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.tools.IPSUtilsConstants;
+import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.utils.xml.PSProcessServerPageTags;
 import com.percussion.utils.xml.PSSaxParseException;
 import org.apache.logging.log4j.LogManager;
@@ -93,7 +90,6 @@ public class PSXmlDocumentBuilder {
      * platforms where &lt;LF&gt; is normally used.
      */
     private static final String NEWLINE = "\r\n";
-    private static final String DOC_NOT_NULL = "doc may not be null";
 
     /**
      * List of cached validating document builders, modified by calls to
@@ -145,16 +141,6 @@ public class PSXmlDocumentBuilder {
      * the Xml Document will have DocType declaration.
      */
     public static final int FLAG_OMIT_DOC_TYPE = 8;
-
-    private static IPSInternalRequestURIResolver internalRequestURIResolver;
-
-    public static IPSInternalRequestURIResolver getInternalRequestURIResolver() {
-        return internalRequestURIResolver;
-    }
-
-    public static void setInternalRequestURIResolver(IPSInternalRequestURIResolver internalRequestURIResolver) {
-        PSXmlDocumentBuilder.internalRequestURIResolver = internalRequestURIResolver;
-    }
 
     /**
      * Create a new, empty XML document.
@@ -228,14 +214,7 @@ public class PSXmlDocumentBuilder {
         try {
             if (dbf == null) {
                 dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                        new PSXmlSecurityOptions(
-                                true,
-                                true,
-                                true,
-                                true,
-                                true,
-                                validating
-                        ));
+                        false);
             }
         } catch (FactoryConfigurationError err) {
             dbf = null;
@@ -245,14 +224,7 @@ public class PSXmlDocumentBuilder {
             try {
                 dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
                         "org.apache.xerces.jaxp.DocumentBuilderFactoryImpl",
-                        new PSXmlSecurityOptions(
-                                true,
-                                true,
-                                true,
-                                false,
-                                true,
-                                false
-                        ));
+                        false);
             } catch (Exception e) {
                 dbf = null;
                 throw new RuntimeException(e.getLocalizedMessage());
@@ -322,12 +294,7 @@ public class PSXmlDocumentBuilder {
                 DocumentBuilderFactory dbf = getDocumentBuilderFactory(validating);
 
                 db = dbf.newDocumentBuilder();
-
-                PSCatalogResolver resolver  = new PSCatalogResolver();
-                if(internalRequestURIResolver != null){
-                    resolver.setInternalRequestURIResolver(internalRequestURIResolver);
-                }
-                db.setEntityResolver(resolver);
+                db.setEntityResolver(PSEntityResolver.getInstance());
                 returnDocumentBuilderFactory(dbf);
             }
 
@@ -478,14 +445,8 @@ public class PSXmlDocumentBuilder {
             throw new IllegalArgumentException("errHandler may not be null");
         }
 
-        PSCatalogResolver resolver = new PSCatalogResolver();
-        if(internalRequestURIResolver!= null)
-            resolver.setInternalRequestURIResolver(internalRequestURIResolver);
-
         DocumentBuilder db = getDocumentBuilder(validate);
         db.setErrorHandler(errHandler);
-        db.setEntityResolver(resolver);
-
 
         Document doc = db.parse(in);
         returnDocumentBuilder(db);
@@ -503,7 +464,8 @@ public class PSXmlDocumentBuilder {
         }
 
         if (errors != null) {
-            throw new PSSaxParseException(errors);
+            PSSaxParseException ex = new PSSaxParseException(errors);
+            throw ex;
         }
 
         return doc;
@@ -540,7 +502,7 @@ public class PSXmlDocumentBuilder {
     public static Document createXmlDocument(String source, String serverRoot,
         Properties properties, PSProcessServerPageTags serverPageTags,
         String encoding, boolean validate)
-        throws IOException, SAXException {
+        throws IOException, SAXException, UnsupportedEncodingException {
         if ((source == null) || (source.trim().length() == 0)) {
             return createXmlDocument();
         }
@@ -586,11 +548,11 @@ public class PSXmlDocumentBuilder {
             serverRoot = ".";
         }
 
-        return "\t<!ENTITY % HTMLlat1 PUBLIC \"-//W3C//ENTITIES_Latin_1_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
+        return "\t<!ENTITY % HTMLlat1 SYSTEM \"" + serverRoot +
         "/DTD/HTMLlat1x.ent\">" + NEWLINE + "\t\t%HTMLlat1;" + NEWLINE +
-        "\t<!ENTITY % HTMLsymbol PUBLIC \"-//W3C//ENTITIES_Symbols_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
+        "\t<!ENTITY % HTMLsymbol SYSTEM \"" + serverRoot +
         "/DTD/HTMLsymbolx.ent\">" + NEWLINE + "\t\t%HTMLsymbol;" + NEWLINE +
-        "\t<!ENTITY % HTMLspecial PUBLIC \"-//W3C//ENTITIES_Special_for_XHTML//EN\" SYSTEM \"file:" + serverRoot +
+        "\t<!ENTITY % HTMLspecial SYSTEM \"" + serverRoot +
         "/DTD/HTMLspecialx.ent\">" + NEWLINE + "\t\t%HTMLspecial;";
     }
 
@@ -626,7 +588,6 @@ public class PSXmlDocumentBuilder {
      *
      * @deprecated this does not work, use com.percussion.xml.PSXmlDomUtils#tidyInput(com.percussion.xmldom.PSXmlDomContext, String) instead.
      */
-    @Deprecated
     public static String tidy(String source, Properties properties,
         PSProcessServerPageTags serverPageTags, String encoding,
         String serverRoot) throws UnsupportedEncodingException, IOException {
@@ -703,6 +664,9 @@ public class PSXmlDocumentBuilder {
      * @param loc the locale to use when formatting the error text
      */
     public static Document createErrorDocument(Throwable t, Locale loc) {
+        if (loc != null) {
+            ;
+        }
 
         /* and report it to the user */
         Document respDoc = createXmlDocument();
@@ -760,7 +724,7 @@ public class PSXmlDocumentBuilder {
     public static Element createRoot(Document doc, String namespace,
         String alias, String rootName) {
         if (doc == null) {
-            throw new IllegalArgumentException(DOC_NOT_NULL);
+            throw new IllegalArgumentException("doc may not be null");
         }
 
         if ((rootName == null) || (rootName.trim().length() == 0)) {
@@ -813,7 +777,7 @@ public class PSXmlDocumentBuilder {
     public static Element replaceRoot(Document doc, Element newRoot)
         throws DOMException {
         if (doc == null) {
-            throw new IllegalArgumentException(DOC_NOT_NULL);
+            throw new IllegalArgumentException("doc may not be null");
         }
 
         if (newRoot == null) {
@@ -848,7 +812,7 @@ public class PSXmlDocumentBuilder {
      */
     public static Element swapRoot(Document doc, Element newRoot) {
         if (doc == null) {
-            throw new IllegalArgumentException(DOC_NOT_NULL);
+            throw new IllegalArgumentException("doc may not be null");
         }
 
         if (newRoot == null) {
@@ -913,7 +877,7 @@ public class PSXmlDocumentBuilder {
     public static Element addElement(Document doc, Element parent,
         String namespace, String alias, String name, String value) {
         if (doc == null) {
-            throw new IllegalArgumentException(DOC_NOT_NULL);
+            throw new IllegalArgumentException("doc may not be null");
         }
 
         if (parent == null) {
@@ -1110,7 +1074,6 @@ public class PSXmlDocumentBuilder {
      *        a specific DTD instead. Then call the regular write methods, which
      *        will include the DOCTYPE reference.
      */
-    @Deprecated
     public static void write(Document doc, OutputStream out, URL dtd)
         throws IOException {
         if (dtd == null) {
@@ -1140,7 +1103,6 @@ public class PSXmlDocumentBuilder {
      *        a specific DTD instead. Then call the regular write methods, which
      *        will include the DOCTYPE reference.
      */
-    @Deprecated
     public static void write(Document doc, OutputStream out, String dtdPath)
         throws IOException {
         if (doc == null) {
@@ -1320,17 +1282,25 @@ public class PSXmlDocumentBuilder {
         String retVal = null;
 
         if (tree != null) {
+            StringWriter sw = null;
 
-
-            try( StringWriter sw = new StringWriter()) {
+            try {
+                sw = new StringWriter();
                 tree.write(sw, indent, omitXMLDeclaration, omitDocumentType);
                 retVal = sw.toString();
             } catch (IOException ioe) {
-                log.error("Error converting node to string {} ",  PSExceptionUtils.getMessageForLog(ioe));
+                log.error("Error converting node to string {} ", ioe.getMessage());
+                log.error(ioe.getMessage());
                 log.debug(ioe.getMessage(), ioe);
-                retVal = PSExceptionUtils.getMessageForLog(ioe);
+                retVal = ioe.getLocalizedMessage();
+            } finally {
+                if (sw != null) {
+                    try {
+                        sw.close();
+                    } catch (IOException ex) {
+                    }
+                }
             }
-
         } else {
             retVal = node.getNodeValue();
         }

@@ -24,7 +24,6 @@
 package com.percussion.test.ant;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -113,14 +112,7 @@ public class PSMakeFilterFileTask extends Task
          {
             throw new BuildException("server.xml doesn't exist: " + serverxml);
          }
-         DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(  new PSXmlSecurityOptions(
-                 true,
-                 true,
-                 true,
-                 false,
-                 true,
-                 false
-         ));
+         DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(false);
          try
          {
             DocumentBuilder b = f.newDocumentBuilder();

@@ -27,7 +27,10 @@ import com.percussion.delivery.feeds.data.IPSFeedDescriptor;
 import com.percussion.delivery.feeds.data.PSFeedItem;
 import junit.framework.TestCase;
 import org.apache.commons.validator.routines.InetAddressValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,8 +44,9 @@ import java.util.Properties;
 public class PSFeedGeneratorTest extends TestCase
 {
 
-    private final String PERC_FEEDS_PROPERTIES = "/feeds.properties";
+    private final String PERC_FEEDS_PROPERTIES = "/src/main/java/webapp/WEB-INF/feeds.properties";
     private final String FEEDS_IP_DEFAULT="127.0.0.1";
+    private static final Logger log = LogManager.getLogger(PSFeedGeneratorTest.class);
     public void testMakeFeedContent() throws Exception
     {
         PSFeedGenerator generator = new PSFeedGenerator();
@@ -79,7 +83,7 @@ public class PSFeedGeneratorTest extends TestCase
         
         String feed = generator.makeFeedContent(desc, "www.google.com", items);
         
-        System.out.println(feed);
+        log.info(feed);
         
     }  
     
@@ -249,7 +253,7 @@ public class PSFeedGeneratorTest extends TestCase
         Properties props1 = new Properties();
         String path = System.getProperty("user.dir");
 
-        try(InputStream in =  PSFeedGeneratorTest.class.getResourceAsStream(PERC_FEEDS_PROPERTIES)) {
+        try(InputStream in = new FileInputStream(path + PERC_FEEDS_PROPERTIES)) {
             props1.load(in);
         }
 

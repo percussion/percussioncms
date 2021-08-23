@@ -23,11 +23,7 @@
  */
 package com.percussion.share.dao;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
-import net.sf.json.JSONNull;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
+import net.sf.json.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,16 +39,12 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.StringUtils.removeEnd;
@@ -87,8 +79,7 @@ public class PSSerializerUtils
         }
         catch (JAXBException e)
         {
-           log.error("Unable to marshall JAXB object: {} Error: {}", object, e.getMessage());
-           log.debug(e);
+           log.error("Unable to marshall JAXB object:" + object.toString(), e);
            return null;
         }
     }
@@ -105,15 +96,15 @@ public class PSSerializerUtils
    public static <T> T unmarshal(String dataField, Class<T> type)
     {
         T object;
-        try {
-            Reader reader = new InputStreamReader(
-                    new ByteArrayInputStream(dataField.getBytes(StandardCharsets.UTF_8)));
-         object = (T) Objects.requireNonNull(PSJaxbContext.createUnmarshaller(type)).unmarshal(reader);
+        StringReader reader = new StringReader(dataField);
+        try
+      {
+         object = (T) PSJaxbContext.createUnmarshaller(type).unmarshal(reader);
          return object;
       }
       catch (JAXBException e)
       {
-         log.error("Unable to unmarshall JAXB object:{}" , dataField);
+         log.error("Unable to unmarshall JAXB object:" + dataField);
          return null;
       }
         
@@ -281,7 +272,7 @@ public class PSSerializerUtils
         catch (JSONException e)
         {
             if(log.isDebugEnabled())
-                log.warn("Bad json string: {}" , json);
+                log.warn("Bad json string: " + json);
             return json;
         }    
     }
@@ -297,7 +288,7 @@ public class PSSerializerUtils
       data = removeEnd(data, "]");
       return data;
     }
-
+    
     /**
      * The log instance to use for this class, never <code>null</code>.
      */

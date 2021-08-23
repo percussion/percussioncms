@@ -25,7 +25,6 @@
 package com.percussion.filetracker;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -90,14 +89,7 @@ public class RXFileTracker
       try
       {
          DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                 new PSXmlSecurityOptions(
-                         true,
-                         true,
-                         true,
-                         false,
-                         true,
-                         false
-                 ));
+                 false);
 
          dbf.setNamespaceAware(true);
          dbf.setValidating(false);

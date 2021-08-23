@@ -25,7 +25,8 @@
 package com.percussion.rest.extensions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
@@ -33,55 +34,55 @@ import java.util.Map;
 
 @XmlRootElement(name = "Extension")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Represents an Extension")
+@ApiModel(description = "Represents an Extension")
 public class Extension {
 
-    @Schema(name = "handlerName", required = false, description = "The extension handler name")
+    @ApiModelProperty(value = "handlerName", required = false, notes = "The extension handler name")
     private String handlerName;
 
-    @Schema(name="context", required = false, description = "The extension context")
+    @ApiModelProperty(name="context", value = "context", required = false, notes = "The extension context")
     private String context;
 
-    @Schema(name="extensionName",  required = false, description = "The extension name")
+    @ApiModelProperty(name="extensionName", value = "extensionName", required = false, notes = "The extension name")
     private String extensionName;
 
-    @Schema(name="category",  required = false, description = "The Category of the extension")
+    @ApiModelProperty(name="category", value = "category", required = false, notes = "The Category of the extension")
     private String category = "";
 
-    @Schema(name="fqn",  required = false, description = "The fully qualified name for the extension")
+    @ApiModelProperty(name="fqn", value = "fgn", required = false, notes = "The fully qualified name for the extension")
     private String fqn;
 
-    @Schema(name="version",  description="The version of the extension")
+    @ApiModelProperty(name="version", value="version", notes="The version of the extension")
     private long version;
 
-    @Schema(name="deprecated", description="When true, this extension has been deprecated.")
+    @ApiModelProperty(name="deprecated", value="deprecated", notes="When true, this extension has been deprecated.")
     private boolean deprecated;
 
-    @Schema(name="restoreRequestParamsOnError",  description="When true if an error occurs on processing the original request parameters will be restored.")
+    @ApiModelProperty(name="restoreRequestParamsOnError", value="restoreRequestParamsOnError", notes="When true if an error occurs on processing the original request parameters will be restored.")
     private boolean restoreRequestParamsOnError;
 
-    @Schema(name="jexlExtension",  description="When true, this extension is a Jexl extension.")
+    @ApiModelProperty(name="jexlExtension", value="jexlExtension", notes="When true, this extension is a Jexl extension.")
     private boolean jexlExtension;
 
-    @Schema(name="suppliedResources",  description = "A list of urls pointing to resources supplied by the Extension")
+    @ApiModelProperty(name="suppliedResources", value="suppliedResources", notes = "A list of urls pointing to resources supplied by the Extension")
     private List<String> suppliedResources;
 
-    @Schema(name="resourceLocations",  description = "A list of urls pointing to resources locations the Extension")
+    @ApiModelProperty(name="resourceLocations", value="suppliedResources", notes = "A list of urls pointing to resources locations the Extension")
     private List<String> resourceLocations;
 
-    @Schema(name="supportedInterfaces",  description = "A list of Java interfaces supported by this Extension")
+    @ApiModelProperty(name="supportedInterfaces", value="supportedInterfaces", notes = "A list of Java interfaces supported by this Extension")
     private List<String> supportedInterfaces;
 
-    @Schema(name="runtimeParameters",  description = "A list of ExtensionParameter objects required by the extension")
+    @ApiModelProperty(name="runtimeParameters", value="runtimeParameters", notes = "A list of ExtensionParameter objects required by the extension")
     private List<ExtensionParameter> runtimeParameters;
 
-    @Schema(name="initParameters",  description = "A map of key value pairs indicating the initParameters used to initialize the Extension")
+    @ApiModelProperty(name="initParameters", value="initParameters", notes = "A map of key value pairs indicating the initParameters used to initialize the Extension")
     private Map<String,String> initParameters;
 
-    @Schema(name="requiredApplications", description = "A list of Extension names that this Extension depends on to function correctly")
+    @ApiModelProperty(name="requiredApplications", value="requiredApplications", notes = "A list of Extension names that this Extension depends on to function correctly")
     private List<String> requiredApplications;
 
-    @Schema(name="methods", description = "A list of ExtensionMethods provided by this extension")
+    @ApiModelProperty(name="methods", value="methods", notes = "A list of ExtensionMethods provided by this extension")
     private Map<String, ExtensionMethod> methods;
 
     public Extension(){}

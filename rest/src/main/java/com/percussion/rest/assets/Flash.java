@@ -26,13 +26,14 @@ package com.percussion.rest.assets;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import io.swagger.annotations.ApiModel;
+
 @XmlRootElement(name = "Flash")
 @JsonInclude(Include.NON_NULL)
-@Schema(description="Represents a binary Flash file.")
+@ApiModel(value="Flash", description="Represents a binary Flash file.")
 public class Flash extends ImageInfo
 {
 	private String flashVersion;

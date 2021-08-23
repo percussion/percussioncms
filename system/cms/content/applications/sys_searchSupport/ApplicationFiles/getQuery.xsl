@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
-		%HTMLlat1;
-		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
-		%HTMLsymbol;
-		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
-		%HTMLspecial;
-		<!ENTITY % w3centities-f PUBLIC
-				"-//W3C//ENTITIES Combined Set//EN//XML"
-				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
-				>
-		%w3centities-f;
-		]>
+	<!ENTITY % HTMLlat1 SYSTEM "./../../DTD/HTMLlat1x.ent">
+	%HTMLlat1;
+	<!ENTITY % HTMLsymbol SYSTEM "./../../DTD/HTMLsymbolx.ent">
+	%HTMLsymbol;
+	<!ENTITY % HTMLspecial SYSTEM "./../../DTD/HTMLspecialx.ent">
+	%HTMLspecial;
+]>
 <!--
 	This is the main stylesheet for rendering the search dialog box confirming to the SearchQueryDef.dtd.  The logic is similar to that of content editor. It has 
    This stylesheet renders search results conforming to the SearchResults.dtd.
@@ -21,9 +16,7 @@
 3. Result setting Part renders the display format and max results.
 4. Buttons renders the buttons based on the type of search.
 -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:import href="file:sys_searchSupport/sys_searchTemplates.xsl"/>
 	<xsl:import href="file:sys_searchSupport/sys_searchJSGenerator.xsl"/>
@@ -327,7 +320,7 @@
 	</xsl:template>
    <xsl:template name="genericJavascript">
       <!-- Javascript function to hide or show the Advanced section -->
-         <script>
+         <script language="javascript">
 					var psSearch = new function(){};
 					var searchMode = '<xsl:value-of select="@searchMode"/>';
 					var canSubmit = true;
@@ -607,7 +600,7 @@
    <xsl:template name="ftScript">
       <!-- If the search mode is simple initially call the hideAdvanced function to hide the Advanced Section -->
 					<xsl:if test="$isFullTextSearch">
-						<script>
+						<script language="javascript">
 						if(searchMode ==  "simple")
 						{
 							PSHideObj("advancedfields");

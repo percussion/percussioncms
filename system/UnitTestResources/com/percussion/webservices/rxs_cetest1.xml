@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  
-<!DOCTYPE PSXContentEditor SYSTEM "sys_ContentEditorLocalDef.dtd">
+<!DOCTYPE PSXContentEditor SYSTEM "./../../DTD/sys_ContentEditorLocalDef.dtd">
 -->
 <PSXContentEditor contentType="0" workflowId="0">
   <PSXDataSet id="768">

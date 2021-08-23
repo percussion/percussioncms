@@ -24,7 +24,6 @@
 
 package com.percussion.share.data;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import java.util.ArrayList;
@@ -47,14 +46,14 @@ public class PSGAEntries {
      * */
 
     PSGAPair p1 = null;
-    List<PSGAPair> gaPairList = new ArrayList<>();
+    List<PSGAPair> PSGAPairList = new ArrayList<>();
     for (Map.Entry<String, String> e : dataMap.entrySet()) {
        p1 = new PSGAPair(e.getKey(),e.getValue());
-      gaPairList.add(p1);
+       PSGAPairList.add(p1);
     }
-    PSGAEntry gaEntry = new PSGAEntry();
-    gaEntry.setEntry(gaPairList);
-    this.setEntries(gaEntry);
+    PSGAEntry PSGAEntry = new PSGAEntry();
+    PSGAEntry.setEntry(PSGAPairList);
+    this.setEntries(PSGAEntry);
   }
   /**
    * @return the entries
@@ -66,8 +65,7 @@ public class PSGAEntries {
   /**
    * @param entries the entries to set
    */
-  @JsonIgnore
-  private void setEntries(PSGAEntry entries) {
+  public void setEntries(PSGAEntry entries) {
     this.entries = entries;
   }
   

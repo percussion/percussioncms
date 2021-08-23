@@ -24,37 +24,39 @@
 
 package com.percussion.rest.pages;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.percussion.rest.assets.Asset;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @XmlRootElement(name = "Widget")
-@Schema(name="Widget",description="Represents a Widget.")
+@ApiModel(value="Widget",description="Represents a Widget.")
 public class Widget implements Cloneable
 {
     public static final String SCOPE_LOCAL = "local";
 
     public static final String SCOPE_SHARED = "shared";
     
-    @Schema(name="id", description="Id of the widget.")
+    @ApiModelProperty(value="id", notes="Id of the widget.")
     private String id;
     
-    @Schema(name="name",description="Name of the widget.")
+    @ApiModelProperty(value="name",notes="Name of the widget.")
     private String name;
 
-    @Schema(name="type", description="Type of widget.")
+    @ApiModelProperty(value="type", notes="Type of widget.")
     private String type;
 
-    @Schema(name="scope", description="Scope of the widget.", allowableValues = "local,shared")
+    @ApiModelProperty(value="scope", notes="Scope of the widget.", allowableValues = "local,shared")
     private String scope;
 
-    @Schema(name="editable", description="Denotes if widget is editable.")
+    @ApiModelProperty(value="editable", notes="Denotes if widget is editable.")
     private Boolean editable;
 
-    @Schema(name="asset", description="Asset within the widget.")
+    @ApiModelProperty(value="asset", notes="Asset within the widget.")
     private Asset asset;
 
     

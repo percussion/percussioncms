@@ -27,8 +27,13 @@
   -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
    <bean id="propertyPlaceholderProps"
          class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
@@ -75,7 +80,7 @@
              <!-- default properties for encryption -->
             <prop key="encryption.type">ENC</prop>
              <!-- default properties for Spring Security -->
-             <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
+             <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
          </props>
       </property>
    </bean>

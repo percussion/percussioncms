@@ -24,8 +24,7 @@
 
 package com.percussion.rest.contentlists;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import java.util.Collection;
 
 
 @XmlRootElement(name = "ContentList")
-@ArraySchema(schema = @Schema(implementation = ContentList.class))
+@ApiModel(description = "A List of ContentList")
 public class ContentListList extends ArrayList<ContentList> {
     public ContentListList(Collection<? extends ContentList> c) {
         super(c);

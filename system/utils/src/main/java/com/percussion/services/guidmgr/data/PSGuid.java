@@ -30,7 +30,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * This class encapsulates guids and converts them to and from user readable and
- * machine formats. Guids are represented internally as 64 bit long values
+ * machine formats. Guids are representated internally as 64 bit long values
  * that contain several fields.
  * <p>
  * GUIDs are intended as globally unique ids. They are kept global by
@@ -94,7 +94,6 @@ public class PSGuid extends Number implements IPSGuid
 
    static final short TYPE_POS = 32;
 
-   private static final String TYPE_NOT_NULL = "type may not be null";
    /**
     * General constructor for a guid.
     * 
@@ -180,7 +179,7 @@ public class PSGuid extends Number implements IPSGuid
    public PSGuid(PSTypeEnum type, long value)
    {
       if (type == null)
-         throw new IllegalArgumentException(TYPE_NOT_NULL);
+         throw new IllegalArgumentException("type may not be null");
 
       m_guid = value;
       if (getType() == 0)
@@ -230,7 +229,7 @@ public class PSGuid extends Number implements IPSGuid
       if (StringUtils.isBlank(guid))
          throw new IllegalArgumentException("guid may not be null or empty");
 
-      String[] tokens;
+      String tokens[];
       if (guid.startsWith("-") && guid.lastIndexOf("-") == 0)
       {
          // one negative component
@@ -306,8 +305,10 @@ public class PSGuid extends Number implements IPSGuid
       int type = getType();
       long uuid = getUUID();
 
-      return hostid + "-" + type + "-" + uuid;
-
+      StringBuilder buf = new StringBuilder();
+      buf.append(Long.toString(hostid)).append("-").append(
+            Integer.toString(type)).append("-").append(Long.toString(uuid));
+      return buf.toString();
    }
 
    /*
@@ -320,7 +321,9 @@ public class PSGuid extends Number implements IPSGuid
       long hostid = getHostId();
       long uuid = getUUID();
 
-      return hostid + "-" + uuid;
+      StringBuilder buf = new StringBuilder();
+      buf.append(Long.toString(hostid)).append("-").append(Long.toString(uuid));
+      return buf.toString();
    }
 
    /*
@@ -524,11 +527,13 @@ public class PSGuid extends Number implements IPSGuid
    public static boolean isValid(PSTypeEnum type, long value)
    {
       if (type == null)
-         throw new IllegalArgumentException(TYPE_NOT_NULL);
+         throw new IllegalArgumentException("type may not be null");
     
       short t = doGetType(value);
-
-      return t == 0 || t == type.getOrdinal();
+      
+      if (  t == 0 || t == type.getOrdinal())
+         return true;
+      return false;
    }
    
    
@@ -541,7 +546,7 @@ public class PSGuid extends Number implements IPSGuid
    public static boolean isValid(PSTypeEnum type, String value)
    {
       if (type == null)
-         throw new IllegalArgumentException(TYPE_NOT_NULL);
+         throw new IllegalArgumentException("type may not be null");
       if ( StringUtils.isBlank(value))
          throw new IllegalArgumentException("value may not be null");
       long val = Long.parseLong(value);

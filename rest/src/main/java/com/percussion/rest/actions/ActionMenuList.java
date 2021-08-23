@@ -24,15 +24,14 @@
 
 package com.percussion.rest.actions;
 
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "ActionMenuList")
-@ArraySchema(schema=@Schema(implementation = ActionMenu.class))
+@ApiModel(description = "A List of Action Menus")
 public class ActionMenuList  extends ArrayList<ActionMenu> {
     public ActionMenuList(Collection<? extends ActionMenu> c) {
         super(c);

@@ -25,7 +25,6 @@
 package com.percussion.server.agent;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -45,13 +44,12 @@ public class PSUtils
    /**
     * Helper function that returns the W3C DOM Element value in the tree.
     *
-    * @param elem - the Element
-    * @param elemname  the element tag name, can be <code>null</code>.
+    * @param String - the element tag name, can be <code>null</code>.
     *
-    * @return  the value of the element, can be <code>empty</code>.
+    * @return Strign - the value of the element, can be <code>empty</code>.
     *
     */
-   public static String getElemValue(Element elem, String elemname)
+   static public String getElemValue(Element elem, String elemname)
    {
       String value = "";
 
@@ -96,19 +94,12 @@ public class PSUtils
     * @return DocumentBuilder object for parsing XML documents. Never
     * <code>null</code>
     */
-   public static DocumentBuilder getDocumentBuilder()
+   static public DocumentBuilder getDocumentBuilder()
    {
       try
       {
          DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-                 new PSXmlSecurityOptions(
-                         true,
-                         true,
-                         true,
-                         false,
-                         true,
-                         false
-                 ));
+                 false);
 
          dbf.setNamespaceAware(true);
          dbf.setValidating(false);
@@ -128,7 +119,7 @@ public class PSUtils
    /**
     * The namespace for agents
     */
-   public static  final String NS_URI_PERCUSSION_AGENT =
+   static public final String NS_URI_PERCUSSION_AGENT =
                            "urn:www.percussion.com/agent";
 
    /**

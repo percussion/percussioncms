@@ -24,10 +24,19 @@
 
 package com.percussion.secure.services;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.ServletContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.w3c.dom.Document;
@@ -36,21 +45,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.servlet.ServletContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class PSMembershipAuthUtils {
-
-	private static final Logger log = LogManager.getLogger(PSMembershipAuthUtils.class);
-
+	
 	public static List<String> getAccessGroupsFromXML(String accessGroupFileName) {
 
 		List<String> groups = new ArrayList<>();
@@ -66,14 +62,7 @@ public class PSMembershipAuthUtils {
 	        File accessGroupFile = new File(filePath);
 	        
 	        DocumentBuilderFactory dbFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
-					new PSXmlSecurityOptions(
-							true,
-							true,
-							true,
-							false,
-							true,
-							false
-					));
+	        		false);
 	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 	        Document doc = dBuilder.parse(accessGroupFile);
 	        
@@ -90,23 +79,19 @@ public class PSMembershipAuthUtils {
 	   }
 	   catch (FileNotFoundException e)
 	   {
-	       log.error("FileNotFoundException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-	       log.debug(e);
+	       System.out.println("FileNotFoundException in PSLdapUserDetailsMapper..... " + e);
 	   }
 	   catch (ParserConfigurationException e)
 	   {
-	      log.error("ParserConfigurationException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-	      log.debug(e);
+	       System.out.println("ParserConfigurationException in PSLdapUserDetailsMapper..... " + e);
 	   }
        catch (IOException e)
        {
-           log.error("IOException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-           log.debug(e);
+           System.out.println("IOException in PSLdapUserDetailsMapper..... " + e);
        }
        catch (SAXException e)
        {
-       	log.error("SAXException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-       	log.debug(e);
+           System.out.println("SAXException in PSLdapUserDetailsMapper..... " + e);
        }
        
        return groups;

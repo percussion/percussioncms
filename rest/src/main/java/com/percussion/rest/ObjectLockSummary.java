@@ -25,35 +25,36 @@
 package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement
-@Schema(description = "Represents a multi-user lock on an object in the system.")
+@ApiModel(description = "Represents a multi-user lock on an object in the system.")
 public class ObjectLockSummary {
 
     /**
      * The session which has this object locked, never <code>null</code> or
      * empty.
      */
-    @Schema(description="The session id of the user who has this object locked.")
+    @ApiModelProperty(notes="The session id of the user who has this oject locked.")
     private String session;
 
     /**
      * The user who has this object locked, never <code>null</code> or empty.
      */
-    @Schema(description="The username of the user that has the object locked, never null or empty")
+    @ApiModelProperty(notes="The username of the user that has the object locked, never null or empty")
     private String locker;
 
     /**
      * The remaining lock time, always > 0.
      */
-    @Schema(description="The remaining lock time, always >0")
+    @ApiModelProperty(notes="The remaining lock time, always >0")
     private long remainingTime;
 
-    @Schema(description="The date and time that the API client last checked this lock.  Can be used for retries.")
+    @ApiModelProperty(notes="The date and time that the API client last checked this lock.  Can be used for retries.")
     private String callerAccessTime;
 
     public String getSession() {

@@ -27,27 +27,13 @@ package com.percussion.rest.preferences;
 
 import com.percussion.rest.Status;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.*;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -57,24 +43,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Path("/preferences")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-@Tag(name = "User Preferences", description = "User Preference operations")
+@Api(value = "/preferences", description = "User Preference operations")
 public class PreferenceResource {
 
-    private  static final Logger log = LogManager.getLogger(PreferenceResource.class);
+    final static Logger log = LogManager.getLogger(PreferenceResource.class);
 
     @Autowired
     IPreferenceAdaptor adaptor;
 
     @Path("/")
     @GET
+    @ApiOperation(value="Get all stored user preferences for the given user")
     @Produces(value= MediaType.APPLICATION_JSON)
-    @Operation(summary="Get all stored user preferences for the given user",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK",content = @Content(
-                    array=@ArraySchema(schema = @Schema(implementation = UserPreference.class))
-            )),
-            @ApiResponse(responseCode = "404", description = "No preferences found"),
-            @ApiResponse(responseCode = "500", description = "Error message")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No preferences found"),
+            @ApiResponse(code = 500, message = "Error message")
     })
     public UserPreferenceList getAllUserPreferences(){
 
@@ -92,17 +76,15 @@ public class PreferenceResource {
 
     @Path("/all")
     @PUT
+    @ApiOperation(value="Save all  user preferences for the current user")
     @Produces(value= MediaType.APPLICATION_JSON)
     @Consumes(value=MediaType.APPLICATION_JSON)
-    @Operation(summary="Save all  user preferences for the current user",
-    responses= {
-            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                    array = @ArraySchema(schema=@Schema(implementation = UserPreference.class))
-            )),
-            @ApiResponse(responseCode = "404", description = "No preferences found"),
-            @ApiResponse(responseCode = "500", description = "Error message")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No preferences found"),
+            @ApiResponse(code = 500, message = "Error message")
     })
-    public UserPreferenceList saveAllUserPreferences(@Parameter(required=true) UserPreferenceList preferences){
+    public UserPreferenceList saveAllUserPreferences(@ApiParam(required=true) UserPreferenceList preferences){
 
         try {
             return adaptor.saveAllUserPreferences(preferences);
@@ -118,13 +100,12 @@ public class PreferenceResource {
 
     @Path("/{preference}")
     @GET
+    @ApiOperation(value="Get a specific user preferences for the logged in user")
     @Produces(value= MediaType.APPLICATION_JSON)
-    @Operation(summary="Get a specific user preferences for the logged in user",
-        responses= {
-            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                    schema = @Schema(implementation = UserPreference.class))),
-            @ApiResponse(responseCode = "404", description = "No preference found"),
-            @ApiResponse(responseCode = "500", description = "Error message")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No preference found"),
+            @ApiResponse(code = 500, message = "Error message")
     })
     public UserPreference loadPreference(
             @PathParam("preference") String preference){
@@ -143,14 +124,13 @@ public class PreferenceResource {
 
     @PUT
     @Path("/")
+    @ApiOperation(value="Saves a specific user preference for the given user. username must be set on preference.")
     @Produces(value= MediaType.APPLICATION_JSON)
     @Consumes(value= MediaType.APPLICATION_JSON)
-    @Operation(summary="Saves a specific user preference for the given user. username must be set on preference."
-        ,responses={
-            @ApiResponse(responseCode =  "200", description = "OK",content=
-            @Content(schema = @Schema(implementation = UserPreference.class))),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "500", description = "Error message")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "User not found"),
+            @ApiResponse(code = 500, message = "Error message")
     })
     public UserPreference savePreference(UserPreference pref){
         try{
@@ -173,13 +153,13 @@ public class PreferenceResource {
 
     @DELETE
     @Path("/")
+    @ApiOperation(value="Delete a specific user preferences for the given user")
     @Produces(value= MediaType.APPLICATION_JSON)
     @Consumes(value= MediaType.APPLICATION_JSON)
-    @Operation(summary="Delete a specific user preferences for the given user",
-    responses = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "404", description = "No preference found"),
-            @ApiResponse(responseCode = "500", description = "Error message")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "No preference found"),
+            @ApiResponse(code = 500, message = "Error message")
     })
     public Status deletePreference(UserPreference pref){
         Status ret = new Status(200,"OK");

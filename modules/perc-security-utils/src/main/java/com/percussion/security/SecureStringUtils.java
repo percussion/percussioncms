@@ -341,17 +341,4 @@ public class SecureStringUtils {
 
     }
 
-    /**
-     * Will strip the leading / from arg if present.
-     * @param arg a String, can be null
-     * @return will return the supplied arg without a leading / if present or just return arg
-     */
-    public static String stripLeadingSlash(String arg){
-        if(arg != null && arg.startsWith("/")){
-            return arg.substring(1);
-        }else{
-            return arg;
-        }
-    }
-
 }

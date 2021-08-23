@@ -25,6 +25,15 @@ package com.percussion.webui.gadget.servlets;
 
 import com.percussion.delivery.client.EasySSLProtocolSocketFactory;
 import com.percussion.util.PSURLEncoder;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
@@ -36,12 +45,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class will takes a JSON object with gadget user preference meta data and will turn it into an html form
@@ -53,18 +56,6 @@ import java.util.Map;
  *
  */
 public class PSUserPrefFormContent {
-
-
-	private static final String CLASS = "class";
-	private static final String FIELD_NAME="fieldname";
-	private static final String HIDDEN="hidden";
-	private static final String VALUE="value";
-	private static final String INPUT="input";
-	private static final String LABEL="label";
-	private static final String SELECT="select";
-	private static final String FOR = "for";
-	private static final String BR = "br";
-
 
 	private static final Logger log = LogManager.getLogger(PSUserPrefFormContent.class);
 
@@ -101,7 +92,7 @@ public class PSUserPrefFormContent {
 		   throw new IllegalArgumentException("prefs cannot be null.");
 		if(upValues == null)
 		   throw new IllegalArgumentException("upValues cannot be null.");
-		if(moduleId != null && moduleId.length() > 0)
+		if(moduleId != null || moduleId.length() > 0)	
 	      m_moduleId = moduleId;
 
 	   registerSslProtocol();
@@ -147,30 +138,30 @@ public class PSUserPrefFormContent {
 	private void buildFormContent(List<JSONObject> prefs)
 	{
 		//Container div
-		Map<String, String> params = new HashMap<>();
+		Map<String, String> params = new HashMap<String, String>();
 		params.put("id", replaceTokens(ID_MAIN_DIV));
-		params.put(CLASS, "perc-gadget-pref-div");
+		params.put("class", "perc-gadget-pref-div");
 		params.put("style", "display:none");
 		m_content.append(createStartTag("div", params, false));
 		m_content.append(createStartTag("table", null, false));
 		m_content.append(createStartTag("tr", null, false));
 		m_content.append(createStartTag("td", null, false));
 		params.clear();
-		params.put(CLASS, "perc-gadget-pref-inner-div");
+		params.put("class", "perc-gadget-pref-inner-div");
 		m_content.append(createStartTag("div", params, false));
 		for(JSONObject pref : prefs)
 		{
-		    m_userPrefs.put((String)pref.get(FIELD_NAME), pref);
+		    m_userPrefs.put((String)pref.get("fieldname"), pref);
 		}
 		for(JSONObject pref : prefs)
 		{
 		   addField(pref);      
 		}
-		Map<String, String> nfParams = new HashMap<>();
+		Map<String, String> nfParams = new HashMap<String, String>();
 		nfParams.put("id", replaceTokens(ID_NUMFIELDS));
-		nfParams.put("type", HIDDEN);
-		nfParams.put(VALUE, String.valueOf(m_fieldCount + 1));
-		m_content.append(createStartTag(INPUT, nfParams, true));
+		nfParams.put("type", "hidden");
+		nfParams.put("value", String.valueOf(m_fieldCount + 1));
+		m_content.append(createStartTag("input", nfParams, true));
 		m_content.append(createEndTag("div"));
 		m_content.append(createEndTag("td"));
 		m_content.append(createEndTag("tr"));
@@ -218,9 +209,9 @@ public class PSUserPrefFormContent {
 	 */
 	private String hexEncodeString(String str){
 	   StringBuilder buff = new StringBuilder();
-
+	   StringReader sr = new StringReader(str);
 	   int c = -2;
-	   try(StringReader sr = new StringReader(str))
+	   try
 	   {
 	      while((c = sr.read()) != -1)
 	      {
@@ -257,6 +248,10 @@ public class PSUserPrefFormContent {
 	      // Should never happen
 	      throw new RuntimeException(e);
 	   }
+	   finally
+	   {
+	      sr.close();
+	   }
 	   return buff.toString();
 	}
 	
@@ -278,13 +273,13 @@ public class PSUserPrefFormContent {
 	private void addField(JSONObject pref){
 	   m_fieldCount++;
 	   String type = (String)pref.get("type");
-	   String fn = (String)pref.get(FIELD_NAME);
+	   String fn = (String)pref.get("fieldname");
 	   String fieldname = replaceTokens(INPUTNAME) + fn;
 	   String displayName = (String)pref.get("displayName");
 	   if(displayName == null || displayName.length() == 0)
 	      displayName = fn;
 	   
-	   if(type.equals(HIDDEN))
+	   if(type.equals("hidden"))
 	   {
 	      addHiddenField(fieldname, pref);
 	      return;
@@ -301,12 +296,12 @@ public class PSUserPrefFormContent {
 	   }
 	   		
 	   // Label
-	   Map<String, String> params = new HashMap<>();
+	   Map<String, String> params = new HashMap<String, String>();
 	   params.put("for", fieldname);
-	   m_content.append(createStartTag(LABEL, params, false));
+	   m_content.append(createStartTag("label", params, false));
 	   m_content.append(displayName);
 	   m_content.append(":");
-	   m_content.append(createEndTag(LABEL));
+	   m_content.append(createEndTag("label"));
 	   m_content.append(createStartTag("br", null, true));
 	   
 	   if(type.equals("string"))
@@ -332,14 +327,14 @@ public class PSUserPrefFormContent {
 	 * @param pref the JSON preference object, assumed not <code>null</code>.
 	 */
 	private void addTextField(String fieldname, JSONObject pref){
-	   Map<String, String> params = new HashMap<>();
+	   Map<String, String> params = new HashMap<String, String>();
 	   String dVal = getFieldValue(pref);
 	   params.put("type", "text");
 	   params.put("id", replaceTokens(ID_INPUT));
 	   params.put("name", fieldname);
 	   if(dVal != null && dVal.length() > 0)
-	      params.put(VALUE, dVal);
-	   m_content.append(createStartTag(INPUT, params, true));
+	      params.put("value", dVal);
+	   m_content.append(createStartTag("input", params, true));
 	   m_content.append(createStartTag("br", null, true));
 		
 	}
@@ -351,32 +346,37 @@ public class PSUserPrefFormContent {
     * or empty.
     * @param pref the JSON preference object, assumed not <code>null</code>.
     */
+	@SuppressWarnings("unchecked")
    private void addEnumField(String fieldname, JSONObject pref){
-	   Map<String, String> params = new HashMap<>();
+	   Map<String, String> params = new HashMap<String, String>();
       String dVal = getFieldValue(pref);
       JSONArray vals = (JSONArray)pref.get("orderedEnumValues");
       params.put("id", replaceTokens(ID_INPUT));
       params.put("name", fieldname);
-      m_content.append(createStartTag(SELECT, params, false));
+      m_content.append(createStartTag("select", params, false));
       //Add options
-	   for (Object o : vals) {
-		   JSONObject current = (JSONObject) o;
-		   String val = (String) current.get(VALUE);
-		   String displayVal = (String) current.get("displayValue");
-		   if (val.startsWith("@url:")) {
-			   handleRemoteOptions(val, dVal);
-		   } else {
-			   addOption(val, displayVal, dVal);
-		   }
-
-	   }
-      m_content.append(createEndTag(SELECT));
-      m_content.append(createStartTag(BR, null, true));
+      Iterator it = vals.iterator();
+      while(it.hasNext()){
+         JSONObject current = (JSONObject)it.next();
+         String val = (String)current.get("value");
+         String displayVal = (String)current.get("displayValue");
+         if(val.startsWith("@url:"))
+         {
+            handleRemoteOptions(val, dVal);
+         }
+         else
+         {
+            addOption(val, displayVal, dVal);
+         }
+              
+      }         	
+      m_content.append(createEndTag("select"));
+      m_content.append(createStartTag("br", null, true));
 	}
 	
 	private void addOption(String val, String displayVal, String defaultVal)
 	{
-	   Map<String, String> optParams = new HashMap<>();
+	   Map<String, String> optParams = new HashMap<String, String>();
       
       if(displayVal == null || displayVal.length() == 0)
          displayVal = val;
@@ -396,6 +396,7 @@ public class PSUserPrefFormContent {
 	 * @param urlString
 	 * @param defaultVal
 	 */
+	@SuppressWarnings("unchecked")
    private void handleRemoteOptions(String urlString, String defaultVal)
    {	
 	   String rawurl = urlString.substring(5);
@@ -442,17 +443,23 @@ public class PSUserPrefFormContent {
                {
                   arr = (JSONArray)temp;
                }
-				for (Object obj : arr) {
-					if (obj instanceof JSONObject) {
-						JSONObject entry = (JSONObject) obj;
-						String val = (String) entry.get("value");
-						String displayVal = (String) entry.get("display_value");
-						if (val != null && val.length() > 0)
-							addOption(val, displayVal, defaultVal);
-					} else {
-						throw new IOException("Invalid json data format");
-					}
-				}
+               Iterator it = arr.iterator();
+               while(it.hasNext())
+               {
+                  Object obj = it.next();
+                  if(obj instanceof JSONObject)
+                  {
+                     JSONObject entry = (JSONObject)obj;
+                     String val = (String)entry.get("value");
+                     String displayVal = (String)entry.get("display_value");
+                     if(val != null && val.length() > 0)
+                        addOption(val, displayVal, defaultVal);
+                  }
+                  else
+                  {
+                     throw new IOException("Invalid json data format");
+                  }
+               }
             }
             else
             {
@@ -481,7 +488,7 @@ public class PSUserPrefFormContent {
     * @param pref the JSON preference object, assumed not <code>null</code>.
     */
 	private void addBooleanField(String fieldname, String displayName, JSONObject pref){
-	   Map<String, String> params = new HashMap<>();
+	   Map<String, String> params = new HashMap<String, String>();
       String dVal = getFieldValue(pref);
       params.put("type", "checkbox");
       params.put("id", replaceTokens(ID_INPUT));
@@ -490,12 +497,12 @@ public class PSUserPrefFormContent {
       if(dVal != null && dVal.length() > 0 && dVal.equalsIgnoreCase("true"))
          params.put("checked", "true");
       m_content.append(createStartTag("input", params, true));
-      Map<String, String> lParams = new HashMap<>();
-      lParams.put(FOR, fieldname);
-      m_content.append(createStartTag(LABEL, lParams, false));
+      Map<String, String> lParams = new HashMap<String, String>();
+      lParams.put("for", fieldname);
+      m_content.append(createStartTag("label", lParams, false));
       m_content.append(displayName);
-      m_content.append(createEndTag(LABEL));
-      m_content.append(createStartTag(BR, null, true));
+      m_content.append(createEndTag("label"));
+      m_content.append(createStartTag("br", null, true));
 	}
 	
 	/**
@@ -506,12 +513,12 @@ public class PSUserPrefFormContent {
     * @param pref the JSON preference object, assumed not <code>null</code>.
     */
 	private void addListField(String fieldname, JSONObject pref){
-	   Map<String, String> params = new HashMap<>();
+	   Map<String, String> params = new HashMap<String, String>();      
       params.put("id", replaceTokens(ID_INPUT));
       params.put("name", fieldname);
-      m_content.append(createStartTag(SELECT, params, false));
-      m_content.append(createEndTag(SELECT));
-      m_content.append(createStartTag(BR, null, true));
+      m_content.append(createStartTag("select", params, false));      
+      m_content.append(createEndTag("select"));
+      m_content.append(createStartTag("br", null, true));	
 	}
 	
 	/**
@@ -521,9 +528,9 @@ public class PSUserPrefFormContent {
     * @param pref the JSON preference object, assumed not <code>null</code>.
     */
 	private void addHiddenField(String fieldname, JSONObject pref){
-	   Map<String, String> params = new HashMap<>();
+	   Map<String, String> params = new HashMap<String, String>();
       String dVal = getFieldValue(pref);
-      params.put("type", HIDDEN);
+      params.put("type", "hidden");
       params.put("id", replaceTokens(ID_INPUT));
       params.put("name", fieldname);
       if(dVal != null && dVal.length() > 0)
@@ -533,10 +540,10 @@ public class PSUserPrefFormContent {
 	
 	private void addSeparator(String fieldname, String displayname, JSONObject pref)
 	{
-	   Map<String, String> params = new HashMap<>();
+	   Map<String, String> params = new HashMap<String, String>();
 	   String id = replaceTokens(ID_INPUT);
 	   String dVal = (String)pref.get("default");
-	   params.put("type", HIDDEN);
+	   params.put("type", "hidden");
       params.put("id", id);
       params.put("name", fieldname);
       params.put("value", "");
@@ -545,17 +552,17 @@ public class PSUserPrefFormContent {
 	   {
 	      params.clear();
 	      params.put("id", id + "_separator_label");
-         params.put(CLASS, "perc-gadget-form-separator");
-         m_content.append(createStartTag(LABEL, params, false));
+         params.put("class", "perc-gadget-form-separator");
+         m_content.append(createStartTag("label", params, false));
          m_content.append(displayname);
-         m_content.append(createEndTag(LABEL));
+         m_content.append(createEndTag("label"));
 	   }
 	   
 	   if(dVal != null && !dVal.equals("@noline"))
 	   {
 	      params.clear();
 	      params.put("id", id + "_separator_line");
-         params.put(CLASS, "perc-gadget-form-separator-line");
+         params.put("class", "perc-gadget-form-separator-line");
          m_content.append(createStartTag("hr", params, true));
 	   }
 	   else
@@ -572,7 +579,7 @@ public class PSUserPrefFormContent {
 	 */
 	private String getFieldValue(JSONObject pref){
 	   String dVal = (String)pref.get("default");
-	   String fName = (String)pref.get(FIELD_NAME);
+	   String fName = (String)pref.get("fieldname");
 	   String uVal = m_userPrefValues.get("up_" + fName);
 	   return (uVal == null || uVal.length() == 0) ? dVal : uVal;	   
 	}
@@ -584,8 +591,8 @@ public class PSUserPrefFormContent {
 	 * @return the replaced string, never <code>null</code>, may be empty.
 	 */
 	private String replaceTokens(String str){
-	   str = str.replace("@@MODULEID@@", m_moduleId);
-	   str = str.replace("@@FIELDIDX@@", String.valueOf(m_fieldCount));
+	   str = str.replaceAll("@@MODULEID@@", m_moduleId);
+	   str = str.replaceAll("@@FIELDIDX@@", String.valueOf(m_fieldCount));
 	   return str;
 	}
 	
@@ -656,9 +663,9 @@ public class PSUserPrefFormContent {
 	/**
 	 * The pssessionid coming from the server request, initialized in the ctor.
 	 */
-	private final String m_pssessionid;
+	private String m_pssessionid;
 	
-	private Map<String, JSONObject> m_userPrefs = new HashMap<>();
+	private Map<String, JSONObject> m_userPrefs = new HashMap<String, JSONObject>();
 	
 	// CONSTANTS
 	private static final String INPUTNAME = "m_@@MODULEID@@_up_";
@@ -672,7 +679,7 @@ public class PSUserPrefFormContent {
 	private static final String FUNCTIONS = "/* PNC edit window -- leave in this line for testing */" + 
 			"function _gel(n) {return document.getElementById ? document.getElementById(n) : null;}" + 
 			"/* collect the userprefs into a ampersand-separate string, suitable for appending to a URL */" + 
-			"/* note: this doesn't gather the locale */" +
+			"/* note: this doesn\'t gather the locale */" + 
 			"function gatherUserprefs_@@MODULEID@@() {var res = \"\";" + 
 			"var num_fields = document.getElementById(\"m_@@MODULEID@@_numfields\").value;" + 
 			"for (var i = 0; i < num_fields; i++) {var obj = document.getElementById(\"m_@@MODULEID@@_\"+i);" + 

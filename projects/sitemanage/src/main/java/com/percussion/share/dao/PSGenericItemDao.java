@@ -23,18 +23,28 @@
  */
 package com.percussion.share.dao;
 
+import static java.util.Arrays.*;
+import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.Validate.*;
+
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.xml.bind.JAXB;
+
+import org.apache.commons.lang.RandomStringUtils;
+
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.PSItemField;
-import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNode;
-import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.data.PSAbstractPersistantObject;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.PSErrorsException;
@@ -42,15 +52,6 @@ import com.percussion.webservices.PSUnknownContentTypeException;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.owasp.csrfguard.util.RandomGenerator;
-
-import java.util.Collections;
-import java.util.List;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * A Generic Content Item Dao that will store a serialized object in 
@@ -66,16 +67,16 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
     /**
      * The type of object to be serialized to the field with name: {@link #dataFieldName}
      */
-    private final Class<T> type;
+    private Class<T> type;
 
-    private final IPSContentWs contentWs;
-    private final PSJcrNodeFinder jcrNodeFinder;
-    private final IPSIdMapper idMapper;
+    private IPSContentWs contentWs;
+    private PSJcrNodeFinder jcrNodeFinder;
+    private IPSIdMapper idMapper;
     
     /**
      * Content type name.
      */
-    private String contentType;
+    private String contentType = null;
     /**
      * Unique field used for search and locating the item.
      */
@@ -87,7 +88,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
     /**
      * Folder path where the content items will be stored.
      */
-    private String folderPath;
+    private String folderPath = null;
 
     
     
@@ -103,7 +104,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
      * @param contentType never <code>null</code>.
      * @param folderPath never <code>null</code>.
      */
-    protected PSGenericItemDao(
+    public PSGenericItemDao(
             IPSContentWs contentWs, 
             IPSContentMgr contentMgr, 
             IPSIdMapper idMapper, 
@@ -130,8 +131,8 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
 
     public T find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
     {
-
-        log.debug("Finding object id: {}" , id);
+        if(log.isDebugEnabled())
+            log.debug("Finding object id: " + id);
         notNull(id);
         T object = null;
         try
@@ -144,8 +145,15 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
                 object = PSSerializerUtils.unmarshal(dataField, type);
             }
         }
-        catch (PSErrorException | PSCmsException | PSErrorResultsException e)
+        catch (PSErrorException e)
         {
+            handleLoadException(id, e);
+        }
+        catch (PSErrorResultsException e)
+        {
+            handleLoadException(id, e);
+        } 
+        catch (PSCmsException e) {
             handleLoadException(id, e);
         }
         return object;
@@ -173,7 +181,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
         notNull(id);
         IPSGuid userGuid = findContentItemGuid(id);
         if (userGuid == null) return null;
-        List<PSCoreItem> items = contentWs.loadItems(Collections.singletonList(userGuid),
+        List<PSCoreItem> items = contentWs.loadItems(Arrays.asList(userGuid), 
                 true, false, false, true);
         if (items.isEmpty()) return null;
         return items.get(0);
@@ -224,22 +232,27 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
 
     public void delete(String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException
     {
-
-        log.debug("Deleting {} : {}",type.getSimpleName(),  id);
+        if (log.isDebugEnabled())
+            log.debug("Deleting " + type.getSimpleName() + " : " + id);
             
         notNull(id);
         IPSGuid guid = findContentItemGuid(id);
         if (guid == null) throw new DeleteException("#findContentItemGuid returned null.");
         try
         {
-            contentWs.deleteItems(Collections.singletonList(guid));
+            contentWs.deleteItems(asList(guid));
         }
-        catch (PSErrorsException | PSErrorException e)
+        catch (PSErrorsException e)
         {
             String error = errorMessage("delete", id);
             throw new DeleteException(error, e);
         }
-
+        catch (PSErrorException e)
+        {
+            String error = errorMessage("delete", id);
+            throw new DeleteException(error,e);
+        }
+        
     }
     
     private String errorMessage(String action, String id) {
@@ -280,7 +293,7 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
             coreItem.setTextField("sys_title", id);
             coreItem.setTextField(getUniqueIdFieldName(), id);
             coreItem.setTextField(getDataFieldName(), data);
-            IPSGuid guid = contentWs.saveItems(Collections.singletonList(coreItem), false, false).get(0);
+            IPSGuid guid = contentWs.saveItems(Arrays.asList(coreItem), false, false).get(0);
             /*
              * If they didn't supply an id we will use the guid.
              */
@@ -307,15 +320,12 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
      * @param object never <code>null</code>.
      * @return never <code>null</code>, empty, or blank.
      */
+    //TODO: Fix me on getting the guid. The coreitem should have the guid.
     protected String createSurrogateId(PSCoreItem item, T object) 
     {
         log.debug("Creating surrogate id for object: {}" , object);
-        String surrogateId;
-        if(item.getContentId()<=0){
-            surrogateId = PSGuidManagerLocator.getGuidMgr().makeGuid(item.getContentId(), PSTypeEnum.LEGACY_CONTENT).toString();
-        }else {
-            surrogateId = RandomGenerator.generateRandomId(PSSecurityUtility.getSecureRandom(),10);
-        }
+        String surrogateId = RandomStringUtils.randomAlphabetic(20);
+
         log.debug("Surrogate id: {}" , surrogateId);
         return surrogateId;
     }
@@ -335,7 +345,8 @@ public abstract class PSGenericItemDao<T extends PSAbstractPersistantObject> imp
     
     protected T unmarshal(String dataField)
     {
-        return PSSerializerUtils.unmarshal(dataField, type);
+    	T object = null;
+        return (T) PSSerializerUtils.unmarshal(dataField, type);
     }
     
     

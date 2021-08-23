@@ -27,12 +27,7 @@ import com.percussion.rx.delivery.IPSDeliveryItem;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
-import com.percussion.services.pubserver.IPSDatabasePubServerFilesService;
-import com.percussion.services.pubserver.IPSPubServer;
-import com.percussion.services.pubserver.IPSPubServerDao;
-import com.percussion.services.pubserver.PSDatabasePubServerServiceLocator;
-import com.percussion.services.pubserver.PSPubServerDaoLocator;
+import com.percussion.services.pubserver.*;
 import com.percussion.services.pubserver.data.PSDatabasePubServer;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -41,6 +36,7 @@ import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -59,6 +55,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
@@ -659,14 +656,7 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
          try(StringWriter writer = new StringWriter()) {
             XMLStreamWriter formatter = ofact.createXMLStreamWriter(writer);
 
-            SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(new PSXmlSecurityOptions(
-                    true,
-                    true,
-                    true,
-                    false,
-                    true,
-                    false
-            ));
+            SAXParserFactory f = PSSecureXMLUtils.getSecuredSaxParserFactory(false);
 
             SAXParser parser = f.newSAXParser();
 

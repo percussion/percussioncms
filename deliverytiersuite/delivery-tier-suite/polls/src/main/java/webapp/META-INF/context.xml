@@ -24,5 +24,7 @@
   -->
 
 <Context>
-  <CookieProcessor sameSiteCookies="lax" />
+  <Loader className="org.apache.catalina.loader.VirtualWebappLoader"
+          virtualClasspath="${catalina.base}/conf/perc/perc-polls-services" 
+          searchVirtualFirst="true" />
 </Context> 

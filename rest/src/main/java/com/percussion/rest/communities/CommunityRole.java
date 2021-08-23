@@ -25,24 +25,25 @@
 package com.percussion.rest.communities;
 
 import com.percussion.rest.Guid;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="CommunityRole")
-@Schema(description="Represents a Community Role association")
+@ApiModel(value="CommunityRole",description="Represents a Community Role association")
 public class CommunityRole {
 
-    @Schema(description="The long id of the community")
+    @ApiModelProperty(value="The long id of the community")
     private long communityid;
-    @Schema(description="The long id of the Role")
+    @ApiModelProperty(value="The long id of the Role")
     private long roleId;
-    @Schema(description="The name of the role")
+    @ApiModelProperty(value="The name of the role", readOnly = true)
     private String roleName;
 
-    @Schema(description="Guid of the community", required = true)
+    @ApiModelProperty(value="Guid of the community", required = true)
     private Guid communityGuid;
-    @Schema(description="Guid of the Role", required=true)
+    @ApiModelProperty(value="Guid of the Role", required=true)
     private Guid roleGuid;
 
     public Guid getCommunityGuid() {

@@ -90,7 +90,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
    public static final String TOMCAT_USER="tomcat-user";
    public static final String TOMCAT_PASSWORD="tomcat-password";
 
-
    /**
     * License Override
     */
@@ -167,7 +166,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * This HTTP codes are treated as successful when returned by the delivery
      * server.
      */
-    private static final List<Integer> successfulHttpStatusCodes = new ArrayList<Integer>()
+    private static final List<Integer> successfullHttpStatusCodes = new ArrayList<Integer>()
     {
         /**
          *
@@ -523,7 +522,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
            {
                socketFactory = new EasySSLProtocolSocketFactory();
            }
-           else //Not using self-signed so setup SSL accordingly
+           else //Not using self signed so setup SSL accordingly
            {
               socketFactory = new TLSProtocolSocketFactory();
            }
@@ -563,7 +562,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
         if (actionOptions.getSuccessfullHttpStatusCodes() != null &&
                 !actionOptions.getSuccessfullHttpStatusCodes().isEmpty())
-            successfulHttpStatusCodes.addAll(actionOptions.getSuccessfullHttpStatusCodes());
+            successfullHttpStatusCodes.addAll(actionOptions.getSuccessfullHttpStatusCodes());
 
         // Request information
         if (this.requestType.equals(HttpMethodType.GET) && requestMessageBody != null)
@@ -684,10 +683,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     {
         if (isBlank(this.responseMessageBodyContentType))
             this.responseMessageBodyContentType = MediaType.APPLICATION_JSON;
-
-
+        
         DeleteMethod deleteMethod = new DeleteMethod(this.requestUrl);
-
         
         if (requestMessageBody instanceof NameValuePair[])
             deleteMethod.setQueryString((NameValuePair[]) requestMessageBody);
@@ -706,7 +703,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     private String executePutMethod(String requestMessageBodyContentType)
     {
         PutMethod putMethod = new PutMethod(this.requestUrl);
-
         return this.executeEntityEnclosingMethod(putMethod, requestMessageBodyContentType);
     }
     
@@ -722,7 +718,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     private String executePostMethod(String requestMessageBodyContentType)
     {
          PostMethod postMethod = new PostMethod(this.requestUrl);
-
 
         if (this.requestMessageBody instanceof Collection<?>)
         {
@@ -851,7 +846,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             try (InputStream responseDataStream = httpMethod.getResponseBodyAsStream()) {
 
                 String responseData = responseDataStream == null ? "" : IOUtils.toString(responseDataStream,StandardCharsets.UTF_8);
-                if (!successfulHttpStatusCodes.contains(statusCode)) {
+                if (!successfullHttpStatusCodes.contains(statusCode)) {
                     failureCount = 0;
                     offline = false;
                     String msg;

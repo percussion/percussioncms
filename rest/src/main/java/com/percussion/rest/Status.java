@@ -25,9 +25,11 @@
 package com.percussion.rest;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
 
 
 /**
@@ -36,16 +38,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description="Status")
+@ApiModel(value="Status")
 public class Status
 {
     /**
      * 
      */
-    @Schema(name="message", description="The message for the Status response")
+    @ApiModelProperty(name="message", value="The message for the Status response")
     private String message;
 
-    @Schema(name="statusCode", description="The numeric code for the Status message")
+    @ApiModelProperty(name="statusCode", value="The numeric code for the Status message")
     private int statusCode;
 
     public int getStatusCode() {

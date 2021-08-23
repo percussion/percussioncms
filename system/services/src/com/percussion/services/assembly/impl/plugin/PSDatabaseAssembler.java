@@ -24,9 +24,8 @@
 package com.percussion.services.assembly.impl.plugin;
 
 import com.percussion.data.PSCachedStylesheet;
-import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
-import com.percussion.security.xml.PSCatalogResolver;
+import com.percussion.data.PSUriResolver;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
@@ -37,9 +36,19 @@ import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.utils.xml.PSSaxHelper;
 import com.percussion.xml.PSStylesheetCacheManager;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
@@ -55,18 +64,10 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The database assembly plugin produces an xml document that is appropriate for
@@ -237,10 +238,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
                .getStyleSheetFromCache(previewSS.toURL());
             Transformer nt = ss.getStylesheetTemplate().newTransformer();
             nt.setErrorListener(errorListener);
-
-            PSCatalogResolver cr = new PSCatalogResolver();
-            cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
-            nt.setURIResolver(cr);
+            nt.setURIResolver(new PSUriResolver());
 
             Source src = new StreamSource(new StringReader(dbdoc));
             ByteArrayOutputStream bout = new ByteArrayOutputStream();

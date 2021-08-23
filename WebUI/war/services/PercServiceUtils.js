@@ -56,121 +56,19 @@
      */
     var TYPE_PUT = "PUT";
 
-    var TYPE_OPTIONS = "OPTIONS";
-
-    var TYPE_HEAD="HEAD";
-
-    var CSRF_HEADER="X-CSRF-HEADER";
-
-
-    var CSRF_PARAM_HEADER="X-CSRF-PARAM";
-    var CSRF_METADATA_PATH="/perc-metadata-services/metadata/csrf";
-    var CSRF_FORMS_PATH="/perc-form-processor/forms/csrf";
-    var CSRF_POLLS_PATH="/perc-polls-services/polls/csrf";
-    var CSRF_INTEGRATION_PATH="/perc-integrations/integrations/csrf";
-    var CSRF_COMMENTS_PATH="/perc-comments-services/comment/csrf";
-    var CSRF_MEMBERSHIP_PATH="/perc-membership-services/membership/csrf";
-
-
-    function csrfGetURLFromServiceCall(url){
-
-        if(typeof url === "undefined" || url == null)
-            return null;
-
-        //Create a new link with the url as its href:
-        var ret;
-        var a = $('<a>', {
-            href: url
-        });
-        var path = a.prop("path");
-
-        if(path.contains("/perc-metadata-services/"))
-            path = CSRF_METADATA_PATH;
-        else if(path.contains("/perc-form-processor/"))
-            path = CSRF_FORMS_PATH;
-        else if(path.contains("/perc-polls-services"))
-            path = CSRF_POLLS_PATH;
-        else if(path.contains("/perc-integrations/"))
-            path = CSRF_INTEGRATION_PATH;
-        else if(path.contains("/perc-comments-services/"))
-            path = CSRF_COMMENTS_PATH;
-        else if(path.contains("/perc-membership-services/"))
-            path = CSRF_MEMBERSHIP_PATH;
-        else
-            path = null;
-
-        if(path!= null){
-            return a.prop("protocol") + a.prop("hostname") + ":" + a.prop("port") + path;
-        }else{
-            return null;
-        }
-
-    }
-
-
-    async function csrfGetToken(url,callback){
-
-        let csrfToken;
-
-        if(typeof url != "undefined" && url != null){
-            if(!url.endsWith("/csrf")){
-                url = csrfGetURLFromServiceCall(url);
-            }
-        }
-
-
-        let init = {
-            method: TYPE_HEAD, // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'omit', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                "Accept": "text/plain"
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin-when-cross-origin'
-        };
-
-        const response = await fetch(url, init);
-
-        response.text().then(data => {
-            if(response.ok) {
-                callback(response);
-            }else{
-                console.debug(response.text);
-            }
-        });
-    }
+    var csrf_token = $('meta[name="csrf-token"]').attr('content');
 
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS)$/.test(method));
     }
 
-
     $.ajaxSetup({
         timeout: 300000,
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                let u = csrfGetURLFromServiceCall(xhr.url);
-                if(u != null){
-                    csrfGetToken(u,function(response){
-                        if(typeof response !== 'undefined' && response != null)
-                            var tokenHeader = response.headers.get(CSRF_HEADER);
-                        if(typeof tokenHeader !== "undefined" && tokenHeader != null ){
-                            var token = jqXHR.getResponseHeader(tokenHeader);
-                            var param = jqXHR.getResponseHeader(CSRF_PARAM_HEADER);
-                            if(typeof(token) !== "undefined" && token !== null){
-                                xhr.setRequestHeader(tokenHeader,token);
-                            }
-
-                        }
-
-
-                    });
-                }
-
+                //TODO:  implement me
+                //xhr.setRequestHeader("anti-csrf-token", csrf_token);
             }
         }
     });
@@ -196,18 +94,18 @@
     }
 
     function toJSON(payload){
-        if("" === payload){
-            payload ={};
-        }
-        if("undefined" !== typeof(payload)){
-            if(Array.isArray(payload) || "string" === typeof(payload)){
-                return JSON.parse(payload);
-            }else{
-                return payload;
-            }
-        }else{
-            return payload;
-        }
+     if("" === payload){
+         payload ={};
+     }
+     if("undefined" !== typeof(payload)){
+         if(Array.isArray(payload) || "string" === typeof(payload)){
+             return JSON.parse(payload);
+         }else{
+             return payload;
+         }
+     }else{
+         return payload;
+     }
 
     }
     /**
@@ -269,7 +167,7 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    let result = {
+                     let result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
@@ -473,30 +371,36 @@
         const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
 
         if(null === callback || 'undefined' === typeof (callback))
-        {
-            console.error("Callback cannot be null or undefined");
-            return;
-        }
+		{
+		    alert("Callback cannot be null or undefined");
+		    return;
+		}
 
-        if(null === servicebase || 'undefined' === typeof (servicebase)){
-            // Let's see if jQuery.getDeliveryServiceBase exists and
-            // if so use it to get the service base
-            if('function' === typeof (jQuery.getDeliveryServiceBase))
-            {
-                servicebase = jQuery.getDeliveryServiceBase();
-            }
-            else
-            {
-                console.error("Servicebase not defined, cannot make ajax call.");
-                return;
-            }
-        }
+		if(!(type === self.TYPE_GET || type === self.TYPE_POST))
+		{
+		    alert("Invalid type specified, must be GET or POST.");
+		    return;		    
+		}
 
-        if(!url.startsWith(servicebase) && !url.startsWith("http")){
+		if(null === servicebase || 'undefined' === typeof (servicebase)){
+		    // Let's see if jQuery.getDeliveryServiceBase exists and 
+			// if so use it to get the service base
+			if('function' === typeof (jQuery.getDeliveryServiceBase))
+			{
+			    servicebase = jQuery.getDeliveryServiceBase();	
+			}
+			else
+			{
+				console.error("Servicebase not defined, cannot make ajax call.");
+			    return;
+			}
+		}
+
+		if(!url.startsWith(servicebase) && !url.startsWith("http")){
             url = joinURL(servicebase,url);
         }
 
-        let init = {
+		let init = {
             method: type, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -870,7 +774,6 @@
         TYPE_GET: TYPE_GET,
         TYPE_POST: TYPE_POST,
         TYPE_PUT: TYPE_PUT,
-        csrfGetToken: csrfGetToken,
         makeJsonRequest: makeJsonRequest,
         makeXmlRequest: makeXmlRequest,
         makeRequest: makeRequest,

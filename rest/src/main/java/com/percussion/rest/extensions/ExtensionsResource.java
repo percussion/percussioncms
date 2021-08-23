@@ -25,19 +25,10 @@
 package com.percussion.rest.extensions;
 
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -47,7 +38,7 @@ import java.util.List;
 @PSSiteManageBean(value="restExtensionsResource")
 @Path("/extensions")
 @XmlRootElement
-@Tag(name = "Extensions", description = "Extension operations")
+@Api(value = "/extensions", description = "Extension operations")
 public class ExtensionsResource {
 
     @Autowired
@@ -62,13 +53,12 @@ public class ExtensionsResource {
     @Path("/list")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "List Extensions available on the system", description = "Returns a list of Extensions that match the supplied ExtensionFilterOptions"
-, responses= {
-            @ApiResponse(responseCode = "200", description = "OK", content=@Content(
-                    array = @ArraySchema(schema=@Schema(implementation = Extension.class)))),
-            @ApiResponse(responseCode = "404", description = "No Extensions not found")
+    @ApiOperation(value = "List Extensions available on the system", notes = "Returns a list of Extensions that match the supplied ExtensionFilterOptions"
+, response = ExtensionList.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "No Extensions not found")
     })
-    public List<Extension> getExtensions(@Parameter(name="filter", description="An extension filter options object", required=true) ExtensionFilterOptions filter){
+    public List<Extension> getExtensions(@ApiParam(name="filter", value="An extension filter options object", required=true) ExtensionFilterOptions filter){
         return new ExtensionList(adaptor.getExtensions(uriInfo.getBaseUri(),filter));
     }
 

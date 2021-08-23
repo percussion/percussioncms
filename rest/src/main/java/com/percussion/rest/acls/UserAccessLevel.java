@@ -26,18 +26,19 @@ package com.percussion.rest.acls;
 
 import com.percussion.rest.PermissionList;
 import com.percussion.rest.Permissions;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-@Schema(description = "User Access Level")
+@ApiModel("User Access Level")
 public class UserAccessLevel {
 
-    @Schema(description="Unique id of this access level")
+    @ApiModelProperty(value="Unique id of this access level")
     private long id;
 
-    @Schema(description="The permissions defined for this acl")
+    @ApiModelProperty(notes="The permissions defined for this acl")
     private Permissions permission;
 
     private PermissionList permissions;

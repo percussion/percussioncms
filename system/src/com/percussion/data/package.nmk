@@ -1,0 +1,202 @@
+PACKAGE=com.percussion.data
+
+#
+# These are our (internal) tests
+#
+TEST_CLASSES = \
+   PSConditionalEvaluatorTest \
+   PSDataComparisonTest \
+   PSDataConverterTest \
+   PSQueryJoinerTest \
+   PSResultSetTest \
+   PSRuleListEvaluatorTest \
+   PSStylesheetCleanupFilterTest \
+   PSStylesheetCleanupUtilsTest \
+   PSTableChangeDataTest \
+   PSViewEvaluatorTest 
+
+# Strip export-restricted classes from the jar
+#
+.IF $(JAR_EXPORT)
+#	EXCLUDED_CLASSES += 
+.END
+
+#
+# Strip testing and non-essential classes from the jar
+#
+.IF $(JAR_PRODUCTION)
+	EXCLUDED_CLASSES += \
+		$(TEST_CLASSES)
+.END
+
+#
+# These will go in the default (unshared) jar file for this package.
+#
+DEFAULT_CLASSES = \
+   IPSDataExtractor \
+   IPSExecutionStep \
+   IPSResultGenerator \
+   IPSResultSetConverter \
+   IPSStatementBlock \
+   IPSStyleSheetMerger \
+   IPSTableChangeListener \
+   IPSInternalRequestHandler \
+   IPSInternalResultHandler \
+   PSBackEndColumnExtractor \
+   PSBackEndLogin \
+   PSBinaryData \
+   PSCgiVariableExtractor \
+   PSConditionalEvaluator \
+   PSConditionalExtensionRunner \
+   PSContentItemDataExtractor \
+   PSContentItemStatusExtractor \
+   PSCookieExtractor \
+   PSCssStyleSheetMerger \
+   PSDataConverter \
+   PSDataExtractor \
+   PSDataExtractorFactory \
+   PSDataHandler \
+   PSDataTypeInfo \
+   PSDatabaseMetaData \
+   PSDatabasePoolDatabaseMetaData \
+   PSDateLiteralExtractor \
+   PSDisplayFieldRefExtractor \
+   PSDisplayTextLiteralExtractor \
+   PSDtdRelationalMapper \
+   PSExecutionBlock \
+   PSExecutionData \
+   PSExtensionRunner \
+   PSFolderPermissionsDataFilter \
+   PSFunctionBlock \
+   PSFunctionCallExtractor \
+   PSHtmlParameterExtractor \
+   PSHtmlParameterTree \
+   PSIndexStatistics \
+   PSIndexedLookupJoiner \
+   PSInternalRequestCallException \
+   PSJoinFormatter \
+   PSJoinTree \
+   PSJoinedRowDataBuffer \
+   PSLiteralExtractor \
+   PSLiteralSetExtractor \
+   PSLockedUpdateStatement \
+   PSMacroExtractor \
+   PSMimeContentResult \
+   PSNativeStatement \
+   PSNumericLiteralExtractor \
+   PSOptimizer \
+   PSOracleJoinFormatter \
+   PSPagedRequestLinkGenerator \
+   PSQueryCacher \
+   PSQueryHandler \
+   PSQueryJoiner \
+   PSQueryOptimizer \
+   PSQueryStatement \
+   PSOriginatingRelationshipPropertyExtractor \
+   PSRelationshipPropertyExtractor \
+   PSRequestLinkGenerator \
+   PSIdGenerator \
+   PSRequestRedirector \
+   PSResultSetHtmlConverter \
+   PSResultSetMimeConverter \
+   PSResultSetXmlConverter \
+   PSResultSetWrapper \
+   PSRowDataBuffer \
+   PSRuleEvaluator \
+   PSRuleListEvaluator \
+   PSSetStyleSheetEvaluator \
+   PSSingleHtmlParameterExtractor \
+   PSSortedResultJoiner \
+   PSSql92JoinFormatter \
+   PSSqlBuilder \
+   PSSqlBuilderContext \
+   PSSqlDeleteBuilder \
+   PSSqlInsertBuilder \
+   PSSqlLockedUpdateBuilder \
+   PSSqlParser \
+   PSSqlQueryBuilder \
+   PSSqlUpdateBuilder \
+   PSSqlUpdateInsertBuilder \
+   PSStatement \
+   PSStatementBlock \
+   PSStatementColumn \
+   PSStatementColumnMapper \
+   PSStatementGroup \
+   PSStyleSheet \
+   PSStylesheetCleanupFilter \
+   PSStylesheetCleanupUtils \
+   PSStyleSheetMerger \
+   PSTableChangeData \
+   PSTableChangeEvent \
+   PSTableMetaData \
+   PSTableStatistics \
+   PSTextLiteralExtractor \
+   PSTransactionSet \
+   PSUdfCallExtractor \
+   PSUpdateHandler \
+   PSUpdateInsertStatement \
+   PSUpdateOptimizer \
+   PSUpdateStatement \
+   PSUserContextExtractor \
+   PSXmlFieldExtractor \
+   IPSLobColumnInitializer \
+   PSOracleInsertBuilder \
+   PSOracleLobColumnInitializer \
+   PSOracleUpdateBuilder \
+   PSOracleUpdateInsertBuilder \
+   PSOracleUpdateInsertStatement \
+   PSOracleUpdateStatement \
+   PSSqlUpdateBuilderFactory \
+   PSXslStyleSheetMerger \
+   PSConditionalExitEvaluator \
+   PSErrorCollector \
+   PSFieldValidationRulesEvaluator \
+   PSFieldSetValidationRulesEvaluator \
+   PSValidationRulesEvaluator \
+   PSMetaDataCache \
+   PSUrlRequestExtractor \
+   PSConditionalUrlEvaluator \
+   PSCachedStylesheet \
+   PSUriResolver \
+   PSViewEvaluator \
+   PSViewExtractor \
+   PSTransformErrorListener \
+   IPSResultSetDataFilter \
+   PSFilterResultSetWrapper
+#
+# These will go in the shared jar file.
+#
+SHARED_CLASSES = \
+   IPSBackEndErrors \
+   IPSDataErrors \
+   PSConversionException \
+   PSDataExtractionException \
+   PSResultSet \
+   PSResultSetMetaData \
+   PSResultSetColumnMetaData \
+   PSSqlException \
+   PSUnsupportedConversionException
+
+#
+# Properties files
+#
+PROPERTIES =
+
+#
+# Image files
+#
+IMAGES =
+
+#
+# Resource files (properties and image files combined)
+#
+RESOURCES = \
+	$(PROPERTIES) \
+	$(IMAGES)
+
+ALL_CLASSES =  $(SHARED_CLASSES) $(DEFAULT_CLASSES) $(TEST_CLASSES)
+
+ALL_FILES = $(ALL_CLASSES) $(RESOURCES)
+
+.EXPORT: ALL_FILES
+

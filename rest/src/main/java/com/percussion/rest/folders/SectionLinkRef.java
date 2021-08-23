@@ -27,14 +27,13 @@ package com.percussion.rest.folders;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.percussion.rest.LinkRef;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
 @XmlRootElement(name = "SectionLinkRef")
 public class SectionLinkRef extends LinkRef
 {
-    @Schema(name="type", required=false,description="type of section link.", allowableValues = "sectionlink,externallink")
+    @ApiModelProperty(value="type", required=false,notes="type of section link.", allowableValues = "sectionlink,externallink")
     String type;
 
     public static final String TYPE_INTERNAL = "internal";
@@ -52,6 +51,7 @@ public class SectionLinkRef extends LinkRef
     {
         super(name, href);
         type = "internal";
+        // TODO Auto-generated constructor stub
     }
 
     @JsonCreator
