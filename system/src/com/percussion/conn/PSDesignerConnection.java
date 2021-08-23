@@ -1306,13 +1306,11 @@ public class PSDesignerConnection
 
       try {
          //If running on server - we will get a key if not an exception
-         return  PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).encrypt(str);
+         return PSEncryptor.encryptString(str);
       } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
 
          try {
-            return PSEncryptor.getInstance("AES",System.getProperty("user.home") + "/.perc-secure").encrypt(str);
+            return PSEncryptor.encryptString(System.getProperty("user.home") + "/.perc-secure",str);
          } catch (PSEncryptionException psEncryptionException) {
             logger.error("Error encrypting text: " +  e.getMessage());
             logger.debug(e);

@@ -56,9 +56,7 @@ public class PSUtilityService implements IPSUtilityService
             throw new IllegalArgumentException("str may not be null");
 
         try {
-            return PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).encrypt(str);
+            return PSEncryptor.encryptString(str);
         } catch (PSEncryptionException e) {
             log.error("Error encrypting text: {}", e.getMessage());
             log.debug(e);
@@ -82,9 +80,7 @@ public class PSUtilityService implements IPSUtilityService
             ).DEFAULT_KEY();
         }
         try{
-            ret = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(str);
+            ret = PSEncryptor.decryptString(str);
 
         }catch(PSEncryptionException ex){
             ret =  PSLegacyEncrypter.getInstance(

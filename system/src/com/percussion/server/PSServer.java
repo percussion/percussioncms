@@ -1850,16 +1850,20 @@ public class PSServer {
             }
 
             String isEncrypted = ms_serverProps.getProperty("pwEncrypted");
+            String pw = ms_serverProps.getProperty("loginPw");
             if (isEncrypted != null &&
                isEncrypted.trim().equalsIgnoreCase("yes"))
             {
                // decrypt the password
                String password = "";
                try {
-                  password = PSEncryptor.getInstance(PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM,null).decrypt(ms_serverProps.getProperty("loginPw"));
-               }catch(PSEncryptionException | java.lang.IllegalArgumentException e) {
-                  password = eatLasagna(ms_serverProps.getProperty("loginId"),
-                          ms_serverProps.getProperty("loginPw"));
+                  password = PSEncryptor.decryptProperty(propFile.getAbsolutePath(), "pwEncrypted",pw );
+               }catch (PSEncryptionException pe) {
+                  try {
+                     password = PSEncryptor.decryptWithOldKey(pw);
+                  } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+                     password = eatLasagna(ms_serverProps.getProperty("loginId"), pw);
+                  }
                }
 
                ms_serverProps.setProperty("loginPw", password);

@@ -53,6 +53,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -225,16 +226,27 @@ public class XmlUploader
                   if (encrypted.trim().equalsIgnoreCase(String.valueOf(true)))
                   {
                      // need to decrypt the password
-
+                     try{
                         try {
-                           PSEncryptor.getInstance("AES",
-                                   PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-                           ).decrypt(m_loginPwd);
-                        }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                           m_loginPwd = PSCryptographer.decrypt(
-                                   PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
-                                   m_loginId, m_loginPwd);
+                           m_loginPwd = PSEncryptor.decryptProperty(propsFile.getAbsolutePath(), Utils.RX_PWD_KEY, m_loginPwd);
+                        }catch (PSEncryptionException pe) {
+                           try {
+                              m_loginPwd = PSEncryptor.decryptWithOldKey(m_loginPwd);
+                           } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+                              m_loginPwd = PSCryptographer.decrypt(
+                                      PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
+                                      m_loginId, m_loginPwd);
+
+                           }
+                           try {
+                              //Try to encrypt password with new key, if fails set decoded password
+                              m_properties.setProperty("loginPw", PSEncryptor.encryptProperty(propsFile.getAbsolutePath(), "loginPw", m_loginPwd));
+                           } catch (PSEncryptionException psEncryptionException) {
+                              m_properties.setProperty("loginPw", m_loginPwd);
+                          }
+                           m_properties.store(new FileOutputStream(propsFile), null);
                         }
+                     }
 
                      catch (Exception e)
                      {

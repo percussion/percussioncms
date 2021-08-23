@@ -76,10 +76,7 @@ public class PSStaticContainerUtils
       if (StringUtils.equalsIgnoreCase(encrypted, "Y"))
       {
          try{
-            str = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
-                            PSEncryptor.SECURE_DIR)
-            ).decrypt(str);
+            str = PSEncryptor.decryptString(str);
          } catch (PSEncryptionException e) {
             str = PSLegacyEncrypter.getInstance(
                     PathUtils.getRxPath().toAbsolutePath().toString().concat(

@@ -24,7 +24,9 @@
 
 package com.percussion.security;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,7 +42,15 @@ import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Main encryption class to be used for Encryption within the code base.
@@ -56,10 +66,15 @@ public class PSEncryptor extends PSAbstractEncryptor {
     private static final Logger log = LogManager.getLogger(PSEncryptor.class);
     public static final String SECURE_DIR = File.separator + "rxconfig"+File.separator+ "secure" +File.separator;
     private static final String SECURE_KEY_FILE = ".key";
+    private static final String OLD_SECURE_KEY_FILE = ".keyold";
     public static final String ROTATE_FLAG_FILE = "rotate";
     private IPSKey secretKey;
+    private IPSKey oldSecretKey;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     public static final String SECRETKEY_PROPNAME="secretKey";
+
+    private static Map encryptedPasswordList = new HashMap<String, List<String>>();
+
 
     private static File getRxDir(String path){
         return new File(".");
@@ -89,9 +104,11 @@ public class PSEncryptor extends PSAbstractEncryptor {
      * @param notifyListeners when true listeners will be notified, when false they will not.
      */
     public void forceReplaceKeyFile(byte[] newKey, boolean notifyListeners){
-
+        //If No change in key then no need to do anything.
+        if(secretKey != null && secretKey.getSecret().equals(newKey)){
+            return;
+        }
         File installDir = getRxDir(null);
-
         generateNewKeyFile(this.secretKey,
                 Paths.get(this.secureDir.concat(SECURE_KEY_FILE)),
                 newKey,
@@ -102,7 +119,20 @@ public class PSEncryptor extends PSAbstractEncryptor {
     private byte[] generateNewKeyFile(IPSKey key,Path secureKeyFile, byte[] secureKey,boolean notifyListeners){
 
         try {
+            log.info("Generating New Key");
             File f = secureKeyFile.toFile();
+            oldSecretKey = secretKey;
+            //Backup Existing key File if Exists
+            if(f.exists()) {
+                log.info("Backing up old Key");
+                File copied = new File(f.getPath().concat("old"));
+                //Delete existing .oldkey Encryption Key file
+                if(Files.exists(copied.toPath())){
+                    Files.delete(copied.toPath());
+                }
+                //Create new .oldKey Encryption key file
+                FileUtils.copyFile(f, copied);
+            }
             f.getParentFile().mkdirs();
             try(FileOutputStream writer = new FileOutputStream(f)) {
                 writer.write(secureKey);
@@ -148,6 +178,18 @@ public class PSEncryptor extends PSAbstractEncryptor {
                 log.error("Error reading instance secure key file ({}): {}",secureKeyFile.toAbsolutePath().toString(), e.getMessage());
                 log.debug(e);
             }
+            Path oldSecureKeyFile = Paths.get(keyLocation + OLD_SECURE_KEY_FILE);
+            if(Files.exists(oldSecureKeyFile)){
+                byte[] oldSecureKeyByte=null;
+                try {
+                    oldSecureKeyByte = Files.readAllBytes(oldSecureKeyFile);
+                    oldSecretKey.setSecret(oldSecureKeyByte);
+                } catch (IOException e) {
+                    log.error("Error reading instance Oldsecure key file ({}): {}",oldSecureKeyFile.toAbsolutePath().toString(), e.getMessage());
+                    log.debug(e);
+                }
+
+            }
         }else{
             //Either there was no key or the rotate flag was set
             secureKey = generateNewKeyFile(key,secureKeyFile,key.generateKey().getEncoded(),true);
@@ -160,6 +202,104 @@ public class PSEncryptor extends PSAbstractEncryptor {
         key.setSecret(secureKey);
         return key;
     }
+
+    public static boolean checkSecureKeyPresent(){
+        String rxPath = getRxDir(null).getAbsolutePath();
+        if(rxPath.endsWith("\\.")){
+            rxPath = rxPath.substring(0,rxPath.length()-2);
+        }
+        String keyLocation = rxPath + SECURE_DIR +PSEncryptor.SECURE_KEY_FILE;
+        File secureFile = new File(keyLocation);
+        return secureFile.exists();
+    }
+
+    public static String encryptString(String secureDir, String value) throws PSEncryptionException {
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES",secureDir);
+        String decryptStr = encryptor.encrypt(value);
+        return decryptStr;
+    }
+
+    public static String encryptString(String value) throws PSEncryptionException {
+       return encryptString(getRxDir(null).getAbsolutePath() + SECURE_DIR, value);
+    }
+
+
+    public static String decryptString(String value) throws PSEncryptionException {
+        return decryptString(getRxDir(null).getAbsolutePath() + SECURE_DIR, value);
+    }
+
+    public static String decryptString(String secureDir,String value) throws PSEncryptionException {
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES", secureDir);
+        try {
+            return encryptor.decrypt(value);
+        }catch (PSEncryptionException ee){
+            return encryptor.decryptWithOld(value);
+        }
+    }
+
+    public static String encryptProperty( String propertyFilePath, String keyName, String value) throws PSEncryptionException {
+        String secureDir = getRxDir(null).getAbsolutePath() + SECURE_DIR;
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES",secureDir);
+        String encryptStr = encryptor.encrypt(value);
+        storeInVault(propertyFilePath,keyName,value);
+
+        return encryptStr;
+    }
+
+    public static String decryptWithOldKey(String value) throws PSEncryptionException {
+        String secureDir = getRxDir(null).getAbsolutePath() + SECURE_DIR;
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES",secureDir);
+        return encryptor.decryptWithOld(value);
+    }
+
+    public static String decryptProperty(String propertyFilePath, String keyName, String value) throws PSEncryptionException {
+        String secureDir = getRxDir(null).getAbsolutePath() + SECURE_DIR;
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES",secureDir);
+        storeInVault(propertyFilePath,keyName,value);
+        String encryptStr = encryptor.decrypt(value);
+
+        return encryptStr;
+    }
+
+    private static void storeInVault(String propertyFilePath, String keyName, String value){
+        List props = (List)encryptedPasswordList.get(propertyFilePath);
+        if(props == null){
+            props = new ArrayList();
+        }
+        //Keep encrypted String in Map such that it can be replaced at the time of rotation
+        if(keyName == null){
+            keyName= StringUtils.EMPTY;
+        }
+        props.add(keyName);
+        log.debug("Adding Pwd to Valut: {} : {}", propertyFilePath,keyName);
+        encryptedPasswordList.put(propertyFilePath,props);
+    }
+
+    /**
+     * Use this method when creating PasswordVault
+     * @param oldKey
+     * @param newKey
+     */
+    private static void rotateSavedPasswords(String oldKey,String newKey){
+        for(Object propertyFile : encryptedPasswordList.keySet() ){
+            List encPwds = (List)encryptedPasswordList.get(propertyFile);
+            File absFile = new File(propertyFile.toString());
+            try {
+                Stream<String> lines = Files.lines(absFile.toPath());
+                List <String> replaced = lines.map(
+                        line -> line.replaceAll("foo", "bar")
+                ).collect(Collectors.toList());
+                Files.write(absFile.toPath(), replaced);
+                lines.close();
+                System.out.println("Find and Replace done!!!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+
 
 
     private static PSEncryptor instance;
@@ -256,7 +396,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
      */
     public String encrypt(String str) throws PSEncryptionException {
 
-             return Base64.getEncoder().encodeToString(secretKey.getEncryptor().encrypt(str));
+        return Base64.getEncoder().encodeToString(secretKey.getEncryptor().encrypt(str));
 
     }
 
@@ -282,13 +422,25 @@ public class PSEncryptor extends PSAbstractEncryptor {
      * @param encrypted base64 encoded encrypted string
      * @return decrypted string or null if the string fails to decrypt
      */
-    public String decrypt(String encrypted) throws PSEncryptionException{
+    private String decrypt(String encrypted) throws PSEncryptionException{
+
+            if (encrypted == null)
+                throw new IllegalArgumentException();
+
+            byte[] encryptedBytes = Base64.getDecoder().decode(encrypted.getBytes(StandardCharsets.UTF_8));
+            return secretKey.getDecryptor().decrypt(encryptedBytes);
+    }
+
+    public String decryptWithOld(String encrypted) throws PSEncryptionException{
 
         if(encrypted== null)
             throw new IllegalArgumentException();
+        if(oldSecretKey == null){
+            throw new PSEncryptionException();
+        }
 
         byte[] encryptedBytes = Base64.getDecoder().decode(encrypted.getBytes(StandardCharsets.UTF_8));
-        return secretKey.getDecryptor().decrypt(encryptedBytes);
+        return oldSecretKey.getDecryptor().decrypt(encryptedBytes);
     }
 
     /**

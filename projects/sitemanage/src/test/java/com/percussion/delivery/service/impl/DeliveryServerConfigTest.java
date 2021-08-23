@@ -107,15 +107,11 @@ public class DeliveryServerConfigTest
             String origPwVal = s.getPassword().getValue();
 
             origPw.setEncrypted(Boolean.TRUE);
-            String enc = PSEncryptor.getInstance("AES",
-                    rxdeploydir.concat(PSEncryptor.SECURE_DIR)
-                    ).encrypt(origPwVal);
+            String enc = PSEncryptor.encryptString(rxdeploydir, origPwVal);
             origPw.setValue(enc);
 
             // make sure password can be decrypted  
-            String pw = PSEncryptor.getInstance("AES",
-                    rxdeploydir.concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(enc);
+            String pw =PSEncryptor.decryptString(rxdeploydir,enc);
             assertTrue(origPwVal.equals(pw));
         }
         

@@ -54,6 +54,7 @@ import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.types.PSPair;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -370,10 +371,8 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     private String decrypt(String dstr) {
 
         try {
-            PSEncryptor encryptor = PSEncryptor.getInstance(
-                    "AES",
-                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-            return encryptor.decrypt(dstr);
+
+            return PSEncryptor.decryptString(dstr);
         } catch (PSEncryptionException e) {
             log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
             try {
