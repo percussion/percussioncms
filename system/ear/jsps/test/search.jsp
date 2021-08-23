@@ -27,13 +27,11 @@
       isEnabled="false";
 
    if(isEnabled.equalsIgnoreCase("false")){
-      response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
-              + "/ui/RxNotAuthorized.jsp"));
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
    }
 
    if (!fullrolestr.contains("Admin"))
-      response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
-              + "/ui/RxNotAuthorized.jsp"));
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
 %>
 

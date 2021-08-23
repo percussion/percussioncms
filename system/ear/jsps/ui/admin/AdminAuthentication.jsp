@@ -29,7 +29,6 @@
 <%
 	if (!PSTopNavigation.hasAdminCompRoles())
 	{
-   	response.sendRedirect(response.encodeUrl(request.getContextPath()
-      	+ "/ui/RxNotAuthorized.jsp"));
+   	response.sendError(HttpServletResponse.SC_NOT_FOUND);
 	}
 %>
