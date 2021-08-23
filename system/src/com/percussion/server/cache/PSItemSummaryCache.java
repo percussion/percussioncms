@@ -43,7 +43,6 @@ import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSUpdateColumn;
 import com.percussion.design.objectstore.PSUpdatePipe;
 import com.percussion.error.PSException;
-import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSInternalRequest;
@@ -253,21 +252,19 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    private PSItemEntry loadItem(int id) {
 
       PSItemEntry item = null;
-      try {
-         IPSItemEntry itemEntry = (PSItemEntry) m_cmsObjectMgr.loadItemEntry(id);
-         synchronized (getCacheSyncObject(id)) {
-            if (itemEntry.getObjectType() == PSCmsObject.TYPE_FOLDER) {
-               item = new PSFolderEntry(itemEntry.getContentId(), itemEntry.getName(), itemEntry.getCommunityId(),
-                       itemEntry.getContentTypeId(), itemEntry.getObjectType());
-            } else {
-               item = (PSItemEntry) itemEntry;
+
+         IPSItemEntry itemEntry = m_cmsObjectMgr.loadItemEntry(id);
+         if(itemEntry != null) {
+            synchronized (getCacheSyncObject(id)) {
+               if (itemEntry.getObjectType() == PSCmsObject.TYPE_FOLDER) {
+                  item = new PSFolderEntry(itemEntry.getContentId(), itemEntry.getName(), itemEntry.getCommunityId(),
+                          itemEntry.getContentTypeId(), itemEntry.getObjectType());
+               } else {
+                  item = (PSItemEntry) itemEntry;
+               }
+               m_items.put(itemEntry.getContentId(), item);
             }
-            m_items.put(itemEntry.getContentId(), item);
          }
-      } catch (Exception e)
-      {
-         log.warn("Failed to Load Object From DB for ID: {} ERROR: {} ",id, PSExceptionUtils.getMessageForLog(e));
-      }
       return item;
 
    }

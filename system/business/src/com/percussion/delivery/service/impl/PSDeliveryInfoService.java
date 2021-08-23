@@ -24,12 +24,12 @@
 
 package com.percussion.delivery.service.impl;
 
-import com.percussion.cms.objectstore.PSSite;
 import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.server.config.PSServerConfigException;
@@ -39,10 +39,7 @@ import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.pubserver.PSPubServerDaoLocator;
 import com.percussion.services.pubserver.data.PSPubServer;
-import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteHelper;
-import com.percussion.services.sitemgr.PSSiteManagerLocator;
+import com.percussion.services.pubserver.data.PSPubServerProperty;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
@@ -76,7 +73,7 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
     /**
      * The configuration file path, never <code>null</code>.
      */
-    private static File CONFIG_FILE = new File(PSServer.getRxDir(),
+    private static final File CONFIG_FILE = new File(PSServer.getRxDir(),
             DTS_CONFIG_FILENAME);
 
     private boolean isConfigured=false;
@@ -178,10 +175,19 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
         String publishServer = null;
         if(edition != null) {
             IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
-            IPSEdition editionObject = pubService.loadEdition(edition);
-            PSPubServer pubServer = PSPubServerDaoLocator.getPubServerManager()
-                    .loadPubServer(editionObject.getPubServerId());
-            publishServer = pubServer.getProperty("publishServer").getValue();
+            if(pubService != null) {
+                IPSEdition editionObject = pubService.loadEdition(edition);
+                PSPubServer pubServer;
+                if(editionObject != null) {
+                     pubServer = PSPubServerDaoLocator.getPubServerManager()
+                            .loadPubServer(editionObject.getPubServerId());
+                    PSPubServerProperty prop = pubServer.getProperty("publishServer");
+                    if(prop!=null){
+                        publishServer = prop.getValue();
+                    }
+                }
+                
+            }
         }
 
         PSDeliveryInfoService psDeliveryInfoService = (PSDeliveryInfoService) PSDeliveryInfoServiceLocator.getDeliveryInfoService();
@@ -209,7 +215,7 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
                                     .setSuccessfullHttpStatusCodes(successfullHttpStatusCodes)
                                     .setAdminOperation(true),
                             secureKey);
-                    log.info("Updated security key pushed to DTS server: " + info.getAdminUrl());
+                    log.info("Updated security key pushed to DTS server: {}" , info.getAdminUrl());
                 } catch (Exception ex) {
                     log.warn("Unable to push updated security key to DTS server:{} ",info.getAdminUrl());
                     log.debug( "Unable to push updated security key to DTS server:{}  ERROR: {} ",info.getAdminUrl(), ex.getMessage(),ex);
@@ -230,7 +236,7 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
                 byte[] key = Files.readAllBytes(secureKeyFile);
                 keyStr = Base64.getEncoder().encodeToString(key);
             } catch (IOException e) {
-                log.error("Error reading instance secure key file");
+                log.error("Error reading instance secure key file: {}", PSExceptionUtils.getMessageForLog(e));
                 log.debug(e);
             }
         }
