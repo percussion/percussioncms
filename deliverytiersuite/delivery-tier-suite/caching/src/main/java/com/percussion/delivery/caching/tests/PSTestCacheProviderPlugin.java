@@ -29,6 +29,8 @@ import com.percussion.delivery.caching.data.PSCacheConfig;
 import com.percussion.delivery.caching.data.PSInvalidateRequest;
 import com.percussion.delivery.caching.utils.PSJaxbUtils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -37,6 +39,8 @@ import org.springframework.context.ApplicationContext;
  */
 public class PSTestCacheProviderPlugin implements IPSCacheProviderPlugin
 {
+
+    private static final Logger log = LogManager.getLogger(PSTestCacheProviderPlugin.class);
 
     /* (non-Javadoc)
      * @see com.percussion.delivery.caching.IPSCacheProviderPlugin#initialize()
@@ -52,14 +56,16 @@ public class PSTestCacheProviderPlugin implements IPSCacheProviderPlugin
      */
     public void invalidate(PSInvalidateRequest request) throws PSCacheManagerException
     {
-        System.out.println("Received the following request:");
+        log.info("Received the following request:");
         try
         {
-            System.out.println(PSJaxbUtils.marshall(request, true));
+            log.info(PSJaxbUtils.marshall(request, true));
         }
         catch (Exception e)
         {
-            System.out.println(e.getLocalizedMessage());
+            log.debug(e.getMessage(), e);
+            log.error(e.getMessage());
+            log.info(e.getLocalizedMessage());
         }
 
     }
