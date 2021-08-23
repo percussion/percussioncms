@@ -47,4 +47,18 @@ The following properties have been replaced by the enableDebugTools property:
 * enableSQLTool
 * enableJCRTool
 
-The optimizePublishWithMD5Check property has been replaced by the optimizePublishWithChecksum property as MD5 has been deprecated and has ben replaced by SHA-256.
+The optimizePublishWithMD5Check property has been replaced by the optimizePublishWithChecksum property as MD5 has been deprecated and has been replaced by SHA-256.
+
+##  XML Catalog
+
+Percussion CMS's origin was as an XML Application server, as such it has a long history with XML.  Current OWASP security best practices recommend restrictions on Entity, DTD, and namespace processing to help block a class of XXE vulnerabilities.  In order to comply with these best practices, starting with the 8.0.3 release of Percussion CMS, the system will only allow external entity / dtd references that are pre-registered in either the <InstallDir>/PercussionXMLCatalog.xml file or in the <InstallDir>/var/config/CustomXMLCatalog.xml file. 
+ 
+User's with custom XML applications, XSL style sheets, DTD, or entity references will need to register those uri's in the <InstallDir>/var/config/CustomXMLCatalog.xml file.
+  
+Review the <InstallDir>/PercussionXMLCatalog.xml file for examples.
+  
+The XML Catalog follows the OASIS 1.0 XML Catalog standard.  
+  
+## The **var** directory
+
+As part of our containerization efforts, we are pushing new configuration to the <InstallDir>/var folder. When running via a container, this will be a mount point to permanent storage.    
