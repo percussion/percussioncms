@@ -108,12 +108,14 @@ public class PSSecureProperty
                            try {
                                encVal = PSEncryptor.encryptProperty(filepath.getAbsolutePath(),key,pwd);
                                encVal = getClouded(encVal);
+                               props.put(key,encVal);
+                               modified = true;
                            } catch (PSEncryptionException e) {
-                               e.printStackTrace();
+                               log.error("ERROR: {}" , e.getMessage());
+                               log.debug(e);
                            }
                        }
-                       props.put(key,encVal);
-                       modified = true;
+
                    }
                }
            }

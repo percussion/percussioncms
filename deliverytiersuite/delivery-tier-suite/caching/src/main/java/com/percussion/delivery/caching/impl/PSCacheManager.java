@@ -134,12 +134,12 @@ public class PSCacheManager implements IPSCacheManager
         }
         catch (FileNotFoundException e)
         {
-            log.error("Configuration file not found", e);
+            log.error("ERROR: Configuration file not found {}", e.getMessage());
             throw e;
         }
         catch (Exception e)
         {
-            log.error("Error in reading the configuration file", e);
+            log.error("Error in reading the configuration file {}", e.getMessage());
             throw e;
         }
     }
