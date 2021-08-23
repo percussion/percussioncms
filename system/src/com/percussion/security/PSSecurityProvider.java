@@ -301,8 +301,7 @@ public abstract class PSSecurityProvider implements IPSSecurityProvider
          ).getPartTwoKey();
 
       try {
-         return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(str);
+         return PSEncryptor.decryptString(str);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
                  PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)

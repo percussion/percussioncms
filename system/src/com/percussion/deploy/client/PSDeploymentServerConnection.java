@@ -1066,7 +1066,7 @@ public class PSDeploymentServerConnection
 
       try {
          //This code is executed client side so the key will be unique per client.
-         return PSEncryptor.getInstance(ENC_ALGO,SECURE_DIR).encrypt(pwd);
+         return PSEncryptor.encryptString(SECURE_DIR,pwd);
       } catch (PSEncryptionException e) {
          log.error("Error encrypting password: {}", e.getMessage());
          log.error(e.getMessage());
@@ -1097,7 +1097,7 @@ public class PSDeploymentServerConnection
 
       try {
          //This code is executed client side so the key will be unique per client.
-         return PSEncryptor.getInstance(ENC_ALGO,SECURE_DIR).decrypt(pwd);
+         return PSEncryptor.decryptString(SECURE_DIR,pwd);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
                  PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)

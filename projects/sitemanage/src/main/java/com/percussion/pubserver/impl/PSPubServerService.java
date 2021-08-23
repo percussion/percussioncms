@@ -71,6 +71,7 @@ import com.percussion.sitemanage.service.IPSSitePublishService.PubType;
 import com.percussion.sitemanage.service.IPSSitePublishStatusService;
 import com.percussion.utils.PSNamedLockManager;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -772,8 +773,10 @@ public class PSPubServerService implements IPSPubServerService
         server.setPublishType(PublishType.amazon_s3.toString());
         PSPublisherInfo pubInfo = siteConfig.getSiteConfig().getPublisherInfo();
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, pubInfo.getBucketName());
-        server.addProperty(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, encrypt(pubInfo.getAccessKey()));
-        server.addProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, encrypt(pubInfo.getSecretKey()));
+        String accessKey = PSEncryptor.encryptString(pubInfo.getAccessKey());
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, accessKey);
+        String secretKey = PSEncryptor.encryptString(pubInfo.getSecretKey());
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, secretKey);
         server.addProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, DRIVER_AMAZONS3);
         server.addProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY, "");
         server.addProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false");
@@ -974,7 +977,7 @@ public class PSPubServerService implements IPSPubServerService
                 {
                     try
                     {
-                        value = encrypt(value);
+                        value = PSEncryptor.encryptString(value);
                     }
                     catch (Exception e)
                     {
@@ -2026,17 +2029,6 @@ public class PSPubServerService implements IPSPubServerService
     public static final String[] encryptableProperties =
             {IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY};
 
-    private String encrypt(String estr) throws PSEncryptionException {
-
-            PSEncryptor encryptor = PSEncryptor.getInstance(
-                    "AES",
-                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-
-            return encryptor.encrypt(estr);
-
-
-    }
-
     /**
      * Decrypt the string.  Will attempt to decrypt using legacy algorithms to handle upgrade scenario.
      * @param dstr base64 encoded encrypted string
@@ -2045,10 +2037,8 @@ public class PSPubServerService implements IPSPubServerService
     private String decrypt(String dstr) {
 
         try {
-            PSEncryptor encryptor = PSEncryptor.getInstance(
-                    "AES",
-                    PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-            return encryptor.decrypt(dstr);
+            return PSEncryptor.decryptString(dstr);
+
         } catch (PSEncryptionException e) {
             log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
             try {

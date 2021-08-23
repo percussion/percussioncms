@@ -181,8 +181,7 @@ public class PSAppConverter
             String pwd = props.getProperty(DB_PWD, "");
             //assumes the attribute "encrypted" is always set to "yes"
             try {
-               setElementData(elem, PASSWORD, PSEncryptor.getInstance("AES",
-                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).encrypt(pwd));
+               setElementData(elem, PASSWORD, PSEncryptor.encryptString(pwd));
             } catch (PSEncryptionException e) {
                logger.error("Error encrypting password: " + e.getMessage(),e);
                setElementData(elem, PASSWORD, "");

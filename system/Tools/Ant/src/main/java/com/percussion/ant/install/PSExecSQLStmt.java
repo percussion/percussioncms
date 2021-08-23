@@ -42,6 +42,7 @@ import org.apache.tools.ant.BuildException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -123,13 +124,23 @@ public class PSExecSQLStmt extends PSAction
          }
          String pw = props.getProperty("PWD");
          try {
-            pw = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pw);
-         } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-            pw = PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).decrypt(pw,
-                    PSJdbcDbmsDef.getPartOneKey(),null);
+            pw = PSEncryptor.decryptProperty(f.getAbsolutePath(), "PWD", pw);
+         }catch (PSEncryptionException ps){
+            try{
+               pw = PSEncryptor.decryptWithOldKey(pw);
+            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+               pw = PSLegacyEncrypter.getInstance(
+                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+               ).decrypt(pw,
+                       PSJdbcDbmsDef.getPartOneKey(), null);
+            }
+            try {
+               //Try to encrypt password with new key, if fails set decoded password
+               props.setProperty("PWD", PSEncryptor.encryptProperty(f.getAbsolutePath(), "PWD", pw));
+            } catch (PSEncryptionException psEncryptionException) {
+               props.setProperty("PWD", pw);
+            }
+            props.store(new FileOutputStream(f), null);
          }
          driver = dbmsDef.getDriver();
          PSLogger.logInfo("PSExecSQLStmt got DB driver: " + driver);

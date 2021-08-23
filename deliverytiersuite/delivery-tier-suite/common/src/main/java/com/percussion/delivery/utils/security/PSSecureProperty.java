@@ -102,7 +102,17 @@ public class PSSecureProperty
                for (String key : expandedKeys) {
                    boolean enc = isValueClouded((String) props.get(key));
                    if (!enc) {
-                       props.put(key, getClouded((String) props.get(key)));
+                       String pwd = (String) props.get(key);
+                       String encVal = StringUtils.EMPTY;
+                       if(pwd != null){
+                           try {
+                               encVal = PSEncryptor.encryptProperty(filepath.getAbsolutePath(),key,pwd);
+                               encVal = getClouded(encVal);
+                           } catch (PSEncryptionException e) {
+                               e.printStackTrace();
+                           }
+                       }
+                       props.put(key,encVal);
                        modified = true;
                    }
                }
@@ -189,9 +199,6 @@ public class PSSecureProperty
         if (s == null)
             throw new IllegalArgumentException();
 
-        PSEncryptor encryptor = PSEncryptor.getInstance("AES",
-                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-
         String encryptedValue = "";
         String decryptedValue = StringUtils.EMPTY;
 
@@ -203,7 +210,7 @@ public class PSSecureProperty
 
         try {
             //Attempt using the updated encryptor
-            decryptedValue = encryptor.decrypt(encryptedValue);
+            decryptedValue = PSEncryptor.decryptString(encryptedValue);
         } catch (PSEncryptionException e) {
             log.debug("Decrypting using legacy algorithm");
             String ky = k == null ? PSLegacyEncrypter.SECURE_PROPERTY_DEFAULT_KEY : k;
@@ -234,17 +241,7 @@ public class PSSecureProperty
     public static String getClouded(String s) {
         if (s == null)
             throw new IllegalArgumentException();
-
-        PSEncryptor encryptor = PSEncryptor.getInstance("AES",
-                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
-        String encodedValue = StringUtils.EMPTY;
-        try {
-            encodedValue = ENC_PREFIX + encryptor.encrypt(s) + ENC_POSTFIX;
-        } catch (PSEncryptionException e) {
-            log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
-        }
-        return encodedValue;
+           return ENC_PREFIX + s+ ENC_POSTFIX;
     }
 
     /**

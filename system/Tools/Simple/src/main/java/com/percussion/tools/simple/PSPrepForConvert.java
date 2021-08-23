@@ -209,8 +209,7 @@ public class PSPrepForConvert
        String ret;
 
        try {
-          ret = PSEncryptor.getInstance("AES",
-                  m_serverBase.getPath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwd);
+          ret = PSEncryptor.decryptString(m_serverBase.getPath(),pwd);
        }catch(Exception ex){
           ret = PSCryptographer.decrypt(
                   PSLegacyEncrypter.getInstance(

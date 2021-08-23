@@ -39,6 +39,7 @@ import org.apache.tools.ant.taskdefs.condition.Condition;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.Properties;
 
@@ -129,13 +130,24 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
 
             String pw = props.getProperty("PWD");
             try {
-               pw = PSEncryptor.getInstance("AES",
-                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pw);
-            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
-               pw = PSLegacyEncrypter.getInstance(
-                       PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-               ).decrypt(pw,
-                       PSJdbcDbmsDef.getPartOneKey(), null);
+               pw = PSEncryptor.decryptProperty(propFile.getAbsolutePath(), "PWD", pw);
+            }catch (PSEncryptionException pe) {
+               try {
+                  pw = PSEncryptor.decryptWithOldKey(pw);
+               } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+                  pw = PSLegacyEncrypter.getInstance(
+                          PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                  ).decrypt(pw,
+                          PSJdbcDbmsDef.getPartOneKey(), null);
+
+               }
+               try {
+                  //Try to encrypt password with new key, if fails set decoded password
+                  props.setProperty("PWD",PSEncryptor.encryptProperty(propFile.getAbsolutePath(),"PWD",pw));
+               } catch (PSEncryptionException psEncryptionException) {
+                  props.setProperty("PWD",pw);
+               }
+               props.store(new FileOutputStream(propFile.getAbsolutePath()), null);
             }
             try(Connection conn = InstallUtil.createConnection(props.getProperty("DB_DRIVER_NAME"),
                     props.getProperty("DB_SERVER"),

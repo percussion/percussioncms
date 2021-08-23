@@ -75,10 +75,7 @@ public class PSJettyJndiDatasource extends PSJBossJndiDatasource
       {
          this.encrypted = true;
          try{
-            pwd = PSEncryptor.getInstance("AES",
-                    PathUtils.getRxPath().toAbsolutePath().toString().concat(
-                            PSEncryptor.SECURE_DIR)
-            ).decrypt(pwd);
+            pwd = PSEncryptor.decryptString(pwd);
          } catch (PSEncryptionException e) {
             pwd = PSLegacyEncrypter.getInstance(
                     PathUtils.getRxPath().toAbsolutePath().toString().concat(

@@ -69,11 +69,7 @@ public class PSEncryptorTests {
     @Test
     public void testKeyStorage() throws PSEncryptionException {
 
-
-        PSEncryptor crypt = PSEncryptor.getInstance("AES",
-                rxdeploydir + PSEncryptor.SECURE_DIR);
-
-        assertTrue(crypt.decrypt(crypt.encrypt("Gnomes rule!!!")).equals("Gnomes rule!!!"));
+        assertTrue(PSEncryptor.decryptString(rxdeploydir, PSEncryptor.encryptString(rxdeploydir, "Gnomes rule!!!")).equals("Gnomes rule!!!"));
 
     }
 
@@ -119,12 +115,10 @@ public class PSEncryptorTests {
 
         teardown();
 
-        PSEncryptor enc = PSEncryptor.getInstance("AES",
-                System.getProperty("user.home") + File.separator + ".perc-secure" + File.separator);
-
-        String pw = enc.encrypt("Cocaine is a hell of a drug.");
+        String pw = PSEncryptor.encryptString(System.getProperty("user.home") + File.separator + ".perc-secure"  + File.separator,"Cocaine is a hell of a drug.");
         assertNotEquals(pw,"Cocaine is a hell of a drug.");
-        assertEquals("Cocaine is a hell of a drug.", enc.decrypt(pw));
+        String dpw = PSEncryptor.decryptString(System.getProperty("user.home") + File.separator + ".perc-secure"  + File.separator,pw);
+        assertEquals("Cocaine is a hell of a drug.", dpw);
 
     }
 

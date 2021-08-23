@@ -3620,8 +3620,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
               uid;
 
       try {
-         return PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(pwd);
+         return PSEncryptor.decryptString(pwd);
       } catch (PSEncryptionException e) {
          try {
             return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(null).INVALID_CRED(), key, pwd);
@@ -3653,9 +3652,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          return "";
 
       try{
-         ret = PSEncryptor.getInstance("AES",
-                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-         ).decrypt(pwd);
+         ret = PSEncryptor.decryptString(pwd);
       } catch (PSEncryptionException e) {
         ret = PSCryptographer.decrypt(key1, key2, pwd);
       }

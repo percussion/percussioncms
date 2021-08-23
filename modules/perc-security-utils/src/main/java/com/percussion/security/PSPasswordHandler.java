@@ -30,11 +30,21 @@ import org.apache.logging.log4j.Logger;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Class responsible for handling password related functions,
@@ -48,6 +58,7 @@ public class PSPasswordHandler {
     private static final int DEFAULT_SALT_SIZE=128;
     private static final int DEFAULT_ITERATIONS = 10000;
     public static final String ALGORITHM = "PBKDF2WithHmacSHA512";
+
 
     private PSPasswordHandler(){
         //Do nothing
