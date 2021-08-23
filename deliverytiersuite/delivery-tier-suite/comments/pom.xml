@@ -306,7 +306,6 @@
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-delivery-common</artifactId>
             <version>${project.parent.version}</version>
-            <scope>provided</scope>
         </dependency>
    </dependencies>
     <build>
