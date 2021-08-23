@@ -71,9 +71,9 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.impl.PSThemeService;
 import com.percussion.validation.ValidationException;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -705,7 +705,7 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         
         PSThemeSummary summary = resource.getThemeSummary();
         if (!useCachedRegionCSS &&
-                StringUtil.isBlank(summary.getRegionCssFilePath()))
+                StringUtils.isBlank(summary.getRegionCssFilePath()))
         {
                 return new PSRenderLink("", resource);
         }
