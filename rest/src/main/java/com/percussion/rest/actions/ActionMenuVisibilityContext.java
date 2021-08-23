@@ -24,12 +24,12 @@
 
 package com.percussion.rest.actions;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ActionMenuVisibilityContext")
-@ApiModel(description = "Represents a Visibility Context for an Action Menu")
+@Schema(description = "Represents a Visibility Context for an Action Menu")
 public class ActionMenuVisibilityContext {
 
     private String name;

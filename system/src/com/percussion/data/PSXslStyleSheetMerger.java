@@ -24,6 +24,7 @@
 
 package com.percussion.data;
 
+import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.util.PSStopwatch;
@@ -71,7 +72,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
    public void merge(
       PSRequest req, Document doc, OutputStream out, URL styleFile,
          String encoding)
-      throws   PSConversionException, PSUnsupportedConversionException
+      throws   PSConversionException
    {
       merge(req, doc, out, styleFile, null, encoding);
    }
@@ -109,7 +110,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
     */
    public void merge(PSRequest req, Document doc, OutputStream out,
                      URL styleFile, Iterator params, String encoding)
-      throws   PSConversionException, PSUnsupportedConversionException
+      throws   PSConversionException
    {
       if(doc == null)
          throw new IllegalArgumentException(
@@ -124,12 +125,10 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          throw new IllegalArgumentException(
             "The Style Sheet to merge should not be null");
 
-      ConcurrentHashMap ssCache = null;
+      ConcurrentHashMap<URL,PSCachedStylesheet> ssCache = null;
 
       // see if params are passed
-      boolean hasParams = false;
-      if (params != null && params.hasNext())
-         hasParams = true;
+      boolean hasParams = params != null && params.hasNext();
 
       // get the cache from the apphandler
       if (req != null)
@@ -148,7 +147,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
 
          if (ssCache != null)
          {
-            cachedSS = (PSCachedStylesheet)ssCache.get(styleFile);
+            cachedSS = ssCache.get(styleFile);
             if (cachedSS == null)
             {
                cachedSS = new PSCachedStylesheet(styleFile);
@@ -167,6 +166,10 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
                   (PSTransformErrorListener) listener ) );
          } catch (IOException ioe)
          {
+            if(ssCache != null){
+               //Removing cached style sheet from cache due to errors
+               ssCache.remove(styleFile);
+            }
             throwConversionException( doc, styleFile,
                "Exception happened while reading error messages of style sheet"
                + " loading" + ioe.getLocalizedMessage() );
@@ -174,6 +177,10 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
 
          if(errorMsg.length() > 0)
          {
+            if(ssCache != null){
+               //Removing cached style sheet from cache due to errors
+               ssCache.remove(styleFile);
+            }
             String message = "Error loading style sheet ";
             message += errorMsg;
             throwConversionException(doc, styleFile, message);
@@ -182,7 +189,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       }
       catch(Exception se)
       {
-         errorMsg.append(se.toString());
+         errorMsg.append(se);
 
          try {
             //For SAXParseException, styleFile has been sent as parameter
@@ -201,12 +208,24 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
                   errorMsg.append( getErrorListenerMessage( 
                      (PSTransformErrorListener) listener ) );
             }
+
+            if(ssCache != null){
+               //Removing cached style sheet from cache due to errors
+               ssCache.remove(styleFile);
+            }
+
+
          }
          catch(IOException ioe)
          {
             errorMsg.append(" ");
             errorMsg.append("Exception happened while reading error messages of"
                + " style sheet loading, " + ioe.getLocalizedMessage());
+
+            if(ssCache != null){
+               //Removing cached style sheet from cache due to errors
+               ssCache.remove(styleFile);
+            }
          }
 
          throwConversionException(doc, styleFile, errorMsg.toString());
@@ -215,6 +234,10 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       //specified in the system properties cannot be found or instantiated.
       catch(TransformerFactoryConfigurationError error)
       {
+         if(ssCache != null){
+            //Removing cached style sheet from cache due to errors
+            ssCache.remove(styleFile);
+         }
          throwConversionException(doc, styleFile, error.getLocalizedMessage());
       }
       finally
@@ -231,8 +254,10 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       try
       {
          transformer = ssTemplate.newTransformer();
-         //https://www.oxygenxml.com/archives/xsl-list/200305/msg01260.html
-         transformer.setURIResolver(new PSUriResolver());
+
+         PSCatalogResolver cr = new PSCatalogResolver();
+         cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+         transformer.setURIResolver(cr);
          transformer.setErrorListener( new PSTransformErrorListener() );
 
          // add any params supplied
@@ -259,8 +284,8 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          if (watch != null)
          {
             watch.stop();
-            l.debug("Transforming stylesheet " + styleFile + " "
-                + watch.toString());
+            l.debug("Transforming stylesheet {} {}" , styleFile ,
+                 watch);
          }
          if (req != null)
             req.getRequestTimer().cont();
@@ -277,11 +302,19 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
             {
                String message = "Error transforming the xml document with " +
                   "stylesheet " + errorMessage;
+               if(ssCache != null){
+                  //Removing cached style sheet from cache due to errors
+                  ssCache.remove(styleFile);
+               }
                throwConversionException(doc, styleFile, message);
             }
          }
          catch(IOException ioe)
          {
+            if(ssCache != null){
+               //Removing cached style sheet from cache due to errors
+               ssCache.remove(styleFile);
+            }
            throwConversionException(doc, styleFile,
                "Exception happened while reading error messages of document " +
                "transformation with style sheet, " + ioe.getLocalizedMessage());
@@ -289,6 +322,11 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
       }
       catch (TransformerException e)
       {
+         if(ssCache != null){
+            //Removing cached style sheet from cache due to errors
+            ssCache.remove(styleFile);
+         }
+
          if (e instanceof TransformerConfigurationException)
             errorMsg.append( "Error getting Transformer object." );
          else
@@ -315,9 +353,14 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          }
 
          throwConversionException( doc, styleFile, errorMsg.toString() );
-      } catch (Throwable t)
+      } catch (Exception e)
       {
-         throwConversionException( doc, styleFile, t.toString() );
+         if(ssCache != null){
+            //Removing cached style sheet from cache due to errors
+            ssCache.remove(styleFile);
+         }
+
+         throwConversionException( doc, styleFile, e.toString() );
       }
    }
 
@@ -531,7 +574,7 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          throw new IllegalArgumentException(
             "The URL of style sheet to use can not be null.");
 
-      String urlText = null;
+      String urlText;
       String ssType;
 
       PSApplicationHandler ah = request.getApplicationHandler();

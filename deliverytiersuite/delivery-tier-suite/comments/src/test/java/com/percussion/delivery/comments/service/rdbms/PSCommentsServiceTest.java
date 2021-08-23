@@ -34,19 +34,16 @@ import com.percussion.delivery.comments.data.PSPageSummaries;
 import com.percussion.delivery.comments.data.PSPageSummary;
 import com.percussion.delivery.comments.data.PSRestComment;
 import com.percussion.delivery.comments.services.IPSCommentsService;
-import junit.framework.TestCase;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,12 +51,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+
+@RunWith(SpringRunner.class)
+@WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:test-beans.xml"})
-public class PSCommentsServiceTest extends TestCase
+public class PSCommentsServiceTest
 {
-    private static final Logger log = LogManager.getLogger(PSCommentsServiceTest.class);
+    
     private final String COMMENT1_PAGEPATH =  "/01_site1/folder/page1.html";
     private final String COMMENT2_PAGEPATH =  "/02_site5/folder/page11.html";
     private final String COMMENT3_PAGEPATH =  "/03_site1/folder/page2.html";
@@ -84,7 +88,6 @@ public class PSCommentsServiceTest extends TestCase
     @Before
     public void setUp() throws Exception
     {
-        super.setUp();
         PSComments comments = commentService.getComments(new PSCommentCriteria(),false);
         commentService.deleteComments(getCommnetIds(comments));
     }
@@ -96,14 +99,6 @@ public class PSCommentsServiceTest extends TestCase
             commnetIds.add(new String(cmt.getId()));
         }
         return commnetIds;
-    }
-
-    @After
-    public void tearDown() throws Exception
-    {
-        super.tearDown();
-       // if (session != null && session.isOpen())
-         //   session.close();
     }
 
 
@@ -1382,7 +1377,7 @@ public class PSCommentsServiceTest extends TestCase
     public void testGetPagesWithComments_Performance() throws Exception
     {
         // Create lots of comment. Actually, 18 * COMMENT_COUNT_FOR_PERFORMANCE_TESTS
-        log.info("Adding comments");
+        System.out.println("Adding comments");
         for (int i=0; i<COMMENT_COUNT_FOR_PERFORMANCE_TESTS; i++)
             createSampleCommentsForPagingTests(Integer.toString(i));
         
@@ -1397,16 +1392,16 @@ public class PSCommentsServiceTest extends TestCase
         // Get page summaries for various pages
         for (int i=0; i<3; i++)
         {
-            log.info("Getting pages with comments");
+            System.out.println("Getting pages with comments");
             Calendar before = Calendar.getInstance();
             PSPageSummaries pageSummariesPage0 = commentService.getPagesWithComments(SITE + "0", 3, i);
             Calendar after = Calendar.getInstance();
             
             assertEquals("page summaries count", 3, pageSummariesPage0.getSummaries().size());
             
-            log.info("Page {}  - Query took: {}  milliseconds", i, (after.getTimeInMillis() - before.getTimeInMillis()));
+            System.out.print("Page " + i + " - Query took: " + (after.getTimeInMillis() - before.getTimeInMillis()) + " milliseconds");
             
-            log.info("");
+            System.out.println();
         }
     }
     

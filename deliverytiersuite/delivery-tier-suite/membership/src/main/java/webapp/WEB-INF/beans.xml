@@ -26,11 +26,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
    <bean id="propertyPlaceholderProps"
          class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
@@ -50,6 +47,9 @@
             one defined wins
          -->
          <list>
+            <value>WEB-INF/perc-security.properties</value>
+            <value>WEB-INF/perc-email.properties</value>
+            <value>WEB-INF/perc-membership-services.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-encryption.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-datasources.properties</value>
             <value>file:${catalina.home}/conf/perc/perc-email.properties</value>
@@ -94,7 +94,7 @@
             <!-- default properties for encrypting -->
             <prop key="encryption.type">ENC</prop>
             <!-- default properties for Spring Security -->
-            <prop key="ContentSecurityPolicy">default-src 'self' *;</prop>
+            <prop key="contentSecurityPolicy">default-src 'self' *;</prop>
 
             <!-- default properties for email service -->
             <prop key="email.hostName"></prop>

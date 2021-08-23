@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -28,11 +28,11 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
-      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-<bean id="propertyPlaceholderProps"
+   <bean id="propertyPlaceholderProps"
          class="com.percussion.delivery.utils.spring.PSPropertiesFactoryBean">
       <property name="ignoreResourceNotFound" value="true" />
       <property name="autoSecure" value="true" />
@@ -42,62 +42,46 @@
          </list>
       </property>
       <property name="locations">
-         <!-- One or more locations of the property files. Properties with 
-            the same name override based on the order the file appears in the list last 
+         <!-- One or more locations of the property files. Properties with
+            the same name override based on the order the file appears in the list last
             one defined wins -->
          <list>
-            <value>perc-datasources.properties</value>
-            <value>perc-comments-services.properties</value>
+            <value>classpath:perc-security.properties</value>
+            <value>classpath:perc-datasources.properties</value>
+            <value>classpath:perc-comments-services.properties</value>
          </list>
       </property>
-      <!-- Local properties to default to if no file exists or the properties 
-         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the 
+      <!-- Local properties to default to if no file exists or the properties
+         do not exist in the file DO NOT USE THESE FOR PRODUCTION, put them in the
          properties file where the password will be encrypted -->
       <property name="properties">
          <props>
-            <!-- Global and database-agnostic Hibernate properties -->
+            <!-- default properties for database -->
+            <prop key="jdbcUrl">jdbc:derby:classpath:derbydata/perccomments;create=true</prop>
+            <prop key="jdbcDriver">org.apache.derby.jdbc.EmbeddedDriver</prop>
+            <prop key="maximumPoolSize">10</prop>
+            <prop key="db.username">test</prop>
+            <prop key="db.password">test</prop>
+            <prop key="db.schema">APP</prop>
             <prop key="datasource">percDataSource</prop>
             <prop key="hibernateProperties">percHibernateProperties</prop>
+            <prop key="hibernate.dialect">com.percussion.delivery.rdbms.DerbyTenOneFourDialect</prop>
+            <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
             <prop key="hibernate.cache.use_second_level_cache">false</prop>
             <prop key="hibernate.cache.use_query_cache">false</prop>
-            
-		    <!-- Apache Derby -->
-	        <prop key="jdbcUrl">jdbc:derby:memory:perccomments;create=true</prop>
-	        <prop key="jdbcDriver">org.apache.derby.jdbc.EmbeddedDriver</prop>
-	        <prop key="db.username">test</prop>
-	        <prop key="db.password">test</prop>
-	        <prop key="db.schema">APP</prop>
-	        <prop key="hibernate.dialect">com.percussion.delivery.rdbms.DerbyTenOneFourDialect</prop>
-	        <prop key="hibernate.query.substitutions">true 'T', false 'F'</prop>
-			
-            <!-- MySQL -->
-<!-- 	        <prop key="jdbcUrl">jdbc:mysql://localhost:3306/deliverydb</prop> -->
-<!-- 	        <prop key="jdbcDriver">com.mysql.jdbc.Driver</prop> -->
-<!-- 	        <prop key="db.username">perc</prop> -->
-<!--             <prop key="db.password">perc</prop> -->
-<!-- 	        <prop key="db.schema"></prop> -->
-<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop> -->
-<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
-         
-            <!-- Oracle -->
-<!--             <prop key="jdbcUrl">jdbc:oracle:thin:@localhost:1521:XE</prop> -->
-<!--             <prop key="jdbcDriver">oracle.jdbc.driver.OracleDriver</prop> -->
-<!--             <prop key="db.username">PERC</prop> -->
-<!--             <prop key="db.password">perc</prop> -->
-<!--             <prop key="db.schema">PERC</prop> -->
-<!--             <prop key="hibernate.dialect">org.hibernate.dialect.Oracle9iDialect</prop> -->
-<!--             <prop key="hibernate.query.substitutions"></prop> -->
-         
-		    <!-- MS SQL Server -->
-<!-- 	        <prop key="jdbcUrl">jdbc:jtds:sqlserver://localhost/deliverydb</prop> -->
-<!-- 	        <prop key="jdbcDriver">net.sourceforge.jtds.jdbc.Driver</prop> -->
-<!-- 	        <prop key="db.username">sa</prop> -->
-<!-- 	        <prop key="db.password">demo</prop> -->
-<!-- 	        <prop key="db.schema">dbo</prop> -->
-<!-- 	        <prop key="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</prop> -->
-<!-- 	        <prop key="hibernate.query.substitutions"></prop> -->
-      		<prop key="tenant.cache.ttl">1440</prop>
-	        <prop key="tenant.cache.reauth">true</prop>
+            <prop key="hibernate.hbm2ddl.auto">update</prop>
+
+            <!-- default properties for encryption -->
+            <prop key="encryption.type">ENC</prop>
+            <prop key="contentSecurityPolicy">default-src 'self';</prop>
+            <prop key="cspReportOnly">false</prop>
+            <prop key="xframeOptionsPolicy">SAMEORIGIN</prop>
+            <prop key="xssProtection">true</prop>
+            <prop key="accessControlAllowedOrigins">*</prop>
+            <prop key="hstsIncludeSubDomains">true</prop>
+            <prop key="hstsMaxAgeSeconds">31536000</prop>
+            <prop key="disableCSRFProtection">false</prop>
+            <prop key="referrerPolicy">strict-origin-when-cross-origin</prop>
          </props>
       </property>
    </bean>
@@ -107,11 +91,17 @@
       <property name="properties" ref="propertyPlaceholderProps" />
    </bean>
 
-   <import resource="perc-datasources.xml" />
-   <import resource="perc-comments-services.xml" />
-
    <context:component-scan base-package="com.percussion.delivery.comments.services" />
    <context:component-scan base-package="com.percussion.delivery.likes.services" />
+
+   <import resource="classpath:perc-datasources.xml" />
+   <import resource="classpath:security.xml" />
+
+   <tx:annotation-driven transaction-manager="txManager"/>
+
+   <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+      <property name="sessionFactory" ref="commentsSessionFactory" />
+   </bean>
 
    <!-- Hibernate SessionFactory -->
    <bean id="commentsSessionFactory"
@@ -123,14 +113,8 @@
          <ref bean="${hibernateProperties}" />
       </property>
       <property name="configLocation">
-         <value>hibernate.cfg.xml</value>
+         <value>classpath:hibernate.cfg.xml</value>
       </property>
-   </bean>
-
-   <tx:annotation-driven transaction-manager="txManager"/>
-
-   <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-      <property name="sessionFactory" ref="commentsSessionFactory" />
    </bean>
 
    <bean id="commentsDao"
@@ -138,19 +122,19 @@
       <property name="sessionFactory">
          <ref bean="commentsSessionFactory" />
       </property>
-   </bean> 
-    
+   </bean>
+
    <!-- Comments Service bean -->
    <bean id="commentsService"
-      class="com.percussion.delivery.comments.services.PSCommentsService"
-      autowire="constructor">
+         class="com.percussion.delivery.comments.services.PSCommentsService"
+         autowire="constructor">
    </bean>
 
    <bean id="commentRestService"
-      class="com.percussion.delivery.comments.services.PSCommentsRestService">
+         class="com.percussion.delivery.comments.services.PSCommentsRestService">
       <constructor-arg ref="commentsService" />
    </bean>
-   
+
    <bean id="likesDao"
          class="com.percussion.delivery.likes.service.rdbms.PSLikesDao">
       <property name="sessionFactory">
@@ -159,12 +143,11 @@
    </bean>
 
    <bean id="likesService" class="com.percussion.delivery.likes.services.PSLikesService"
-      autowire="constructor">
+         autowire="constructor">
    </bean>
 
    <bean id="likesRestService" class="com.percussion.delivery.likes.services.PSLikesRestService">
       <constructor-arg ref="likesService" />
    </bean>
-
 
 </beans>

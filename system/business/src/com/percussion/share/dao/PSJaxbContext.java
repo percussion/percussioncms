@@ -114,6 +114,7 @@ public class PSJaxbContext
       if (um == null)
       {
          JAXBContext jc = JAXBContext.newInstance(clazz);
+
          um = jc.createUnmarshaller();
          unmarshallerThreadLocal.set(um);
       }

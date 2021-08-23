@@ -25,8 +25,6 @@ package com.percussion.delivery.feeds.services;
 
 import com.percussion.delivery.feeds.PSFeedsApplication;
 import com.percussion.delivery.utils.PSVersionHelper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
@@ -55,8 +53,6 @@ public abstract class PSFeedServiceTestsBase extends JerseyTest {
 
 
     private String _appContext;
-
-    private static final Logger log = LogManager.getLogger(PSFeedServiceTestsBase.class);
 
     static
     {
@@ -151,7 +147,7 @@ public abstract class PSFeedServiceTestsBase extends JerseyTest {
 	private String testGetVersion(){
 		String version = PSVersionHelper.getVersion(this.getClass());
 		Assert.assertNotNull(version);
-		log.info(version);
+		System.out.print(version);
 		return version;
 	}
   

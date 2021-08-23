@@ -26,6 +26,8 @@ package com.percussion.webui.gadget.servlets;
 
 
 import com.percussion.delivery.client.EasySSLProtocolSocketFactory;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.ToDoVulnerability;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
@@ -61,9 +63,9 @@ public class GadgetSettingsFormServlet extends HttpServlet
 {
    private static final Logger log = LogManager.getLogger(GadgetSettingsFormServlet.class.getName());
 
-   private boolean sslSocketFactoryRegistered;
+   private static boolean sslSocketFactoryRegistered;
 
-   private void registerSslProtocol()
+   private static void registerSslProtocol()
     {
 
         if (sslSocketFactoryRegistered)
@@ -72,7 +74,7 @@ public class GadgetSettingsFormServlet extends HttpServlet
         ProtocolSocketFactory socketFactory = new EasySSLProtocolSocketFactory();
         Protocol.registerProtocol("https", new Protocol("https", socketFactory, 443));
 
-        sslSocketFactoryRegistered = true;
+       sslSocketFactoryRegistered = true;
     }
 
     /**
@@ -100,33 +102,39 @@ public class GadgetSettingsFormServlet extends HttpServlet
     * @see javax.servlet.http.HttpServlet#doGet(
     *    javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
     */
-   @SuppressWarnings("unused")
    @Override
-   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-           throws IOException
-   {
-      String gadgetUrl = req.getParameter("gurl");
-      String moduleId = req.getParameter("mid");
-      resp.setContentType("application/javascript");
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+      try {
+         String gadgetUrl = req.getParameter("gurl");
+         String moduleId = req.getParameter("mid");
+         resp.setContentType("application/javascript");
 
-      PrintWriter out = resp.getWriter();
-      if(gadgetUrl != null)
-      {
-         JSONObject meta = getGadgetMeta(req, gadgetUrl, moduleId);
-         List<JSONObject> prefs = extractUserPrefs(meta);
-         String scheme = req.getScheme();
-         String serverName = "127.0.0.1";
-         int serverPort = req.getServerPort();
-         PSUserPrefFormContent formContent =
-                 new PSUserPrefFormContent(prefs, moduleId, getUpParams(req),
-                         serverName, scheme, serverPort,
-                         getPSSessionId(req));
-         //m_log.error("JETTY TODO - get correct hostname and port",new Throwable());
-         out.println(formContent.toJavaScript());
-      }
-      else
-      {
-         out.println("// Gadget URL must be specified.");
+         PrintWriter out = resp.getWriter();
+         if (gadgetUrl != null) {
+            JSONObject meta = getGadgetMeta(req, gadgetUrl, moduleId);
+            List<JSONObject> prefs = extractUserPrefs(meta);
+            String scheme = req.getScheme();
+            String serverName = "127.0.0.1";
+            int serverPort = req.getServerPort();
+            PSUserPrefFormContent formContent =
+                    new PSUserPrefFormContent(prefs, moduleId, getUpParams(req),
+                            serverName, scheme, serverPort,
+                            getPSSessionId(req));
+            //m_log.error("JETTY TODO - get correct hostname and port",new Throwable());
+            out.println(formContent.toJavaScript());
+         } else {
+            out.println("// Gadget URL must be specified.");
+         }
+      } catch (IOException e) {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
+         try{
+            resp.sendError(500,"");
+         } catch (IOException ioException) {
+            resp.reset();
+            resp.setStatus(500);
+         }
+
       }
    }
 
@@ -134,8 +142,8 @@ public class GadgetSettingsFormServlet extends HttpServlet
     * Calls the gadget metadata service to get information for the specified gadget url.
     * @param req the servlet request, assumed not <code>null</code>.
     * @param url the gadget.xml url, assumed not <code>null</code> or empty.
-    * @param moduleId
-    * @return
+    * @param moduleId The Module Id
+    * @return A json object containing the Gadget metadata
     * @throws IOException
     */
    @SuppressWarnings("unchecked")
@@ -184,7 +192,7 @@ public class GadgetSettingsFormServlet extends HttpServlet
       String result =
               makeJSONPostRequest(metaDataServiceURL.toString(), obj.toString());
       JSONParser parser=new JSONParser();
-      JSONObject meta = null;
+      JSONObject meta;
       try
       {
          meta = (JSONObject)parser.parse(new StringReader(result));
@@ -225,19 +233,18 @@ public class GadgetSettingsFormServlet extends HttpServlet
 
    /**
     *
-    * @param meta
-    * @return
+    * @param meta a de-serialized gadget metadata entry json object
+    * @return A list of JSON objects representing userPrefs
     */
-   @SuppressWarnings("unchecked")
    private List<JSONObject> extractUserPrefs(JSONObject meta){
-      List<JSONObject> results = new ArrayList<JSONObject>();
+      List<JSONObject> results = new ArrayList<>();
       JSONArray gArr = (JSONArray)meta.get("gadgets");
       if(gArr != null)
       {
          JSONObject prefs = (JSONObject)((JSONObject)gArr.get(0)).get("userPrefs");
          if(!prefs.isEmpty())
          {
-            List<String> keys = new ArrayList<String>();
+            List<String> keys = new ArrayList<>();
             for(Object k : prefs.keySet())
                keys.add((String)k);
             Collections.sort(keys);
@@ -257,14 +264,14 @@ public class GadgetSettingsFormServlet extends HttpServlet
     * @param req assumed not <code>null</code>.
     * @return map of user pref params.
     */
-   @SuppressWarnings("unchecked")
+   @ToDoVulnerability //This needs to validate the parameters for injection
    private Map<String, String> getUpParams(HttpServletRequest req)
    {
-      Map<String, String> params = new HashMap<String, String>();
-      Enumeration en = req.getParameterNames();
+      Map<String, String> params = new HashMap<>();
+      Enumeration<String> en = req.getParameterNames();
       while(en.hasMoreElements())
       {
-         String name = (String)en.nextElement();
+         String name = en.nextElement();
          if(name.startsWith("up_"))
             params.put(name, req.getParameter(name));
       }

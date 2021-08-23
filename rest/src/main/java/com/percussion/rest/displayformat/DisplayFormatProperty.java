@@ -25,22 +25,21 @@
 package com.percussion.rest.displayformat;
 
 import com.percussion.rest.ValueList;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 
-@ApiModel(description="Represents a property of a DisplayFormat. Properties may be multi valued or single valued.")
+@Schema(name="DisplayFormatProperty", description="Represents a property of a DisplayFormat. Properties may be multi valued or single valued.")
 public class DisplayFormatProperty {
 
-    @ApiModelProperty(name="propertyId", notes="The id for this property.")
+    @Schema(name="propertyId", description="The id for this property.")
     private String propertyId;
-    @ApiModelProperty(name="propertyName", notes="The unique Name for this property.")
+    @Schema(name="propertyName", description="The unique Name for this property.")
     private String propertyName;
-    @ApiModelProperty(name="propertyValue", notes="For a single value property, the value of the property")
+    @Schema(name="propertyValue", description="For a single value property, the value of the property")
     private String propertyValue;
-    @ApiModelProperty(name="description", notes="An optional description of this properties purpose")
+    @Schema(name="description", description="An optional description of this properties purpose")
     private String description;
-    @ApiModelProperty(name="propertyValues", notes="For a multi value property, the list of current values of the property")
+    @Schema(name="propertyValues", description="For a multi value property, the list of current values of the property")
     private ValueList propertyValues;
 
     public DisplayFormatProperty(){}

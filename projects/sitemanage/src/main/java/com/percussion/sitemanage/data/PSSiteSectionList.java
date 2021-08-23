@@ -24,15 +24,17 @@
 
 package com.percussion.sitemanage.data;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.swagger.annotations.ApiModel;
 
 
 @XmlRootElement(name = "SiteSection")
-@ApiModel(description = "A List of PSSiteSection")
+@ArraySchema(schema=@Schema(implementation = PSSiteSection.class))
 public class PSSiteSectionList extends ArrayList<PSSiteSection> {
     public PSSiteSectionList(Collection<? extends PSSiteSection> c) {
         super(c);

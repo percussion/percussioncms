@@ -24,10 +24,19 @@
 package com.percussion.server;
 
 import com.percussion.data.IPSDataErrors;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSAttributeList;
+import com.percussion.design.objectstore.PSGlobalSubject;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.design.objectstore.PSSubject;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.log.PSLogHandler;
-import com.percussion.security.*;
+import com.percussion.security.PSRoleEntry;
+import com.percussion.security.PSSecurityCatalogException;
+import com.percussion.security.PSSecurityProvider;
+import com.percussion.security.PSSecurityToken;
+import com.percussion.security.PSUserEntry;
 import com.percussion.server.content.PSContentParser;
 import com.percussion.server.content.PSFormContentParser;
 import com.percussion.server.content.PSXmlContentParser;
@@ -36,7 +45,12 @@ import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.servlets.PSSecurityFilter;
-import com.percussion.util.*;
+import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.PSBaseHttpUtils;
+import com.percussion.util.PSInputStreamReader;
+import com.percussion.util.PSIteratorUtils;
+import com.percussion.util.PSPurgableTempFile;
+import com.percussion.util.PSStopwatch;
 import com.percussion.utils.date.PSDateFormatter;
 import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.string.PSStringUtils;
@@ -50,11 +64,23 @@ import org.w3c.dom.Document;
 import javax.security.auth.Subject;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletRequestWrapper;
-import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -2714,6 +2740,10 @@ public class PSRequest
     */
    public static final int    PAGE_TYPE_TEXT    = 0x00000004;
 
+   /**
+    * The desired page type is json
+    */
+   public  static final int   PAGE_TYPE_JSON    = 0x00000006;
 
    /**
     * A HashMap to store temp file resources, so that PurgeableTempFile

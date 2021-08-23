@@ -24,12 +24,12 @@
 
 package com.percussion.rest.actions;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "ActionMenuParameter")
-@ApiModel(description = "An ActionMenu parameter")
+@Schema(description = "An ActionMenu parameter")
 public class ActionMenuParameter {
 
     private String name;

@@ -24,14 +24,15 @@
 
 package com.percussion.rest.sites;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "SiteList")
-@ApiModel(description = "A List of Sites")
+@ArraySchema(schema=@Schema(implementation = Site.class))
 public class SiteList extends ArrayList<Site> {
     public SiteList(Collection<? extends Site> c) {
         super(c);

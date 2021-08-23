@@ -57,6 +57,8 @@
     } else {
         aboutMsg = o.toString();
     }
+
+    String fullrolestr = PSRoleUtilities.getUserRoles();
 %>
 <script>
         var gIsSaaSEnvironment = <%=isSaaS%>;
@@ -80,7 +82,9 @@
     <%-- logout must be after help because they both float and we want logout to left of help --%>
     <div class="perc-logout"><a href="javascript:void(0)" id="perc-changepw" title="<i18n:message key="perc.ui.change.pw@Change Password"/>"><i18n:message key="perc.ui.common.label@Welcome"/>
         <span><%= request.getAttribute("currentUserName") %></span></a> | <a href="https://help.percussion.com/"
-                                                                             target="_blank" title="<i18n:message key="perc.ui.common.label@Help" />" rel="noopener noreferrer"><i18n:message key="perc.ui.common.label@Help"/></a> | <a href="/rest/api-docs?url=/rest/swagger.json" target="_blank" rel="noopener noreferrer" title="REST API Documentation">API</a> | <a
+                                                                             target="_blank" title="<i18n:message key="perc.ui.common.label@Help" />" rel="noopener noreferrer"><i18n:message key="perc.ui.common.label@Help"/></a> <%
+        if (fullrolestr.contains("Admin")){
+                                                                             %>| <a href="/rest/api-docs?url=/rest/openapi.json&docExpansion=none&deepLinking=true&filter=true&tagsSorter=alpha" target="_blank" rel="noopener noreferrer" title="REST API Documentation">API</a> <%}%>| <a
             href="https://community.percussion.com/" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Percussion Community"/>"><i18n:message key="perc.ui.common.label@Percussion Community"/></a> | <a
             href="javascript:void(0)" id="perc-help-about" title="<i18n:message key="perc.ui.common.label@About"/>"><i18n:message key="perc.ui.common.label@About"/></a> | <a href="/Rhythmyx/logout" title="<i18n:message
             key="perc.ui.common.label@Log Out"/>"><i18n:message

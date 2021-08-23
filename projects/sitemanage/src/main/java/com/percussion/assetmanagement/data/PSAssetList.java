@@ -24,15 +24,16 @@
 
 package com.percussion.assetmanagement.data;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import io.swagger.annotations.ApiModel;
-
 
 @XmlRootElement(name = "Asset")
-@ApiModel(description = "A List of PSAsset")
+@ArraySchema(schema=@Schema(implementation = PSAsset.class))
 public class PSAssetList extends ArrayList<PSAsset> {
     public PSAssetList(Collection<? extends PSAsset> c) {
         super(c);

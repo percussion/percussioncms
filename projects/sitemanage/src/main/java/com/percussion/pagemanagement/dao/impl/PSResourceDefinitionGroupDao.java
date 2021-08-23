@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSResourceDefinitionGroupDao;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
@@ -67,12 +68,19 @@ public class PSResourceDefinitionGroupDao
             try
             {
                 PSResourceDefinitionGroup group = fileToObject(fe);
-                group.setId(fe.getId());
-                data.add(group);
+                if(group!=null) {
+                    group.setId(fe.getId());
+                    data.add(group);
+                }else{
+                    log.debug("Null group detected.");
+                }
             }
             catch (Exception e)
             {
-                log.error("Failed to parse resource definition: " + fe.getFileName(), e);
+                log.error("Failed to parse resource definition: {} Error: {}" ,
+                        fe.getFileName(),
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
             }
         }
         

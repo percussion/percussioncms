@@ -24,23 +24,23 @@
 package com.percussion.xml;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.utils.xml.PSEntityResolver;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
+
 /**
  * @author dougrand
  *
- * Create a parser for use in Rhythmyx. This parser has the entity resolver
+ * Create a parser for use in Percussion. This parser has the entity resolver
  * set to an instance of our entity resolver. This class is currently
  * configured to work with Xerces.
  */
@@ -51,9 +51,19 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
     private static final ThreadLocal<SAXParserFactory> factoryThreadLocal = ThreadLocal.withInitial(() -> {
         try {
             SAXParserFactory factory = PSSecureXMLUtils.getSecuredSaxParserFactory(
-                    "org.apache.xerces.jaxp.SAXParserFactoryImpl", null,false);
+                    "org.apache.xerces.jaxp.SAXParserFactoryImpl", null,
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    ));
             factory.setNamespaceAware(true);
+            factory.setValidating(false);
             factory.setFeature("http://xml.org/sax/features/namespaces",true);
+            factory.setFeature("http://xml.org/sax/features/namespace-prefixes",false);
 
             return factory;
         } catch (Exception e) {
@@ -67,10 +77,9 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
     @Override
     public SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
         SAXParserFactory parserFactory = factoryThreadLocal.get();
-        SAXParser parser = parserFactory.newSAXParser();
-        XMLReader reader = parser.getXMLReader();
-        reader.setEntityResolver(PSEntityResolver.getInstance());
-        return parser;
+
+        return parserFactory.newSAXParser();
+
     }
 
     @Override

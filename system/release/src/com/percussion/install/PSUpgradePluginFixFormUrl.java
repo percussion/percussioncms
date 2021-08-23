@@ -125,8 +125,8 @@ public class PSUpgradePluginFixFormUrl implements IPSUpgradePlugin
          // Change all "/perc-form-processor/forms" to
          // "/perc-form-processor/form/"
          renderedForm = renderedForm.replaceAll(
-               "/perc-form-processor/forms",
-               "/perc-form-processor/form/");
+               "/perc-form-processor/form",
+               "/perc-form-processor/forms/form");
 
          logger.println("updating 'RENDEREDFORM' column in 'CT_PERCFORMASSET' for contentid = "
                + contentid

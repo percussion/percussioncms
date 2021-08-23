@@ -53,13 +53,17 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -76,7 +80,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -112,6 +115,17 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
 {
     public PSFeedService(){
 
+    }
+
+
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
+
+        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
+        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
+        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
     }
 
     private PSHttpClient httpClient;
@@ -198,7 +212,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             if (info != null)
             {
             	if(log.isDebugEnabled()){
-            		log.debug("Got connection info for feed: {}", info.toString());
+            		log.debug("Got connection info for feed: {}", info);
             	}
             	String feed;
                 try
@@ -467,14 +481,14 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         
         if(log.isDebugEnabled()){
     		log.debug(
-    		        "WebResource for metadata service : {}",webTarget.toString());
+    		        "WebResource for metadata service : {}",webTarget);
     	}
         
         try
         {
             List<PSFeedItem> items = new ArrayList<>();
 
-            Invocation.Builder invocationBuilder =  ((WebTarget) webTarget).request(MediaType.APPLICATION_JSON_TYPE);
+            Invocation.Builder invocationBuilder =  ( webTarget).request(MediaType.APPLICATION_JSON_TYPE);
 
             Response  response = invocationBuilder.post(Entity.entity(desc.getQuery(), MediaType.APPLICATION_JSON));
 

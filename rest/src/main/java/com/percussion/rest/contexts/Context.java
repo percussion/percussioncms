@@ -28,36 +28,35 @@ package com.percussion.rest.contexts;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.rest.Guid;
 import com.percussion.rest.locationscheme.LocationScheme;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement(name = "Context")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(description = "Represents a publishing Context")
+@Schema(description = "Represents a publishing Context")
 public class Context {
 
-    @ApiModelProperty(name = "id", value = "The unique identifier for the Context use string value to persist the id.")
+    @Schema(name = "id", description = "The unique identifier for the Context use string value to persist the id.")
     private Guid id;
 
-    @ApiModelProperty(name="version", value="Ignored")
+    @Schema(name="version", description="Ignored")
     private Integer version;
 
-    @ApiModelProperty(name="name", value="The unique name for the publishing Context",required=true)
+    @Schema(name="name", description="The unique name for the publishing Context",required=true)
     private
     String name;
 
-    @ApiModelProperty(name="description", value="Human friendly description for the publishing Context")
+    @Schema(name="description", description="Human friendly description for the publishing Context")
     private
     String description;
 
-    @ApiModelProperty(name="defaultScheme", value="The default Location Scheme to use when publishing to this Context")
+    @Schema(name="defaultScheme", description="The default Location Scheme to use when publishing to this Context")
     private
     LocationScheme defaultScheme;
 
-    @ApiModelProperty(name="locationSchemes", value="The list of Location Schemes configured for this publishing Context")
+    @Schema(name="locationSchemes", description="The list of Location Schemes configured for this publishing Context")
     private
     List<LocationScheme> locationSchemes;
 

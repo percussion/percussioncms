@@ -35,10 +35,21 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.fastforward.globaltemplate.PSRxGlobals;
 import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.PSServer;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssembler;
+import com.percussion.services.assembly.IPSAssemblyErrors;
+import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSAssemblyTemplate.AAType;
 import com.percussion.services.assembly.IPSAssemblyTemplate.OutputFormat;
+import com.percussion.services.assembly.IPSSlotContentFinder;
+import com.percussion.services.assembly.IPSTemplateBinding;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSTemplateNotImplementedException;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.assembly.data.PSTemplateBinding;
@@ -50,7 +61,12 @@ import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
-import com.percussion.services.contentmgr.*;
+import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.contentmgr.IPSNode;
+import com.percussion.services.contentmgr.IPSNodeDefinition;
+import com.percussion.services.contentmgr.PSContentMgrConfig;
+import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.contentmgr.PSContentMgrOption;
 import com.percussion.services.contentmgr.data.PSContentNode;
 import com.percussion.services.contentmgr.data.PSNodeDefinition;
 import com.percussion.services.error.PSNotFoundException;
@@ -103,7 +119,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.jcr.*;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
+import javax.jcr.UnsupportedRepositoryOperationException;
+import javax.jcr.ValueFormatException;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -111,9 +133,25 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.StringReader;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -2177,7 +2215,17 @@ public class PSAssemblyService implements IPSAssemblyService
                String doc = result.toResultString();
                Reader r = new StringReader(doc);
 
-               XMLInputFactory fact = PSSecureXMLUtils.getSecuredXMLInputFactory(false);
+
+               XMLInputFactory fact = PSSecureXMLUtils.getSecuredXMLInputFactory(
+                       new PSXmlSecurityOptions(
+                       true,
+                       true,
+                       true,
+                       false,
+                       true,
+                       false
+                       )
+               );
 
                XMLEventReader reader = fact.createXMLEventReader(r);
                while (reader.hasNext())

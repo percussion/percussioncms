@@ -106,7 +106,7 @@
 </script>    
     
 <script>
-     $(document).ready(function() {
+     $(function() {
             var prefs    = new gadgets.Prefs();
             var rows     = parseInt(prefs.getString("zrows"));
              var site = prefs.getString("site");
