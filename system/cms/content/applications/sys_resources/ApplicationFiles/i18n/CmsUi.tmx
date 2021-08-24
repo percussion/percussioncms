@@ -13520,6 +13520,17 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    </tuv>
 	 </tu>
 
+	 <tu tuid="perc.ui.image.widget.control@Image Resize Note">
+        <prop type="sectionname" xml:lang="en-us">Widget Controls</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>Note: Image resizing/rotating may not be available for some formats</seg>
+        </tuv>
+         <tuv xml:lang="es">
+            <seg>Nota: Es posible que el cambio de tamaño / rotación de la imagen no esté disponible para algunos formatos</seg>
+        </tuv>
+     </tu>
+
 	 <tu tuid="perc.ui.control.imageSlider@None">
 	    <prop type="sectionname" xml:lang="en-us">Widget Controls</prop>
 	    <note xml:lang="en-us"></note>

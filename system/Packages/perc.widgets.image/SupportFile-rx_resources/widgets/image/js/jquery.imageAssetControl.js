@@ -317,7 +317,6 @@
                     },
                     "json"
                 ).fail(function(xhr, status, error) {
-                    alert( "Error was encountered. Check console log." );
                     console.log(xhr.statusText);
                     console.log(textStatus);
                     console.log(error);
@@ -410,9 +409,7 @@
         function getImageInfo(element) {
             var  step = $(this).closest(".image_asset_step");
             for (i=0;i<imagePages.length;i++) {
-                //if (imagePages[i].page.is(":visible"))
                 if(imagePages[i].page == step) {
-                    //alert("Found imageInfo");
                     return imagePages[i];
                 }
             }

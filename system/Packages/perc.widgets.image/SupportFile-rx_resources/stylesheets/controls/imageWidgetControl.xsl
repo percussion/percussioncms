@@ -16,6 +16,7 @@
                 xmlns:psxctl="urn:percussion.com/control"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
+	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 
 	<xsl:template match="/" />
 	<!--
@@ -132,7 +133,12 @@
 				</div>
 			</span>
 			<span id="main_resize" class="step image_asset_step">
-				<span id="resize_warning">Note: Image resizing/rotating may not be available for some formats</span>
+				<span id="resize_warning">
+					<xsl:call-template name="getLocaleString">
+						<xsl:with-param name="key" select="'perc.ui.image.widget.control@Image Resize Note'"/>
+						<xsl:with-param name="lang" select="$lang"/>
+					</xsl:call-template>
+				</span>
 				<table>
 					<tr>
 						<td>
@@ -140,10 +146,10 @@
 
 							<div class="image_resize_wrapper">
 								<div class="image_asset_rotate">
-									<input   name="main_left" class="image_asset_rotate_left" type="button"  />
-									<input   name="main_right" class="image_asset_rotate_right" type="button"  />
+									<input name="main_left" class="image_asset_rotate_left" type="button"  />
+									<input name="main_right" class="image_asset_rotate_right" type="button"  />
 								</div>
-								<div id="main_image_region" class="image_asset_image" style="overflow:auto;" />
+								<div id="main_image_region" class="image_asset_image"  />
 							</div>
 						</td>
 						<td width = "30px">
