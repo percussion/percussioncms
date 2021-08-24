@@ -11,6 +11,7 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
+   <xsl:output method="html" omit-xml-declaration="yes"/>
    <xsl:variable name="langlist" select="document(//@langurl)/*/lang"/>
    <xsl:variable name="lang">
       <xsl:choose>
@@ -86,7 +87,7 @@
                redirectTo(redirurl,bouncetourl,communities_enabled,communityid, sys_lang)
                }
             </script>
-            <link rel="stylesheet" href="../sys_resources/css/rxcx.css" type="text/css" media="screen"/>
+            <link rel="stylesheet" href="/sys_resources/css/rxcx.css" type="text/css" media="screen"/>
          </head>
          <body>
             <xsl:if test="($communities_enabled!='yes' or $communityid!='') and $communitypage!='yes'">
@@ -98,24 +99,24 @@
                      <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr>
                            <td width="25">
-                              <img height="25" src="{concat('../rx_resources/images/',$lang,'/','rhythmyx_login_topleft.gif')}" width="25"/>
+                              <img height="25" src="{concat('/rx_resources/images/',$lang,'/','rhythmyx_login_topleft.gif')}" width="25"/>
                            </td>
                            <td class="rhythmyx_login_topbkgd">
-                              <img height="25" src="{concat('../rx_resources/images/',$lang,'/','blank-pixel.gif')}" width="25"/>
+                              <img height="25" src="{concat('/rx_resources/images/',$lang,'/','blank-pixel.gif')}" width="25"/>
                            </td>
                            <td width="25">
-                              <img height="25" src="{concat('../rx_resources/images/',$lang,'/','rhythmyx_login_topright.gif')}" width="25"/>
+                              <img height="25" src="{concat('/rx_resources/images/',$lang,'/','rhythmyx_login_topright.gif')}" width="25"/>
                            </td>
                         </tr>
                      </table>
                   </td>
                   <td class="RightShadow">
-                     <img src="{concat('../rx_resources/images/',$lang,'/','shadow-topright.gif')}" width="9" height="25"/>
+                     <img src="{concat('/rx_resources/images/',$lang,'/','shadow-topright.gif')}" width="9" height="25"/>
                   </td>
                </tr>
                <tr>
                   <td colspan="2" class="BannerCell">
-                     <img height="50" src="{concat('../rx_resources/images/',$lang,'/','rhythmyx_login_banner.jpg')}" width="516">
+                     <img height="50" src="{concat('/rx_resources/images/',$lang,'/','rhythmyx_login_banner.jpg')}" width="516">
                         <xsl:attribute name="alt"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_welcome.communitylogin.alt@Rhythmyx Content Manager'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
                      </img>
                   </td>
@@ -138,7 +139,7 @@
                                                 <xsl:when test="count($itemsurl) &gt; 1 or not($itemsurl/@commid = '')">
                                                    <tr class="whiteBKGD" valign="middle">
                                                       <td height="30" align="right">
-                                                         <img src="../sys_resources/images/spacer.gif" height="17" width="10"/>
+                                                         <img src="/sys_resources/images/spacer.gif" height="17" width="10"/>
                                                          <span class="SelectText">
                                                             <label for="community">
                                                                <xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_welcome.communitylogin.mnemonic.Select a Community@M'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
@@ -149,10 +150,10 @@
                                                                </xsl:call-template>
                                                             </label>
                                                          </span>
-                                                         <img src="../sys_resources/images/spacer.gif" height="17" width="10"/>
+                                                         <img src="/sys_resources/images/spacer.gif" height="17" width="10"/>
                                                       </td>
                                                       <td>
-                                                         <img src="../sys_resources/images/spacer.gif" height="17" width="10"/>
+                                                         <img src="/sys_resources/images/spacer.gif" height="17" width="10"/>
                                                          <label for="community" accesskey="M"/>
                                                          <select class="ComboText" id="community" name="community" tabindex="1">
                                                             <xsl:for-each select="$itemsurl">
@@ -177,7 +178,7 @@
                                                 <xsl:when test="count($langlist)&gt;1">
                                                    <tr class="whiteBKGD" valign="middle">
                                                       <td height="30" align="right">
-                                                         <img src="../sys_resources/images/spacer.gif" height="17" width="10"/>
+                                                         <img src="/sys_resources/images/spacer.gif" height="17" width="10"/>
                                                          <span class="SelectText">
                                                             <label for="sys_lang">
                                                                <xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_welcome.communitylogin.mnemonic.Locale@L'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
@@ -188,10 +189,10 @@
                                                                </xsl:call-template>
                                                             </label>
                                                          </span>
-                                                         <img src="../sys_resources/images/spacer.gif" height="17" width="10"/>
+                                                         <img src="/sys_resources/images/spacer.gif" height="17" width="10"/>
                                                       </td>
                                                       <td>
-                                                         <img src="../sys_resources/images/spacer.gif" height="17" width="10"/>
+                                                         <img src="/sys_resources/images/spacer.gif" height="17" width="10"/>
                                                          <label for="sys_lang">
                                                             <xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_welcome.communitylogin.mnemonic.Locale@L'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
                                                          </label>
@@ -217,12 +218,12 @@
                                        <xsl:choose>
                                           <xsl:when test="count($itemsurl) &gt; 1 or not($itemsurl/@commid = '')">
                                              <td class="button" align="center" width="49">
-                                                <img src="../sys_resources/images/spacer.gif" height="17" width="3"/>
-                                                <input type="image" height="17" alt="Logon" width="43" src="{concat('../rx_resources/images/',$lang,'/','go.gif')}" border="0" name="Go" tabindex="3">
+                                                <img src="/sys_resources/images/spacer.gif" height="17" width="3"/>
+                                                <input type="image" height="17" alt="Logon" width="43" src="{concat('/rx_resources/images/',$lang,'/','go.gif')}" border="0" name="Go" tabindex="3">
                                                    <xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_welcome.communitylogin.mnemonic.Go@G'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
                                                    <xsl:attribute name="onclick">javascript:onclickGo("<xsl:value-of select="//@loginurl"/>","<xsl:value-of select="$bouncetourl"/>","<xsl:value-of select="$communities_enabled"/>");</xsl:attribute>
                                                 </input>
-                                                <img src="../sys_resources/images/spacer.gif" height="17" width="3"/>
+                                                <img src="/sys_resources/images/spacer.gif" height="17" width="3"/>
                                              </td>
                                           </xsl:when>
                                        </xsl:choose>
@@ -238,7 +239,7 @@
                <tr>
                   <td colspan="2" class="BottomShadow">&nbsp;</td>
                   <td>
-                     <img src="{concat('../rx_resources/images/',$lang,'/','shadow-bottomright.gif')}" width="9" height="9"/>
+                     <img src="{concat('/rx_resources/images/',$lang,'/','shadow-bottomright.gif')}" width="9" height="9"/>
                   </td>
                </tr>
             </table>

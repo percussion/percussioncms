@@ -23,19 +23,19 @@
 		<xsl:variable name="rximagepath">
 			<xsl:choose>
 				<xsl:when test="$lang and $lang!=''">
-					<xsl:text>../rx_resources/images/en-us/</xsl:text>
+					<xsl:text>/rx_resources/images/en-us/</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat('../rx_resources/images/',$lang,'/')"/>
+					<xsl:value-of select="concat('/rx_resources/images/',$lang,'/')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<html>
 			<head>
 				<title>Processing Request</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<script language="javascript" src="../sys_resources/js/browser.js">;</script>
 				<script language="javascript" src="../sys_resources/js/href.js">;</script>
 				<script>
@@ -101,7 +101,7 @@
 										<table width="100%" border="0" cellspacing="0" cellpadding="0" height="75" background="{concat($rximagepath,'banner_bg_noline.gif')}">
 											<tr>
 												<td align="left" valign="bottom">
-													<img src="../sys_resources/images/spacer.gif"/>
+													<img src="/sys_resources/images/spacer.gif"/>
 												</td>
 											</tr>
 										</table>

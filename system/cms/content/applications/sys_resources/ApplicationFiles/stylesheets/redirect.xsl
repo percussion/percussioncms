@@ -15,24 +15,25 @@
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
+	<xsl:output method="html" omit-xml-declaration="yes"/>
 	<xsl:template match="redirect" mode="redirect">
 		<xsl:param name="lang"/>
 		<xsl:variable name="rximagepath">
 			<xsl:choose>
 				<xsl:when test="$lang and $lang!=''">
-					<xsl:text>../rx_resources/images/en-us/</xsl:text>
+					<xsl:text>/rx_resources/images/en-us/</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat('../rx_resources/images/',$lang,'/')"/>
+					<xsl:value-of select="concat('/rx_resources/images/',$lang,'/')"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<html>
 			<head>
 				<title>Processing Request</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+                <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<meta HTTP-EQUIV="Refresh">
 					<xsl:attribute name="CONTENT">0.5; URL=<xsl:value-of select="BounceTo"/></xsl:attribute>
 				</meta>
@@ -56,7 +57,7 @@
 										<table width="100%" border="0" cellspacing="0" cellpadding="0" height="75" background="{concat($rximagepath,'banner_bg_noline.gif')}">
 											<tr>
 												<td align="left" valign="bottom">
-													<img src="../sys_resources/images/spacer.gif"/>
+													<img src="/sys_resources/images/spacer.gif"/>
 												</td>
 											</tr>
 										</table>

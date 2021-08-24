@@ -17,9 +17,9 @@
          <head>
             <meta name="generator" content="Percussion XSpLit Version 3.5"/>
             <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-            <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+            <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
             <title>
                <xsl:call-template name="getLocaleString">
                   <xsl:with-param name="key" select="'psx.sys_rcSupport.createnew@Create Item - Select Content Type and Template'"/>

@@ -71,10 +71,10 @@
 	<xsl:variable name="rximagepath">
 		<xsl:choose>
 			<xsl:when test="$lang and $lang!=''">
-				<xsl:text>../rx_resources/images/en-us/</xsl:text>
+				<xsl:text>/rx_resources/images/en-us/</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat('../rx_resources/images/',$lang,'/')"/>
+				<xsl:value-of select="concat('/rx_resources/images/',$lang,'/')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -109,9 +109,9 @@
                   }
                }
             </script>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 			</head>
 			<body marginwidth="0" marginheight="0" leftmargin="0" topmargin="0">
 				<table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">

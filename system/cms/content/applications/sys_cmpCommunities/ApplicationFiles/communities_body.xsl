@@ -73,7 +73,7 @@
 						  <td align="center" class="datacell1font">
 							<xsl:if test="$usercommunity != communityid">
 							 <a href="javascript:delConfirm('{deletecommunityurl}');">
-								<img height="21" alt="Delete" src="../sys_resources/images/delete.gif" width="21" border="0"/>
+								<img height="21" alt="Delete" src="/sys_resources/images/delete.gif" width="21" border="0"/>
 							 </a>
 							</xsl:if>
 						  </td>

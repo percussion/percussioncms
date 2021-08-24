@@ -26,9 +26,9 @@
                   <xsl:with-param name="lang" select="$lang"/>
                </xsl:call-template>
             </title>
-            <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+            <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
             <script src="../sys_resources/js/formValidation.js"/>
          </head>
          <script>
@@ -102,7 +102,7 @@
       <tr class="datacell1">
          <td valign="top" class="datacell1font" align="center">
             <a href="javascript:delConfirm('{deletelink}')">
-               <img src="../sys_resources/images/delete.gif" border="0">
+               <img src="/sys_resources/images/delete.gif" border="0">
                   <xsl:attribute name="alt"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_cmpCaSavedSearches.savedsearchlist.alt@Delete'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
                </img>
             </a>

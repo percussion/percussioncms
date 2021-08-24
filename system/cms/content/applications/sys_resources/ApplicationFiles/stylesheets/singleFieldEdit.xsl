@@ -46,9 +46,9 @@
                   <xsl:with-param name="lang" select="$lang"/>
                </xsl:call-template>
             </title>
-            <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+            <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 			<script language="javascript" src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
              <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
              <xsl:text>&#10;</xsl:text>
@@ -133,11 +133,11 @@
                                  <xsl:attribute name="onsubmit">ps_setUpdateFlag();<xsl:text>addFormRedirect(document.forms['EditForm']); return </xsl:text><xsl:if test="$hasWebImageFx"><xsl:text>wifxHandleSubmit</xsl:text></xsl:if><xsl:text>(_ignoreMultipleSubmit() &amp;&amp; canSubmit &amp;&amp; true</xsl:text><xsl:apply-templates select="/*/ItemContent" mode="psxcontrol-form-onsubmit"/><xsl:text>)</xsl:text></xsl:attribute>
                                  <table width="100%" border="0" cellspacing="5" cellpadding="0" summary="controls for editing metadata">
                                     <tr>
-                                       <td height="8"><img src="../sys_resources/images/spacer.gif" height="8"/></td>
+                                       <td height="8"><img src="/sys_resources/images/spacer.gif" height="8"/></td>
                                     </tr>
                                     <xsl:apply-templates select="ItemContent"/>
                                     <tr>
-                                       <td height="8"><img src="../sys_resources/images/spacer.gif" height="8"/></td>
+                                       <td height="8"><img src="/sys_resources/images/spacer.gif" height="8"/></td>
                                     </tr>
                                     <tr>
                                        <td align="center" colspan="2" class="headercell2">

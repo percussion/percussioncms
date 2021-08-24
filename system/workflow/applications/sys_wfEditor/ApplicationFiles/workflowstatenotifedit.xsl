@@ -50,8 +50,8 @@
 				<meta name="generator" content="Percussion XSpLit Version 3.5"/>
 				<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 				<title>Rhythmyx - Workflow Administrator</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
 				<link href="../sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
 				<script language="JavaScript" src="../sys_resources/js/checkrequired.js"><![CDATA[
 ]]></script>
@@ -170,7 +170,7 @@
 				<input name="rxorigin" type="hidden" value="editnotif"/>
 				<tr class="datacell2">
 					<td align="left" class="datacell1font" width="30%">ID:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 					</td>
 					<td width="100%" align="left" class="datacell1font">
 						<xsl:apply-templates select="notificationid"/>&nbsp;
@@ -179,7 +179,7 @@
 				<tr class="datacell1">
 					<td align="left" class="datacell1font">
 						<font class="reqfieldfont">*</font>Subject:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 					</td>
 					<td width="100%" align="left" class="datacell1font">
 						<input type="text" name="requiredsubject" size="30">
@@ -189,7 +189,7 @@
 				</tr>
 				<tr class="datacell1">
 					<td align="left" class="datacell1font">Description:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 					</td>
 					<td width="100%" align="left" class="datacell1font">
 						<input type="text" name="description" size="30">
@@ -199,7 +199,7 @@
 				</tr>
 				<tr class="datacell2">
 					<td align="left" class="headercellfont">Body:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 					</td>
 					<td width="100%" align="left" class="datacell1font">
 						<xsl:for-each select=".">

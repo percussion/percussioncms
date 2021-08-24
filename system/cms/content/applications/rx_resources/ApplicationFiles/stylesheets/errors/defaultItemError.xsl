@@ -17,8 +17,8 @@
             <meta name="generator" content="Percussion XSpLit Version 3.5"/>
             <meta http-equiv="Content-Type" content="text/html; UTF-8"/>
             <title>Item Validation Default Error Page</title>
-            <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
          </head>
          <body>
             <table border="0" width="100%" cellpadding="0" cellspacing="1">

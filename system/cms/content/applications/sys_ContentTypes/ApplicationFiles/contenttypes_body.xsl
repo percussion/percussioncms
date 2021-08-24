@@ -66,7 +66,7 @@
 						<xsl:otherwise>
 						  <td align="center" class="datacell1font">
 							 <a href="javascript:delConfirm('{deletecontenttypeurl}');">
-								<img height="21" alt="Delete" src="../sys_resources/images/delete.gif" width="21" border="0"/>
+								<img height="21" alt="Delete" src="/sys_resources/images/delete.gif" width="21" border="0"/>
 							 </a>
 						  </td>
 						  <td align="left" class="datacell1font">

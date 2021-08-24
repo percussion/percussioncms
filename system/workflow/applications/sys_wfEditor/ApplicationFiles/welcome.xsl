@@ -16,6 +16,7 @@
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_bannerTemplate.xsl"/>
+	<xsl:output method="html" omit-xml-declaration="yes"/>
 	<xsl:include href="file:sys_wfLookups/workflowslist.xsl"/>
 	<xsl:variable name="this" select="/"/>
 	<xsl:variable name="extworkflows" select="/*/URL/extworkflows"/>
@@ -27,12 +28,12 @@
 				<meta name="generator" content="Percussion XSpLit Version 3.5"/>
 				<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 				<title>Rhythmyx - Workflow Administrator</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link href="../sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
-				<script language="JavaScript" src="../sys_resources/js/delconfirm.js"/>
-				<script language="JavaScript" src="../sys_resources/js/checkrequired.js"/>
-				<script language="JavaScript" src="../sys_resources/js/formValidation.js"><![CDATA[
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link href="/sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
+				<script src="/sys_resources/js/delconfirm.js"/>
+				<script src="/sys_resources/js/checkrequired.js"/>
+				<script src="/sys_resources/js/formValidation.js"><![CDATA[
 			]]></script>
 			</head>
 			<body class="backgroundcolor" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

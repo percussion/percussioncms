@@ -56,7 +56,7 @@
                   </xsl:otherwise>
                </xsl:choose>    
             </xsl:variable>
-            <xsl:variable name="helpIcon" select="concat('../rx_resources/images/',$lang,'/help_icon.gif')"/>
+            <xsl:variable name="helpIcon" select="concat('/rx_resources/images/',$lang,'/help_icon.gif')"/>
             <xsl:variable name="helpAlt">
                <xsl:call-template name="getLocaleString">
                   <xsl:with-param name="key" select="'psx.sys_cmpHelp.help.alt@Help'"/>
@@ -118,7 +118,7 @@
       </tr>
       <tr class="outerboxcellfont ">
          <td align="left" class="outerboxcellfont">
-            <img border="0" height="2" src="../sys_resources/images/invis.gif"/>
+            <img border="0" height="2" src="/sys_resources/images/invis.gif"/>
          </td>
       </tr>
    </xsl:template>

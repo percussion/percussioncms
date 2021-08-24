@@ -65,9 +65,9 @@
                   <xsl:with-param name="lang" select="$lang"/>
                </xsl:call-template>
             </title>
-            <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+            <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
             <script language="javascript" src="../sys_resources/js/href.js">;</script>
             <script>
             function openCA(url)
@@ -336,7 +336,7 @@
          </tr>
          <tr>
             <td width="100%" height="1">
-               <img src="../sys_resources/images/invis.gif" width="1" height="1" border="0"/>
+               <img src="/sys_resources/images/invis.gif" width="1" height="1" border="0"/>
             </td>
          </tr>
          <xsl:apply-templates select="." mode="mode4"/>

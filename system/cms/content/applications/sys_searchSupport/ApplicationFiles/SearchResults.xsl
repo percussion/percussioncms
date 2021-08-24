@@ -55,9 +55,9 @@
 		<html>
 			<head>
 				<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
 				<script><![CDATA[
@@ -398,7 +398,7 @@
 		<xsl:param name="categoryLevel" select="./@categoryLevel"/>
 		<tr class="datacell1">
 			<td colspan="9" class="headercellfont" align="left">
-				<img src="../sys_resources/images/spacer.gif">
+				<img src="/sys_resources/images/spacer.gif">
 					<xsl:attribute name="width"><xsl:value-of select="$categoryLevel * $tabsize"/></xsl:attribute>
 				</img>
 				<xsl:value-of select="./Value"/>
