@@ -106,7 +106,7 @@ public class PSMakeLasagnaTest
       
       // verify encryption was successful
       assertFalse(newPWD.equals(originalPWD));
-      newPWD = PSEncryptor.decryptString(newPWD);
+      newPWD = PSEncryptor.decryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),newPWD);
       assertTrue(newPWD.equals(originalPWD));
    }
    

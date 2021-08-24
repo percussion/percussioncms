@@ -474,7 +474,7 @@ public class PSAuthentication extends PSComponent
       if (encrypted)
       {
          try{
-            data = PSEncryptor.decryptString(data);
+            data = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),data);
          } catch (PSEncryptionException e) { String userStr = getUser();
             String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -538,7 +538,7 @@ public class PSAuthentication extends PSComponent
 
       String pw = null;
       try {
-         pw = PSEncryptor.encryptString(getPassword());
+         pw = PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),getPassword());
       } catch (PSEncryptionException e) {
          logger.error("Error encrypting password: {}" , e.getMessage());
          logger.debug(e);

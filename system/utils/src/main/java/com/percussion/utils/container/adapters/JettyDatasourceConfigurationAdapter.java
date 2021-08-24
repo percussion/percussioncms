@@ -195,7 +195,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                 if (encrypted != null && encrypted.equalsIgnoreCase("Y")) {
                     try {
-                        pwd = PSEncryptor.decryptString(pwd);
+                        pwd = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
 
                     }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                         pwd = PSLegacyEncrypter.getInstance(
@@ -326,7 +326,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
 
                     props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_SERVER_SUFFIX, datasource.getServer());
                     try {
-                        String encPwd = PSEncryptor.encryptProperty(propertyFile.toAbsolutePath().toString(),IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,datasource.getPassword());
+                        String encPwd = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propertyFile.toAbsolutePath().toString(),IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,datasource.getPassword());
                         props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_SUFFIX,
                                 encPwd);
                         props.setProperty(prefix + IPSJdbcJettyDbmsDefConstants.JETTY_PWD_ENCRYPTED_SUFFIX, "Y");

@@ -85,7 +85,7 @@ public class PSFeedsServiceTests{
 
         PSFeedDTO feedDTO = new PSFeedDTO();
 
-        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath(),"https://www.nasa.gov/rss/dyn/breaking_news.rss");
+        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),"https://www.nasa.gov/rss/dyn/breaking_news.rss");
 
         feedDTO.setFeedsUrl(url);
         String xml = svc.readExternalFeed(feedDTO);
@@ -104,7 +104,7 @@ public class PSFeedsServiceTests{
 
         PSFeedDTO feedDTO = new PSFeedDTO();
 
-        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath(),"jar://www.nasa.gov/rss/dyn/breaking_news.jar");
+        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),"jar://www.nasa.gov/rss/dyn/breaking_news.jar");
         feedDTO.setFeedsUrl(url);
 
         boolean passed = false;
@@ -125,7 +125,7 @@ public class PSFeedsServiceTests{
 
         PSFeedDTO feedDTO = new PSFeedDTO();
 
-        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath(),"file://www.nasa.gov/rss/dyn/breaking_news.txt");
+        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),"file://www.nasa.gov/rss/dyn/breaking_news.txt");
         feedDTO.setFeedsUrl(url);
 
         boolean passed = false;
@@ -146,7 +146,7 @@ public class PSFeedsServiceTests{
 
         PSFeedDTO feedDTO = new PSFeedDTO();
 
-        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath(),"data://www.nasa.gov/rss/dyn/breaking_news.jar");
+        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),"data://www.nasa.gov/rss/dyn/breaking_news.jar");
         feedDTO.setFeedsUrl(url);
 
         boolean passed = false;

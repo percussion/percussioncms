@@ -95,7 +95,7 @@ public class PSSecurePropertyTest
    @Test
    public void testGetClouded() throws Exception
    {
-      String encStr = PSEncryptor.encryptString(pass);
+      String encStr = PSEncryptor.encryptString(tempFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pass);
       String enc1 = PSSecureProperty.getClouded(encStr);
       String enc2 = PSSecureProperty.getClouded(encStr);
       String dec1 = PSSecureProperty.getValue(enc1, null);

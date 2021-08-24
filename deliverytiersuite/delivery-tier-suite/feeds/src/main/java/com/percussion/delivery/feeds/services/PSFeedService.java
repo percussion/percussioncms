@@ -282,7 +282,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         try{
             //If Secure File is not Copied to DTS Yet then returning
 
-            String decryptedUrl = PSEncryptor.decryptString(feedUrl);
+            String decryptedUrl = PSEncryptor.decryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),feedUrl);
             log.debug("Decrypted URL is: {}" , decryptedUrl);
             decodedUrl = URLDecoder.decode(decryptedUrl, "UTF8");
             log.debug("Decoded URL is: {}",  decodedUrl);
@@ -290,7 +290,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             //plaintext URL Sent---- Throw not Allowed Error
 	         if(decodedUrl != null && decodedUrl.equals(feedUrl)){
                 log.error("Illegal argument passed to readExternalFeed. External unEncrypted Feed Url Not Allowed.");
-                throw new WebApplicationException(403);
+                throw new WebApplicationException(404);
               }
 
             decodedUrl = stripNonHttpProtocols(decodedUrl);
@@ -309,12 +309,12 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         }catch(Exception e){
         	log.error(e.getMessage());
         	log.debug(e);
-        	throw new WebApplicationException(403);
+        	throw new WebApplicationException(404);
         }
         
         if(StringUtils.isEmpty(feedUrl)) {
     		log.error("Illegal argument passed to readExternalFeed. Feed Url was missing from request.");
-    		throw new WebApplicationException(403);
+    		throw new WebApplicationException(404);
         }
 
         try

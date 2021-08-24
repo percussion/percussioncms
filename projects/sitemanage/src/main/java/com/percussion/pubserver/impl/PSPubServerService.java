@@ -773,9 +773,9 @@ public class PSPubServerService implements IPSPubServerService
         server.setPublishType(PublishType.amazon_s3.toString());
         PSPublisherInfo pubInfo = siteConfig.getSiteConfig().getPublisherInfo();
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, pubInfo.getBucketName());
-        String accessKey = PSEncryptor.encryptString(pubInfo.getAccessKey());
+        String accessKey = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pubInfo.getAccessKey());
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, accessKey);
-        String secretKey = PSEncryptor.encryptString(pubInfo.getSecretKey());
+        String secretKey = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pubInfo.getSecretKey());
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, secretKey);
         server.addProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, DRIVER_AMAZONS3);
         server.addProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY, "");
@@ -977,7 +977,7 @@ public class PSPubServerService implements IPSPubServerService
                 {
                     try
                     {
-                        value = PSEncryptor.encryptString(value);
+                        value = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),value);
                     }
                     catch (Exception e)
                     {
@@ -2037,7 +2037,7 @@ public class PSPubServerService implements IPSPubServerService
     private String decrypt(String dstr) {
 
         try {
-            return PSEncryptor.decryptString(dstr);
+            return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
 
         } catch (PSEncryptionException e) {
             log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());

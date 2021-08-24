@@ -127,7 +127,7 @@ public class PSProxyConfigLoader
        if (pwd.isEncrypted())
       {
           try {
-            decryptedPassword = PSEncryptor.decryptString(pwdVal);
+            decryptedPassword = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwdVal);
           }catch (PSEncryptionException e){
               decryptedPassword = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
               ).decrypt(pwdVal, encrypterKey,null);
@@ -138,7 +138,7 @@ public class PSProxyConfigLoader
 
        String enc = null;
        try {
-           enc = PSEncryptor.encryptString(pwdVal);
+           enc = PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwdVal);
        } catch (PSEncryptionException e) {
            log.error("Error encrypting password: " + e.getMessage(), e);
            enc = "";

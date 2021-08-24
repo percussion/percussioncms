@@ -1857,10 +1857,10 @@ public class PSServer {
                // decrypt the password
                String password = "";
                try {
-                  password = PSEncryptor.decryptProperty(propFile.getAbsolutePath(), "pwEncrypted",pw );
+                  password = PSEncryptor.getInstance(PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM,null).decrypt(pw );
                }catch (PSEncryptionException pe) {
                   try {
-                     password = PSEncryptor.decryptWithOldKey(pw);
+                     password = PSEncryptor.getInstance(PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM,null).decryptWithOld(pw);
                   } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
                      password = eatLasagna(ms_serverProps.getProperty("loginId"), pw);
                   }
