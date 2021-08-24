@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <!DOCTYPE xsl:stylesheet [
 		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
 		%HTMLlat1;
@@ -40,6 +16,7 @@
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_bannerTemplate.xsl"/>
+	<xsl:output method="html" omit-xml-declaration="yes"/>
 	<xsl:variable name="this" select="/"/>
 	<xsl:variable name="bannerinclude" select="/*/bannerincludeurl"/>
 	<xsl:variable name="userstatusinclude" select="/*/userstatusincludeurl"/>
@@ -50,12 +27,12 @@
 				<meta name="generator" content="Percussion XSpLit Version 3.5"/>
 				<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 				<title>Rhythmyx - Workflow Administrator</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link href="../sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
-				<script language="JavaScript" src="../sys_resources/js/checkrequired.js"><![CDATA[
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link href="/sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
+				<script src="/sys_resources/js/checkrequired.js"><![CDATA[
 ]]></script>
-				<script src="../sys_resources/js/formValidation.js"><![CDATA[
+				<script src="/sys_resources/js/formValidation.js"><![CDATA[
           ]]></script>
 				<script><![CDATA[
 				function save_onclick() {
@@ -139,7 +116,7 @@
 						<tr class="datacell1">
 							<td align="left" class="datacell1font">
 								<font class="reqfieldfont">*</font>Name:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 							</td>
 							<td width="100%" align="left" class="datacell1font">
 								<input type="text" name="requiredname" size="30"/>&nbsp;
@@ -147,7 +124,7 @@
 						</tr>
 						<tr class="datacell2">
 							<td align="left" class="datacell1font">Administrator:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 							</td>
 							<td width="100%" align="left" class="datacell1font">
 								<input type="text" name="administrator" size="30"/>&nbsp;
@@ -155,7 +132,7 @@
 						</tr>
 						<tr class="datacell1">
 							<td align="left" class="datacell1font">Initial&nbsp;State:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 							</td>
 							<td width="100%" align="left" class="datacell1font">
 								<input type="hidden" name="initialstate" value="1"/>&nbsp;1&nbsp;
@@ -163,7 +140,7 @@
 						</tr>
 						<tr class="datacell2">
 							<td align="left" class="datacell1font">Description:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 							</td>
 							<td width="100%" align="left" class="datacell1font">
 								<input type="text" name="description" size="40"/>&nbsp;
@@ -172,8 +149,8 @@
 						<tr class="datacell1">
 							<td colspan="2" align="left" class="datacell1font">
 								<input type="hidden" class="nav_body" name="DBActionType" value="INSERT"/>
-								<input type="button" value="Save" name="save" language="javascript" onclick="save_onclick()"/>&nbsp;
-                   <input type="button" value="Cancel" name="cancel" language="javascript" onclick="history.back();"/>
+								<input type="button" value="Save" name="save" onclick="save_onclick()"/>&nbsp;
+                   <input type="button" value="Cancel" name="cancel" onclick="history.back();"/>
 							</td>
 						</tr>
 					</table>

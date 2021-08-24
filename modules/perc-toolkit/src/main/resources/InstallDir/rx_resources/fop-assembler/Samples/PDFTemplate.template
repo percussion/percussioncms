@@ -109,7 +109,7 @@
 
 				&lt;fo:static-content flow-name="xsl-region-before"&gt;
 					&lt;fo:block&gt;
-						&lt;fo:external-graphic src="../rx_resources/images/PDFmarginTop.jpg" content-width="20cm"/&gt;
+						&lt;fo:external-graphic src="/rx_resources/images/PDFmarginTop.jpg" content-width="20cm"/&gt;
 					&lt;/fo:block&gt;
 				&lt;/fo:static-content&gt;
 

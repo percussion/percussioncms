@@ -22,9 +22,9 @@
    <xsl:template match="/">
       <html>
          <head>
-            <link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+            <link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
             <script language="javascript" src="../sys_resources/js/href.js">;</script>
             <title>
                <xsl:call-template name="getLocaleString">
@@ -45,7 +45,7 @@
             <table border="0" cellspacing="0" cellpadding="0" width="100%" height="46">
                <tr>
                   <td height="5">
-                     <img src="../sys_resources/images/spacer.gif" alt="" height="4"/>
+                     <img src="/sys_resources/images/spacer.gif" alt="" height="4"/>
                   </td>
                </tr>
                <tr>
@@ -53,15 +53,15 @@
                      <table border="0" cellspacing="0" cellpadding="0" width="100%" height="26">
                         <tr>
                            <td width="460" class="outerboxcell" align="center" nowrap="yes" colspan="7">
-                              <img src="../sys_resources/images/spacer.gif" width="2" height="2" alt=""/>
+                              <img src="/sys_resources/images/spacer.gif" width="2" height="2" alt=""/>
                            </td>
                            <td>
-                              <img src="../sys_resources/images/spacer.gif" alt="" height="2"/>
+                              <img src="/sys_resources/images/spacer.gif" alt="" height="2"/>
                            </td>
                         </tr>
                         <tr>
                            <td width="2" class="outerboxcell" align="center" nowrap="yes">
-                              <img src="../sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
+                              <img src="/sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
                            </td>
                            <td width="150" class="outerboxcell" align="center" nowrap="yes">
                               <xsl:attribute name="class"><xsl:choose><xsl:when test="$defactiveitem='1'">outerboxcell</xsl:when><xsl:otherwise>headercell</xsl:otherwise></xsl:choose></xsl:attribute>
@@ -83,7 +83,7 @@
                               </font>
                            </td>
                            <td width="2" class="outerboxcell" align="center" nowrap="yes">
-                              <img src="../sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
+                              <img src="/sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
                            </td>
                            <td width="150" class="outerboxcell" align="center">
                               <xsl:attribute name="class"><xsl:choose><xsl:when test="$defactiveitem='3'">outerboxcell</xsl:when><xsl:otherwise>headercell</xsl:otherwise></xsl:choose></xsl:attribute>
@@ -108,7 +108,7 @@
                               </font>
                            </td>
                            <td width="2" class="outerboxcell" align="center" nowrap="yes">
-                              <img src="../sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
+                              <img src="/sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
                            </td>
                            <td width="150" class="headercell" align="center" nowrap="yes">
                               <xsl:attribute name="class"><xsl:choose><xsl:when test="$defactiveitem='2'">outerboxcell</xsl:when><xsl:otherwise>headercell</xsl:otherwise></xsl:choose></xsl:attribute>
@@ -146,10 +146,10 @@
                               </font>
                            </td>
                            <td width="2" class="outerboxcell" align="center" nowrap="yes">
-                              <img src="../sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
+                              <img src="/sys_resources/images/spacer.gif" width="2" height="26" alt=""/>
                            </td>
                            <td>
-                              <img src="../sys_resources/images/spacer.gif" alt="" height="13"/>
+                              <img src="/sys_resources/images/spacer.gif" alt="" height="13"/>
                            </td>
                         </tr>
                      </table>
@@ -157,7 +157,7 @@
                </tr>
                <tr class="outerboxcell">
                   <td align="right" width="100%" height="20">
-                     <img src="../sys_resources/images/spacer.gif" alt="" height="20"/>
+                     <img src="/sys_resources/images/spacer.gif" alt="" height="20"/>
                   </td>
                </tr>
             </table>

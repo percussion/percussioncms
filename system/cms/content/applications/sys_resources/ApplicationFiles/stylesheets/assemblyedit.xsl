@@ -484,7 +484,7 @@
                               </a>
                            </xsl:element>
                            <xsl:element name="xsl:otherwise">
-                              <img class="PSnavmenuitem" src="../sys_resources/images/spacer.gif" border="0" align="absmiddle" width="21" height="19"/>
+                              <img class="PSnavmenuitem" src="/sys_resources/images/spacer.gif" border="0" align="absmiddle" width="21" height="19"/>
                            </xsl:element>
                         </xsl:element>
                      </td>

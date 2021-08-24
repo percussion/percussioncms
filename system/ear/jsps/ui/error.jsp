@@ -61,11 +61,11 @@
             <td height="75">
                <table width="100%" height="75" cellpadding="0" cellspacing="0" border="0">
                   <tr class="bannerbackground">
-                     <td width="315" valign="top" align="left"><img src="../rx_resources/images/en-us/banner_longlogo.jpg" width="640" height="75" border="0" alt="Rhythmyx Content Manager" title="Rhythmyx Content Manager"></td>
+                     <td width="315" valign="top" align="left"><img src="/rx_resources/images/en-us/banner_longlogo.jpg" width="640" height="75" border="0" alt="Rhythmyx Content Manager" title="Rhythmyx Content Manager"></td>
                      <td height="75" align="left" class="tabs" width="100%">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" height="75" background="../rx_resources/images/en-us/banner_bg_noline.gif">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" height="75" background="/rx_resources/images/en-us/banner_bg_noline.gif">
                            <tr>
-                              <td align="left" valign="bottom"><img src="../sys_resources/images/spacer.gif"></td>
+                              <td align="left" valign="bottom"><img src="/sys_resources/images/spacer.gif"></td>
                            </tr>
                         </table>
                      </td>
@@ -74,7 +74,7 @@
             </td>
          </tr>
          <tr>
-            <td height="1" class="backgroundcolor"><img src="../sys_resources/images/spacer.gif" width="1" height="1" border="0" alt=""></td>
+            <td height="1" class="backgroundcolor"><img src="/sys_resources/images/spacer.gif" width="1" height="1" border="0" alt=""></td>
          </tr>
          <tr class="outerboxcell">
             <td>

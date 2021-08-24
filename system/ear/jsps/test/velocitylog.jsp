@@ -93,9 +93,9 @@
 <html>
 <head>
     <title>Retrieve velocity logs from server for assembly debugging</title>
-    <link rel="stylesheet" href="../sys_resources/css/rxcx.css" type="text/css" media="screen"/>
-    <link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css">
-    <link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/sys_resources/css/rxcx.css" type="text/css" media="screen"/>
+    <link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css">
+    <link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css">
     <link href="../rx_resources/css/en-us/templates.css" rel="stylesheet" type="text/css">
 </head>
 <body>

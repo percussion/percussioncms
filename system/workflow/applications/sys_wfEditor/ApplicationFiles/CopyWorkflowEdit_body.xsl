@@ -83,7 +83,7 @@
 							<tr class="datacell1">
 								<td align="left" class="datacell1font" width="30%">
 									<font class="reqfieldfont">*</font>Name:
-							 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+							 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<input type="text" name="requiredname" size="30">

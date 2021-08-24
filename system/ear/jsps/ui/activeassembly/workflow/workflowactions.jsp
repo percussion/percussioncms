@@ -190,7 +190,7 @@
 			</tr>
 			<tr>
 				<td height="5">
-					<img src="../sys_resources/images/spacer.gif" height="5"/>
+					<img src="/sys_resources/images/spacer.gif" height="5"/>
 				</td>
 			</tr>
 			<tr>

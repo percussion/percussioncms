@@ -20,10 +20,10 @@
 	<xsl:variable name="rximagepath">
 		<xsl:choose>
 			<xsl:when test="$lang and $lang!=''">
-				<xsl:text>../rx_resources/images/en-us/</xsl:text>
+				<xsl:text>/rx_resources/images/en-us/</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat('../rx_resources/images/',$lang,'/')"/>
+				<xsl:value-of select="concat('/rx_resources/images/',$lang,'/')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -36,7 +36,7 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
 				<script>
 				   function Continue_onclick()
 				   {
@@ -62,7 +62,7 @@
 											<table width="100%" border="0" cellspacing="0" cellpadding="0" height="75" background="{concat($rximagepath,'banner_bg_noline.gif')}">
 												<tr>
 													<td align="left" valign="bottom">
-														<img src="../sys_resources/images/spacer.gif"/>
+														<img src="/sys_resources/images/spacer.gif"/>
 													</td>
 												</tr>
 											</table>

@@ -32,9 +32,9 @@
 <head>
 	<title>Assembly error for item: <%= id %></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" href="../sys_resources/css/rxcx.css" type="text/css" media="screen" />
-	<link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css">
-	<link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="/sys_resources/css/rxcx.css" type="text/css" media="screen" />
+	<link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css">
+	<link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css">
 	<link href="../rx_resources/css/en-us/templates.css" rel="stylesheet" type="text/css">
 </head>
 <body>

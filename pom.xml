@@ -178,7 +178,7 @@
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
-        <jetty.version>9.4.40.v20210413</jetty.version>
+        <jetty.version>9.4.43.v20210629</jetty.version>
         <trinidad.version>1.0.2</trinidad.version>
        <derby.version>10.14.2.0</derby.version>
        <mssql.version>9.2.1.jre8</mssql.version>
