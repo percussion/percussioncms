@@ -39,7 +39,7 @@ package com.percussion.widgets.image.services;
                {
                    if (irm==null)
                    {
-                       irm = (ImageResizeManager)getBean("imageWidgetResizeManager");
+                       irm = (ImageResizeManager)getBean(IMAGE_RESIZE_BEAN);
                    }
                }
            }
