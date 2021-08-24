@@ -187,7 +187,7 @@ public class PSManagedTagsUtils
         notNull(docHead);
         notNull(tag);
         
-        Comment commentedTag = new Comment(tag.toString(), "http://");
+        Comment commentedTag = new Comment(tag.toString());
         docHead.appendChild(commentedTag);
         tag.remove();
     }
