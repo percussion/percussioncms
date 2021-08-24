@@ -25,7 +25,6 @@ package com.percussion.delivery.utils.security;
 
 import com.percussion.security.PSEncryptor;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
