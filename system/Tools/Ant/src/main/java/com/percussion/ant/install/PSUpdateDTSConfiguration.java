@@ -58,9 +58,6 @@ public class PSUpdateDTSConfiguration extends PSAction {
     {
         String rxDir = getRootDir();
 
-        System.setProperty("javax.xml.parsers.DocumentBuilderFactory","com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl");
-        System.setProperty("javax.xml.parsers.SAXParserFactory","com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl");
-
         File dtsRoot = new File(rxDir,PROD_PATH );
         if(dtsRoot.exists()) {
             updateConfiguration(dtsRoot);
