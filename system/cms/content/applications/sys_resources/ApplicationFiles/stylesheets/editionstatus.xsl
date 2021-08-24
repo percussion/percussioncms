@@ -16,8 +16,8 @@
       <head>
         <meta name="generator" content="Percussion XSpLit Version 3.0"/>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-        <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+        <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+        <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
         <script src="../sys_resources/js/href.js">;</script>
 
         <title>Rhythmyx - Publisher - Publication Status Details</title>
@@ -52,7 +52,7 @@
             <td class="outerboxcell" align="right" valign="top"><span class="outerboxcellfont">Publication Status Details</span></td>
           </tr>
           <tr> 
-            <td width="100%" height="1" class="bordercolor"><img src="../sys_resources/images/invis.gif" width="1" height="1" border="0" alt="" /></td>
+            <td width="100%" height="1" class="bordercolor"><img src="/sys_resources/images/invis.gif" width="1" height="1" border="0" alt="" /></td>
           </tr>
 	<tr><td valign="top" class="bordercolor">
 		        	<xsl:apply-templates select="." mode="mode1"/>

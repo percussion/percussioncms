@@ -57,8 +57,8 @@
 				<meta name="generator" content="Percussion XSpLit Version 3.5"/>
 				<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 				<title>Rhythmyx - Workflow Administrator</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
 				<link href="../sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
 				<script language="JavaScript" src="../sys_resources/js/checkrequired.js"><![CDATA[
 ]]></script>
@@ -204,7 +204,7 @@
 		<xsl:for-each select=".">
 			<tr class="datacell2">
 				<td align="left" class="datacell1font">To-State:
-          <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+          <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 				</td>
 				<td width="100%" align="left" class="datacell1font">
 					<select name="tostate" size="1">
@@ -267,7 +267,7 @@
 					<table width="100%" cellpadding="0" cellspacing="1" border="0">
 						<tr class="datacell1">
 							<td align="left" class="headercellfont">ID:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 							</td>
 							<td width="100%" align="left" class="datacell1font">
 								<xsl:apply-templates select="transitionid"/>
@@ -277,7 +277,7 @@
 							<tr class="datacell2">
 								<td width="30%" align="left" class="datacell1font">
 									<font class="reqfieldfont">*</font>Label:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="70%" align="left" class="datacell1font">
 									<input type="text" name="requiredlabel" size="30">
@@ -287,7 +287,7 @@
 							</tr>
 							<tr class="datacell1">
 								<td align="left" class="datacell1font">Description:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<input type="text" name="description" size="40">
@@ -298,7 +298,7 @@
 							<tr class="datacell2">
 								<td align="left" class="datacell1font">
 									<font class="reqfieldfont">*</font>Trigger:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<input type="text" name="requiredtrigger" size="30">
@@ -308,7 +308,7 @@
 							</tr>
 							<tr class="datacell1">
 								<td align="left" class="datacell1font">From-State:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<xsl:variable name="stateidvar">
@@ -329,7 +329,7 @@
 								<tr class="datacell1">
 									<td align="left" class="datacell1font">
 										<font class="reqfieldfont"></font>Approval Type:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<select name="approvaltype">
@@ -343,7 +343,7 @@
 								<tr class="datacell1">
 									<td align="left" class="datacell1font">
 										<font class="reqfieldfont">*</font>Approvals Required:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<input type="text" name="requiredapprovals" size="6">
@@ -359,7 +359,7 @@
 								</tr>
 								<tr class="datacell2">
 									<td align="left" class="datacell1font">Comment:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<select name="commentrequired">
@@ -387,7 +387,7 @@
 								</tr>
 								<tr class="datacell2">
 									<td align="left" class="datacell1font">Default Transition:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<select name="defaulttransition">
@@ -406,7 +406,7 @@
 							</xsl:if>
 							<tr class="datacell1">
 								<td align="left" class="datacell1font">Workflow Action:
-                <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+                <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<!-- begin XSL -->
@@ -421,7 +421,7 @@
 							<xsl:if test="not($isagingvar='1')">
 								<tr class="datacell2">
 									<td align="left" class="datacell1font">Transition Role:
-							<img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+							<img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<xsl:for-each select="roles">
@@ -451,7 +451,7 @@
 								<input type="hidden" name="transitionroles" value="*ALL*"/>
 								<tr class="datacell2">
 									<td align="left" class="datacell1font">Aging Type:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<xsl:variable name="agingtype" select="agingtype"/>
@@ -469,7 +469,7 @@
 								</tr>
 								<tr class="datacell1">
 									<td align="left" class="datacell1font">Aging Interval(min):
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<input type="text" name="aginginterval" size="6">
@@ -479,7 +479,7 @@
 								</tr>
 								<tr class="datacell2">
 									<td align="left" class="datacell1font">System Field:
-						 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+						 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="100%" align="left" class="datacell1font">
 										<xsl:variable name="systemfield" select="systemfield"/>

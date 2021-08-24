@@ -9,9 +9,9 @@
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>
 				<title>Redirecting to action page...</title>
-	            <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-	            <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-	            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+	            <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+	            <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+	            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 			</head>
 			<body>
             <table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" class="headercell">

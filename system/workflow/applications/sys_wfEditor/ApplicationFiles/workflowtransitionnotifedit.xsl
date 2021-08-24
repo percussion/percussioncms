@@ -54,8 +54,8 @@
 				<meta name="generator" content="Percussion XSpLit Version 3.5"/>
 				<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 				<title>Rhythmyx - Workflow Administrator</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
 				<link href="../sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
 				<script language="JavaScript" src="../sys_resources/js/checkrequired.js"><![CDATA[
 ]]></script>
@@ -187,7 +187,7 @@
 						<xsl:for-each select="transitionnotif">
 							<tr class="datacell1">
 								<td align="left" class="headercellfont" width="30%">ID:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="70%" align="left" class="datacell1font">
 									<xsl:apply-templates select="transitionnotifid"/>
@@ -195,7 +195,7 @@
 							</tr>
 							<tr class="datacell2">
 								<td align="left" class="datacell1font">Notification: Subject(ID)
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<xsl:variable name="notificationid" select="notificationid"/>
@@ -216,7 +216,7 @@
 							</tr>
 							<tr class="datacell1">
 								<td align="left" class="datacell1font">State Role Recipients Type:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<xsl:variable name="recipienttype" select="transitionnotifreciptype"/>
@@ -234,7 +234,7 @@
 							</tr>
 							<tr class="datacell2">
 								<td align="left" class="datacell1font">Additional Recipient List:<br/>(Comma separated list of email addresses)
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<textarea name="addrecipientlist" cols="60" rows="5">
@@ -244,7 +244,7 @@
 							</tr>
 							<tr class="datacell1">
 								<td align="left" class="datacell1font">CC List:<br/>(Comma separated list of email addresses)
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 								</td>
 								<td width="100%" align="left" class="datacell1font">
 									<textarea name="cclist" cols="60" rows="5">

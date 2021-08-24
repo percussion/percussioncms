@@ -19,8 +19,8 @@
      <meta name="generator" content="Percussion XSpLit Version 3.0"/>
      <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
      <title>Rhythmyx - Content Editor - Saved Searches</title>
-     <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-     <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+     <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+     <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
 	<script src="../sys_resources/js/formValidation.js"/>
 	</head>
    <script>

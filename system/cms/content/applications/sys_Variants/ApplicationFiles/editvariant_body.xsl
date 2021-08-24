@@ -269,7 +269,7 @@
             <xsl:attribute name="class"><xsl:choose><xsl:when test="position() mod 2 = 1"><xsl:value-of select="'datacell1'"/></xsl:when><xsl:otherwise><xsl:value-of select="'datacell2'"/></xsl:otherwise></xsl:choose></xsl:attribute>
             <td align="center" width="5%" valign="middle">
                <a href="javascript:delConfirm('{slotdelete}');">
-                  <img height="21" alt="Delete" src="../sys_resources/images/delete.gif" width="21" border="0"/>
+                  <img height="21" alt="Delete" src="/sys_resources/images/delete.gif" width="21" border="0"/>
                </a>
             </td>
             <td align="left" width="95%" class="datacell1font">
@@ -283,7 +283,7 @@
             <xsl:attribute name="class"><xsl:choose><xsl:when test="position() mod 2 = 1"><xsl:value-of select="'datacell1'"/></xsl:when><xsl:otherwise><xsl:value-of select="'datacell2'"/></xsl:otherwise></xsl:choose></xsl:attribute>
             <td align="center" width="5%" valign="middle">
                <a href="javascript:delConfirm('{sitedelete}');">
-                  <img height="21" alt="Delete" src="../sys_resources/images/delete.gif" width="21" border="0"/>
+                  <img height="21" alt="Delete" src="/sys_resources/images/delete.gif" width="21" border="0"/>
                </a>
             </td>
             <td align="left" width="95%" class="datacell1font">

@@ -16,8 +16,8 @@
       <html>
          <head>
             <title>Rhythmyx - Document Comparison</title>
-            <link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
          </head>
          <body leftmargin="0" topmargin="0">
             <xsl:apply-templates select="itemdetails"/>

@@ -23,9 +23,9 @@
                   <xsl:with-param name="lang" select="$lang"/>
                </xsl:call-template>
             </title>
-            <link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+            <link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
             <script language="javascript" src="../sys_resources/js/href.js">;</script>
             <script>
                function selectRevision(revid){

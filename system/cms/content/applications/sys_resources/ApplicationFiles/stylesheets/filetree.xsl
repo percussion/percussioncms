@@ -22,12 +22,12 @@
 <xsl:template match="filetree" mode="ftree">
 	<table summary="File List goes here" width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr class="headercell2">
-		  <td width="30%" class="headercell2font" align="center">Filename<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
-		  <td width="30%" class="headercell2font" align="left">Operation<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
-		  <td width="30%" class="headercell2font" align="left">Status<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
-        <td width="30%" class="headercell2font" align="left">CMS&nbsp;Link<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+		  <td width="30%" class="headercell2font" align="center">Filename<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+		  <td width="30%" class="headercell2font" align="left">Operation<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+		  <td width="30%" class="headercell2font" align="left">Status<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+        <td width="30%" class="headercell2font" align="left">CMS&nbsp;Link<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
 		</tr>
-		<tr><td colspan="4" widtn="100%" class="bordercolor"><img src="../sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/></td></tr>
+		<tr><td colspan="4" widtn="100%" class="bordercolor"><img src="/sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/></td></tr>
 		<xsl:for-each select="./path">
 			<xsl:apply-templates select="." mode="path" />      
 		</xsl:for-each> 

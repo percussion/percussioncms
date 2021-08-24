@@ -57,7 +57,7 @@
 								</Control>
 							</Column>
 							<ActionLinkList>
-								<ActionLink imageHref="../rx_resources/images/delete.gif">
+								<ActionLink imageHref="/rx_resources/images/delete.gif">
 									<DisplayLabel>Del</DisplayLabel>
 									<Param name="sys_command">modify</Param>
 									<Param name="sys_childrowid">3</Param>
@@ -66,7 +66,7 @@
 									<Param name="DBActionType">DELETE</Param>
 									<Param name="sys_view">sys_All</Param>
 								</ActionLink>
-								<ActionLink imageHref="../rx_resources/images/edit.gif">
+								<ActionLink imageHref="/rx_resources/images/edit.gif">
 									<DisplayLabel>Edit</DisplayLabel>
 									<Param name="sys_command">edit</Param>
 									<Param name="sys_childrowid">3</Param>

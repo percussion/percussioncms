@@ -66,7 +66,6 @@ public class PSGAEntries {
   /**
    * @param entries the entries to set
    */
-  @JsonIgnore
   private void setEntries(PSGAEntry entries) {
     this.entries = entries;
   }
