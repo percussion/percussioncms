@@ -23,6 +23,7 @@
  */
 package com.percussion.delivery.utils.security;
 
+import com.percussion.security.PSEncryptor;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -93,12 +94,11 @@ public class PSSecurePropertyTest
    }
       
    @Test
-   @Ignore("TODO: @Santosh fix me!")
    public void testGetClouded() throws Exception
    {
-
-      String enc1 = PSSecureProperty.getClouded(pass);
-      String enc2 = PSSecureProperty.getClouded(pass);
+      String encStr = PSEncryptor.encryptString(pass);
+      String enc1 = PSSecureProperty.getClouded(encStr);
+      String enc2 = PSSecureProperty.getClouded(encStr);
       String dec1 = PSSecureProperty.getValue(enc1, null);
       String dec2 = PSSecureProperty.getValue(enc2, salt);
       assertEquals(pass, dec1);
