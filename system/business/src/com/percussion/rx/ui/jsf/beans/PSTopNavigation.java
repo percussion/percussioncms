@@ -132,7 +132,7 @@ public class PSTopNavigation extends DataModel
       public Tab(String label, String url, String matchPath, String roles)
       {
          this(label, url, matchPath);
-         mi_id = "rx_tab_" + label.replaceAll(" ", "_");
+         mi_id = "rx_tab_" + label.replace(" ", "_");
          if (StringUtils.isBlank(roles))
             mi_enabled = true;
          else
@@ -232,7 +232,7 @@ public class PSTopNavigation extends DataModel
    private String m_path = null;
 
    /**
-    * The selected tab, set in {@link #setPath(String)} as a side effect.
+    * The selected tab
     */
    int m_selected = 0;
 
@@ -257,10 +257,10 @@ public class PSTopNavigation extends DataModel
       m_tabs.add(new Tab(
             "Workflow",
             "/Rhythmyx/sys_wfEditor/welcome.html?"
-            + "sys_componentname=wf_all&amp;sys_pagename=wf_all",
+            + "sys_componentname=wf_all&sys_pagename=wf_all",
             "wf", WORKFLOW_ROLE));
       m_tabs.add(new Tab("Admin", "/ui/admin", "/ui/admin",
-            "sysrole"));
+            ADMIN_ROLE));
    }
 
    /**
@@ -275,10 +275,11 @@ public class PSTopNavigation extends DataModel
     */
    private static boolean hasCompBannerRoles(String roles)
    {
-      String rolearr[] = roles.split(",");
+      String[] rolearr = roles.split(",");
       for (String role : rolearr)
       {
-         if (PSRoleUtilities.hasComponentRole(COMP_BANNER, role.trim()))
+         Boolean b = PSRoleUtilities.hasComponentRole(COMP_BANNER, role.trim());
+         if (Boolean.TRUE.equals(b))
          {
             return true;
          }
@@ -328,31 +329,31 @@ public class PSTopNavigation extends DataModel
    /**
     * The name of the banner component.
     */
-   final private static String COMP_BANNER = "cmp_banner";
+    private static final String COMP_BANNER = "cmp_banner";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility and accessibility of the "Publishing Design" tab.
     */
-   final private static String PUB_DESIGN_ROLE = "pubrole,PubDesignRole";
+    private static final String PUB_DESIGN_ROLE = "pubrole,PubDesignRole";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility and accessibility of the "Publishing Runtime" tab.
     */
-   final private static String PUB_RUNTIME_ROLE = "pubrole,PubRuntimeRole";
+    private static final String PUB_RUNTIME_ROLE = "pubrole,PubRuntimeRole";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility and accessibility of the "Admin" tab.
     */
-   final private static String ADMIN_ROLE = "sysrole";
+    private static final String ADMIN_ROLE = "sysrole";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility of the "Workflow" tab.
     */
-   final private static String WORKFLOW_ROLE = "wfrole";
+    private static final String WORKFLOW_ROLE = "wfrole";
    
    /**
     * @return the current set path, may be <code>null</code>.
