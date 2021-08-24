@@ -52,8 +52,8 @@
 				<meta name="generator" content="Percussion XSpLit Version 3.5"/>
 				<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 				<title>Rhythmyx - Workflow Administrator</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
 				<link href="../sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
 				<script language="JavaScript" src="../sys_resources/js/checkrequired.js"><![CDATA[
 ]]></script>
@@ -188,7 +188,7 @@
 							<xsl:otherwise>
 								<tr class="datacell1">
 									<td align="left" class="headercellfont" width="30%">Role:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 									</td>
 									<td width="70%" align="left" class="datacell1font">
 										<select name="role">

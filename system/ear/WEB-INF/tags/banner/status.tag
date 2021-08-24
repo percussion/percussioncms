@@ -1,5 +1,7 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:rxcomp="http://rhythmyx.percussion.com/components"
           version="1.2">
    <jsp:useBean id="status" scope="session"
                 class="com.percussion.rx.ui.jsf.beans.PSUserStatus" />

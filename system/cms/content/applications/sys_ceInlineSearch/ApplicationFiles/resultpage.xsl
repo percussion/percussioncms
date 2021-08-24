@@ -30,9 +30,9 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 			</head>
 			<script><![CDATA[
             var editorname = "";
@@ -217,7 +217,7 @@
 				<a>
 					<xsl:attribute name="href">#</xsl:attribute>
 					<xsl:attribute name="onclick">javascript:window.open(&quot;<xsl:value-of select="previewurl"/>&quot;,&quot;preview&quot;, &quot;toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=1,width=400,height=300,z-lock=1&quot;)</xsl:attribute>
-					<img src="../sys_resources/images/preview.gif" alt="Preview" align="top" border="0">
+					<img src="/sys_resources/images/preview.gif" alt="Preview" align="top" border="0">
 						<xsl:attribute name="alt"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_ceInlineSearch.resultpage.alt@Preview'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
 					</img>
 				</a>

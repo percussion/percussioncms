@@ -35,7 +35,7 @@
             </xsl:when>
             <xsl:otherwise>
 					<a href="javascript:delConfirm('{delete}');">
-                <img src="../sys_resources/images/delete.gif" width="21" height="21" border="0" alt="Delete" />
+                <img src="/sys_resources/images/delete.gif" width="21" height="21" border="0" alt="Delete" />
                </a>        			
             </xsl:otherwise>
           </xsl:choose>

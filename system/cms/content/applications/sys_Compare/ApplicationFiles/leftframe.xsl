@@ -54,9 +54,9 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link href="../sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-				<link href="../rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link href="/sys_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+				<link href="/rx_resources/css/templates.css" rel="stylesheet" type="text/css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<script language="javascript" src="../sys_resources/js/href.js">;</script>
 				<script>
                function openSelectRevision(url)
@@ -96,12 +96,12 @@
 							<table border="0" width="220" cellspacing="0" cellpadding="0">
 								<tr class="outerboxcell">
 									<td width="225" class="outerboxcellfont" align="center" colspan="2" height="2">
-										<img src="../sys_resources/images/spacer.gif" height="2" width="225"/>
+										<img src="/sys_resources/images/spacer.gif" height="2" width="225"/>
 									</td>
 								</tr>
 								<tr class="outerboxcell">
 									<td width="225" class="outerboxcellfont" align="center" colspan="2" height="2">
-										<xsl:variable name="helpIcon" select="concat('../rx_resources/images/',$lang,'/help_icon.gif')"/>
+										<xsl:variable name="helpIcon" select="concat('/rx_resources/images/',$lang,'/help_icon.gif')"/>
 										            <xsl:variable name="helpAlt">
 										               <xsl:call-template name="getLocaleString">
 										                  <xsl:with-param name="key" select="'psx.sys_cmpHelp.help.alt@Help'"/>
@@ -147,7 +147,7 @@
 								</tr>
 								<tr class="outerboxcell">
 									<td width="225" class="outerboxcellfont" align="center" colspan="2" height="2">
-										<img src="../sys_resources/images/spacer.gif" height="2" width="225"/>
+										<img src="/sys_resources/images/spacer.gif" height="2" width="225"/>
 									</td>
 								</tr>
 								<tr>

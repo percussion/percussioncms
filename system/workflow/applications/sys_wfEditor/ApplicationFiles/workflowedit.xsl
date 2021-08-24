@@ -17,6 +17,7 @@
 				extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 
 	<xsl:import href="file:sys_resources/stylesheets/sys_bannerTemplate.xsl"/>
+	<xsl:output method="html" omit-xml-declaration="yes"/>
 	<xsl:include href="file:sys_wfLookups/stateslist.xsl"/>
 	<xsl:include href="file:sys_wfLookups/roleslist.xsl"/>
 	<xsl:include href="file:sys_wfLookups/statenotifslist.xsl"/>
@@ -26,7 +27,7 @@
 	<xsl:variable name="extroles" select="/*/URL/extroles"/>
 	<xsl:variable name="extstates" select="/*/URL/extstate"/>
 	<xsl:variable name="extstatenotifs" select="/*/URL/extnotifs"/>
-	<xsl:output method="html" omit-xml-declaration="yes"/>
+
 	<xsl:template match="/">
 		<html>
 			<head>

@@ -2,7 +2,7 @@
 var PS_SUB_MENU_IMG				= "../sys_resources/images/submenu.gif"
 var PS_INVERTED_SUB_MENU_IMG	= "../sys_resources/images/submenuI.gif"
 var PS_SEPERATOR_LINE_IMG		= "../sys_resources/images/line.gif"
-var PS_SPACER_IMG				= "../sys_resources/images/spacer.gif"
+var PS_SPACER_IMG				= "/sys_resources/images/spacer.gif"
 var PS_NO_ENTRIES               = LocalizedMessage('no_entries');
 
 var PSitemHeight  = 19;

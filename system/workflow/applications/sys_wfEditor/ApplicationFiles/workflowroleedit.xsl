@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <!DOCTYPE xsl:stylesheet [
 		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
 		%HTMLlat1;
@@ -40,6 +16,7 @@
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_bannerTemplate.xsl"/>
+	<xsl:output method="html" omit-xml-declaration="yes"/>
 	<xsl:variable name="this" select="/"/>
 	<xsl:variable name="relatedlinks" select="/*/relatedlinks"/>
 	<xsl:template match="/">
@@ -48,12 +25,12 @@
 				<meta name="generator" content="Percussion XSpLit Version 3.5"/>
 				<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
 				<title>Rhythmyx - Workflow Administrator</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link href="../sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
-				<script language="JavaScript" src="../sys_resources/js/checkrequired.js"><![CDATA[
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link href="/sys_resources/css/tabs.css" rel="stylesheet" type="text/css"/>
+				<script src="/sys_resources/js/checkrequired.js"><![CDATA[
 ]]></script>
-				<script language="JavaScript" src="../sys_resources/js/formValidation.js"><![CDATA[
+				<script src="/sys_resources/js/formValidation.js"><![CDATA[
 			]]></script>
 				<script id="clientEventHandlersJS" language="javascript"><![CDATA[
 				function save_onclick(callSubmit) {
@@ -62,15 +39,11 @@
 							document.UpdateRoles.submit();
 				}
 			]]></script>
-			<script language="javascript1.2">
-
+			<script>
 			   function cancelFunc()
-			   {			      
-			      
+			   {
 			      document.location.href = '<xsl:value-of select="//cancelurl"/>';
-			      
 			   }
-						
 			</script>			
 			</head>
 			<body class="backgroundcolour" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
@@ -174,7 +147,7 @@
 					<tr class="datacell1">
 						<td align="left" class="datacell1font" width="20%">
 							<font class="reqfieldfont">*</font>Name:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 						</td>
 						<td width="80%" align="left" class="datacell1font">
 							<select name="requiredname">
@@ -204,7 +177,7 @@
 					</tr>
 					<tr class="datacell2">
 						<td align="left" class="datacell1font" width="30%">Description:
-					 <img src="../sys_resources/images/invis.gif" height="1" width="100" border="0"/>
+					 <img src="/sys_resources/images/invis.gif" height="1" width="100" border="0"/>
 						</td>
 						<td width="70%" align="left" class="datacell1font">
 							<input type="text" name="roledesc" size="30">
@@ -215,8 +188,8 @@
 					<tr class="datacell1">
 						<td colspan="2" align="left" class="datacell1font">
 							<input type="hidden" class="nav_body" name="DBActionType" value="UPDATE"/>
-							<input type="button" class="nav_body" name="DBActionType" value="Save" onclick="javascript:save_onclick(true);"/>&nbsp;
-							<input type="button" value="Cancel" name="cancel" language="javascript" onclick="cancelFunc();"/>
+							<input type="button" class="nav_body" name="DBActionType" value="Save" onclick="save_onclick(true);"/>&nbsp;
+							<input type="button" value="Cancel" name="cancel" onclick="cancelFunc();"/>
 						</td>
 					</tr>
 				</xsl:when>

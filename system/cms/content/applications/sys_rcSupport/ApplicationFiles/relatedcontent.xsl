@@ -18,8 +18,8 @@
         <meta name="generator" content="Percussion XSpLit Version 3.5"/>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <title>Related Content Control</title>
-        <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-        <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
+        <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+        <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
         <script>
         <![CDATA[
           function onClose()
@@ -126,7 +126,7 @@
 
         <td class="datacell2" width="15%">
           <a href="" onclick="javascript:alert(&apos;delete&apos;);">
-            <img border="0" src="../sys_resources/images/delete.gif"/>
+            <img border="0" src="/sys_resources/images/delete.gif"/>
           </a>
 
           <a href="#" onclick="javascript:alert(&apos;edit&apos;);">

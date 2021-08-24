@@ -26,9 +26,9 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link href="../sys_resources/css/templates.css" type="text/css" rel="stylesheet"/>
-				<link href="../rx_resources/css/templates.css" type="text/css" rel="stylesheet"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link href="/sys_resources/css/templates.css" type="text/css" rel="stylesheet"/>
+				<link href="/rx_resources/css/templates.css" type="text/css" rel="stylesheet"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<script language="javascript" src="../sys_resources/js/browser.js">;</script>
 				<script src="../sys_resources/js/AddFormParameters.js" >;</script>
 				<script src="../sys_resources/js/formValidation.js" >;</script>
@@ -119,7 +119,7 @@
 														<td align="center">
 															<a onclick="javascript:showUserSearch2(document.wfcomment.sys_wfAdhocUserList, 'UserSearchWindow')" href="javascript:void(0)">
 																<xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_uiSupport.wfTransition.mnemonic.Search@S'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
-																<img border="0" alt="Click here to search for users" src="{concat('../rx_resources/images/',$lang,'/people_search.gif')}">
+																<img border="0" alt="Click here to search for users" src="{concat('/rx_resources/images/',$lang,'/people_search.gif')}">
 																	<xsl:attribute name="alt"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_uiSupport.wfTransition.alt@Click here to search for users'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
 																</img>
 															</a>

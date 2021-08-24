@@ -46,7 +46,7 @@
                   <td class="outerboxcell"> 
                     <input type="text" name="enddate" size="4" class="datadisplay" />
                     &#160; <a href="javascript:onmousedown=getMonth_and_Date(document.Admin_SearchResults,'enddate');putcal(document.Admin_SearchResults,'enddate')"> 
-                    <img height="20" alt="Calendar Pop-up" src="../rx_resources/images/cal.gif" width="20" border="0" /></a> 
+                    <img height="20" alt="Calendar Pop-up" src="/rx_resources/images/cal.gif" width="20" border="0" /></a>
                   </td>
                 </tr>
                 <tr> 
@@ -54,7 +54,7 @@
                   <td class="outerboxcell"> 
                     <input type="text" name="startdate" size="4" class="datadisplay" />
                     &#160; <a href="javascript:onmousedown=getMonth_and_Date(document.Admin_SearchResults,'startdate');putcal(document.Admin_SearchResults,'startdate')"> 
-                    <img height="20" alt="Calendar Pop-up" src="../rx_resources/images/cal.gif" width="20" border="0" /></a> 
+                    <img height="20" alt="Calendar Pop-up" src="/rx_resources/images/cal.gif" width="20" border="0" /></a>
                   </td>
                 </tr>
                 <tr class="datacell2"> 

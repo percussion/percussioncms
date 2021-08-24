@@ -42,9 +42,9 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<link rel="stylesheet" type="text/css" href="../sys_resources/css/popmenu.css"/>
 				<script src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>

@@ -60,9 +60,9 @@
 		<html>
 			<head>
 				<!-- CSS Include section -->
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<!-- Script Include section -->
 				<script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
@@ -133,7 +133,7 @@
                                              <button style="border: 1px solid black;" dojoType="Button" id="ps.search.advanced"><img src="../sys_resources/images/aa/ChevronsDown16.gif" width="16" height="16" title="Advanced" alt="Advanced"/></button>
                                              <button style="border: 1px solid black;" dojoType="Button" id="ps.search.simple"><img src="../sys_resources/images/aa/ChevronsUp16.gif" width="16" height="16" title="Simple" alt="Simple"/></button>
                                           </td>
-                                          <td width="15"><img src="../sys_resources/images/spacer.gif"/></td>
+                                          <td width="15"><img src="/sys_resources/images/spacer.gif"/></td>
                                        </tr>
                                     </table>
                                  </td>
@@ -255,7 +255,7 @@
 					<table width="100%" border="0" cellpadding="0" cellspacing="0" class="outerboxcell">
 						<tr class="headercell">
 							<td colspan="2" class="outerboxcellfont">
-								<img src="../sys_resources/images/spacer.gif" height="2"/>
+								<img src="/sys_resources/images/spacer.gif" height="2"/>
 							</td>
 						</tr>
 						<tr class="headercell">
@@ -525,7 +525,7 @@
        </script>
     </xsl:template>
    <xsl:template name="helpScript">
-      <xsl:variable name="helpIcon" select="concat('../rx_resources/images/',$lang,'/help_icon.gif')"/>
+      <xsl:variable name="helpIcon" select="concat('/rx_resources/images/',$lang,'/help_icon.gif')"/>
       <xsl:variable name="helpAlt">
          <xsl:call-template name="getLocaleString">
             <xsl:with-param name="key" select="'psx.sys_cmpHelp.help.alt@Help'"/>

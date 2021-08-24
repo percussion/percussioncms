@@ -35,7 +35,7 @@
           </tr>
           <tr class="outerboxcellfont ">
             <td align="left" class="outerboxcellfont">
-               <img border="0" height="2" src="../sys_resources/images/invis.gif"/>
+               <img border="0" height="2" src="/sys_resources/images/invis.gif"/>
             </td>
           </tr>
   </xsl:template>

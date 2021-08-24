@@ -93,6 +93,6 @@
 	<tr>
 			<td rowspan="4" valign="bottom" align="right"><a href="../rxloggingout.jsp" target="_parent"><img
 			alt="Log out" title="Log out" height="17"
-			src="../rx_resources/images/${locale}/logout.gif" width="62"/></a></td>		
+			src="/rx_resources/images/${locale}/logout.gif" width="62"/></a></td>
 	</tr>
 </table>

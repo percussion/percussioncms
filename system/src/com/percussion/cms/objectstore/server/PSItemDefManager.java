@@ -1556,7 +1556,7 @@ public class PSItemDefManager
     * <code>PSContentEditor.ICON_SOURCE_NONE</code> then the path for that
     * item is set to null. If it is
     * <code>PSContentEditor.ICON_SOURCE_SPECIFIED</code> then the iconValue is
-    * prefixed with "../rx_resources/images/ContentTypeIcons/" and set as item's
+    * prefixed with "/rx_resources/images/ContentTypeIcons/" and set as item's
     * icon path. If it is <code>PSContentEditor.ICON_SOURCE_FROMFILEEXT</code>
     * then the icon path is determined by FileIcons.properties.
     * 

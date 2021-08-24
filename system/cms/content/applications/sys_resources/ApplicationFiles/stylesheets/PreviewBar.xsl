@@ -23,7 +23,7 @@
          </tr>
          <tr>
             <td width="100%" height="1" class="backgroundcolor">
-               <img src="../sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/>
+               <img src="/sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/>
             </td>
          </tr>
          <tr>
@@ -48,7 +48,7 @@
    </xsl:template>
    <xsl:template match="Variant" mode="columns">
       <td align="left" class="headercell2">&#160;&#160;
-         <img src="../sys_resources/images/preview.gif" width="20" height="20" border="0" alt="Click on link for preview">
+         <img src="/sys_resources/images/preview.gif" width="20" height="20" border="0" alt="Click on link for preview">
             <xsl:attribute name="alt"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.contenteditor.previewbar.alt@Click on link for preview'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
          </img>
          &#160;
