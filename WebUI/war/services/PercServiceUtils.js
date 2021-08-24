@@ -70,6 +70,7 @@
     var CSRF_INTEGRATION_PATH="/perc-integrations/integrations/csrf";
     var CSRF_COMMENTS_PATH="/perc-comments-services/comment/csrf";
     var CSRF_MEMBERSHIP_PATH="/perc-membership-services/membership/csrf";
+    var CSRF_FEEDS_PATH="/feed/rss/csrf";
 
 
     function csrfGetURLFromServiceCall(url){
@@ -96,6 +97,8 @@
             path = CSRF_COMMENTS_PATH;
         else if(path.contains("/perc-membership-services/"))
             path = CSRF_MEMBERSHIP_PATH;
+        else if(path.contains("/feeds/"))
+            path = CSRF_FEEDS_PATH;
         else
             path = null;
 
