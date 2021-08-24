@@ -119,7 +119,8 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
     private ImageData postProcessImage(ImageData result, BufferedImage outImage)
             throws IllegalArgumentException  {
 
-        try {
+        try(ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(outStream)) {
 
             ImageWriter iw = getImageWriter(result.getExt());
             ImageWriteParam iwp = iw.getDefaultWriteParam();
@@ -138,8 +139,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
                 log.debug("Transparent metadata is {}", metadata);
             }
 
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(outStream);
+
 
             iw.setOutput(mcios);
             iw.write(null, new IIOImage(outImage, new ArrayList(), metadata), iwp);
