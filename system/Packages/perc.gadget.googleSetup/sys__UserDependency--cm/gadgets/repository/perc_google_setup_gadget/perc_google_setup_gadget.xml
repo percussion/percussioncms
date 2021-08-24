@@ -481,7 +481,9 @@
                  {
                      if(status == $.PercServiceUtils.STATUS_SUCCESS)
                      {
-                         _profileList = $.perc_utils.convertCXFArray(result.data.psmap.entries.entry);
+                            if(typeof (result.data.psmap.entries)!=='undefined'){
+                                _profileList = $.perc_utils.convertCXFArray(result.data.psmap.entries.entry);
+                            }
                      }
                      else
                      {
