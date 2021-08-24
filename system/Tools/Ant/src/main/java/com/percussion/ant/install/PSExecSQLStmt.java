@@ -124,10 +124,10 @@ public class PSExecSQLStmt extends PSAction
          }
          String pw = props.getProperty("PWD");
          try {
-            pw = PSEncryptor.decryptProperty(f.getAbsolutePath(), "PWD", pw);
+            pw = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),f.getAbsolutePath(), "PWD", pw);
          }catch (PSEncryptionException ps){
             try{
-               pw = PSEncryptor.decryptWithOldKey(pw);
+               pw = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pw);
             } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
                pw = PSLegacyEncrypter.getInstance(
                        PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -136,7 +136,7 @@ public class PSExecSQLStmt extends PSAction
             }
             try {
                //Try to encrypt password with new key, if fails set decoded password
-               props.setProperty("PWD", PSEncryptor.encryptProperty(f.getAbsolutePath(), "PWD", pw));
+               props.setProperty("PWD", PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),f.getAbsolutePath(), "PWD", pw));
             } catch (PSEncryptionException psEncryptionException) {
                props.setProperty("PWD", pw);
             }

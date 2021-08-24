@@ -688,7 +688,7 @@ public class PSUserSession
    public void addAuthentication(String uid, String auth)
    {
       try {
-         m_authentications.put(uid, PSEncryptor.encryptString(auth));
+         m_authentications.put(uid, PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),auth));
       } catch (PSEncryptionException e) {
          ms_log.error("Error encrypting authentication: " + e.getMessage(),e);
          m_authentications.put(uid,"");

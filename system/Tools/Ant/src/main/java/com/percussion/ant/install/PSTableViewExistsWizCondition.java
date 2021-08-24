@@ -130,10 +130,10 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
 
             String pw = props.getProperty("PWD");
             try {
-               pw = PSEncryptor.decryptProperty(propFile.getAbsolutePath(), "PWD", pw);
+               pw = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFile.getAbsolutePath(), "PWD", pw);
             }catch (PSEncryptionException pe) {
                try {
-                  pw = PSEncryptor.decryptWithOldKey(pw);
+                  pw = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pw);
                } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
                   pw = PSLegacyEncrypter.getInstance(
                           PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -143,7 +143,7 @@ public class PSTableViewExistsWizCondition extends PSAction implements Condition
                }
                try {
                   //Try to encrypt password with new key, if fails set decoded password
-                  props.setProperty("PWD",PSEncryptor.encryptProperty(propFile.getAbsolutePath(),"PWD",pw));
+                  props.setProperty("PWD",PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFile.getAbsolutePath(),"PWD",pw));
                } catch (PSEncryptionException psEncryptionException) {
                   props.setProperty("PWD",pw);
                }

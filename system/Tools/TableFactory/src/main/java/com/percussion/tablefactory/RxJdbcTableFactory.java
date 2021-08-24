@@ -567,7 +567,7 @@ public class RxJdbcTableFactory
          m_version = m_Props.getProperty("DB_DRIVER_VERSION");
          m_uid = m_Props.getProperty("UID");
          try {
-             m_pw = PSEncryptor.decryptString(m_Props.getProperty("PWD"));
+             m_pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_Props.getProperty("PWD"));
          }catch(Exception e){
              m_pw = PSLegacyEncrypter.getInstance(
                      PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)

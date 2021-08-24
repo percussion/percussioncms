@@ -109,7 +109,7 @@ public class PSEncryptProperties {
                     log.debug("Encrypting property: " + prop);
                     StringBuilder sb = new StringBuilder();
                     sb.append(PREFIX);
-                    sb.append(PSEncryptor.encryptProperty(propsFile.getAbsolutePath(),prop,propValue));
+                    sb.append(PSEncryptor.encryptProperty(secureDir,propsFile.getAbsolutePath(),prop,propValue));
                     sb.append(SUFFIX);
                     props.setProperty(prop, sb.toString());
                     isModified = true;

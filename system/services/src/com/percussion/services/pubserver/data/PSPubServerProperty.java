@@ -174,7 +174,7 @@ public class PSPubServerProperty extends PSAbstractDataObject
       if (isEncodedProperty()) {
          try {
 
-            return StringUtils.isEmpty(value) ? value : PSEncryptor.decryptString(value);
+            return StringUtils.isEmpty(value) ? value : PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),value);
          } catch (PSEncryptionException e) {
             return StringUtils.isEmpty(value) ? value : decode(value);
          }
@@ -191,7 +191,7 @@ public class PSPubServerProperty extends PSAbstractDataObject
    {
       if (isEncodedProperty()) {
          try {
-            String enc = PSEncryptor.encryptString(value);
+            String enc = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),value);
             this.value = StringUtils.isEmpty(value) ? value : enc;
          } catch (PSEncryptionException e) {
             log.error("Unable to encrypt encoded property: {} Error: {}", this.name,

@@ -1306,7 +1306,7 @@ public class PSDesignerConnection
 
       try {
          //If running on server - we will get a key if not an exception
-         return PSEncryptor.encryptString(str);
+         return PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),str);
       } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
 
          try {

@@ -179,7 +179,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       if (isEncrypted != null && isEncrypted.equalsIgnoreCase("Y"))
          try{
 
-            m_pw = PSEncryptor.decryptString(m_pw);
+            m_pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_pw);
          } catch (PSEncryptionException e) {
             m_pw = PSLegacyEncrypter.getInstance(
                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -328,7 +328,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
          if (creds == null)
          {
             try {
-               strPw = PSEncryptor.encryptProperty(loginCfgFile.getAbsolutePath(),null,
+               strPw = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),loginCfgFile.getAbsolutePath(),null,
                        repositoryJndiDataSource.getPassword());
                encrypted = true;
             } catch (PSEncryptionException e) {
@@ -341,7 +341,7 @@ public class PSJdbcDbmsDef implements IPSJdbcDbmsDefConstants
       else
       {
          try {
-            strPw = PSEncryptor.encryptString(
+            strPw = PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),
                     repositoryJndiDataSource.getPassword());
             encrypted = true;
          } catch (PSEncryptionException e) {

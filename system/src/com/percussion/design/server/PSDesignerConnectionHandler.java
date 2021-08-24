@@ -151,7 +151,7 @@ public class PSDesignerConnectionHandler implements IPSRequestHandler
          loginPw = "";
       else if (isEncrypted) { // fix bug #Rx-99-12-0016
          try {
-            loginPw = PSEncryptor.decryptString(loginPw);
+            loginPw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),loginPw);
          } catch (PSEncryptionException e) {
             loginPw = eatLasagna(loginId, sessId, loginPw);
          }

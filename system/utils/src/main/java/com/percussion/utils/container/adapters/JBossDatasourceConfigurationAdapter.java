@@ -259,7 +259,7 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             ds.setUserId(creds.getUserId());
             String pw = "";
             try{
-                pw = PSEncryptor.decryptString(creds.getPassword());
+                pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),creds.getPassword());
             }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
                 pw = PSLegacyEncrypter.getInstance(
                         PathUtils.getRxPath().toAbsolutePath().toString().concat(
@@ -330,7 +330,8 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             {
                 String pw =  ds.getPassword();
                 try{
-                     pw = PSEncryptor.encryptString(ds.getPassword());
+                     pw = PSEncryptor.encryptString(PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                             PSEncryptor.SECURE_DIR),ds.getPassword());
 
                 } catch (PSEncryptionException e) {
                     log.error("Error encrypting password: " + e.getMessage(),e);

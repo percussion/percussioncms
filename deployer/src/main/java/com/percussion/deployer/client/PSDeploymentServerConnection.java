@@ -1094,7 +1094,7 @@ public class PSDeploymentServerConnection
          uid;
 
       try {
-         return PSEncryptor.encryptString(pwd);
+         return PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
 
       } catch (PSEncryptionException e) {
          log.error("Error encrypting password: {}", e.getMessage());
@@ -1125,7 +1125,7 @@ public class PSDeploymentServerConnection
          uid;
 
       try {
-         return PSEncryptor.decryptString(pwd);
+         return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
       } catch (PSEncryptionException e) {
          return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
                  PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)

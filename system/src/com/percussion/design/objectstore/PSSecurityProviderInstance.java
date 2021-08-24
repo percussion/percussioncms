@@ -248,7 +248,7 @@ public class PSSecurityProviderInstance extends PSComponent
    public static String prepareCredentials(String uid, String pw)
    {
       try {
-         return PSEncryptor.encryptString(pw);
+         return PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pw);
       } catch (PSEncryptionException e) {
          logger.error("Error encrypting password: {}",e.getMessage());
          logger.debug(e);

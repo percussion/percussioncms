@@ -91,7 +91,8 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
       else
       {
           try {
-              ePwd = PSEncryptor.encryptString(pwd);
+              ePwd = PSEncryptor.encryptString(PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                      PSEncryptor.SECURE_DIR),pwd);
           } catch (PSEncryptionException e) {
               ePwd = pwd;
               config.setEncrypted(false);
@@ -144,7 +145,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
 
            String pwd = null;
            try {
-               pwd = encrypted ? rawPwd : PSEncryptor.decryptString(rawPwd);
+               pwd = encrypted ? rawPwd : PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),rawPwd);
            } catch (PSEncryptionException | IllegalArgumentException  e) {
                pwd = PSLegacyEncrypter.getInstance(
                PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).decrypt(

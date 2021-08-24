@@ -106,7 +106,7 @@ public class PSSecureProperty
                        String encVal = StringUtils.EMPTY;
                        if(pwd != null){
                            try {
-                               encVal = PSEncryptor.encryptProperty(filepath.getAbsolutePath(),key,pwd);
+                               encVal = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),filepath.getAbsolutePath(),key,pwd);
                                encVal = getClouded(encVal);
                                props.put(key,encVal);
                                modified = true;
@@ -212,7 +212,7 @@ public class PSSecureProperty
 
         try {
             //Attempt using the updated encryptor
-            decryptedValue = PSEncryptor.decryptString(encryptedValue);
+            decryptedValue = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),encryptedValue);
         } catch (PSEncryptionException e) {
             log.debug("Decrypting using legacy algorithm");
             String ky = k == null ? PSLegacyEncrypter.SECURE_PROPERTY_DEFAULT_KEY : k;

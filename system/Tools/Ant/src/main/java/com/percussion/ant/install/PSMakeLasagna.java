@@ -111,10 +111,10 @@ public class PSMakeLasagna extends Task
          {
             String decryptPwd = "";
              try {
-                decryptPwd = PSEncryptor.decryptProperty(propFilePath, PSJdbcDbmsDef.PWD_PROPERTY, pwd);
+                decryptPwd = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFilePath, PSJdbcDbmsDef.PWD_PROPERTY, pwd);
              }catch (PSEncryptionException pe) {
                 try {
-                   decryptPwd = PSEncryptor.decryptWithOldKey(pwd);
+                   decryptPwd = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
                 } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
                    decryptPwd = PSLegacyEncrypter.getInstance(
                            PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -122,7 +122,7 @@ public class PSMakeLasagna extends Task
                 }
              }
          }
-         pwd = PSEncryptor.encryptProperty(propFilePath,PSJdbcDbmsDef.PWD_PROPERTY,pwd );
+         pwd = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propFilePath,PSJdbcDbmsDef.PWD_PROPERTY,pwd );
          props.setProperty(PSJdbcDbmsDef.PWD_PROPERTY, pwd);
          props.setProperty(PSJdbcDbmsDef.PWD_ENCRYPTED_PROPERTY, "Y");
          out = new FileOutputStream(m_root + File.separator +

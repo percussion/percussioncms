@@ -228,10 +228,10 @@ public class XmlUploader
                      // need to decrypt the password
                      try{
                         try {
-                           m_loginPwd = PSEncryptor.decryptProperty(propsFile.getAbsolutePath(), Utils.RX_PWD_KEY, m_loginPwd);
+                           m_loginPwd = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propsFile.getAbsolutePath(), Utils.RX_PWD_KEY, m_loginPwd);
                         }catch (PSEncryptionException pe) {
                            try {
-                              m_loginPwd = PSEncryptor.decryptWithOldKey(m_loginPwd);
+                              m_loginPwd = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_loginPwd);
                            } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
                               m_loginPwd = PSCryptographer.decrypt(
                                       PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
@@ -240,7 +240,7 @@ public class XmlUploader
                            }
                            try {
                               //Try to encrypt password with new key, if fails set decoded password
-                              m_properties.setProperty("loginPw", PSEncryptor.encryptProperty(propsFile.getAbsolutePath(), "loginPw", m_loginPwd));
+                              m_properties.setProperty("loginPw", PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propsFile.getAbsolutePath(), "loginPw", m_loginPwd));
                            } catch (PSEncryptionException psEncryptionException) {
                               m_properties.setProperty("loginPw", m_loginPwd);
                           }

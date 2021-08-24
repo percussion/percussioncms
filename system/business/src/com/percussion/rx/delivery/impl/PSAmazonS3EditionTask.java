@@ -372,7 +372,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
 
         try {
 
-            return PSEncryptor.decryptString(dstr);
+            return PSEncryptor.decryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
         } catch (PSEncryptionException e) {
             log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
             try {
