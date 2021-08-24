@@ -70,6 +70,8 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <property name="version" value="${project.parent.version}"/>
         <property name="description" value="Public REST API"/>
         <property name="contactEmail" value="support@percussion.com"/>
+        <property name="contactName" value="Percussion Software" />
+        <property name="contactUrl" value="https://support.percussion.com" />
         <property name="runAsFilter" value="false" />
         <property name="license" value="Percussion Standard Agreement"/>
         <property name="licenseUrl" value="https://www.percussion.com/legal/"/>
@@ -83,6 +85,9 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         <property name="prettyPrint" value="true"/>
         <property name="scannerClass" value="io.swagger.v3.oas.integration.GenericOpenApiScanner"/>
     </bean>
+
+    <!-- Used to Authorize API access -->
+    <bean id="authorizationFilter" class="com.percussion.servlets.PSRestApiAuthFilter" />
 
     <!-- Rest API -->
     <jaxrs:server id="rest-jax-rs" address="/">
@@ -120,6 +125,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
             <ref bean="runtimeExceptionMapper" />
             <ref bean="jacksonProvider" />
             <ref bean="jacksonContextResolver" />
+            <ref bean="authorizationFilter" />
         </jaxrs:providers>
         <jaxrs:features>
                 <ref bean="openApiFeature" />

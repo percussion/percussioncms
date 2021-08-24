@@ -149,12 +149,13 @@ public class PSCachedStylesheet
                   //PSXMLDocumentBuilder is giving better error message than
                   //using StreamSource with inputstream of stylesheet URL.
 
-                  InputStream urlStream = m_ssUrl.openStream();
-                  PSXmlDocumentBuilder.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
-                  doc = PSXmlDocumentBuilder.createXmlDocument(
-                           new InputSource(urlStream),
-                           false);
-                  urlStream.close();
+                  try(InputStream urlStream = m_ssUrl.openStream()) {
+                     PSXmlDocumentBuilder.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+                     doc = PSXmlDocumentBuilder.createXmlDocument(
+                             new InputSource(urlStream),
+                             false);
+                  }
+
                if(encoding.trim().length() > 0)
                {
                   // override char encoding
