@@ -227,13 +227,13 @@ var layoutModel;
         });
 
         // populates Explore Regions tray and toggles it open/close
-        $("#perc-region-library-expander").off().on("click",function(){
+        $("#perc-region-library-expander").off("click").on("click",function(){
             $.fn.percRegionLibraryMaximizer(P);
             populateRegionLibrary();
         });
 
         // populates Orphan Assets tray and toggles it open/close
-        $("#perc-orphan-assets-expander").off().on("click",function(){
+        $("#perc-orphan-assets-expander").off("click").on("click",function(){
             $.fn.percOrphanAssetsMaximizer(P);
             populateOrphanAssets();
         });
