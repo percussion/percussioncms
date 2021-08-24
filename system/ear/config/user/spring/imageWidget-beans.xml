@@ -28,10 +28,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
-   <bean id="imageWidgetResizeManager" class="com.percussion.widgets.image.services.impl.ImageResizeManagerImpl">
-      <property name="extension" value="png" />
-      <property name="contentType" value="image/png" />
-      <property name="imageFormat" value="png" />
+   <bean id="imageWidgetResizeManager" class="com.percussion.widgets.image.services.impl.ImageResizeManagerImpl" scope="singleton">
+      <property name="extension" value="" />
+      <property name="contentType" value="" />
+      <property name="imageFormat" value="" />
       <!-- set compression value between 0.0 (max compression) 
            and 1.0 (max quality).  -->
       <property name="compression" value=".85" />
