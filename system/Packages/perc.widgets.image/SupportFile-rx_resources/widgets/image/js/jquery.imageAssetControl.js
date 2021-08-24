@@ -77,9 +77,9 @@
                 $out.html('Form success handler received: <strong>' + typeof data + '</strong>');
                 var newData;
                 if (typeof data == 'object' && data.nodeType) {
-                     newData = _elementToString(data.documentElement, true);
+                    newData = _elementToString(data.documentElement, true);
                 } else if (typeof data == 'object')  {
-                     newData = _objToString(data);
+                    newData = _objToString(data);
                 }
                 $out.append('<div><pre>'+ newData +'</pre></div>');
             }
@@ -258,23 +258,22 @@
                 var result = $.post("/Rhythmyx/user/apps/imageWidget/resizeImage.do",
                     request,
                     function(data) {
-
-                        var newData = _objToString(data);
-                        //alert ( "resize result is  "+newData );
-                        imageInfo.displayImage = eval(data);
+                        imageInfo.displayImage = data;
                         renderMainImage(imageInfo);
                     },
                     "json"
-                );
+                ).fail(function(xhr, status, error) {
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
+                });
             }
 
         }
         function renderMainImage(imageInfo) {
-            //alert("rendering image");
             imageInfo.page.find(".image_asset_width").val(imageInfo.image.width);
             imageInfo.page.find(".image_asset_height").val(imageInfo.image.height);
             renderImage(imageInfo.page.find(".image_asset_image"),imageInfo.displayImage);
-            //alert("rendered display image");
         }
 
         function renderImage(selector,j) {
@@ -312,13 +311,17 @@
                     request,
                     function(data) {
                         var newData = _objToString(data);
-                        //alert ( "resize result is  "+newData );
                         imageInfo.image = eval(data);
                         setImageIdOnForm(imageInfo);
                         updateImageForDisplay(imageInfo);
                     },
                     "json"
-                );
+                ).fail(function(xhr, status, error) {
+                    alert( "Error was encountered. Check console log." );
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
+                });
             }
         }
 
@@ -576,40 +579,40 @@
         $('.image_asset_height').on("blur",function() {
             resize();
         })
-        .on("keypress",function(evt) {
-            if (!_acceptKey(evt, uploadedImage.height)) {
-                return false;
-            }
-        })
-        .on("keyup",function()  {
-            var step = $(this).closest(".image_asset_step");
-            var constrain = step.find(".image_asset_constrain:checked").length;
+            .on("keypress",function(evt) {
+                if (!_acceptKey(evt, uploadedImage.height)) {
+                    return false;
+                }
+            })
+            .on("keyup",function()  {
+                var step = $(this).closest(".image_asset_step");
+                var constrain = step.find(".image_asset_constrain:checked").length;
 
-            if(constrain > 0) {
-                var newWidth = Math.round(( uploadedImage.width / uploadedImage.height ) *  $(this).val());
-                step.find(".image_asset_width").val( newWidth );
-            }
-        });
+                if(constrain > 0) {
+                    var newWidth = Math.round(( uploadedImage.width / uploadedImage.height ) *  $(this).val());
+                    step.find(".image_asset_width").val( newWidth );
+                }
+            });
 
 
         // handle when width input lose focus - always retrieve & display image if there is any height/width changes
         $('.image_asset_width').on("blur",function() {
             resize();
         })
-        .on("keypress",function(evt) {
+            .on("keypress",function(evt) {
 
-            if (!_acceptKey(evt, uploadedImage.width)) {
-                return false;
-            }
-        })
+                if (!_acceptKey(evt, uploadedImage.width)) {
+                    return false;
+                }
+            })
             .on("keyup",function()  {
-            var step = $(this).closest(".image_asset_step");
-            var constrain = step.find(".image_asset_constrain:checked").length;
-            if(constrain > 0 ) {
-                var newHeight = Math.round(( uploadedImage.height / uploadedImage.width ) *  $(this).val());
-                step.find(".image_asset_height").val(newHeight);
-            }
-        });
+                var step = $(this).closest(".image_asset_step");
+                var constrain = step.find(".image_asset_constrain:checked").length;
+                if(constrain > 0 ) {
+                    var newHeight = Math.round(( uploadedImage.height / uploadedImage.width ) *  $(this).val());
+                    step.find(".image_asset_height").val(newHeight);
+                }
+            });
 
 
         // helper method
@@ -733,8 +736,8 @@
             if (enable)
                 $("#perc-image-resize").off('click').on('click',
                     function(evt){
-                                _step2ClickHandler(evt);
-                            }).css("cursor", "pointer");
+                        _step2ClickHandler(evt);
+                    }).css("cursor", "pointer");
             else
                 $("#perc-image-resize").off('click').css("cursor", "default");
         }
@@ -844,11 +847,11 @@
             {
                 var filename = $('#perc-select-image').val();
                 $.perc_utils.debug('filename = ' + filename);
-				if(filename.match(/fakepath/)) {
-                        // update the file-path text using case-insensitive regex
-                        filename = filename.replace(/C:\\fakepath\\/i, '');
-                 }
-                 $.perc_utils.debug('filename = ' + filename);
+                if(filename.match(/fakepath/)) {
+                    // update the file-path text using case-insensitive regex
+                    filename = filename.replace(/C:\\fakepath\\/i, '');
+                }
+                $.perc_utils.debug('filename = ' + filename);
                 if (filename !== undefined && filename !== null && filename !=='')
                     $('#perc-content-edit-displaytitle').val(filename);
             }
