@@ -1,0 +1,149 @@
+<!--
+  ~     Percussion CMS
+  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~
+  ~     This program is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+  ~
+  ~     This program is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Affero General Public License for more details.
+  ~
+  ~     Mailing Address:
+  ~
+  ~      Percussion Software, Inc.
+  ~      PO Box 767
+  ~      Burlington, MA 01803, USA
+  ~      +01-781-438-9900
+  ~      support@percussion.com
+  ~      https://www.percussion.com
+  ~
+  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+  -->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/Rhythmyx/rx_resources/css/bootstrap/4.0.0/bootstrap.min.css">
+
+    <title>Percussion Error Page</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            color: #ffffff;
+            background-color: #133c55;
+        }
+
+        body {
+            font-family: 'Open Sans';
+        }
+
+        h1 {
+            font-weight: 700;
+        }
+
+        .btn.focus, .btn:focus {
+            box-shadow: none;
+        }
+
+        .perc-btn {
+            border-radius: 0px;
+            font-size: 18px !important;
+            font-weight: 400;
+            height: 40px;
+        }
+
+        .perc-btn-light, a .perc-btn-light {
+            background-color: #ffffff;
+            color: #133c55;
+        }
+
+        .perc-btn-light:hover {
+            background-color: #133c55;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+
+        .perc-btn-outline-light {
+            background-color: #133c55;
+            color: #ffffff;
+        }
+
+        .perc-btn-outline-light:hover {
+            background-color: #ffffff;
+            color: #133c55;
+        }
+
+        hr {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 1);
+        }
+
+        .logo-container {
+            width: 100%;
+        }
+
+        .perc-error-btn-container {
+            padding-top: 10px;
+        }
+
+        .perc-error-btn-group-container {
+            /* padding-top: 10px; */
+        }
+
+        .perc-error-details {
+            font-size: 1rem;
+        }
+
+        .perc-error-logo {
+            max-height: 9vh;
+        }
+
+        .perc-fixed-logo {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            padding: 35px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div class="container h-100">
+    <div class="row h-100 align-items-center align-items-center-minus-5">
+        <div class="col-12">
+            <p><img class="perc-error-logo" src="/Rhythmyx/cm/images/images/headerLogo.png" /></p>
+            <h1 class="text-left perc-error-code">This page cannot be&nbsp;found.</h1>
+            <h2 class="text-left perc-error-details">Please return to the main page, visit the help site, or reach out to support by clicking one of the buttons&nbsp;below.</h2>
+            <hr />
+            <div class="row perc-error-btn-group-container">
+                <div class="col-sm-4 perc-error-btn-container">
+                    <a role="button" class="btn btn-block perc-btn perc-btn-light perc-error-btn" href="/">Main Page</a>
+                </div>
+                <div class="col-sm-4 perc-error-btn-container">
+                    <a role="button" class="btn btn-block perc-btn perc-btn-light perc-error-btn" href="https://help.percussion.com" target="_blank" rel = "noopener noreferrer">Percussion Help</a>
+                </div>
+                <div class="col-sm-4 perc-error-btn-container">
+                    <a role="button" class="btn btn-block perc-btn perc-btn-light perc-error-btn" href="https://support.percussion.com/hc" target="_blank" rel = "noopener noreferrer">Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

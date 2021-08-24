@@ -127,8 +127,7 @@ public class PSSetCommunityFilter implements Filter
                .findCommunitiesByName(communityName);
          if (communities.isEmpty())
          {
-            log.error("Cannot find the community named: \"" + communityName
-                  + "\"");
+            log.error("Cannot find the community named: {}" , communityName);
             return; // do nothing if cannot find default community.
          }
 
@@ -160,6 +159,7 @@ public class PSSetCommunityFilter implements Filter
     */
    public void destroy()
    {
+      //NOOP
    }
 
 
