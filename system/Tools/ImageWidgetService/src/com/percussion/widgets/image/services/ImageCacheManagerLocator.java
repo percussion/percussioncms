@@ -36,11 +36,11 @@ public class ImageCacheManagerLocator extends PSBaseServiceLocator
        {
            if (rsm==null)
            {
-               synchronized (ImageResizeManagerLocator.class)
+               synchronized (ImageCacheManagerLocator.class)
                {
                    if (rsm==null)
                    {
-                       rsm = (ImageCacheManager)getBean("imageWidgetCacheManager");
+                       rsm = (ImageCacheManager)getBean(IMAGE_CACHE_BEAN);
                    }
                }
            }

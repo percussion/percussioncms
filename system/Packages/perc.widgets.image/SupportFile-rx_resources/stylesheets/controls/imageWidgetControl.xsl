@@ -132,7 +132,7 @@
 				</div>
 			</span>
 			<span id="main_resize" class="step image_asset_step">
-				<span id="resize_warning">Warning: Images resized by this editor will be converted to png file format.</span>
+				<span id="resize_warning">Note: Image resizing/rotating may not be available for some formats</span>
 				<table>
 					<tr>
 						<td>
@@ -143,7 +143,7 @@
 									<input   name="main_left" class="image_asset_rotate_left" type="button"  />
 									<input   name="main_right" class="image_asset_rotate_right" type="button"  />
 								</div>
-								<div id="main_image_region" class="image_asset_image" />
+								<div id="main_image_region" class="image_asset_image" style="overflow:auto;" />
 							</div>
 						</td>
 						<td width = "30px">

@@ -63,7 +63,6 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
    private static final Logger log = LogManager.getLogger(ImageAssetInputTranslation.class);
 
    ImageCacheManager cacheManager = null;
-
    ImageResizeManager resizeManager = null;
 
    public void init(IPSExtensionDef def, File file) throws PSExtensionException
