@@ -257,7 +257,7 @@ public class PSTopNavigation extends DataModel
       m_tabs.add(new Tab(
             "Workflow",
             "/Rhythmyx/sys_wfEditor/welcome.html?"
-            + "sys_componentname=wf_all&sys_pagename=wf_all",
+            + "sys_componentname=wf_all&amp;sys_pagename=wf_all",
             "wf", WORKFLOW_ROLE));
       m_tabs.add(new Tab("Admin", "/ui/admin", "/ui/admin",
             ADMIN_ROLE));
