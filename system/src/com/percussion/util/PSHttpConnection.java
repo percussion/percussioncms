@@ -41,6 +41,8 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -166,7 +168,7 @@ public class PSHttpConnection
       else
       {
          return postDataWithPSSessionId(url, data.toString(),
-            "multipart/form-data; charset=" + PSCharSets.rxStdEnc() +
+            "multipart/form-data; charset=" + StandardCharsets.UTF_8.name() +
             "; boundary=" + boundary);
       }
    }
@@ -212,7 +214,7 @@ public class PSHttpConnection
 
       // send the data to server and get the response
       return postDataWithPSSessionId(url, data.toString(),
-         "multipart/form-data; charset=" + PSCharSets.rxStdEnc() +
+         "multipart/form-data; charset=" + StandardCharsets.UTF_8.name() +
          "; boundary=" + boundary);
    }
 
@@ -299,7 +301,7 @@ public class PSHttpConnection
 
       String postData = PSXmlDocumentBuilder.toString(doc);
       String resp = postDataWithPSSessionId(url, postData, "text/xml; charset=" +
-         PSCharSets.rxStdEnc());
+         StandardCharsets.UTF_8.name());
 
       return PSXmlDocumentBuilder.createXmlDocument(new StringReader(resp),
          false);
@@ -363,7 +365,7 @@ public class PSHttpConnection
 
          // Write POST data to connection output stream
          try(OutputStream out = connection.getOutputStream()) {
-            out.write(data.getBytes(PSCharSets.rxJavaEnc()));
+            out.write(data.getBytes(StandardCharsets.UTF_8));
 
             int respCode = connection.getResponseCode();
 
@@ -391,15 +393,15 @@ public class PSHttpConnection
                byte[] byteData = os.toByteArray();
                // Get the character-set for the received data
                String rcvContentType = connection.getHeaderField("Content-Type");
-               String charset = PSCharSets.rxJavaEnc();
+               String charset = StandardCharsets.UTF_8.name();
                if (rcvContentType != null) {
                   Map params = new HashMap();
                   PSBaseHttpUtils.parseContentType(rcvContentType, params);
                   charset = (String) params.get("charset");
                   if (charset == null)
-                     charset = PSCharSets.rxJavaEnc();
+                     charset = StandardCharsets.UTF_8.name();
                   else
-                     charset = PSCharSets.getJavaName(charset);
+                     charset = Charset.forName(charset).name();
                }
 
                // Convert byte[] to string
@@ -469,10 +471,9 @@ public class PSHttpConnection
 
          ByteArrayOutputStream os = new ByteArrayOutputStream();
          long readData = IOTools.copyStream(in, os);
-         byte[] byteData = os.toByteArray();
 
          // Make sure received all the data if specified "Content-Length"
-         if ( (contentLength >0) && (long) contentLength != readData)
+         if ( (contentLength >0) &&  contentLength != readData)
          {
             String [] args = {""+readData, ""+contentLength};
             throw new PSException(IPSUtilErrors.RECEIVE_DATA_ERROR, args);
@@ -480,20 +481,20 @@ public class PSHttpConnection
 
          // Get the character-set for the received data
          String rcvContentType = connection.getHeaderField("Content-Type");
-         String charset = PSCharSets.rxJavaEnc();
+         String charset = StandardCharsets.UTF_8.name();
          if (rcvContentType != null)
          {
             Map params = new HashMap();
             PSBaseHttpUtils.parseContentType(rcvContentType, params);
             charset = (String) params.get("charset");
             if (charset == null)
-               charset = PSCharSets.rxJavaEnc();
+               charset = StandardCharsets.UTF_8.name();
             else
-               charset = PSCharSets.getJavaName(charset);
+               charset = Charset.forName(charset).name();
          }
 
          // Convert byte[] to string
-         msg = new String(byteData, charset);
+         msg = os.toString(charset);
 
          // if error, print to console,
          // then throw exception with error code and message
