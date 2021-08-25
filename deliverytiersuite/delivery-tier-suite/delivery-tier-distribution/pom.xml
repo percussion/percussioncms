@@ -46,13 +46,6 @@
             <version>${project.version}</version>
             <type>war</type>
         </dependency>
-
-        <dependency>
-            <groupId>com.percussion.deliverytier</groupId>
-            <artifactId>perc-caching</artifactId>
-            <version>${project.version}</version>
-            <type>war</type>
-        </dependency>
         <dependency>
             <groupId>com.percussion.deliverytier</groupId>
             <artifactId>perc-comments-services</artifactId>
@@ -858,12 +851,6 @@
 
                         <deployable>
                             <groupId>com.percussion.deliverytier</groupId>
-                            <artifactId>perc-caching</artifactId>
-                            <type>war</type>
-                        </deployable>
-
-                        <deployable>
-                            <groupId>com.percussion.deliverytier</groupId>
                             <artifactId>perc-comments-services</artifactId>
                             <type>war</type>
                         </deployable>
@@ -1217,12 +1204,7 @@
 
                                     <type>war</type>
                                 </deployable>
-                                <deployable>
-                                         <groupId>com.percussion.deliverytier</groupId>
-                                         <artifactId>perc-caching</artifactId>
 
-                                         <type>war</type>
-                                     </deployable>
                                      <deployable>
                                          <groupId>com.percussion.deliverytier</groupId>
                                          <artifactId>perc-comments-services</artifactId>
