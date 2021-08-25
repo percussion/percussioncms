@@ -243,7 +243,7 @@
                        showServerInfo="false" />
             </Host>
 
-            <Valve className="com.percussion.tomcat.valves.PSSimpleRedirectorValve" targetHost="localhost" serviceNames="perc-form-processor,perc-common-ui,perc-metadata-services,perc-comments-services,feeds,perc-caching,perc-membership-services,perc-integrations,perc-generickey-services,perc-polls-services,perc-thirdparty-services"/>
+            <Valve className="com.percussion.tomcat.valves.PSSimpleRedirectorValve" targetHost="localhost" serviceNames="perc-form-processor,perc-common-ui,perc-metadata-services,perc-comments-services,feeds,perc-membership-services,perc-integrations,perc-generickey-services,perc-polls-services,perc-thirdparty-services"/>
 
         </Engine>
     </Service>
