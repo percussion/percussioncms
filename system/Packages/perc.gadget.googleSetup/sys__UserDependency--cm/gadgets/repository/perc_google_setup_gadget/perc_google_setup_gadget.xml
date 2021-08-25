@@ -23,7 +23,7 @@
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 <Module>
-    <ModulePrefs title="Google Setup" category="analytics" description="This gadget allows an administrator to configure Google Analytics to use the correct account and profile for each site managed by CMS." thumbnail="images/gadgetConfigGoogle.png" height="448" adminOnly="true">
+    <ModulePrefs title="Google Setup" category="analytics" description="This gadget allows an administrator to configure Google Analytics to use the correct account and profile for each site managed by CMS." thumbnail="images/gadgetConfigGoogle.png" height="465" adminOnly="true">
         <Require feature="perc_core"/>
         <Require feature="perc_jquery_ui"/>
     </ModulePrefs>

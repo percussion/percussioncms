@@ -36,7 +36,7 @@
     <link href="/cm/cui/components/twitter-bootstrap-3.0.0/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="/cm/gadgets/repository/perc_bulk_file_upload_gadget/css/jquery.fileupload.css" type="text/css"/>
     <link  rel="stylesheet" href="/cm/gadgets/repository/perc_bulk_file_upload_gadget/css/perc_bulk_file_upload.css" type="text/css"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/b5599b836a.css" />
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
 
     <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
     <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"</script>
