@@ -51,6 +51,16 @@
                                 <beans:value>X-Request-With</beans:value>
                                 <beans:value>X-PINGOTHER</beans:value>
                                 <beans:value>pingpong</beans:value>
+                                <beans:value>Access-Control-Allow-Origin</beans:value>
+                                <beans:value>X-CSRF-TOKEN</beans:value>
+                                <beans:value>Strict-Transport-Security</beans:value>
+                                <beans:value>X-XSS-Protection</beans:value>
+                                <beans:value>X-Frame-Options</beans:value>
+                                <beans:value>X-Content-Type-Options</beans:value>
+                                <beans:value>Content-Security-Policy</beans:value>
+                                <beans:value>Date</beans:value>
+                                <beans:value>Keep-Alive</beans:value>
+                                <beans:value>Connection</beans:value>
                             </beans:list>
                         </beans:property>
                         <beans:property name="allowedMethods">
