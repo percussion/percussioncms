@@ -24,14 +24,24 @@
 
 package com.percussion.category.service.impl;
 
-import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
-
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.marshaller.PSCategoryMarshaller;
 import com.percussion.category.marshaller.PSCategoryUnMarshaller;
+import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
+import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
+import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryClientException;
+import com.percussion.delivery.client.PSDeliveryClient;
+import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,19 +52,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-
-import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
-import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
-import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryClientException;
-import com.percussion.delivery.client.PSDeliveryClient;
-import com.percussion.delivery.data.PSDeliveryInfo;
-import com.percussion.delivery.service.IPSDeliveryInfoService;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
 
 public class PSCategoryServiceUtil {
     public static final String DUMMYROOT = "dummyroot";
@@ -95,12 +93,12 @@ public class PSCategoryServiceUtil {
             // Skip if category has no id (we have already added these ids to the new Items), if id has already been processed, or we
             // are skipping remaining old items that no longer exist
             if (nextOld != null && (nextOld.getId() == null || processedIds.contains(nextOld.getId()))) {
-                log.debug("Skipping processed nextOld" + nextOld.getTitle());
+                log.debug("Skipping processed nextOld {}" , nextOld.getTitle());
                 nextOld = getNext(oldCatIt);
                 continue;
             }
             if (nextNew != null && processedIds.contains(nextNew.getId())) {
-                log.debug("Skipping processed nextNew" + nextNew.getTitle());
+                log.debug("Skipping processed nextNew {}" , nextNew.getTitle());
                 nextNew = getNext(newCatIt);
                 continue;
             }
@@ -114,21 +112,21 @@ public class PSCategoryServiceUtil {
                 // deleted otherwise we sequentially add
                 if (!nextOld.isDeleted() && (site == null || site.equals("undefined")) || siteList.contains(site)) {
                     // skip and move to next
-                    log.debug("Removing node that has been deleted or removed" + nextOld.getId());
+                    log.debug("Removing node that has been deleted or removed {}" , nextOld.getId());
                     nextOld.setDeleted(true);
 
                 } else {
-                    log.debug("Merging back categories from other sites and deleted" + nextOld.getId());
+                    log.debug("Merging back categories from other sites and deleted {}" , nextOld.getId());
                 }
                 // merge in hidden node from other site
                 processedItem = nextOld;
                 fullCategories.add(nextOld);
                 nextOld = getNext(oldCatIt);
             } else if (nextNew != null) {
-                log.debug("adding sent category: " + nextNew.getId());
+                log.debug("adding sent category: {}" , nextNew.getId());
                 fullCategories.add(nextNew);
                 processedItem = nextNew;
-                if (nextOld != null && nextOld.getId() == nextNew.getId())
+                if (nextOld != null && nextOld.getId().equalsIgnoreCase(nextNew.getId()))
                     nextOld = getNext(oldCatIt);
                 nextNew = getNext(newCatIt);
             }
@@ -186,7 +184,7 @@ public class PSCategoryServiceUtil {
                 newCategory.setId(id);
             }
             if (newCategoryIds.contains(id)) {
-                log.warn("Duplicate id " + id + " passed in category update skipping");
+                log.warn("Duplicate id {} passed in category update skipping", id);
                 newCatIt1.remove();
             } else if (title.equals("Add Top Level Categories")) {
                 newCategoryIds.remove(id);
@@ -209,7 +207,7 @@ public class PSCategoryServiceUtil {
 
     public static Set<String> removeDeletedNodes(List<PSCategoryNode> childNodes, Set<String> nodesToRemove) {
 
-        log.debug("Total nodes for removal : " + childNodes.size());
+        log.debug("Total nodes for removal : {}" , childNodes.size());
 
         Set<String> removedNodes = nodesToRemove;
         List<PSCategoryNode> tempList = new ArrayList<>();
@@ -234,7 +232,7 @@ public class PSCategoryServiceUtil {
 
         categoryJson = PSCategoryMarshaller.marshalToJson(category);
 
-        log.debug("Prepared Category Json is : " + categoryJson);
+        log.debug("Prepared Category Json is : {}" , categoryJson);
 
         return categoryJson;
     }
@@ -242,12 +240,11 @@ public class PSCategoryServiceUtil {
     public static void publishToDTS(String category, String sitename, String deliveryServer, IPSDeliveryInfoService deliveryService) throws PSValidationException {
 
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER, deliveryServer.toUpperCase());
-        //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
 
         if (server == null)
             throw new PSDeliveryClientException("The " + deliveryServer + " Server is not configured. Cannot perform the category publish. Please select the correct option.");
 
-        log.debug("Server to publish the categories is " + server.getServerType());
+        log.debug("Server to publish the categories is {}" , server.getServerType());
 
         PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
@@ -324,10 +321,8 @@ public class PSCategoryServiceUtil {
                             temp = findModifiedCategories(parent.getChildNodes(), oldPrefix + "/" + parent.getTitle(), oldPrefix + "/" + parent.getTitle(), false);
                     }
 
-                    if (temp != null) {
-                        for (int i = 0; i < temp.length(); i++) {
-                            jsonArray.put(temp.get(i));
-                        }
+                    for (int i = 0; i < temp.length(); i++) {
+                        jsonArray.put(temp.get(i));
                     }
                 }
             }
