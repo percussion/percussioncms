@@ -204,3 +204,7 @@ span.ui-button-text {
     font-family: 'Open Sans', sans-serif;
     font-size: 20px;
 }
+
+#create-new-asset-content-dlg {
+    overflow-y : hidden !important;
+}
