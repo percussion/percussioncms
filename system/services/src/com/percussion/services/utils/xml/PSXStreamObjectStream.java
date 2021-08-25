@@ -66,6 +66,9 @@ public class PSXStreamObjectStream<T> extends PSObjectStream<T>
       stream.allowTypesByWildcard(new String[] {
               "com.percussion.**"
       });
+
+      stream.denyTypesByWildcard(new String[]{ "sun.reflect.**", "sun.tracing.**", "com.sun.corba.**" });
+      stream.denyTypesByRegExp(new String[]{ ".*\\.ws\\.client\\.sei\\..*", ".*\\$ProxyLazyValue", "com\\.sun\\.jndi\\..*Enumerat(?:ion|tor),.*\\$URLData" });
    }
 
    public PSXStreamObjectStream() throws IOException
