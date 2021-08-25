@@ -162,10 +162,11 @@
         </copy>
 
 
-
+        <mkdir dir="${assembly-directory}/DTD"/>
         <copy todir="${assembly-directory}/DTD">
             <!--<fileset dir="${basedir}/../../system/cms/dbpublisher/dtd" includes="sys_DatabasePublisher.dtd, aliasmap.dtd" />-->
             <fileset dir="${basedir}/../../system/Tools/TableFactory/src/main/resources/dtd" includes="sys_Tabledata.dtd, sys_Tabledef.dtd" />
+            <fileset dir="${basedir}/../../system/DTD" includes="**"/>
         </copy>
 
         <!-- Force copy of UI files - they weren't getting refreshed on upgrade without this -->

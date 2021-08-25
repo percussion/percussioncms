@@ -22,6 +22,7 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
     <!-- Jetty Server -->
     <public publicId="-//Jetty//Configure//EN" uri="file://@@rxdir@@/DTD/configure_9_3.dtd"/>
     <system systemId="http://www.eclipse.org/jetty/configure_9_3.dtd" uri="file://@@rxdir@@/DTD/configure_9_3.dtd"/>
+    <uri name="http://www.eclipse.org/jetty/configure_9_3.dtd"  uri="file://@@rxdir@@/DTD/configure_9_3.dtd"/>
 
     <!-- Percussion DTDs -->
     <system systemId="sys_VisibilityContexts.dtd" uri="file://@@rxdir@@/DTD/sys_VisibilityContexts.dtd" />
