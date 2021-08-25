@@ -57,7 +57,7 @@
          */
         function showNewWorkflowEditor()
         {
-            $(".perc-wf-default").find('input').removeAttr('checked').removeAttr('disabled'); 
+            $(".perc-wf-default").find('input').prop('checked', false).prop('disabled', false);
             hideWorkflowUpdateEditor();
             hideWorkflowEditButton();
             //create the workflow control for publish now to staging permissions
