@@ -28,18 +28,61 @@ import com.github.javafaker.Faker;
 import com.ibm.icu.text.Normalizer2;
 import org.apache.commons.lang3.StringUtils;
 import org.owasp.encoder.Encode;
+import org.owasp.esapi.ESAPI;
+import org.owasp.esapi.codecs.Codec;
+import org.owasp.esapi.codecs.DB2Codec;
+import org.owasp.esapi.codecs.MySQLCodec;
+import org.owasp.esapi.codecs.OracleCodec;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SecureStringUtils {
 
+    public enum DatabaseType{
+        MYSQL,
+        ORACLE,
+        DB2,
+        MSSQL,
+        DERBY
+    }
+
+    /**
+     * Checks if the supplied date is a valid date.
+     * @param dt the date
+     * @return true if the date is valid, false if it is not
+     */
+    public static boolean isValidDate(String dt){
+        try {
+                LocalDate.parse(dt);
+            } catch (DateTimeParseException e) {
+                return false;
+            }
+            return true;
+    }
+
+    /**
+     * Checks if the supplied time is a valie time.
+     * @param t the time
+     * @return true if the time is valid, false if not
+     */
+    public static boolean isValidTime(String t){
+        try{
+            LocalTime.parse(t);
+        }catch(DateTimeParseException e){
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Will return an instance of secure random.  Will attempt to return a StrongSecureRandom first
@@ -311,13 +354,36 @@ public class SecureStringUtils {
         throw new RuntimeException("Not Implemented!");
     }
 
-    /**
-     * Utility to sanitize a string for use in a SQL statement
-     * @param str User provided string
-     * @return The sanitized string
-     */
     public static String sanitizeStringForSQLStatement(String str){
-        return str.replace("'","\'");
+        return str.replace("'", "\'");
+    }
+    /**
+     * Utility to sanitize a string for use in a SQL statement.
+     * @param str User provided string
+     * @param dbType The type of database that should be used for encoding if an ESAPI Codec is available for the DB.
+     * @return The sanitized string, will use {@link #sanitizeStringForFileSystem(String)} if no ESAPI codec is available.
+     */
+    public static String sanitizeStringForSQLStatement(String str, DatabaseType dbType){
+        Codec codec;
+        switch(dbType){
+            case DERBY:
+            case DB2:
+                codec = new DB2Codec();
+                break;
+            case MYSQL:
+                codec = new MySQLCodec(MySQLCodec.Mode.STANDARD);
+                break;
+            case ORACLE:
+                codec = new OracleCodec();
+                break;
+            default:
+                codec = null;
+        }
+        if(codec == null) {
+            return sanitizeStringForSQLStatement(str);
+        }else{
+            return ESAPI.encoder().encodeForSQL(codec,str);
+        }
     }
 
     /**
