@@ -1654,7 +1654,22 @@ public class PSSqlHelper
     */
    public static boolean isMysql(String driverName)
    {
-      return (driverName.toUpperCase().indexOf("MYSQL") > -1);
+      return (driverName.toUpperCase().contains("MYSQL"));
+   }
+
+   public static boolean isMsSql(String driverName)
+   {
+      return (driverName.toUpperCase().contains("MSSQL")||driverName.toUpperCase().contains("JTDS"));
+   }
+
+   public static boolean isDB2(String driverName)
+   {
+      return (driverName.toUpperCase().contains("DB2"));
+   }
+
+   public static boolean isDerby(String driverName)
+   {
+      return (driverName.toUpperCase().contains("DERBY"));
    }
 
    /**
