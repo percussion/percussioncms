@@ -25,14 +25,13 @@ package com.percussion.cx.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * The class that has static methods that are useful for the objectstore
@@ -84,6 +83,30 @@ public class PSComponentUtils
 
       if(value == null || value.trim().length() == 0)
          value = (String)allowedValues.get(0);
+
+      return value;
+   }
+
+   /**
+    * For handling optional attributes.  Gets the attribute or the supplied default value.
+    * @param el The active element
+    * @param attrib The attribute name
+    * @param defaultValue The default value to use if the attribute is null or empty in the element
+    * @return The value of the attribute or the default value if it is empty or not found
+    */
+   public static String getAttribute(Element el, String attrib, String defaultValue) {
+      if(el == null)
+         throw new IllegalArgumentException("el may not be null.");
+
+      if(attrib == null || attrib.trim().length() == 0)
+         throw new IllegalArgumentException("attrib may not be null or empty.");
+
+      String value = el.getAttribute(attrib);
+
+      if(value == null || value.trim().length() == 0)
+      {
+         value=defaultValue;
+      }
 
       return value;
    }
