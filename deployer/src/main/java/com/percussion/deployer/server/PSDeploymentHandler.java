@@ -198,7 +198,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          PSServerException, PSDeployException, IOException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String sessionId = null;
 
@@ -211,7 +211,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       // get the credentials
       Element root = doc.getDocumentElement();
       String uid = root.getAttribute("userId");
-      String pwd = decryptPwd(uid, root.getAttribute("password"));
+      String pwd = root.getAttribute("password");
       String lock = root.getAttribute("overrideLock");
       boolean overrideLock = "yes".equalsIgnoreCase(lock);
 
@@ -311,7 +311,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getDeployableElements(PSRequest req)
            throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -385,7 +385,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getDependencies(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the inputs
       String type = getRequiredAttrFromRequest(req, "type");
@@ -450,7 +450,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    public Document getExportDescriptor(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the root of the doc in request
       Document doc = req.getInputDocument();
@@ -460,7 +460,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
       String name = null;
       int logId = -1;
-      name = root.getAttribute("descName");
+      name = root.getAttribute(DESC_NAME);
       if (name == null || name.trim().length() == 0)
       {
          name = null;
@@ -542,7 +542,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getValidationResults(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String name = getRequiredAttrFromRequest(req, "archiveRef");
 
@@ -603,7 +603,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    public Document getIdTypes(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -683,7 +683,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveIdTypes(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -766,7 +766,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document validateLocalConfig(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
       Document doc = req.getInputDocument();
       if (doc == null)
       {
@@ -856,7 +856,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document validateArchive(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -1188,7 +1188,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getDbmsMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String server = getRequiredAttrFromRequest(req, "server");
 
@@ -1229,7 +1229,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveDbmsMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSDbmsMap map = (PSDbmsMap) getRequiredComponentFromRequest(req,
             PSDbmsMap.class, PSDbmsMap.XML_NODE_NAME);
@@ -1269,7 +1269,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getIdMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String sourceServer = getRequiredAttrFromRequest(req, "sourceServer");
 
@@ -1311,7 +1311,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveIdMap(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSIdMap idmap = (PSIdMap) getRequiredComponentFromRequest(req,
             PSIdMap.class, PSIdMap.XML_NODE_NAME);
@@ -1394,7 +1394,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getArchiveSummary(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the root of the doc in request
       Document doc = req.getInputDocument();
@@ -1466,7 +1466,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getArchiveInfo(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       int logId = getAttrNumberFromRequest(req, "archiveLogId");
       PSArchiveSummary sum = getArchiveSummary(logId);
@@ -1625,7 +1625,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getLogSummary(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       int logId = getAttrNumberFromRequest(req, "logId");
       PSLogSummary logSummary = m_logHandler.getLogSummary(logId);
@@ -1788,7 +1788,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document deleteArchive(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -1845,7 +1845,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    public Document saveExportDescriptor(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSExportDescriptor desc = (PSExportDescriptor) getRequiredComponentFromRequest(
             req, PSExportDescriptor.class, PSExportDescriptor.XML_NODE_NAME);
@@ -1979,10 +1979,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       // delete the descriptor
       File descFile = new File(EXPORT_DESC_DIR, name + ".xml");
       if (!descFile.exists())
@@ -2030,7 +2030,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getAppPolicySettings(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // load the descriptor
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -2097,7 +2097,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSAppPolicySettings policySettings = (PSAppPolicySettings) getRequiredComponentFromRequest(
             req, PSAppPolicySettings.class, PSAppPolicySettings.XML_NODE_NAME);
@@ -2290,7 +2290,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          PSServerException, PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       String sessionId = req.getUserSessionId();
@@ -2395,7 +2395,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          PSServerException, PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       String sessionId = null;
 
@@ -2453,7 +2453,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    public Document loadDependencies(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -2506,7 +2506,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    public Document loadAncestors(PSRequest req) throws PSDeployException, PSNotFoundException {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -2556,7 +2556,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveUserDependency(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSUserDependency dep = (PSUserDependency) getRequiredComponentFromRequest(
             req, PSUserDependency.class, PSUserDependency.XML_NODE_NAME);
@@ -2594,7 +2594,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document deleteUserDependency(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       PSUserDependency dep = (PSUserDependency) getRequiredComponentFromRequest(
             req, PSUserDependency.class, PSUserDependency.XML_NODE_NAME);
@@ -2633,10 +2633,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getArchiveFile(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
 
       // use descriptor name as archive ref
       File archiveFile = getExportArchiveFile(name);
@@ -2695,10 +2695,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document createConfigDef(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
       
       ByteArrayInputStream in = null;
@@ -2757,10 +2757,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document createDefaultConfig(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
       
       // Get info from descriptor
@@ -2829,10 +2829,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document createDescriptorSummary(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the descriptor name
-      String name = getRequiredAttrFromRequest(req, "descName");
+      String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
       
       
@@ -2925,7 +2925,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveArchiveFile(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the file to save
       Iterator params = req.getParametersIterator();
@@ -3017,7 +3017,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document saveConfigFile(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       // get the file to save
       Iterator params = req.getParametersIterator();
@@ -3109,7 +3109,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getFeatureSet(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -3206,7 +3206,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public Document getParentTypes(PSRequest req) throws PSDeployException
    {
       if (req == null)
-         throw new IllegalArgumentException("req may not be null");
+         throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
       Document doc = req.getInputDocument();
       if (doc == null)
@@ -4259,4 +4259,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     */
    PSLogHandler m_logHandler;
 
+   public static final String DESC_NAME = "descName";
+   public static final String ARCHIVE_LOG_ID = "archiveLogId";
+   public static final String ARCHIVE_REF = "archiveRef";
+   public static final String NULL_REQUEST_ERROR = "Request may not be null";
+   public static final String TYPE_ATTR = "type";
+   
 }
