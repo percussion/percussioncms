@@ -16,7 +16,13 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="//@xml:lang"/>
+	<!--<xsl:variable name="lang" select="//@xml:lang"/>-->
+	<xsl:variable name="lang">
+		<xsl:choose>
+			<xsl:when test="//@xml:lang"><xsl:value-of select="//@xml:lang"/></xsl:when>
+			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise> <!-- default value -->
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="tmp">
 		<xsl:call-template name="replace-quote">
 			<xsl:with-param name="text" select="/dependencytree/title"/>
@@ -53,10 +59,10 @@
 	<xsl:variable name="rximagepath">
 		<xsl:choose>
 			<xsl:when test="$lang and $lang!=''">
-				<xsl:text>/rx_resources/images/en-us/</xsl:text>
+				<xsl:value-of select="concat('/rx_resources/images/',$lang,'/')"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat('/rx_resources/images/',$lang,'/')"/>
+				<xsl:text>/rx_resources/images/en-us/</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
