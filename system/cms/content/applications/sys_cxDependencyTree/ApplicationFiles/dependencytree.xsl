@@ -16,11 +16,10 @@
                 xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
                 exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<!--<xsl:variable name="lang" select="//@xml:lang"/>-->
 	<xsl:variable name="lang">
 		<xsl:choose>
 			<xsl:when test="//@xml:lang"><xsl:value-of select="//@xml:lang"/></xsl:when>
-			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise> <!-- default value -->
+			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="tmp">

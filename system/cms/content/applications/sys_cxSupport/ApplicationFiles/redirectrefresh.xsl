@@ -18,11 +18,10 @@
 	<xsl:variable name="rev" select="//@sys_revision"/>
 	<xsl:variable name="contentid" select="//@sys_contentid"/>
 	<xsl:variable name="closeWindow" select="//closeWindow"/>
-	<!--<xsl:variable name="lang" select="//@xml:lang"/>-->
 	<xsl:variable name="lang">
 		<xsl:choose>
 			<xsl:when test="//@xml:lang"><xsl:value-of select="//@xml:lang"/></xsl:when>
-			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise> <!-- default value -->
+			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:template match="/">
