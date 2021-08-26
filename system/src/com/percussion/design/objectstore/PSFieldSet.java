@@ -257,6 +257,9 @@ public class PSFieldSet extends PSComponent
     *
     * @param name   the name of the field we want back, not
     *               <code>null</code> or empty.
+    * @param systemModOnly The flag passed to the 'get' methods. If
+    *     *    <code>false</code>, then we need to return the pre 5.0 fields,
+    *     *    if <code>true</code>, we return all the newly added fields.
     *
     * @return       The first matching field found in a fieldset, or
     *               <code>null</code> if not found.

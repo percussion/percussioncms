@@ -26,6 +26,7 @@ package com.percussion.services.system.impl;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.content.IPSMimeContentTypes;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSRoleManager;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -117,6 +118,7 @@ public class PSSystemService
 {
 
    private SessionFactory sessionFactory;
+
 
    public SessionFactory getSessionFactory() {
       return sessionFactory;
@@ -1233,31 +1235,111 @@ public class PSSystemService
     * 
     * @return It is <code>true</code> if the repository is an oracle database.
     */
-   private boolean isOracle()
+   @Override
+   public boolean isOracle()
    {
       if (m_isOracle != null)
-         return m_isOracle.booleanValue();
+         return m_isOracle;
       
       try
       {
          PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
          m_isOracle = PSSqlHelper.isOracle(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
-         return m_isOracle.booleanValue();
+         return m_isOracle;
       }
       catch (Exception e)
       {
-         ms_logger.error("Failed to determine database type", e);
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
       }
       return false;
    }
 
+   @Override
+   public boolean isMySQL() {
+      if (mysql != null)
+         return mysql;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         mysql = PSSqlHelper.isMysql(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return mysql;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
+
+   @Override
+   public boolean isMsSQL() {
+      if (mssql != null)
+         return mssql;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         mssql = PSSqlHelper.isMsSql(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return mssql;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
+
+   @Override
+   public boolean isDB2() {
+      if (db2 != null)
+         return db2;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         db2 = PSSqlHelper.isDB2(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return db2;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
+
+   @Override
+   public boolean isDerby(){
+      if (derby != null)
+         return derby;
+
+      try
+      {
+         PSConnectionDetail connDetail = m_dsMgr.getConnectionDetail(null);
+         derby = PSSqlHelper.isDerby(connDetail.getDriver()) ? Boolean.TRUE : Boolean.FALSE;
+         return derby;
+      }
+      catch (Exception e)
+      {
+         ms_logger.error("Failed to determine database type {}", PSExceptionUtils.getMessageForLog(e));
+      }
+      return false;
+   }
    /**
     * Determines if the repository is an oracle database or not.
     * It is <code>true</code> if the repository is an oracle database.
     * Initialized to <code>null</code> and it is lazily set by {@link #isOracle()}.
     */
    private static Boolean m_isOracle = null;
-   
+
+   private  Boolean mysql = null;
+
+   private  Boolean mssql = null;
+
+   private  Boolean db2 = null;
+
+   private Boolean derby = null;
+
    /**
     * The datasource manager to use to override the new configuration.
     * <code>null</code> after that.
