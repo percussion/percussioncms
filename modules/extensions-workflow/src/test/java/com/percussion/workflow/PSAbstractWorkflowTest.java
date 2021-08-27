@@ -88,33 +88,35 @@ public abstract class PSAbstractWorkflowTest
       catch (PSWorkflowTestException e)
       {
 
-         System.err.println("Exception while testing ");
+         log.error(e.getMessage());
+         log.debug(e.getMessage(), e);
+         log.error("Exception while testing ");
          Throwable throwable =  e.getThrowable();
-         System.out.println("throwable class = " + throwable.getClass());
+         log.info("throwable class = {}", throwable.getClass());
          if (null != throwable)
          {
             if ((java.sql.SQLException.class).isInstance(throwable))
             {
                SQLException sqlEx = (SQLException)throwable;
 
-               System.out.println("chain of SQL exceptions");
+               log.info("chain of SQL exceptions");
                for (;
                     null !=  sqlEx;
                     sqlEx = sqlEx.getNextException())
                {
-                  System.out.println("   " + PSSqlException.toString(sqlEx));
+                  log.info(" {} ", PSSqlException.toString(sqlEx));
                }
             }
             else
             {
-               System.out.println(throwable);
+               log.info(throwable);
 
             }
-            System.out.println("Stack Trace for original exception:");
+            log.info("Stack Trace for original exception:");
             log.error(throwable.getMessage());
             log.debug(throwable.getMessage(), throwable);
          }
-         System.out.println("Stack Trace for testing code:");
+         log.info("Stack Trace for testing code:");
          log.error(e.getMessage());
          log.debug(e.getMessage(), throwable);
       }
@@ -153,7 +155,7 @@ public abstract class PSAbstractWorkflowTest
 
             if (m_sArgs[i].equals("-h") || m_sArgs[i].equals("-help"))
             {
-               System.out.println(HelpMessage());
+               log.info(HelpMessage());
                return false;
             }
          } // End loop over args

@@ -24,6 +24,8 @@
 package com.percussion.workflow;
 
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -38,6 +40,8 @@ import java.util.Calendar;
 @Category(IntegrationTest.class)
 public class PSContentStatusContextTest extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentStatusContextTest.class);
 
    /**
     * Constructor specifying command line arguments
@@ -55,17 +59,17 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("Entering Method ExecuteTest");
+      log.info("Entering Method ExecuteTest");
       Exception except = null;
       String exceptionMessage = "";
       PSContentStatusContext context = null;
       
       try
       {
-         System.out.println("contentID = " + m_nContentID);
+         log.info("contentID = {}", m_nContentID);
          PSContentStatusContext
                csc = new PSContentStatusContext(connection, m_nContentID);
-         System.out.println(csc.toString(true));
+         log.info(csc.toString(true));
          csc.setContentStateID(m_nStateID);
          csc.setContentCheckedOutUserName("");
          csc.setEditRevision(-1);
@@ -100,21 +104,25 @@ public class PSContentStatusContextTest extends PSAbstractWorkflowTest
          
          csc.close(); //release the JDBC resources
          
-         System.out.println(csc.toString(true));   
+         log.info(csc.toString(true));
       }
       catch (SQLException e) 
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          exceptionMessage = "SQL exception: ";
          except = e;
       }
       catch (PSEntryNotFoundException e) 
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          exceptionMessage = "Entry not found";
          except = e;
       }
       finally 
       {
-         System.out.println("Exiting Method ExecuteTest");
+         log.info("Exiting Method ExecuteTest");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,
