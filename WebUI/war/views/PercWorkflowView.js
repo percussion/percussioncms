@@ -133,7 +133,7 @@
          */
         function editWorkflow(evt)
         {
-            $(".perc-wf-default").find('input').removeAttr('checked').removeAttr('disabled');   
+            $(".perc-wf-default").find('input').prop('checked', false).prop('disabled', false);
             $(".perc-step-config-button, .perc-reserved-step-config-bttn, .perc-step-delete-button, .perc-create-new-step").off("click").on("click");
             $(".perc-create-new-step").addClass("perc-step-disable");
             $(".perc-step-delete-button").addClass("perc-step-delete-disable");
