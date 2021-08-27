@@ -24,6 +24,8 @@
 package com.percussion.workflow;
 
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -36,6 +38,9 @@ import java.sql.SQLException;
 @Category(IntegrationTest.class)
 public class PSTransitionsContextTest extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSTransitionsContextTest.class);
+
    /**
     * Constructor specifying command line arguments
     *
@@ -50,7 +55,7 @@ public class PSTransitionsContextTest extends PSAbstractWorkflowTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("\nExecuting test of PSTransitionsContext\n");
+      log.info("\nExecuting test of PSTransitionsContext\n");
       Exception except = null;
       String exceptionMessage = "";
       PSTransitionsContext context = null;
@@ -67,16 +72,15 @@ public class PSTransitionsContextTest extends PSAbstractWorkflowTest
                {
                   if (context.isAgingTransition()) 
                   {
-                     System.out.println(context.toString(true));
+                     log.info(context.toString(true));
                   }
                   else 
                   {
-                     System.out.println("Not an aging transition. ID = " +
-                                        m_nTransitionID);
+                     log.info("Not an aging transition. ID = {}", m_nTransitionID);
                   }               }
                else 
                {
-                  System.out.println(context.toString());
+                  log.info(context.toString());
                }
          }
 
@@ -90,9 +94,8 @@ public class PSTransitionsContextTest extends PSAbstractWorkflowTest
             context =  new PSTransitionsContext(m_nWorkflowID,
                                                 connection,
                                                 m_nStateID);
-            System.out.println(
-               "Number of transitions from state " + m_nStateID + 
-               " is " + context.getTransitionCount() + ".\n");
+            log.info(
+               "Number of transitions from state {} is {}.\n", m_nStateID, context.getTransitionCount());
             do
             {
                if (m_bAgingOnly) 
@@ -102,11 +105,11 @@ public class PSTransitionsContextTest extends PSAbstractWorkflowTest
                      continue;
                   }
                   
-                  System.out.println(context.toString(true));
+                  log.info(context.toString(true));
                }
                else 
                {
-                  System.out.println(context.toString());
+                  log.info(context.toString());
                }
             }
             while (context.moveNext());
@@ -115,17 +118,21 @@ public class PSTransitionsContextTest extends PSAbstractWorkflowTest
       }
       catch (SQLException e) 
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          exceptionMessage = "SQL exception: ";
          except = e;
       }
       catch (PSEntryNotFoundException e) 
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          exceptionMessage = "Entry not found";
          except = e;
       }
       finally 
       {
-         System.out.println("\nEnd test of PSTransitionsContext\n");
+         log.info("\nEnd test of PSTransitionsContext\n");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,
@@ -136,7 +143,7 @@ public class PSTransitionsContextTest extends PSAbstractWorkflowTest
 
    public int GetArgValues(int i)
    {
-      System.out.println("GetArgValues");
+      log.info("GetArgValues");
       if (m_sArgs[i].equals("-w") || m_sArgs[i].equals("-workflowid"))
       {
          m_nWorkflowID =  Integer.parseInt(m_sArgs[++i]);

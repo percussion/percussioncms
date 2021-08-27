@@ -359,5 +359,15 @@ public interface IPSSystemService
     */
    public List<String> getAdhocRoleMembers(IPSGuid contentId, 
       IPSGuid transitionId, String roleName, String nameFilter);
+
+   boolean isOracle();
+
+   boolean isMySQL();
+
+   boolean isMsSQL();
+
+   boolean isDB2();
+
+   boolean isDerby();
 }
 

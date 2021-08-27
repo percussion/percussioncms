@@ -35,18 +35,17 @@ import com.percussion.webservices.assembly.data.PSAssemblyTemplateBindingsBindin
 import com.percussion.webservices.assembly.data.PublishType;
 import com.percussion.webservices.common.Reference;
 import com.percussion.webservices.transformation.impl.PSTransformerFactory;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Converts objects between the classes
@@ -189,7 +188,7 @@ public class PSAssemblyTemplateConverter extends PSConverter
          // convert publish type
          Converter converter = PSTransformerFactory.getInstance().getConverter(
                IPSAssemblyTemplate.PublishWhen.class);
-         dest.setWhenToPublish( converter.convert(
+         dest.setWhenToPublish((PublishType) converter.convert(
                PublishType.class, orig.getPublishWhen()));
       }
 

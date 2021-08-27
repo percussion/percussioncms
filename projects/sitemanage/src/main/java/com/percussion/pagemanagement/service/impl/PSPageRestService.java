@@ -24,6 +24,8 @@
 
 package com.percussion.pagemanagement.service.impl;
 
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.pagemanagement.data.PSNonSEOPagesRequest;
 import com.percussion.pagemanagement.data.PSPage;
@@ -39,7 +41,10 @@ import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
 import com.percussion.searchmanagement.service.IPSSearchService;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.system.IPSSystemService;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSNoContent;
@@ -52,6 +57,8 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.web.service.PSRestServicePathConstants;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +77,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Map;
 
 import static com.percussion.share.web.service.PSRestServicePathConstants.DELETE_PATH;
 import static com.percussion.share.web.service.PSRestServicePathConstants.LOAD_PATH;
@@ -91,32 +99,37 @@ public class PSPageRestService
 {
 
     private static final Logger log =  LogManager.getLogger(PSPageRestService.class);
+
     /**
      * The page service.
      */
-    private IPSPageService pageService;
+    private final IPSPageService pageService;
 
     /**
      * Recycle service.
      */
-    private IPSRecycleService recycleService;
+    private final IPSRecycleService recycleService;
 
-    private IPSFolderHelper folderHelper;
+    private final IPSFolderHelper folderHelper;
 
-    private IPSSearchService searchService;
+    private final IPSSearchService searchService;
+
+    private final IPSSystemService systemService;
 
     private static final String RECYCLED_TYPE = PSRelationshipConfig.TYPE_RECYCLED_CONTENT;
 
     private static final String FOLDER_TYPE = PSRelationshipConfig.TYPE_FOLDER_CONTENT;
 
     @Autowired
-    public PSPageRestService(IPSPageService pageService, IPSRecycleService recycleService, IPSFolderHelper folderHelper, IPSSearchService searchService)
+    public PSPageRestService(IPSPageService pageService, IPSRecycleService recycleService, IPSFolderHelper folderHelper, IPSSearchService searchService,
+                             IPSSystemService systemService)
     {
         super();
         this.pageService = pageService;
         this.recycleService = recycleService;
         this.folderHelper = folderHelper;
         this.searchService = searchService;
+        this.systemService = systemService;
     }
 
     /**
@@ -125,7 +138,7 @@ public class PSPageRestService
      */
     @DELETE
     @Path(DELETE_PATH)
-    public void delete(@PathParam(value="id")
+    public void delete(@PathParam("id")
                                    String id)
     {
         try {
@@ -470,11 +483,70 @@ public class PSPageRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
+
+        criteria = validateSearchCriteria(criteria);
+
         PSPagedItemList itemList = new PSPagedItemList();
         List<Integer> contentIdsAllowedForSite = searchService.getContentIdsForFetchingByStatus(criteria);
         itemList = searchService.searchByStatus(criteria, contentIdsAllowedForSite);
 
         return itemList;
+    }
+
+    private PSSearchCriteria validateSearchCriteria(PSSearchCriteria criteria) {
+        Map<String,String> fields = criteria.getSearchFields();
+        if(fields != null){
+            SecureStringUtils.DatabaseType type=null;
+
+            if(systemService.isMySQL())
+                type = SecureStringUtils.DatabaseType.MYSQL;
+            else if(systemService.isOracle())
+                type = SecureStringUtils.DatabaseType.ORACLE;
+            else if(systemService.isDB2())
+                type = SecureStringUtils.DatabaseType.DB2;
+            else if(systemService.isMsSQL())
+                type = SecureStringUtils.DatabaseType.MSSQL;
+            else if(systemService.isDerby()){
+                type = SecureStringUtils.DatabaseType.DERBY;
+            }
+
+            PSFieldSet systemFieldSet =
+                    PSServer.getContentEditorSystemDef().getFieldSet();
+
+            for(Map.Entry<String,String> field : fields.entrySet()){
+
+                PSField f = systemFieldSet.findFieldByName(field.getKey(), true);
+                if(f != null){
+                    if(f.getDataType().equalsIgnoreCase(PSField.DT_INTEGER) || f.getDataType().equalsIgnoreCase(PSField.DT_FLOAT)){
+                        if(!StringUtils.isNumeric(field.getValue())){
+                            throw new IllegalArgumentException(field.getKey() + " must have a numeric value for search");
+                        }
+                    }else if(f.getDataType().equalsIgnoreCase(PSField.DT_BOOLEAN)){
+                        Boolean b = BooleanUtils.toBoolean(field.getValue());
+                        if(b==null){
+                            throw new IllegalArgumentException(field.getKey() + " requires a boolean value.");
+                        }
+
+                    }else if(f.getDataType().equalsIgnoreCase(PSField.DT_DATE)){
+                        if(!SecureStringUtils.isValidDate(field.getValue())){
+                            throw new IllegalArgumentException(field.getKey() + " must be a valid date.");
+                        }
+                    }else if(f.getDataType().equalsIgnoreCase(PSField.DT_TIME)){
+                        if(!SecureStringUtils.isValidTime((field.getValue()))){
+                            throw new IllegalArgumentException(field.getKey() + " must be a valid time.");
+                        }
+                    }else if(f.getDataType().equalsIgnoreCase(PSField.DT_BINARY) || f.getDataType().equalsIgnoreCase(PSField.DT_IMAGE)){
+                        throw new IllegalArgumentException("Can't use Binary fields in Search criteria.");
+                    }else{
+                        //Unsure on data type so just make sure there is no SQL injection possible DT_TEXT is covered here.
+                        field.setValue(SecureStringUtils.sanitizeStringForSQLStatement(field.getValue(),type));
+                    }
+                }
+            }
+            //Update the criteria with any sanitized inputs
+            criteria.setSearchFields(fields);
+        }
+        return criteria;
     }
 
 }
