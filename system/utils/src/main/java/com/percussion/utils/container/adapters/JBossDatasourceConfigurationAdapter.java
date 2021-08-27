@@ -24,6 +24,7 @@
 
 package com.percussion.utils.container.adapters;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConfigurationAdapter;
 import com.percussion.utils.container.IPSJndiDatasource;
@@ -330,13 +331,13 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             {
                 String pw =  ds.getPassword();
                 try{
-                     pw = PSEncryptor.encryptString(PathUtils.getRxPath().toAbsolutePath().toString().concat(
-                             PSEncryptor.SECURE_DIR),ds.getPassword());
+                     pw = PSEncryptor.encryptProperty(PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                             PSEncryptor.SECURE_DIR),loginCfgFile.getAbsolutePath(),null,ds.getPassword());
 
                 } catch (PSEncryptionException e) {
-                    log.error("Error encrypting password: " + e.getMessage(),e);
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
+                    log.error("Error encrypting password: " + PSExceptionUtils.getMessageForLog(e),e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(e);
                 }
 
                 PSSecureCredentials cred = new PSSecureCredentials(
@@ -464,8 +465,8 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
             // TODO Auto-generated catch block
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
 
         return dsResolver;
@@ -485,8 +486,8 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         }
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
 
     }

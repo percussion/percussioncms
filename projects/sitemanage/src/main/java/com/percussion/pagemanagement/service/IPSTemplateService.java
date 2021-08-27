@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
@@ -261,6 +262,15 @@ public interface IPSTemplateService extends IPSDataService<PSTemplate, PSTemplat
     * @return <code>true</code> if the template is being used by one or more pages, <code>false</code> otherwise.
     */
    public boolean isAssociatedToPages(String templateId) throws PSValidationException;
+
+    /**
+     * Returns List of ids of pages associated with template.
+     *
+     * @param templateId never blank.
+     *
+     * @return List of pageIds if the template is being used by one or more pages.
+     */
+    public Collection<Integer> getPageIdsForTemplate(String templateId);
    
    /**
     * Returns the template with the specified id and without the content

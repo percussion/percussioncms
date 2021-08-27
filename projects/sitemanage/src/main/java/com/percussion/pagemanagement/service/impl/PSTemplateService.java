@@ -565,6 +565,10 @@ public class PSTemplateService implements IPSTemplateService
 
         return !pageDaoHelper.findPageIdsByTemplateInRecentRevision(templateId).isEmpty();
     }
+
+    public Collection<Integer> getPageIdsForTemplate(String templateId){
+        return pageDaoHelper.findPageIdsByTemplateInRecentRevision(templateId);
+    }
     
     private void updateBodyMarkupOrRegionTree(PSTemplate object) {
         /*
