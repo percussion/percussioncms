@@ -28,6 +28,7 @@ import static com.percussion.share.dao.PSSerializerUtils.unmarshalWithValidation
 import static com.percussion.share.dao.PSSerializerUtils.marshal;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.proxyconfig.service.impl.ProxyConfig.Password;
 import com.percussion.security.PSEncryptionException;
@@ -102,7 +103,7 @@ public class PSProxyConfigLoader
            proxyConfig = new PSProxyConfig(s);
            proxyConfigurations.add(proxyConfig);
            
-           configChanged = processPassword(s.getPassword(), proxyConfig, encrypterKey);
+           configChanged = processPassword(s.getPassword(), configFile,proxyConfig, encrypterKey);
        }
 
        if (configChanged)
@@ -118,7 +119,7 @@ public class PSProxyConfigLoader
     * @param encrypterKey 
     * @return true if the password was encrypted by the process. false if it was already encrypted.
     */
-   private boolean processPassword(Password pwd, PSProxyConfig proxyConfig, String encrypterKey)
+   private boolean processPassword(Password pwd,File configFile, PSProxyConfig proxyConfig, String encrypterKey)
    {
       if (pwd == null)
          return false;
@@ -127,26 +128,32 @@ public class PSProxyConfigLoader
        if (pwd.isEncrypted())
       {
           try {
-            decryptedPassword = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwdVal);
-          }catch (PSEncryptionException e){
-              decryptedPassword = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-              ).decrypt(pwdVal, encrypterKey,null);
+            decryptedPassword = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),configFile.getAbsolutePath(),null,pwdVal);
+          }catch (PSEncryptionException e) {
+              try {
+                  decryptedPassword = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), pwdVal);
+
+              } catch (PSEncryptionException pe) {
+                  decryptedPassword = PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                  ).decrypt(pwdVal, encrypterKey, null);
+
+              }
+              String enc = null;
+              try {
+                  enc = PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR), configFile.getAbsolutePath(), null, pwdVal);
+              } catch (PSEncryptionException e2) {
+                  log.error("Error encrypting password:{} " + e2.getMessage(), e2);
+                  enc = "";
+              }
+              pwd.setValue(enc);
+              pwd.setEncrypted(Boolean.TRUE);
+              proxyConfig.setPassword(decryptedPassword);
+              return true;
           }
           proxyConfig.setPassword(decryptedPassword);
           return false;
       }
-
-       String enc = null;
-       try {
-           enc = PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwdVal);
-       } catch (PSEncryptionException e) {
-           log.error("Error encrypting password: " + e.getMessage(), e);
-           enc = "";
-       }
-       pwd.setValue(enc);
-       pwd.setEncrypted(Boolean.TRUE);
-      
-      return true;
+       return false;
    }
 
    /**
@@ -167,7 +174,7 @@ public class PSProxyConfigLoader
       catch (IOException e)
       {
           log.error("Error writing the proxy configuration file: " +
-                  e.getMessage());
+                  PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {

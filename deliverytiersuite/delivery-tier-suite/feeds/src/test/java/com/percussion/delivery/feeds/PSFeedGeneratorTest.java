@@ -27,6 +27,8 @@ import com.percussion.delivery.feeds.data.IPSFeedDescriptor;
 import com.percussion.delivery.feeds.data.PSFeedItem;
 import junit.framework.TestCase;
 import org.apache.commons.validator.routines.InetAddressValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ import java.util.Properties;
 public class PSFeedGeneratorTest extends TestCase
 {
 
+    private static final Logger log = LogManager.getLogger(PSFeedGeneratorTest.class);
     private final String PERC_FEEDS_PROPERTIES = "/feeds.properties";
     private final String FEEDS_IP_DEFAULT="127.0.0.1";
     public void testMakeFeedContent() throws Exception
@@ -79,7 +82,7 @@ public class PSFeedGeneratorTest extends TestCase
         
         String feed = generator.makeFeedContent(desc, "www.google.com", items);
         
-        System.out.println(feed);
+        log.info(feed);
         
     }  
     

@@ -26,6 +26,7 @@ package com.percussion.assetmanagement.dao.impl;
 import com.percussion.assetmanagement.dao.IPSAssetDao;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNode;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
@@ -199,8 +200,8 @@ public class PSAssetDao implements IPSAssetDao
             try {
                 assets.add(find(idMapper.getString(node.getGuid())));
             } catch (PSDataServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
                 //continue processing
             }
         }        
@@ -240,10 +241,17 @@ public class PSAssetDao implements IPSAssetDao
 	private static final String ALL_IMAGE_ASSET_QUERY="select rx:sys_contentid from rx:percImageAsset order by jcr:path asc";
 	private static final String ALL_IMAGE_ASSET_REPORT="All Image Assets";
 
+    private static final String ALL_ENCRYPTED_CONTENT_ASSET_QUERY="select rx:sys_contentid from rx:percRssAsset,rx:percFormAsset ";
+    private static final String ALL_ENCRYPTED_CONTENT_ASSET_REPORT="All Assets with Encrypted Content";
+
 	@Override
 	public List<PSAsset> findAllImageAssets() throws PSReportFailedToRunException {
 		return runReport(ALL_IMAGE_ASSET_QUERY,ALL_IMAGE_ASSET_REPORT);		
 	}
+
+	public List<PSAsset> findAllAssetsUsingEncryption() throws PSReportFailedToRunException {
+        return runReport(ALL_ENCRYPTED_CONTENT_ASSET_QUERY,ALL_ENCRYPTED_CONTENT_ASSET_REPORT);
+    }
 	
     private List<PSAsset> runReport(String query, String reportName) throws PSReportFailedToRunException{
 	ArrayList<PSAsset> ret = new ArrayList<>();
@@ -269,8 +277,8 @@ public class PSAssetDao implements IPSAssetDao
 			it = results.getNodes();
 		} catch (RepositoryException e) {
 			log.error("An error occurred retrieving the {} report from the Content Repository. Error: {}",  reportName,
-                    e.getMessage());
-			log.debug(e.getMessage(),e);
+                    PSExceptionUtils.getMessageForLog(e));
+			log.debug(e);
 			return ret;
 		}
 		
@@ -283,8 +291,8 @@ public class PSAssetDao implements IPSAssetDao
 				contentItem = contentItemDao.find(idMapper.getString(node.getGuid()), true);
 			} catch (PSDataServiceException e) {
 				log.error("An error occurred retrieving an Image Asset for the  {} report from the Content Repository. Error: {}",reportName,
-                        e.getMessage());
-				log.debug(e.getMessage(),e);
+                        PSExceptionUtils.getMessageForLog(e));
+				log.debug(e);
 			}
             
 			if(null != contentItem ){

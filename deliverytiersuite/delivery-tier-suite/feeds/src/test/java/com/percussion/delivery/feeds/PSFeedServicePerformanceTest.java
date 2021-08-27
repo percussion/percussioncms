@@ -24,11 +24,14 @@
 
 package com.percussion.delivery.feeds;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.junitrunners.Concurrent;
 import com.percussion.junitrunners.ConcurrentJunitRunner;
 import com.percussion.junitrunners.Server;
 import com.percussion.junitrunners.Threshold;
 import com.rometools.rome.io.FeedException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -52,6 +55,7 @@ import static org.junit.Assert.assertTrue;
 @Server(url="http://localhost:9980/",siteName="Site1",feedName="feeds1")
 public class PSFeedServicePerformanceTest
 {
+    private static final Logger log = LogManager.getLogger(PSFeedServicePerformanceTest.class);
     private static int sum = 0;
     private static int Threshold = 0;
     private static String URL = "";
@@ -70,7 +74,7 @@ public class PSFeedServicePerformanceTest
     @AfterClass
     public static void average() throws Throwable
     {
-        System.out.println("Average: " + (sum / 100));
+        log.info("Average: {}", (sum / 100));
         assertTrue((sum / 100) < Threshold);
     }
     
@@ -189,6 +193,8 @@ public class PSFeedServicePerformanceTest
 
         }catch (Exception e)
             {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
                 throw new FeedException(e.getLocalizedMessage(), e);
             }
 

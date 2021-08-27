@@ -514,7 +514,7 @@ public class PSPageRestService
                     PSServer.getContentEditorSystemDef().getFieldSet();
 
             for(Map.Entry<String,String> field : fields.entrySet()){
-
+              
                 PSField f = systemFieldSet.findFieldByName(field.getKey(), false);
                 if(f!= null) {
                     if (f.getDataType().equalsIgnoreCase(PSField.DT_INTEGER) || f.getDataType().equalsIgnoreCase(PSField.DT_FLOAT)) {

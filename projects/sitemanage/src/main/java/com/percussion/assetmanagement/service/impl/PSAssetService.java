@@ -54,6 +54,7 @@ import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.PSAssetSiteImpact;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
@@ -361,7 +362,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 				ret.add(row);
 				i++;
 			}catch(Exception e){
-				log.warn("Skipping asset due to error: " + e.getMessage());
+				log.warn("Skipping asset due to error: " + PSExceptionUtils.getMessageForLog(e));
 				log.debug(e);
 			}
 
@@ -815,8 +816,8 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
                 try {
 					fields.put(SYS_WORKFLOWID, "" + itemWorkflowService.getLocalContentWorkflowId());
 				} catch (PSItemWorkflowServiceException e) {
-					log.error(e.getMessage());
-					log.debug(e.getMessage(),e);
+					log.error(PSExceptionUtils.getMessageForLog(e));
+					log.debug(e);
 				}
 				fields.put(IPSHtmlParameters.SYS_TITLE, newName);
                 PSAsset newAsset = save(asset);
@@ -1414,7 +1415,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 			} catch (PSDataServiceException e) {
 				log.error("Error loading asset with id: {} Error: {}",
 						request.getWidgetId(),
-						e.getMessage());
+						PSExceptionUtils.getMessageForLog(e));
 			}
 		}
 
@@ -1615,7 +1616,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     	try {
 			return assetDao.find(id, isSummary);
 		} catch (PSDataServiceException e) {
-			throw new PSAssetServiceException(e.getMessage(),e);
+			throw new PSAssetServiceException(PSExceptionUtils.getMessageForLog(e),e);
 		}
 	}
 
@@ -1746,7 +1747,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             return richTextAsset;
         } catch (PSDataServiceException e) {
         	log.error(CREATE_ASSET_ERROR_MESSAGE);
-        	log.debug(e.getMessage(),e);
+        	log.debug(e);
 			throw new PSAssetServiceException(CREATE_ASSET_ERROR_MESSAGE,e);
 		}
     }
@@ -2123,6 +2124,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 
         return newName;
     }
+
 
     public PSAbstractBeanValidator<PSAssetWidgetRelationship> assetWidgetRelationshipValidator;
 
