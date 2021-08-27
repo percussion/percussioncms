@@ -89,6 +89,8 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -142,6 +144,7 @@ public class PSPubServerService implements IPSPubServerService
     private final IPSUtilityService utilityService;
     private static Boolean isEC2Instance = null;
     private IPSPublishingWs pubWs;
+    private SecureKeyRotationListener secureKeyRotationListener;
 
 
 
@@ -168,9 +171,13 @@ public class PSPubServerService implements IPSPubServerService
         handlerMap = new HashMap<>();
         handlerMap.putAll(generatePubServerHandlerMap());
 
-
-
         lockMgr = new PSNamedLockManager(5000);
+
+        //Adding Secure Key Rotation Listener, such that Encrypted Pwds can be reencrypted
+        // on rotation of secure key.
+        secureKeyRotationListener = new SecureKeyRotationListener();
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES", PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+        encryptor.addPropertyChangeListener(secureKeyRotationListener);
     }
 
     /**
@@ -267,20 +274,13 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception e)
         {
-            throw new PSPubServerServiceException(e.getMessage(), e);
+            throw new PSPubServerServiceException(PSExceptionUtils.getMessageForLog(e), e);
         }
 
         return serverInfo;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.percussion.pubserver.IPSPubServerService#getPubServerList()
-     */
-    @Override
-    public List<PSPublishServerInfo> getPubServerList(String siteId) throws PSPubServerServiceException
+    private List<PSPublishServerInfo> getPubServerList(String siteId,boolean loadProperties) throws PSPubServerServiceException
     {
         if (isBlank(siteId)) {
             throw new IllegalArgumentException(SITEID_NOT_BLANK);
@@ -313,6 +313,18 @@ public class PSPubServerService implements IPSPubServerService
             throw new PSPubServerServiceException(msg, ex);
         }
         return serversList;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.percussion.pubserver.IPSPubServerService#getPubServerList()
+     */
+    @Override
+    public List<PSPublishServerInfo> getPubServerList(String siteId) throws PSPubServerServiceException
+    {
+        return getPubServerList(siteId,false);
     }
 
     private boolean isDatabaseType(String type)
@@ -551,8 +563,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception e)
         {
-            log.error("Failed to clear the incremental queue for site: {}, Error: {}" , site.getName(), e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Failed to clear the incremental queue for site: {}, Error: {}" , site.getName(), PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
     }
 
@@ -635,8 +647,8 @@ public class PSPubServerService implements IPSPubServerService
                 deletePubServer(pubServer);
             } catch (PSPubServerServiceException | PSNotFoundException e) {
                 log.error("Error deleting publishing server: {} Error:{}",
-                        pubServer.getName(),e.getMessage());
-                log.debug(e.getMessage(),e);
+                        pubServer.getName(),PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
             }
         }
     }
@@ -690,8 +702,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch(Exception e)
         {
-            log.error("The site {} does not exist. Error: {}" , siteId, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("The site {} does not exist. Error: {}" , siteId, PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
 
         if (publishType.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_LOCAL))
@@ -2040,7 +2052,7 @@ public class PSPubServerService implements IPSPubServerService
             return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
 
         } catch (PSEncryptionException e) {
-            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
+            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",PSExceptionUtils.getMessageForLog(e));
             try {
                 PSAesCBC aes = new PSAesCBC();
                 return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
@@ -2175,8 +2187,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch(Exception e)
         {
-            log.error("Error finding the pub server for the supplied id: {}, Error: {}" , serverId, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error finding the pub server for the supplied id: {}, Error: {}" , serverId, PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
 
         }
         return server;
@@ -2201,6 +2213,38 @@ public class PSPubServerService implements IPSPubServerService
             PSPubServer currentDefaultServer = getDefaultPubServer(site.getGUID());
             String adminUrl = currentDefaultServer.getPropertyValue("publishServer");
             return adminUrl;
+        }
+    }
+
+    public class SecureKeyRotationListener implements PropertyChangeListener{
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            //find all sites and update Encrypetd Properties
+            List<IPSSite> sites = siteMgr.findAllSites();
+            String secureDir = PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR);
+            if(sites == null || sites.isEmpty()){
+                return;
+            }
+            for(IPSSite site: sites){
+                String siteId = site.getSiteId().toString();
+                try {
+                    List<PSPublishServerInfo> pubServerInfo = getPubServerList(siteId,true);
+                    if(pubServerInfo == null || pubServerInfo.isEmpty()){
+                        continue;
+                    }
+                    for (PSPublishServerInfo pubInfo:pubServerInfo){
+                        try {
+                            updatePubServer(siteId, pubInfo.getServerName(), pubInfo);
+                        } catch (PSDataServiceException | PSNotFoundException e) {
+                            log.error("Secure Key Rotation Failed to update Encryption for site {} Server : {} ERROR: {}", siteId, pubInfo.getServerName(), PSExceptionUtils.getMessageForLog(e));
+                        }
+                    }
+
+                } catch (PSPubServerServiceException e) {
+                    log.error("Secure Key Rotation Failed to update Encryption for site {}. ERROR: {}",siteId,PSExceptionUtils.getMessageForLog(e));
+                }
+            }
         }
     }
 

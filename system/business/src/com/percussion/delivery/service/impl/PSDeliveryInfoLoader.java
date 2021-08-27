@@ -28,6 +28,7 @@ import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.impl.DeliveryServer.Password;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.config.PSServerConfigException;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.security.PSEncryptionException;
@@ -111,7 +112,7 @@ public class PSDeliveryInfoLoader
             {
                 String decryptedPassword = "";
                 try{
-                    decryptedPassword = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwdVal);
+                    decryptedPassword = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),configFile.getAbsolutePath(),null,pwdVal);
                 }catch(Exception e){
                      decryptedPassword = PSLegacyEncrypter.getInstance(
                              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
@@ -128,7 +129,7 @@ public class PSDeliveryInfoLoader
             try {
                 enc = PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwdVal);
             } catch (PSEncryptionException e) {
-                log.error("Error encrypting password: " + e.getMessage(),e);
+                log.error("Error encrypting password: " + PSExceptionUtils.getMessageForLog(e),e);
             }
             pwd.setValue(enc);
             pwd.setEncrypted(Boolean.TRUE);
@@ -149,7 +150,7 @@ public class PSDeliveryInfoLoader
             catch (IOException e)
             {
                 log.error("Error writing the delivery servers file: " +
-                        e.getMessage());
+                        PSExceptionUtils.getMessageForLog(e));
             }
             finally
             {
