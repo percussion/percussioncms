@@ -143,6 +143,11 @@
             </fileset>
         </copy>
 
+        <mkdir dir="${assembly-directory}/rxconfig/esapi"/>
+        <copy todir="${assembly-directory}/rxconfig/esapi">
+            <fileset dir="${basedir}/../perc-security-utils/src/main/resources/esapi" includes="**/*"/>
+        </copy>
+
         <!-- Install Velocity Configuration Files -->
         <mkdir dir="${assembly-directory}/rxconfig/velocity"/>
         <copy todir="${assembly-directory}/rxconfig/velocity">

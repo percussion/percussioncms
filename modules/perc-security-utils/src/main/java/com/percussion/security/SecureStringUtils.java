@@ -28,11 +28,11 @@ import com.github.javafaker.Faker;
 import com.ibm.icu.text.Normalizer2;
 import org.apache.commons.lang3.StringUtils;
 import org.owasp.encoder.Encode;
-import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.codecs.Codec;
 import org.owasp.esapi.codecs.DB2Codec;
 import org.owasp.esapi.codecs.MySQLCodec;
 import org.owasp.esapi.codecs.OracleCodec;
+import org.owasp.esapi.reference.DefaultEncoder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -382,7 +382,8 @@ public class SecureStringUtils {
         if(codec == null) {
             return sanitizeStringForSQLStatement(str);
         }else{
-            return ESAPI.encoder().encodeForSQL(codec,str);
+
+            return DefaultEncoder.getInstance().encodeForSQL(codec,str);
         }
     }
 
