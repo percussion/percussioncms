@@ -239,6 +239,15 @@
                 <include name=".legacy-key"/>
             </fileset>
         </copy>
+
+        <mkdir dir="${install.dir}/rxconfig/esapi"/>
+        <copy todir="${install.dir}/rxconfig/esapi/"
+              failonerror="true" overwrite="false" verbose="true">
+            <fileset dir="${install.src}/rxconfig/esapi/" defaultexcludes="no">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
         <echo>Configuring Datasource...</echo>
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
         <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}"/>
