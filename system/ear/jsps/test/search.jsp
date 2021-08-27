@@ -17,6 +17,7 @@
 <%@ page import="java.util.regex.Pattern" %>
 <%@ page import="java.util.regex.Matcher" %>
 <%@ page import="com.percussion.error.PSExceptionUtils" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%
@@ -51,7 +52,7 @@
    String lastquery = request.getParameter("querybody");
    if (lastquery == null || lastquery.trim().length() == 0)
    {
-      lastquery = "select rx:displaytitle, jcr:path from rx:rffgeneric";
+      lastquery = "select rx:sys_contentid, rx:sys_title, jcr:path from rx:percPage";
    }
    lastquery = sanitizeForHtml(lastquery);
 
@@ -186,8 +187,10 @@
          Map pmap = new HashMap();
          for (int i = 0; i < allNames.length; i++)
          {
-            String pNameLoop = sanitizeForHtml(allNames[i]);
-            String pValLoop = sanitizeForHtml(allValues[i]);
+            String pNameLoop = SecureStringUtils.sanitizeStringForSQLStatement(
+                    sanitizeForHtml(allNames[i]));
+            String pValLoop = SecureStringUtils.sanitizeStringForSQLStatement(
+                    sanitizeForHtml(allValues[i]));
             if (pNameLoop.trim().length() > 0 && pValLoop.trim().length() > 0)
             {
                out.println(pNameLoop + " " + pValLoop);
