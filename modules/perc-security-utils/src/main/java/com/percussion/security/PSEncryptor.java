@@ -26,15 +26,16 @@ package com.percussion.security;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
@@ -49,8 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Main encryption class to be used for Encryption within the code base.
@@ -73,8 +72,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     public static final String SECRETKEY_PROPNAME="secretKey";
 
-    private static Map propertyFilesWithPassword = new HashMap<String, List<String>>();
-    private static Map xmlFilesWithPassword = new HashMap<String, List<String>>();
+    private static Map<String, List<String>> propertyFilesWithPassword = new HashMap();
+    private static Map<String, List<String>> xmlFilesWithPassword = new HashMap();
 
 
     private static File getRxDir(String path){
@@ -139,12 +138,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
                 writer.write(secureKey);
             }
             key.setSecret(secureKey);
-            //Notify any listeners that the key has changed.
-            pcs.firePropertyChange(
-                    SECRETKEY_PROPNAME,
-                    this.secretKey,  //old value
-                    secureKey //new value
-            );
+
         } catch (IOException e) {
             log.error("Error writing instance secure key file: (" + secureKeyFile.toAbsolutePath().toString() + ")" + ") :" + e.getMessage());
             log.debug(e);
@@ -184,6 +178,9 @@ public class PSEncryptor extends PSAbstractEncryptor {
                 byte[] oldSecureKeyByte=null;
                 try {
                     oldSecureKeyByte = Files.readAllBytes(oldSecureKeyFile);
+                    if(oldSecretKey == null) {
+                        oldSecretKey = PSEncryptionKeyFactory.getKeyGenerator(algorithm);
+                    }
                     oldSecretKey.setSecret(oldSecureKeyByte);
                 } catch (IOException e) {
                     log.error("Error reading instance Oldsecure key file ({}): {}",oldSecureKeyFile.toAbsolutePath().toString(), e.getMessage());
@@ -201,6 +198,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
             }
         }
         key.setSecret(secureKey);
+        this.secretKey = key;
+        notifyKeyRotation();
         return key;
     }
 
@@ -217,6 +216,19 @@ public class PSEncryptor extends PSAbstractEncryptor {
         return secureFile.exists();
     }
 
+    private void notifyKeyRotation(){
+        //Notify any listeners that the key has changed.
+
+        pcs.firePropertyChange(
+                SECRETKEY_PROPNAME,
+                oldSecretKey,  //old value
+                secretKey //new value
+        );
+
+        rotatePropertyFileKeys();
+        rotateXMLFileKeys();
+    }
+
     /**
      * If using this API, then Pwd will not be reencrypted on rotation of key
      * Either add listener to rotation or use encryptProperty(...) API
@@ -229,23 +241,6 @@ public class PSEncryptor extends PSAbstractEncryptor {
         PSEncryptor encryptor = PSEncryptor.getInstance("AES",secureDir);
         String decryptStr = encryptor.encrypt(value);
         return decryptStr;
-    }
-
-    /**
-     * If using this API, then Pwd will not be reencrypted on rotation of key
-     * Either add listener to rotation or use encryptProperty(...) API
-     * @param value
-     * @return
-     * @throws PSEncryptionException
-     */
-
-    public static String encryptString(String value) throws PSEncryptionException {
-       return encryptString(getRxDir(null).getAbsolutePath() + SECURE_DIR, value);
-    }
-
-
-    public static String decryptString(String value) throws PSEncryptionException {
-        return decryptString(getRxDir(null).getAbsolutePath() + SECURE_DIR, value);
     }
 
     public static String decryptString(String secureDir,String value) throws PSEncryptionException {
@@ -303,10 +298,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
     /**
      * Use this method when creating PasswordVault
-     * @param oldKey
-     * @param newKey
      */
-    private static void rotatePropertyFileKeys(String oldKey,String newKey){
+    private static void rotatePropertyFileKeys(){
         for(Object propertyFile : propertyFilesWithPassword.keySet() ){
             List encPwds = (List) propertyFilesWithPassword.get(propertyFile);
             File propFile = new File(propertyFile.toString());
@@ -316,8 +309,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
                 for (Object propKey:encPwds) {
                     String pwd = props.getProperty((String) propKey);
                     if(pwd != null){
-                        String decryptPwd = decryptString(pwd);
-                        String encPwd = encryptString(decryptPwd);
+                        String decryptPwd = instance.decrypt(pwd);
+                        String encPwd = instance.encrypt(decryptPwd);
                         props.setProperty((String) propKey,encPwd);
                     }
                 }
@@ -329,37 +322,38 @@ public class PSEncryptor extends PSAbstractEncryptor {
         }
     }
 
-    private static void rotateXMLFileKeys(String oldKey,String newKey){
-//            for(Object propertyFile : xmlFilesWithPassword.keySet() ){
-//                List encPwds = (List)xmlFilesWithPassword.get(propertyFile);
-//                File absFile = new File(propertyFile.toString());
-//                try {
-//                    Stream<String> lines = Files.lines(absFile.toPath());
-//
-//
-//                    for (Object enpw:encPwds) {
-//                        String dePwd = decryptString((String)enpw);
-//                        String nPwd = encryptString(dePwd);
-//
-//
-//                    }
-//                    List <String> replaced = lines.map(
-//                            line -> line.replaceAll("foo", "bar")
-//
-//                    ).collect(Collectors.toList());
-//                    Files.write(absFile.toPath(), replaced);
-//                    lines.close();
-//                    System.out.println("Find and Replace done!!!");
-//                } catch (IOException | PSEncryptionException e) {
-//                    e.printStackTrace();
-//                }
+    private static void rotateXMLFileKeys() {
+        for (Object propertyFile : xmlFilesWithPassword.keySet()) {
+            try {
+                List<String> encPwds = (List) xmlFilesWithPassword.get(propertyFile);
 
-  //          }
+                File absFile = new File(propertyFile.toString());
 
+                try (FileReader fr = new FileReader(absFile)) {   //reads the file
+                    BufferedReader br = new BufferedReader(fr);  //creates a buffering character input stream
+                    StringBuffer sb = new StringBuffer();    //constructs a string buffer with no characters
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        for (String oldPw : encPwds) {
+                            String dePwd = instance.decrypt((String) oldPw);
+                            String newPwd = instance.encrypt(dePwd);
+                            line.replaceAll(oldPw,newPwd);
+                        }
+                        sb.append(line);      //appends line to string buffer
+                        sb.append("\n");     //line feed
+                    }
+                    fr.close();    //closes the stream and release the resources
+                    log.info("Passwords rotated in File : {}" + absFile.getAbsolutePath() );
+                } catch (IOException e) {
+                   log.error("Rotation Of Password Failed in XML File Updates");
+                }
+
+            } catch (PSEncryptionException pe) {
+                log.error("Reencryption Failed on Rotation Of Password in XML File Updates");
+            }
+
+        }
     }
-
-
-
 
     private static PSEncryptor instance;
 
@@ -419,7 +413,11 @@ public class PSEncryptor extends PSAbstractEncryptor {
         try {
             Files.createFile(rotateFlag);
             synchronized (PSEncryptor.class) {
-                instance = new PSEncryptor(algorithm,keyLocation);
+                if(instance == null) {
+                    instance = new PSEncryptor(algorithm, keyLocation);
+                }else{
+                    instance.loadKey(algorithm,keyLocation);
+                }
             }
         } catch (IOException e) {
             log.warn("Unable to rotate Key ERROR: {} .",e.getMessage());

@@ -79,6 +79,14 @@ public interface IPSAssetDao extends IPSGenericDao<PSAsset, String>
      * @return collection of assets, never <code>null</code>, may be empty.
      */
     public Collection<PSAsset> findByTypeAndName(String type, String name) throws LoadException;
+
+	/**
+	 * Finds all assets that use Encryption and needs republish in case of key rotation.
+	 *
+	 *
+	 * @return collection of assets, never <code>null</code>, may be empty.
+	 */
+	public Collection<PSAsset> findAllAssetsUsingEncryption() throws LoadException, PSReportFailedToRunException;
     
     /**
      * Finds all assets of the specified type

@@ -25,6 +25,7 @@ package com.percussion.itemmanagement.service.impl;
 
 import com.percussion.assetmanagement.dao.IPSAssetDao;
 import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.assetmanagement.data.PSReportFailedToRunException;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSAssetRestService;
 import com.percussion.auditlog.PSActionOutcome;
@@ -36,6 +37,7 @@ import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.PSAssetSiteImpact;
 import com.percussion.itemmanagement.data.PSComment;
 import com.percussion.itemmanagement.data.PSItemDates;
@@ -49,9 +51,16 @@ import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pathmanagement.data.PSFolderPermission;
+import com.percussion.security.PSEncryptor;
+import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.content.data.PSItemSummary;
+import com.percussion.services.contentchange.IPSContentChangeService;
+import com.percussion.services.contentchange.data.PSContentChangeEvent;
+import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.guidmgr.PSGuidUtils;
+import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.linkmanagement.IPSManagedLinkDao;
 import com.percussion.services.linkmanagement.data.PSManagedLink;
 import com.percussion.services.notification.IPSNotificationListener;
@@ -88,9 +97,11 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
+import com.percussion.webservices.publishing.IPSPublishingWs;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.ArrayUtils;
@@ -112,10 +123,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -163,9 +177,14 @@ public class PSItemService implements IPSItemService
     IPSPublisherService pubService;
     IPSManagedLinkDao linkService;
     @Autowired
+    IPSPublishingWs publishingWs;
+    @Autowired
+    IPSContentChangeService changeService;
+    @Autowired
     IPSRelationshipService relationshipService;
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
     private PSContentEvent psContentEvent;
+    private SecureKeyRotationListener secureKeyRotationListener;
 
 
 
@@ -208,7 +227,11 @@ public class PSItemService implements IPSItemService
             }
         });
 
-
+        //Adding Secure Key Rotation Listener, such that Assets with Encryption can republish
+        //pages after reencrypting using new key on rotation of secure key.
+        secureKeyRotationListener = new SecureKeyRotationListener();
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES", PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+        encryptor.addPropertyChangeListener(secureKeyRotationListener);
     }
 
     @GET
@@ -284,8 +307,8 @@ public class PSItemService implements IPSItemService
             return new PSItemPublishingHistoryList(pubHistoryList);
         }
         catch(Exception e){
-        	log.error("Error fetching the publishing history for the supplied id: {} Error: {}", id, e.getMessage());
-            log.debug(e.getMessage(),e);
+        	log.error("Error fetching the publishing history for the supplied id: {} Error: {}", id, PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         	throw new WebApplicationException("An unexpected error occurred while fetching the publishing history, " +
         			"see log for details.");
         }
@@ -365,9 +388,9 @@ public class PSItemService implements IPSItemService
 
             return new PSNoContent("Item with id " + id + " has been restored.");
         } catch (PSValidationException | PSItemServiceException | PSNotFoundException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e.getMessage());
+            log.error("Restore Revision Failed. Error: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -389,8 +412,8 @@ public class PSItemService implements IPSItemService
 				fillOwners(id, ownerPages, ownerTemplates);
 				getManagedLinkOwners(id, ownerPages, ownerTemplates,MAX_PAGES_SITEIMPACT);
 			}catch(Exception e){
-				log.error("Error processing Site Impact for owner Pages and Templates for Asset id: {} Error: {}" ,id, e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error("Error processing Site Impact for owner Pages and Templates for Asset id: {} Error: {}" ,id, PSExceptionUtils.getMessageForLog(e));
+				log.debug(e);
 				//continue
 			}
 
@@ -399,8 +422,8 @@ public class PSItemService implements IPSItemService
                 try{
                 	impact.getOwnerPages().add(folderHelper.findItemPropertiesById(page));
                 }catch(Exception e){
-                	log.error("Error processing Site Impact with owner Page {} for Asset id: {} Error: {}",page, id, e.getMessage());
-                	log.debug(e.getMessage(),e);
+                	log.error("Error processing Site Impact with owner Page {} for Asset id: {} Error: {}",page, id, PSExceptionUtils.getMessageForLog(e));
+                	log.debug(e);
                 }
 
                 List<IPSSite> sites = new ArrayList<>();
@@ -410,8 +433,8 @@ public class PSItemService implements IPSItemService
                 	log.error("Error processing Site Impact detecting owner Site for Page {} for Asset id: {} Error: {}",
                              page,
                              id,
-                             e.getMessage());
-                	log.debug(e.getMessage(),e);
+                             PSExceptionUtils.getMessageForLog(e));
+                	log.debug(e);
                 }
 
                 ownerSites.addAll(sites);
@@ -466,8 +489,8 @@ public class PSItemService implements IPSItemService
             	try{
                  itemProps = folderHelper.findItemPropertiesById(page);
             	}catch(Exception e){
-            		log.error("An error occurred while processing Asset Impact checking item properties for Page: {} Error: {}", page,e.getMessage());
-            		log.debug(e.getMessage(),e);
+            		log.error("An error occurred while processing Asset Impact checking item properties for Page: {} Error: {}", page,PSExceptionUtils.getMessageForLog(e));
+            		log.debug(e);
             	}
             	if(itemProps != null) {
 					pageArray.add(itemProps);
@@ -480,8 +503,8 @@ public class PSItemService implements IPSItemService
             	try{
             		template = templateService.find(templateId);
             	}catch(Exception e){
-            		log.error("An error occurred while processing Asset Impact with Template {} Error: {}",templateId,e.getMessage());
-            		log.debug(e.getMessage(),e);
+            		log.error("An error occurred while processing Asset Impact with Template {} Error: {}",templateId,PSExceptionUtils.getMessageForLog(e));
+            		log.debug(e);
             	}
 
 
@@ -537,8 +560,8 @@ public class PSItemService implements IPSItemService
     	try{
     		owners = waRelService.getRelationshipOwners(assetId,true);
     	}catch(Exception e){
-            log.error("An error occurred looking up relationships for Asset {} while processing Site Impact Error: {}", assetId,e.getMessage() );
-            log.debug(e.getMessage(),e);
+            log.error("An error occurred looking up relationships for Asset {} while processing Site Impact Error: {}", assetId,PSExceptionUtils.getMessageForLog(e) );
+            log.debug(e);
     	}
     	if(owners != null){
         for (String owner : owners)
@@ -574,8 +597,8 @@ public class PSItemService implements IPSItemService
                             fillOwners(parent.getId(), ownerPages, ownerTemplates);
                         }
                     } catch (PSDataServiceException e) {
-                        log.warn(e.getMessage());
-                        log.debug(e.getMessage(),e);
+                        log.warn(PSExceptionUtils.getMessageForLog(e));
+                        log.debug(e);
                         //continue processing
                     }
                 }else{
@@ -937,9 +960,9 @@ public class PSItemService implements IPSItemService
 
             return itemDates;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1062,7 +1085,7 @@ catch (Exception e){
             return new PSSoProMetadata(id, metadata);
 
         } catch (PSDataServiceException e) {
-            throw new WebApplicationException(e.getMessage());
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1129,7 +1152,7 @@ catch (Exception e){
                     try {
                         linkedPages.addAll(getPageLinkItem(depLocator, s, null));
                     } catch (Exception e) {
-                        log.warn(e.getMessage());
+                        log.warn(PSExceptionUtils.getMessageForLog(e));
                     }
                 }
 
@@ -1137,9 +1160,9 @@ catch (Exception e){
             linkedPages.addAll(relationships);
             return linkedPages;
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1360,7 +1383,7 @@ catch (Exception e){
 
             return new PSNoContent("Successfully added page to my pages");
         } catch (PSValidationException | IPSGenericDao.SaveException e) {
-           throw new WebApplicationException(e.getMessage());
+           throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1378,8 +1401,8 @@ catch (Exception e){
 
             return new PSNoContent("Successfully added page to my pages");
         } catch (PSValidationException | IPSGenericDao.SaveException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             throw new WebApplicationException(e);
         }
     }
@@ -1397,7 +1420,7 @@ catch (Exception e){
 
         return new PSNoContent("Successfully removed page from my pages");
         } catch (PSValidationException e) {
-            throw new WebApplicationException(e.getMessage());
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1415,7 +1438,7 @@ catch (Exception e){
             result = userItem != null;
             return result;
         } catch (PSValidationException e) {
-           throw new WebApplicationException(e.getMessage());
+           throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1597,12 +1620,67 @@ catch (Exception e){
 					items.add(itemProps);
 				}
             } catch (IPSDataService.DataServiceLoadException | IPSGenericDao.LoadException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(e);
                 //continue processing
             }
         }
         return new PSItemPropertiesList(items);
+    }
+
+
+    public class SecureKeyRotationListener implements PropertyChangeListener {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            try {
+                Set processedPages = new HashSet();
+                Collection<PSAsset> assets = assetDao.findAllAssetsUsingEncryption();
+                for (PSAsset asset:assets) {
+                    Set<String> pages = waRelService.getRelationshipOwners(asset.getId());
+                    for(String page : pages) {
+                        if(workflowHelper.isTemplate(page)){
+                            Collection<Integer> pageIds = templateService.getPageIdsForTemplate(page);
+                            for(Integer pageContentId:pageIds){
+                                if (processedPages.contains(pageContentId.intValue())) {
+                                    continue;
+                                }
+                                if(addToIncrementalQueue(pageContentId)) {
+                                    processedPages.add(pageContentId.intValue());
+                                }
+                            }
+                        }else if(workflowHelper.isPage(page)) {
+                            int contentId = ((PSLegacyGuid) idMapper.getGuid(page)).getContentId();
+                            if (processedPages.contains(contentId)) {
+                                continue;
+                            }
+                            if(addToIncrementalQueue(contentId)) {
+                                processedPages.add(contentId);
+                            }
+                        }
+                        }
+                    }
+
+            } catch (PSReportFailedToRunException | PSValidationException | PSNotFoundException | IPSGenericDao.LoadException  e) {
+               log.error("Secure Key Rotation Failed to get Asset Pages with Encryption. ERROR: {}",PSExceptionUtils.getMessageForLog(e));
+            }
+        }
+
+        private boolean addToIncrementalQueue(int pageId){
+            try {
+                IPSGuid contentGuid = PSGuidUtils.makeGuid(pageId, PSTypeEnum.LEGACY_CONTENT);
+                PSContentChangeEvent changeEvent = new PSContentChangeEvent();
+                changeEvent.setChangeType(PSContentChangeType.PENDING_LIVE);
+                changeEvent.setContentId(pageId);
+                IPSSite site = publishingWs.getItemSites(contentGuid).get(0);
+                changeEvent.setSiteId(site.getSiteId());
+                changeService.contentChanged(changeEvent);
+
+            } catch (IPSGenericDao.SaveException  e) {
+                log.error("Secure Key Rotation Failed to add page : {} to Incremental Queue. ERROR: {}", pageId, PSExceptionUtils.getMessageForLog(e));
+                return false;
+            }
+            return true;
+        }
     }
     
     public  static final String PAGE = "page";

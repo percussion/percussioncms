@@ -23,6 +23,9 @@
  */
 package com.percussion.ant;
 
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -64,6 +67,9 @@ import java.util.jar.JarFile;
 @Deprecated
 public class PSCheckVersion extends Task
 {
+
+   private static final Logger log = LogManager.getLogger(PSCheckVersion.class);
+
    @Override
    public void execute() throws BuildException
    {
@@ -131,6 +137,8 @@ public class PSCheckVersion extends Task
       }
       catch (Exception e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
          throw new BuildException(e);
       }
       finally
@@ -144,7 +152,9 @@ public class PSCheckVersion extends Task
             }
             catch (IOException e)
             {
-               System.out.println("An unexpected error occurred: " + e.getMessage());
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(e);
+               log.info("An unexpected error occurred: " + e.getMessage());
             }
          }
       }
@@ -220,6 +230,8 @@ public class PSCheckVersion extends Task
       }
       catch (IOException e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
          throw new BuildException("Error loading " + VERSION_FILE);
       }
       finally
@@ -233,6 +245,8 @@ public class PSCheckVersion extends Task
             }
             catch (IOException e)
             {
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(e);
             }
          }
       }
