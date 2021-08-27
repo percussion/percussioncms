@@ -24,6 +24,7 @@
 
 package com.percussion.delivery.test;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.logging.log4j.LogManager;
@@ -66,9 +67,9 @@ public class TestMultiConcurrentCallsToServer {
             }
             for(Future<String> fut : list){
                 try {
-                    System.out.println(new Date()+ "::"+fut.get());
+                    log.info("{} :: {}", new Date(), fut.get());
                 } catch (InterruptedException | ExecutionException e) {
-                    log.error(e.getMessage());
+                    log.error(PSExceptionUtils.getMessageForLog(e));
                     log.debug(e);
                     Assert.assertFalse(true);
                     Thread.currentThread().interrupt();
@@ -103,7 +104,7 @@ public class TestMultiConcurrentCallsToServer {
             }
             catch (Exception e)
             {
-                log.error(e.getMessage());
+                log.error(PSExceptionUtils.getMessageForLog(e));
                 log.debug(e);
                 Assert.assertFalse(true);
             }
