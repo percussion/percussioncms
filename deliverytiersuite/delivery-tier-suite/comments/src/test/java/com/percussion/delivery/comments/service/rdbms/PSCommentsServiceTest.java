@@ -34,7 +34,10 @@ import com.percussion.delivery.comments.data.PSPageSummaries;
 import com.percussion.delivery.comments.data.PSPageSummary;
 import com.percussion.delivery.comments.data.PSRestComment;
 import com.percussion.delivery.comments.services.IPSCommentsService;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -63,7 +66,8 @@ import static org.junit.Assert.fail;
 @ContextConfiguration(locations = {"classpath:test-beans.xml"})
 public class PSCommentsServiceTest
 {
-    
+
+    private static final Logger log = LogManager.getLogger(PSCommentsServiceTest.class);
     private final String COMMENT1_PAGEPATH =  "/01_site1/folder/page1.html";
     private final String COMMENT2_PAGEPATH =  "/02_site5/folder/page11.html";
     private final String COMMENT3_PAGEPATH =  "/03_site1/folder/page2.html";
@@ -914,7 +918,8 @@ public class PSCommentsServiceTest
         }
         catch (IllegalArgumentException ex)
         {
-            
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
         }
         
         // empty site
@@ -926,7 +931,8 @@ public class PSCommentsServiceTest
         }
         catch (IllegalArgumentException ex)
         {
-            
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
         }
     }
     
@@ -1272,7 +1278,8 @@ public class PSCommentsServiceTest
         }
         catch (IllegalArgumentException ex)
         {
-            // Test passes
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
         }
     }
     
@@ -1338,7 +1345,8 @@ public class PSCommentsServiceTest
         }
         catch (IllegalArgumentException ex)
         {
-            // Test passes
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
         }
     }
     
@@ -1377,7 +1385,7 @@ public class PSCommentsServiceTest
     public void testGetPagesWithComments_Performance() throws Exception
     {
         // Create lots of comment. Actually, 18 * COMMENT_COUNT_FOR_PERFORMANCE_TESTS
-        System.out.println("Adding comments");
+        log.info("Adding comments");
         for (int i=0; i<COMMENT_COUNT_FOR_PERFORMANCE_TESTS; i++)
             createSampleCommentsForPagingTests(Integer.toString(i));
         
@@ -1392,16 +1400,14 @@ public class PSCommentsServiceTest
         // Get page summaries for various pages
         for (int i=0; i<3; i++)
         {
-            System.out.println("Getting pages with comments");
+            log.info("Getting pages with comments");
             Calendar before = Calendar.getInstance();
             PSPageSummaries pageSummariesPage0 = commentService.getPagesWithComments(SITE + "0", 3, i);
             Calendar after = Calendar.getInstance();
             
             assertEquals("page summaries count", 3, pageSummariesPage0.getSummaries().size());
             
-            System.out.print("Page " + i + " - Query took: " + (after.getTimeInMillis() - before.getTimeInMillis()) + " milliseconds");
-            
-            System.out.println();
+            log.info("Page {} - Query took: {} milliseconds", i, (after.getTimeInMillis() - before.getTimeInMillis()));
         }
     }
     
@@ -1510,7 +1516,8 @@ public class PSCommentsServiceTest
         }
         catch (IllegalArgumentException ex)
         {
-            // Ok, test passes.
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
         }
     }
     
