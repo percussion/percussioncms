@@ -64,32 +64,31 @@ public class PSPreExitHandler implements IPSRequestPreProcessor
    public void preProcessRequest(Object[] params, IPSRequestContext request)
       throws PSExtensionProcessingException
    {
-    System.out.println("");
-    System.out.println(
-       "             *** Beginning of Pre-Processor Exit Debugger ***");
-    System.out.println("");
+    log.info("");
+    log.info("             *** Beginning of Pre-Processor Exit Debugger ***");
+    log.info("");
 
     if(null == request)
     {
-      System.out.println("Request context is null!");
+      log.info("Request context is null!");
     }
     else
     {
       PSPostExitHandler.printRequestContext(request);
 
-      System.out.println("");
-      System.out.println("Input XML Document:");
-      System.out.println("");
-      System.out.println("*** Starts Here ***");
+      log.info("");
+      log.info("Input XML Document:");
+      log.info("");
+      log.info("*** Starts Here ***");
       try
       {
         if(null == request.getInputDocument())
-          System.out.println("   Document is empty");
+          log.info("   Document is empty");
         else
         {
           StringWriter writer = new StringWriter();
           PrintNode.printNode(request.getInputDocument(), " " , writer);
-          System.out.println(writer.toString());
+          log.info(writer.toString());
         }
       }
       catch (Exception e)
@@ -97,11 +96,10 @@ public class PSPreExitHandler implements IPSRequestPreProcessor
           log.error(e.getMessage());
           log.debug(e.getMessage(), e);
       }
-      System.out.println("*** Ends Here ***");
+      log.info("*** Ends Here ***");
     }
-    System.out.println("");
-    System.out.println(
-       "             *** End of Pre-Processor Exit Debugger ***");
-    System.out.println("");
+    log.info("");
+    log.info("             *** End of Pre-Processor Exit Debugger ***");
+    log.info("");
    }
 }
