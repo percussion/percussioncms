@@ -26,14 +26,13 @@ package com.percussion.cx.objectstore;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.util.PSXMLDomUtil;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * The class that is used to represent menu actions as defined by
@@ -127,12 +126,9 @@ public class PSMenuAction implements IPSComponent, Cloneable
       }
 
       //attributes
-      /**@todo should be required but there is a hard coded menu
-       * that does not have id's for each action in it -mgb
-       */
       m_actionid = PSXMLDomUtil.checkAttributeInt(sourceNode, ACTIONID_ATTR, false);
       m_name = PSComponentUtils.getRequiredAttribute(sourceNode, NAME_ATTR);
-      m_label = PSComponentUtils.getRequiredAttribute(sourceNode, LABEL_ATTR);
+      m_label = PSComponentUtils.getAttribute(sourceNode, LABEL_ATTR, m_name);
       m_type = PSComponentUtils.getEnumeratedAttribute(
          sourceNode, TYPE_ATTR, ms_menuTypes);
       String url = sourceNode.getAttribute(URL_ATTR);
@@ -266,7 +262,7 @@ public class PSMenuAction implements IPSComponent, Cloneable
    /**
     * Sets the action url that is relative to the applet's document base.
     * 
-    * @param the url, never <code>null</code>, may be empty.
+    * @param url the url, never <code>null</code>, may be empty.
     */
    public void setURL(String url)
    {
@@ -616,16 +612,12 @@ public class PSMenuAction implements IPSComponent, Cloneable
     * Merges PSMenuAction objects based merge rules and returns the merge result
     * as PSMenuAction object.
     *
-    * @param currentAction may be <code>null</code> in which case merge result
-    * will be the new action.
-    *
     * @param newAction may be <code>null</code> in which case merge result will
     * be current action.
     *
     * @return merge result as PSMenuAction object, <code>null</code> only when the
     * two actions to be merged are <code>null</code>.
     *
-    * @todo apply complex merge rules. Right now, it filters for common child
     * actions based equality.
     */
    public PSMenuAction merge(PSMenuAction newAction)

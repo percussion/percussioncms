@@ -106,5 +106,10 @@
             <artifactId>xercesImpl</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.owasp.esapi</groupId>
+            <artifactId>esapi</artifactId>
+            <version>2.1.0.1</version>
+        </dependency>
     </dependencies>
 </project>

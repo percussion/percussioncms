@@ -27,6 +27,7 @@ package com.percussion.cx;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("ALL")
 public class PSContentExplorerConstants
 {
 
@@ -48,7 +49,7 @@ public class PSContentExplorerConstants
    /**
     * The suffix to use with icon constants to put or get expanded version of an
     * icon. The constant used for an icon of any node is the node type. See
-    * {@link com.percussion.cx.objectstore#PSNode}for more information on nodes.
+    * PSNode for more information on nodes.
     */
    public static final String EXP_SUFFIX = "_EXPAND";
    /**
@@ -144,7 +145,7 @@ public class PSContentExplorerConstants
    /**
     * The parameter that defines a url to get options.
     */
-   public static final String OPTIONS_URL = "../sys_cxSupport/options.xml";
+   public static final String OPTIONS_URL = "/sys_cxSupport/options.xml";
    /**
     * The parameter that defines the 'CONTENTID' of the item
     */
@@ -230,7 +231,7 @@ public class PSContentExplorerConstants
     * The application resource used to retreive the list of folders with the
     * publish flag set
     */
-   static final String APP_RESOURCE_FLAGGED_FOLDERS = "../sys_psxObjectSupport/getAllFolderPublishFlags.xml";
+   static final String APP_RESOURCE_FLAGGED_FOLDERS = "/sys_psxObjectSupport/getAllFolderPublishFlags.xml";
    /**
     * The constant for the parameter that specifies if an external search engine
     * is available. Value is "yes" if available, "no" if not.
@@ -301,7 +302,7 @@ public class PSContentExplorerConstants
    /**
     * The default url for the Workflow action menu.
     */
-   public static final String WORKFLOW_MENU_ACTION_URL = "../sys_cxSupport/wfactionset.xml";
+   public static final String WORKFLOW_MENU_ACTION_URL = "/sys_cxSupport/wfactionset.xml";
    /**
     * String constant for the action parameter name "sys_command"
     */
@@ -341,7 +342,7 @@ public class PSContentExplorerConstants
     * SYS_SERVERACTIONURL with the value from the htmlparameter
     * SYS_SERVERACTIONURL.
     */
-   public static final String SAVE_SERVERACTIONURL = "../sys_cxSupport/saveserveractionurl.html";
+   public static final String SAVE_SERVERACTIONURL = "/sys_cxSupport/saveserveractionurl.html";
    /**
     * Default Actions for various types of nodes. These are invoked on mouse
     * double click. The default actions are assigned in the order of priority so
@@ -350,6 +351,6 @@ public class PSContentExplorerConstants
     * two default actions "Edit" and "View" so that if user cannot edit he may
     * be able to view.
     */
-   public final static Map<String, String[]> ms_NodeDefaultActionMap = new HashMap<>();
+   protected  static final Map<String, String[]> ms_NodeDefaultActionMap = new HashMap<>();
 
 }
