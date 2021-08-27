@@ -24,6 +24,8 @@
 package com.percussion.workflow;
 
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -38,6 +40,9 @@ import java.util.List;
 @Category(IntegrationTest.class)
 public class PSContentAdhocUsersContextTest extends PSAbstractWorkflowTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSContentAdhocUsersContextTest.class);
+
    /**
     * Constructor specifying command line arguments
     *
@@ -54,7 +59,7 @@ public class PSContentAdhocUsersContextTest extends PSAbstractWorkflowTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("\nExecuting test of PSContentAdhocUsersContext\n");
+      log.info("\nExecuting test of PSContentAdhocUsersContext\n");
       Exception except = null;
       String exceptionMessage = "";
       int workflowID = 1;
@@ -88,11 +93,11 @@ public class PSContentAdhocUsersContextTest extends PSAbstractWorkflowTest
       {
          context = new PSContentAdhocUsersContext(contentID,
                                                   connection);
-         System.out.println("context = " + context);
+         log.info("context = {}", context);
 
 
          recordCount = cauc.emptyAdhocUserEntries(connection);
-         System.out.println("records deleted = " + recordCount);
+         log.info("records deleted = {}", recordCount);
 
           cauc =
             new PSContentAdhocUsersContext(newContentID);
@@ -108,33 +113,34 @@ public class PSContentAdhocUsersContextTest extends PSAbstractWorkflowTest
          cauc.setAdhocAnonymousUsersAndRoles(adhocAnonymousUserNames,
                                              userAdhocAnonymousRoles);
          recordCount = cauc.commit(connection);
-         System.out.println("records inserted = " + recordCount);
+         log.info("records inserted = {}", recordCount);
 
          cauc = null;
 
          cauc = new PSContentAdhocUsersContext(newContentID,
                                                connection);
-         System.out.println("cauc = " + cauc);
-         System.out.println("State 1 has adhoc users = " +
-            cauc.hasAdhocUsers(1));
-         System.out.println("State 6 has adhoc users = " +
-            cauc.hasAdhocUsers(6));
-         System.out.println("Empty roles in the list " + adhocTestList +
-                            " are " + cauc.getEmptyAdhocRoles(adhocTestList));
+         log.info("cauc = {}", cauc);
+         log.info("State 1 has adhoc users = {}", cauc.hasAdhocUsers(1));
+         log.info("State 6 has adhoc users = {}", cauc.hasAdhocUsers(6));
+         log.info("Empty roles in the list {} are {}", adhocTestList, cauc.getEmptyAdhocRoles(adhocTestList));
       }
       catch (SQLException e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          exceptionMessage = "SQL exception: ";
          except = e;
       }
       catch (PSRoleException e)
       {
+         log.error(e.getMessage());
+         log.debug(e.getMessage(),e);
          exceptionMessage = "Role exception ";
          except = e;
       }
       finally
       {
-         System.out.println("\nEnd test of PSContentAdhocUsersContext\n");
+         log.info("\nEnd test of PSContentAdhocUsersContext\n");
          if (null != except)
          {
             throw new PSWorkflowTestException(exceptionMessage,

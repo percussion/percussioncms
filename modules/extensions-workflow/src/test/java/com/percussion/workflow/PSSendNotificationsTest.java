@@ -25,6 +25,8 @@ package com.percussion.workflow;
 
 import com.percussion.server.IPSRequestContext;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -36,6 +38,9 @@ import java.sql.Connection;
 @Category(IntegrationTest.class)
 public class PSSendNotificationsTest extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSSendNotificationsTest.class);
+
    /**
     * Constructor specifying command line arguments
     *
@@ -49,7 +54,7 @@ public class PSSendNotificationsTest extends PSAbstractWorkflowTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("\nExecuting test of " +
+      log.info("\nExecuting test of " +
                          "PSExitNotifyAssignees.sendNotifications\n");
       Exception except = null;
       String exceptionMessage = "";
@@ -82,7 +87,7 @@ public class PSSendNotificationsTest extends PSAbstractWorkflowTest
       }
       finally 
       {
-         System.out.println("\nEnd test of sendNotifications\n");
+         log.info("\nEnd test of sendNotifications\n");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,
