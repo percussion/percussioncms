@@ -24,6 +24,7 @@
 
 package com.percussion.servlets;
 
+import com.percussion.security.SecureStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -121,9 +122,11 @@ public class PSDispatcherFilter implements Filter {
         String path = req.getRequestURI();
 
         String strippedPath = path.startsWith(RHYTHMYX) ? StringUtils.substringAfter(path,RHYTHMYX) : path;
-        String newPath = path;
+        String newPath =
+                SecureStringUtils.cleanWildPath(resourcePaths,path,request.getRemoteAddr());
 
-        if(Stream.of(bannedPaths).anyMatch(strippedPath::startsWith)){
+
+        if(newPath == null || Stream.of(bannedPaths).anyMatch(strippedPath::startsWith)){
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
