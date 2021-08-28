@@ -23,7 +23,7 @@
  */
 package com.percussion.utils.xml;
 
-import com.percussion.utils.string.PSFolderStringUtils;
+import com.percussion.security.SecureStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -211,7 +211,7 @@ public class PSEntityResolver implements EntityResolver
             return null;
          }
 
-         if(!PSFolderStringUtils.isChildOfFilePath(resolutionHome.toPath(), p)){
+         if(!SecureStringUtils.isChildOfFilePath(resolutionHome.toPath(), p)){
             log.warn("Blocking external entity reference: {} as it is outside of the installation folder: {}.",
                     systemid,resolutionHome.getAbsolutePath());
             return null;
@@ -220,7 +220,7 @@ public class PSEntityResolver implements EntityResolver
          entityFile = p.toFile();
       }else{
         Path p =  Paths.get(resolutionHome.getAbsolutePath(),systemid);
-        if(!PSFolderStringUtils.isChildOfFilePath(resolutionHome.toPath(), p)){
+        if(!SecureStringUtils.isChildOfFilePath(resolutionHome.toPath(), p)){
            return null;
         }
 

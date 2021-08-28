@@ -26,9 +26,6 @@ package com.percussion.utils.string;
 import com.percussion.utils.jsr170.PSPath;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.regex.Pattern;
 
 /**
@@ -172,28 +169,5 @@ public class PSFolderStringUtils
       return false;
    }
 
-   public static boolean isChildOfFilePath(final Path parent, final Path child) {
-      final Path absoluteParent = parent.toAbsolutePath().normalize();
-      final Path absoluteChild = child.toAbsolutePath().normalize();
 
-      if (absoluteParent.getNameCount() >= absoluteChild.getNameCount()) {
-         return false;
-      }
-
-      final Path immediateParent = absoluteChild.getParent();
-      if (immediateParent == null) {
-         return false;
-      }
-
-      return isSameFileAs(absoluteParent, immediateParent) || isChildOfFilePath(absoluteParent, immediateParent);
-   }
-
-   public static boolean isSameFileAs(final Path path, final Path path2) {
-      try {
-         return Files.isSameFile(path, path2);
-      }
-      catch (final IOException ioe) {
-         return path.toAbsolutePath().normalize().equals(path2.toAbsolutePath().normalize());
-      }
-   }
 }
