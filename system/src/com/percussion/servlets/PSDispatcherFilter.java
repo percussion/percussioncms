@@ -99,7 +99,8 @@ public class PSDispatcherFilter implements Filter {
             "/adf/",
             "/uploadAssetFile",
             "/textToImage/",
-            "/Designer"
+            "/Designer",
+            "/Rhythmyx/"
 
     };
 
