@@ -423,9 +423,9 @@ public class SecureStringUtils {
             }
 
             //Remove /Rhythmyx/ if present
-            while(ret.contains("/Rhythmyx/")) {
-                ret = ret.replace("/Rhythmyx/", "/");
-            }
+          //  while(ret.contains("/Rhythmyx/")) {
+          //      ret = ret.replace("/Rhythmyx/", "/");
+          //  }
 
             String[] dotdots = ret.split("\\.\\./");
             for(String s : resourcePaths){

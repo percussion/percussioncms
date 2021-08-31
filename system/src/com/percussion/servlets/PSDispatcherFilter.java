@@ -98,14 +98,15 @@ public class PSDispatcherFilter implements Filter {
             "/contentui/aa",
             "/adf/",
             "/uploadAssetFile",
-            "/textToImage/"
+            "/textToImage/",
+            "/Designer"
 
     };
 
     /**
      * Logger to use, never <code>null</code>.
      */
-    static Logger log = LogManager.getLogger(PSDispatcherFilter.class);
+    private static final Logger log = LogManager.getLogger(PSDispatcherFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
