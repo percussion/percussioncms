@@ -67,7 +67,9 @@ public class TestSecureStringUtils {
             "/contentui/aa",
             "/adf/",
             "/uploadAssetFile",
-            "/textToImage/"
+            "/textToImage/",
+            "/Designer",
+            "/Rhythmyx/"
 
     };
 
