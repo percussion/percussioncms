@@ -23,6 +23,8 @@
  */
 package com.percussion.searchmanagement.service.impl;
 
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
@@ -34,7 +36,9 @@ import com.percussion.search.objectstore.PSWSSearchRequest;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
 import com.percussion.searchmanagement.service.IPSSearchService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
+import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSSearchHandler;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
@@ -43,6 +47,7 @@ import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.services.system.IPSSystemService;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
@@ -62,6 +67,7 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +106,7 @@ public class PSSearchService implements IPSSearchService
 
     @Autowired
     public PSSearchService(IPSFolderHelper folderHelper, IPSIdMapper idMapper,
-            IPSItemWorkflowService itemWorkflowService,  @Qualifier("cm1SearchListViewHelper") IPSListViewHelper listViewHelper, IPSUiService uiService,IPSRecycleService recycleService)
+            IPSItemWorkflowService itemWorkflowService,  @Qualifier("cm1SearchListViewHelper") IPSListViewHelper listViewHelper, IPSUiService uiService,IPSRecycleService recycleService, IPSSystemService systemService)
     {
         this.folderHelper = folderHelper;
         this.idMapper = idMapper;
@@ -109,6 +115,7 @@ public class PSSearchService implements IPSSearchService
         this.workflowService = PSWorkflowServiceLocator.getWorkflowService();
         this.uiService = uiService;
         this.recycleService=recycleService;
+        this.systemService = systemService;
     }
 
     /*
@@ -643,6 +650,8 @@ public class PSSearchService implements IPSSearchService
     private IPSWorkflowService workflowService;
 
     private IPSRecycleService recycleService;
+
+    private final IPSSystemService systemService;
     
     /**
      * The id of the workflow used for local content, set in {@link #getLocalContentWfId()}.
@@ -676,5 +685,64 @@ public class PSSearchService implements IPSSearchService
      * Query to include shared workflows using ranges, {0} should be localWFId - 1, {1} localWFId + 1, {2} max value possible
      */
     private static final String SHARED_WORKFLOW_RANGE = "(" + WORKFLOW_ID + ":[0 TO {0}] OR " + WORKFLOW_ID + ":[{1} TO {2}])";
+
+    @Override
+    public PSSearchCriteria validateSearchCriteria(PSSearchCriteria criteria) {
+        Map<String,String> fields = criteria.getSearchFields();
+        if(fields != null){
+            SecureStringUtils.DatabaseType type=null;
+
+            if(systemService.isMySQL())
+                type = SecureStringUtils.DatabaseType.MYSQL;
+            else if(systemService.isOracle())
+                type = SecureStringUtils.DatabaseType.ORACLE;
+            else if(systemService.isDB2())
+                type = SecureStringUtils.DatabaseType.DB2;
+            else if(systemService.isMsSQL())
+                type = SecureStringUtils.DatabaseType.MSSQL;
+            else if(systemService.isDerby()){
+                type = SecureStringUtils.DatabaseType.DERBY;
+            }
+
+            PSFieldSet systemFieldSet =
+                    PSServer.getContentEditorSystemDef().getFieldSet();
+
+            for(Map.Entry<String,String> field : fields.entrySet()){
+
+                PSField f = systemFieldSet.findFieldByName(field.getKey(), false);
+                if(f!= null) {
+                    if (f.getDataType().equalsIgnoreCase(PSField.DT_INTEGER) || f.getDataType().equalsIgnoreCase(PSField.DT_FLOAT)) {
+                        if (!org.apache.commons.lang3.StringUtils.isNumeric(field.getValue())) {
+                            throw new IllegalArgumentException(field.getKey() + " must have a numeric value for search");
+                        }
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_BOOLEAN)) {
+                        Boolean b = BooleanUtils.toBoolean(field.getValue());
+                        if (b == null) {
+                            throw new IllegalArgumentException(field.getKey() + " requires a boolean value.");
+                        }
+
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_DATE)) {
+                        if (!SecureStringUtils.isValidDate(field.getValue())) {
+                            throw new IllegalArgumentException(field.getKey() + " must be a valid date.");
+                        }
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_TIME)) {
+                        if (!SecureStringUtils.isValidTime((field.getValue()))) {
+                            throw new IllegalArgumentException(field.getKey() + " must be a valid time.");
+                        }
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_BINARY) || f.getDataType().equalsIgnoreCase(PSField.DT_IMAGE)) {
+                        throw new IllegalArgumentException("Can't use Binary fields in Search criteria.");
+                    } else {
+                        //Unsure on data type so just make sure there is no SQL injection possible DT_TEXT is covered here.
+                        field.setValue(SecureStringUtils.sanitizeStringForSQLStatement(field.getValue(), type));
+                    }
+                }else{
+                    field.setValue(SecureStringUtils.sanitizeStringForSQLStatement(field.getValue(), type));
+                }
+            }
+            //Update the criteria with any sanitized inputs
+            criteria.setSearchFields(fields);
+        }
+        return criteria;
+    }
 
 }
