@@ -158,6 +158,9 @@ public class PSSearchRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPagedItemPropertiesList extendedSearch(PSSearchCriteria criteria) throws PSSearchServiceException
     {
+
+        criteria = searchService.validateSearchCriteria(criteria);
+
         sanitizeCriteria(criteria);
 
         PSPagedItemPropertiesList itemList;
