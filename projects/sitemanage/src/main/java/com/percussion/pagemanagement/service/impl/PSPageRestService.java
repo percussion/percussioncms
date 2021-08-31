@@ -484,71 +484,13 @@ public class PSPageRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
 
-        criteria = validateSearchCriteria(criteria);
+        criteria = searchService.validateSearchCriteria(criteria);
 
         PSPagedItemList itemList = new PSPagedItemList();
         List<Integer> contentIdsAllowedForSite = searchService.getContentIdsForFetchingByStatus(criteria);
         itemList = searchService.searchByStatus(criteria, contentIdsAllowedForSite);
 
         return itemList;
-    }
-
-    private PSSearchCriteria validateSearchCriteria(PSSearchCriteria criteria) {
-        Map<String,String> fields = criteria.getSearchFields();
-        if(fields != null){
-            SecureStringUtils.DatabaseType type=null;
-
-            if(systemService.isMySQL())
-                type = SecureStringUtils.DatabaseType.MYSQL;
-            else if(systemService.isOracle())
-                type = SecureStringUtils.DatabaseType.ORACLE;
-            else if(systemService.isDB2())
-                type = SecureStringUtils.DatabaseType.DB2;
-            else if(systemService.isMsSQL())
-                type = SecureStringUtils.DatabaseType.MSSQL;
-            else if(systemService.isDerby()){
-                type = SecureStringUtils.DatabaseType.DERBY;
-            }
-
-            PSFieldSet systemFieldSet =
-                    PSServer.getContentEditorSystemDef().getFieldSet();
-
-            for(Map.Entry<String,String> field : fields.entrySet()){
-              
-                PSField f = systemFieldSet.findFieldByName(field.getKey(), false);
-                if(f!= null) {
-                    if (f.getDataType().equalsIgnoreCase(PSField.DT_INTEGER) || f.getDataType().equalsIgnoreCase(PSField.DT_FLOAT)) {
-                        if (!StringUtils.isNumeric(field.getValue())) {
-                            throw new IllegalArgumentException(field.getKey() + " must have a numeric value for search");
-                        }
-                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_BOOLEAN)) {
-                        Boolean b = BooleanUtils.toBoolean(field.getValue());
-                        if (b == null) {
-                            throw new IllegalArgumentException(field.getKey() + " requires a boolean value.");
-                        }
-
-                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_DATE)) {
-                        if (!SecureStringUtils.isValidDate(field.getValue())) {
-                            throw new IllegalArgumentException(field.getKey() + " must be a valid date.");
-                        }
-                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_TIME)) {
-                        if (!SecureStringUtils.isValidTime((field.getValue()))) {
-                            throw new IllegalArgumentException(field.getKey() + " must be a valid time.");
-                        }
-                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_BINARY) || f.getDataType().equalsIgnoreCase(PSField.DT_IMAGE)) {
-                        throw new IllegalArgumentException("Can't use Binary fields in Search criteria.");
-                    } else {
-                        //Unsure on data type so just make sure there is no SQL injection possible DT_TEXT is covered here.
-                        field.setValue(SecureStringUtils.sanitizeStringForSQLStatement(field.getValue(), type));
-                    }
-                }else{
-                    field.setValue(SecureStringUtils.sanitizeStringForSQLStatement(field.getValue(), type));
-                }
-            }
-            //Update the criteria with any sanitized inputs
-            criteria.setSearchFields(fields);
-        }
-        return criteria;
     }
 
 }
