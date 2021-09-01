@@ -25,6 +25,7 @@ package com.percussion.sitemanage.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.cms.IPSConstants;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPage;
@@ -38,10 +39,14 @@ import com.percussion.pagemanagement.service.IPSPageTemplateService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
 import com.percussion.pagemanagement.service.impl.PSPageToTemplateException;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.queue.IPSPageImportQueue;
+import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
+import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSDataService;
@@ -64,6 +69,7 @@ import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.sitemanage.service.PSPageToTemplatePair;
 import com.percussion.sitemanage.service.PSSiteTemplates;
 import com.percussion.sitemanage.service.PSSiteTemplates.CreateTemplate;
+import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -93,6 +99,7 @@ import java.util.Set;
 
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
 import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.TEMPLATES;
 import static java.text.MessageFormat.format;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -110,6 +117,10 @@ import static org.apache.commons.lang.Validate.notNull;
 @Lazy
 public class PSSiteTemplateService implements IPSSiteTemplateService
 {
+    private IPSSiteManager siteMgr;
+
+    private IPSFolderHelper folderHelper;
+
     private IPSTemplateService templateService;
 
     private IPSSiteSectionMetaDataService siteSectionMetaDataService;
@@ -144,7 +155,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     public PSSiteTemplateService(IPSiteDao siteDao, IPSSiteSectionMetaDataService siteSectionMetaDataService,
             @Qualifier("sys_templateService") IPSTemplateService templateService, IPSAsyncJobService asyncJobService,  IPSPageService pageService,
             IPSAssetService assetService, IPSItemWorkflowService itemWorkflowService, 
-            IPSWidgetAssetRelationshipService widgetAssetRelationshipService, IPSPageTemplateService pageTemplateService)
+            IPSWidgetAssetRelationshipService widgetAssetRelationshipService, IPSPageTemplateService pageTemplateService, IPSSiteManager siteMgr, IPSFolderHelper folderHelper)
     {
         super();
         this.siteDao = siteDao;
@@ -156,6 +167,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         this.itemWorkflowService = itemWorkflowService;
         this.widgetAssetRelationshipService = widgetAssetRelationshipService;
         this.pageTemplateService = pageTemplateService;
+        this.siteMgr = siteMgr;
+        this.folderHelper = folderHelper;
     }
 
     @GET
@@ -343,6 +356,28 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
     {
         try {
             validate(siteTemplates);
+            for(CreateTemplate createTemplate : siteTemplates.getCreateTemplates()){
+                String createTemplateName = createTemplate.getName();
+                if (StringUtils.containsAny(createTemplateName, IPSConstants.INVALID_ITEM_NAME_CHARACTERS)){
+
+                    for (int i = 0; i < IPSConstants.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
+                        // Replace any invalid characters present. output eg. createTemplateName = Box-Copy-2-
+                        createTemplateName = StringUtils.replace(createTemplateName, String.valueOf(IPSConstants.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
+                    }
+
+                    if(createTemplateName.substring(createTemplateName.length()-1).equalsIgnoreCase("-")){
+                        //eg. createTemplateName = Box-Copy //the base name for copied template
+                        createTemplateName = createTemplateName.substring(0, createTemplateName.length()-3);
+                    }
+
+                    IPSSite site = siteMgr.findSite(createTemplate.getSiteIds().get(0));
+                    String templateFolderPathForSite = folderHelper.concatPath(site.getFolderRoot(), SECTION_SYSTEM_FOLDER_NAME, TEMPLATES);
+                    //find unique name for copied template.
+                    createTemplateName = folderHelper.getUniqueNameInFolder(templateFolderPathForSite, createTemplateName, "", 2, false);
+
+                    createTemplate.setName(createTemplateName);
+                }
+            }
             List<CreateTemplate> createTemplates = siteTemplates.getCreateTemplates();
             List<AssignTemplate> assignTemplates = siteTemplates.getAssignTemplates();
             List<AssignTemplate> created = createTemplates(createTemplates);
@@ -350,7 +385,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
             List<AssignTemplate> total = new ArrayList<>(assignTemplates);
             total.addAll(created);
             return new PSTemplateSummaryList(assignTemplates(total));
-        } catch (PSDataServiceException e) {
+        } catch (PSDataServiceException | IPSPathService.PSPathNotFoundServiceException e) {
             throw new WebApplicationException(e.getMessage());
         }
     }
