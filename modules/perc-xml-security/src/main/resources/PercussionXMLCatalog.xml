@@ -124,7 +124,7 @@ are not defined in this catalog file to prevent XXE vulnerabilities -->
     <system systemId="sys_defaultError.dtd" uri="file://@@rxdir@@/DTD/errors/sys_defaultError.dtd" />
 
     <!-- System XSL Stylesheets -->
-
+    <uri name="file:sys_resources/stylesheets/sys_Security.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/sys_Security.xsl"/>
     <uri name="file:sys_resources/stylesheets/sys_I18nUtils.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/sys_I18nUtils.xsl"/>
     <uri name="file:sys_resources/stylesheets/sys_Templates.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/sys_Templates.xsl" />
     <uri name="file:sys_resources/stylesheets/customControlImports.xsl" uri="file://@@rxdir@@/sys_resources/stylesheets/customControlImports.xsl"/>

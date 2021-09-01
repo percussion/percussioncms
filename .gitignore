@@ -116,3 +116,4 @@ fabric.properties
 /modules/extensions-workflow/depends.txt
 /deliverytiersuite/delivery-tier-suite/feeds/depends.txt
 /modules/perc-distribution-tree/depends.txt
+/modules/perc-xml-security/depends.txt
