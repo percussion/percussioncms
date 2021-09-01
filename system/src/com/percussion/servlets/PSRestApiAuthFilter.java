@@ -39,6 +39,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * Provides an authorization filter for the REST API / API Docs
@@ -76,7 +78,9 @@ public class PSRestApiAuthFilter implements ContainerRequestFilter {
             auth = fullrolestr.contains("Admin");
         }
 
-        if(!auth){
+        boolean allowedURLParam = false;
+        allowedURLParam = isPathAllowed(requestContext);
+        if(!auth || !allowedURLParam){
             URI uri=null;
             try{
                 uri = new URI("../ui/default-error.html");
@@ -96,6 +100,30 @@ public class PSRestApiAuthFilter implements ContainerRequestFilter {
 
             requestContext.abortWith(st.build());
         }
+
+    }
+
+    private boolean isPathAllowed(ContainerRequestContext requestContext) {
+        if(requestContext.getUriInfo().getPath(true).equalsIgnoreCase("api-docs")) {
+            List<String> urls = requestContext.getUriInfo().getQueryParameters().get("url");
+            String url = null;
+
+
+            if (urls != null) {
+                url = urls.get(0);
+            }
+
+            if (url != null) {
+                if (Stream.of(allowedPaths).anyMatch(url::equalsIgnoreCase)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }else{
+            return true;
+        }
     }
 
     String get404Content(URI uri){
@@ -110,4 +138,8 @@ public class PSRestApiAuthFilter implements ContainerRequestFilter {
         }
         return ret;
     }
+
+    private static String[] allowedPaths = {
+            "/rest/openapi.json"
+    };
 }
