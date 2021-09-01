@@ -128,7 +128,7 @@ public class PSDispatcherFilter implements Filter {
                 SecureStringUtils.cleanWildPath(resourcePaths,path,request.getRemoteAddr());
 
 
-        if(newPath == null || Stream.of(bannedPaths).anyMatch(strippedPath::startsWith)){
+        if(newPath == null ||( Stream.of(bannedPaths).anyMatch(strippedPath::startsWith) && !(Stream.of(resourcePaths).anyMatch(strippedPath::startsWith)))){
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }

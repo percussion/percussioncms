@@ -14,10 +14,12 @@
 		]>
 <!-- $ Id: $ -->
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
-                exclude-result-prefixes="psxi18n">
+				xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n psxSecurity"
+				xmlns:psxSecurity="com.percussion.security.xsl"
+				exclude-result-prefixes="psxi18n psxSecurity">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
+	<xsl:import href="file:sys_resources/stylesheets/sys_Security.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/sys_Templates.xsl"/>
 	<xsl:import href="file:sys_resources/stylesheets/customControlImports.xsl"/>
 	<xsl:import href="file:rx_resources/stylesheets/rx_Templates.xsl"/>
@@ -37,8 +39,16 @@
 		<xsl:variable name="syscontentid" select="Workflow/@contentId"/>
 		<xsl:variable name="sysrevision" select="Workflow/BasicInfo/HiddenFormParams/Param[@name='sys_revision']"/>
 		<xsl:variable name="syspageid" select="/*/ActionLinkList/ActionLink/Param[@name='sys_pageid']"/>
+		<xsl:variable name="sysCSRFHeader">
+			<xsl:call-template name="getCSRFTokenName" />
+		</xsl:variable>
+		<xsl:variable name="sysCSRFTokenValue">
+			<xsl:call-template name="getCSRFTokenValue" />
+		</xsl:variable>
 		<html>
 			<head>
+				<meta name='_csrf_header' content='{$sysCSRFHeader}' />
+				<meta name='_csrf' content='{$sysCSRFTokenValue}' />
 				<script src="/tmx/tmx.jsp?/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang={$lang}"><xsl:value-of select="' '"/></script>
 				<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"><xsl:value-of select="' '"/></script>
 				<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"><xsl:value-of select="' '"/></script>
@@ -47,9 +57,19 @@
 				<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js"><xsl:value-of select="' '"/></script>
 				<script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-jeditable/jquery.jeditable.js"><xsl:value-of select="' '"/></script>
 				<script src="/sys_resources/js/cm/init.js"><xsl:value-of select="' '"/></script>
+				<script>
+					var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+					var csrfToken = $("meta[name='_csrf']").attr("content");
+					var headers = {};
+					headers[csrfHeader] = csrfToken;
+					$.ajaxSetup({
+						headers: headers
+					});
+				</script>
 				<xsl:variable name="scripttags">
 					<xsl:apply-templates select="ControlNameSet/ControlName" mode="scriptfiles"/>
 				</xsl:variable>
+
 				<xsl:variable name="styletags">
 					<xsl:apply-templates select="ControlNameSet/ControlName" mode="stylefiles"/>
 				</xsl:variable>
