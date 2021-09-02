@@ -30,7 +30,7 @@
         //they do not have spurious interactions with draggables outside the
         //iframe
         $.perc_iframe_scope = 'perc-iframe-scope';
-    
+
         var dragging = false;
 
 
@@ -38,20 +38,20 @@
         //Create an invisible div to put over the iframe
         var overlay = $("<div class=\"perc-iframe-overlay-dnd-container\"/>");
         $('body').append( overlay );
-        
+
         overlay
             .height( frame.height() )
             .width( frame.width() )
             .addClass('ui-layout-ignore')
             .css(
-            {
-                overflow: 'hidden',
-                position: 'absolute', 
-                left: '-10000px',
-                top: '0px',
-                zIndex: 1000
-            });
-            
+                {
+                    overflow: 'hidden',
+                    position: 'absolute',
+                    left: '-10000px',
+                    top: '0px',
+                    zIndex: 1000
+                });
+
         addDragSupportDroppable();
 
         //Move the div over the iframe
@@ -72,12 +72,12 @@
         //droppables inside the iframe
         function liftDroppables( )
         {
-            var droppables = frame.contents().find( ':data(droppable)' );
+            var droppables = frame.contents().find( ':data(ui-droppable)' );
 
             droppables.each( function()
             {
                 var orig = $(this);
-                var orig_drop = $.data( this, 'droppable' );
+                var orig_drop = $.data( this, 'ui-droppable' );
                 var clone = $("<div/>").addClass("allDroppablesHelpers").addClass("perc-iframe-dnd-overlay-droppable").attr("for", orig.attr("id")).width( orig.outerWidth() ).height( orig.outerHeight() );
                 overlay.append( clone );
                 var iframeLeft, iframeTop;
@@ -109,16 +109,32 @@
                 //Make the clone droppable, with event functions which
                 //call through to the original droppable's events
                 clone.droppable(
-                { 
-                    greedy: orig_drop.options.greedy,
-                    tolerance: orig_drop.options.tolerance,
-                    accept: orig_drop.options.accept,
-                    over: function(evt){ orig_drop._over.call(orig_drop, evt); },
-                    activate: function(evt){ orig_drop._activate.call(orig_drop, evt); },
-                    deactivate: function(evt){ orig_drop._deactivate.call(orig_drop, evt); },
-                    out: function(evt){ orig_drop._out.call(orig_drop, evt); },
-                    drop: function(evt){ orig_drop._drop.call( orig_drop, evt); }
-                });
+                    {
+                        greedy: orig_drop.options.greedy,
+                        tolerance: orig_drop.options.tolerance,
+                        accept: orig_drop.options.accept,
+                        scope: orig_drop.options.scope,
+                        over: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._over.call(orig_drop, [evt,ui]);
+                        },
+                        activate: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._activate.call(orig_drop, [evt,ui]);
+                        },
+                        deactivate: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._deactivate.call(orig_drop, [evt,ui]);
+                        },
+                        out: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._out.call(orig_drop, [evt,ui]);
+                        },
+                        drop: function(evt,ui){
+                            evt.preventDefault();
+                            orig_drop._drop.call( orig_drop,[evt,ui]);
+                        }
+                    });
             });
         }
 
@@ -128,7 +144,7 @@
             overlay.empty();
         }
 
-        function startDrag()
+        function onDragStart()
         {
             if( !dragging )
             {
@@ -138,7 +154,7 @@
             }
         }
 
-        function stopDrag()
+        function onDragStop()
         {
             removeOverlay();
             removeDroppables();
@@ -148,18 +164,20 @@
         function addDragSupportDroppable()
         {
             var d = $("<div/>")
-	            .addClass('ui-layout-ignore')
-	            .droppable({
+                .addClass('ui-layout-ignore')
+                .droppable({
                     addClasses: false,
-	                activate: function(event,ui)
-	                {
-	                    startDrag(ui.draggable);
-	                }, 
-	                deactivate: function()
-	                {
-	                    setTimeout( stopDrag, 100 );
-	                }
-	            });
+                    scope: 'perc_iframe_scope',
+                    tolerance : 'pointer',
+                    activate: function(event,ui)
+                    {
+                        onDragStart(ui.draggable);
+                    },
+                    deactivate: function(event,ui)
+                    {
+                        setTimeout( onDragStop, 100 );
+                    }
+                });
             //.css({'position':'absolute', 'left':-1000});
             $('body').append(d);
         }
@@ -168,5 +186,5 @@
         //startDrag() when dragging starts, end stopDrag() when dragging
         //stops
 
-	};
+    };
 })(jQuery);
