@@ -101,7 +101,7 @@ label.error {
 	width:600px;
 }
 
-#main_image_region {
+#main_image_region, #thumb_image_region {
 	overflow:auto;
 }
 
