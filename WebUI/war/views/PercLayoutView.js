@@ -397,8 +397,12 @@ var layoutModel;
             if(callback){
                 callback();
             }
-            if (layoutModel.isTemplate())
-                $.PercRegionCSSHandler.prepareForEditRegionCSS();
+
+            if (layoutModel.isTemplate()){
+                $.PercRegionCSSHandler.setTemplateAndThemeNamesIfEmpty(layoutModel);
+                $.PercRegionCSSHandler.prepareForEditRegionCSS(layoutModel);
+            }
+
         }
 
         initDeleteRegionDialog();
