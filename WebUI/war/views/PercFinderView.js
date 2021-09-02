@@ -1277,7 +1277,7 @@
                         checkOutCheckInPage(null, id, notifyComplete, params.pathType);
                         notifyComplete(id, true);
                     }
-
+                    return;
                 });
             }
             else
@@ -1352,7 +1352,7 @@
                         var tbwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-editor-toolbar');
                         if(tbwrapper != null)
                             tbwrapper.handleComponentProgress('perc-ui-component-editor-toolbar', "complete");
-
+                        return;
                     }
                     else
                     {

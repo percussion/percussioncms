@@ -197,9 +197,8 @@
                     }
 
                     callback();
+                    $.PercNavigationManager.setTemplateModel(modelObject);
                 });
-
-                $.PercNavigationManager.setTemplateModel(modelObject);
                 // } JGA
             });
         }
@@ -766,7 +765,7 @@
             $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
             frame.contents().remove();
             frame.attr("src", renderPath);
-            frame.off("load").on("load",function()
+            frame.off().on("load",function()
             {
                 loadAssetDropCriteria(function(){
                     loadPageAssetDropCriteria(function(){
