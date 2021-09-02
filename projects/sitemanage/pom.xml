@@ -749,18 +749,16 @@
       <dependency>
           <groupId>com.percussion</groupId>
           <artifactId>perc-exceptions-spring</artifactId>
-          <version>8.0.3-SNAPSHOT</version>
+          <version>${project.parent.version}</version>
           <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>org.owasp.esapi</groupId>
           <artifactId>esapi</artifactId>
-          <version>2.2.3.1</version>
       </dependency>
       <dependency>
           <groupId>org.owasp.encoder</groupId>
           <artifactId>encoder</artifactId>
-          <version>1.2.3</version>
       </dependency>
   </dependencies>
 </project>
