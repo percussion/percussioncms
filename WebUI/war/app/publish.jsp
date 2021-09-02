@@ -4,30 +4,6 @@
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
-<%--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  --%>
-
 <%
     String locale= PSRoleUtilities.getUserCurrentLocale();
     String lang="en";
@@ -52,8 +28,7 @@
 <html lang="<%=lang %>">
 <head>
     <title><i18n:message key="perc.ui.navMenu.publish@Publish"/></title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%@include file="includes/common_meta.jsp" %>
     <%--
          When ran in normal mode all javascript will be in one compressed file and
          the same for css (Currently just concatenated but not compressed.).
@@ -117,7 +92,15 @@
     <script>
         moment.locale('<%= locale %>');
     </script>
-
+    <script>
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+        var headers = {};
+        headers[csrfHeader] = csrfToken;
+        $.ajaxSetup({
+            headers: headers
+        });
+    </script>
     <%@include file='includes/minuetCommonTemplates/alertTemplates.jsp'%>
     <%@include file='includes/minuetPublishTemplates/publishTemplates.jsp'%>
     <%@include file='includes/minuetPublishTemplates/publishStatusTemplates.jsp'%>

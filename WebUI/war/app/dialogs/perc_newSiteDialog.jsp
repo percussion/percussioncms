@@ -67,11 +67,9 @@
 <i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
 <span style="position: relative; float: right; margin-top: -28px;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span>
 <div id="perc_newSiteDialog" >
-<%-- TODO: Shouldn't this be post instead of get? --%>
-<csrf:form id="perc_newSiteDialogForm" method="get" action="perc_newSiteDialog.jsp">
+<csrf:form id="perc_newSiteDialogForm" method="post" action="perc_newSiteDialog.jsp">
     <div class="ui-layout-center">
         <div id="perc_wizard_step1" class="perc_wizard_step">
-
             <div class="perc_sitename_field">
                 <label class="perc_dialog_label perc-required-field" for="sitename"><i18n:message key="perc.ui.newsitedialog.label@Name Your Site:"/></label><br/>
                 <%if(isSaaS){ %>
@@ -85,15 +83,12 @@
                     <input class="perc_dialog_input perc_dialog_field" id="sitename" name="sitename" maxlength="80" type="text" autofocus="true"/>
                 <%} %>
             </div>
-
             <p class="hint"><strong><i18n:message key="perc.ui.newsitedialog.text@page1 summary"/></strong></p>
-
             <div class="perc_url_field">
                 <input class="perc_dialog_input" type="radio" name="site_type" id="type_url" value="type_url" checked="checked" /><label class="perc_dialog_label" for="type_url"><i18n:message key="perc.ui.newsitedialog.label@URL:"/></label>
                 <br/>
                 <input class="perc_dialog_input perc_dialog_field" id="url" name="url" maxlength="2048" type="text"/>
             </div>
-
             <div class="perc_percussion_template_field">
                 <input class="perc_dialog_input" type="radio" name="site_type" id="type_percussion_template" value="type_percussion_template" /><label class="perc_dialog_label" for="type_percussion_template"><i18n:message key="Percussion Templates"/></label>
             </div>

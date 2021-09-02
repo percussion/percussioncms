@@ -31,6 +31,7 @@ import com.percussion.pagemanagement.service.IPSPageTemplateService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.async.IPSAsyncJobService;
+import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.service.PSSiteTemplates.CreateTemplate;
@@ -71,6 +72,7 @@ public class PSSiteTemplateServiceValidationTest
     IPSItemWorkflowService itemWorkflowService; 
     IPSWidgetAssetRelationshipService widgetAssetRelationshipService;
     IPSPageTemplateService pageTemplateService;
+    IPSFolderHelper folderHelper;
     
     @Before
     public void setUp() throws Exception
@@ -84,10 +86,13 @@ public class PSSiteTemplateServiceValidationTest
         itemWorkflowService = context.mock(IPSItemWorkflowService.class);
         widgetAssetRelationshipService = context.mock(IPSWidgetAssetRelationshipService.class);
         pageTemplateService = context.mock(IPSPageTemplateService.class);
+        siteMgr = context.mock(IPSSiteManager.class);
+        folderHelper = context.mock(IPSFolderHelper.class);
+
         
         
         sut = new PSSiteTemplateService(siteDao, siteSectionMetaDataService, templateService, asyncJobService, 
-                pageService, assetService, itemWorkflowService, widgetAssetRelationshipService, pageTemplateService);
+                pageService, assetService, itemWorkflowService, widgetAssetRelationshipService, pageTemplateService, siteMgr, folderHelper);
     }
     
     

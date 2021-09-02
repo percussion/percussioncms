@@ -800,7 +800,7 @@ public class PSSecurityFilter implements Filter
                   sendAuthenticationError(request, response);
             
                return authReq;
-            }
+             }
 
          }
          // reload configs if they've changed

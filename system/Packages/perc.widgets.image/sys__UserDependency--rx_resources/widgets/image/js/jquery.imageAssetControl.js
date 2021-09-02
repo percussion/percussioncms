@@ -55,7 +55,7 @@
             //target:    '#response',  // target element(s) to be updated with server response
             success: imageUploadResponse,
             beforeSubmit: function(a,f,o) {
-                imageUpload.find('input[type="file"]').prop("disabled",false);
+                imageUpload.find('input[type="file"]').prop("disabled", false);
                 $('#image_asset_upload_message').html('Uploading...');
             },
             iframe: true,
@@ -64,23 +64,23 @@
             url:      '/Rhythmyx/user/apps/imageWidget/upload',        // override for form's 'action' attribute
             type:      'post',        // 'get' or 'post', override for form's 'method' attribute
             dataType:   'json',       // 'xml', 'script', or 'json' (expected server response type)
-            resetForm: false        // reset the form after successful submit
+            resetForm: false,        // reset the form after successful submit
 
             // $.ajax options can be used here too, for example:
             //timeout:   3000
+            headers: headers
         };
 
         function imageUploadResponse(data, statusText) {
-
             $('#image_asset_upload_message').html('');
             if (config.debug) {
                 var $out = $('#uploadOutput');
                 $out.html('Form success handler received: <strong>' + typeof data + '</strong>');
                 var newData;
                 if (typeof data == 'object' && data.nodeType) {
-                     newData = _elementToString(data.documentElement, true);
+                    newData = _elementToString(data.documentElement, true);
                 } else if (typeof data == 'object')  {
-                     newData = _objToString(data);
+                    newData = _objToString(data);
                 }
                 $out.append('<div><pre>'+ newData +'</pre></div>');
             }
@@ -89,7 +89,7 @@
             // if uploaded invalid or unsupported image ?
             if (image === undefined || image.error !== undefined) {
                 var errorMsg = "Failed to upload the image.";
-                if (image !== undefined && image.error !== undefined && image.error !== null)
+                if (image !== undefined && image.error !== undefined && image.error != null)
                     errorMsg = image.error;
                 $('#perc-upload-error-message').show().html(errorMsg);
 
@@ -125,7 +125,7 @@
                 },
                 function ( data, textStatus) {
                     imageInfo.image = data;
-                    if (typeof(uploadedImage) == "undefined"  ) {
+                    if (typeof(uploadedImage) === "undefined"  ) {
                         uploadedImage = imageInfo.image;
                         form.find(".image_asset_orig_height").html(uploadedImage.height);
                         form.find(".image_asset_orig_width").html(uploadedImage.width);
@@ -139,14 +139,14 @@
 
         function resetImages(image) {
             //  Create main and thumbnail images
-            for (let i of imagePages) {
+            for (i=0;i<imagePages.length;i++) {
 
-                i.image = image;
+                imagePages[i].image = image;
 
-                setDefaultSizes(i);
+                setDefaultSizes(imagePages[i]);
 
-                i.dirty = true;
-                setImageIdOnForm(i);
+                imagePages[i].dirty = true;
+                setImageIdOnForm(imagePages[i]);
 
             }
             updateImageForDisplay(imagePages[MAIN_IMAGE]);
@@ -158,7 +158,7 @@
             var defaultWidth = imageInfo.page.find(".image_asset_default_width").val();
             var resize=false;
 
-            if ( typeof defaultWidth !== 'undefined' && defaultWidth > 0) {
+            if ( defaultWidth !== 'undefined' && defaultWidth > 0) {
                 if (imageInfo.image.thumbWidth) {
                     defaultWidth = imageInfo.image.thumbWidth;
                 }
@@ -233,7 +233,6 @@
                 imageInfo.displayImage = imageInfo.image;
                 renderMainImage(imageInfo);
             } else {
-                //alert ('image too large resizing');
                 var height=imageInfo.image.height;
                 var width=imageInfo.image.width;
                 var displayScale = 100;
@@ -260,23 +259,22 @@
                 var result = $.post("/Rhythmyx/user/apps/imageWidget/resizeImage.do",
                     request,
                     function(data) {
-
-                        var newData = _objToString(data);
-                        //alert ( "resize result is  "+newData );
-                        imageInfo.displayImage = eval(data);
+                        imageInfo.displayImage = data;
                         renderMainImage(imageInfo);
                     },
                     "json"
-                );
+                ).fail(function(xhr, status, error) {
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
+                });
             }
 
         }
         function renderMainImage(imageInfo) {
-            //alert("rendering image");
             imageInfo.page.find(".image_asset_width").val(imageInfo.image.width);
             imageInfo.page.find(".image_asset_height").val(imageInfo.image.height);
             renderImage(imageInfo.page.find(".image_asset_image"),imageInfo.displayImage);
-            //alert("rendered display image");
         }
 
         function renderImage(selector,j) {
@@ -314,13 +312,16 @@
                     request,
                     function(data) {
                         var newData = _objToString(data);
-                        //alert ( "resize result is  "+newData );
                         imageInfo.image = eval(data);
                         setImageIdOnForm(imageInfo);
                         updateImageForDisplay(imageInfo);
                     },
                     "json"
-                );
+                ).fail(function(xhr, status, error) {
+                    console.log(xhr.statusText);
+                    console.log(textStatus);
+                    console.log(error);
+                });
             }
         }
 
@@ -343,7 +344,6 @@
                 function(data) {
 
                     var newData = _objToString(data);
-                    //alert ( "resize result is  "+newData );
                     var result = eval(data);
 
                     imageInfo.image=result;
@@ -410,16 +410,14 @@
         function getImageInfo(element) {
             var  step = $(this).closest(".image_asset_step");
             for (i=0;i<imagePages.length;i++) {
-                //if (imagePages[i].page.is(":visible"))
                 if(imagePages[i].page == step) {
-                    //alert("Found imageInfo");
                     return imagePages[i];
                 }
             }
         }
         //Callbacks
 
-        $('.image_asset_rotate_left').on("click", function()  {
+        $('.image_asset_rotate_left').on("click",function()  {
             rotate(-1);
         });
         $('.image_asset_rotate_right').on("click", function()  {
@@ -431,7 +429,7 @@
          * The "Upload" INPUT is a pseudo 'img' field, but it cannot name as 'img' on the field;
          * otherwise it will cause some unintended side effect when uploaded invalid an image file.
          */
-        function _selectImageHandler()
+        function _selectImageHandler(event)
         {
             form.ajaxSubmit(imageFormOptions);
         }
@@ -456,8 +454,8 @@
                 data.folderPath.substring(data.folderPath.indexOf('/Assets')),
                 true,
                 function( status, result ) {
-                    var error = status == $.topFrameJQuery.PercFolderHelper().PERMISSION_ERROR,
-                        onlyWrite = result == $.topFrameJQuery.PercFolderHelper().PERMISSION_READ;
+                    var error = status === $.topFrameJQuery.PercFolderHelper().PERMISSION_ERROR,
+                        onlyWrite = result === $.topFrameJQuery.PercFolderHelper().PERMISSION_READ;
                     if ( error || onlyWrite ) {
                         $.topFrameJQuery.perc_utils.alert_dialog({title: I18N.message("perc.ui.newassetdialog.title@New Asset"), content: I18N.message("perc.ui.page.path.selection.dialog@Not Authorized to Create")});
                         return;
@@ -479,7 +477,6 @@
                         accessNone = result === $.topFrameJQuery.PercUserService.ACCESS_NONE;
                     if (  error || accessRead || accessNone ) {
                         $.topFrameJQuery.perc_utils.alert_dialog({title: I18N.message("perc.ui.newassetdialog.title@New Asset"), content: I18N.message("perc.ui.page.path.selection.dialog@Not Authorized to Create")});
-                        return;
                     }
                     else {
                         updateFormActionUrl(data);
@@ -489,7 +486,7 @@
             );
         }
 
-        function _displayPathSelection() {
+        function _displayPathSelection(event) {
             var pathSelectionOptions = {
                 okCallback: _checkUserPermission,
                 dialogTitle: "Select Destination Folder",
@@ -502,11 +499,11 @@
             $.topFrameJQuery.PercPathSelectionDialog.open(pathSelectionOptions);
         }
 
-        $("#perc-select-image").on("change", function(evt){
+        $("#perc-select-image").on("change",function(evt){
             _selectImageHandler(evt);
         });
 
-        $(".perc-select-folderpath").on('click', function(evt){
+        $(".perc-select-folderpath").on("click", function(evt){
             _displayPathSelection(evt);
         });
 
@@ -525,13 +522,12 @@
             var currHeight = height.val();
             var currWidth = width.val();
             // resize the image if height or width is automatically modified by the constrain
-            if (prevHeight != currHeight || prevWidth != currWidth) {
+            if (prevHeight !== currHeight || prevWidth !== currWidth) {
                 resize();
             }
         });
 
         $(this).ajaxError(function(event, request, settings){
-            //alert("ajax error requesting page"+settings.url);
             displayUploadStep();
         });
 
@@ -553,12 +549,12 @@
 
             // evt.whcih == 8   for backspace
             // evt.which == 0   for all (left, right, up & down) keys
-            if (isNaN(theChar) && evt.which!==8 && evt.which!==0){
+            if (isNaN(theChar) && evt.which!=8 && evt.which!=0){
                 return false;
             }
 
             var field = evt.target;
-            value = field.value;
+            var value = field.value;
 
             // re-calculate the input value if key is a number, not backspace or arrow key
             if (evt.which !== 8 && evt.which !== 0) {
@@ -568,55 +564,61 @@
                 var t2 = field.value.slice(end);
                 value = t1 + theChar + t2;
             }
+
+            // don't check against max value for now.
+            // if (value > maxValue) {
+            //	return false;
+            //}
+
             return true;
         }
 
         // handle when height input lose focus - always retrieve & display image if there is any height/width changes
         $('.image_asset_height').on("blur",function() {
-            // utils.debug('".image_asset_height" Handler for .blur() called.');
             resize();
         })
-        .on("keypress",function(evt) {
-            if (!_acceptKey(evt, uploadedImage.height)) {
-                return false;
-            }
-        })
-        .on("keyup",function()  {
-            var step = $(this).closest(".image_asset_step");
-            var constrain = step.find(".image_asset_constrain:checked").length;
+            .on("keypress",function(evt) {
+                if (!_acceptKey(evt, uploadedImage.height)) {
+                    return false;
+                }
+            })
+            .on("keyup",function()  {
+                var step = $(this).closest(".image_asset_step");
+                var constrain = step.find(".image_asset_constrain:checked").length;
 
-            if(constrain > 0) {
-                var newWidth = Math.round(( uploadedImage.width / uploadedImage.height ) *  $(this).val());
-                //utils.debug('new width = ' + newWidth);
-                step.find(".image_asset_width").val( newWidth );
-            }
-        });
+                if(constrain > 0) {
+                    var newWidth = Math.round(( uploadedImage.width / uploadedImage.height ) *  $(this).val());
+                    step.find(".image_asset_width").val( newWidth );
+                }
+            });
+
 
         // handle when width input lose focus - always retrieve & display image if there is any height/width changes
         $('.image_asset_width').on("blur",function() {
-            // utils.debug('".image_asset_width" Handler for .blur() called.');
             resize();
         })
-        .on("keypress",function(evt) {
-            if (!_acceptKey(evt, uploadedImage.width)) {
-                return false;
-            }
-        })
-        .on("keyup",function()  {
-            var step = $(this).closest(".image_asset_step");
-            var constrain = step.find(".image_asset_constrain:checked").length;
-            if(constrain > 0 ) {
-                var newHeight = Math.round(( uploadedImage.height / uploadedImage.width ) *  $(this).val());
-                step.find(".image_asset_height").val(newHeight);
-            }
-        });
+            .on("keypress",function(evt) {
+
+                if (!_acceptKey(evt, uploadedImage.width)) {
+                    return false;
+                }
+            })
+            .on("keyup",function()  {
+                var step = $(this).closest(".image_asset_step");
+                var constrain = step.find(".image_asset_constrain:checked").length;
+                if(constrain > 0 ) {
+                    var newHeight = Math.round(( uploadedImage.height / uploadedImage.width ) *  $(this).val());
+                    step.find(".image_asset_height").val(newHeight);
+                }
+            });
 
 
         // helper method
         function _elementToString(n, useRefs) {
             var attr = "", nest = "", a = n.attributes;
-            for (let i=0; a && i < a.length; i++) {
-                attr += ' ' + a[i].nodeName + '="' + a[i].nodeValue + '"';}
+            for (var i=0; a && i < a.length; i++) {
+                attr += ' ' + a[i].nodeName + '="' + a[i].nodeValue + '"';
+            }
 
             if (n.hasChildNodes === false) {
                 return "<" + n.nodeName + "\/>";
@@ -624,9 +626,9 @@
 
             for (let i=0; i < n.childNodes.length; i++) {
                 var c = n.childNodes.item(i);
-                if (c.nodeType == 1)       nest += _elementToString(c);
-                else if (c.nodeType == 2)  attr += " " + c.nodeName + "=\"" + c.nodeValue + "\" ";
-                else if (c.nodeType == 3)  nest += c.nodeValue;
+                if (c.nodeType === 1)       nest += _elementToString(c);
+                else if (c.nodeType === 2)  attr += " " + c.nodeName + "=\"" + c.nodeValue + "\" ";
+                else if (c.nodeType === 3)  nest += c.nodeValue;
             }
             var s = "<" + n.nodeName + attr + ">" + nest + "<\/" + n.nodeName + ">";
             return useRefs ? s.replace(/</g,'&lt;').replace(/>/g,'&gt;') : s;
@@ -636,12 +638,10 @@
         function _objToString(o) {
             var s = '{\n';
             for (var p in o) {
-                if (typeof o[p] === 'object'){
+                if (typeof o[p] == 'object')
                     s+=_objToString(o[p]);
-                }
-                else{
+                else
                     s += '    ' + p + ': ' + o[p] + '\n';
-                }
             }
             return s + '}';
         }
@@ -707,10 +707,9 @@
         function _enableClickStep1(enable)
         {
             if (enable)
-                $("#perc-image-upload").off('click').on('click',
-                    function(evt){
-                        _step1ClickHandler(evt);
-                    }).css("cursor", "pointer");
+                $("#perc-image-upload").on("click",function(evt){
+                    _step1ClickHandler(evt);
+                } ).css("cursor", "pointer");
             else
                 $("#perc-image-upload").off('click').css("cursor", "default");
         }
@@ -759,7 +758,7 @@
         function _enableClickStep3(enable)
         {
             if (enable)
-                $("#perc-image-thumbnail").off('click').on('click',
+                $("#perc-image-thumbnail").off('click').on("click",
                     function(evt){
                         _step3ClickHandler(evt);
                     }).css("cursor", "pointer");
@@ -810,9 +809,10 @@
             $("input[name=thumbprefix]").val($thumbPrefix.val());
         }
 
-        $('#perc-image-thumbprefix').on("blur", function(e){
-            _updateThumbprefix(e);
-        });
+        $('#perc-image-thumbprefix').on("blur",
+            function(e){
+                _updateThumbprefix(e);
+            });
 
         /**
          * Initialize the editable "thumbnail" input field, populate the field
@@ -841,16 +841,16 @@
             $.perc_utils.debug('updateDisplayTitleIfNeeded() ...');
 
             var displayTitle = $('#perc-content-edit-displaytitle').val();
-            if (displayTitle == null || displayTitle =='')
+            if (displayTitle == null || displayTitle ==='')
             {
                 var filename = $('#perc-select-image').val();
                 $.perc_utils.debug('filename = ' + filename);
-				if(filename.match(/fakepath/)) {
-                        // update the file-path text using case-insensitive regex
-                        filename = filename.replace(/C:\\fakepath\\/i, '');
-                 }
-                 $.perc_utils.debug('filename = ' + filename);
-                if (filename != undefined && filename != null && filename !='')
+                if(filename.match(/fakepath/)) {
+                    // update the file-path text using case-insensitive regex
+                    filename = filename.replace(/C:\\fakepath\\/i, '');
+                }
+                $.perc_utils.debug('filename = ' + filename);
+                if (filename !== undefined && filename !== null && filename !=='')
                     $('#perc-content-edit-displaytitle').val(filename);
             }
             return true;
@@ -883,7 +883,7 @@
                     imageKey = $(this).find('.image_asset_id').val();
                 }
 
-                if ( imageKey!=undefined && imageKey.length > 0 ) {
+                if ( imageKey!== undefined && imageKey.length > 0 ) {
                     foundExisting = true;
                     imageRequest(imageKey,imageInfo);
                 }

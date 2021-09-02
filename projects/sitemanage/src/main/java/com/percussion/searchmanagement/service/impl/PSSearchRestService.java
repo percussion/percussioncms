@@ -23,11 +23,16 @@
  */
 package com.percussion.searchmanagement.service.impl;
 
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
 import com.percussion.searchmanagement.service.IPSSearchService;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.system.IPSSystemService;
 import com.percussion.services.useritems.data.PSUserItem;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedItemPropertiesList;
@@ -36,6 +41,8 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.PSWebserviceUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.queryparser.flexible.standard.QueryParserUtil;
@@ -61,12 +68,14 @@ public class PSSearchRestService
     private final IPSSearchService searchService;
     private final IPSItemService itemService;
     private static final Logger log = LogManager.getLogger(PSSearchRestService.class);
+    private final IPSSystemService systemService;
 
     @Autowired
-    public PSSearchRestService(IPSSearchService finderSearchService, IPSItemService itemService)
+    public PSSearchRestService(IPSSearchService finderSearchService, IPSItemService itemService, IPSSystemService systemService)
     {
         this.searchService = finderSearchService;
         this.itemService = itemService;
+        this.systemService = systemService;
     }
 
     /***
@@ -114,6 +123,8 @@ public class PSSearchRestService
     {
         try {
 
+            criteria = searchService.validateSearchCriteria(criteria);
+
             sanitizeCriteria(criteria);
 
             PSPagedItemList itemList = new PSPagedItemList();
@@ -147,6 +158,9 @@ public class PSSearchRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPagedItemPropertiesList extendedSearch(PSSearchCriteria criteria) throws PSSearchServiceException
     {
+
+        criteria = searchService.validateSearchCriteria(criteria);
+
         sanitizeCriteria(criteria);
 
         PSPagedItemPropertiesList itemList;

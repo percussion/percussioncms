@@ -45,7 +45,7 @@ public class PSSearchSecurityTests {
     @Test
     public void testCriteriaValidation(){
         PSSearchCriteria badCriteria = new PSSearchCriteria();
-        PSSearchRestService svc = new PSSearchRestService(null,null);
+        PSSearchRestService svc = new PSSearchRestService(null,null, null);
 
         badCriteria.setQuery("<Script>alert();</Script> AND g=1");
         log.info("Bad Query: {}", badCriteria.getQuery());

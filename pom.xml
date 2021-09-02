@@ -163,8 +163,8 @@
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
         <poi.version>4.1.2</poi.version>
-        <esapi.version>2.2.0.0-RC2</esapi.version>
-        <esapi.encoder.version>1.2.2</esapi.encoder.version>
+        <esapi.version>2.2.3.1</esapi.version>
+        <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.11</ant.version>
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.3</any23.version>
@@ -1962,11 +1962,10 @@
                 <version>${esapi.encoder.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.owasp.esapi/esapi -->
             <dependency>
                 <groupId>org.owasp.esapi</groupId>
                 <artifactId>esapi</artifactId>
-                <version>2.1.0.1</version>
+                <version>${esapi.version}</version>
             </dependency>
 
             <dependency>
