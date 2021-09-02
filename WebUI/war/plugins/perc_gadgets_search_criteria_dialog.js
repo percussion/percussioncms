@@ -333,7 +333,7 @@
               // BEGINNING TYPE_AHEAD          
               var inputField = dialog.find("#perc-search-criteria-dialog-created-by-field");
               
-              percJQuery.PercReusableSearchService.getUsers("", function(status, results)
+              percJQuery.PercReusableSearchService.getUsers("*", function(status, results)
               {
                   if (results !== undefined && results != null)
                   {
