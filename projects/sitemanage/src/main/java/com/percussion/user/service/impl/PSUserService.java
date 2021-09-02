@@ -1100,7 +1100,14 @@ public class PSUserService implements IPSUserService
             throws PSDirectoryServiceException, PSDirectoryServiceConnectionException,
             PSDirectoryServiceDisabledException
     {
-        PSUtilityService utilityService = (PSUtilityService) PSSpringBeanProvider.getBean("utilityService");
+        if(query == null || StringUtils.isEmpty(query)){
+            query = "%";
+        }
+
+        //Replace * wildcards with %
+        query = query.replace("*", "%");
+
+        query = SecureStringUtils.sanitizeStringForLDAP(query,false);
 
         List<Subject> subjects;
         try

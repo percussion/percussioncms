@@ -57,6 +57,16 @@ public class SecureStringUtils {
 
     private static final Logger log = LogManager.getLogger(SecureStringUtils.class);
 
+    /**
+     * To be used when sending queries to LDAP.
+     *
+     * @param query An LDAP query
+     * @return A string encoded for LDAP, wild cards are not encoded.
+     */
+    public static String sanitizeStringForLDAP(String query, boolean encodeWildcards) {
+        return DefaultEncoder.getInstance().encodeForLDAP(query,encodeWildcards);
+    }
+
     public enum DatabaseType{
         MYSQL,
         ORACLE,
