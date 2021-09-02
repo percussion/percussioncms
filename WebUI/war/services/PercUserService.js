@@ -73,12 +73,12 @@
      * Get list of usernames
      * @param callback function to be called when list of users is retrieved.
      * response status and list of users is passed back to the callback.
-     * 
+     *
      * Response user list JSON:
-     * 
+     *
      * {"UserList":{"users":["Admin","Contributor"]}}
-     * 
-     */       
+     *
+     */
     function getUsers(callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_USERS,
@@ -89,7 +89,7 @@
                     //Convert all users values to string.
                     result.data.UserList.users = convertToString(result.data.UserList.users);
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                } 
+                }
                 else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -103,12 +103,12 @@
      * @param username username of user to be found.
      * @param callback function to be called when user is retrieved.
      * response status and userObj is passed back to the callback.
-     * 
+     *
      * Response userObj JSON:
-     * 
+     *
      * {"User":{"name":"","roles":["Admin","Contributor"]}}
-     * 
-     */       
+     *
+     */
     function findUser(username, callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_FIND + "/" + username,
@@ -118,7 +118,7 @@
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
                     result.data.User.name = result.data.User.name.toString();//CXF return a numeric value if the name contains just numbers
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                } 
+                }
                 else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -126,18 +126,18 @@
             }
         );
     }
-    
+
     /**
      * Change password of current user only
      * @param userObj user object which contains username and new password.
      * @param callback function to be called when user is retrieved.
      * response status and userObj is passed back to the callback.
-     * 
+     *
      * Response userObj JSON:
-     * 
+     *
      * {"User":{"name":""}}
-     * 
-     */       
+     *
+     */
     function changePassword(userObj, callback){
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.CHANGEPW,
@@ -152,21 +152,21 @@
                 }
             },
             userObj
-        );          
+        );
     }
 
     /**
      * Find directory users by usernameStartsWith
-     * 
+     *
      * @param usernameStartsWith {string} can be empty string
      * @param callback {function} function to be called when user is retrieved.
      * Response status and usersObj is passed back to the callback.
-     * 
+     *
      * Response usersObj JSON:
-     * 
+     *
      * {"ExternalUsers" : [ {"name":"Alice"}, {"name":"Bob"}, {"name":"Charlie"} ] }
-     * 
-     */       
+     *
+     */
     function findDirectoryUsers(usernameStartsWith, callback){
 
         if(usernameStartsWith === null) {
@@ -174,7 +174,7 @@
             return;
         }
         usernameStartsWith = usernameStartsWith.replace(/%+$/, "");
-        var urlfindExternalUsernamesThatStartwith = $.perc_paths.USER_EXTERNAL_FIND + "/" + encodeURIComponent(usernameStartsWith) + "%25";
+        var urlfindExternalUsernamesThatStartwith = $.perc_paths.USER_EXTERNAL_FIND + "/" + encodeURIComponent(usernameStartsWith) + "*";
 
         $.PercServiceUtils.makeJsonRequest(
             urlfindExternalUsernamesThatStartwith,
@@ -182,16 +182,16 @@
             false,
             function(status, result) {
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
-                    
+
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                        
+
                 } else {
 
                     try {
-	                    var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
-	                    callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
+                        var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                        callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
                     } catch (err) {
-                    	callback($.PercServiceUtils.STATUS_ERROR, I18N.message("perc.ui.user.service@Unable To Retrieve Users"));
+                        callback($.PercServiceUtils.STATUS_ERROR, I18N.message("perc.ui.user.service@Unable To Retrieve Users"));
                     }
                 }
             }
@@ -201,17 +201,17 @@
     /**
      * Imports list of users.
      * @param usersJSON {object} containing list of users to be imported with the following data structure
-     * 
+     *
      * {"ImportUsers":{"externalUsers":[{"name":"a"},{"name":"b"},{"name":"c"}]}}
-     * 
+     *
      * @param callback {function} the callback function to be called when the request completes. Passes back the list of users that
      * have and have not been imported and the reason why they were not imported. The data structure of response
-     * 
+     *
      * {"ImportedUser":[{"name":"a","status":"SUCCESS"},{"name":"b","status":"DUPLICATE"},{"name":"c","status":"ERROR"}]}
-     * 
+     *
      */
     function importDirectoryUsers(usersJSON, callback){
-        
+
         if(usersJSON === null || usersJSON === undefined || usersJSON.ImportUsers.externalUsers.length === 0) {
             callback($.PercServiceUtils.STATUS_ERROR, I18N.message("perc.ui.user.service@Null or Empty List of Users"));
             return;
@@ -222,33 +222,33 @@
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                
+
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
-                    
+
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                        
+
                 } else {
-                    
+
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
-                    
+
                 }
             },
-            usersJSON);          
-      }
+            usersJSON);
+    }
 
 
     /**
      * Get the status of the directory service
-     * 
+     *
      * @param callback {function} to be called when user is retrieved.
      * response status and usersObj is passed back to the callback.
-     * 
+     *
      * Response
-     * 
+     *
      * {"DirectoryServiceStatus":{"status":"ENABLED"}}
      *
-     */       
+     */
     function getDirectoryStatus(callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_EXTERNAL_STATUS,
@@ -256,14 +256,14 @@
             false,
             function(status, result) {
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
-                    
+
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                        
+
                 } else {
 
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
-                    
+
                 }
             }
         );
@@ -273,12 +273,12 @@
      * Get list of roles
      * @param callback function to be called when list of roles is retrieved.
      * response status and list of roles is passed back to the callback.
-     * 
+     *
      * Response looks as follows:
-     * 
+     *
      * {"RoleList":{"roles":["Admin","Contributor","Editor"]}}
-     * 
-     */       
+     *
+     */
     function getRoles(callback) {
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_ROLES,
@@ -289,7 +289,7 @@
                     //Convert all roles values to string.
                     result.data.RoleList.roles = convertToString(result.data.RoleList.roles);
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                } 
+                }
                 else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -297,19 +297,19 @@
             }
         );
     }
-    
+
 
     /**
-     * Create a new user. This is a JSON only call and returns json in 
-     * the callback.        
+     * Create a new user. This is a JSON only call and returns json in
+     * the callback.
      * @param userObj the user object to be created. Cannot be <code>null</code>.
      * contains username, password and list of roles. Password can be left blank.
      * @param callback the callback function to be called when the request completes.
-     * 
+     *
      * Response userObj JSON:
-     * 
+     *
      * {"User":{"name":"username", "password":"p@$$w0rd", "roles":["Admin","Contributor"]}}
-     * 
+     *
      */
     function createUser(userObj, callback) {
         $.PercServiceUtils.makeJsonRequest(
@@ -317,19 +317,19 @@
             $.PercServiceUtils.TYPE_POST,
             false,
             function(status, result) {
-                
+
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
-                    
-                        callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                        
+
+                    callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
+
                 } else {
-                    
+
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
                 }
             },
-            userObj);          
-      }
+            userObj);
+    }
 
 
     /**
@@ -337,16 +337,16 @@
      * @param username username of user to be found.
      * @param callback function to be called when user is retrieved.
      * response status and userObj is passed back to the callback.
-     */       
+     */
     function deleteUser(username, callback) {
         $.PercServiceUtils.makeDeleteRequest(
             $.perc_paths.USER_DELETE + "/" + username,
             false,
             function(status, result) {
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
-                    
+
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                        
+
                 } else {
 
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
@@ -357,7 +357,7 @@
     }
 
     /**
-     * Update An Existing User. This is a JSON only call and returns json in 
+     * Update An Existing User. This is a JSON only call and returns json in
      * the callback.
      * @param userObj the user object to be updated. Cannot be <code>null</code>.
      * contains new password and new list of roles. If password is null or blank, password stays unchanged
@@ -365,12 +365,12 @@
      * If password is empty, password will not be changed on the server.
      * Username will be ignored by the server.
      * @param callback the callback function to be called when the request completes.
-     * 
+     *
      * Response userObj JSON:
-     * 
+     *
      * {"User":{"name":"username", "password":"p@$$w0rd", "roles":["Admin","Contributor"]}}
-     * 
-     */                    
+     *
+     */
     function updateUser(userObj, callback){
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_UPDATE,
@@ -378,19 +378,19 @@
             false,
             function(status, result) {
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
-                      
+
                     callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
-                        
+
                 } else {
-                    
+
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
-                
+
                 }
             },
             userObj
-        );          
-    }  
+        );
+    }
 
     /*ROLE SECTION*/
     /**
@@ -398,12 +398,12 @@
      * @param rolename name of role to be found.
      * @param callback function to be called when user is retrieved.
      * response status and roleObj is passed back to the callback.
-     * 
+     *
      * Response roleObj JSON:
-     * 
+     *
      * {"Role":{"name":"","description":"","users":["Admin","Admin2"]}}
-     * 
-     */       
+     *
+     */
     function findRole(rolename, callback){
         var strObj = {"psstring":{"value":rolename}};
         $.PercServiceUtils.makeJsonRequest(
@@ -422,13 +422,13 @@
             strObj
         );
     }
-    
+
     /**
      * Delete a role by rolename
      * @param rolename name of role to be delete.
      * @param callback function to be called when user is retrieved.
      * response status and roleObj is passed back to the callback.
-     */       
+     */
     function deleteRole(rolename, callback){
         var strObj = {"psstring":{"value":rolename}};
         $.PercServiceUtils.makeJsonRequest(
@@ -446,18 +446,18 @@
             strObj
         );
     }
-    
+
     /**
-     * Create a new role. This is a JSON only call and returns json in 
-     * the callback.        
+     * Create a new role. This is a JSON only call and returns json in
+     * the callback.
      * @param roleObj the role object to be created. Cannot be <code>null</code>.
      * contains rolename, description and list of users.
      * @param callback the callback function to be called when the request completes.
-     * 
+     *
      * Response roleObj JSON:
-     * 
+     *
      * {"Role":{"name":"rolename","description":"Description text", "users":["user1","user2"]}}
-     * 
+     *
      */
     function createRole(roleObj, callback){
         $.PercServiceUtils.makeJsonRequest(
@@ -466,7 +466,7 @@
             false,
             function(status, result) {
                 if(status === $.PercServiceUtils.STATUS_SUCCESS) {
-                        callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
+                    callback($.PercServiceUtils.STATUS_SUCCESS, result.data);
                 } else {
                     var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                     callback($.PercServiceUtils.STATUS_ERROR, defaultMsg);
@@ -475,20 +475,20 @@
             roleObj
         );
     }
-    
+
     /**
-     * Update An Existing Role. This is a JSON only call and returns json in 
+     * Update An Existing Role. This is a JSON only call and returns json in
      * the callback.
      * @param roleObj the role object to be updated. Cannot be <code>null</code>.
      * contains new description and new list of users.
      * if list of users is empty, role will be removed from all users.
      * Rolename will be ignored by the server.
      * @param callback the callback function to be called when the request completes.
-     * 
+     *
      * Response roleObj JSON:
-     * 
+     *
      * {"Role":{"name":"rolename", "description":"new Description Text", "users":["user1","userNew"]}}
-     * 
+     *
      */
     function updateRole(roleObj, callback){
         $.PercServiceUtils.makeJsonRequest(
@@ -506,18 +506,18 @@
             roleObj
         );
     }
-    
+
     /**
-     * Get the available users by an existing Role. This is a JSON only call and returns json in 
+     * Get the available users by an existing Role. This is a JSON only call and returns json in
      * the callback.
      * @param roleObj the role object. Cannot be <code>null</code>.
      * contains the role name. {"Role":{"name":"RoleName"}}
      * @param callback the callback function to be called when the request completes.
-     * 
+     *
      * Response roleObj JSON:
-     * 
+     *
      * {"Role":{"name":"rolename", "users":["user1","userNew"]}}
-     * 
+     *
      */
     function getAvailableUsers(roleObj, callback){
         $.PercServiceUtils.makeJsonRequest(
@@ -537,7 +537,7 @@
             roleObj
         );
     }
-   
+
     /**
      * Finds the access level for the current user. This returns json in the callback.
      * @param type the default workflow of the specified content type will be used.
@@ -558,7 +558,7 @@
         {
             reqObj = {"AccessLevelRequest":{"itemId":itemId, "parentFolderPath": parentFolderPath}};
         }
-        
+
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.USER_ACCESS_LEVEL,
             $.PercServiceUtils.TYPE_POST,
@@ -574,18 +574,18 @@
             reqObj
         );
     }
-    
+
     /**
-     * Validate a Role before delete it. This is a JSON only call and returns json in 
+     * Validate a Role before delete it. This is a JSON only call and returns json in
      * the callback.
      * @param roleObj the role object to be validate. Cannot be <code>null</code>.
      * contains the role name and the assigned users list.
      * @param callback the callback function to be called when the request completes.
-     * 
+     *
      * roleObj:
-     * 
+     *
      * {"Role":{"name":"rolename", "users":["user1","user2"]}}
-     * 
+     *
      */
     function validateDeleteRole(roleObj, callback){
         $.PercServiceUtils.makeJsonRequest(
@@ -603,17 +603,17 @@
             roleObj
         );
     }
-    
-     /**
-     * Validate the user list to be removed from a Role. This is a JSON only call and returns json in 
+
+    /**
+     * Validate the user list to be removed from a Role. This is a JSON only call and returns json in
      * the callback.
      * @param UserList Users List to be validated. Cannot be <code>null</code>.
      * @param callback the callback function to be called when the request completes.
-     * 
+     *
      * UserList:
-     * 
+     *
      * {"UserList":{"users":["Admin","Contributor"]}}
-     * 
+     *
      */
     function validateDeleteUsers(userList, callback){
         $.PercServiceUtils.makeJsonRequest(
@@ -631,7 +631,7 @@
             userList
         );
     }
-    
+
     /**
      * Convert all array values to string.
      * CXF return a mixed array (numeric and string values if some of the values contains just numbers).
@@ -643,5 +643,5 @@
         });
         return itemList;
     }
-    
+
 })(jQuery);
