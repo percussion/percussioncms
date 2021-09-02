@@ -24,8 +24,10 @@
 
 package com.percussion.widgets.image.data;
 
-import java.io.Serializable;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
 
 public class ImageMetaData implements Serializable
 {
@@ -77,7 +79,10 @@ public class ImageMetaData implements Serializable
 
    public void setExt(String ext)
    {
-      this.ext = ext;
+      if(ext == null || StringUtils.isEmpty(ext))
+         throw new IllegalArgumentException("Extension is required");
+
+      this.ext = ext.replace(".","");
    }
 
    public String getFilename()

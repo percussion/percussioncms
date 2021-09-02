@@ -24,6 +24,7 @@
 
       package com.percussion.widgets.image.web.impl;
 
+      import com.percussion.error.PSExceptionUtils;
       import com.percussion.widgets.image.data.CachedImageMetaData;
       import com.percussion.widgets.image.data.ImageData;
       import com.percussion.widgets.image.services.ImageCacheManager;
@@ -39,7 +40,6 @@
       import org.springframework.web.bind.annotation.ModelAttribute;
       import org.springframework.web.bind.annotation.PostMapping;
       import org.springframework.web.bind.annotation.RequestMapping;
-      import org.springframework.web.bind.annotation.RequestMethod;
       import org.springframework.web.servlet.ModelAndView;
 
       import java.awt.*;
@@ -64,8 +64,9 @@
                   JSON json = JSONSerializer.toJSON(cimd);
                   mav.addObject(getModelObjectName(), json);
               } catch (Exception ex) {
-                  String emsg = "Unexpected exception " + ex.getLocalizedMessage();
-                  log.error(emsg, ex);
+                  String emsg = "Unexpected exception " + PSExceptionUtils.getMessageForLog(ex);
+                  log.error(emsg);
+                  log.debug(ex);
                   JSON json = new JSONObject().accumulate("error", emsg);
                   mav.addObject(getModelObjectName(), json);
               }
@@ -83,16 +84,16 @@
 
               if ((bean.getWidth() != 0) || (bean.getHeight() != 0)) {
                   size = new Dimension(bean.getWidth(), bean.getHeight());
-                  log.debug("new image size is " + size);
+                  log.debug("new image size is {}" ,size);
               }
 
               if ((bean.getX() != 0) && (bean.getY() != 0) && (bean.getDeltaX() != 0) && (bean.getDeltaY() != 0)) {
                   cropBox = new Rectangle(bean.getX(), bean.getY(), bean.getDeltaX(), bean.getDeltaY());
-                  log.debug("new image crop box is " + cropBox);
+                  log.debug("new image crop box is {}" , cropBox);
               }
               if (bean.getRotate() != 0) {
                   rotate = bean.getRotate();
-                  log.debug("rotate is " + rotate);
+                  log.debug("rotate is {}" , rotate);
               }
               ImageData imageData = this.imageCacheManager.getImage(bean.getImageKey());
               Validate.notNull(imageData, "Image to be resized was not found");
@@ -107,8 +108,8 @@
                   String key = this.imageCacheManager.addImage(imageReturnData);
                   return new CachedImageMetaData(imageReturnData, key);
               } catch(IllegalArgumentException e) {
-                  log.error("Can not resize image with this format. Error: {}", e.getMessage());
-                  log.debug(e.getMessage(), e);
+                  log.error("Can not resize image with this format. Error: {}", PSExceptionUtils.getMessageForLog(e));
+                  log.debug(e);
               }
 
               String key = this.imageCacheManager.addImage(imageData);
