@@ -71,7 +71,7 @@ var assetPagination = null;
         // WARN: expect this method to be called after body onload
         // determine the width of the native scrollbar
         // http://visualpulse.net/forums/index.php?topic=120.0
-        $("body").append('<div id="perc-wide_scroll_div_one" style="width:50px;height:50px;overflow-y:scroll;position:absolute;top:-200px;left:-200px;"><div id="wide_scroll_div_two" style="height:100px;width:100%"></div></div>');
+        $("body").append('<div id="perc-wide_scroll_div_one" style="width:50px;height:50px;overflow-y:hidden;position:absolute;top:-200px;left:-200px;"><div id="wide_scroll_div_two" style="height:100px;width:100%"></div></div>');
         var SCROLLBAR_WIDTH = $("#perc-wide_scroll_div_one").width() - $("#wide_scroll_div_two").innerWidth();
         $("#perc-wide_scroll_div_one").remove();
 
@@ -107,7 +107,7 @@ var assetPagination = null;
         function finder_do_goto_or_search (event) {
             event.preventDefault();
             var val, isGoto, $control, $input, isNotAllowed;
-            $control = $(".perc-action-goto-or-search").parents('.perc-finder-goto-or-search');
+            $control = $(this).parents('.perc-finder-goto-or-search');
             $input = $control.find('input.perc-finder-goto-or-search:first');
             val = $input.val();
             isGoto = /^\//.test(val);
@@ -128,12 +128,9 @@ var assetPagination = null;
         }
 
         // attach event handlers to the dom
-        $('body').on('click', '.perc-action-goto-or-search',
-            function(evt){
-                finder_do_goto_or_search(evt);
-            });
+        $('body').on('click', '.perc-action-goto-or-search', finder_do_goto_or_search);
         $.perc_filterField($("#mcol-path-summary"), $.perc_textFilters.PATH);
-        $(document).on("keyup","#mcol-path-summary",function(evt){
+        $("#mcol-path-summary").on("keyup",function(evt){
             if (evt.keyCode === 13){
                 $("#mcol-path-summary").trigger("blur");
                 finder_do_goto_or_search.apply(this, [evt]);
@@ -150,7 +147,7 @@ var assetPagination = null;
             // hide the message if it's visible
             showFinderErrorMessage(false);
         });
-        $(document).on("mousedown touchstart",function(evt){
+        $(document).on('mousedown',function(evt){
             if (evt.target.id !== "perc-finder-go-action" && evt.target.id !== "mcol-path-summary"){
                 $("#mcol-path-summary").trigger("blur");
                 if (evt.target.id !== "perc-finder-search-submit" &&     // Need this condition to clean path when performing search
@@ -216,6 +213,7 @@ var assetPagination = null;
             if (newPath === currPath && viaGoButton === true &&
                 ($.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_SEARCH_RESULTS  && // This condition avoids the check when
                     $.Percussion.getCurrentFinderView() !== $.Percussion.PERC_FINDER_RESULT)){    // in search view to force the path change
+                return;
             }else {
 
                 $.PercPathService.validatePath(newPath, function(status, result){
@@ -320,7 +318,7 @@ var assetPagination = null;
             // refresh Architecture view
             if( $("#perc_site_map").length > 0 )   {
                 try {
-                    $("#perc_site_map").perc_site_map('layoutAll');
+                     $("#perc_site_map").perc_site_map('layoutAll');
                 }catch(error){
                     //Gettign Initialization error in case site not selected... needs to be ignored
                 }
@@ -953,6 +951,7 @@ var assetPagination = null;
                 .data( 'tag', pref + (spec.name + "").toLowerCase() )
                 .data( 'name', item_path[ item_path.length - 1 ] )
                 .data( 'spec', spec );
+
             _addToPathIdArray(spec.path, spec.id);
             if(spec.type)
                 listing.addClass("perc-listing-type-" + spec.type);
@@ -1000,8 +999,10 @@ var assetPagination = null;
                     revertDuration: 0,
                     start: onDragStart,
                     stop: onDragStop,
+                    scope: 'perc_iframe_scope',
                     delay: dragDelay
                 });
+
             }
 
             if(isDroppableItem(spec))
@@ -1011,6 +1012,7 @@ var assetPagination = null;
                     accept: dragAcceptor,
                     over: hoverStart,
                     out: hoverCancel,
+                    scope: 'perc_iframe_scope',
                     drop: onDrop } );
             }
 
@@ -1245,7 +1247,7 @@ var assetPagination = null;
 
                         return;
                     }
-                    evt.stopPropagation();
+                    // evt.stopPropagation();
                 }
 
                 //Set the Search icon for when highlighted
@@ -1401,7 +1403,7 @@ var assetPagination = null;
                     if(isAssetResource)
                     {
                         $sum.find("#perc-asset-preview-link").each(function(){
-                            $(this).off('click').on('click', function(){
+                            $(this).off().on('click', function(){
                                 launchAssetPreview(spec.id);
                             });
                         });
@@ -1409,7 +1411,7 @@ var assetPagination = null;
                     else
                     {
                         $sum.find("#perc-page-preview-link").each(function(){
-                            $(this).off('click').on('click', function(){
+                            $(this).off().on('click', function(){
                                 launchPagePreview(spec.id);
                             });
                         });
@@ -1720,6 +1722,7 @@ var assetPagination = null;
             $(".mcol-listing").each(function(){
                 $(this).droppable();
                 $(this).droppable("option", "disabled", !enable);
+
             });
             $("#perc-finder-listview table").droppable("option", "disabled", !enable);
         }

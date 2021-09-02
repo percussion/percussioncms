@@ -86,11 +86,11 @@
                     else if(model.isTemplate() || model.isLandingPage())
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") || (model.isPage() && model.isLandingPage() && wDef === "percTitle")) {
+                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") || (model.isPage() && model.isLandingPage() && wDef === "percTitle")) {
                             imgSrc = '/cm/images/icons/editor/editInactive';
                         }
                     }
-                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
+                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                     {
                         imgSrc += "Middle";
                     }
@@ -108,7 +108,7 @@
                     if(model.getWidgetContentTypes(elem.attr('widgetid')) !== "" )
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") ||
+                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") ||
                             (model.isPage() && model.isLandingPage() && wDef === "percTitle"))
                         {
                             return;
@@ -135,7 +135,7 @@
                         var assetInfo = model.getAssetDropCriteria()[elem.attr('widgetid')];
                         var assetId = assetInfo && !assetInfo.locked?elem.attr('assetid'):"";
                         var wDef = elem.attr('widgetdefid');
-                        if(assetId && typeof model.getWidgetPrefs(wDef) !== 'undefined' && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
+                        if(assetId && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                         {
                             imgSrc = '/cm/images/icons/editor/promote';
                         }
@@ -181,7 +181,7 @@
 
         var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-active', widgetMenu);
 
-        $('#show-hide-decorations').off("click").on("click", function(){
+        $('#show-hide-decorations').off().on("click", function(){
             widgetDecorator.visible( !widgetDecorator.visible());
         });
 
@@ -256,18 +256,20 @@
             function accepts(item)
             {
                 var ctype = item.data('spec') && item.data( 'spec' ).type;
-                if (ctype === undefined || ctype === "")
+                if (typeof ctype === 'undefined' || ctype === "")
                 {
                     ctype = item.data('percRowData') && item.data( 'percRowData' ).type;
                 }
                 var accept = ctype && ctypes && ( ctype === ctypes || $.grep( ctypes, function(ct) { return ct === ctype; } ).length );
                 return accept;
             }
+
+
             var inside = insideIframe(widget);
             if(typeof(inside.draggable) == 'function')
             {
                 insideIframe(widget).draggable({
-                    scope: 'default',
+                    scope: 'perc_iframe_scope',
                     revert: true,
                     drag: function(event, ui) {
                         if(event.target.innerText.length <= 0)
@@ -276,13 +278,12 @@
                 });
                 insideIframe(widget).droppable({
                     // only interact with iframe draggables
-                    scope: 'default',
+                    scope: 'perc_iframe_scope',
                     tolerance : 'pointer',
-                    greedy: true,
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
 
-                        var parentRegionId = $(this).attr("id");
+                        var parentRegionId = $(this).parent().parent().attr("id");
 
                         overlapContentWidgets++;
 
@@ -365,17 +366,15 @@
             }
 
             widget.droppable({
-                scope: 'default',
+                scope: 'perc_iframe_scope',
                 tolerance : 'pointer',
-                greedy: true,
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {
-                    var parentRegionId = $(this).attr("id");
-
+                    var parentRegionId = $(this).parent().parent().attr("id");
                     overlap++;
                     if(accepts(ui.draggable)) {
                         document.body.style.cursor="default";
-                        if(parentRegionId === currentRegionId || overlap === 1) {
+                        if(parentRegionId === currentRegionId || overlap === 1 ) {
                             // clear background of all other widgets
                             widgets.each(function(){
                                 $(this).css("background-color", "");
@@ -407,6 +406,7 @@
                     if(widget.hasClass('perc-locked')) {
                         return false;
                     }
+
                     var assetid = "";
                     var relationshipId = "";
                     var spec = ui.draggable.data('spec');
@@ -530,9 +530,7 @@
                 widgetDecorator.unselectAll();
             });
             overlap = 0;
-
             iframe = $("#frame");
-
             // grab all the regions and widgets
             regions = iframe.contents().find(".perc-region");
             widgets = iframe.contents().find(".perc-widget");
@@ -541,6 +539,7 @@
                 currentRegionId = $(this).attr("id");
                 event.stopPropagation();
             }));
+
         }
 
         /**

@@ -513,7 +513,7 @@
                     );
                 }
                 // populates Orphan Assets tray and toggles it open/close
-                $("#perc_orphan_assets_expander").off("click").on("click",function()
+                $("#perc_orphan_assets_expander").off().on("click",function()
                 {
                     clearSelection();
                     $.fn.percOrphanAssetsMaximizer(P);
@@ -533,14 +533,6 @@
                         zIndex: 9990,
                         revert: true,
                         revertDuration: 0,
-                        start: function()
-                        {
-                            $("body").css("overflow", "hidden");
-                        },
-                        stop: function()
-                        {
-                            $("body").css("overflow", "auto");
-                        },
                         delay: 25
                     });
 
@@ -707,12 +699,13 @@
                             resetJavaScriptMenu();
                         });
                         return false;
+                    }else{
+                        //Reset the JavaScript Off/On menu to JavaScript Off
+                        resetJavaScriptMenu();
                     }
                 },
                 activate: function(event,ui)
                 {
-                    //Reset the JavaScript Off/On menu to JavaScript Off
-                    resetJavaScriptMenu();
                     loadTab(ui.newTab.index(), true);
                 }
             });
@@ -850,7 +843,7 @@
                 var previewPath = $.perc_paths.PAGE_PREVIEW + currentPageId;
                 $("#frame").contents().remove();
                 $("#frame").attr("src", previewPath);
-                $("#frame").off("load");
+                $("#frame").off();
                 $("#frame").on("load", function()
                 {
                     fixIframeHeight();
