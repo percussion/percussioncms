@@ -557,21 +557,7 @@ public class PSExtensionRunner
                   break;
                default:
             }
-         }
-         catch(PSExtensionProcessingException e1)
-         {
-            String message = getExceptionInfo(args, m_effect, executeMethod);
-            ms_log.error(message, e1);
-            throw e1;
-            
-         }
-         catch(PSParameterMismatchException e1)
-         {
-            String message = getExceptionInfo(args, m_effect, executeMethod);
-            ms_log.error(message, e1);
-            throw e1;
-         }
-         catch (PSCloneAlreadyExistsException ce)
+         } catch (PSCloneAlreadyExistsException ce)
          {
             String msg = "Existing clone (" + ce.getDependent().getId() 
                + ") found for item " 
@@ -581,12 +567,13 @@ public class PSExtensionRunner
                + " relationship.";
             ms_log.info(msg);
             throw ce;
-         }
-         catch(RuntimeException e1)
+         } catch(PSExtensionProcessingException | PSParameterMismatchException | RuntimeException e1)
          {
             String message = getExceptionInfo(args, m_effect, executeMethod);
-            ms_log.error(message, e1);
+            ms_log.error(message);
+            ms_log.debug(e1);
             throw e1;
+
          }
 
          // Trace processing message
@@ -625,9 +612,8 @@ public class PSExtensionRunner
       buf.append("Problem while processing effect: ");
       buf.append(effect.getClass().getName());
       buf.append("\nargs: ");
-      for(int i = 0; i < args.length; i++)
-      {
-         buf.append(args[i].toString());
+      for (Object arg : args) {
+         buf.append(arg.toString());
          buf.append(" ");
       }
       
@@ -686,7 +672,7 @@ public class PSExtensionRunner
     *
     * @see #buildExtractors
     *
-    * @throws PSDataExtraction
+    * @throws PSDataExtractionException
     */
    private Object[] extractData(PSExecutionData data)
       throws PSDataExtractionException
@@ -696,9 +682,8 @@ public class PSExtensionRunner
 
       Object[] args = new Object[m_extractors.size()];
       int extractorNum = 0;
-      for (Iterator i = m_extractors.iterator(); i.hasNext(); )
-      {
-         IPSDataExtractor extractor = (IPSDataExtractor)(i.next());
+      for (Object m_extractor : m_extractors) {
+         IPSDataExtractor extractor = (IPSDataExtractor) m_extractor;
          if (extractor != null)
             args[extractorNum++] = extractor.extract(data);
          else

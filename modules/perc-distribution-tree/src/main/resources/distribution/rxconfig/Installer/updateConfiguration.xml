@@ -112,6 +112,9 @@
                 <entry key="useXMLAssemblerCache" default="false"/>
                 <entry key="requireHTTPS" default="false"/>
                 <entry key="imageThumbnailWidth" default="50"/>
+                <entry key="imageThumbnailExtension" default="png"/>
+                <entry key="imageThumbnailContentType" default="image/png"/>
+                <entry key="imageThumbnailFormat" default="png"/>
                 <entry key="publicCmsHostname" default=""/>
                 <entry key="requestBehindProxy" default="false"/>
                 <entry key="proxyScheme" default="http"/>

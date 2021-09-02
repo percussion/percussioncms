@@ -24,6 +24,7 @@
 
 package com.percussion.widgets.image.extensions;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSItemInputTransformer;
 import com.percussion.extension.PSDefaultExtension;
@@ -43,20 +44,19 @@ import com.percussion.widgets.image.services.ImageCacheManagerLocator;
 import com.percussion.widgets.image.services.ImageResizeManager;
 import com.percussion.widgets.image.services.ImageResizeManagerLocator;
 import com.percussion.widgets.image.web.impl.ImageReader;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ImageAssetInputTranslation extends PSDefaultExtension implements IPSItemInputTransformer
 {
@@ -79,9 +79,9 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
    }
 
    /**
-    * @throws PSAuthorizationException
-    * @throws PSRequestValidationException
-    * @throws PSParameterMismatchException
+    * @throws PSAuthorizationException Authorization error
+    * @throws PSRequestValidationException If the request is invalid
+    * @throws PSParameterMismatchException If the parameters are incorrect
     */
    public void preProcessRequest(Object[] params, IPSRequestContext request) throws PSAuthorizationException,
          PSRequestValidationException, PSParameterMismatchException, PSExtensionProcessingException
@@ -104,7 +104,7 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
             }
             else
             {
-               this.log.debug("a value was not found for parameter " + imageName);
+               log.debug("a value was not found for parameter {}", imageName);
             }
          }
          else
@@ -115,7 +115,8 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
       }
       catch (Exception ex)
       {
-         this.log.error("Unexpected Exception " + ex, ex);
+         log.error("Unexpected Exception: {}" , PSExceptionUtils.getMessageForLog(ex));
+         log.debug(ex);
          throw new PSExtensionProcessingException(getClass().getName(), ex);
       }
    }
@@ -123,31 +124,31 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
    protected void processInputImage(IPSRequestContext request, String base) throws Exception
    {
       String dirty = request.getParameter(base + "_dirty");
-      dirty = "true";
+
+
       if (StringUtils.isBlank(dirty))
       {
-         this.log.debug("image " + base + " is not dirty");
-         return;
+         log.debug("image {} is not dirty", base);
+         dirty = "true";
       }
       String imageKey = request.getParameter(base + "_id");
       if (StringUtils.isBlank(imageKey))
       {
-         this.log.debug("Image key is blank ");
+         log.debug("Image key is blank");
          return;
       }
       ImageData iData = this.cacheManager.getImage(imageKey);
       if (iData == null)
       {
-         this.log.info("Image not found in the cache for key " + imageKey);
+         log.info("Image not found in the cache for key {}" , imageKey);
          return;
       }
       updateRequest(request, base, iData);
    }
 
-   private void updateRequest(IPSRequestContext request, String prefix, ImageData iData) throws Exception
-   {
+   private void updateRequest(IPSRequestContext request, String prefix, ImageData iData) throws IOException {
       PSPurgableTempFile temp = writeFile(iData);
-      this.log.debug("updating file for " + prefix + " " + temp.getCanonicalPath());
+      log.debug("updating file for {} {}" ,prefix , temp.getCanonicalPath());
 
       request.setParameter(prefix, temp);
       request.setParameter(prefix + "_ext", iData.getExt());
@@ -159,15 +160,13 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
       request.setParameter(prefix + "_id", null);
    }
 
-   private ImageData generateImage(PSPurgableTempFile imageFile, String mimeType) throws Exception
-   {
+   private ImageData generateImage(PSPurgableTempFile imageFile, String mimeType) throws Exception {
       try(FileInputStream fin = new FileInputStream(imageFile)){
          ImageData iData = this.resizeManager.generateImage(fin);
          iData.setFilename(imageFile.getSourceFileName());
          iData.setMimeType(mimeType);
 
-         ImageData localImageData1 = iData;
-         return localImageData1;
+         return iData;
       }
    }
 
@@ -178,6 +177,10 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
 
       Properties serverProps = PSServer.getServerProps();
       String thumbWidthStr = serverProps.getProperty("imageThumbnailWidth", "50");
+      String imageThumbnailExt = serverProps.getProperty("imageThumbnailExtension","png");
+      String imageThumbnailContentType = serverProps.getProperty("imageThumbnailContentType","image/png");
+      String imageThumbnailFormat = serverProps.getProperty("imageThumbnailFormat","png");
+
       int thumbWidth = Integer.parseInt(thumbWidthStr);
       try(      FileInputStream fin = new FileInputStream(imageFile)){
          final byte[] imageByteArray = IOUtils.toByteArray(fin);
@@ -187,8 +190,11 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
             width = image.getWidth();
             int height = image.getHeight();
             Rectangle rec = new Rectangle(0, 0, width, height);
-            Dimension dim = new Dimension(thumbWidth, Math.round(height / width * thumbWidth));
+            Dimension dim = new Dimension(thumbWidth, height / width * thumbWidth);
             try(FileInputStream fin2 = new FileInputStream(imageFile)) {
+               this.resizeManager.setExtension(imageThumbnailExt);
+               this.resizeManager.setContentType(imageThumbnailContentType);
+               this.resizeManager.setImageFormat(imageThumbnailFormat);
                iData = this.resizeManager.generateImage(fin2, rec, dim);
             }
          }
@@ -197,8 +203,7 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
       }
    }
 
-   protected PSPurgableTempFile writeFile(ImageData iData) throws Exception
-   {
+   protected PSPurgableTempFile writeFile(ImageData iData) throws IOException {
       try(ByteArrayInputStream bis = new ByteArrayInputStream(iData.getBinary())) {
 
          PSPurgableTempFile f = new PSPurgableTempFile("img", iData.getExt(), null, iData.getFilename(),
@@ -217,8 +222,3 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
    }
 }
 
-/*
- * Location: C:\decompile\image-widget-1.0.jar Qualified Name:
- * com.percussion.widgets.image.extensions.ImageAssetInputTranslation JD-Core
- * Version: 0.6.0
- */

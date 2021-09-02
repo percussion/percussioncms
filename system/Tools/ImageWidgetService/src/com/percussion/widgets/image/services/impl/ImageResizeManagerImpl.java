@@ -24,15 +24,32 @@
 
 package com.percussion.widgets.image.services.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.widgets.image.data.ImageData;
 import com.percussion.widgets.image.services.ImageResizeManager;
+import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Element;
 
-import java.awt.AlphaComposite;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOInvalidTreeException;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -44,27 +61,6 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.imageio.*;
-
-import javax.imageio.metadata.IIOInvalidTreeException;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.MemoryCacheImageOutputStream;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import org.w3c.dom.Element;
 
 public class ImageResizeManagerImpl implements ImageResizeManager {
     private static final Logger log = LogManager.getLogger(ImageResizeManagerImpl.class);
@@ -152,22 +148,31 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             result.setHeight(outImage.getHeight());
         }
         catch (IOException e) {
-            log.error("Error was encountered while trying to create output stream. Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error was encountered while trying to create output stream. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
         return result;
     }
 
     private ImageWriter getImageWriter(String format) throws IllegalArgumentException {
 
+        if(format == null || StringUtils.isEmpty(format))
+            throw new IllegalArgumentException("Image format is required.");
+
         Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName(format);
 
         if (!iter.hasNext()) {
-            throw new IllegalArgumentException("No writer found for the image format: " + format);
+            //Scan for plugins
+            ImageIO.scanForPlugins();
+            //try again
+            iter = ImageIO.getImageWritersByFormatName(format);
+            if(!iter.hasNext())
+                throw new IllegalArgumentException("No writer found for the image format: " + format);
         }
 
         ImageWriter iw = iter.next();
-        log.debug("Image writer is " + iw.getClass().getCanonicalName());
+        log.debug("Image writer is {}" , iw.getClass().getCanonicalName());
         return iw;
     }
 
@@ -235,7 +240,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         long timer = System.currentTimeMillis();
         int height = inImage.getHeight() / this.stepFactor;
         int width = inImage.getWidth() / this.stepFactor;
-        log.debug("Scaling to image height " + height + " width " + width);
+        log.debug("Scaling to image height {} width {}", height, width);
         BufferedImage halfImage = createBufferedImage(width, height, inImage);
         Graphics2D half = getGraphics(halfImage);
 
@@ -250,7 +255,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         if (log.isDebugEnabled()) {
             long timestop = System.currentTimeMillis();
             long elapsed = timestop - timer;
-            log.debug("Time elapsed is " + elapsed);
+            log.debug("Time elapsed is {}" , elapsed);
         }
         half.dispose();
         return halfImage;
@@ -265,11 +270,11 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         if ((rotate != 1) && (rotate != -1)) {
             throw new IllegalArgumentException("rotate must be 1 or -1");
         }
-        log.debug("Original image size is " + inImage.getWidth() + " , "
-                + inImage.getHeight());
+        log.debug("Original image size is {}, {}" , inImage.getWidth() ,
+                 inImage.getHeight());
         double i0 = inImage.getWidth() / 2.0D;
         double j0 = inImage.getHeight() / 2.0D;
-        log.debug("Anchor point is " + i0 + " , " + j0);
+        log.debug("Anchor point is {}, {}" , i0 , j0);
         AffineTransform trans = AffineTransform.getQuadrantRotateInstance(rotate,
                 i0, j0);
         double jdiff;
@@ -279,11 +284,11 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         } else {
             jdiff = i0 - j0;
         }
-        log.debug("translation distance is " + jdiff);
+        log.debug("translation distance is {}" , jdiff);
         trans.translate(jdiff, jdiff);
         int width = inImage.getHeight();
         int height = inImage.getWidth();
-        log.debug("new width: " + width + " new height: " + height);
+        log.debug("new width: {} new height: {}" , width ,  height);
         BufferedImage outImage = createBufferedImage(width, height, inImage);
         Graphics2D graph = getGraphics(outImage);
 
@@ -291,7 +296,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         if (log.isDebugEnabled()) {
             long timestop = System.currentTimeMillis();
             long elapsed = timestop - timer;
-            log.debug("Rotation Time elapsed is " + elapsed);
+            log.debug("Rotation Time elapsed is {}" , elapsed);
         }
         graph.dispose();
         return outImage;
@@ -307,8 +312,8 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             width = size.width;
             if (box.height > 0) {
                 double scale = size.getWidth() / box.getWidth();
-                log.debug("scale is " + scale);
-                height = new Long(Math.round(box.getHeight() * scale)).intValue();
+                log.debug("scale is {}" ,scale);
+                height = (int)Math.round(box.getHeight() * scale);
             } else {
                 height = 1;
             }
@@ -316,7 +321,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             height = size.height;
             if (box.height > 0) {
                 double scale = size.getHeight() / box.getHeight();
-                width = new Long(Math.round(box.getWidth() * scale)).intValue();
+                width = (int)Math.round(box.getWidth() * scale);
             } else {
                 width = 1;
             }
@@ -335,15 +340,15 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         if ((image.getColorModel() instanceof IndexColorModel)) {
             IndexColorModel icm = (IndexColorModel) image.getColorModel();
             int transparentPixel = icm.getTransparentPixel();
-            log.debug("Transparent Pixel is " + transparentPixel);
+            log.debug("Transparent Pixel is {}" , transparentPixel);
             int argb = icm.getRGB(transparentPixel);
-            log.debug("Transparent RGB is " + Integer.toHexString(argb));
+            log.debug("Transparent RGB is {}" , Integer.toHexString(argb));
             int tr = icm.getRed(transparentPixel);
             int tg = icm.getGreen(transparentPixel);
             int tb = icm.getBlue(transparentPixel);
             int ta = icm.getAlpha(transparentPixel);
-            log.debug("Transparent RGB as colors " + tr + " " + tg + " " + tb);
-            log.debug("Transparent Alpha is " + ta);
+            log.debug("Transparent RGB as colors {} {} {}" , tr , tg , tb);
+            log.debug("Transparent Alpha is {}" ,ta);
             int count = 0;
             for (int i = 0; i < image.getWidth(); i++) {
                 for (int j = 0; j < image.getHeight(); j++) {
@@ -358,8 +363,8 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
                     int ib = icm.getBlue(pix);
                     int ia = icm.getAlpha(pix);
                     if ((ia < 100) && (count++ < 100))
-                        log.debug("data pixel " + i + " " + j + " " + pix + " "
-                                + Integer.toHexString(irgb) + " " + ia);
+                        log.debug("data pixel {} {} {} {} {}", i , j , pix ,
+                                Integer.toHexString(irgb) , ia);
                     if (ia >= 10)
                         continue;
                     data[0] = transparentPixel;
@@ -375,9 +380,9 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
     protected BufferedImage createBufferedImage(int width, int height,
                                                 BufferedImage baseImage) {
         boolean transparency = isTransparent(baseImage);
-        log.debug("image transparency is " + transparency);
+        log.debug("image transparency is {}" , transparency);
         int imageType = baseImage.getType();
-        log.debug("image type is " + imageType);
+        log.debug("image type is {}" , imageType);
         GraphicsConfiguration gc = baseImage.createGraphics()
                 .getDeviceConfiguration();
         BufferedImage outImage = gc.createCompatibleImage(width, height, 2);
@@ -424,12 +429,12 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             throws IIOInvalidTreeException {
         IndexColorModel cm = (IndexColorModel) image.getColorModel();
         int transparentColor = cm.getTransparentPixel();
-        log.debug("transparent color is " + transparentColor);
+        log.debug("transparent color is {}" , transparentColor);
         ImageTypeSpecifier imageTypeSpecifier = new ImageTypeSpecifier(image);
         IIOMetadata metadata = writer.getDefaultImageMetadata(imageTypeSpecifier,
                 writeParam);
         String metaFormatName = metadata.getNativeMetadataFormatName();
-        log.debug("meta format name is " + metaFormatName);
+        log.debug("meta format name is {}" , metaFormatName);
         IIOMetadataNode root = (IIOMetadataNode) metadata
                 .getAsTree(metaFormatName);
         IIOMetadataNode gce = getChildMetadataNode(root,
@@ -462,9 +467,10 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             StreamResult output = new StreamResult(out);
 
             idTransform.transform(input, output);
-            log.debug(out.toString());
+            log.debug(out);
         } catch (TransformerException e) {
-            log.error("Transformer Exception " + e, e);
+            log.error("Transformer Exception: {}" , PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
     }
 
@@ -475,12 +481,12 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             IIOMetadataNode node = (IIOMetadataNode) root.item(i);
             if (!node.getNodeName().equalsIgnoreCase(nodeName))
                 continue;
-            log.debug("found node " + nodeName);
+            log.debug("found node {}" , nodeName);
             return node;
         }
         IIOMetadataNode node = new IIOMetadataNode(nodeName);
         root.appendChild(node);
-        log.debug("created new node " + nodeName);
+        log.debug("created new node {}" , nodeName);
         return node;
     }
 
