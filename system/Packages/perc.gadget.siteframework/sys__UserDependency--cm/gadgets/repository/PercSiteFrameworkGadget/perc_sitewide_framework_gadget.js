@@ -239,9 +239,9 @@ function collectFrameworkUpdates() {
             siteName1= siteName1.replace(/[^\w\s]/gi, '\\$&');
         }
 
-        frameworkObject.SiteProperties.overrideSystemFoundation = ( $(`#perc-foundation-override-`+siteName1).attr('checked')) ? true : false;
-        frameworkObject.SiteProperties.overrideSystemJQuery = ( $(`#perc-jquery-override-`+siteName1).attr('checked')) ? true : false;
-        frameworkObject.SiteProperties.overrideSystemJQueryUI = ( $(`#perc-jqueryui-override-`+siteName1).attr('checked')) ? true : false;
+        frameworkObject.SiteProperties.overrideSystemFoundation = ( $(`#perc-foundation-override-`+siteName1).prop('checked')) ? true : false;
+        frameworkObject.SiteProperties.overrideSystemJQuery = ( $(`#perc-jquery-override-`+siteName1).prop('checked')) ? true : false;
+        frameworkObject.SiteProperties.overrideSystemJQueryUI = ( $(`#perc-jqueryui-override-`+siteName1).prop('checked')) ? true : false;
         frameworkObject.SiteProperties.siteAdditionalHeadContent = ( $this.find('.perc-site-framework-additional-head-content').val() == '' ) ? null : $this.find('.perc-site-framework-additional-head-content').val();
         frameworkObject.SiteProperties.siteAfterBodyOpenContent = ( $this.find('.perc-site-framework-after-body-open-content').val() == '' ) ? null : $this.find('.perc-site-framework-after-body-open-content').val();
         frameworkObject.SiteProperties.siteBeforeBodyCloseContent = ( $this.find('.perc-site-framework-before-body-close-content').val() == '' ) ? null : $this.find('.perc-site-framework-before-body-close-content').val();
