@@ -292,10 +292,9 @@ public class PSUserService implements IPSUserService
                 updateLegacyPasswordsForUser(ADMIN2_NAME);
                 log.info("Done generating new password for generated users.");
 
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(errorMessage, e);
+            } catch (InterruptedException e) {
+                log.warn("Shutting down user update thread...");
+                Thread.currentThread().interrupt();
             }
         }
 
@@ -598,6 +597,10 @@ public class PSUserService implements IPSUserService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUserList getUserNames(@PathParam("nameFilter") String nameFilter) throws PSDataServiceException
     {
+        if(nameFilter == null || StringUtils.isEmpty(nameFilter) || nameFilter.equalsIgnoreCase("*")){
+            nameFilter = "%";
+        }
+
         List<String> names = findUserNames(nameFilter);
         names.removeAll(SYSTEM_USERS);
         PSUserList result = new PSUserList();
@@ -691,7 +694,7 @@ public class PSUserService implements IPSUserService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSUser changePassword(PSUser user) throws PSDataServiceException {
-        log.debug("changing password for user " + user);
+        log.debug("changing password for user {}" , user);
 
         // the result
         PSUser rvalue = null;
@@ -797,7 +800,7 @@ public class PSUserService implements IPSUserService
             } catch (SQLException | PSDataServiceException throwables) {
                 log.error("Error occurred determining access level of current user for type '{}', workflow id '{}'. {}",
                         type, workflowId, throwables.getMessage());
-                log.debug(throwables.getMessage(),throwables);
+                log.debug(throwables);
                 throw new WebApplicationException(throwables.getMessage());
             }
 
@@ -806,8 +809,8 @@ public class PSUserService implements IPSUserService
 
             return accessLevel;
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -873,7 +876,7 @@ public class PSUserService implements IPSUserService
      */
     protected void doValidation(PSUser user, boolean isCreateUser) throws PSValidationException
     {
-        log.debug("validating user " + user);
+        log.debug("validating user {}" , user);
         user.setCreateUser(isCreateUser);
         PSUserValidator validator = new PSUserValidator(isCreateUser);
 
@@ -1106,7 +1109,7 @@ public class PSUserService implements IPSUserService
         }
         catch (PSSecurityCatalogException e)
         {
-            log.error("General directory service failure: {}" , e.getMessage());
+            log.error("General directory service failure: {}" , PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
             if(e.getMessage().contains("LDAP: error code 4 - Sizelimit Exceeded")){
                 throw new PSDirectoryServiceException("The returned results exceeded LDAP server limit, please refine your search to get the results.");
@@ -1115,7 +1118,7 @@ public class PSUserService implements IPSUserService
         }
         catch (PSSecurityException e)
         {
-            log.error("Failed to connect to Directory Server: {}", e.getMessage());
+            log.error("Failed to connect to Directory Server: {}", PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
             throw new PSDirectoryServiceConnectionException(e);
         }
@@ -1168,8 +1171,8 @@ public class PSUserService implements IPSUserService
 
             return new PSImportedUserList(importedUsers);
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             throw new WebApplicationException(e.getMessage());
         }
     }
