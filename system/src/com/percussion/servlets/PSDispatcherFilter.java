@@ -24,6 +24,7 @@
 
 package com.percussion.servlets;
 
+import com.percussion.security.SecureStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -97,14 +98,16 @@ public class PSDispatcherFilter implements Filter {
             "/contentui/aa",
             "/adf/",
             "/uploadAssetFile",
-            "/textToImage/"
+            "/textToImage/",
+            "/Designer",
+            "/Rhythmyx/"
 
     };
 
     /**
      * Logger to use, never <code>null</code>.
      */
-    static Logger log = LogManager.getLogger(PSDispatcherFilter.class);
+    private static final Logger log = LogManager.getLogger(PSDispatcherFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -121,9 +124,11 @@ public class PSDispatcherFilter implements Filter {
         String path = req.getRequestURI();
 
         String strippedPath = path.startsWith(RHYTHMYX) ? StringUtils.substringAfter(path,RHYTHMYX) : path;
-        String newPath = path;
+        String newPath =
+                SecureStringUtils.cleanWildPath(resourcePaths,path,request.getRemoteAddr());
 
-        if(Stream.of(bannedPaths).anyMatch(strippedPath::startsWith)){
+
+        if(newPath == null ||( Stream.of(bannedPaths).anyMatch(strippedPath::startsWith) && !(Stream.of(resourcePaths).anyMatch(strippedPath::startsWith)))){
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }

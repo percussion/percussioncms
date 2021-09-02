@@ -76,6 +76,15 @@
             });
         });
 </script>
+<script>
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                    var csrfToken = $("meta[name='_csrf']").attr("content");
+                    var headers = {};
+                    headers[csrfHeader] = csrfToken;
+    $.ajaxSetup({
+  headers: headers
+  });
+</script>
 <i18n:settings lang="<%=locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
 <div class="perc-header">
     <div class="perc-logo" role="img" aria-label="<i18n:message key="perc.ui.header@Percussion Logo"/>"></div>

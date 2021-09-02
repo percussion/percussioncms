@@ -100,7 +100,7 @@
 </head>
 <body>
 <div style="background-color: white; margin: 10px; padding: 10px">
-    <csrf:form method="GET" action="/test/velocitylog.jsp">
+    <csrf:form method="POST" action="/test/velocitylog.jsp">
         <p><img src="../sys_resources/images/banner_bkgd.jpg"></p>
         <input type="submit" id=refresh" name="refresh" value="Refresh">&nbsp;&nbsp;&nbsp;
         <label for="warning">Hide warnings:</label><input type="checkbox" id="warning" name="warning" <%= warning ? "checked" : "" %> value="on"/>

@@ -23,17 +23,89 @@
  */
 
 import com.percussion.security.SecureStringUtils;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class TestSecureStringUtils {
+
+    @Rule
+    public TemporaryFolder tempFolder = TemporaryFolder.builder().build();
+
+    private static final String[] resourcePaths = new String[] {
+            "/Sites/",
+            "/Assets/",
+            "/rx_resources",
+            "/sys_resources",
+            "/cm/",
+            "/web_resources",
+            "/tmx/",
+            "/services/",
+            "/sessioncheck",
+            "/webservices/",
+            "/designwebservices/",
+            "/content/",
+            "/rest",
+            "/v8",
+            "/assembler/",
+            "/contentlist",
+            "/sitelist",
+            "/login",
+            "/logout",
+            "/rxwebdav",
+            "/ui/actionpage/panel",
+            "/user/apps",
+            "/publisher/",
+            "/linkback/",
+            "/servlet/",
+            "/assembly/aa",
+            "/contentui/aa",
+            "/adf/",
+            "/uploadAssetFile",
+            "/textToImage/",
+            "/Designer",
+            "/Rhythmyx/"
+
+    };
+
+    @Before
+    public void setup(){
+        System.setProperty("rxdeploydir", tempFolder.getRoot().getAbsolutePath());
+    }
 
     @Test
     public void testRandomPassword(){
         String pwd = SecureStringUtils.generateRandomPassword();
 
         assertTrue(pwd!=null);
+    }
+
+    @Test
+    public void testWildStrings(){
+
+        String testPath = SecureStringUtils.cleanWildPath(resourcePaths,"/Rhythmyx/cm%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5cwindows%5cwin.ini","unit.test");
+        assertNull(testPath);
+
+        testPath = SecureStringUtils.cleanWildPath(resourcePaths,"/login","unit.test");
+        assertEquals("/login",testPath);
+
+        testPath = SecureStringUtils.cleanWildPath(resourcePaths,"/cm/../sys_resources/css/test.css","unit.test");
+        assertEquals("/cm/../sys_resources/css/test.css",testPath);
+
+        testPath = SecureStringUtils.cleanWildPath(resourcePaths,"/cm/../../sys_resources/css/test.css","unit.test");
+        assertNull(testPath);
+
+        testPath = SecureStringUtils.cleanWildPath(resourcePaths,"favicon.ico","unit.test");
+        assertEquals("favicon.ico",testPath);
+
+        testPath = SecureStringUtils.cleanWildPath(resourcePaths,"%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5cwindows%5cwin.ini","unit.test");
+        assertNull(testPath);
+
     }
 
 }

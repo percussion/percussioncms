@@ -83,8 +83,8 @@
         <!-- <myfaces.version>2.2.12</myfaces.version> -->
         <myfaces.version>1.1.5</myfaces.version>
         <poi.version>3.17</poi.version>
-        <esapi.version>2.2.0.0-RC2</esapi.version>
-        <esapi.encoder.version>1.2.2</esapi.encoder.version>
+        <esapi.version>2.2.3.1</esapi.version>
+        <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.6</ant.version>
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.2</any23.version>

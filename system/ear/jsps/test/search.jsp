@@ -8,7 +8,7 @@
          import="com.percussion.services.contentmgr.IPSContentMgr, com.percussion.services.contentmgr.PSContentMgrLocator"
          import="java.util.Map, java.util.HashMap"
          import="org.jsoup.Jsoup"
-         import="org.jsoup.safety.Whitelist"
+         import="org.jsoup.safety.Safelist"
          import="org.owasp.encoder.Encode"
          import="com.percussion.server.PSServer"
          import="com.percussion.services.utils.jspel.*"
@@ -16,6 +16,8 @@
 %>
 <%@ page import="java.util.regex.Pattern" %>
 <%@ page import="java.util.regex.Matcher" %>
+<%@ page import="com.percussion.error.PSExceptionUtils" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%
@@ -50,8 +52,9 @@
    String lastquery = request.getParameter("querybody");
    if (lastquery == null || lastquery.trim().length() == 0)
    {
-      lastquery = "select rx:displaytitle, jcr:path from rx:rffgeneric";
+      lastquery = "select rx:sys_contentid, rx:sys_title, jcr:path from rx:percPage";
    }
+   lastquery = sanitizeForHtml(lastquery);
 
 %>
 <h1>JCR Query Debugger</h1>
@@ -68,34 +71,34 @@
       <tr><th>Name</th><th>Value</th></tr>
       </thead>
       <tr>
-         <td><input type="text" name="qname" maxlength="30" value="<%= allNames[0] %>" /> </td>
-         <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[0] %>" /> </td>
+         <td><input type="text" name="qname" maxlength="30" value="<%= Encode.forHtml(allNames[0]) %>" /> </td>
+         <td><input type="text" name="qvalue" maxlength="256" value="<%= Encode.forHtml(allValues[0]) %>" /> </td>
       </tr>
       <tr>
-         <td><input type="text" name="qname" maxlength="30" value="<%= allNames[1] %>" /> </td>
-         <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[1] %>" /> </td>
+         <td><input type="text" name="qname" maxlength="30" value="<%= Encode.forHtml(allNames[1]) %>" /> </td>
+         <td><input type="text" name="qvalue" maxlength="256" value="<%= Encode.forHtml(allValues[1]) %>" /> </td>
       </tr>
       <tr>
-         <td><input type="text" name="qname" maxlength="30" value="<%= allNames[2] %>" /> </td>
-         <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[2] %>" /> </td>
+         <td><input type="text" name="qname" maxlength="30" value="<%= Encode.forHtml(allNames[2]) %>" /> </td>
+         <td><input type="text" name="qvalue" maxlength="256" value="<%= Encode.forHtml(allValues[2]) %>" /> </td>
       </tr>
       <tr>
-         <td><input type="text" name="qname" maxlength="30" value="<%= allNames[3] %>" /> </td>
-         <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[3] %>" /> </td>
+         <td><input type="text" name="qname" maxlength="30" value="<%= Encode.forHtml(allNames[3]) %>" /> </td>
+         <td><input type="text" name="qvalue" maxlength="256" value="<%= Encode.forHtml(allValues[3]) %>" /> </td>
       </tr>
       <tr>
-         <td><input type="text" name="qname" maxlength="30" value="<%= allNames[4] %>" /> </td>
-         <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[4] %>" /> </td>
+         <td><input type="text" name="qname" maxlength="30" value="<%= Encode.forHtml(allNames[4]) %>" /> </td>
+         <td><input type="text" name="qvalue" maxlength="256" value="<%= Encode.forHtml(allValues[4]) %>" /> </td>
       </tr>
       <tr>
-         <td><input type="text" name="qname" maxlength="30" value="<%= allNames[5] %>" /> </td>
-         <td><input type="text" name="qvalue" maxlength="256" value="<%= allValues[5] %>" /> </td>
+         <td><input type="text" name="qname" maxlength="30" value="<%= Encode.forHtml(allNames[5]) %>" /> </td>
+         <td><input type="text" name="qvalue" maxlength="256" value="<%= Encode.forHtml(allValues[5]) %>" /> </td>
       </tr>
 
    </table>
    <br/>
    <textarea name="querybody" rows="5" cols="60">
-<%=sanitizeForHtml(lastquery)%>
+<%=lastquery%>
 </textarea>
    <br/>
    <input type="submit" name="execute" value="execute" label="Execute" />
@@ -108,7 +111,7 @@
       {
          out.println("<pre>");
          Map pmap = buildParamMap(allNames, allValues, out);
-         String qry = request.getParameter("querybody");
+         String qry = sanitizeForHtml(request.getParameter("querybody"));
          if (qry != null && qry.trim().length() > 0)
          {
             out.println("\nQuery is " + qry.trim());
@@ -152,12 +155,7 @@
       } catch (Exception ex)
       {
          out.println("<pre> Unexpected Exception \n");
-         out.println(ex.toString());
-         StackTraceElement[] stacktrace = ex.getStackTrace();
-         for (int m = 0; m < stacktrace.length; m++)
-         {
-            out.println(stacktrace[m].toString());
-         }
+         out.println(PSExceptionUtils.getMessageForLog(ex));
          out.println("</pre>");
       }
    }
@@ -189,8 +187,10 @@
          Map pmap = new HashMap();
          for (int i = 0; i < allNames.length; i++)
          {
-            String pNameLoop = sanitizeForHtml(allNames[i]);
-            String pValLoop = sanitizeForHtml(allValues[i]);
+            String pNameLoop = SecureStringUtils.sanitizeStringForSQLStatement(
+                    sanitizeForHtml(allNames[i]));
+            String pValLoop = SecureStringUtils.sanitizeStringForSQLStatement(
+                    sanitizeForHtml(allValues[i]));
             if (pNameLoop.trim().length() > 0 && pValLoop.trim().length() > 0)
             {
                out.println(pNameLoop + " " + pValLoop);
@@ -236,7 +236,7 @@
       private String sanitizeForHtml(String input){
          String ret = null;
          if(input != null){
-            ret = Jsoup.clean(input, Whitelist.none());
+            ret = Jsoup.clean(input, Safelist.none());
          }
          return ret;
       }

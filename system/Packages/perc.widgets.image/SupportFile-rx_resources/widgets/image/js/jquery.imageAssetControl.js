@@ -64,10 +64,11 @@
             url:      '/Rhythmyx/user/apps/imageWidget/upload',        // override for form's 'action' attribute
             type:      'post',        // 'get' or 'post', override for form's 'method' attribute
             dataType:   'json',       // 'xml', 'script', or 'json' (expected server response type)
-            resetForm: false        // reset the form after successful submit
+            resetForm: false,        // reset the form after successful submit
 
             // $.ajax options can be used here too, for example:
             //timeout:   3000
+            headers: headers
         };
 
         function imageUploadResponse(data, statusText) {

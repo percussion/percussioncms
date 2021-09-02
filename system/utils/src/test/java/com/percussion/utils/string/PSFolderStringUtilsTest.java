@@ -24,6 +24,7 @@
 
 package com.percussion.utils.string;
 
+import com.percussion.security.SecureStringUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -47,12 +48,12 @@ public class PSFolderStringUtilsTest {
         File parentB = temporaryFolder.newFolder("parentB");
         File childA = temporaryFolder.newFolder("parentA","childA");
 
-        assertFalse(PSFolderStringUtils.isChildOfFilePath(parentA.toPath(),parentB.toPath()));
-        assertTrue(PSFolderStringUtils.isChildOfFilePath(parentA.toPath(), childA.toPath()));
-        assertFalse(PSFolderStringUtils.isChildOfFilePath(parentB.toPath(), childA.toPath()));
+        assertFalse(SecureStringUtils.isChildOfFilePath(parentA.toPath(),parentB.toPath()));
+        assertTrue(SecureStringUtils.isChildOfFilePath(parentA.toPath(), childA.toPath()));
+        assertFalse(SecureStringUtils.isChildOfFilePath(parentB.toPath(), childA.toPath()));
 
-        assertTrue(PSFolderStringUtils.isSameFileAs(parentA.toPath(),parentA.toPath()));
-        assertFalse(PSFolderStringUtils.isSameFileAs(parentA.toPath(),childA.toPath()));
-        assertFalse(PSFolderStringUtils.isSameFileAs(parentA.toPath(),parentB.toPath()));
+        assertTrue(SecureStringUtils.isSameFileAs(parentA.toPath(),parentA.toPath()));
+        assertFalse(SecureStringUtils.isSameFileAs(parentA.toPath(),childA.toPath()));
+        assertFalse(SecureStringUtils.isSameFileAs(parentA.toPath(),parentB.toPath()));
     }
 }

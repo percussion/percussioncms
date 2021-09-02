@@ -70,6 +70,8 @@ public interface IPSSearchService
     public List<Integer> getContentIdsForFetchingByStatus(PSSearchCriteria criteria);
 
     public PSPagedItemList searchByStatus(PSSearchCriteria criteria, List<Integer> contentIdList) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException;
+
+    public PSSearchCriteria validateSearchCriteria(PSSearchCriteria criteria);
     
 
 }

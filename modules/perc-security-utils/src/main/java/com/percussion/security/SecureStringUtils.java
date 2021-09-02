@@ -27,17 +27,24 @@ package com.percussion.security;
 import com.github.javafaker.Faker;
 import com.ibm.icu.text.Normalizer2;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.owasp.encoder.Encode;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.codecs.Codec;
 import org.owasp.esapi.codecs.DB2Codec;
 import org.owasp.esapi.codecs.MySQLCodec;
 import org.owasp.esapi.codecs.OracleCodec;
+import org.owasp.esapi.errors.EncodingException;
+import org.owasp.esapi.reference.DefaultEncoder;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,6 +54,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SecureStringUtils {
+
+    private static final Logger log = LogManager.getLogger(SecureStringUtils.class);
 
     public enum DatabaseType{
         MYSQL,
@@ -241,9 +250,7 @@ public class SecureStringUtils {
      */
     public static boolean isSQLReservedKeyWord(String name)
     {
-        if(SQLKEYWORDS.contains(name.toUpperCase()))
-            return true;
-        return false;
+        return SQLKEYWORDS.contains(name.toUpperCase());
     }
 
     /**
@@ -382,10 +389,72 @@ public class SecureStringUtils {
         if(codec == null) {
             return sanitizeStringForSQLStatement(str);
         }else{
-            return ESAPI.encoder().encodeForSQL(codec,str);
+
+            return DefaultEncoder.getInstance().encodeForSQL(codec,str);
         }
     }
 
+    /**
+     * Takes a path provided as input and makes sure that it is:
+     *
+     *  1. URI Decoded
+     *  2. Normalized for /'s
+     *  3. Pointed at a resource under the web application root of / (/Rhythmyx/../../../../ would fail)
+     *
+     * @param path
+     * @return the decoded and checked "safe" path or null if the path is invalid
+     */
+    public static String cleanWildPath(String[] resourcePaths, String path, String remoteIP){
+        String ret = null;
+
+        if(path ==null)
+            return ret;
+
+        try {
+            //Url decode path
+            ret = ESAPI.encoder().decodeFromURL(path);
+
+            //Normalize backslashes to slashes
+            ret = ret.replace("\\","/");
+
+            //Normalize doubleslashes
+            while(ret.contains("//")) {
+                ret = ret.replace("//", "/");
+            }
+
+            //Remove /Rhythmyx/ if present
+          //  while(ret.contains("/Rhythmyx/")) {
+          //      ret = ret.replace("/Rhythmyx/", "/");
+          //  }
+
+            String[] dotdots = ret.split("\\.\\./");
+            for(String s : resourcePaths){
+                String[] slashes = {};
+                if(ret.startsWith(s)) {
+                    slashes = s.split("/");
+
+                    if (dotdots.length > slashes.length) {
+                        log.warn("Security filter blocked suspicious path: {} from client ip: {}",ret, remoteIP);
+                        ret = null;
+                        break;
+                    }
+                }
+            }
+
+            //if we didn't match a resource we still need to check for /../ - there should be no dot dots
+            if(ret != null && ret.startsWith("/..")){
+                log.warn("Security filter blocked suspicious path: {} from client ip: {}",ret, remoteIP);
+                ret= null;
+            }
+
+
+        } catch (EncodingException e) {
+            log.warn("Error decoding wild path {}. Error: {}", path, e.getMessage());
+            log.debug(e);
+        }
+
+        return ret;
+    }
     /**
      * Sanitizes a user provided string for use in HTML
      * @param str a user provided string
@@ -420,4 +489,28 @@ public class SecureStringUtils {
         }
     }
 
+    public static boolean isChildOfFilePath(final Path parent, final Path child) {
+        final Path absoluteParent = parent.toAbsolutePath().normalize();
+        final Path absoluteChild = child.toAbsolutePath().normalize();
+
+        if (absoluteParent.getNameCount() >= absoluteChild.getNameCount()) {
+            return false;
+        }
+
+        final Path immediateParent = absoluteChild.getParent();
+        if (immediateParent == null) {
+            return false;
+        }
+
+        return isSameFileAs(absoluteParent, immediateParent) || isChildOfFilePath(absoluteParent, immediateParent);
+    }
+
+    public static boolean isSameFileAs(final Path path, final Path path2) {
+        try {
+            return Files.isSameFile(path, path2);
+        }
+        catch (final IOException ioe) {
+            return path.toAbsolutePath().normalize().equals(path2.toAbsolutePath().normalize());
+        }
+    }
 }
