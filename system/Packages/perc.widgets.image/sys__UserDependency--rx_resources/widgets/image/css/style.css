@@ -95,10 +95,12 @@ label.error {
 }
 .image_asset_image {
 	background-color:#FFFFFF;
-	height:435px;
+	max-height:435px;
 	margin-bottom:0.5em;
 	padding:0.1em 0.1em 0;
-	width:600px;
+	max-width:600px;
+	object-fit: cover;
+	overflow: hidden;
 }
 
 #main_image_region, #thumb_image_region {
