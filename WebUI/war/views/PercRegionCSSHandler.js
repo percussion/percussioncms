@@ -43,7 +43,8 @@
         getRegionCSS: getRegionCSS,
         saveRegionCSS: saveRegionCSS,
         mergeRegionCSS: mergeRegionCSS,
-        prepareForEditRegionCSS: prepareForEditRegionCSS
+        prepareForEditRegionCSS: prepareForEditRegionCSS,
+        setTemplateAndThemeNamesIfEmpty: setTemplateAndThemeNamesIfEmpty
     };
 
     /**
@@ -268,6 +269,18 @@
             _themeName,
             _templateName,
             function(status, data) {});
+    }
+
+    function setTemplateAndThemeNamesIfEmpty(model){
+
+        if(typeof(_themeName) === "undefined" || _themeName === ""){
+            _themeName=model.getTemplateObj().Template.theme;
+        }
+
+        if(typeof(_templateName) === "undefined" || _templateName === ""){
+            _templateName = model.getTemplateObj().Template.name;
+        }
+
     }
 
 })(jQuery, jQuery.Percussion);
