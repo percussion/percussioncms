@@ -113,7 +113,7 @@
                 }
             ];
             all_widgets().perc_decorate(true, actions, template_id)
-                .droppable({'accept': '#nothing', 'scope':$.perc_iframe_scope, activeClass: 'perc-widget-active', hoverClass: 'perc-widget-hover'});
+                .droppable({'accept': '#nothing', 'scope':'perc_iframe_scope', activeClass: 'perc-widget-active', hoverClass: 'perc-widget-hover'});
             set_widget_drops();
         }
 
@@ -471,10 +471,10 @@
             decorateCallback();
             all_widgets()
                 .perc_decorate( decorated, actions, pageId )
-                .droppable({'accept': '#nothing', 'scope':$.perc_iframe_scope, activeClass: 'perc-widget-active', hoverClass: 'perc-widget-hover'});
+                .droppable({'accept': '#nothing', 'scope':'perc_iframe_scope', activeClass: 'perc-widget-active', hoverClass: 'perc-widget-hover'});
             all_regions()
                 .perc_decorate( decorated, actions, pageId )
-                .droppable({'accept': '.perc-widget', 'scope':$.perc_iframe_scope, activeClass: 'perc-region-active', hoverClass: 'perc-region-hover',
+                .droppable({'accept': '.perc-widget', 'scope':'perc_iframe_scope', activeClass: 'perc-region-active', hoverClass: 'perc-region-hover',
                     drop: function(event, ui){
                         //This is a temporary solution to add the widget to the page, Once page model has been created this needs to be moved there.
                         if( ui.draggable.data( 'widget' ) ) {

@@ -227,13 +227,13 @@ var layoutModel;
         });
 
         // populates Explore Regions tray and toggles it open/close
-        $("#perc-region-library-expander").off("click").on("click",function(){
+        $("#perc-region-library-expander").off().on("click",function(){
             $.fn.percRegionLibraryMaximizer(P);
             populateRegionLibrary();
         });
 
         // populates Orphan Assets tray and toggles it open/close
-        $("#perc-orphan-assets-expander").off("click").on("click",function(){
+        $("#perc-orphan-assets-expander").off().on("click",function(){
             $.fn.percOrphanAssetsMaximizer(P);
             populateOrphanAssets();
         });
@@ -397,8 +397,12 @@ var layoutModel;
             if(callback){
                 callback();
             }
-            if (layoutModel.isTemplate())
-                $.PercRegionCSSHandler.prepareForEditRegionCSS();
+
+            if (layoutModel.isTemplate()){
+                $.PercRegionCSSHandler.setTemplateAndThemeNamesIfEmpty(layoutModel);
+                $.PercRegionCSSHandler.prepareForEditRegionCSS(layoutModel);
+            }
+
         }
 
         initDeleteRegionDialog();
@@ -406,7 +410,7 @@ var layoutModel;
         //Initially load all widgets - populate widget library will handle filters
         initWidgetLibrary("all","no");
         populateWidgetLibrary();
-        $(".perc-widget-type").off("change").on("change",
+        $(".perc-widget-type").off().on("change",
             function(evt){
                 populateWidgetLibrary(evt);
             });
@@ -632,11 +636,11 @@ var layoutModel;
                 accept: '.perc-widget-tool',
                 tolerance: 'pointer',
                 greedy: true,
-                scope: 'default',
+                scope: 'perc_iframe_scope',
                 drop: function(event,ui) {
                     regionDrop(ui, region);
                 },
-                activate : function(event, ui) {
+                over : function(event, ui) {
                     regionOver(region);
                 },
                 out : function(event, ui) {
@@ -649,11 +653,11 @@ var layoutModel;
                 accept: '.perc-widget-tool',
                 tolerance: 'pointer',
                 greedy: true,
-                scope: 'default',
+                scope: 'perc_iframe_scope',
                 drop: function(event,ui) {
                     widgetDrop(ui, $(this), region);
                 },
-                activate: function(event, ui) {
+                over: function(event, ui) {
                     widgetOver($(this), region);
                 },
                 out : function(event, ui) {
@@ -800,12 +804,12 @@ var layoutModel;
             return $("<div/>")
                 .addClass("perc-region-feedback")
                 .css({'position':'absolute'}).droppable({
-                    scope: 'default',
+                    scope: 'perc_iframe_scope',
                     accept: '#region-tool',
                     tolerance: 'pointer',
                     greedy: true,
                     hoverClass: 'perc-show-feedback',
-                    activate : function(event, ui) {
+                    over : function(event, ui) {
                         // provide feeback when hovering region tool over a region so that you know what region will be split
                         iframe.contents().find(".perc-region").removeClass("perc-hover-region-feedback");
                         // add feedback to this region, i.e., the parent of the feedback div that lights up
@@ -1548,6 +1552,7 @@ var layoutModel;
                         refreshPositions: true,
                         helper: 'clone',
                         revert: false,
+                        scope : 'perc_iframe_scope',
                         start: function(){
                             $.perc_utils.addAutoScroll();
                             currentDragOverRegion = null;

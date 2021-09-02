@@ -95,19 +95,14 @@
                         }
                     );
                     return false;
+                }else{
+                    //Reset the JavaScript Off/On menu to JavaScript Off
+                    resetJavaScriptMenu()
                 }
             },
             activate : function(event, ui) {
-
-
-                    //Reset the JavaScript Off/On menu to JavaScript Off
-                    resetJavaScriptMenu()
-
                 deactivateRegionToolButton();
-
                 loadTab(ui.newTab.index());
-
-
             }
 
         });
@@ -172,7 +167,7 @@
                 return;
             }
 
-            else if (index === TEMPLATE_LAYOUT)
+            if (index === TEMPLATE_LAYOUT)
             {
                 // put back scrollbars in the layout view as needed
                 $("body").css("overflow","auto");
@@ -232,7 +227,7 @@
 
 
             }
-            else if (index === TEMPLATE_STYLE)
+            if (index === TEMPLATE_STYLE)
             {
 
                 // put back scrollbars in the style view as needed
