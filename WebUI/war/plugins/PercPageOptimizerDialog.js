@@ -144,7 +144,7 @@
                     height: 355
                 }).appendTo('#perc-po-details-container');
                 
-                $("#perc-page-optimizer").load(function(){
+                $("#perc-page-optimizer").on('load',function(){
                     var pageOptimizerData = {
                         CI: pageOptDetails.clientIdentity,
                         page: pageOptDetails.pageHtml
