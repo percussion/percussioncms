@@ -44,6 +44,12 @@
     if (debug == null)
         debug = "false";
 %>
+<script>
+    function toggle(index){
+        $("#perc-styleTabs").tabs({ active: index });
+    }
+
+</script>
 <i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%=debug%>"/>
 
 <div id="ui-layout-west">
@@ -53,9 +59,9 @@
                 <ul>
                     <div id = "perc-dropdown-actions-style" style="float:left;"></div>
                     <div id = "perc-dropdown-view-style" style="float:left;"></div>
-                    <li ><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
-                    <li ><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
-                    <li ><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
+                    <li onclick="toggle(0);"><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
+                    <li onclick="toggle(1);"><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
+                    <li onclick="toggle(2);"><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
                     <div style="text-align: right; float : right" class="ui-layout-east">
                         <button id="perc-css-editor-save"   class="btn btn-primary" name="perc_wizard_save"   ><i18n:message key ="perc.ui.button@Save"/></button>
                         <button id="perc-css-editor-cancel" class="btn btn-primary" name="perc_wizard_cancel" ><i18n:message key ="perc.ui.common.label@Cancel"/></button>
