@@ -44,7 +44,7 @@
         saveRegionCSS: saveRegionCSS,
         mergeRegionCSS: mergeRegionCSS,
         prepareForEditRegionCSS: prepareForEditRegionCSS,
-        setTemplateAndThemeNamesIfEmpty: setTemplateAndThemeNamesIfEmpty
+        setTemplateAndThemeNamesAndTemplateIdIfEmpty: setTemplateAndThemeNamesAndTemplateIdIfEmpty
     };
 
     /**
@@ -271,7 +271,7 @@
             function(status, data) {});
     }
 
-    function setTemplateAndThemeNamesIfEmpty(model){
+    function setTemplateAndThemeNamesAndTemplateIdIfEmpty(model){
 
         if(typeof(_themeName) === "undefined" || _themeName === ""){
             _themeName=model.getTemplateObj().Template.theme;
@@ -279,6 +279,10 @@
 
         if(typeof(_templateName) === "undefined" || _templateName === ""){
             _templateName = model.getTemplateObj().Template.name;
+        }
+
+        if(typeof(_templateId) === "undefined" || _templateId === ""){
+            _templateId = model.getTemplateObj().Template.id;
         }
 
     }
