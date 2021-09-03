@@ -399,7 +399,7 @@ var layoutModel;
             }
 
             if (layoutModel.isTemplate()){
-                $.PercRegionCSSHandler.setTemplateAndThemeNamesIfEmpty(layoutModel);
+                $.PercRegionCSSHandler.setTemplateAndThemeNamesAndTemplateIdIfEmpty(layoutModel);
                 $.PercRegionCSSHandler.prepareForEditRegionCSS(layoutModel);
             }
 
