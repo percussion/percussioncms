@@ -440,7 +440,8 @@
                         <fileset dir="${install.src}">
                             <include name="Deployment/**" />
                             <exclude name="Deployment/Server/conf/tomcat-users.xml"/>
-                            <exclude name="Deployment/Server/conf/.keystore"/>
+                            <!-- CMS-8463 Want to update keystore on upgrade as well -->
+                            <!-- <exclude name="Deployment/Server/conf/.keystore"/> -->
                             <exclude name="Deployment/Server/conf/server.xml"/>
                         </fileset>
                     </copy>
