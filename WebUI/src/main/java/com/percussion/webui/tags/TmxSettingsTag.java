@@ -24,16 +24,13 @@
 package com.percussion.webui.tags;
 
 import com.percussion.i18n.PSTmxResourceBundle;
-
-import java.io.IOException;
-import java.util.Iterator;
+import org.xml.sax.SAXException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * @author erikserating
