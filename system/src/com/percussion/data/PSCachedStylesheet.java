@@ -126,7 +126,7 @@ public class PSCachedStylesheet
    public Templates getStylesheetTemplate(String encoding)
       throws IOException, SAXException, TransformerConfigurationException
    {
-      encoding = encoding == null ? "" : encoding;
+      encoding = encoding == null ? "UTF-8" : encoding;
       // we can calculate modified time on files, so see if it changed
       if ( (m_ssTemplate == null) || (!m_lastEncoding.equals(encoding)) ||
            ((m_ssFile != null) && (m_ssFile.lastModified() > m_cachedTime)) )
