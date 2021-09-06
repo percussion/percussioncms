@@ -101,9 +101,9 @@ public class PSUpdateDTSCertificate extends PSAction {
                         Certificate[] newCertChain = newKeyStore.getCertificateChain(CERT_ALIAS);
                         //update existing keystore with new certificate
                         oldKeyStore.setKeyEntry(CERT_ALIAS,newKeyStore.getKey(CERT_ALIAS,OldPassword.toCharArray()),OldPassword.toCharArray(), newCertChain);
-                        //Delete the new Cert File after updating
-                        newCertFile.delete();
                     }
+                    //Delete the new Cert File after updating
+                    newCertFile.delete();
                 }
             }
         } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException io) {
