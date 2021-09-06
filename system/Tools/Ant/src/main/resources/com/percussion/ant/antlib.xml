@@ -49,6 +49,7 @@
     <taskdef name="PSExecDTSSQLStmt" classname="com.percussion.ant.install.PSExecDTSSqlStmt" />
     <taskdef name="PSExecStagingDTSSQLStmt" classname="com.percussion.ant.install.PSExecStagingDTSSqlStmt" />
     <taskdef name="PSUpdateDTSConfiguration" classname="com.percussion.ant.install.PSUpdateDTSConfiguration"/>
+    <taskdef name="PSUpdateDTSCertificate" classname="com.percussion.ant.install.PSUpdateDTSCertificate"/>
     <taskdef name="PSUpgradeRemoveTomcatAJP" classname="com.percussion.ant.install.PSUpgradeRemoveTomcatAJP"/>
     <taskdef name="PSUpdateJettyConfigFromJBoss" classname="com.percussion.ant.install.PSUpdateJettyConfigFromJBoss"/>
     <taskdef name="PSUpdateRepoProps" classname="com.percussion.ant.install.PSUpdateRepoProps"/>

@@ -440,11 +440,17 @@
                         <fileset dir="${install.src}">
                             <include name="Deployment/**" />
                             <exclude name="Deployment/Server/conf/tomcat-users.xml"/>
-                            <!-- CMS-8463 Want to update keystore on upgrade as well -->
-                            <!-- <exclude name="Deployment/Server/conf/.keystore"/> -->
+                            <exclude name="Deployment/Server/conf/.keystore"/>
                             <exclude name="Deployment/Server/conf/server.xml"/>
                         </fileset>
                     </copy>
+                    <!--Copy New Keystore to dir, will be used for certificate upgrade-->
+                    <if>
+                        <available file="${install.dir}${staging.dir}/Deployment/Server/conf/.keystore"/>
+                            <then>
+                                <copy file="${install.src}/Deployment/Server/conf/.keystore" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/.keystoreNew"/>
+                            </then>
+                    </if>
 
                     <copy todir="${install.dir}${staging.dir}/Deployment/Server" overwrite="true" verbose="true">
                         <fileset dir="${install.src}">
@@ -704,6 +710,7 @@
                     <echo>Scanning existing configuration...</echo>
                     <PSUpdateDTSConfiguration rootDir="${install.dir}" />
                     <PSUpgradeRemoveTomcatAJP rootDir="${install.dir}" />
+                    <PSUpdateDTSCertificate rootDir="${install.dir}" />
 
                     <echo>Removing obsolete Tomcat listeners...</echo>
                     <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" summary="yes">
