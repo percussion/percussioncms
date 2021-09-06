@@ -31,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Properties;
 import java.security.KeyStore;
@@ -97,15 +98,15 @@ public class PSUpdateDTSCertificate extends PSAction {
                     try(FileInputStream io2 = new FileInputStream(prodPath + File.separator + newKeyStoreName)) {
                         //Load new keystore file with new certificate came with new build
                         newKeyStore.load(io2, "changeit".toCharArray());
-                        Certificate newCert = newKeyStore.getCertificate(CERT_ALIAS);
+                        Certificate[] newCertChain = newKeyStore.getCertificateChain(CERT_ALIAS);
                         //update existing keystore with new certificate
-                        oldKeyStore.setCertificateEntry(CERT_ALIAS, newCert);
+                        oldKeyStore.setKeyEntry(CERT_ALIAS,newKeyStore.getKey(CERT_ALIAS,OldPassword.toCharArray()),OldPassword.toCharArray(), newCertChain);
                         //Delete the new Cert File after updating
                         newCertFile.delete();
                     }
                 }
             }
-        } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException io) {
+        } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException io) {
             PSLogger.logError("Error loading perc-catalina.properties: " + io.getMessage());
         }
         PSLogger.logInfo("Done Upgrading DTS SSL Certificate..." + prodPath);
