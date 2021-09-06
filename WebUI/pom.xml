@@ -96,19 +96,19 @@
         </profile>
     </profiles>
     <build>
-        <sourceDirectory>src</sourceDirectory>
-
+        <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
-                <directory>src</directory>
+                <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
         </resources>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <testResources>
             <testResource>
-                <directory>src</directory>
+                <directory>src/test/resources</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
@@ -448,7 +448,7 @@
                             <webappSourceDir>${project.basedir}/war</webappSourceDir>
                             <webappSourceDir>${project.basedir}/war</webappSourceDir>
                             <webappTargetDir>${project.build.directory}/minify-common</webappTargetDir>
-                            <bundleConfiguration>${project.basedir}/src/minify/common-bundles.json</bundleConfiguration>
+                            <bundleConfiguration>${project.basedir}/src/main/resources/minify/common-bundles.json</bundleConfiguration>
                         </configuration>
                     </execution>
                     <execution>
@@ -478,7 +478,7 @@
                             <nosuffix>false</nosuffix>
                             <webappSourceDir>${project.basedir}/war</webappSourceDir>
                             <webappTargetDir>${project.build.directory}/minify-common</webappTargetDir>
-                            <bundleConfiguration>${project.basedir}/src/minify/common-minuet-bundles.json</bundleConfiguration>
+                            <bundleConfiguration>${project.basedir}/src/main/resources/minify/common-minuet-bundles.json</bundleConfiguration>
                         </configuration>
 
                     </execution>
@@ -508,7 +508,7 @@
                             <nosuffix>false</nosuffix>
                             <webappSourceDir>${project.basedir}/war</webappSourceDir>
                             <webappTargetDir>${project.build.directory}/${project.build.finalName}/cm</webappTargetDir>
-                            <bundleConfiguration>${project.basedir}/src/minify/static-bundles.json</bundleConfiguration>
+                            <bundleConfiguration>${project.basedir}/src/main/resources/minify/static-bundles.json</bundleConfiguration>
                         </configuration>
                         <goals>
                             <goal>minify</goal>
@@ -539,7 +539,7 @@
                             <nosuffix>true</nosuffix>
                             <webappSourceDir>${project.basedir}/war</webappSourceDir>
                             <webappTargetDir>${project.build.directory}/${project.build.finalName}/cm/common/js</webappTargetDir>
-                            <bundleConfiguration>${project.basedir}/src/minify/common-ui-bundle.json</bundleConfiguration>
+                            <bundleConfiguration>${project.basedir}/src/main/resources/minify/common-ui-bundle.json</bundleConfiguration>
                         </configuration>
                         <goals>
                             <goal>minify</goal>
