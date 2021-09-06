@@ -999,6 +999,7 @@ var assetPagination = null;
                     revertDuration: 0,
                     start: onDragStart,
                     stop: onDragStop,
+                    containment: "window",
                     scope: 'perc_iframe_scope',
                     delay: dragDelay
                 });

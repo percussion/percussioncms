@@ -1552,14 +1552,15 @@ var layoutModel;
                         refreshPositions: true,
                         helper: 'clone',
                         revert: false,
+                        containment: "window",
                         scope : 'perc_iframe_scope',
-                        start: function(){
+                        start: function(event, ui){
                             $.perc_utils.addAutoScroll();
                             currentDragOverRegion = null;
                             hideRegionOverflow();
                             $.percHideBodyScrollbars();
                         },
-                        stop: function() {
+                        stop: function(event, ui) {
                             $.perc_utils.removeAutoScroll();
                             restoreRegionOverflow();
                             $.percShowBodyScrollbars();
