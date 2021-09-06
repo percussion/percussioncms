@@ -688,21 +688,61 @@ public class PSSearchService implements IPSSearchService
 
     @Override
     public PSSearchCriteria validateSearchCriteria(PSSearchCriteria criteria) {
+
+        SecureStringUtils.DatabaseType type=null;
+
+        if(systemService.isMySQL())
+            type = SecureStringUtils.DatabaseType.MYSQL;
+        else if(systemService.isOracle())
+            type = SecureStringUtils.DatabaseType.ORACLE;
+        else if(systemService.isDB2())
+            type = SecureStringUtils.DatabaseType.DB2;
+        else if(systemService.isMsSQL())
+            type = SecureStringUtils.DatabaseType.MSSQL;
+        else if(systemService.isDerby()){
+            type = SecureStringUtils.DatabaseType.DERBY;
+        }
+
+        if(!criteria.getQuery().trim().isEmpty()){
+            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getQuery(), type));
+        }
+
+        if(!criteria.getSearchType().trim().isEmpty()){
+            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSearchType(), type));
+        }
+
+        if(criteria.getStartIndex()!=null){
+            if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getStartIndex().toString())) {
+                throw new IllegalArgumentException(criteria.getStartIndex() + " must have a numeric value for search");
+            }
+        }
+
+        if(criteria.getMaxResults()!=null){
+            if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getMaxResults().toString())) {
+                throw new IllegalArgumentException(criteria.getMaxResults() + " must have a numeric value for search");
+            }
+        }
+
+        if(!criteria.getSortColumn().trim().isEmpty()){
+            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortColumn(), type));
+        }
+
+        if(!criteria.getSortOrder().trim().isEmpty()){
+            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortOrder(), type));
+        }
+
+        if(!criteria.getFolderPath().trim().isEmpty()){
+            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getFolderPath(), type));
+        }
+
+        if(criteria.getFormatId()!=null){
+            if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getFormatId().toString())) {
+                throw new IllegalArgumentException(criteria.getFormatId() + " must have a numeric value for search");
+            }
+        }
+
         Map<String,String> fields = criteria.getSearchFields();
         if(fields != null){
-            SecureStringUtils.DatabaseType type=null;
-
-            if(systemService.isMySQL())
-                type = SecureStringUtils.DatabaseType.MYSQL;
-            else if(systemService.isOracle())
-                type = SecureStringUtils.DatabaseType.ORACLE;
-            else if(systemService.isDB2())
-                type = SecureStringUtils.DatabaseType.DB2;
-            else if(systemService.isMsSQL())
-                type = SecureStringUtils.DatabaseType.MSSQL;
-            else if(systemService.isDerby()){
-                type = SecureStringUtils.DatabaseType.DERBY;
-            }
 
             PSFieldSet systemFieldSet =
                     PSServer.getContentEditorSystemDef().getFieldSet();
