@@ -111,7 +111,7 @@
       {
          out.println("<pre>");
          Map pmap = buildParamMap(allNames, allValues, out);
-         String qry = sanitizeForHtml(request.getParameter("querybody"));
+         String qry = SecureStringUtils.sanitizeStringForSQLStatement(sanitizeForHtml(request.getParameter("querybody")));
          if (qry != null && qry.trim().length() > 0)
          {
             out.println("\nQuery is " + qry.trim());
