@@ -446,9 +446,9 @@
                     </copy>
                     <!--Copy New Keystore to dir, will be used for certificate upgrade-->
                     <if>
-                        <available file="${install.dir}${staging.dir}/Deployment/Server/conf/.keystore"/>
+                        <available file="${install.dir}${staging.dir}/Deployment/Server/conf/.keystore" />
                             <then>
-                                <copy file="${install.src}/Deployment/Server/conf/.keystore" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/.keystoreNew"/>
+                                <copy file="${install.src}/Deployment/Server/conf/.keystore" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/.keystoreNew" failonerror="false" verbose="true" overwrite="true" force="true"/>
                             </then>
                     </if>
 

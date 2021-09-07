@@ -40,10 +40,11 @@ import java.security.cert.Certificate;
 public class PSUpdateDTSCertificate extends PSAction {
     private static String PROD_PATH = "Deployment";
     private static String STAGING_PATH = "Staging/Deployment";
-    private static String STAGING_PATH_WIN = "Staging\\Deployment";
     private static String CATALINA_PROPERTIES = "Server/conf/perc/perc-catalina.properties";
     private static String newKeyStoreName  = "Server/conf/.keystoreNew";
+    private static String oldKeyStoreName  = "Server/conf/.keystore";
     private static String CERT_ALIAS="tomcat";
+    private static char[] DEFAULT_PWD="changeit".toCharArray();
 
     @Override
     public void execute()
@@ -61,18 +62,29 @@ public class PSUpdateDTSCertificate extends PSAction {
         }
     }
 
-    private Properties loadPercCatalinaProperties(File percCatalinaFile) throws IOException {
-        Properties prop = new Properties();
-        try (FileInputStream inputStream = new FileInputStream(percCatalinaFile)) {
+    /**
+     * Get KeyStore Password from Catalina.properties
+     * @param prodPath
+     * @return
+     * @throws IOException
+     */
+    private String getKeyStorePasswordFromCatalinaProperties(File prodPath) throws IOException {
+        File percCatalinaFile = new File(prodPath, CATALINA_PROPERTIES);
+        Properties properties = new Properties();
+         try (FileInputStream inputStream = new FileInputStream(percCatalinaFile)) {
             if (inputStream != null) {
-                prop.load(inputStream);
+                properties.load(inputStream);
+                return properties.getProperty("https.keystorePass");
             } else {
                 throw new FileNotFoundException("property file '" + CATALINA_PROPERTIES + "' not found in the classpath");
             }
         }
-        return prop;
     }
 
+    /**
+     * Update New Default Certificate in the path specified
+     * @param prodPath
+     */
     private void updateCertificate(File prodPath) {
 
         File newCertFile = new File(prodPath+ File.separator + newKeyStoreName);
@@ -80,35 +92,55 @@ public class PSUpdateDTSCertificate extends PSAction {
             //That means it is a new Install, no need to upgrade certificate..thus return
             return;
         }
-        Properties properties = new Properties();
-        PSLogger.logInfo("Upgrading DTS SSL Certificate..." + prodPath);
+        PSLogger.logInfo("Upgrading Default DTS Self Signed Certificate..." + prodPath);
+        updateCertificate(prodPath,newCertFile,DEFAULT_PWD,true);
+        //Delete the new Cert File after updating
+        newCertFile.delete();
+        PSLogger.logInfo("Done Upgrading Default DTS Self Signed Certificate..." + prodPath);
+    }
 
-        File percCatalinaFile = new File(prodPath, CATALINA_PROPERTIES);
+    /**
+     * Try's to update certificate by opening the keystore with default password, incase fails, then gets the pwd from
+     * Catalina.properties and opens the keystore. If Successful in opening the keystore, then updates the certificate.
+     * @param prodPath
+     * @param newCertFile
+     * @param pwd
+     */
+    private void updateCertificate(File prodPath,File newCertFile,char[] pwd,boolean withDefaultPwd){
         try {
-            if (percCatalinaFile.exists()) {
-                //Get Keystore file path and keystore ppassword from perc-catalina.properties
-                properties = loadPercCatalinaProperties(percCatalinaFile);
-                String oldKeyStoreFileName = properties.getProperty("https.keystoreFile");
-                String OldPassword = properties.getProperty("https.keystorePass");
-                KeyStore oldKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                try(FileInputStream io = new FileInputStream(prodPath + File.separator + "Server" + File.separator + oldKeyStoreFileName)) {
+            KeyStore oldKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            try(FileInputStream io = new FileInputStream(prodPath + File.separator + oldKeyStoreName)) {
+                try {
                     //Load exisitng keystore using above information
-                    oldKeyStore.load(io, OldPassword.toCharArray());
-                    KeyStore newKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-                    try(FileInputStream io2 = new FileInputStream(prodPath + File.separator + newKeyStoreName)) {
-                        //Load new keystore file with new certificate came with new build
-                        newKeyStore.load(io2, "changeit".toCharArray());
-                        Certificate[] newCertChain = newKeyStore.getCertificateChain(CERT_ALIAS);
-                        //update existing keystore with new certificate
-                        oldKeyStore.setKeyEntry(CERT_ALIAS,newKeyStore.getKey(CERT_ALIAS,OldPassword.toCharArray()),OldPassword.toCharArray(), newCertChain);
+                    oldKeyStore.load(io, pwd);
+                }catch(IOException ex){
+                    //Incase we have already tried with Catalina.properties Pwd, then exit.Else it will go in loop
+                    if(!withDefaultPwd){
+                        return;
+                    }else {
+                        //Load keystore password from Catalina.properties
+                        String pwdStr = getKeyStorePasswordFromCatalinaProperties(prodPath);
+                        if (pwdStr != null) {
+                            updateCertificate(prodPath, newCertFile, pwdStr.toCharArray(), false);
+                            return;
+                        } else {
+                            return;
+                        }
                     }
-                    //Delete the new Cert File after updating
-                    newCertFile.delete();
+                }
+                KeyStore newKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                try(FileInputStream io2 = new FileInputStream(prodPath + File.separator + newKeyStoreName)) {
+                    //Load new keystore file with new certificate came with new build
+                    newKeyStore.load(io2, DEFAULT_PWD);
+                    Certificate[] newCertChain = newKeyStore.getCertificateChain(CERT_ALIAS);
+                    //update existing keystore with new certificate
+                    oldKeyStore.setKeyEntry(CERT_ALIAS,newKeyStore.getKey(CERT_ALIAS,pwd),pwd, newCertChain);
                 }
             }
+
         } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException io) {
-            PSLogger.logError("Error loading perc-catalina.properties: " + io.getMessage());
+            PSLogger.logError("Error Failed to Upgrading Default DTS Self Signed Certificate: " + io.getMessage());
         }
-        PSLogger.logInfo("Done Upgrading DTS SSL Certificate..." + prodPath);
+        PSLogger.logInfo("Done Upgrading Default DTS Self Signed Certificate..." + prodPath);
     }
 }
