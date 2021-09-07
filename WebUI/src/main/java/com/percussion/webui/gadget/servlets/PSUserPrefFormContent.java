@@ -23,22 +23,28 @@
  */
 package com.percussion.webui.gadget.servlets;
 
-import com.percussion.delivery.client.EasySSLProtocolSocketFactory;
-import com.percussion.util.PSURLEncoder;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.ToDoVulnerability;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
-import java.net.URL;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,22 +71,12 @@ public class PSUserPrefFormContent {
 	private static final String FOR = "for";
 	private static final String BR = "br";
 
+	private GadgetSettingsFormServlet servlet;
+	private HttpServletRequest request;
+	private HttpServletResponse response;
+
 
 	private static final Logger log = LogManager.getLogger(PSUserPrefFormContent.class);
-
-	private boolean sslSocketFactoryRegistered;
-
-	private void registerSslProtocol()
-	{
-
-		if (sslSocketFactoryRegistered)
-			return;
-
-		ProtocolSocketFactory socketFactory = new EasySSLProtocolSocketFactory();
-		Protocol.registerProtocol("https", new Protocol("https", socketFactory, 443));
-
-		sslSocketFactoryRegistered = true;
-	}
 
 
 	/**
@@ -90,32 +86,26 @@ public class PSUserPrefFormContent {
 	 * @param upValues map of name/values that the user persisted for gadget preferences
 	 * for this gadget. Cannot be <code>null</code>.
 	 * case it will default to &quote;0&quote;.
-	 * @param servername
-	 * @param serverport
-	 * @param pssessionid
 	 */
-   public PSUserPrefFormContent(List<JSONObject> prefs, String moduleId,
-               Map<String, String> upValues,
-               String servername, String serverscheme, int serverport, String pssessionid){
+	public PSUserPrefFormContent(List<JSONObject> prefs, String moduleId, Map<String, String> upValues, GadgetSettingsFormServlet gadgetSettingsFormServlet, HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		if(prefs == null)
-		   throw new IllegalArgumentException("prefs cannot be null.");
+			throw new IllegalArgumentException("prefs cannot be null.");
 		if(upValues == null)
-		   throw new IllegalArgumentException("upValues cannot be null.");
+			throw new IllegalArgumentException("upValues cannot be null.");
 		if(moduleId != null && moduleId.length() > 0)
-	      m_moduleId = moduleId;
-
-	   registerSslProtocol();
+			m_moduleId = moduleId;
 
 		m_userPrefValues = upValues;
-		m_servername = servername;
-		m_serverport = serverport;
-		m_serverscheme =serverscheme;
-		m_pssessionid = pssessionid;
-	   buildFormContent(prefs);
-	}	
+		servlet = gadgetSettingsFormServlet;
+		request = req;
+		response = resp;
+
+		buildFormContent(prefs);
+
+   }
 
 
-   @Override
+	@Override
    public String toString()
 	{
 	   return m_content.toString();
@@ -144,8 +134,7 @@ public class PSUserPrefFormContent {
 	 * object.
 	 * @param prefs the JSON preferences object, assumed not <code>null</code>.
 	 */
-	private void buildFormContent(List<JSONObject> prefs)
-	{
+	private void buildFormContent(List<JSONObject> prefs) throws IOException {
 		//Container div
 		Map<String, String> params = new HashMap<>();
 		params.put("id", replaceTokens(ID_MAIN_DIV));
@@ -254,6 +243,7 @@ public class PSUserPrefFormContent {
 	   }
 	   catch(IOException e)
 	   {
+	   	log.error(PSExceptionUtils.getMessageForLog(e));
 	      // Should never happen
 	      throw new RuntimeException(e);
 	   }
@@ -275,7 +265,7 @@ public class PSUserPrefFormContent {
 	 * object.
 	 * @param pref the JSON preference object, assumed not <code>null</code>.
 	 */
-	private void addField(JSONObject pref){
+	private void addField(JSONObject pref) throws IOException {
 	   m_fieldCount++;
 	   String type = (String)pref.get("type");
 	   String fn = (String)pref.get(FIELD_NAME);
@@ -351,7 +341,7 @@ public class PSUserPrefFormContent {
     * or empty.
     * @param pref the JSON preference object, assumed not <code>null</code>.
     */
-   private void addEnumField(String fieldname, JSONObject pref){
+   private void addEnumField(String fieldname, JSONObject pref) throws IOException {
 	   Map<String, String> params = new HashMap<>();
       String dVal = getFieldValue(pref);
       JSONArray vals = (JSONArray)pref.get("orderedEnumValues");
@@ -364,7 +354,7 @@ public class PSUserPrefFormContent {
 		   String val = (String) current.get(VALUE);
 		   String displayVal = (String) current.get("displayValue");
 		   if (val.startsWith("@url:")) {
-			   handleRemoteOptions(val, dVal);
+			   handleRemoteOptions(val,dVal);
 		   } else {
 			   addOption(val, displayVal, dVal);
 		   }
@@ -388,89 +378,79 @@ public class PSUserPrefFormContent {
       m_content.append(displayVal);
       m_content.append(createEndTag("option"));    
 	}
-	
+
+
+	protected String getEnumUrlValue(String enumValue){
+		if(enumValue.startsWith("@url:"))
+			return enumValue.replace("@url:","");
+		else
+			return enumValue;
+
+	}
 	/**
 	 * Handles remote enumeration options. The service must return a JSON array
 	 * with JSONObjects that have a &quot;value&quot; and a &quot;display_value&quot; property,
 	 * with the &quot;display_value&quot; option being optional.
-	 * @param urlString
 	 * @param defaultVal
 	 */
-   private void handleRemoteOptions(String urlString, String defaultVal)
-   {	
-	   String rawurl = urlString.substring(5);
-	   String url = rawurl;	  
-	   
-	   try
-       {
-         if (!rawurl.startsWith("http"))
-         {
-            String sep = rawurl.indexOf('?') == -1 ? "?" : "&";
-            URL lUrl = new URL(m_serverscheme, m_servername,
-               m_serverport, rawurl);
-            url = lUrl.toString();
-         }
-       
-         int index = url.indexOf('@');
-         if (index != -1)
-         {
-             String replaceField = url.substring(index + 1);
-             replaceField = replaceField.substring(0, replaceField.indexOf('@'));
-             String fieldValue = getFieldValue(m_userPrefs.get(replaceField));
-             url = url.replace('@' + replaceField + '@', PSURLEncoder.encodePath(fieldValue));
-         }
-                  
-         String result = makeJSONGetRequest(url);
-         JSONParser parser=new JSONParser();
-         Object res = null;
-         try
-         {
-            res = parser.parse(new StringReader(result));
-            if(isRemoteEnumValJsonValid(res))
-            {
-               JSONObject jobj = (JSONObject)res;
-               Object temp = ((JSONObject)jobj.get("EnumVals")).get("entries");
-               if(temp == null)
-                  return;
-               JSONArray arr = null;
-               if(temp instanceof JSONObject)
-               {
-                  arr = new JSONArray();
-                  arr.add(temp);
-               }
-               else
-               {
-                  arr = (JSONArray)temp;
-               }
-				for (Object obj : arr) {
-					if (obj instanceof JSONObject) {
-						JSONObject entry = (JSONObject) obj;
-						String val = (String) entry.get("value");
-						String displayVal = (String) entry.get("display_value");
-						if (val != null && val.length() > 0)
-							addOption(val, displayVal, defaultVal);
-					} else {
-						throw new IOException("Invalid json data format");
-					}
-				}
-            }
-            else
-            {
-               throw new IOException("Invalid json data format");
-            }
-         }
-         catch(Exception e)
-         {
-			 log.error(e.getMessage());
-			 log.debug(e.getMessage(), e);
-            throw new IOException("Problem retrieving or parsing data.");   
-         }
-      }
-      catch (IOException e)
-      {
-		  log.error(e.getMessage());
-		  log.debug(e.getMessage(), e);
-      }
+	//TODO: If this is an @url param, we need to validate that the URL is safe.
+	//NOTE: I am not sure why we need to call the RPC servlet here.  We should just be able to call the service
+	//directly as these urls are always with the same web app.
+	@ToDoVulnerability
+   private void handleRemoteOptions(String enumValue,String defaultVal) throws IOException {
+
+   	  if(enumValue != null && !StringUtils.isEmpty(enumValue)) {
+		 	  String url = getEnumUrlValue(enumValue);
+		  try {
+		  	RequestDispatcher dispatcher =
+				  servlet.getServletContext().getRequestDispatcher(url);
+		  StringWriter sw = new StringWriter();
+		  final PrintWriter pw = new PrintWriter(sw);
+		  HttpServletResponse responseWrapper =
+				  new HttpServletResponseWrapper(response) {
+					  @Override
+					  public PrintWriter getWriter() throws IOException {
+						  return pw;
+					  }
+				  };
+		  dispatcher.include(request, responseWrapper);
+
+		  String result = sw.toString();
+			  JSONParser parser = new JSONParser();
+			  Object res = null;
+
+				  res = parser.parse(new StringReader(result));
+				  if (isRemoteEnumValJsonValid(res)) {
+					  JSONObject jobj = (JSONObject) res;
+					  Object temp = ((JSONObject) jobj.get("EnumVals")).get("entries");
+					  if (temp == null)
+						  return;
+					  JSONArray arr = null;
+					  if (temp instanceof JSONObject) {
+						  arr = new JSONArray();
+						  arr.add(temp);
+					  } else {
+						  arr = (JSONArray) temp;
+					  }
+					  for (Object obj : arr) {
+						  if (obj instanceof JSONObject) {
+							  JSONObject entry = (JSONObject) obj;
+							  String val = (String) entry.get("value");
+							  String displayVal = (String) entry.get("display_value");
+							  if (val != null && val.length() > 0)
+								  addOption(val, displayVal, defaultVal);
+						  } else {
+							  throw new IOException("Invalid json data format");
+						  }
+					  }
+				  } else {
+					  throw new IOException("Invalid json data format");
+				  }
+			  } catch (ParseException | ServletException e) {
+			  log.error(PSExceptionUtils.getMessageForLog(e));
+			  log.debug(e);
+		  }
+	  }
 	}
 	
 	/**
@@ -487,9 +467,9 @@ public class PSUserPrefFormContent {
       params.put("id", replaceTokens(ID_INPUT));
       params.put("name", fieldname);
       params.put("value", "true");
-      if(dVal != null && dVal.length() > 0 && dVal.equalsIgnoreCase("true"))
+      if(dVal != null && dVal.equalsIgnoreCase("true"))
          params.put("checked", "true");
-      m_content.append(createStartTag("input", params, true));
+      m_content.append(createStartTag(INPUT, params, true));
       Map<String, String> lParams = new HashMap<>();
       lParams.put(FOR, fieldname);
       m_content.append(createStartTag(LABEL, lParams, false));
@@ -591,15 +571,15 @@ public class PSUserPrefFormContent {
 	
 	private boolean isRemoteEnumValJsonValid(Object obj)
 	{
-	   //TODO: Validate the json format.
 	   return true;
 	}
-	
+
 	/**
     * Sends a JSON string to a specific URL and returns the plain response of the server
     */
    private String makeJSONGetRequest(String url) throws IOException
    {
+
 
        HttpClient httpClient = new HttpClient();
              
@@ -641,22 +621,7 @@ public class PSUserPrefFormContent {
 	 * The current number of fields in the form. The is incremented by {@link #addField(JSONObject)}.
 	 */
 	private int m_fieldCount = -1;
-	
-	/**
-	 * The name of the server, initialized in the ctor.
-	 */
-	private String m_servername;
-	
-	/**
-    * The server port, initialized in the ctor.
-    */
-	private int m_serverport;
 
-	private String m_serverscheme;
-	/**
-	 * The pssessionid coming from the server request, initialized in the ctor.
-	 */
-	private final String m_pssessionid;
 	
 	private Map<String, JSONObject> m_userPrefs = new HashMap<>();
 	

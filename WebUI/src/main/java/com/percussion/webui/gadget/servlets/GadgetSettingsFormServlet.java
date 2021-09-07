@@ -24,30 +24,31 @@
 package com.percussion.webui.gadget.servlets;
 
 
-
-import com.percussion.delivery.client.EasySSLProtocolSocketFactory;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.ToDoVulnerability;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.apache.commons.httpclient.protocol.Protocol;
-import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import javax.servlet.ReadListener;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.net.URL;
+import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -63,19 +64,6 @@ public class GadgetSettingsFormServlet extends HttpServlet
 {
    private static final Logger log = LogManager.getLogger(GadgetSettingsFormServlet.class.getName());
 
-   private static boolean sslSocketFactoryRegistered;
-
-   private static void registerSslProtocol()
-    {
-
-        if (sslSocketFactoryRegistered)
-            return;
-
-        ProtocolSocketFactory socketFactory = new EasySSLProtocolSocketFactory();
-        Protocol.registerProtocol("https", new Protocol("https", socketFactory, 443));
-
-       sslSocketFactoryRegistered = true;
-    }
 
     /**
      * A convenience method which can be overridden so that there's no need
@@ -94,8 +82,6 @@ public class GadgetSettingsFormServlet extends HttpServlet
     @Override
     public void init() throws ServletException {
         super.init();
-
-        registerSslProtocol();
     }
 
     /* (non-Javadoc)
@@ -106,36 +92,44 @@ public class GadgetSettingsFormServlet extends HttpServlet
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
       try {
          String gadgetUrl = req.getParameter("gurl");
+
+         if(!PSGadgetUtils.isValidGadgetPathInUrl(req, new URI(gadgetUrl))){
+            resp.sendError(404);
+         }
+
          String moduleId = req.getParameter("mid");
+
          resp.setContentType("application/javascript");
 
          PrintWriter out = resp.getWriter();
          if (gadgetUrl != null) {
-            JSONObject meta = getGadgetMeta(req, gadgetUrl, moduleId);
+            JSONObject meta = getGadgetMeta(req, resp, gadgetUrl, moduleId);
             List<JSONObject> prefs = extractUserPrefs(meta);
-            String scheme = req.getScheme();
-            String serverName = "127.0.0.1";
-            int serverPort = req.getServerPort();
             PSUserPrefFormContent formContent =
-                    new PSUserPrefFormContent(prefs, moduleId, getUpParams(req),
-                            serverName, scheme, serverPort,
-                            getPSSessionId(req));
-            //m_log.error("JETTY TODO - get correct hostname and port",new Throwable());
+                    new PSUserPrefFormContent(prefs, moduleId, getUpParams(req), this, req,resp);
+
             out.println(formContent.toJavaScript());
          } else {
             out.println("// Gadget URL must be specified.");
          }
-      } catch (IOException e) {
+      } catch (IOException | URISyntaxException e) {
          log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(e);
          try{
-            resp.sendError(500,"");
+            resp.sendError(404);
          } catch (IOException ioException) {
             resp.reset();
-            resp.setStatus(500);
+            resp.setStatus(404);
          }
 
       }
+   }
+
+   /**
+    * Validate input parameters for sane inputs.
+    */
+   private void validateInputParameters(){
+
    }
 
    /**
@@ -149,8 +143,9 @@ public class GadgetSettingsFormServlet extends HttpServlet
    @SuppressWarnings("unchecked")
    private JSONObject getGadgetMeta(
            HttpServletRequest req,
+           HttpServletResponse response,
            String url,
-           String moduleId) throws IOException{
+           String moduleId) throws IOException {
 
       JSONObject obj = new JSONObject();
       JSONObject gadget = new JSONObject();
@@ -163,7 +158,7 @@ public class GadgetSettingsFormServlet extends HttpServlet
 
       JSONArray gadgets = new JSONArray();
       Map<String, String> upParams = getUpParams(req);
-      if(moduleId == null)
+      if (moduleId == null)
          moduleId = "0";
       gadgets.add(gadget);
       obj.put("context", context);
@@ -171,65 +166,129 @@ public class GadgetSettingsFormServlet extends HttpServlet
 
       gadget.put("url", url);
       gadget.put("moduleId", moduleId);
-      if(!upParams.isEmpty())
-      {
+      if (!upParams.isEmpty()) {
          JSONObject ups = new JSONObject();
-         for(String key : upParams.keySet())
-         {
+         for (String key : upParams.keySet()) {
             ups.put(key, upParams.get(key));
          }
          gadget.put("prefs", ups);
       }
-      String serverName = "127.0.0.1";
-      int serverPort = req.getServerPort();
 
-      URL metaDataServiceURL = new URL(req.getScheme(),
-              serverName,
-              serverPort,
-              METADATA_SERVICE_URL);
+      String result = null;
 
-      //m_log.error("JETTY TODO - get correct hostname and port",new Throwable());
-      String result =
-              makeJSONPostRequest(metaDataServiceURL.toString(), obj.toString());
-      JSONParser parser=new JSONParser();
-      JSONObject meta;
-      try
-      {
-         meta = (JSONObject)parser.parse(new StringReader(result));
-         return meta;
+      try{
+      RequestDispatcher dispatcher =
+              this.getServletContext().getRequestDispatcher(METADATA_SERVICE_URL);
+      StringWriter sw = new StringWriter();
+      final PrintWriter pw = new PrintWriter(sw);
+
+      //Wrap the response so that we can capture output from the rpc servlet.
+      HttpServletResponse responseWrapper =
+              new HttpServletResponseWrapper(response) {
+                 @Override
+                 public PrintWriter getWriter() throws IOException {
+                    return pw;
+                 }
+              };
+
+      /**
+       * We wrap the request here so that we can override the inputs to the RCP Servlet.
+       */
+      HttpServletRequest requestWrapper = new HttpServletRequestWrapper(req) {
+         /**
+          * The default behavior of this method is to return getMethod()
+          * on the wrapped request object.
+          */
+         @Override
+         public String getMethod() {
+            return "POST";
+         }
+
+         final byte[] bytes = obj.toString().getBytes(StandardCharsets.UTF_8);
+
+         /**
+          * The default behavior of this method is to return getInputStream()
+          * on the wrapped request object.
+          */
+         @Override
+         public ServletInputStream getInputStream() throws IOException {
+            return new ServletInputStream() {
+               private int lastIndexRetrieved = -1;
+               private ReadListener readListener = null;
+
+               @Override
+               public boolean isFinished() {
+                  return (lastIndexRetrieved == bytes.length - 1);
+               }
+
+               @Override
+               public boolean isReady() {
+                  // This implementation will never block
+                  // We also never need to call the readListener from this method, as this method will never return false
+                  return isFinished();
+               }
+
+               @Override
+               public void setReadListener(ReadListener readListener) {
+                  this.readListener = readListener;
+                  if (!isFinished()) {
+                     try {
+                        readListener.onDataAvailable();
+                     } catch (IOException e) {
+                        readListener.onError(e);
+                     }
+                  } else {
+                     try {
+                        readListener.onAllDataRead();
+                     } catch (IOException e) {
+                        readListener.onError(e);
+                     }
+                  }
+               }
+
+               @Override
+               public int read() throws IOException {
+                  int i;
+                  if (!isFinished()) {
+                     i = bytes[lastIndexRetrieved + 1];
+                     lastIndexRetrieved++;
+                     if (isFinished() && (readListener != null)) {
+                        try {
+                           readListener.onAllDataRead();
+                        } catch (IOException ex) {
+                           readListener.onError(ex);
+                           throw ex;
+                        }
+                     }
+                     return i;
+                  } else {
+                     return -1;
+                  }
+               }
+            };
+         }
+      };
+         dispatcher.include(requestWrapper, responseWrapper);
+         result = sw.toString();
+   } catch (ServletException e) {
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
-      catch(Exception e)
-      {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         throw new IOException("Problem retrieving metadata.");
+
+      if(result != null) {
+         JSONParser parser = new JSONParser();
+         JSONObject meta;
+         try {
+            meta = (JSONObject) parser.parse(new StringReader(result));
+            return meta;
+         } catch (Exception e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
+            throw new IOException("Problem retrieving metadata.");
+         }
+      }else{
+         throw new IOException("Unable to retrieve metadata.");
       }
    }
-
-   /**
-    * Sends a JSON string to a specific URL and returns the plain response of the server
-    */
-   private String makeJSONPostRequest(String url, String jsonString) throws IOException
-   {
-
-      HttpClient httpClient = new HttpClient();
-
-      PostMethod post = new PostMethod(url);
-      post.setRequestHeader("x-shindig-dos", "true");
-      post.setRequestEntity(new StringRequestEntity(jsonString, "application/json", "UTF-8"));
-
-      try
-      {
-         httpClient.executeMethod(post);
-         return post.getResponseBodyAsString();
-      }
-      finally
-      {
-         post.releaseConnection();
-      }
-
-   }
-
 
    /**
     *

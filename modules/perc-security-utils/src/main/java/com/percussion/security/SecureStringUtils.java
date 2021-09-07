@@ -38,8 +38,10 @@ import org.owasp.esapi.codecs.OracleCodec;
 import org.owasp.esapi.errors.EncodingException;
 import org.owasp.esapi.reference.DefaultEncoder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -56,6 +58,32 @@ import java.util.List;
 public class SecureStringUtils {
 
     private static final Logger log = LogManager.getLogger(SecureStringUtils.class);
+
+    public static List<String> getTypicalAllowedHosts(HttpServletRequest request){
+        List<String> ret = new ArrayList<>();
+        ret.add(request.getLocalName());
+        ret.add(request.getLocalAddr());
+        ret.add(request.getServerName());
+        return ret;
+    }
+
+    /**
+     * Will validate that the URI provided belongs to one of the allowed hosts. Will automatically allow
+     * localhost, localname and servername from the passed in request. Any other hostnames should be
+     * passed in with the allowed hosts param
+     *
+     * @param request the request that provided the url.
+     * @param url A url to to validate
+     * @param allowedHosts Never null.  A list of allowed hostnames.
+     * @return
+     */
+    public static boolean hostMatchesRequest(HttpServletRequest request, URI url, List<String> allowedHosts){
+
+        allowedHosts.addAll(getTypicalAllowedHosts(request));
+
+        return allowedHosts.contains(url.getHost());
+
+    }
 
     /**
      * To be used when sending queries to LDAP.
