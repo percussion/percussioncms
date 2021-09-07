@@ -636,7 +636,7 @@ var layoutModel;
                 accept: '.perc-widget-tool',
                 tolerance: 'pointer',
                 greedy: true,
-                scope: 'perc_iframe_scope',
+                scope: $.perc_iframe_scope,
                 drop: function(event,ui) {
                     regionDrop(ui, region);
                 },
@@ -653,7 +653,7 @@ var layoutModel;
                 accept: '.perc-widget-tool',
                 tolerance: 'pointer',
                 greedy: true,
-                scope: 'perc_iframe_scope',
+                scope: $.perc_iframe_scope,
                 drop: function(event,ui) {
                     widgetDrop(ui, $(this), region);
                 },
@@ -804,10 +804,9 @@ var layoutModel;
             return $("<div/>")
                 .addClass("perc-region-feedback")
                 .css({'position':'absolute'}).droppable({
-                    scope: 'perc_iframe_scope',
+                    scope: $.perc_iframe_scope,
                     accept: '#region-tool',
                     tolerance: 'pointer',
-                    greedy: true,
                     hoverClass: 'perc-show-feedback',
                     over : function(event, ui) {
                         // provide feeback when hovering region tool over a region so that you know what region will be split
@@ -1552,19 +1551,12 @@ var layoutModel;
                         refreshPositions: true,
                         helper: 'clone',
                         revert: false,
+                        iframeFix: true,
+                        delay:$.dragDelay,
                         containment: "window",
-                        scope : 'perc_iframe_scope',
-                        start: function(event, ui){
-                            $.perc_utils.addAutoScroll();
-                            currentDragOverRegion = null;
-                            hideRegionOverflow();
-                            $.percHideBodyScrollbars();
-                        },
-                        stop: function(event, ui) {
-                            $.perc_utils.removeAutoScroll();
-                            restoreRegionOverflow();
-                            $.percShowBodyScrollbars();
-                        }
+                        scope : $.perc_iframe_scope,
+                        scroll: true
+
                     })
                     .data( 'widget', w ));
 
