@@ -148,13 +148,15 @@ public class PSXslStyleSheetMerger extends PSStyleSheetMerger
          if (ssCache != null)
          {
             cachedSS = ssCache.get(styleFile);
-            if (cachedSS == null)
+            if (cachedSS == null )
             {
                cachedSS = new PSCachedStylesheet(styleFile);
                ssCache.put(styleFile, cachedSS);
             }
-         } else  // not really cached!
+         } else {
+            // not cached
             cachedSS = new PSCachedStylesheet(styleFile);
+         }
 
          ssTemplate = cachedSS.getStylesheetTemplate(encoding);
 

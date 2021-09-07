@@ -23,6 +23,7 @@
  */
 package com.percussion.webui.gadget.servlets;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -34,12 +35,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This servlet is used to retrieve a listing of gadgets from the gadget repository.  For each gadget, the following
@@ -54,10 +61,9 @@ public class GadgetRepositoryListingServlet extends HttpServlet
      * @see javax.servlet.http.HttpServlet#doGet(
      *    javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    @SuppressWarnings({"unused", "unchecked"})
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException
+            throws IOException
     {
         String type = req.getParameter("type");
         if(type == null || type.trim().length() < 1)
@@ -66,62 +72,52 @@ public class GadgetRepositoryListingServlet extends HttpServlet
         resp.setContentType("application/json");
 
 
-        PrintWriter out = resp.getWriter();
-        List gadgets = new JSONArray();
-        File root = new File(gadgetsRoot.getPath());
+        try(PrintWriter out = resp.getWriter()) {
+            JSONArray gadgets = new JSONArray();
+            File root = new File(gadgetsRoot.getPath());
 
-        File[] gadgetFiles = root.listFiles();
-        try
-        {
-            for (File gadgetFile : gadgetFiles)
-            {
-                if (!gadgetFile.isDirectory())
-                {
-                    // only concerned with directories
-                    continue;
-                }
+            File[] gadgetFiles = root.listFiles();
 
-                JSONObject gadget = null;
-                File[] gadgetConfigFiles = gadgetFile.listFiles();
-                try
-                {
-                    for (File gadgetConfigFile : gadgetConfigFiles)
-                    {
-                        if (gadgetConfigFile.isDirectory())
-                        {
+            if (gadgetFiles != null) {
+                for (File gadgetFile : gadgetFiles) {
+                    if (!gadgetFile.isDirectory()) {
+                        // only concerned with directories
+                        continue;
+                    }
+
+                    JSONObject gadget = null;
+                    File[] gadgetConfigFiles = gadgetFile.listFiles();
+                    for (File gadgetConfigFile : gadgetConfigFiles) {
+                        if (gadgetConfigFile.isDirectory()) {
                             // only concerned with files
                             continue;
                         }
 
-                        if (gadgetConfigFile.getName().endsWith(".xml"))
-                        {
+                        if (gadgetConfigFile.getName().endsWith(".xml")) {
                             // try to load the gadget
                             gadget = loadGadget(gadgetConfigFile);
-                            if (gadget != null)
-                            {
+                            if (gadget != null) {
                                 // the gadget is loaded
                                 break;
                             }
                         }
                     }
-                }
-                catch (NullPointerException e)
-                {
-                }
-                if (gadget != null && (type.equalsIgnoreCase("All") || type.equalsIgnoreCase(gadget.get("type").toString())))
-                {
-                    gadgets.add(gadget);
+
+                    if (gadget != null && (type.equalsIgnoreCase("All") || type.equalsIgnoreCase(gadget.get("type").toString()))) {
+                        gadgets.add(gadget);
+                    }
                 }
             }
-        }
-        catch(NullPointerException e)
-        {
-        }
-        Collections.sort(gadgets, gComp);
 
-        JSONObject gadgetListing = new JSONObject();
-        gadgetListing.put("Gadget", gadgets);
-        out.println(gadgetListing.toString());
+            Collections.sort(gadgets, gComp);
+
+            JSONObject gadgetListing = new JSONObject();
+            gadgetListing.put("Gadget", gadgets);
+            out.println(gadgetListing.toString());
+        }catch(IOException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            resp.setStatus(500);
+        }
     }
 
     /**
@@ -145,39 +141,34 @@ public class GadgetRepositoryListingServlet extends HttpServlet
     {
         JSONObject gadget = null;
 
-        try
-        {
-            try(FileInputStream fin = new FileInputStream(config)) {
-                Document doc = PSXmlDocumentBuilder.createXmlDocument(fin, false);
-                NodeList modulePrefs = doc.getElementsByTagName("ModulePrefs");
-                if (modulePrefs.getLength() > 0) {
-                    Element modulePref = (Element) modulePrefs.item(0);
-                    gadget = new JSONObject();
-                    gadget.put("name", modulePref.getAttribute("title"));
-                    gadget.put("type", getGadgetType(modulePref.getAttribute("title")));
-                    gadget.put("category", modulePref.getAttribute("category"));
-                    String adminOnly = modulePref.getAttribute("adminOnly");
-                    gadget.put("adminOnly", adminOnly != null &&
-                            (adminOnly.equalsIgnoreCase("true") || adminOnly.equalsIgnoreCase("yes")));
-                    gadget.put("description", modulePref.getAttribute("description"));
+        try(FileInputStream fin = new FileInputStream(config)) {
+            Document doc = PSXmlDocumentBuilder.createXmlDocument(fin, false);
+            NodeList modulePrefs = doc.getElementsByTagName("ModulePrefs");
+            if (modulePrefs.getLength() > 0) {
+                Element modulePref = (Element) modulePrefs.item(0);
+                gadget = new JSONObject();
+                gadget.put("name", modulePref.getAttribute("title"));
+                gadget.put("type", getGadgetType(modulePref.getAttribute("title")));
+                gadget.put("category", modulePref.getAttribute("category"));
+                String adminOnly = modulePref.getAttribute("adminOnly");
+                gadget.put("adminOnly", adminOnly != null &&
+                        (adminOnly.equalsIgnoreCase("true") || adminOnly.equalsIgnoreCase("yes")));
+                gadget.put("description", modulePref.getAttribute("description"));
 
-                    String path = config.getCanonicalPath().replaceAll("\\\\", "/");
-                    String absRootPath = gadgetsRoot.getCanonicalPath().replaceAll("\\\\", "/");
-                    String url = path.replace(absRootPath + "/", "");
-                    gadget.put("url", GADGETS_BASE_URL + url);
+                String path = config.getCanonicalPath().replace("\\", "/");
+                String absRootPath = gadgetsRoot.getCanonicalPath().replace("\\", "/");
+                String url = path.replace(absRootPath + "/", "");
+                gadget.put("url", GADGETS_BASE_URL + url);
 
-                    String configParentPath = config.getParentFile().getCanonicalPath().replaceAll("\\\\", "/");
-                    String iconBaseUrl = configParentPath.replace(absRootPath + "/", "");
-                    gadget.put("iconUrl", GADGETS_BASE_URL + iconBaseUrl + '/' + modulePref.getAttribute("thumbnail"));
-                }
+                String configParentPath = config.getParentFile().getCanonicalPath().replace("\\", "/");
+                String iconBaseUrl = configParentPath.replace(absRootPath + "/", "");
+                gadget.put("iconUrl", GADGETS_BASE_URL + iconBaseUrl + '/' + modulePref.getAttribute("thumbnail"));
             }
+        } catch (IOException | SAXException e) {
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(e);
         }
-        catch (Exception e)
-        {
-            System.err.println("Failed to load gadget from file : " + config.getAbsolutePath());
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
-        }
+
 
         return gadget;
     }
@@ -186,7 +177,7 @@ public class GadgetRepositoryListingServlet extends HttpServlet
      * Used for sorting json representations of gadgets.  Gadgets will be sorted alphabetically by name, case-sensitive.
      * It is assumed that each json respresentation will have a name field.
      */
-    public class GadgetComparator implements Comparator<JSONObject>
+    public static class GadgetComparator implements Comparator<JSONObject>
     {
         public int compare(JSONObject obj1, JSONObject obj2)
         {
@@ -224,13 +215,13 @@ public class GadgetRepositoryListingServlet extends HttpServlet
      * gadget type as value.
      * @return Map of gadget name and type, never <code>null</code> may be empty.
      */
-    private Map<String, String> loadGadgetTypeMap()
+    protected Map<String, String> loadGadgetTypeMap()
     {
-        Map<String, String> gadTypeMap = new HashMap<String, String>();
+        Map<String, String> gadTypeMap = new HashMap<>();
         try(InputStream in = this.getClass().getClassLoader()
                 .getResourceAsStream("com/percussion/webui/gadget/servlets/GadgetRegistry.xml")) {
             if (in == null) {
-                System.err.println("Gadget registry file is missing in gadgets jar.");
+                log.error("Gadget registry file is missing from WEB-INF/classes/{}","com/percussion/webui/gadget/servlets/GadgetRegistry.xml" );
                 return gadTypeMap;
             }
 
@@ -248,32 +239,14 @@ public class GadgetRepositoryListingServlet extends HttpServlet
                 }
 
         }
-        catch (IOException e)
+        catch (IOException | SAXException e)
         {
             // This should not happen as we are reading the file from JAR
-            // incase if it happens logging it and returning empty Gadget
+            // in case if it happens logging it and returning empty Gadget
             // map.
-            System.err.println("Failed to load gadget registry file :");
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
-        }
-        catch (SAXException e)
-        {
-            // This should not happen as we are reading the file from JAR
-            // incase if it happens logging it and returning empty Gadget
-            // map.
-            System.err.println("Failed to parse gadget registry file :");
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
-        }
-        catch (Exception e)
-        {
-            // This should not happen as we are reading the file from JAR
-            // incase if it happens logging it and returning empty Gadget
-            // map.
-            System.err.println("Failed to parse gadget registry file :");
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Failed to load gadget registry file : {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
         return gadTypeMap;
     }
@@ -286,12 +259,12 @@ public class GadgetRepositoryListingServlet extends HttpServlet
     /**
      * Used for sorting gadgets.
      */
-    private GadgetComparator gComp = new GadgetComparator();
+    private final GadgetComparator gComp = new GadgetComparator();
 
     /**
      * The root directory of all gadgets (i.e., the gadget repository).  Never <code>null</code>.
      */
-    private File gadgetsRoot = new File(PSServer.getRxDir() + "/cm/gadgets/repository");
+    private final File gadgetsRoot = new File(PSServer.getRxDir() + "/cm/gadgets/repository");
 
     //Private data variable initialized in getGadgetType method.
     private Map<String,String> gadgetTypeMap = null;
