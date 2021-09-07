@@ -23,12 +23,12 @@
  */
 
 /**
-* Page Optimizer Dialog
-*/
+ * Page Optimizer Dialog
+ */
 (function($){
     //Public API for the page optimizer dialog.
     $.PercPageOptimizerDialog = {
-            open: openDialog
+        open: openDialog
     };
     /**
      * Opens the Page Optimizer Dialog and shows the optimizer details.
@@ -41,14 +41,14 @@
         $.PercPageOptimizerService.getPageOptimizerDetails(pageId, createDialog);
         var dialog;
         /**
-        */
+         */
         function createDialog(status, pageOptDetails)
         {
             $.unblockUI();
             var self = this;
-            
+
             if(!status)
-            { 
+            {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
                 return;
@@ -76,7 +76,7 @@
             });
 
         }
-        
+
         /**
          * Creates the comments table html, with wrapper div. Empty tbody is added.
          * @return comments dialog html.
@@ -97,80 +97,75 @@
                 le = le.date + " " + le.time;
             }
             var wfstatus = pageOptDetails.status + " (" + pageOptDetails.workflow + ")";
-            
+
             //TODO: I18N with correct formatting below
             var thumbHtml = "<div class=\"perc-missing-thumb\"><i title=\"Thumbnail is not yet available for this page.\" class=\"perc-missing-thumb-i perc-font-icon icon-camera fa-5x\"></i></div>";
             if(pageOptDetails.thumbUrl){
                 thumbHtml = "<img src=\"" + pageOptDetails.thumbUrl + "\"/>";
             }
-            var pageOptimizerHtml = 
+            var pageOptimizerHtml =
                 "<div id='perc-po-page-details-container'>" +
-                    "<div class='perc-po-page-col perc-po-page-col0'>" +
-                        "<div style='height:150px;line-height:150px;text-align:center;'>" + thumbHtml + "</div>" +
-                    "</div>" +
-                    "<div class='perc-po-page-col perc-po-page-col1'>" +
-                        "<div><label>File Name:</label><span title='"+ pageOptDetails.pageName + "'>" + pageOptDetails.pageName + "</span></div>" +
-                        "<div><label>Display Title:</label><span title='"+ pageOptDetails.pageTitle + "'>" + pageOptDetails.pageTitle + "</span></div>" +
-                        "<div><label>Status:</label><span title='"+ wfstatus + "'>" + wfstatus + "</span></div>" +
-                    "</div>" +
-                    "<div class='perc-po-page-col perc-po-page-col2'>" +
-                        "<div><label>Last Published:</label><span>" + lp + "</span></div>" +
-                        "<div><label>Last Edited:</label><span>" + le + "</span></div>" +
-                    "</div>" +
+                "<div class='perc-po-page-col perc-po-page-col0'>" +
+                "<div style='height:150px;line-height:150px;text-align:center;'>" + thumbHtml + "</div>" +
+                "</div>" +
+                "<div class='perc-po-page-col perc-po-page-col1'>" +
+                "<div><label>File Name:</label><span title='"+ pageOptDetails.pageName + "'>" + pageOptDetails.pageName + "</span></div>" +
+                "<div><label>Display Title:</label><span title='"+ pageOptDetails.pageTitle + "'>" + pageOptDetails.pageTitle + "</span></div>" +
+                "<div><label>Status:</label><span title='"+ wfstatus + "'>" + wfstatus + "</span></div>" +
+                "</div>" +
+                "<div class='perc-po-page-col perc-po-page-col2'>" +
+                "<div><label>Last Published:</label><span>" + lp + "</span></div>" +
+                "<div><label>Last Edited:</label><span>" + le + "</span></div>" +
+                "</div>" +
                 "</div>" +
                 "<div id='perc-po-details-container' class='top-border'>" +
-                    "<div class='loading center-text'><div style='position: absolute; top: 40%; margin: auto; width: 100%;'><img src='/cm/images/images/ajaxLoader.gif'></div></div>" +                    
+                "<div class='loading center-text'><div style='position: absolute; top: 40%; margin: auto; width: 100%;'><img src='https://optimizer-ui.percussion.com/img/ajaxLoader.gif'></div></div>" +
                 "</div>";
             $dialogHtml.append(pageOptimizerHtml);
             return $dialogHtml;
         }
-        
+
         /**
-        * adds the page optimizer content/iframe to the page
-        *
-        * @param {Object} pageOptDetails - detailed object containing all the information to be passed to the page optimizer
-        */
+         * adds the page optimizer content/iframe to the page
+         *
+         * @param {Object} pageOptDetails - detailed object containing all the information to be passed to the page optimizer
+         */
         function addPageOptimizerContent(pageOptDetails){
             var optimizerServiceUrl = pageOptDetails.pageOptimizerUrl;
-            
-            pingOptimizerService(optimizerServiceUrl + '/ping').done(function(){
-                $("#perc-po-details-container .loading").hide();
-                $("#perc-po-details-container").removeClass("top-border");
-                //add iframe to the page
-                $('<iframe/>', {
-                    id: 'perc-page-optimizer',
-                    src: optimizerServiceUrl + '/start/optimizer',
-                    width: '100%',
-                    height: 355
-                }).appendTo('#perc-po-details-container');
-                
-                $("#perc-page-optimizer").on('load',function(){
-                    var pageOptimizerData = {
-                        CI: pageOptDetails.clientIdentity,
-                        page: pageOptDetails.pageHtml
-                    };
-                    this.contentWindow.postMessage(pageOptimizerData, '*');
-                    $("#perc-po-details-container").addClass("perc-po-frame-loaded");
-                });
-            }).fail(function(){
-                $("#perc-po-details-container .loading").hide();
-                $('<div class="no-service center-text"><div style="position: relative; top: 40%; margin: auto; width: 100%;">Page optimizer is not available at this time.</div></div>').appendTo('#perc-po-details-container');
-                $.perc_utils.logToServer("error", "PageOptimizer", "Failed to fetch the UI from page optimizer service.");
+
+            $("#perc-po-details-container .loading").hide();
+            $("#perc-po-details-container").removeClass("top-border");
+            //add iframe to the page
+            $('<iframe/>', {
+                id: 'perc-page-optimizer',
+                src: optimizerServiceUrl + '/start/optimizer',
+                width: '100%',
+                height: 355
+            }).appendTo('#perc-po-details-container');
+
+            $("#perc-page-optimizer").on('load',function(){
+                var pageOptimizerData = {
+                    CI: pageOptDetails.clientIdentity,
+                    page: pageOptDetails.pageHtml
+                };
+                this.contentWindow.postMessage(pageOptimizerData, '*');
+                $("#perc-po-details-container").addClass("perc-po-frame-loaded");
+            });
+
+        }
+
+        /**
+         * ping the service to ensure that it is available
+         *
+         * @param {string} thisUrl - url to be checked
+         */
+        function pingOptimizerService(thisUrl) {
+            return $.ajax({
+                method: 'GET',
+                url: thisUrl
             });
         }
-        
-        /**
-        * ping the service to ensure that it is available
-        *
-        * @param {string} thisUrl - url to be checked
-        */
-        function pingOptimizerService(thisUrl) {
-        	return $.ajax({
-        		method: 'GET',
-        		url: thisUrl
-        	});
-        }
-        
-    }// End open dialog      
+
+    }// End open dialog
 
 })(jQuery);
