@@ -1000,7 +1000,9 @@ var assetPagination = null;
                     start: onDragStart,
                     stop: onDragStop,
                     containment: "window",
-                    scope: 'perc_iframe_scope',
+                    scope: $.perc_iframe_scope,
+                    scroll: true,
+                    iframeFix: true,
                     delay: dragDelay
                 });
 
@@ -1013,7 +1015,7 @@ var assetPagination = null;
                     accept: dragAcceptor,
                     over: hoverStart,
                     out: hoverCancel,
-                    scope: 'perc_iframe_scope',
+                    scope: $.perc_iframe_scope,
                     drop: onDrop } );
             }
 

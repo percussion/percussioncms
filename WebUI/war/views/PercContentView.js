@@ -269,7 +269,10 @@
             if(typeof(inside.draggable) == 'function')
             {
                 insideIframe(widget).draggable({
-                    scope: 'perc_iframe_scope',
+                    scope: $.perc_iframe_scope,
+                    iframeFix: true,
+                    delay:$.dragDelay,
+                    scroll: true,
                     revert: true,
                     drag: function(event, ui) {
                         if(event.target.innerText.length <= 0)
@@ -278,8 +281,9 @@
                 });
                 insideIframe(widget).droppable({
                     // only interact with iframe draggables
-                    scope: 'perc_iframe_scope',
+                    scope: $.perc_iframe_scope,
                     tolerance : 'pointer',
+                    iframeFix: true,
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
 
@@ -366,7 +370,7 @@
             }
 
             widget.droppable({
-                scope: 'perc_iframe_scope',
+                scope: $.perc_iframe_scope,
                 tolerance : 'pointer',
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {

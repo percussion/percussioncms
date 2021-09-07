@@ -815,15 +815,9 @@
 
             $("#region-tool").draggable(
             {
-                start: function(event, ui)
-                {
-                    utils.addAutoScroll();
-                },
-                stop: function(event, ui)
-                {
-                    utils.removeAutoScroll();
-                },
                 helper: 'clone',
+                iframeFix: true,
+                delay:$.dragDelay,
                 refreshPositions: true
             });
             $("#w1").data("widget", {

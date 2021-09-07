@@ -600,11 +600,10 @@ var gSelectTemp = null;
 			{
 				return $("<div/>").addClass("perc-region-feedback").css({'position':'absolute'}).droppable(
 				{ 
-					//scope: $.perc_iframe_scope,
-					accept: '#region-tool', 
+					accept: '#region-tool',
 					tolerance: 'pointer', 
+					hoverClass: 'perc-show-feedback',
 					greedy: true,
-					hoverClass: 'perc-show-feedback', 
 					drop: function()
 					{
 						if(self.type == self.helper.Type.PAGE && $.inArray(region_id, self.helper.page.lockedTemplateRegions)!=-1)

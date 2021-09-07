@@ -30,7 +30,7 @@
         //they do not have spurious interactions with draggables outside the
         //iframe
         $.perc_iframe_scope = 'perc-iframe-scope';
-
+        $.dragDelay = 10;
         var dragging = false;
 
 
@@ -167,7 +167,7 @@
                 .addClass('ui-layout-ignore')
                 .droppable({
                     addClasses: false,
-                    scope: 'perc_iframe_scope',
+                    scope: $.perc_iframe_scope,
                     tolerance : 'pointer',
                     activate: function(event,ui)
                     {

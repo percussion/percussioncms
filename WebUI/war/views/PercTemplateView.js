@@ -326,7 +326,7 @@
                 cssController.updateTemplateObject();
                 var self = $(this);
                 currentTabIndex = self.tabs('option','active');
-                switch(ui.newTab.index())
+                switch(currentTabIndex)
                 {
                     case 0:
                         // CSS Gallery
@@ -441,13 +441,12 @@
 
 
             $("#region-tool").draggable({
-                start : function(event, ui) {
-                    utils.addAutoScroll();
-                },
-                stop : function(event, ui) {
-                    utils.removeAutoScroll();
-                },
                 helper: 'clone',
+                scope:  $.perc_iframe_scope,
+                scroll: true,
+                containment: 'window',
+                iframeFix: true,
+                delay:$.dragDelay,
                 refreshPositions: true
             });
             $("#w1").data("widget", {definitionId: 'widgetType' } ).draggable({});

@@ -707,35 +707,35 @@ public class PSSearchService implements IPSSearchService
             criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getQuery(), type));
         }
 
-        if(!criteria.getSearchType().trim().isEmpty()){
+        if(criteria.getSearchType() != null && !criteria.getSearchType().trim().isEmpty()){
             criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSearchType(), type));
         }
 
-        if(criteria.getStartIndex()!=null){
+        if(criteria.getStartIndex() != null){
             if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getStartIndex().toString())) {
                 throw new IllegalArgumentException(criteria.getStartIndex() + " must have a numeric value for search");
             }
         }
 
-        if(criteria.getMaxResults()!=null){
+        if(criteria.getMaxResults() != null){
             if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getMaxResults().toString())) {
                 throw new IllegalArgumentException(criteria.getMaxResults() + " must have a numeric value for search");
             }
         }
 
-        if(!criteria.getSortColumn().trim().isEmpty()){
+        if(criteria.getSortColumn() != null && !criteria.getSortColumn().trim().isEmpty()){
             criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortColumn(), type));
         }
 
-        if(!criteria.getSortOrder().trim().isEmpty()){
+        if(criteria.getSortOrder() != null && !criteria.getSortOrder().trim().isEmpty()){
             criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortOrder(), type));
         }
 
-        if(!criteria.getFolderPath().trim().isEmpty()){
+        if(criteria.getFolderPath() != null && !criteria.getFolderPath().trim().isEmpty()){
             criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getFolderPath(), type));
         }
 
-        if(criteria.getFormatId()!=null){
+        if(criteria.getFormatId() != null && -1 !=criteria.getFormatId()){
             if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getFormatId().toString())) {
                 throw new IllegalArgumentException(criteria.getFormatId() + " must have a numeric value for search");
             }
@@ -743,7 +743,6 @@ public class PSSearchService implements IPSSearchService
 
         Map<String,String> fields = criteria.getSearchFields();
         if(fields != null){
-
             PSFieldSet systemFieldSet =
                     PSServer.getContentEditorSystemDef().getFieldSet();
 
