@@ -25,7 +25,9 @@ package com.percussion.delivery.utils.spring;
 
 
 import com.percussion.delivery.utils.security.PSSecureProperty;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.util.StringValueResolver;
 
 import javax.annotation.Nonnull;
 
@@ -50,6 +52,20 @@ public class PSPropertyPlaceholderConfigurer
       if(PSSecureProperty.isValueClouded(originalValue))
          return PSSecureProperty.getValue(originalValue, key);
       return originalValue;
+   }
+
+   //Workaround for bug spring-framework/issues/13568
+   protected void doProcessProperties(ConfigurableListableBeanFactory beanFactoryToProcess,
+                                      final StringValueResolver valueResolver) {
+
+      super.doProcessProperties(beanFactoryToProcess,
+              new StringValueResolver() {
+                 @Override
+                 public String resolveStringValue(String strVal) {
+                    return convertPropertyValue(valueResolver.resolveStringValue(strVal));
+                 }
+              }
+      );
    }
 
    /**
