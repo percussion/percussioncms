@@ -703,12 +703,12 @@ public class PSSearchService implements IPSSearchService
             type = SecureStringUtils.DatabaseType.DERBY;
         }
 
-        if(!criteria.getQuery().trim().isEmpty()){
+        if(criteria.getQuery() !=null && !criteria.getQuery().trim().isEmpty()){
             criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getQuery(), type));
         }
 
         if(criteria.getSearchType() != null && !criteria.getSearchType().trim().isEmpty()){
-            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSearchType(), type));
+            criteria.setSearchType(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSearchType(), type));
         }
 
         if(criteria.getStartIndex() != null){
@@ -724,15 +724,15 @@ public class PSSearchService implements IPSSearchService
         }
 
         if(criteria.getSortColumn() != null && !criteria.getSortColumn().trim().isEmpty()){
-            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortColumn(), type));
+            criteria.setSortColumn(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortColumn(), type));
         }
 
         if(criteria.getSortOrder() != null && !criteria.getSortOrder().trim().isEmpty()){
-            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortOrder(), type));
+            criteria.setSortOrder(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortOrder(), type));
         }
 
         if(criteria.getFolderPath() != null && !criteria.getFolderPath().trim().isEmpty()){
-            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getFolderPath(), type));
+            criteria.setFolderPath(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getFolderPath(), type));
         }
 
         if(criteria.getFormatId() != null && -1 !=criteria.getFormatId()){
