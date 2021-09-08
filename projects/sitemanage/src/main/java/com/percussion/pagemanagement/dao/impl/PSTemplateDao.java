@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.pagemanagement.dao.IPSTemplateDao;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSMetadataDocType;
@@ -32,6 +33,7 @@ import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSTemplateService.PSTemplateException;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -966,7 +968,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @author leonardohildt
      */
-    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws PSTemplateException {
+    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws PSTemplateException, IPSPathService.PSPathNotFoundServiceException {
         if (log.isDebugEnabled()){
             log.debug("Saving template: " + template);}
         notNull(template, "template");
@@ -991,7 +993,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         }
     }
 
-    private String generateTemplateName(String name, IPSSite site) throws PSTemplateException {
+    private String generateTemplateName(String name, IPSSite site) throws PSTemplateException, IPSPathService.PSPathNotFoundServiceException {
         String suggestedName = name;
         String appendSuffix = "";
         if (lastValueUsed == 0)
@@ -1031,6 +1033,20 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                 return this.generateTemplateName(templateName, site);
             }
         }
+
+        if (StringUtils.containsAny(templateName, IPSConstants.INVALID_ITEM_NAME_CHARACTERS)){
+            for (int i = 0; i < IPSConstants.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
+                // Replace any invalid characters present.
+                templateName = StringUtils.replace(templateName, String.valueOf(IPSConstants.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
+            }
+            if(templateName.substring(templateName.length()-1).equalsIgnoreCase("-")){
+                //the base name for copied template
+                templateName = templateName.substring(0, templateName.length()-3);
+            }
+            //Unique name using the base name in template folder for given site path
+            templateName = folderHelper.getUniqueNameInFolder(path, templateName, "", 2, false);
+        }
+
         return templateName;
     }
 
