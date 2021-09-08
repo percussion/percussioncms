@@ -169,7 +169,7 @@
 			</div>
 		</div>
 		<div id="perc-content-edit-metadata-sep"/>
-		<div id="perc-site-impact-panel">
+		<div id="perc-site-impact-panel" style = "display:none">
 			<div id="perc-content-edit-site-link" class = "perc-spacer">
 				<span id="perc-content-edit-site-icon" />Site Impact</div>
 			<div class="perc-content-edit-data">
