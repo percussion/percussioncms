@@ -28,6 +28,7 @@ import com.percussion.install.PSLogger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -135,7 +136,15 @@ public class PSUpdateDTSCertificate extends PSAction {
                     Certificate[] newCertChain = newKeyStore.getCertificateChain(CERT_ALIAS);
                     //update existing keystore with new certificate
                     oldKeyStore.setKeyEntry(CERT_ALIAS,newKeyStore.getKey(CERT_ALIAS,pwd),pwd, newCertChain);
+                    // Save the new keystore contents
+                    File keystoreFile = new File(prodPath + File.separator + oldKeyStoreName);
+                    // Save the new keystore contents
+                    try(FileOutputStream out = new FileOutputStream(keystoreFile)) {
+                        oldKeyStore.store(out, pwd);
+                        PSLogger.logInfo("Saved New Keystore..." + keystoreFile.getPath());
+                    }
                 }
+
             }
 
         } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException io) {
