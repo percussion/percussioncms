@@ -29,6 +29,7 @@ import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.share.dao.IPSGenericDao;
@@ -164,7 +165,7 @@ public interface IPSTemplateDao extends IPSGenericDao<PSTemplate, String>
      * 
      * @return the loaded template 
      */
-    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws IPSTemplateService.PSTemplateException;
+    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws IPSTemplateService.PSTemplateException, IPSPathService.PSPathNotFoundServiceException;
    
    /**
     * Gets the thumbnail path for a template given the specific site name.
