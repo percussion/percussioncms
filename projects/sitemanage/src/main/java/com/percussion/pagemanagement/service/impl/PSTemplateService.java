@@ -48,6 +48,7 @@ import com.percussion.pagemanagement.parser.PSParsedRegionTree;
 import com.percussion.pagemanagement.parser.PSTemplateRegionParser;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -780,7 +781,7 @@ public class PSTemplateService implements IPSTemplateService
      * 
      */
     public PSTemplate importTemplate(PSTemplate template, String siteId)
-            throws PSDataServiceException {
+            throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException {
         notNull(template, "template");
         rejectIfBlank("importTemplate", "siteId", siteId);
         

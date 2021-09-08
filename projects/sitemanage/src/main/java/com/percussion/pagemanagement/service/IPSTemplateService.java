@@ -31,6 +31,7 @@ import com.percussion.pagemanagement.data.PSHtmlMetadata;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
+import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.dao.IPSGenericDao;
@@ -298,7 +299,7 @@ public interface IPSTemplateService extends IPSDataService<PSTemplate, PSTemplat
     * @throws PSBeanValidationException if there is any invalid properties in the template.
     * @throws com.percussion.share.service.IPSDataService.DataServiceSaveException if there is any unexpected error.
     */
-   public PSTemplate importTemplate(PSTemplate template, String siteId) throws PSDataServiceException;
+   public PSTemplate importTemplate(PSTemplate template, String siteId) throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException;
    
    /**
     * (Runtime) Exception is thrown when an unexpected error occurs in this
