@@ -167,12 +167,25 @@ public class PSEnumVals
         {
             this.value = value;
         }
-        
+
+        /**
+         * Will return the display value, if it is not set, then will default
+         * to use the value for display.
+         * @return never null
+         */
         public String getDisplayValue()
         {
+            if(displayValue == null) {
+                if (value != null)
+                    return value;
+                else
+                    return "";
+            }
+
             return displayValue;
         }
-        
+
+
         public void setDisplayValue(String displayValue)
         {
             this.displayValue = displayValue;

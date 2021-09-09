@@ -36,7 +36,7 @@
         <EnumValue value="uniquepageviews"   display_value="Unique page visits"/>
   </UserPref> 
   <UserPref name="a-site" display_name="Site" required="false" datatype="enum">
-        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+        <EnumValue value="@url:/services/sitemanage/site/choices"/>
   </UserPref> 
   <UserPref name="b-dateFrom" display_name="Date range from" required="true" datatype="string" default_value="">
   </UserPref>
