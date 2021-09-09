@@ -24,12 +24,8 @@
 
 package com.percussion.utils;
 
-import com.percussion.share.spring.PSSpringWebApplicationContextSetter;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
-
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Service;
 
 public class PSSpringBeanProvider  {
 

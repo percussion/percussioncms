@@ -1552,7 +1552,7 @@ public class PSServer {
          }
       }
 
-      // make sure handler able to process this type of reqeuest method
+      // make sure handler able to process this type of request method
       String reqMethod = req.getServletRequest().getMethod();
       if ( rh != null )
       {

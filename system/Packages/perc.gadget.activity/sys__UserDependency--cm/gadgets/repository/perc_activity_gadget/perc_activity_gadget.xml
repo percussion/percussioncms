@@ -32,7 +32,7 @@
   </ModulePrefs>
   <UserPref name="site" display_name="Site" required="false" datatype="enum" default_value="@all">
         <EnumValue value="@all" display_value="All Sites"/>
-        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+        <EnumValue value="@url:/services/sitemanage/site/choices"/>
   </UserPref> 
   <UserPref name="duration_type" display_name="Duration" required="true" datatype="enum" default_value="days">
         <EnumValue value="days" display_value="Days"/>
