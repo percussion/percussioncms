@@ -64,7 +64,14 @@
         var gIsSaaSEnvironment = <%=isSaaS%>;
         $(document).ready(function () {
             $('.perc-header #perc-help-about').on("click",function (e) {
-                $.perc_utils.confirm_dialog({
+                var qins = $;
+                if(typeof qins === 'undefined'){
+                    qins = globalThis.$j;
+                }
+                if(typeof qins === 'undefined'){
+                    return;
+                }
+                qins.perc_utils.confirm_dialog({
                     title: "About Percussion CMS",
                     type: "OK",
                     width: 400,
@@ -72,7 +79,14 @@
                 });
             });
             $('.perc-header #perc-changepw').on("click",function (e) {
-                $.perc_ChangePwDialog.open();
+                var qins = $;
+                if(typeof qins === 'undefined'){
+                    qins = globalThis.$j;
+                }
+                if(typeof qins === 'undefined'){
+                    return;
+                }
+                qins.perc_ChangePwDialog.open();
             });
         });
 </script>

@@ -103,6 +103,7 @@
             if(pageOptDetails.thumbUrl){
                 thumbHtml = "<img src=\"" + pageOptDetails.thumbUrl + "\"/>";
             }
+            var loadingImgUrl = "<img src=\"" + pageOptDetails.uiProviderURL + "/img/ajaxLoader.gif />" ;
             var pageOptimizerHtml =
                 "<div id='perc-po-page-details-container'>" +
                 "<div class='perc-po-page-col perc-po-page-col0'>" +
@@ -119,7 +120,7 @@
                 "</div>" +
                 "</div>" +
                 "<div id='perc-po-details-container' class='top-border'>" +
-                "<div class='loading center-text'><div style='position: absolute; top: 40%; margin: auto; width: 100%;'><img src='https://optimizer-ui.percussion.com/img/ajaxLoader.gif'></div></div>" +
+                "<div class='loading center-text'><div style='position: absolute; top: 40%; margin: auto; width: 100%;'>" + loadingImgUrl + "</div></div>" +
                 "</div>";
             $dialogHtml.append(pageOptimizerHtml);
             return $dialogHtml;
