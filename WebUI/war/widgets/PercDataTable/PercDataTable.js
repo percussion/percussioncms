@@ -538,7 +538,7 @@
             var aData = [];
             var data;
             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
-                aData.push( $('input', td).val());
+                aData.push( $(td)[0].innerText);
             } );
 
             return aData;
@@ -552,13 +552,7 @@
         $.fn.dataTableExt.afnSortData['perc-type-date'] = function  ( oSettings, iColumn ) {
             var aData = [];
             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
-                var dateTimeArray = Array("", "");
-                var divs = $(this).find('div');
-
-                dateTimeArray[0] = $(divs[0]).text();
-                dateTimeArray[1] = $(divs[1]).text();
-                var dateString = dateTimeArray.join(' ');
-                var date = new Date(dateString);
+                var date = new Date($(td)[0].innerText);
                 aData.push(date);
             });
             return aData;
