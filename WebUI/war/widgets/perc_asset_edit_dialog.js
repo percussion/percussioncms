@@ -476,6 +476,7 @@
       function onLaterFrameLoads() {
          if ($("#edit-widget-content-frame").contents().find("#perc-content-edit-errors").length > 0) {
             $.unblockUI();
+             $.PercDirtyController.setDirty(false);
             return;
          }
          var ediv = $("#edit-widget-content").get(0);
@@ -498,6 +499,7 @@
          } else {
             $.PercAssetService.updateAsset(parentId, assetid, function() {
                 reload_callback(assetid,producesResource);
+                $.PercDirtyController.setDirty(false);
                 $.unblockUI();
             });
          }
