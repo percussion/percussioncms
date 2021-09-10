@@ -24,6 +24,7 @@
 
 package com.percussion.server;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
@@ -3349,11 +3350,22 @@ public class PSServer {
       return ms_serverProps.getProperty(key);
    }
 
+   /**
+    * Get a property from the main rxconfig/server.properties file using the supplied default value if
+    * the property is not found or set.
+    *
+    * @param key The property name, never null.
+    * @param defaultValue The value to return if this property is not set, never null.
+    * @return The configured value or the supplied defaultValue if the property is not configured.
+    */
    public static String getProperty(String key, String defaultValue)
    {
       notNull(key);
+      notNull(defaultValue);
+
       if (ms_serverProps == null)
-         return null;
+         return defaultValue;
+
       return ms_serverProps.getProperty(key) == null ? defaultValue : ms_serverProps.getProperty(key);
    }
 
@@ -3831,7 +3843,7 @@ public class PSServer {
                if (list == null
                   || override == null
                   || (override != null
-                     && (fallback == null || fallback.equals("true") == false)))
+                     && (fallback == null || !fallback.equals(IPSConstants.TRUE))))
                {
                   //user is not member of his role-communities, user fails
                   //authentication

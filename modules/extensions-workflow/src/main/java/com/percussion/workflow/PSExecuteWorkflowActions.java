@@ -59,12 +59,12 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
    /**
     * The fully qualified name of this extension.
     */
-   private static  String m_fullExtensionName = "";
+   private String m_fullExtensionName = "";
 
    /*
-    * Flag to indicate indicating that this exit has not been initialized yet.
+    * Flag to indicate that this exit has not been initialized yet.
     */
-    private static  boolean  m_extensionInitialized = false;
+    private boolean  m_extensionInitialized = false;
 
    /* *************  IPSExtension Interface Implementation ************* */
 
@@ -79,7 +79,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
       if (!m_extensionInitialized)
       {
        ms_extensionMgr = PSServer.getExtensionManager(null);
-       m_wfActionExtensions = new ConcurrentHashMap();
+       m_wfActionExtensions = new ConcurrentHashMap<>();
        m_extensionInitialized = true;
        m_fullExtensionName = extensionDef.getRef().toString();
       }
@@ -166,13 +166,6 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
           throw new PSParameterMismatchException(lang, size, 0);
        }
 
-       if (null == requestContext)
-       {
-          throw new PSExtensionProcessingException(
-               m_fullExtensionName,
-               new IllegalArgumentException("The request must not be null"));
-       }
-
        List workflowActions = (List)
            requestContext.getPrivateObject
            (IPSWorkflowAction.WORKFLOW_ACTIONS_PRIVATE_OBJECT);
@@ -187,7 +180,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
        }
 
        // If the workflow action list is empty, it is an error
-       if (0 == workflowActions.size())
+       if (workflowActions.isEmpty())
        {
           String key =
            Integer.toString(IPSExtensionErrors.WKFLOW_ACTIONLIST_EMPTY);
@@ -224,11 +217,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
           {
              // make stuff into separate method
              wfActionFullName = (String) wfaIter.next();
-             if (null != m_wfActionExtensions.get(wfActionFullName))
-             {
-                continue;
-             }
-             else
+             if (null == m_wfActionExtensions.get(wfActionFullName))
              {
                 PSExtensionRef ref = new PSExtensionRef(wfActionFullName);
                 IPSExtension ext = ms_extensionMgr.prepareExtension(ref, null);
@@ -241,8 +230,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
                    throw new PSExtensionProcessingException(lang,
                     m_fullExtensionName,  new Exception(msg));
                 }
-                m_wfActionExtensions.put(wfActionFullName,
-                                        (IPSWorkflowAction) ext);
+                m_wfActionExtensions.put(wfActionFullName, ext);
 
              }
           }
@@ -310,7 +298,7 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
    /**
     * The unique system extension manager.
     */
-    private static IPSExtensionManager ms_extensionMgr = null;
+    private IPSExtensionManager ms_extensionMgr = null;
 
    /**
     * The map from the full extension name to the executable extension workflow
@@ -318,5 +306,5 @@ public class PSExecuteWorkflowActions implements IPSResultDocumentProcessor
     * by multiple threads and ConcurrentHashMap is used instead of HashMap.
     * .
     */
-   private ConcurrentHashMap m_wfActionExtensions;
+   private ConcurrentHashMap <String, IPSExtension> m_wfActionExtensions;
 }

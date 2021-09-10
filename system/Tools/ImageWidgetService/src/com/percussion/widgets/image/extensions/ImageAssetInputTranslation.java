@@ -58,6 +58,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import static com.percussion.cms.IPSConstants.FALSE;
+
 public class ImageAssetInputTranslation extends PSDefaultExtension implements IPSItemInputTransformer
 {
    private static final Logger log = LogManager.getLogger(ImageAssetInputTranslation.class);
@@ -129,7 +131,7 @@ public class ImageAssetInputTranslation extends PSDefaultExtension implements IP
       if (StringUtils.isBlank(dirty))
       {
          log.debug("image {} is not dirty", base);
-         dirty = "true";
+         dirty = FALSE;
       }
       String imageKey = request.getParameter(base + "_id");
       if (StringUtils.isBlank(imageKey))

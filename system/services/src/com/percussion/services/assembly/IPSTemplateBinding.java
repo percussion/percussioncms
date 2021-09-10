@@ -28,6 +28,20 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.percussion.cms.IPSConstants.SYS_PARAM_AA;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_ASM;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_ASSEMBLY_ITEM;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_CHARSET;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_INDEX;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_MIMETYPE;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_PARAMS;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_RX;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_SITE;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_TEMPLATE;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_TOOLS;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_USER;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_VARIABLES;
+
 /**
  * A binding describes the pairing of a variable to bind with an expression
  * to evaluate. 
@@ -52,21 +66,19 @@ public interface IPSTemplateBinding
    /**
     * Names of system variables.
     */
-   final static Set<String> SYSTEM_VARIABLES = Collections.unmodifiableSet(
-         new HashSet<String>(Arrays.asList(new String[] {
-               "$rx",
-               "$sys.activeAssembly",
-               "$sys.asm",
-               "$sys.assemblyItem",
-               "$sys.charset",
-               "$sys.index",
-               "$sys.item",
-               "$sys.mimetype",
-               "$sys.params",
-               "$sys.site",
-               "$sys.template",
-               "$sys.variables",
-               "$tools",
-               "$user",
-               })));
+   Set<String> SYSTEM_VARIABLES = Collections.unmodifiableSet(
+         new HashSet<String>(Arrays.asList(SYS_PARAM_RX,
+                 SYS_PARAM_AA,
+                 SYS_PARAM_ASM,
+                 SYS_PARAM_ASSEMBLY_ITEM,
+                 SYS_PARAM_CHARSET,
+                 SYS_PARAM_INDEX,
+                 SYS_PARAM_INDEX,
+                 SYS_PARAM_MIMETYPE,
+                 SYS_PARAM_PARAMS,
+                 SYS_PARAM_SITE,
+                 SYS_PARAM_TEMPLATE,
+                 SYS_PARAM_VARIABLES,
+                 SYS_PARAM_TOOLS,
+                 SYS_PARAM_USER)));
 }

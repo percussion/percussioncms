@@ -23,6 +23,7 @@
  */
 package com.percussion.services.utils.jexl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -38,7 +39,16 @@ import org.apache.velocity.runtime.resource.Resource;
 import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.apache.velocity.util.ExtProperties;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Date;
@@ -73,7 +83,7 @@ public class PSVelocityUtils
 
 
 private static void initProperties() {
-	String preCompilerFile  = PSServer.getRxConfigDir() + File.separator + VELOCITY_AUTOCORRECTFILE;
+	String preCompilerFile  = PSServer.getRxConfigDir() +  VELOCITY_AUTOCORRECTFILE;
 
 	 loadPreCompilerConfig(preCompilerFile);
 
@@ -101,8 +111,9 @@ private static void initProperties() {
             origTemplate = new String(Files.readAllBytes(f.toPath()), StandardCharsets.UTF_8);
 
         } catch (IOException e) {
-            log.error("Cannot read velocity template {} Error: {}", f.getAbsolutePath(), e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Cannot read velocity template {} Error: {}", f.getAbsolutePath(),
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug( e);
             return;
         }
         String fileName = f.getName();
@@ -118,21 +129,23 @@ private static void initProperties() {
                                  new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8)) {
                         writer.write(processed);
                     } catch (FileNotFoundException e) {
-                       log.error("File not found exception for file Error: {}", e.getMessage());
-                       log.debug(e.getMessage(), e);
+                       log.error("File not found exception for file Error: {}", 
+                               PSExceptionUtils.getMessageForLog(e));
+                       log.debug( e);
                        return;
 
                     } catch (IOException e) {
-                        log.error("IOException writing processed velocity macro to {} Error: {}", f.getAbsolutePath(), e.getMessage());
-                        log.debug(e.getMessage(), e);
+                        log.error("IOException writing processed velocity macro to {} Error: {}", f.getAbsolutePath(), 
+                                PSExceptionUtils.getMessageForLog(e));
+                        log.debug(e);
                         return;
                     }
 
                     log.info("Updated Velocity macro file {} backup written to {}", f.getAbsolutePath(), backup.getAbsolutePath());
                 } catch (Exception e)
                 {
-                    log.error("Cannot backup or write fixed up velocity template Error: {}", e.getMessage());
-					log.debug(e.getMessage(), e);
+                    log.error("Cannot backup or write fixed up velocity template Error: {}", PSExceptionUtils.getMessageForLog(e));
+					log.debug(e);
                     return;
                 }
    
@@ -216,12 +229,11 @@ private static void initProperties() {
     * @return the compiled template, never <code>null</code>
     * 
     * @throws ResourceNotFoundException if failed to find resource.
-    * @throws ParseErrorException if parse error occurred. 
-    * @throws Exception if any other error occurred.
+    * @throws ParseErrorException if parse error occurred.
     */
    public static Template compileTemplate(String content, String name,
          RuntimeServices rs)
-      throws ResourceNotFoundException, ParseErrorException, Exception
+      throws ResourceNotFoundException, ParseErrorException
    {
 
       //Pre-process the template if auto correct is turned on
@@ -307,8 +319,8 @@ private static void initProperties() {
                }
 		   }
 	   }catch(Exception e){
-		   log.error("An unexpected exception occurred while pre-compiling Template {} Error: {}", name, e.getMessage());
-		   log.debug(e.getMessage(), e);
+		   log.error("An unexpected exception occurred while pre-compiling Template {} Error: {}", name, PSExceptionUtils.getMessageForLog(e));
+		   log.debug( e);
 	   }
 
 	   return ret;
@@ -319,8 +331,8 @@ private static void initProperties() {
 	   try{
 		   ret.load(preCompilerFile);
 	   }catch(IOException e){
-			log.error("Velocity pre-compiler disabled.  Unable to load configuration file from stream. Error: {}", e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error("Velocity pre-compiler disabled.  Unable to load configuration file from stream. Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug( e);
 	   }
 
 	   autocorrectPatterns = ret;
@@ -330,8 +342,8 @@ private static void initProperties() {
 			try (FileInputStream input = new FileInputStream(preCompilerFile)){
 				ret.load(input);
 			} catch (IOException e) {
-				log.error("Velocity pre-compiler disabled.  Unable to load configuration file: {}. Error: {}" , preCompilerFile, e.getMessage());
-				log.debug(e.getMessage(), e);
+				log.error("Velocity pre-compiler disabled.  Unable to load configuration file: {}. Error: {}" , preCompilerFile, PSExceptionUtils.getMessageForLog(e));
+				log.debug( e);
 			}
 
 	   autocorrectPatterns = ret;
