@@ -34,6 +34,7 @@ import com.percussion.delivery.comments.data.PSPageSummaries;
 import com.percussion.delivery.comments.data.PSPageSummary;
 import com.percussion.delivery.comments.service.rdbms.PSComment;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -41,7 +42,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author erikserating
@@ -141,7 +151,9 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in adding a new comment: " + ex.getMessage());
+            log.error("Error in adding a new comment: {}" ,
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -176,7 +188,7 @@ public class PSCommentsService implements IPSCommentsService
         if (commentIds.isEmpty())
             return;
 
-        log.info("Approving comments with the following IDs: " + commentIds.toString());
+        log.info("Approving comments with the following IDs: {}" , commentIds);
         moderateComments(commentIds, APPROVAL_STATE.APPROVED);
     }
 
@@ -194,7 +206,7 @@ public class PSCommentsService implements IPSCommentsService
         if (commentIds.isEmpty())
             return;
 
-        log.info("Rejecting comments with the following IDs: " + commentIds.toString());
+        log.info("Rejecting comments with the following IDs: {}" , commentIds);
         moderateComments(commentIds, APPROVAL_STATE.REJECTED);
     }
 
@@ -216,7 +228,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in moderating comments: " + ex.getMessage());
+            log.error("Error in moderating comments: {}",PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -244,7 +257,7 @@ public class PSCommentsService implements IPSCommentsService
         
         
 
-        log.info("Deleting comments with the following IDs: " + commentIds.toString());
+        log.info("Deleting comments with the following IDs: {}" , commentIds);
 
         Set<String> siteNames = new HashSet<>();
         try
@@ -255,7 +268,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in deleting comments: " + ex.getMessage());
+            log.error("Error in deleting comments: {}" , PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -322,7 +336,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting comments by criteria: " + ex.getMessage());
+            log.error("Error in getting comments by criteria: {}" ,
+                    PSExceptionUtils.getMessageForLog(ex));
             throw new RuntimeException(ex);
         }        
 
@@ -383,7 +398,9 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting pages with comments: " + ex.getMessage());
+            log.error("Error in getting pages with comments: {}" , 
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }        
 
@@ -408,7 +425,7 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error getting default moderation state: " + ex.getMessage());
+            log.error("Error getting default moderation state: {}" , PSExceptionUtils.getMessageForLog(ex));
             throw new RuntimeException(ex);
         }
         
@@ -431,7 +448,8 @@ public class PSCommentsService implements IPSCommentsService
         }
         catch (Exception ex)
         {
-            log.error("Error setting default moderation state: " + ex.getMessage());
+            log.error("Error setting default moderation state: {}" , PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }       
 
@@ -605,13 +623,17 @@ public class PSCommentsService implements IPSCommentsService
                 try {
                     dao.save(comment);
                 } catch (Exception e) {
-                    log.error("Error updating comment with id: "
-                            + comment.getId()
-                            + " An administrator should attempty to update the comment manually.");
+                    log.error("Error updating comment with id: {} An administrator should attempt to update the comment manually. Error: {}",
+                            comment.getId(),
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(e);
                 }
             }
         } catch (Exception e) {
-            log.error("Error finding comments for site: " + prevSiteName, e);
+            log.error("Error finding comments for site: {} Error: {}",
+                    prevSiteName,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             return false;
         }
         return true;

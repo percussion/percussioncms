@@ -23,6 +23,7 @@
  */
 package com.percussion.delivery.comments.services;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -123,7 +124,9 @@ public class PSProfanityFilter
         }
         catch (IOException e)
         {
-            log.error("Error initializing the Comment Profanity Filter.",e);
+            log.error("Error initializing the Comment Profanity Filter. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
         }
 
         PSProfanityFilter.profanity = Arrays.asList(StringUtils.split(profanityWords, ","));

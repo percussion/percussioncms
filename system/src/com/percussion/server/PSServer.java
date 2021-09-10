@@ -296,7 +296,7 @@ public class PSServer {
     */
    public static URL getResolvedURL(URL url) throws IOException
    {
-      if (url.getProtocol().equals("file") && url.getFile().startsWith("/") == false)
+      if (url.getProtocol().equals("file") && !url.getFile().startsWith("/"))
       {
          File absFile = new File(getRxDir(), url.getFile());
          if (!absFile.exists())
@@ -485,7 +485,7 @@ public class PSServer {
                ms_hostAddress = firstBindAddress;
             }
          }
-         catch (Throwable e)
+         catch (Exception e)
          {
             // not a critical error
             ms_serverName = "localhost";
@@ -668,7 +668,7 @@ public class PSServer {
         
          return true;
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          
          /* trap for unforeseen exceptions, allowing us to log the failure */
@@ -684,7 +684,7 @@ public class PSServer {
    }
 
    @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
-   public static String stackToString(Throwable t)
+   public static String stackToString(Exception t)
    {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
@@ -711,9 +711,8 @@ public class PSServer {
       String lockFile = getRxDir() + File.separator + name;
       
       FileLock lock = null;
-      try
+      try(RandomAccessFile lockF = new RandomAccessFile(lockFile, "rw"))
       {
-         RandomAccessFile lockF = new RandomAccessFile(lockFile, "rw");
          FileChannel channel = lockF.getChannel();
 
          lock = channel.tryLock(0, 1, false);
@@ -724,14 +723,7 @@ public class PSServer {
                   new String[]
                   {"Already locked"});
          }
-      }
-      catch (FileNotFoundException e)
-      {
-         PSConsole.printWarnMsg("Server",
-               IPSServerErrors.RUNNING_SERVER_LOCK_NOT_ACQUIRED, new String[] {e
-                     .getLocalizedMessage()});
-      }
-      catch (Throwable e)
+      } catch (Exception e)
       {
          PSConsole.printWarnMsg("Server",
                IPSServerErrors.RUNNING_SERVER_LOCK_NOT_ACQUIRED, new String[] {e
@@ -758,7 +750,7 @@ public class PSServer {
          lf.release();
          lf.channel().close();
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          PSConsole.printMsg("Server",
                "Could not release lock on the running server");
@@ -767,8 +759,7 @@ public class PSServer {
 
    /**
     * Check that the database is compatible with Rhythmyx. This currently
-    * checks that the database supports unicode. See
-    * {@link PSServer#checkDatabaseCompatibility()} for details.
+    * checks that the database supports unicode.
     */
    private static void checkDatabaseCompatibility()
    {
@@ -791,7 +782,7 @@ public class PSServer {
             logger.warn("!!!Database does not support unicode!!!");
          }
       }
-      catch(Throwable e)
+      catch(Exception e)
       {
          logger.error("Problem trying to discover if db supports unicode", e);
       }
@@ -1145,9 +1136,7 @@ public class PSServer {
    }
 
    /**
-    * Convenience method that calls the other 5 parameter version as follows:
-    * {@link #getInternalRequest(String,PSRequest,Map,boolean)
-    * getInternalRequest(path, erquest, extraParams, inheritParams, null}.
+    * Convenience method that calls the other 5 parameter version.
     */
    public static PSInternalRequest getInternalRequest(String path,
                                                       PSRequest request,
@@ -1263,33 +1252,23 @@ public class PSServer {
                String targetPageName = target.substring(pos+1);
                
                ms_resourceMap.put(
-                     new PSPair<String, String>(
+                     new PSPair<>(
                            sourceAppName.toLowerCase(), 
                            sourcePageName.toLowerCase()),
-                     new PSPair<String, String>(targetAppName, targetPageName));
+                     new PSPair<>(targetAppName, targetPageName));
                //also put just application with null for request page
                ms_resourceMap.put(
-                     new PSPair<String, String>(
+                     new PSPair<>(
                            sourceAppName.toLowerCase(), 
                            null),
-                     new PSPair<String, String>(targetAppName, null));
+                     new PSPair<>(targetAppName, null));
                
             }
          }
-      }
-      catch (FileNotFoundException e)
+      } catch (IOException | IllegalArgumentException e)
       {
          // should never happen because we check first
          ex = e;
-      }
-      catch (IOException e)
-      {
-         //just warn user
-         ex = e;
-      }
-      catch (IllegalArgumentException e)
-      {
-         //ignore - config directory not found, maybe testing
       }
       
       if (ex != null)
@@ -1321,7 +1300,7 @@ public class PSServer {
              if(requesturl.getHost().equalsIgnoreCase("localhost") ||  requesturl.getHost().equalsIgnoreCase("127.0.0.1")  ){
                 return false;
              }else{
-                return Boolean.valueOf(PSServer.getProperty("requestBehindProxy", "false"));
+                return Boolean.parseBoolean(PSServer.getProperty("requestBehindProxy", "false"));
              }
           }catch (Exception e){
              return false;
@@ -1665,7 +1644,7 @@ public class PSServer {
             {
                System.exit(0);
             }
-            catch (Throwable e)
+            catch (Exception e)
             {
                PSConsole.printMsg("Server", e, 
                   "Failed to initiate server shutdown");
@@ -1698,7 +1677,7 @@ public class PSServer {
          // let these propagate
          throw e;
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          /* Some IO or parsing exception probably - log it and return the
           * empty config - resource handler will deal with any missing data.
@@ -1739,7 +1718,7 @@ public class PSServer {
          // let these propagate
          throw e;
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          /* Some IO or parsing exception probably - log it and return the
           * empty config - resource handler will deal with any missing
@@ -1894,7 +1873,7 @@ public class PSServer {
          
          return true;
       } 
-      catch (Throwable e) 
+      catch (Exception e) 
       {
          /* this is thrown if one of our config files is missing, etc.
           * we really can't recover from this, so spit out an error.
@@ -1924,7 +1903,7 @@ public class PSServer {
          PSServerXmlObjectStore.createInstance(
             (PSXmlObjectStoreHandler)ms_objectStore);
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          /* the objectDirectory setting is missing or points to an
           * invalid directory.
@@ -2507,7 +2486,7 @@ public class PSServer {
                   handlerClass.newInstance();
             }
          }
-         catch (Throwable e)
+         catch (Exception e)
          {
             // catch any error here and rethrow
             Object[] args = {def.getClassName(), e.toString()};
@@ -3120,7 +3099,7 @@ public class PSServer {
          shutdownQueues();
          ms_delayedInitExecutor.shutdownNow();
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          Object[] args = { e.getLocalizedMessage() };
          PSServerLogHandler.logMessage(new PSInternalError(
@@ -3138,7 +3117,7 @@ public class PSServer {
 
          try { /* catch all exceptions so we can continue processing */
             shutdownRequestHandlers();
-         } catch (Throwable t) {
+         } catch (Exception t) {
             Object[] args = { t.toString() };
             PSServerLogHandler.logMessage(new PSInternalError(
                IPSServerErrors.REQ_HANDLER_TERM_EXCEPTION, args));
@@ -3154,7 +3133,7 @@ public class PSServer {
          {
             ms_extensionMgr.shutdown();
          }
-         catch (Throwable t)
+         catch (Exception t)
          {
             Object[] args = { t.toString() };
             PSServerLogHandler.logMessage(new PSInternalError(
@@ -3177,7 +3156,7 @@ public class PSServer {
          try
          { /* catch all exceptions so we can continue processing */
             PSErrorManager.close();
-         } catch (Throwable t) {
+         } catch (Exception t) {
             Object[] args = { t.toString() };
             PSServerLogHandler.logMessage(new PSInternalError(
                IPSServerErrors.ERROR_MGR_TERM_EXCEPTION, args));
@@ -3186,7 +3165,7 @@ public class PSServer {
          try
          {
             ms_serverErrorHandler.shutdown();
-         } catch (Throwable e)
+         } catch (Exception e)
          {
             /* shutdown throws no errors; this block ignores runtime errors
                so we can continue the shutdown process */
@@ -3208,7 +3187,7 @@ public class PSServer {
 
          try { /* catch all exceptions so we can continue processing */
             PSLogManager.close();
-         } catch (Throwable t) {
+         } catch (Exception t) {
             Object[] args = { t.toString() };
             PSConsole.printMsg("Server", IPSServerErrors.LOG_MGR_TERM_EXCEPTION,
                                                                          args);
@@ -3294,7 +3273,7 @@ public class PSServer {
             Thread.currentThread().interrupt();
             return;
          }
-         catch (Throwable evt)
+         catch (Exception evt)
          {
             return;
          }
@@ -3708,7 +3687,7 @@ public class PSServer {
             PSConsole.printMsg("Server", "Failed to load cms object type: " + typeId);
          return o;
       }
-      catch (Throwable e) // this may not possible, otherwise fatal error
+      catch (Exception e) // this may not possible, otherwise fatal error
       {
          PSConsole.printMsg("Server", "Failed to load cms object type: " + typeId);
          throw new RuntimeException(
@@ -4852,7 +4831,7 @@ public class PSServer {
             ret = ret.substring(0, ret.length() - padLen);
 
          return ret;
-      } catch (Throwable e) {
+      } catch (Exception e) {
          // we were returning null which caused a decryption error downstream
          // now we return ""
          return "";

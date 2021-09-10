@@ -30,6 +30,7 @@ import com.percussion.security.PSUserEntry;
 import org.apache.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.io.IoBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -318,7 +319,7 @@ public class PSConsole /* extends Thread */
 
       Logger l = getLogger(subsystem);
       if (ms_printCallStacks)
-         l.error(logError.toString());
+         l.error("{}",logError);
       else
          l.error(message);
    }
@@ -385,10 +386,7 @@ public class PSConsole /* extends Thread */
     */
    private static final Logger getLogger(String subsystem)
    {
-      if (ms_rootLogger == null)
-      { 
          ensureLog4jConfiguration();
-      }
       
       if (!subsystem.startsWith("com.percussion."))
          subsystem = "com.percussion." + subsystem;
@@ -403,7 +401,7 @@ public class PSConsole /* extends Thread */
       new BufferedReader(new InputStreamReader(System.in));
 
    /** the PrintStream we print messages to */
-   private static PrintStream m_out = System.out;
+   private static PrintStream m_out = IoBuilder.forLogger().buildPrintStream();
 
    /**
     * If <code>true</code> this flag indicates to print the call stack in the

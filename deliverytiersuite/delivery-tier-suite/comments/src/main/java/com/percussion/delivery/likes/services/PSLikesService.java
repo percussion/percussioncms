@@ -26,17 +26,17 @@ package com.percussion.delivery.likes.services;
 import com.percussion.delivery.comments.services.PSCommentsService;
 import com.percussion.delivery.likes.data.IPSLikes;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class PSLikesService implements IPSLikesService
 {
@@ -82,7 +82,9 @@ public class PSLikesService implements IPSLikesService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting likes by criteria: " + ex.getMessage());
+            log.error("Error in getting likes by criteria: {}",
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }        
     }
@@ -160,7 +162,9 @@ public class PSLikesService implements IPSLikesService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting likes by criteria: " + ex.getMessage());
+            log.error("Error in getting likes by criteria: {}",
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -238,9 +242,11 @@ public class PSLikesService implements IPSLikesService
             }
             dao.save(likes);
         } catch (Exception e) {
-            log.error("Error retrieving likes for site: " + prevSiteName + ". "
-                    + "An administrator should atttempty to update the likes table "
-                    + "in the DTS database.", e);
+            log.error("Error retrieving likes for site: {}. "
+                    + "An administrator should atttempt to update the likes table "
+                    + "in the DTS database. Error: {}",prevSiteName,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
             return;
         }
 

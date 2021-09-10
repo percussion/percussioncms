@@ -83,7 +83,7 @@ public class PSVelocityUtils
 
 
 private static void initProperties() {
-	String preCompilerFile  = PSServer.getRxConfigDir() +  VELOCITY_AUTOCORRECTFILE;
+	String preCompilerFile  = PSServer.getRxConfigDir() + File.separatorChar+ VELOCITY_AUTOCORRECTFILE;
 
 	 loadPreCompilerConfig(preCompilerFile);
 
