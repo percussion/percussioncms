@@ -64,10 +64,7 @@ public class PSLikesRestService extends PSAbstractRestService
 
     /**
      * Tally of how many users have Liked a page, a comment.
-     * 
-     * @param site. Must not be <code>null</null>.
-     * @param likeId. Must not be <code>null</null>.
-     * @param type. Must not be <code>null</null>.
+     *
      * @return int, never <code>null</code> may be empty.
      */
     @POST
@@ -88,10 +85,7 @@ public class PSLikesRestService extends PSAbstractRestService
 
     /**
      * To Like a page, a comment.
-     * 
-     * @param site. Must not be <code>null</null>.
-     * @param likeId. Must not be <code>null</null>.
-     * @param type. Must not be <code>null</null>.
+     *
      * @return int, never <code>null</code> may be empty.
      */
     @POST
@@ -112,10 +106,7 @@ public class PSLikesRestService extends PSAbstractRestService
     
     /**
      * To UnLike a page, a comment.
-     * 
-     * @param site. Must not be <code>null</null>.
-     * @param likeId. Must not be <code>null</null>.
-     * @param type. Must not be <code>null</null>.
+     *
      * @return int, never <code>null</code> may be empty.
      */
     @POST

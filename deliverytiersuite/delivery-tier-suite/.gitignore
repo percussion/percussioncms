@@ -111,3 +111,7 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
 /common/depends.txt
+/forms/depends.txt
+/metadata/depends.txt
+/polls/depends.txt
+/secure-membership/depends.txt

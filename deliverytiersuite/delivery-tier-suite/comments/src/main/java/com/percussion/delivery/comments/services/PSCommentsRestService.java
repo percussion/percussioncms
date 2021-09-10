@@ -35,6 +35,7 @@ import com.percussion.delivery.comments.data.PSRestComment;
 import com.percussion.delivery.comments.service.rdbms.PSComment;
 import com.percussion.delivery.exceptions.PSBadRequestException;
 import com.percussion.delivery.services.PSAbstractRestService;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
@@ -134,8 +135,9 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting comments!, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Exception occurred while getting comments!, Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(e);
 
             throw new WebApplicationException(e, Response.serverError().build());
         }

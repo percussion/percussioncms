@@ -31,6 +31,7 @@ import com.percussion.delivery.feeds.data.PSFeedItem;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSHttpClient;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.security.SecureStringUtils;
@@ -200,20 +201,19 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         Response resp;
         if (desc != null)
         {
-        	if(log.isDebugEnabled()){
-        		log.debug(
-        		        String.format("Found feed descriptor: %s",desc.toString()));
-        	}
+
+        		log.debug("Found feed descriptor: {}",desc);
+
         	
-        	if(log.isDebugEnabled()){
+
         		log.debug("Searching for feed connection information...");
-        	}
+
             IPSConnectionInfo info = feedDao.getConnectionInfo();
             if (info != null)
             {
-            	if(log.isDebugEnabled()){
+
             		log.debug("Got connection info for feed: {}", info);
-            	}
+
             	String feed;
                 try
                 {
@@ -224,8 +224,9 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 }
                 catch (FeedException | IOException e)
                 {
-                	log.error("Unexpected exception generating RSS feed: {}", e.getMessage());
-                	log.debug(e.getMessage(), e);
+                	log.error("Unexpected exception generating RSS feed: {}",
+                            PSExceptionUtils.getMessageForLog(e));
+                	log.debug(e);
                     return Response.status(Status.INTERNAL_SERVER_ERROR).build();
                 }
                 if (StringUtils.isNotBlank(feed))
@@ -473,7 +474,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         catch (Exception e)
         {
             client = ClientBuilder.newClient();
-            log.error("Exception occurred in creating the SSL Client : {} " , e.getMessage());
+            log.error("Exception occurred in creating the SSL Client : {} " ,
+                    PSExceptionUtils.getMessageForLog(e));
             log.debug(e.getMessage(), e);
         }
 
