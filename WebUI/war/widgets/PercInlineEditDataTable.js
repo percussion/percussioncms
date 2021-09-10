@@ -517,7 +517,7 @@
                     {
                         restoreRow( nEditing );
                     } catch(ex){
-                        console.error(ex);
+                        //console.error(ex);
                     }
                     editCol( nRow, nCol );
                     nEditing = nRow;
