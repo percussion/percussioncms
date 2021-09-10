@@ -100,7 +100,8 @@ public class PSDispatcherFilter implements Filter {
             "/uploadAssetFile",
             "/textToImage/",
             "/Designer",
-            "/Rhythmyx/"
+            "/Rhythmyx/",
+            "/Rhythmyx/services"
 
     };
 
