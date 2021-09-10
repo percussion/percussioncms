@@ -39,6 +39,16 @@ import java.io.File;
 public interface IPSConstants
 {
    /**
+    * Mime Types
+    */
+   public static final String MIME_HTML="text/html";
+
+   public static final String MIME_XML = "text/xml";
+
+   public static final String MIME_JSON = "application/json";
+
+
+   /**
     * This is part of the primary key for the main content item table. Never
     * empty.
     */
@@ -262,11 +272,17 @@ public interface IPSConstants
     */
    public static final String BOOLEAN_TRUE = "yes";
 
+   public static final String TRUE="true";
+
    /**
     * This is the value text to use for document attributes that have a boolean
     * value of false.
     */
    public static final String BOOLEAN_FALSE = "no";
+
+   public static final String FALSE="false";
+
+
 
    /**
     * The name of the default view to use if one has not been specified.
@@ -451,5 +467,118 @@ public interface IPSConstants
     * Windows" and "unsafe URL characters".
     */
    public static String INVALID_ITEM_NAME_CHARACTERS = INVALID_WINDOWS_FILE_CHARACTERS + UNSAFE_URL_CHARACTERS;
+
+   /**
+    * The default mime type to use if a mime type is undefined.
+    */
+   public static final String DEFAULT_MIMETYPE="text/html";
+
+   public static final String PARAM_REINIT_TEMPLATE_ENGINE="sys_reinit";
+
+   /**
+    * server.property names
+    */
+
+   /**
+    * A boolean property that flags template engines to turn off all server caching of templates.
+    */
+   public static final String SERVER_PROP_NO_CACHE_TEMPLATES = "noCacheTemplates";
+
+   /**
+    * When set to true will send output through a compressor based on the mime type
+    * of the assembly result.
+    */
+   public static final String SERVER_PROP_COMPRESS_OUTPUT = "compressOutput";
+
+
+   /*
+    * System template bindings
+    */
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_MIMETYPE="$sys.mimetype";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_CHARSET="$sys.charset";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_TEMPLATE="$sys.template";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_AA= "$sys.activeAssembly";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_ASM= "$sys.asm";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_ASSEMBLY_ITEM= "$sys.assemblyItem";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_INDEX= "$sys.index";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_ITEM= "$sys.item";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_PARAMS= "$sys.params";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_RX= "$rx";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_SITE= "$sys.site";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_VARIABLES= "$sys.variables";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_TOOLS= "$tools";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_USER= "$user";
+
+   /**
+    * The name of the binding variable, used to turn off the compiled templates
+    */
+   public static final String SYS_PARAM_NO_CACHE_TEMPLATE = "$sys.noCacheTemplate";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_CTX = "$sys.ctx";
+
+   /**
+    *
+    */
+   public static final String SYS_PARAM_SYSTEM="$sys";
+
 }
 

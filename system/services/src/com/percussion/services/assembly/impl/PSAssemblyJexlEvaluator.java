@@ -23,15 +23,20 @@
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase;
 import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_PARAMS;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_RX;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_TOOLS;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_USER;
 
 /**
  * Override service implementation to load bound functions
@@ -65,12 +70,14 @@ public class PSAssemblyJexlEvaluator extends PSServiceJexlEvaluatorBase
          {
             try
             {
-               ms_rx = PSJexlEvaluator.createExpression("$rx");
-               ms_user = PSJexlEvaluator.createExpression("$user");
+               ms_rx = PSJexlEvaluator.createExpression(SYS_PARAM_RX);
+               ms_user = PSJexlEvaluator.createExpression(SYS_PARAM_USER);
             }
             catch (Exception e)
             {
-               ms_log1.error("problem creating expressions ", e);
+               ms_log1.error("Problem creating JEXL expressions. Error: {}",
+                       PSExceptionUtils.getMessageForLog(e));
+               ms_log1.debug(e);
             }
          }
       }
@@ -85,9 +92,9 @@ public class PSAssemblyJexlEvaluator extends PSServiceJexlEvaluatorBase
        */
       try
       {
-         add("$rx", ms_rx, getJexlFunctions(SYS_CONTEXT));
-         add("$user", ms_user, getJexlFunctions(USER_CONTEXT));
-         bind("$tools", getVelocityToolBindings());
+         add(SYS_PARAM_RX, ms_rx, getJexlFunctions(SYS_CONTEXT));
+         add(SYS_PARAM_USER, ms_user, getJexlFunctions(USER_CONTEXT));
+         bind(SYS_PARAM_TOOLS, getVelocityToolBindings());
       }
       catch (Exception e)
       {
@@ -96,7 +103,7 @@ public class PSAssemblyJexlEvaluator extends PSServiceJexlEvaluatorBase
       
       Map<String, String[]> params = work.getParameters();
 
-      bind("$sys.params", params);
+      bind(SYS_PARAM_PARAMS, params);
    }
 
 }

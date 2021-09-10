@@ -40,6 +40,9 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.percussion.cms.IPSConstants.SYS_PARAM_SYSTEM;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_USER;
+
 /**
  * Helper class loads bound jexl functions by reading them from the extensions
  * manager.
@@ -172,13 +175,13 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
     * Prefix for system extensions: JEXL expr has something like this:
     * $sys.codec etc
     */
-   public static final String SYS  = "$sys";
+   public static final String SYS  = SYS_PARAM_SYSTEM;
 
    /**
     * Prefix for system extensions: JEXL expr has something like this:
     * $sys.codec etc
     */
-   public static final String USER = "$user";
+   public static final String USER = SYS_PARAM_USER;
    
    /**
     * Escape pattern for the regular expression

@@ -173,17 +173,5 @@ public class PSPredefinedJexlVariableDefs
       
       ms_predefinedJexlVarDefs = Collections.unmodifiableList(jexlVarDefs);      
    }
-   
-   /**
-    * Test the above code.
-    * @param args not used.
-    */
-   public static void main(String[] args)
-   {
-      List<String[]> v = getPredefinedJexlVarDefs();
-      List<String[]> t = getPredefinedTemplateVarDefs();
-      
-      System.out.println("v size = " + v.size());
-      System.out.println("t size = " + t.size());
-   }
+
 }

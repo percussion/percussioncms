@@ -131,6 +131,11 @@
                 <entry key="allowedHeaders" default="Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-UA-Compatible, OWASP-CSRFTOKEN,User-Agent"/>
                 <entry key="allowCredentials" default="false"/>
                 <entry key="secureKeyRotationTime" default="90"/>
+                <entry key="secureKeyRotationTime" default="90"/>
+                <entry key="secureKeyRotationTime" default="90"/>
+                <entry key="noCacheTemplates" default=""/>
+                <entry key="compressOutput" default="false"/>
+
 
                 <!-- Properties to remove if present -->
                 <entry key="optimizePublishWithMD5Check" operation="del"/>
@@ -139,7 +144,8 @@
                 <entry key="enableLogTool" operation="del"/>
             </propertyfile>
 
-
+        <echo>Setting default velocity.properties...</echo>
+        <copy failonerror="false" verbose="true" overwrite="false" todir="${install.dir}/rxconfig/Server" file="${install.dir}/rxconfig/velocity/2.3/config/*.properties" />
 
         <!-- Specify the rxdir in jetty default jvm -->
         <echo>Specifying rxdeploydir in jvm.ini files...</echo>

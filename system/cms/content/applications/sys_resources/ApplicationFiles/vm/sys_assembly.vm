@@ -524,6 +524,23 @@ $__style
 $__style
 </style>
 #end##
+#if($perc.isEditMode() || ($perc.isPreviewMode()))##
+<style>
+#perc-assembly-error{
+    border: 2px solid red;
+    background-color: #FFEEEE;
+    width:100%;
+    padding:5px;
+    margin:1px;
+}
+</style>
+#else##
+<style>
+#perc-assembly-error{
+    display:none;
+}
+</style>
+#end##
 #if("$!perc.page.noindex" == "true")##
 <meta name="robots" content="noindex" />
 #end##
