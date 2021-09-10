@@ -39,7 +39,7 @@
     </UserPref>
     <UserPref name="site" display_name="Site" required="false" datatype="enum" default_value="@all">
         <EnumValue value="@all" display_value="All Sites"/>
-        <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+        <EnumValue value="@url:/services/sitemanage/site/choices"/>
     </UserPref>
     <UserPref name="ykeyword" display_name="Keyword" required="false" datatype="string"/>
     <UserPref name="zeverity" display_name="Severity" required="false" datatype="enum" default_value="MEDIUM">

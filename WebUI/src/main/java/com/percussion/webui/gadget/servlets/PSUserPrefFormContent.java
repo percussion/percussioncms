@@ -23,8 +23,15 @@
  */
 package com.percussion.webui.gadget.servlets;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.ToDoVulnerability;
+import com.percussion.share.data.PSEnumVals;
+import com.percussion.sitemanage.service.impl.PSSiteDataRestService;
+import com.percussion.utils.PSSpringBeanProvider;
+import com.percussion.workflow.service.impl.PSSteppedWorkflowRestService;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang3.StringUtils;
@@ -35,16 +42,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,10 @@ public class PSUserPrefFormContent {
 
 	private static final Logger log = LogManager.getLogger(PSUserPrefFormContent.class);
 
+	protected static final String URL_PREFIX="@url:";
+	protected static final String SITELIST_URL="/services/sitemanage/site/choices";
+	protected static final String WORKFLOWS_URL="/Rhythmyx/services/workflowmanagement/workflows/";
+	protected static final String WORKFLOW_STATE_URL="/Rhythmyx/services/workflowmanagement/workflows/@ssworkflow@/states/choices";
 
 	/**
 	 * Initialize and build form content based on passed in user prefs.
@@ -387,6 +393,74 @@ public class PSUserPrefFormContent {
 			return enumValue;
 
 	}
+
+	/**
+	 * Get a list of available sites.
+	 *
+	 * "@url:/services/sitemanage/site/choices"
+	 * @return Returns a JSON string containing a list of sites
+	 */
+	protected String getSiteList(){
+		PSSiteDataRestService siteSvc = (PSSiteDataRestService)PSSpringBeanProvider.getBean("siteDataRestService");
+		String ret = "{}"; //default ot an empty object
+		PSEnumVals siteList = siteSvc.getChoices();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+
+		try {
+			return mapper.writeValueAsString(siteList);
+		} catch (JsonProcessingException e) {
+			log.error("Error converting Site List to JSON. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
+		}
+		return ret;
+	}
+
+	/**
+	 * Get a list of available workflows.
+	 *
+	 * "@url:/Rhythmyx/services/workflowmanagement/workflows/"
+	 * @return A json string containing workflows.
+	 */
+	protected String getWorkflows(){
+		PSSteppedWorkflowRestService svc = (PSSteppedWorkflowRestService) PSSpringBeanProvider.getBean("steppedWorkflowRestService");
+		String ret = "{}";
+		PSEnumVals wfList = svc.getWorflowList();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+
+		try {
+			return mapper.writeValueAsString(wfList);
+		} catch (JsonProcessingException e) {
+			log.error("Error converting Workflow List to JSON. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
+		}
+		return ret;
+	}
+
+	/**
+	 * Get a list of workflow states for the supplied workflow name
+	 * "@url:/Rhythmyx/services/workflowmanagement/workflows/@ssworkflow@/states/choices"
+	 * @param workflowName Required. A valid workflow name, if null or empty returns {}
+	 * @return A json string representing the list of workflows.
+	 */
+	protected String getWorkflowStates(String workflowName){
+		PSSteppedWorkflowRestService svc = (PSSteppedWorkflowRestService) PSSpringBeanProvider.getBean("steppedWorkflowRestService");
+		String ret = "{}";
+		PSEnumVals wfList = svc.getStatesChoices(workflowName);
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+
+		try {
+			return mapper.writeValueAsString(wfList);
+		} catch (JsonProcessingException e) {
+			log.error("Error converting Workflow State List to JSON for workflow: {}. Error: {}",
+					workflowName,
+					PSExceptionUtils.getMessageForLog(e));
+		}
+		return ret;
+	}
+
 	/**
 	 * Handles remote enumeration options. The service must return a JSON array
 	 * with JSONObjects that have a &quot;value&quot; and a &quot;display_value&quot; property,
@@ -402,26 +476,36 @@ public class PSUserPrefFormContent {
    	  if(enumValue != null && !StringUtils.isEmpty(enumValue)) {
 		 	  String url = getEnumUrlValue(enumValue);
 		  try {
-		  	RequestDispatcher dispatcher =
-				  servlet.getServletContext().getRequestDispatcher(url);
-		  StringWriter sw = new StringWriter();
-		  final PrintWriter pw = new PrintWriter(sw);
-		  HttpServletResponse responseWrapper =
-				  new HttpServletResponseWrapper(response) {
-					  @Override
-					  public PrintWriter getWriter() throws IOException {
-						  return pw;
-					  }
-				  };
-		  dispatcher.include(request, responseWrapper);
+		  String result;
+		  switch(url){
+			  case SITELIST_URL:
+			  	result = getSiteList();
+			  	break;
+			  case WORKFLOWS_URL:
+			  	result = getWorkflows();
+			  	break;
+			  case WORKFLOW_STATE_URL:
+			  	result=getWorkflowStates("");
+			  	break;
+			  default:
+			  	return;
+		  }
 
-		  String result = sw.toString();
+		  if(result == null || StringUtils.isEmpty(result)){
+		    	log.debug("No results returned for remote options.");
+		    	result = "{}";
+		  }
+
 			  JSONParser parser = new JSONParser();
 			  Object res = null;
 
 				  res = parser.parse(new StringReader(result));
 				  if (isRemoteEnumValJsonValid(res)) {
 					  JSONObject jobj = (JSONObject) res;
+
+					  if(jobj==null)
+					  	return;
+
 					  Object temp = ((JSONObject) jobj.get("EnumVals")).get("entries");
 					  if (temp == null)
 						  return;
@@ -446,7 +530,7 @@ public class PSUserPrefFormContent {
 				  } else {
 					  throw new IOException("Invalid json data format");
 				  }
-			  } catch (ParseException | ServletException e) {
+			  } catch (ParseException e) {
 			  log.error(PSExceptionUtils.getMessageForLog(e));
 			  log.debug(e);
 		  }
@@ -571,7 +655,7 @@ public class PSUserPrefFormContent {
 	
 	private boolean isRemoteEnumValJsonValid(Object obj)
 	{
-	   return true;
+	   return obj != null;
 	}
 
 	/**

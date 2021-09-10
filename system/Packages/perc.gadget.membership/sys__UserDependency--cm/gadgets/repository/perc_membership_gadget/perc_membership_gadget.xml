@@ -32,7 +32,7 @@
         <Require feature="setprefs" /> 
     </ModulePrefs>
     <UserPref name="site" display_name="Site" required="true" datatype="enum" default_value="">
-    <EnumValue value="@url:/Rhythmyx/services/sitemanage/site/choices"/>
+    <EnumValue value="@url:/services/sitemanage/site/choices"/>
 </UserPref>
     <UserPref name="selectedBlogID" display_name="selectedBlogID" required="false" datatype="hidden" default_value="@null" />
   	<UserPref name="zrows" display_name="Display height" required="false" datatype="enum" default_value="5">
