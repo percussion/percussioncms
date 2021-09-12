@@ -116,7 +116,7 @@
         function isResponsiveBaseTemplate()
         {
             if(templObj === undefined){
-               return false;
+                return false;
             }
             var srcTpl = templObj.Template.sourceTemplateName;
             return srcTpl.indexOf("perc.resp.") === 0;
@@ -171,7 +171,7 @@
                 templObj = utils.unxml( $.perc_schemata.template, $.xmlDOM(xml) );
                 root = P.regionsFromTree( templObj.Template.regionTree.rootRegion, templObj.Template.regionTree.regionWidgetAssociations, "template" );
                 eachRegion( function(){ regionIds[ this.regionId ] = true; } );
-                //loadWidgetPrefs();
+                loadWidgetPrefs();
 
                 // Load the CSS Data.
                 cssObj.themeName = templObj.Template.theme;
@@ -1007,8 +1007,8 @@
         }
 
         startTag += ' class="' + modelObject.encodeHtml(('perc-region'+leaf+noAutoResize+fixed+direction+hspan+vspan+cssClass).replace(/\s\s+/g, ' ')) +'" ' +
-             ' data-noautoresize="'+modelObject.encodeHtml(region.noAutoResize) + '" id="'+modelObject.encodeHtml(region.regionId)+'">' +
-             ' <div class="'+modelObject.encodeHtml(direction)+'"';
+            ' data-noautoresize="'+modelObject.encodeHtml(region.noAutoResize) + '" id="'+modelObject.encodeHtml(region.regionId)+'">' +
+            ' <div class="'+modelObject.encodeHtml(direction)+'"';
 
         var treeAttributes = [];
         if( region.attributes ) {
@@ -1069,7 +1069,7 @@
         }
 
         startTag += ' class="perc-region'+modelObject.encodeHtml(leaf+row+columns+large+cssClass)+'" ' +
-             'id="'+modelObject.encodeHtml(region.regionId)+'"';
+            'id="'+modelObject.encodeHtml(region.regionId)+'"';
 
 
         var treeAttributes = [];
