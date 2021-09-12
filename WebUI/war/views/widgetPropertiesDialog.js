@@ -36,7 +36,7 @@ function countProperties(obj) {
 
 (function($, P) {
     P.widgetPropertiesDialog = function( setWidgetProperty, widgetProperties, widgetDefinitionId, postCallback, propertyType, getWidgetByName ) {
-        restGetWidgetDefinition(widgetDefinitionId, propertyType, function(widgetDef) {
+        $.perc_widget_definition_client.restGetWidgetDefinition(widgetDefinitionId, propertyType, function(widgetDef) {
             if (widgetProperties){
                 if (typeof(widgetProperties['sys_perc_name']) != "undefined" && typeof(widgetProperties['sys_perc_description']) != "undefined" ){
                     widgetDef.userPrefDef['sys_perc_name'] = (new $.perc_sys_pref("perc_sys_name","","Name","sys_perc_name"));
@@ -55,6 +55,7 @@ function countProperties(obj) {
                 },
                 id: "perc_edit_widget_properties"
             };
+            var dialog = $('#perc_edit_widget_properties');
             //If there are no field groups then add height accordingly.
             var numOfFields = countProperties(widgetDef.userPrefDef);
             var dlgHeight = "auto";
@@ -291,9 +292,14 @@ function countProperties(obj) {
             return html;
         };
     };
+    /**
+     *  Widget Definition Client
+     *  Retrieves widget definition from REST Service and creates a widget definition model
+     */
 
-
-    function restGetWidgetDefinition( widgetDefinitionId, propertyType, callback)
+    $.perc_widget_definition_client = new function()
+    {
+        this.restGetWidgetDefinition = function(widgetDefinitionId, propertyType, callback)
     {
         $.ajax(
             {
@@ -316,7 +322,7 @@ function countProperties(obj) {
             });
     };
 
-    function restGetWidgetPrefs(widgetDefinitionId, callback)
+        this.restGetWidgetPrefs = function(widgetDefinitionId, callback)
     {
         $.ajax(
             {
@@ -338,7 +344,7 @@ function countProperties(obj) {
                 }
             });
     };
-
+    };
 
     $.perc_sys_pref = function(datatype, default_value, display_name, name, required_field)
     {

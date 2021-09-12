@@ -628,8 +628,7 @@
          */
         var percDecorationCssLinks = "<link rel='stylesheet' type='text/css' href='/cm/css/perc_decoration.css'/>";
 
-        var jQueryScripts  = "<script src='/cm/jslib/profiles/3x/jquery-3.6.0.js'></script>";
-        jQueryScripts += "<script src='/cm/jslib/profiles/3x/jquery-migrate-3.3.2.js'></script>";
+        var jQueryScripts  = "<script src='/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js'></script>";
         jQueryScripts += "<script src='/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js'></script>";
         var jQueryCssLinks = "<link rel='stylesheet' type='text/css' href='/cm/themes/smoothness/jquery-ui-1.8.9.custom.css'/>";
 
