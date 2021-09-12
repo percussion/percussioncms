@@ -45,6 +45,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -105,8 +106,11 @@ public class PSEncryptor extends PSAbstractEncryptor {
      */
     public void forceReplaceKeyFile(byte[] newKey, boolean notifyListeners){
         //If No change in key then no need to do anything.
-        if(secretKey != null && secretKey.getSecret().equals(newKey)){
-            return;
+        if(secretKey != null){
+            byte[] oldKey = secretKey.getSecret();
+           if(Arrays.equals(newKey,oldKey)) {
+               return;
+           }
         }
         File installDir = getRxDir(null);
         generateNewKeyFile(this.secretKey,
