@@ -309,7 +309,9 @@ public class PSPubServerService implements IPSPubServerService
         catch (Exception ex)
         {
             String msg = "Failed to get the list of publish servers";
-            log.error(msg, ex);
+            log.error("{} Error: {}", msg,
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new PSPubServerServiceException(msg, ex);
         }
         return serversList;
@@ -424,7 +426,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new PSPubServerServiceException(ex.getMessage(), ex);
         }
 
@@ -527,7 +530,8 @@ public class PSPubServerService implements IPSPubServerService
             }
             catch (IOException e)
             {
-                log.error("Failed to update site configure cache file", e);
+                log.error("Failed to update site configure cache . Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
             }
 
             if (clearIncrementalQueue)
@@ -766,7 +770,8 @@ public class PSPubServerService implements IPSPubServerService
         }
         catch (Exception ex)
         {
-            log.error(ex.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new PSPubServerServiceException(ex.getMessage(), ex);
         }
 
@@ -1925,7 +1930,7 @@ public class PSPubServerService implements IPSPubServerService
         boolean unlocked = lockMgr.releaseLock(siteId);
         if (!unlocked)
         {
-            log.warn("Unabled to release lock for site: {}" , siteId);
+            log.warn("Unable to release lock for site: {}" , siteId);
         }
     }
 
