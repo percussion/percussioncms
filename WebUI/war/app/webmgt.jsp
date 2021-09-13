@@ -246,11 +246,13 @@
                             lic = data.moduleLicenses.moduleLicenses;
                         }
 
-                        var url = lic.uiProvider + '/scripts/native-cm1.js';
-                        var element = document.createElement('script');
-                        element.setAttribute('type', 'text/javascript');
-                        element.setAttribute('src', url);
-                        document.head.appendChild(element);
+                        if(lic.name !== "PAGE_OPTIMIZER" && lic.name!=="SOCIAL_PROMOTION"){
+                            var url = lic.uiProvider + '/scripts/native-cm1.js';
+                            var element = document.createElement('script');
+                            element.setAttribute('type', 'text/javascript');
+                            element.setAttribute('src', url);
+                            document.head.appendChild(element);
+                        }
                     }
                 });
             }
