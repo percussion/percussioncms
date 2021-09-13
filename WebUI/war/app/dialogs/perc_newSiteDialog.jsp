@@ -67,7 +67,7 @@
 <i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
 <span style="position: relative; float: right; margin-top: -28px;"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span>
 <div id="perc_newSiteDialog" >
-<csrf:form id="perc_newSiteDialogForm" method="post" action="perc_newSiteDialog.jsp">
+<csrf:form id="perc_newSiteDialogForm" method="get" action="perc_newSiteDialog.jsp">
     <div class="ui-layout-center">
         <div id="perc_wizard_step1" class="perc_wizard_step">
             <div class="perc_sitename_field">
