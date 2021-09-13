@@ -24,12 +24,17 @@
 
 package com.percussion.webui.gadget.servlets;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +44,11 @@ import java.util.List;
  */
 public class PSGadgetUtils {
 
+    private PSGadgetUtils(){
+        //Private constructor to force static access
+    }
+
+    private static final Logger log = LogManager.getLogger(PSGadgetUtils.class);
 
     public static final File gadgetsRoot = new File(PSServer.getRxDir() + "/cm/gadgets/repository");
 
@@ -62,8 +72,14 @@ public class PSGadgetUtils {
 
         List<File> gadgetFiles = getInstalledGadgetFiles();
         for(File f : gadgetFiles) {
-            if(f.getAbsolutePath().endsWith(url.getPath())){
-                ret = true;
+            try {
+                if (getGadgetFileNameForCompare(f.getCanonicalPath()).endsWith(url.getPath())) {
+                    ret = true;
+                    break;
+                }
+            } catch (IOException e) {
+                log.error("An invalid gadget path was provided: {} Error: {}", f.getAbsolutePath(),
+                       PSExceptionUtils.getMessageForLog(e) );
                 break;
             }
         }
@@ -71,7 +87,7 @@ public class PSGadgetUtils {
         //validate the host name portions
         List<String> allowedHosts = new ArrayList<>();
         String publicCMSHostName = PSServer.getServerProps().getProperty("publicCmsHostname","");
-        if(publicCMSHostName != ""){
+        if(! StringUtils.isEmpty(publicCMSHostName)){
             allowedHosts.add(publicCMSHostName);
         }
         String allowedOrigins = PSServer.getServerProps().getProperty("allowedOrigins","*");
@@ -130,6 +146,18 @@ public class PSGadgetUtils {
             }
         }
         return ret;
+    }
+
+    /**
+     * Convert the path to url / format.
+     * @param canonicalPath A canonicalPath to be converted. never null.
+     * @return A string containing the path in normalized form.
+     */
+    protected static String getGadgetFileNameForCompare(String canonicalPath){
+        if(canonicalPath == null)
+            throw new IllegalArgumentException("Gadget path is required");
+        return canonicalPath.replace("\\","/");
+
     }
 
 }
