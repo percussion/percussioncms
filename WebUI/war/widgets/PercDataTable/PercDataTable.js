@@ -33,6 +33,7 @@
     var PADDING_BOTTOM_PX = 5;
     var tableDom;
     var configo;
+    var totalPages = 0;
 
     /**
      *  PercDataTable(config)
@@ -125,7 +126,7 @@
             $.each(pageNumbers, function(index, element){
                 $(element).attr("perc-page", index + 1);
             });
-            if(!pageNumbers || pageNumbers.length < 2)
+            if(!totalPages || totalPages < 2)
                 paginator.hide();
             else
                 paginator.show();
@@ -151,7 +152,7 @@
             var pages = Math.ceil(totalItemsCount / itemsPerPage);
             var currentPageNumber = Math.ceil(iEnd / itemsPerPage);
             var pageOfPages = currentPageNumber + " of " + pages + (pages === 1 ? " Page" : " Pages");
-
+            totalPages = pages;
             if(pages === 0 || config.singlePage)
                 pageOfPages = "";
 
