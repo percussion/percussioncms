@@ -14,7 +14,6 @@
         <gadget name="Iframe" baseuri="/cm/gadgets/repository/perc_iframe_gadget" file="perc_iframe_gadget.xml"/>
         <gadget name="License Monitor" baseuri="/cm/gadgets/repository/perc_license_monitor_gadget" file="perc_license_monitor_gadget.xml"/>
         <gadget name="Membership" baseuri="/cm/gadgets/repository/perc_membership_gadget" file="perc_membership_gadget.xml"/>
-        <gadget name="Page Optimizer Keywords" baseuri="/cm/gadgets/repository/perc_optimizer_keywords_gadget" file="perc_optimizer_keywords_gadget.xml"/>
         <gadget name="Pages By Status" baseuri="/cm/gadgets/repository/perc_workflow_status_gadget" file="perc_workflow_status_gadget.xml"/>
         <gadget name="Process Monitor" baseuri="/cm/gadgets/repository/PercProcessorMonitorGadget" file="PercProcessorMonitorGadget.xml"/>
         <gadget name="Siteimprove" baseuri="/cm/gadgets/repository/perc_site_improve_gadget" file="perc_site_improve_gadget.xml"/>

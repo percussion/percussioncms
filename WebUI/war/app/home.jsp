@@ -97,7 +97,6 @@
 <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_template_layout.css"/>
 <link rel="stylesheet" type="text/css" href="../css/PercCommentsDialog.css"/>
-<link rel="stylesheet" type="text/css" href="../css/PercPageOptimizerDialog.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
 
 <%--  JavaScript Includes (order matters)
@@ -192,8 +191,6 @@
 <script src="../services/PercSiteImpactService.js"></script>
 <script src="../views/PercSiteImpactView.js"></script>
 <script src="../plugins/PercCommentsDialog.js"></script>
-<script src="../services/PercPageOptimizerService.js"></script>
-<script src="../plugins/PercPageOptimizerDialog.js"></script>
 <script src="../services/PercUtilService.js"></script>
 <script src="../plugins/PercContributorUiAdaptor.js"></script>
 <script src="../services/PercBlogService.js"></script>
