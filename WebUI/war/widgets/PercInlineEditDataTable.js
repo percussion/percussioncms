@@ -386,8 +386,9 @@
                 value = placeHolderValue;
             }
 
-            oTable.fnUpdate( "<span class='" + placeHolderClass + "'>" + value + "</span>", nRow, colNumber, false );
+            oTable.fnUpdate( "<span class='perc-placeholder'>" + value + "</span>", nRow, colNumber, false );
             oTable.fnDraw();
+            $(table).find('td span').on('click', tableCellOnClick);
             var newRowsDefaultValues = defaultConfig.percNewRowDefaultValues;
             if (jqInputs[0].value.trim() === newRowsDefaultValues[0])
             {
@@ -572,8 +573,9 @@
             if(!('placeholder' in $('<input>')[0] || 'placeHolder' in $('<input>')[0]))
             {
                 table.find('input[placeholder]').placeHolder({hideOnFocus: false});
+
             }
-        }
+           }
         // only fix ellipsis in IE
         if ($.browser.msie) {
             // fix text overflow at first
