@@ -24,11 +24,29 @@
 
 package com.percussion.error;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 /***
  * A class for common exception utilities.
  */
 public class PSExceptionUtils {
 
+    private static final Logger log = LogManager.getLogger(PSExceptionUtils.class);
+
+    /**
+     * Use when outputting error messages or warnings to the log based on exceptions.
+     *
+     * The message will be written out localized if the localized message is available and the
+     * error message will include C:[ClassName] L:[Line Number] to aid in problem diagnosis without
+     * flooding the log with stack traces,  Stack traces should only ever be written to the debug log.
+     * @param exception A valid exception, never null;
+     * @return A string with the message, never null;
+     */
     public static String getMessageForLog(Exception exception){
 
         //Try localized message first and if there isn't one - just do default.
@@ -46,6 +64,22 @@ public class PSExceptionUtils {
 
         return message;
 
+    }
+
+    /**
+     * Use when outputting stack trace etc to debug log.
+     * @param e A valid exception
+     * @return A safe debug string to wrote to the log.
+     */
+    public static String getDebugMessageForLog(Exception e){
+        try(StringWriter sw = new StringWriter()) {
+            try(PrintWriter pw = new PrintWriter(sw)) {
+               e.printStackTrace(new PrintWriter(sw));
+               return sw.toString().trim();
+            }
+        } catch (IOException ioException) {
+            return "Unable to extract stack trace for exception. Error: " + PSExceptionUtils.getMessageForLog(ioException);
+        }
     }
 
 }
