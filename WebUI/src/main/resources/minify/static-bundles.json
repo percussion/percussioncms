@@ -134,8 +134,6 @@
         "plugins/PercScheduleDialog.js",
         "plugins/PercCommentsDialog.js",
         "plugins/PercPublishingHistoryDialog.js",
-        "services/PercPageOptimizerService.js",
-        "plugins/PercPageOptimizerDialog.js",
         "plugins/PercContributorUiAdaptor.js",
         "services/PercBlogService.js",
         "plugins/perc_ChangePwDialog.js",
@@ -160,7 +158,6 @@
         "css/styles.css",
         "css/perc_template_layout.css",
         "css/PercCommentsDialog.css",
-        "css/PercPageOptimizerDialog.css",
         "css/perc_ChangePw.css"
       ]
     },
