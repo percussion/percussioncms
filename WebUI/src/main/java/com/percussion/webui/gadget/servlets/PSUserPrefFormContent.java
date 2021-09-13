@@ -250,7 +250,7 @@ public class PSUserPrefFormContent {
 	   catch(IOException e)
 	   {
 	   	log.error(PSExceptionUtils.getMessageForLog(e));
-	      // Should never happen
+		log.debug(e);
 	      throw new RuntimeException(e);
 	   }
 	   return buff.toString();
