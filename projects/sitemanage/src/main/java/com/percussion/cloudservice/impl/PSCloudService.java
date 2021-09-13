@@ -61,8 +61,6 @@ import java.util.List;
 @Path("/cloudservice")
 public class PSCloudService implements IPSCloudService {
 
-	protected static final String PAGE_OPTIMIZER_KEY_PROP = "PAGE_OPTIMIZER_KEY";
-	protected static final String PAGE_OPTIMIZER_URL_PROP = "PAGE_OPTIMIZER_URL";
 	protected static final String PAGE_THUMB_ROOT = "/rx_resources/images/TemplateImages/";
 	protected static final String PAGE_THUMB_SUFFIX = "-page.jpg";
 	protected static final String CLOUD_SERVICE_TYPE_CM1 = "CM1";

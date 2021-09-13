@@ -250,18 +250,20 @@
     function generateLicenseView(licenseInfo,  newLicenseInfo){
 
         var licInfoElemCont = $("<div/>");
-        $.each(licenseInfo, function(){
+        $.each(licenseInfo, function() {
             var curLI = this;
-            if(newLicenseInfo && curLI.name == newLicenseInfo.name){
+            if (newLicenseInfo && curLI.name == newLicenseInfo.name) {
                 curLI = newLicenseInfo;
             }
-            var licInfoElem = $("<div/>");
-            $("<span/>").addClass("perc-lmg-modulelicense-label").text(curLI.label).appendTo(licInfoElem);
-            var msg = curLI.isValid?" : " + I18N.message("perc.ui.gadgets.licenseMonitor@Active") : " : " + curLI.message + " ";
-            $("<span/>").addClass("perc-lmg-modulelicense-message").html(msg).appendTo(licInfoElem);
-            var iconClass = curLI.isValid? "status-active" : "status-warning";
-            $("<span/>",{"class":"perc-lmg-icon-status"}).addClass(iconClass).attr("for", curLI.name).appendTo(licInfoElem);
-            licInfoElemCont.append(licInfoElem);
+            if (curLI.label != "Page Optimizer") {
+                var licInfoElem = $("<div/>");
+                $("<span/>").addClass("perc-lmg-modulelicense-label").text(curLI.label).appendTo(licInfoElem);
+                var msg = curLI.isValid ? " : " + I18N.message("perc.ui.gadgets.licenseMonitor@Active") : " : " + curLI.message + " ";
+                $("<span/>").addClass("perc-lmg-modulelicense-message").html(msg).appendTo(licInfoElem);
+                var iconClass = curLI.isValid ? "status-active" : "status-warning";
+                $("<span/>", {"class": "perc-lmg-icon-status"}).addClass(iconClass).attr("for", curLI.name).appendTo(licInfoElem);
+                licInfoElemCont.append(licInfoElem);
+            }
         });
         return licInfoElemCont;
     }
@@ -270,7 +272,10 @@
         var licActElemCont = $("<div/>").addClass("perc-lmg-modulelicense-act-top");
         var typeComboBox = $("<select/>",{"id":"perc-lmg-modulelicense-type-list"});
         $.each(licenseTypes, function(){
-            $("<option/>").attr("value",this.id).text(this.label).appendTo(typeComboBox);
+            //TODO:  This should be removed from server, but need to cover a transitionary phase.
+            if(this.id !== "PAGE_OPTIMIZER") {
+                $("<option/>").attr("value", this.id).text(this.label).appendTo(typeComboBox);
+            }
         });
 
         licActElemCont.append(typeComboBox).append(`<input name='perc-lmg-modulelicense-key'/>`).append(`<button aria-label="Activate License" id="activate-license-button" class="btn btn-primary advanced">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</button>`);

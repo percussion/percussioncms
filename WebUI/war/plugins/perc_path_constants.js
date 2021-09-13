@@ -51,7 +51,6 @@
         PUBMGT       : SERVICES_ROOT + "/publishmanagement",
         SHARE        : SERVICES_ROOT + "/share",
         WDGMGT       : SERVICES_ROOT + "/widgetmanagement",
-        PAGEOPTMGT   : SERVICES_ROOT + "/pageoptimizermanagement",
         RECMGT       : SERVICES_ROOT + "/recentmanagement",
         REDMGT       : SERVICES_ROOT + "/redirectmanagement",
         CLDSVC       : SERVICES_ROOT + "/cloudservicemanagement",
@@ -417,10 +416,6 @@
         CLDSVC_DATA             : SERVICES.CLDSVC + "/cloudservice/pagedata/",
         CLDSVC_DATA_FMT         : SERVICES.CLDSVC + "/cloudservice/%s/pagedata/",
 
-        // Page optimizer management services
-        PAGE_OPT_ACTIVE         : SERVICES.PAGEOPTMGT + "/pageoptimizer/active/",
-        PAGE_OPT_DATA           : SERVICES.PAGEOPTMGT + "/pageoptimizer/pagedata/",
-        PAGE_OPT_INFO           : SERVICES.PAGEOPTMGT + "/pageoptimizer/info/",
 
         //Recent management services
         RECENT_ROOT              : SERVICES.RECMGT + "/recent/",

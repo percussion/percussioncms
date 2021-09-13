@@ -246,7 +246,7 @@
     </PackageFileEntry>
     <PackageFileEntry>
         <packageName>perc.gadget.pageOptimizerKeywords</packageName>
-        <status>PENDING</status>
+        <status>UNINSTALL</status>
     </PackageFileEntry>
     <PackageFileEntry>
         <packageName>perc.gadget.SiteConfig</packageName>

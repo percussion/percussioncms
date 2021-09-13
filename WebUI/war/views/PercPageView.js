@@ -1217,13 +1217,6 @@
             $.PercPublishingHistoryDialog.open(pageId, pageName, $.PercPublishingHistoryDialog.ITEM_TYPE_PAGE);
         }
 
-        function _openOptimizer(callbackData){
-            if(callbackData.class === jQuery.Event.class){
-                callbackData = callbackData.data;
-            }
-            $.PercPageOptimizerDialog.open(callbackData.pageId, callbackData.pageName);
-        }
-
         function _previewPage(currentPageId)
         {
             confirm_if_dirty(function()
