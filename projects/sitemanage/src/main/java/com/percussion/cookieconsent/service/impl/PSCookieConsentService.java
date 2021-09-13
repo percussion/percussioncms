@@ -24,19 +24,23 @@
 
 package com.percussion.cookieconsent.service.impl;
 
-import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
-
 import com.percussion.cookieconsent.service.IPSCookieConsentService;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -47,11 +51,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
+import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 
 /**
  * Service which interfaces with DTS meta data
@@ -64,7 +64,7 @@ import org.springframework.context.annotation.Lazy;
 @PSSiteManageBean("cookieConsentService")
 public class PSCookieConsentService implements IPSCookieConsentService {
     
-    private static final Logger log = LogManager.getLogger(PSCookieConsentService.class.getName());
+    private static final Logger log = LogManager.getLogger(PSCookieConsentService.class);
     
     private static final String DTS_URL = "/perc-metadata-services/metadata/consent/log";
     
@@ -124,7 +124,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
 
            return response;
        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
-           log.error(e.getMessage());
+           log.error(PSExceptionUtils.getMessageForLog(e));
            throw new WebApplicationException(e.getMessage());
        }
     }
@@ -149,13 +149,13 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                     TOTAL_ENTRIES_URL + "/" + siteName, HttpMethodType.GET, true));
 
             if (response != null) {
-                log.debug(response);
+                log.debug(SecureStringUtils.stripAllLineBreaks(response));
             }
 
             return response;
         } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -177,7 +177,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                 TOTAL_ENTRIES_URL, HttpMethodType.GET, true));
         
         if (response != null) {
-            log.debug(response);
+            log.debug(SecureStringUtils.stripAllLineBreaks(response));
         }
         
         return response;
@@ -204,7 +204,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                 DTS_URL, HttpMethodType.DELETE, true));
         
         if (response != null) {
-            log.debug(response);
+            log.debug(SecureStringUtils.stripAllLineBreaks(response));
         }
     }
     
@@ -231,7 +231,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
                   DTS_URL + "/" + siteName, HttpMethodType.DELETE, true));
 
           if (response != null) {
-              log.debug(response);
+              log.debug(SecureStringUtils.stripAllLineBreaks(response));
           }
       } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
          throw new WebApplicationException(e);
@@ -247,9 +247,9 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         String adminURl= pubServerService.getDefaultAdminURL(site);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
-        //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
+
         if (server == null) {
-            log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+            log.debug("Cannot find server with service of: {}" , PSDeliveryInfo.SERVICE_INDEXER);
         }
 
         return server;
@@ -260,7 +260,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
         if (server == null) {
-            log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+            log.debug("Cannot find server with service of: {}" , PSDeliveryInfo.SERVICE_INDEXER);
         }
 
         return server;
