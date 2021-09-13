@@ -300,9 +300,7 @@ public class PSPubServerService implements IPSPubServerService
             {
                 for (PSPubServer server : servers)
                 {
-                    PSPublishServerInfo serverInfo = new PSPublishServerInfo();
-                    serverInfo = toPSPublishServerInfo(server, site, false);
-                    serversList.add(serverInfo);
+                    serversList.add(toPSPublishServerInfo(server, site, false));
                 }
             }
         }
