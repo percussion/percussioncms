@@ -26,6 +26,7 @@
  */
 package com.percussion.tomcat.valves;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
@@ -100,23 +101,28 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 	}
 
 	@Override
-	public void startInternal() throws LifecycleException {
+	public synchronized void startInternal() throws LifecycleException {
 	
 		started = false;
 		
-		if(log.isDebugEnabled())
-			log.debug("start");
+		log.debug("start");
 		
 		log.info("Starting Multi App Version Redirector Valve");
 		
 		if(mappingFile!=null){
 			try {
 				File file = new File(mappingFile);
-				properties.load(new FileInputStream(file));
+				try(FileInputStream fis = new FileInputStream(file)) {
+					properties.load(fis);
+				}
 			} catch (FileNotFoundException e) {
-				log.info("Could not find the version Mapping file specified: " + mappingFile  +". Multi Version Routing is disabled.");
+				log.warn("Could not find the version Mapping file specified: {} Multi Version Routing is disabled. Error: {}",
+						mappingFile,
+						PSExceptionUtils.getMessageForLog(e));
 			} catch (IOException e) {
-				log.info("Could not access the version Mapping file specified: " + mappingFile  + "." + e.getMessage() + ". Multi Version Routing is disabled.");
+				log.warn("Could not access the version Mapping file specified: {}. Error: {}. Multi Version Routing is disabled.",
+						mappingFile,
+						PSExceptionUtils.getMessageForLog(e));
 			}
 			
 			
@@ -156,12 +162,11 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 	public void invoke(Request request, Response response) throws IOException,
 			ServletException {
 
-		if(log.isDebugEnabled())
-			log.debug("invoke");
+		log.debug("invoke");
 		
 		if (pipelining.get() == Boolean.TRUE) {
 			   getNext().invoke(request, response);
-			   pipelining.set(null);
+			   pipelining.remove();
 			   return;
 		 }
 		
@@ -191,16 +196,7 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 	            response.setStatus (SC_MOVED_PERMANENTLY);
 	            response.setHeader ("Location",
 	            response.encodeRedirectURL (sUrl));
-                return;  
-//				//Submit the change to the pipeline for processing. 
-//			        try {
-//					request.getConnector().getProtocolHandler().getAdapter().service(
-//								request.getCoyoteRequest(),
-//						        response.getCoyoteResponse());			        
-//			        } catch (Exception e) {
-//						throw new RuntimeException();
-//					}
-         		
+                return;
 			}
 			
 		Valve nextValve = getNext();
@@ -210,12 +206,12 @@ public class PSMultiAppVersionRedirectorValve extends ValveBase implements Lifec
 		}
 		
 		//Make sure thread local is cleared.
-		pipelining.set(null);
+		pipelining.remove();
 					
 	}
 	
     @Override
-    public void stopInternal() throws LifecycleException
+    public synchronized void stopInternal() throws LifecycleException
     {
         started=false;
         if (getContainer()!=null)
