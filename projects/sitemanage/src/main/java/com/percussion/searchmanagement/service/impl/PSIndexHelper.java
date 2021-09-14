@@ -25,11 +25,14 @@
 package com.percussion.searchmanagement.service.impl;
 
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.search.PSSearchIndexEventQueue;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Singleton;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 /**
@@ -44,17 +47,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *becomes a background process.
  */
 @Component("indexHelper")
+@Singleton
 public class PSIndexHelper implements Runnable
 {
     private static final Logger log = LogManager.getLogger(PSIndexHelper.class);
 
-    private PSSearchIndexEventQueue queue;
+    private PSSearchIndexEventQueue queue = PSSearchIndexEventQueue.getInstance();
 
     private CopyOnWriteArrayList<PSLocator> ids;
 
     private static final Object lock = new Object();
 
-    private Thread thread;
+    private final Thread thread;
 
     public PSIndexHelper()
     {
@@ -64,23 +68,13 @@ public class PSIndexHelper implements Runnable
         thread.start();
     }
 
-    /**
-     * get the search index queue instance. May not have been
-     * initialized by the time this thread starts.
-     * @return PSSearchIndexEventQueue queue
-     */
-    private PSSearchIndexEventQueue getIndexEventQueue()
-    {
-        if (queue == null)
-            queue = PSSearchIndexEventQueue.getInstance();
-        return queue;
-    }
 
     /**
      * Add items to the concurrent data structure so that they can
      * be processed by the background process.
      * @param locas<PSLocator> locas
      */
+    @SuppressFBWarnings("NN_NAKED_NOTIFY")
     public void addItemsForIndex(Set<PSLocator> locas)
     {
         try
@@ -89,7 +83,8 @@ public class PSIndexHelper implements Runnable
         }
         catch (Exception e)
         {
-            log.warn("Could not ad Item ids to be indexed: {}" , this.getClass().getName());
+            log.warn("Could not add Item ids to be indexed: {} Error: {}" , this.getClass().getName(),
+                    PSExceptionUtils.getMessageForLog(e));
         }
         finally
         {
@@ -105,31 +100,23 @@ public class PSIndexHelper implements Runnable
      * Adds the locators into the search index queue
      */
     public void index() throws InterruptedException {
-        while (ids.isEmpty())
-        {
-            try
-            {
-                synchronized (lock)
-                {
+
+        //idle in background until there is content to be indexed.
+        synchronized (lock) {
+            while (ids.isEmpty()) {
+                try {
                     lock.wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
-            }
-            catch (InterruptedException e)
-            {
-                log.warn("{} Thread InterruptedException {}",
-                        this.getClass().getName(),
-                        e.getMessage());
-                Thread.currentThread().interrupt();
-                throw new InterruptedException(e.getMessage());
             }
         }
 
         try
         {
-
             for (PSLocator locator : ids)
             {
-                getIndexEventQueue().indexItem(locator);
+                queue.indexItem(locator);
                 ids.remove(locator);
             }
         }
@@ -137,23 +124,20 @@ public class PSIndexHelper implements Runnable
         {
             log.warn("Trouble adding content to search index queue - {} Error: {}",
                     PSIndexHelper.class.getName(),
-                    e.getMessage());
+                    PSExceptionUtils.getMessageForLog(e));
         }
     }
 
     @Override
     public void run()
     {
-        while (true) {
+        do {
             try {
                 index();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
 
-            if(Thread.currentThread().isInterrupted()){
-                break;
-            }
-        }
+        } while (!Thread.currentThread().isInterrupted());
     }
 }
