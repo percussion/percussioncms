@@ -188,17 +188,17 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 		Item item = svc.findByKeyField(Integer.toString(url.hashCode()),keyfield,contextRoot);
 	
 		if(item!=null && item.getContentId()!=null){
-			log.debug("Located existing item for URL " + url);
+			log.debug("Located existing item for URL {}" , url);
 			Field etag_field = item.getField("cached_etag");
 			if(etag_field!=null){
 				etag = etag_field.getStringValue();
-				log.debug("ETag Header set to " + etag);
+				log.debug("ETag Header set to {}" , etag);
 			}
 			
 			Field lm_field = item.getField("cached_lastmodified");
 			if(lm_field != null){
 				lastModified = lm_field.getStringValue();
-				log.debug("Last-Modified Header set to " + lastModified);
+				log.debug("Last-Modified Header set to {}" , lastModified);
 			}
 		}
 		

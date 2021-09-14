@@ -32,8 +32,6 @@ import com.percussion.share.data.PSEnumVals;
 import com.percussion.sitemanage.service.impl.PSSiteDataRestService;
 import com.percussion.utils.PSSpringBeanProvider;
 import com.percussion.workflow.service.impl.PSSteppedWorkflowRestService;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +42,6 @@ import org.json.simple.parser.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
@@ -658,31 +655,6 @@ public class PSUserPrefFormContent {
 	   return obj != null;
 	}
 
-	/**
-    * Sends a JSON string to a specific URL and returns the plain response of the server
-    */
-   private String makeJSONGetRequest(String url) throws IOException
-   {
-
-
-       HttpClient httpClient = new HttpClient();
-             
-       GetMethod get = new GetMethod(url);
-       get.setRequestHeader("x-shindig-dos", "true");
-       get.setRequestHeader("Content-Type", MediaType.APPLICATION_JSON);
-       get.setRequestHeader("Accept", MediaType.APPLICATION_JSON);
-
-       try
-       {
-          httpClient.executeMethod(get);          
-          return get.getResponseBodyAsString();
-       }
-       finally
-       {
-          get.releaseConnection();
-       }
-       
-   }   
 	/**
 	 * The module id value. Never <code>null</code> or empty, generally
 	 * set by the ctor.

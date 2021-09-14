@@ -57,6 +57,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -334,7 +335,7 @@ public class PSTdSchemaXmlServlet extends HttpServlet
          return;
      
       httpResponse.setContentType(ctype);
-      byte[] respBytes = resp.getBytes("UTF-8");
+      byte[] respBytes = resp.getBytes(StandardCharsets.UTF_8);
       httpResponse.setContentLength(respBytes.length);
       httpResponse.setStatus(respCode);
       if(respCode == 500)

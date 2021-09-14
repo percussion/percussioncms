@@ -1820,7 +1820,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 						ref = new URI(binValue.getHref());
 					} catch (URISyntaxException e1) {
 						log.debug(e1,e1);
-				        throw new ItemRestException("Error processing " + binValue.getHref() );						
+				        throw new ItemRestException("Error processing " + binValue.getHref() , e1);
 					}
 					
 					if(ref.isAbsolute()){

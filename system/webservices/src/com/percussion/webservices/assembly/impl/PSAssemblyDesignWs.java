@@ -23,7 +23,11 @@
  */
 package com.percussion.webservices.assembly.impl;
 
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
 import com.percussion.services.assembly.data.PSTemplateSlot;
 import com.percussion.services.catalog.IPSCatalogSummary;
@@ -46,7 +50,13 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
-import com.percussion.webservices.*;
+import com.percussion.webservices.IPSWebserviceErrors;
+import com.percussion.webservices.PSErrorException;
+import com.percussion.webservices.PSErrorResultsException;
+import com.percussion.webservices.PSErrorsException;
+import com.percussion.webservices.PSTemplateImageUtils;
+import com.percussion.webservices.PSWebserviceErrors;
+import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.assembly.IPSAssemblyDesignWs;
 import com.percussion.webservices.assembly.IPSAssemblyWs;
 import com.percussion.webservices.assembly.PSAssemblyWsLocator;
@@ -63,7 +73,12 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The private assembly design webservice implementations.
@@ -278,7 +293,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
          {
             try
             {
-               Map<IPSGuid, IPSAssemblyTemplate> templateMap = new HashMap<IPSGuid, IPSAssemblyTemplate>();
+               Map<IPSGuid, IPSAssemblyTemplate> templateMap = new HashMap<>();
 
                if (PSWebserviceUtils.hasValidLockForDelete(id, session, user))
                {
@@ -300,7 +315,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
 
                   // get a list of templates containing these slots and 
                   // lock them
-                  List<IPSGuid> templateLocks = new ArrayList<IPSGuid>();
+                  List<IPSGuid> templateLocks = new ArrayList<>();
                   List<IPSAssemblyTemplate> templates = service
                      .findTemplatesBySlot(slot);
                   try
@@ -429,7 +444,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
       // filter for associated template id
       if (associatedTemplateId != null)
       {
-         List<IPSTemplateSlot> filteredSlots = new ArrayList<IPSTemplateSlot>();
+         List<IPSTemplateSlot> filteredSlots = new ArrayList<>();
          for (IPSTemplateSlot slot : slots)
          {
             Collection<PSPair<IPSGuid, IPSGuid>> associations = slot
@@ -470,7 +485,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
       {
          try
          {
-            List<IPSAssemblyTemplate> templates = new ArrayList<IPSAssemblyTemplate>();
+            List<IPSAssemblyTemplate> templates = new ArrayList<>();
             templates.add(PSWebserviceUtils.loadTemplate(id, true));
             List<PSAssemblyTemplateWs> wsTemplates = getTemplateWs(templates);
             results.addResult(id, wsTemplates.get(0));
@@ -558,7 +573,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
       IPSObjectLockService lockService = PSObjectLockServiceLocator
          .getLockingService();
 
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       PSErrorsException results = new PSErrorsException();
       for (PSAssemblyTemplateWs templateWs : templates)
       {
@@ -619,7 +634,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
     * object type, and saving and deleting templates, both of which modify 
     * sites.
     */
-   private static final String SYNC_SAVE_DELETE_TEMPLATE_AND_SLOT = "Synchronize Save and Delete Templates and Slots";
+   private static final Object SYNC_SAVE_DELETE_TEMPLATE_AND_SLOT = new Object();
 
    /**
     * Deletes the specified template and the association between the template 
@@ -686,7 +701,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
             throw convertException(e);
          }
 
-         Map<IPSGuid, List<IPSGuid>> ctypeTemplateMap = new HashMap<IPSGuid, List<IPSGuid>>();
+         Map<IPSGuid, List<IPSGuid>> ctypeTemplateMap = new HashMap<>();
 
          // group by ctype
          for (PSContentTemplateDesc desc : ctAssociations)
@@ -716,7 +731,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
                {
                   throw convertException(e);
                }
-               List<IPSGuid> validTemplateRefs = new ArrayList<IPSGuid>();
+               List<IPSGuid> validTemplateRefs = new ArrayList<>();
                for (PSContentTemplateDesc desc : templateTypePairs)
                {
                   if (!desc.getTemplateId().equals(deletedId))

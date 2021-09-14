@@ -24,32 +24,30 @@
 
 package com.percussion.services.sitemgr;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.serialization.PSObjectSerializer;
-
-import java.beans.IntrospectionException;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import java.beans.IntrospectionException;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Returns an xml document of all sites registered in the system.
@@ -69,7 +67,6 @@ public class PSSiteCatalogServlet extends javax.servlet.http.HttpServlet
     * @see javax.servlet.http.HttpServlet#service(javax.servlet.http.HttpServletRequest,
     * javax.servlet.http.HttpServletResponse)
     */
-   @SuppressWarnings("unchecked")
    @Override
    protected void service(HttpServletRequest request,
       HttpServletResponse response) throws ServletException, IOException
@@ -96,45 +93,25 @@ public class PSSiteCatalogServlet extends javax.servlet.http.HttpServlet
          o.write(bos.toByteArray());
          o.flush();
       }
-      catch (DOMException e)
+      catch (DOMException | PSCatalogException | PSNotFoundException | SAXException | IntrospectionException | ParserConfigurationException | IOException e)
       {
          ex = e;
       }
-      catch (IOException e)
-      {
-         ex = e;
-      }
-      catch (SAXException e)
-      {
-         ex = e;
-      }
-      catch (IntrospectionException e)
-      {
-         ex = e;
-      }
-      catch (ParserConfigurationException e)
-      {
-         ex = e;
-      }
-      catch (PSCatalogException | PSNotFoundException e)
-      {
-         ex = e;
-      }
-     
+
       if (ex != null)
       {
-         response.setContentType("text/plain");
          PrintWriter w;
          try
          {
-            Throwable orig = PSExceptionHelper.findRootCause(ex, true);
-            ms_log.error("Site list failure", orig);
-            w = response.getWriter();
-            w.println(ex.getLocalizedMessage());
+
+            ms_log.error("Site list failure.  Error: {}", PSExceptionUtils.getMessageForLog(ex));
+            response.reset();
+            response.sendError(500);
          }
          catch (IOException e1)
          {
-            throw new RuntimeException(e1);
+            response.reset();
+            response.setStatus(500);
          }
       }
    }

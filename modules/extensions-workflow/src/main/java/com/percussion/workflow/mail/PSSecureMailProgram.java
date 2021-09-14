@@ -23,17 +23,17 @@
  */
 package com.percussion.workflow.mail;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSExtensionErrors;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptProperties;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.percussion.extension.IPSExtensionErrors;
-import com.percussion.security.PSEncryptProperties;
 
 /**
  * Can be used to send secure mail via workflow transitions. Follows the Mail
@@ -83,7 +83,8 @@ public class PSSecureMailProgram implements IPSMailProgram {
             MultiPartEmail commonsMultiPartEmail = createMultiPartEmail(messageContext);
             commonsMultiPartEmail.send();
         } catch (EmailException e) {
-            log.error("Error sending workflow mail notification with message: ", e);
+            log.error("Error sending workflow mail notification with message: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
 
     }
@@ -126,23 +127,24 @@ public class PSSecureMailProgram implements IPSMailProgram {
             IPSMailMessageContext messageContext) throws EmailException {
         MultiPartEmail commonsMultiPartEmail = new MultiPartEmail();
 
-        Boolean isTLSEnabled = false; // TLS defaults to false if not set.
+        boolean isTLSEnabled = false; // TLS defaults to false if not set.
 
         if (!StringUtils.isEmpty(messageContext.getIsTLSEnabled())
                 && "true".equalsIgnoreCase(messageContext.getIsTLSEnabled())) {
             isTLSEnabled = true;
         }
-        log.debug("Is TLS enabled: " + isTLSEnabled);
+        log.debug("Is TLS enabled:{} " , isTLSEnabled);
 
         if (!StringUtils.isEmpty(messageContext.getPortNumber())) {
             try {
                 int smtpPort = Integer.parseInt(messageContext.getPortNumber());
                 commonsMultiPartEmail.setSmtpPort(smtpPort);
-                log.debug("SMTP port: " + smtpPort);
+                log.debug("SMTP port: {}" , smtpPort);
             } catch (NumberFormatException e) {
                 log.error(
                         "Unable to set smtp port number; defaulting to port 587.  Please check the configuration and"
-                                + " verify the port number is a valid port.", e);
+                                + " verify the port number is a valid port. Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
             }
         }
 
@@ -159,12 +161,12 @@ public class PSSecureMailProgram implements IPSMailProgram {
             commonsMultiPartEmail.setAuthentication(
                     messageContext.getUserName(), pwd);
         }
-        log.debug("Authenticating with user name: " + messageContext.getUserName());
+        log.debug("Authenticating with user name: {}" , messageContext.getUserName());
 
         if (StringUtils.isNotBlank(messageContext.getTo())) {
             String[] emails = messageContext.getTo().split(",");
             for (String email : emails) {
-                log.debug("Sending mail to: " + email);
+                log.debug("Sending mail to: {}" , email);
                 commonsMultiPartEmail.addTo(makeAddress(email, messageContext.getMailDomain()));
             }
         }
@@ -172,23 +174,25 @@ public class PSSecureMailProgram implements IPSMailProgram {
         if (StringUtils.isNotBlank(messageContext.getCc())) {
             String[] emails = messageContext.getCc().split(",");
             for (String email : emails) {
-                log.debug("Cc: " + email);
+                log.debug("Cc: {}" , email);
                 commonsMultiPartEmail.addCc(makeAddress(email, messageContext.getMailDomain()));
             }
         }
         if (!StringUtils.isEmpty(messageContext.getSSLPortNumber())) {
             commonsMultiPartEmail.setSslSmtpPort(messageContext
                     .getSSLPortNumber());
+            log.debug("Enabling SSL/TLS server identity check");
+            commonsMultiPartEmail.setSSLCheckServerIdentity(true);
             commonsMultiPartEmail.setSSLOnConnect(true);
         }
-        log.debug("Using SSL port: " + messageContext.getSSLPortNumber());
+        log.debug("Using SSL port: {}" , messageContext.getSSLPortNumber());
 
         commonsMultiPartEmail.setMsg(messageContext.getBody());
 
         if (!StringUtils.isEmpty(messageContext.getBounceAddr())) {
             commonsMultiPartEmail.setBounceAddress(makeAddress(messageContext.getBounceAddr(),
                     messageContext.getMailDomain()));
-            log.debug("Using bounce address: " + messageContext.getBounceAddr());
+            log.debug("Using bounce address: {}" , messageContext.getBounceAddr());
         }
 
         commonsMultiPartEmail.setStartTLSEnabled(isTLSEnabled);
@@ -213,7 +217,7 @@ public class PSSecureMailProgram implements IPSMailProgram {
      * @return a String with the appropriate e-mail address and domain name.
      */
     private String makeAddress(String user, String mailDomain) {
-        log.debug("Making address with user: " + user + " and domain: " + mailDomain);
+        log.debug("Making address with user: {} and domain: {}", user, mailDomain);
         String userAddressString = null;
         if (!mailDomain.startsWith("@")) {
             mailDomain = "@" + mailDomain;

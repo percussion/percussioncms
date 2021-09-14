@@ -441,7 +441,6 @@ public class PSErrorManagerImpl implements IPSErrorManager {
    {
       ResourceBundle strBundle = null;
 
-      synchronized  (m_errorStrings) {
          strBundle = m_errorStrings.get(loc.toString());
          if (strBundle != null)
             return strBundle;
@@ -449,7 +448,6 @@ public class PSErrorManagerImpl implements IPSErrorManager {
          strBundle = ResourceBundle.getBundle(
                            "com.percussion.error.PSErrorStringBundle", loc);
          m_errorStrings.put(loc.toString(), strBundle);
-      }
 
       return strBundle;
    }
@@ -467,7 +465,6 @@ public class PSErrorManagerImpl implements IPSErrorManager {
    {
       PSMapClassToObject pageMap = null;
 
-      synchronized  (m_errorURLs) {
          pageMap = m_errorURLs.get(loc.toString());
          if (pageMap != null)
             return pageMap;
@@ -501,7 +498,6 @@ public class PSErrorManagerImpl implements IPSErrorManager {
                   new com.percussion.log.PSLogServerWarning(
                   com.percussion.design.objectstore.IPSObjectStoreErrors.APP_NOT_FOUND,
                   args, true, "ErrorManager"));
-            }
          }
 
          m_errorURLs.put(loc.toString(), pageMap);

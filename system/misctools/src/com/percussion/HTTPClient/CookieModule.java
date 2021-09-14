@@ -57,8 +57,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * in the request, and it will remove the <var>Set-Cookie</var> and
  * <var>Set-Cookie2</var> header fields in the response (after processing them).
  * In order to add cookies to a request or to prevent cookies from being sent,
- * you can use the {@link #addCookie(HTTPClient.Cookie) addCookie} and {@link
- * #removeCookie(HTTPClient.Cookie) removeCookie} methods to manipulate the
+ * you can use the {@link #addCookie(Cookie)} addCookie} and {@link
+ * #removeCookie(Cookie) removeCookie} methods to manipulate the
  * module's list of cookies.
  *
  * <P>A cookie jar can be used to store cookies between sessions. This file is
@@ -264,8 +264,6 @@ public class CookieModule implements HTTPClientModule
 	Vector  lens    = new Vector();
 	int     version = 0;
 
-	synchronized (cookie_cntxt_list)
-	{
 	    ConcurrentHashMap cookie_list =
 		Util.getList(cookie_cntxt_list, req.getConnection().getContext());
 	    if (cookie_list.size() == 0)
@@ -304,7 +302,6 @@ public class CookieModule implements HTTPClientModule
 		    if (cookie instanceof Cookie2)
 			version = Math.max(version, ((Cookie2) cookie).getVersion());
 		}
-	    }
 
 	    // remove any marked cookies
 	    // Note: we can't do this during the enumeration!
@@ -438,8 +435,6 @@ public class CookieModule implements HTTPClientModule
 		Log.write(Log.COOKI, "CookM: Cookie " + idx + ": " + cookies[idx]);
 	}
 
-	synchronized (cookie_cntxt_list)
-	{
 	    ConcurrentHashMap cookie_list =
 		    Util.getList(cookie_cntxt_list, req.getConnection().getContext());
       
@@ -459,7 +454,6 @@ public class CookieModule implements HTTPClientModule
 			cookie_list.put(cookies[idx], cookies[idx]);
 		}
 	    }
-	}
     }
 
 
@@ -469,10 +463,7 @@ public class CookieModule implements HTTPClientModule
      */
     public static void discardAllCookies()
     {
-      synchronized (cookie_cntxt_list)
-      {
          cookie_cntxt_list.clear();
-      }
     }
 
 
@@ -500,8 +491,7 @@ public class CookieModule implements HTTPClientModule
      */
     public static Cookie[] listAllCookies()
     {
-	synchronized (cookie_cntxt_list)
-	{
+
 	    Cookie[] cookies = new Cookie[0];
 	    int idx = 0;
 
@@ -509,18 +499,15 @@ public class CookieModule implements HTTPClientModule
 	    while (cntxt_list.hasMoreElements())
 	    {
 		ConcurrentHashMap cntxt = (ConcurrentHashMap) cntxt_list.nextElement();
-		synchronized (cntxt)
-		{
+
 		    cookies = Util.resizeArray(cookies, idx+cntxt.size());
 		    Enumeration cookie_list = cntxt.elements();
 		    while (cookie_list.hasMoreElements())
 			cookies[idx++] = (Cookie) cookie_list.nextElement();
-		}
 	    }
 
 	    return cookies;
 	}
-    }
 
 
     /**
@@ -532,8 +519,6 @@ public class CookieModule implements HTTPClientModule
      */
     public static Cookie[] listAllCookies(Object context)
     {
-	synchronized (cookie_cntxt_list)
-	{
 	    ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, context);
 
 	    Cookie[] cookies = new Cookie[cookie_list.size()];
@@ -544,7 +529,6 @@ public class CookieModule implements HTTPClientModule
 		cookies[idx++] = (Cookie) e.nextElement();
 
 	    return cookies;
-	}
     }
 
 
@@ -558,12 +542,9 @@ public class CookieModule implements HTTPClientModule
      */
     public static void addCookie(Cookie cookie)
     {
-      synchronized (cookie_cntxt_list)
-      {
          ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, HTTPConnection
                .getDefaultContext());
          cookie_list.put(cookie, cookie);
-      }
     }
 
 
@@ -579,11 +560,8 @@ public class CookieModule implements HTTPClientModule
      */
     public static void addCookie(Cookie cookie, Object context)
     {
-       synchronized (cookie_cntxt_list)
-       {
           ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, context);
           cookie_list.put(cookie, cookie);
-       }
     }
 
 
@@ -597,12 +575,9 @@ public class CookieModule implements HTTPClientModule
      */
     public static void removeCookie(Cookie cookie)
     {
-       synchronized (cookie_cntxt_list)
-       {
           ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, HTTPConnection
                 .getDefaultContext());
           cookie_list.remove(cookie);
-       }
     }
 
 
@@ -617,11 +592,8 @@ public class CookieModule implements HTTPClientModule
      */
     public static void removeCookie(Cookie cookie, Object context)
     {
-       synchronized (cookie_cntxt_list)
-       {
           ConcurrentHashMap cookie_list = Util.getList(cookie_cntxt_list, context);
           cookie_list.remove(cookie);
-       }
     }
 
 

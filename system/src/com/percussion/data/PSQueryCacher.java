@@ -710,7 +710,6 @@ public class PSQueryCacher
          if (isCachedEntryStale(entry)) {
             // remove the entry from the cache
             PSCachedEntry rmEntry = null;
-            synchronized (cache) {
                // we remove from the ConcurrentHashMap by locking it and
                // verifying a new entry wasn't put in the old entries
                // place during our check of its age
@@ -725,7 +724,6 @@ public class PSQueryCacher
                   m_cacheSortByDate.remove(entry);   // remove from sort
                   entry = null;                     // flag we're stale
                }
-            }
 
             // Note: if we somehow slept past the specified interval
             // while trying to lock m_pageCache, this new entry
@@ -859,17 +857,14 @@ public class PSQueryCacher
                /* need to figure out which ConcurrentHashMap this is in and
                 * remove it.
                 */
-               synchronized (m_xmlCache) {
                   PSCachedEntry ce = (PSCachedEntry)m_xmlCache.get(entryKey);
                   if ((ce != null) && (ce == rmEntry))
                      m_xmlCache.remove(entryKey);
-               }
 
-               synchronized (m_pageCache) {
-                  PSCachedEntry ce = (PSCachedEntry)m_pageCache.get(entryKey);
+
+                  ce = (PSCachedEntry)m_pageCache.get(entryKey);
                   if ((ce != null) && (ce == rmEntry))
                      m_pageCache.remove(entryKey);
-               }
 
                // remove the file from disk and decrement the cache size used
                java.io.File file = rmEntry.getFile();

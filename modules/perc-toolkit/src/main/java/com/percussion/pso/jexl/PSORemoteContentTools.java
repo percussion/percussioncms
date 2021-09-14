@@ -4,22 +4,24 @@ import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import net.sf.json.JSONObject;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -44,6 +46,7 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
      * @throws IllegalArgumentException
      * @throws IOException
      */
+    @SuppressFBWarnings("HTTP_PARAMETER_POLLUTION") //Is an api specifically for pulling remote content
     @IPSJexlMethod(description="Returns a status code for a url",
             params={
                     @IPSJexlParam(name="urlString", description="url to pull content from, include query params if desired")
@@ -199,6 +202,7 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
      * @throws IllegalArgumentException
      * @throws IOException
      */
+    @SuppressFBWarnings("HTTP_PARAMETER_POLLUTION") //Is an API method for returning remote JSON content in a template.
     @IPSJexlMethod(description="Returns JSONObject based on a URL.",
         params={
             @IPSJexlParam(name="urlString", description="url to pull content from, include query params if desired")
@@ -211,8 +215,9 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
         String responseBody;
         try{
             int statusCode = client.executeMethod(get);
-            if (statusCode != HttpStatus.SC_OK) {
-                log.debug("Get failed" + get.getStatusLine() + ": " + urlString);
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_MODIFIED) {
+                log.warn("JEXL: getRemoteJSONContent request was not 200/304: URL: {} Status Code: {} Status Message: {}" ,
+                        statusCode, get.getStatusLine() , urlString);
             }
             // execute method and handle any error responses.
             responseBody = get.getResponseBodyAsString();
@@ -221,8 +226,7 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
             get.releaseConnection();
         }
 
-        JSONObject jsonObject = JSONObject.fromObject(responseBody);
-        return jsonObject;
+        return JSONObject.fromObject(responseBody);
     }
 
     /**
@@ -234,6 +238,7 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
      * @throws IllegalArgumentException
      * @throws IOException
      */
+    @SuppressFBWarnings("HTTP_PARAMETER_POLLUTION") //Is an API
     @IPSJexlMethod(description="Returns JSONObject based on a URL.",
         params={
             @IPSJexlParam(name="urlString", description="url to pull content from, include query params if desired"),
@@ -256,8 +261,9 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
                 defaultcreds);
 
             int statusCode = client.executeMethod(get);
-            if (statusCode != HttpStatus.SC_OK) {
-                log.debug("Get failed" + get.getStatusLine() + ": " + urlString);
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_MODIFIED) {
+                log.warn("JEXL: getRemoteJSONContent response was not 200/304. URL: {} Status Code: {} Status Message: {}",
+                        urlString, statusCode, get.getStatusLine());
             }
             responseBody = get.getResponseBodyAsString();
         }finally{
@@ -265,8 +271,7 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
             get.releaseConnection();
         }
 
-        JSONObject jsonObject = JSONObject.fromObject(responseBody);
-        return jsonObject;
+        return JSONObject.fromObject(responseBody);
     }
 
     /**
@@ -320,6 +325,7 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
      * @throws IllegalArgumentException
      * @throws IOException
      */
+    @SuppressFBWarnings("HTTP_PARAMETER_POLLUTION") // Is an api method for getting remote data by url
     @IPSJexlMethod(description="Returns JSONObject based on a URL.",
         params={
             @IPSJexlParam(name="urlString", description="url to pull content from, include query params if desired"),
@@ -348,8 +354,9 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
                     defaultcreds);
 
             int statusCode = client.executeMethod(get);
-            if (statusCode != HttpStatus.SC_OK) {
-                log.debug("Get failed" + get.getStatusLine() + ": " + urlString);
+            if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_NOT_MODIFIED) {
+                log.warn("JEXL: getRemoteJSONContent was not 200/304. URL: {} Status Code:{}, Status Message: {}",
+                        urlString, statusCode, get.getStatusLine());
             }
             responseBody = get.getResponseBodyAsString();
         }finally{
@@ -357,8 +364,8 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
             get.releaseConnection();
         }
 
-        JSONObject jsonObject = JSONObject.fromObject(responseBody);
-        return jsonObject;
+        return JSONObject.fromObject(responseBody);
+
     }
 
 
@@ -376,8 +383,9 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
             returns="Returns a JSOUP document")
     public Document getRemoteXMLContent(String urlString)
             throws IllegalArgumentException, IOException {
-        Document doc = Jsoup.connect(urlString).get();
-        return doc;
+
+        return Jsoup.connect(urlString).get();
+
     }
 
     /**
@@ -399,11 +407,11 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
     public org.jsoup.nodes.Document getRemoteXMLContent(String urlString, String username, String password)
             throws IllegalArgumentException, IOException {
         String login = username + ":" + password;
-        String base64login = new String(Base64.encodeBase64(login.getBytes()));
-        Document doc = Jsoup.connect(urlString)
+        String base64login = new String(Base64.encodeBase64(login.getBytes(StandardCharsets.UTF_8)));
+
+        return Jsoup.connect(urlString)
                 .header("Authorization", "Basic " + base64login)
                 .get();
-        return doc;
     }
 
 
@@ -428,8 +436,7 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
         {
             connection = connection.header(entry.getKey(),entry.getValue());
         }
-        Document doc = connection.get();
-        return doc;
+        return connection.get();
     }
 
 
@@ -453,14 +460,13 @@ public class PSORemoteContentTools extends PSJexlUtilBase implements IPSJexlExpr
                                                         String username, String password)
             throws IllegalArgumentException, IOException {
         String login = username + ":" + password;
-        String base64login = new String(Base64.encodeBase64(login.getBytes()));
+        String base64login = new String(Base64.encodeBase64(login.getBytes(StandardCharsets.UTF_8)));
         Connection connection = Jsoup.connect(urlString).header("Authorization", "Basic " + base64login);
         for (Map.Entry<String, String> entry : headers.entrySet())
         {
             connection = connection.header(entry.getKey(),entry.getValue());
         }
-        Document doc = connection.get();
-        return doc;
+        return connection.get();
     }
 
 
