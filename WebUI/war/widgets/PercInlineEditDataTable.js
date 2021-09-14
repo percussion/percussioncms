@@ -196,6 +196,9 @@
 
         function editCol ( nRow, nCol )
         {
+            if(typeof nRow === 'undefined' || nCol === 'undefined'){
+                return;
+            }
             var aData = oTable.fnGetData(nRow);
             var jqTds = $('>td', nRow);
             $(nRow).addClass("perc-edit-mode");
