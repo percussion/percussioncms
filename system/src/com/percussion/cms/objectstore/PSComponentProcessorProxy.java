@@ -24,6 +24,7 @@
 package com.percussion.cms.objectstore;
 
 import com.percussion.cms.PSCmsException;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +32,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Element;
 
 /**
  * This class presents the interfaces supported by the processor classes, but
@@ -122,7 +121,7 @@ public class PSComponentProcessorProxy  extends PSProcessorProxy
       Map procGroups = createComponentProcessorGroups(components);
 
       PSProcessingStatistics totals = new PSProcessingStatistics(0,0);
-      List resultComps = new ArrayList();
+      List<IPSDbComponent> resultComps = new ArrayList<>();
       Iterator iter = procGroups.keySet().iterator();
       while (iter.hasNext())
       {
@@ -200,7 +199,7 @@ public class PSComponentProcessorProxy  extends PSProcessorProxy
    public void reorder(int insertAt, List comp)
       throws PSCmsException
    {
-
+      throw new UnsupportedOperationException("Not Implemented");
    }
    /**
     * Helper method that overrides the base class version to return a specfic
