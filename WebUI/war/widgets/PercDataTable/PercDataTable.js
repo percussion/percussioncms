@@ -123,8 +123,9 @@
             paginator.find('.perc-datatable-paginator-pages-label').removeClass('paginate_button');
             // add page number attribute to each page for QA
             var pageNumbers = paginator.find("span span.paginate_button, span span.paginate_active");
+
             $.each(pageNumbers, function(index, element){
-                $(element).attr("perc-page", index + 1);
+                $(element).attr("perc-page", index + 1 );
             });
             if(!totalPages || totalPages < 2)
                 paginator.hide();

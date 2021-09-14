@@ -328,6 +328,17 @@
                 </then>
             </if>
             <propertyfile file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties">
+                <entry key="encryption.type" default="ENC" />
+                <entry key="contentSecurityPolicy" default="default-src * ; img-src * 'self' 'unsafe-inline' 'unsafe-eval'; font-src * 'unsafe-inline' 'unsafe-eval' ; script-src * 'unsafe-inline' 'unsafe-eval' ; style-src * 'unsafe-inline' 'unsafe-eval' ; frame-src * 'self' 'unsafe-inline' 'unsafe-eval'; frame-ancestors * 'self';" />
+                <entry key="cspReportOnly" default="false" />
+                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
+                <entry key="xssProtection" default="true" />
+                <entry key="accessControlAllowedOrigins" default="*" />
+                <entry key="hstsIncludeSubDomains" default="true" />
+                <entry key="hstsMaxAgeSeconds" default="31536000" />
+                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
+                <entry key="disableCSRFProtection" default="false" />
+                <entry key="referrerPolicy" default="strict-origin-when-cross-origin" />
                 <!-- Entries to remove -->
                 <entry key="Access-Control-Allow-Origin" operation="del" />
                 <entry key="ContentSecurityPolicy" operation="del" />
