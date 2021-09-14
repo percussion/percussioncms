@@ -30,6 +30,10 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,11 +46,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 
@@ -293,7 +293,7 @@ public abstract class PSProcessorProxy
             String procClass =
                   PSXMLDomUtil.checkAttribute(processorEl, "className", true);
             foundProc = true;
-            Map processorProps = new HashMap();
+            Map<String,Object> processorProps = new ConcurrentHashMap<>();
             if (null == cfg)
             {
                cfg = new ProcessorConfig(procType, procClass);
@@ -654,7 +654,7 @@ public abstract class PSProcessorProxy
 
             return o;
          }
-         catch (ClassNotFoundException cnfe)
+         catch (ClassNotFoundException | InstantiationException | IllegalAccessException cnfe)
          {
             String[] args =
             {
@@ -664,30 +664,7 @@ public abstract class PSProcessorProxy
             };
             throw new PSCmsException(IPSCmsErrors.PROCESSOR_INSTANTIATION_ERROR,
                   args);
-         }
-         catch (InstantiationException ie)
-         {
-            String[] args =
-            {
-               name,
-               compType,
-               ie.getLocalizedMessage()
-            };
-            throw new PSCmsException(IPSCmsErrors.PROCESSOR_INSTANTIATION_ERROR,
-                  args);
-         }
-         catch (IllegalAccessException iae)
-         {
-            String[] args =
-            {
-               name,
-               compType,
-               iae.getLocalizedMessage()
-            };
-            throw new PSCmsException(IPSCmsErrors.PROCESSOR_INSTANTIATION_ERROR,
-                  args);
-         }
-         catch (InvocationTargetException ite)
+         } catch (InvocationTargetException ite)
          {
             Throwable origException = ite.getTargetException();
             String msg = origException.getLocalizedMessage();
@@ -780,14 +757,14 @@ public abstract class PSProcessorProxy
        * See {@link #getComponentPropertySets()} for description of contents.
        * Never <code>null</code>.
        */
-      private Map m_componentProps = new HashMap();
+      private Map<String,Map<String,Object>> m_componentProps = new ConcurrentHashMap<>();
 
       /**
        * Never <code>null</code>. Each time {@link #getProcessor(String)}
        * instantiates a new processor, it will be added to this cache.
        * The key is the class name, the value is the processor instance.
        */
-      private Map m_cachedProcs = new HashMap();
+      private Map<String,Object> m_cachedProcs = new ConcurrentHashMap<>();
 
       /**
        * Never <code>null</code>. Contains 1 entry for every component added
@@ -795,6 +772,6 @@ public abstract class PSProcessorProxy
        * processor class name. Assumed that entries are never <code>null</code>
        * or empty.
        */
-      private Map m_procClassNames = new HashMap();
+      private Map<String,String> m_procClassNames = new ConcurrentHashMap<>();
    }
 }
