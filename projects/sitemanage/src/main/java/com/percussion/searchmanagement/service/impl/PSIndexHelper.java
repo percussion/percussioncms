@@ -52,7 +52,7 @@ public class PSIndexHelper implements Runnable
 {
     private static final Logger log = LogManager.getLogger(PSIndexHelper.class);
 
-    private PSSearchIndexEventQueue queue = PSSearchIndexEventQueue.getInstance();
+    private final PSSearchIndexEventQueue queue = PSSearchIndexEventQueue.getInstance();
 
     private CopyOnWriteArrayList<PSLocator> ids;
 
