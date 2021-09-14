@@ -136,10 +136,16 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
             if (ms_instance == null)
             {
                ms_instance = new PSSearchIndexEventQueue();
-               PSSearchConfig config = PSServer.getServerConfiguration().getSearchConfig();
-               ms_searchEnabled = config.isFtsEnabled();
+
             }
+
+
          }
+      }
+
+      if(PSServer.isInitialized()) {
+         PSSearchConfig config = PSServer.getServerConfiguration().getSearchConfig();
+         ms_searchEnabled = config.isFtsEnabled();
       }
 
       return ms_instance;
