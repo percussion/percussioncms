@@ -554,7 +554,18 @@
         $.fn.dataTableExt.afnSortData['perc-type-date'] = function  ( oSettings, iColumn ) {
             var aData = [];
             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
-                var date = new Date($(td)[0].innerText);
+                var dateTimeArray = Array("", "");
+                var date;
+                var divs = $($(td)[0]).find('div');
+                if(divs.length>1){
+                    //blogs gadget has dates in two divs one for date and other for time.
+                    dateTimeArray[0] = $(divs[0]).text();
+                    dateTimeArray[1] = $(divs[1]).text();
+                    var dateString = dateTimeArray.join(' ');
+                    date = new Date(dateString);
+                }else{
+                    date = new Date($(td)[0].innerText);
+                }
                 aData.push(date);
             });
             return aData;
