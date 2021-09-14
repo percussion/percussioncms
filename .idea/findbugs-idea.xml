@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FindBugs-IDEA">
-    <analysisEffort>max</analysisEffort>
     <minRank>15</minRank>
     <hiddenBugCategory>
-      <category name="BAD_PRACTICE" />
-      <category name="CORRECTNESS" />
       <category name="EXPERIMENTAL" />
       <category name="I18N" />
       <category name="NOISE" />
-      <category name="STYLE" />
     </hiddenBugCategory>
     <plugins>
       <plugin id="com.h3xstream.findsecbugs" enabled="true" bundled="true" />

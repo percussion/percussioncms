@@ -563,8 +563,6 @@ public class PSSiteManager
       // prevent lock on read with double checked locking
       if (rval == null)
       {
-         synchronized (locationSchemeMap)
-         {
             rval = locationSchemeMap.get(key);
             if (rval==null)
             {   
@@ -578,7 +576,6 @@ public class PSSiteManager
                   rval = c.list();
                   locationSchemeMap.put(key, rval);
 
-            }
          }
       }
       return rval;

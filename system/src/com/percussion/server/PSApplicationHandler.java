@@ -385,8 +385,6 @@ public class PSApplicationHandler implements IPSRootedHandler
          (IPSRequestHandler)m_dataHandlers.remove(ds.getName().toLowerCase());
       if (rh != null)
       {
-         synchronized (m_dataHandlerMap)
-         {
             PSRequestor requestor = ds.getRequestor();
             if (requestor != null)
             {
@@ -419,7 +417,6 @@ public class PSApplicationHandler implements IPSRootedHandler
                      }
                   }
                }
-            }
          }
 
          PSServer.notifyHandlerShutdownListeners(rh);
@@ -1233,10 +1230,6 @@ public class PSApplicationHandler implements IPSRootedHandler
     */
    private void shutdownDataHandlers()
    {
-   // because we can now modify the data handlers while an application is
-   // still running we synchronize so that we don't fail going through the enumeration
-      synchronized (m_dataHandlers)
-      {
          // shut down all the data handlers
          for (Enumeration e = m_dataHandlers.elements(); e.hasMoreElements(); )
          {
@@ -1246,7 +1239,6 @@ public class PSApplicationHandler implements IPSRootedHandler
          }
          m_dataHandlers.clear();
          m_dataHandlerMap.clear();
-     }
    }
 
 

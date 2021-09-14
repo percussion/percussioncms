@@ -24,6 +24,7 @@
 package com.percussion.services.publisher.impl;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.publisher.PSPublisherUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -46,7 +47,6 @@ import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBaseHttpUtils;
 import com.percussion.util.PSUrlUtils;
-import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.timing.PSStopwatch;
 import org.apache.commons.lang.StringUtils;
@@ -258,7 +258,7 @@ public class PSContentListServlet extends HttpServlet
          f.flush();
          f.close();
          writer.close();
-         w.print(writer.toString());
+         w.print(writer);
          sw.stop();
          String info = MessageFormat.format(
                "Created content list {0} publication id {3}\n" +
@@ -271,20 +271,16 @@ public class PSContentListServlet extends HttpServlet
       catch (Exception e)
       {
 
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         response.setContentType("text/plain");
-         PrintWriter w;
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
          try
          {
-            Throwable orig = PSExceptionHelper.findRootCause(e, true);
-            log.error("Content list failure", orig);
-            w = response.getWriter();
-            w.println(e.getLocalizedMessage());
+            response.sendError(500);
          }
          catch (IOException e1)
          {
-            throw new RuntimeException(e1);
+            response.setStatus(500);
          }
       }
    }
@@ -367,7 +363,7 @@ public class PSContentListServlet extends HttpServlet
             .longValue()));
       formatter.writeCharacters("\n    ");
       List<Integer> ids = new ArrayList<>();
-      ids.add(new Integer(cid.getContentId()));
+      ids.add(cid.getContentId());
       PSComponentSummary s = cms.loadComponentSummaries(ids).get(0);
       formatter.writeCharacters("\n    ");
       formatter.writeStartElement("title");
@@ -432,7 +428,7 @@ public class PSContentListServlet extends HttpServlet
       XMLStreamWriter f = ofact.createXMLStreamWriter(writer);
       f.writeStartDocument();
       f.writeCharacters("\n");
-      f.writeStartElement("contentlist");
+      f.writeStartElement(ms_region);
       f.writeAttribute("context", context);
       f.writeAttribute("deliverytype", delivery);
       return f;

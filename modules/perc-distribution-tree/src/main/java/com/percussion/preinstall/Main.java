@@ -131,13 +131,13 @@ public class Main {
             if(existingVersion != null) {
                 String major = existingVersion.getProperty("majorVersion");
                 String minor = existingVersion.getProperty("minorVersion");
-                log.info("Major Version Found:" + major);
-                log.info("Minor Version Found:" + minor);
+                log.info("Major Version Found: {}" , major);
+                log.info("Minor Version Found: {}" ,minor);
                 try {
                     majorVersion = Integer.parseInt(major);
                     minorVersion = Integer.parseInt(minor);
                 }catch (NumberFormatException ne){
-                    log.info("Invalid Version Nos in Version File");
+                    log.warn("Invalid Version number in Version File");
                 }
             }
 

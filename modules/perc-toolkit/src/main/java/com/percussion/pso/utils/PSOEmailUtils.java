@@ -1,6 +1,7 @@
 package com.percussion.pso.utils;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
@@ -91,7 +92,7 @@ public class PSOEmailUtils {
 			 if(bcc_line != null)
 			 	message.addRecipients(Message.RecipientType.BCC, splitEmailAddresses(bcc_line).toArray(new Address[0]));
 
-			 message.setSubject(subject);
+			 message.setSubject(SecureStringUtils.stripAllLineBreaks(subject));
 	         message.setText(body);
 	         Transport.send(message);
 	  }

@@ -4646,10 +4646,8 @@ public class PSServer {
          // if this app exists, it must be in the master hash
          PSApplicationHandler rh = (PSApplicationHandler)ms_RequestHandlers.get(appKey);
          if (rh != null){
-            synchronized (ms_RequestHandlers){
                ms_RequestHandlers.remove(appKey);
                ms_RequestHandlers.put("data-" + newName.toLowerCase(), rh);
-            }
          }
       }
 

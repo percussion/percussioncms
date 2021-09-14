@@ -224,8 +224,6 @@ public class Util
      */
     final static ConcurrentHashMap getList(ConcurrentHashMap cntxt_list, Object cntxt)
     {
-	synchronized (cntxt_list)
-	{
 	    ConcurrentHashMap list = (ConcurrentHashMap) cntxt_list.get(cntxt);
 	    if (list == null)
 	    {
@@ -234,7 +232,6 @@ public class Util
 	    }
 
 	    return list;
-	}
     }
 
 
@@ -883,7 +880,7 @@ public class Util
 	synchronized (http_parse_lock)
 	{
 	    if (parse_1123 == null)
-		setupParsers();
+			setupParsers();
 	}
 
 	try

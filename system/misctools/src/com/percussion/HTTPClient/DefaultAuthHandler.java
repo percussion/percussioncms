@@ -1420,7 +1420,7 @@ class SimpleAuthPopup implements AuthorizationPrompter
 	    line3 = "Authentication Scheme: " + challenge.getScheme();
 	}
 
-	synchronized(getClass())
+	synchronized(DefaultAuthHandler.class)
 	{
 	    if (inp == null)
 		inp = new BasicAuthBox();
