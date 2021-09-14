@@ -23,9 +23,11 @@
  */
 package com.percussion.sitemanage.importer;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
@@ -46,8 +48,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -82,14 +82,15 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                 try {
                     site = siteDao.find(siteName);
                     if (site == null) {
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site: " + siteName);
+                        log.error("Couldn't load site: {}", siteName);
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site.");
                         return;
                     }
                     templateId = site.getBaseTemplateName();
                 } catch (PSDataServiceException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't load site: " + siteName);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't load site.");
                     return;
                 }
             }
@@ -104,9 +105,9 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                         logs = logDao.findAll(templateId, PSLogObjectType.TEMPLATE.name());
                     }
                 } catch (PSDataServiceException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server Error");
                     return;
                 }
             }
@@ -126,9 +127,11 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                     siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
                     site = siteDao.find(siteName);
                 } catch (PSDataServiceException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load for template: " + templateName);
+                    log.error("Couldn't load template: {} Error: {}", templateName,
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load template.");
                     return;
                 }
             }
@@ -144,8 +147,9 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                     List<String> itemIds = folderHelper.findItemIdsByPath(site.getFolderPath());
                     pageLogIds = logDao.findLogIdsForObjects(itemIds, PSLogObjectType.PAGE.name());
                 } catch (Exception e) {
-                    log.error("Failed to load page import logs for Site: {}, Error: {}", siteName, e.getMessage());
-                    log.debug(e.getMessage(), e);
+                    log.error("Failed to load page import logs for Site: {}, Error: {}", siteName,
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
 
@@ -154,7 +158,8 @@ public class PSSiteImportLogViewer extends HttpServlet  {
             // For each, get and stream output - .25
 
             response.setContentType("text/plain");
-            response.setHeader("Content-Disposition", "attachment;filename=" + siteName + "-" + templateName + "-importlog.txt");
+            response.setHeader("Content-Disposition", "attachment;filename=" + SecureStringUtils.stripAllLineBreaks(
+                    siteName) + "-" + SecureStringUtils.stripAllLineBreaks(templateName) + "-importlog.txt");
             PrintWriter out = response.getWriter();
             if (templateLogEntry != null) {
                 out.println(templateLogEntry.getLogData());
@@ -177,13 +182,7 @@ public class PSSiteImportLogViewer extends HttpServlet  {
     private PSImportLogEntry getLatestLogEntry(List<PSImportLogEntry> logs)
     {
         PSImportLogEntry logEntry;
-        Collections.sort(logs, new Comparator<PSImportLogEntry>(){
-            @Override
-            public int compare(PSImportLogEntry log1, PSImportLogEntry log2)
-            {
-                return log1.getLogEntryDate().compareTo(log2.getLogEntryDate());
-            }
-        });
+        logs.sort((log1, log2) -> log1.getLogEntryDate().compareTo(log2.getLogEntryDate()));
         
         logEntry = logs.get(logs.size() - 1);
         return logEntry;
@@ -193,84 +192,85 @@ public class PSSiteImportLogViewer extends HttpServlet  {
      * Call doGet method
      * @author federicoromanelli
      * @throws IOException
-     */    
+     */
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException {
         doGet(req, resp);
     }
     
     /* Getters and Setters to inject spring dependencies */
-    private IPSImportLogDao logDao;
-    private IPSTemplateService templateService;
-    private IPSiteDao siteDao;
-    private IPSPageService pageService;
-    private IPSSiteManager siteMgr;
-    private IPSIdMapper idMapper;
-    private IPSFolderHelper folderHelper;
+    private static IPSImportLogDao logDao;
+    private static IPSTemplateService templateService;
+    private static IPSiteDao siteDao;
+    private static IPSPageService pageService;
+    private static IPSSiteManager siteMgr;
+    private static IPSIdMapper idMapper;
+    private static IPSFolderHelper folderHelper;
 
-    public IPSImportLogDao getLogDao()
+    public static IPSImportLogDao getLogDao()
     {
         return logDao;
     }
 
-    public void setLogDao(IPSImportLogDao logDao)
+    public static void setLogDao(IPSImportLogDao logDao)
     {
-        this.logDao = logDao;
+        PSSiteImportLogViewer.logDao = logDao;
     }
 
-    public IPSTemplateService getTemplateService()
+    public static IPSTemplateService getTemplateService()
     {
         return templateService;
     }
 
-    public void setTemplateService(IPSTemplateService templateService)
+    public static void setTemplateService(IPSTemplateService templateService)
     {
-        this.templateService = templateService;
+        PSSiteImportLogViewer.templateService = templateService;
     }
 
-    public IPSiteDao getSiteDao()
+    public static IPSiteDao getSiteDao()
     {
         return siteDao;
     }
 
-    public void setSiteDao(IPSiteDao siteDao)
+    public static void setSiteDao(IPSiteDao siteDao)
     {
-        this.siteDao = siteDao;
+        PSSiteImportLogViewer.siteDao = siteDao;
     }
 
-    public IPSPageService getPageService()
+    public static IPSPageService getPageService()
     {
         return pageService;
     }
 
-    public void setPageService(IPSPageService pageService)
+    public static void setPageService(IPSPageService pageService)
     {
-        this.pageService = pageService;
+        PSSiteImportLogViewer.pageService = pageService;
     }
 
-    public IPSSiteManager getSiteMgr()
+    public static IPSSiteManager getSiteMgr()
     {
         return siteMgr;
     }
 
-    public void setSiteMgr(IPSSiteManager siteMgr)
+    public static void setSiteMgr(IPSSiteManager siteMgr)
     {
-        this.siteMgr = siteMgr;
+        PSSiteImportLogViewer.siteMgr = siteMgr;
     }
 
-    public IPSIdMapper getIdMapper()
+    public static IPSIdMapper getIdMapper()
     {
         return idMapper;
     }
 
-    public void setIdMapper(IPSIdMapper idMapper)
+    public static void setIdMapper(IPSIdMapper idMapper)
     {
-        this.idMapper = idMapper;
+        PSSiteImportLogViewer.idMapper = idMapper;
     }
     
-    public void setFolderHelper(IPSFolderHelper folderHelper)
+    public static void setFolderHelper(IPSFolderHelper folderHelper)
     {
-        this.folderHelper = folderHelper;
+        PSSiteImportLogViewer.folderHelper = folderHelper;
     }
 
     /**
