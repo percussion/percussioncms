@@ -107,7 +107,7 @@ div.datatables_info {
 
 .dataTables_paginate.paging_full_numbers span span.paginate_active,
 .dataTables_paginate.paging_full_numbers span span.paginate_button {
-    padding-left : 4;
+    padding-left : 4px;
     cursor : pointer;
     color : #0099CC;
 }
