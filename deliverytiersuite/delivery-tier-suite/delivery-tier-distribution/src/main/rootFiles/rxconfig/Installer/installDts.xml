@@ -323,26 +323,15 @@
                     <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties"/>
                 </not>
                 <then>
+                    <copy file="${install.src}/Deployment/Server/conf/perc/perc-security.properties" tofile="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties" failonerror="false" verbose="true" overwrite="false" force="true"/>
                     <touch file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties" verbose="true"/>
                 </then>
             </if>
             <propertyfile file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-security.properties">
-                <entry key="encryption.type" default="ENC" />
-                <entry key="contentSecurityPolicy" default="default-src 'self' *;" />
-                <entry key="cspReportOnly" default="false" />
-                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
-                <entry key="xssProtection" default="true" />
-                <entry key="accessControlAllowedOrigins" default="*" />
-                <entry key="hstsIncludeSubDomains" default="true" />
-                <entry key="hstsMaxAgeSeconds" default="31536000" />
-                <entry key="xframeOptionsPolicy" default="SAMEORIGIN" />
-                <entry key="disableCSRFProtection" default="false" />
-                <entry key="referrerPolicy" default="strict-origin-when-cross-origin" />
                 <!-- Entries to remove -->
                 <entry key="Access-Control-Allow-Origin" operation="del" />
                 <entry key="ContentSecurityPolicy" operation="del" />
             </propertyfile>
-
             <if>
                 <isfalse value="@{upgrade}"/>
                 <then>
