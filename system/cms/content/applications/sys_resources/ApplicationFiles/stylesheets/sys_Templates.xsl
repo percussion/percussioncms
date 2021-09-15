@@ -3011,11 +3011,13 @@ onchange    %Script;       #IMPLIED
          </xsl:call-template>
          // <![CDATA[
             readonly = readonly == 'true' ? true : false;
-            var siteName = parent.$.PercNavigationManager.getSiteName();
-            siteurl = treeSrcUrl + "?" + "sitename="+ siteName + "&rootpath="+rootpath;
+            if(typeof parent.$ !== 'undefined'){
+               var siteName = parent.$.PercNavigationManager.getSiteName();
+               siteurl = treeSrcUrl + "?" + "sitename="+ siteName + "&rootpath="+rootpath;
 
-            var opts = {url : siteurl, selected : selectedValues, paramName : paramName, readonly : readonly};
-            $('#' + paramName + '-tree').perc_checkboxTree(opts);
+               var opts = {url : siteurl, selected : selectedValues, paramName : paramName, readonly : readonly};
+               $('#' + paramName + '-tree').perc_checkboxTree(opts);
+            }
         });
         })(jQuery);
         // ]]>
