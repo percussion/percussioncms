@@ -514,7 +514,7 @@
      */
     function createGadget(jsonGadget)
     {
-        if(!jsonGadget.url.contains("perc_optimizer_keywords")) {
+        if(!jsonGadget.url.includes("perc_optimizer_keywords")) {
             var args = {
                 specUrl: makeLocalUrl(jsonGadget.url),
                 instanceId: jsonGadget.instanceId
