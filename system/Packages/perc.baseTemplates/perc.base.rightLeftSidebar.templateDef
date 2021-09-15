@@ -38,7 +38,7 @@
             &lt;div class="clear-float"&gt;&lt;/div&gt;       
          &lt;/div&gt;
       &lt;/div&gt; 
-#perc_templateFooter()##</template>
+#perc_templateFooter()</template>
     <template-type>Shared</template-type>
     <type>TEMPLATE</type>
     <variant>false</variant>
