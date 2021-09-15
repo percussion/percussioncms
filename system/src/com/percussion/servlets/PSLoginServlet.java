@@ -24,7 +24,11 @@
 
 package com.percussion.servlets;
 
+import com.percussion.auditlog.PSActionOutcome;
+import com.percussion.auditlog.PSAuditLogService;
+import com.percussion.auditlog.PSAuthenticationEvent;
 import com.percussion.content.IPSMimeContentTypes;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.IPSSecurityErrors;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -34,25 +38,26 @@ import com.percussion.server.PSServer;
 import com.percussion.server.PSUserSessionManager;
 import com.percussion.tools.PSURIEncoder;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import com.percussion.auditlog.PSActionOutcome;
-import com.percussion.auditlog.PSAuditLogService;
-import com.percussion.auditlog.PSAuthenticationEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
+import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 /**
@@ -71,7 +76,7 @@ public class PSLoginServlet extends HttpServlet
     * Serial version id
     */
    private static final long serialVersionUID = 1L;
-   private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
+   private final PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
    private PSAuthenticationEvent psAuthenticationEvent;
 
 
@@ -170,7 +175,7 @@ public class PSLoginServlet extends HttpServlet
    }
 
    /**
-    * Handles thSte logout request.
+    * Handles the logout request.
     *
     * @param request The current request, assumed not <code>null</code>.
     * @param response The current response, assumed not <code>null</code>.
@@ -223,7 +228,7 @@ public class PSLoginServlet extends HttpServlet
 
       // Checking for maximum users allowed in the system, if reached maximum, then don't allow more users
          if(!PSUserSessionManager.checkIfNewUserAllowed()){
-            String errorText = "Maximum number of users are logged in,try again after some time!!";
+            String errorText = "Maximum number of users are logged in, try again after some time!!";
 
             // add error param
             request = new HttpServletRequestWrapper(request) {
@@ -245,8 +250,7 @@ public class PSLoginServlet extends HttpServlet
 
       if (request.getMethod().equalsIgnoreCase("POST"))
       {
-         PSRequest psreq = (PSRequest) PSRequestInfo
-                 .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
+         PSRequest psreq = (PSRequest) getRequestInfo(KEY_PSREQUEST);
 
          if (psreq == null)
          {
@@ -321,9 +325,8 @@ public class PSLoginServlet extends HttpServlet
       catch (URISyntaxException e)
       {
          log.error("Bad redirect uri: {} , Error : {} ",  uri, e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         rvalue = false;
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       if(PSServer.isRequestBehindProxy(request)){
