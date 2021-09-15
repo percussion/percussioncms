@@ -95,6 +95,16 @@ public class SecureStringUtils {
         return DefaultEncoder.getInstance().encodeForLDAP(query,encodeWildcards);
     }
 
+    /**
+     * Use this method to encode a string provided externally for JavaScript / JSON.
+     *
+     * @param s The string to encode
+     * @return Returns the supplied string encoded for a JSON
+     */
+    public static String sanitizeForJson(String s) {
+        return DefaultEncoder.getInstance().encodeForJavaScript(s);
+    }
+
     public enum DatabaseType{
         MYSQL,
         ORACLE,
