@@ -514,45 +514,43 @@
      */
     function createGadget(jsonGadget)
     {
-        var args = {
-            specUrl: makeLocalUrl(jsonGadget.url),
-            instanceId: jsonGadget.instanceId
-        };
-        var gadgetObj = gadgets.container.createGadget(args);
-        gadgets.container.addGadget(gadgetObj);
-        jsonGadget.instanceId = gadgetObj.id;
-        createGadgetHTML(jsonGadget);
-        getGadgetMeta([{
-                "url": makeLocalUrl(jsonGadget.url),
-                "moduleId": gadgetObj.id
-            }], [gadgets.container.userPrefStore.getPrefs(gadgetObj)], function(data)
-            {
-                var meta = data.gadgets[0];
-                var prefs = meta.userPrefs;
-                var prefCount = 0;
-                for (let c in prefs)
-                {
-                    prefCount++;
-                } // Check if user prefs has values
-                gadgetObj.title = meta.title;
-                $("#gid_" + gadgetObj.id).attr("name", meta.title);
-                gadgetObj.height = meta.height;
-                gadgetObj.width = meta.width;
-                gadgetObj.hasPrefs = prefCount > 0;
-                gadgetObj.metaKey = dashboardConfigMetaKey + ".mid." + gadgetObj.id + ".";
+        if(!jsonGadget.url.contains("perc_optimizer_keywords")) {
+            var args = {
+                specUrl: makeLocalUrl(jsonGadget.url),
+                instanceId: jsonGadget.instanceId
+            };
+            var gadgetObj = gadgets.container.createGadget(args);
+            gadgets.container.addGadget(gadgetObj);
+            jsonGadget.instanceId = gadgetObj.id;
+            createGadgetHTML(jsonGadget);
+            getGadgetMeta([{
+                    "url": makeLocalUrl(jsonGadget.url),
+                    "moduleId": gadgetObj.id
+                }], [gadgets.container.userPrefStore.getPrefs(gadgetObj)], function (data) {
+                    var meta = data.gadgets[0];
+                    var prefs = meta.userPrefs;
+                    var prefCount = 0;
+                    for (let c in prefs) {
+                        prefCount++;
+                    } // Check if user prefs has values
+                    gadgetObj.title = meta.title;
+                    $("#gid_" + gadgetObj.id).attr("name", meta.title);
+                    gadgetObj.height = meta.height;
+                    gadgetObj.width = meta.width;
+                    gadgetObj.hasPrefs = prefCount > 0;
+                    gadgetObj.metaKey = dashboardConfigMetaKey + ".mid." + gadgetObj.id + ".";
 
-                gadgets.container.layoutManager.addGadgetChromeId(gadgetObj.id, "gid_" + gadgetObj.id);
-                gadgets.container.renderGadget(gadgetObj);
-                addMenu($("#gid_" + gadgetObj.id));
-                if (!jsonGadget.expanded)
-                {
-                    minimizeGadget($("#gid_" + gadgetObj.id));
+                    gadgets.container.layoutManager.addGadgetChromeId(gadgetObj.id, "gid_" + gadgetObj.id);
+                    gadgets.container.renderGadget(gadgetObj);
+                    addMenu($("#gid_" + gadgetObj.id));
+                    if (!jsonGadget.expanded) {
+                        minimizeGadget($("#gid_" + gadgetObj.id));
+                    }
+                    makeDashboardGadgetsDraggable($("#gid_" + gadgetObj.id));
                 }
-                makeDashboardGadgetsDraggable($("#gid_" + gadgetObj.id));
-            }
-
-        );
-        return gadgetObj.id;
+            );
+            return gadgetObj.id;
+        }
     }
 
     /**
@@ -1500,7 +1498,7 @@
      */
     function addGadgetToDashboard(gadgetName, gadgetUrl, columnIndex, rowIndex, feedback)
     {
-        if (isFeedbackVisible(feedback, rowIndex)) addGadget(gadgetUrl, columnIndex, rowIndex);
+            if (isFeedbackVisible(feedback, rowIndex)) addGadget(gadgetUrl, columnIndex, rowIndex);
     }
 
     /**
