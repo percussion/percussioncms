@@ -472,6 +472,7 @@ public class PSUserPrefFormContent {
 
    	  if(enumValue != null && !StringUtils.isEmpty(enumValue)) {
 		 	  String url = getEnumUrlValue(enumValue);
+
 		  try {
 		  String result;
 		  switch(url){
@@ -482,7 +483,15 @@ public class PSUserPrefFormContent {
 			  	result = getWorkflows();
 			  	break;
 			  case WORKFLOW_STATE_URL:
-			  	result=getWorkflowStates("");
+				  int index = url.indexOf('@');
+				  String fieldValue="*";
+				  if (index != -1)
+				  {
+					  String replaceField = url.substring(index + 1);
+					  replaceField = replaceField.substring(0, replaceField.indexOf('@'));
+					  fieldValue = getFieldValue(m_userPrefs.get(replaceField));
+				  }
+			  	result=getWorkflowStates(fieldValue);
 			  	break;
 			  default:
 			  	return;
