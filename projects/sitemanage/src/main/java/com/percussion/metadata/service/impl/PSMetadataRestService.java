@@ -148,10 +148,10 @@ public class PSMetadataRestService
         }
     }
    
-   private IPSMetadataService service;
+   private final IPSMetadataService service;
    
    /**
     * Logger for this service.
     */
-   public static Logger log = LogManager.getLogger(PSMetadataRestService.class);
+   private static final Logger log = LogManager.getLogger(PSMetadataRestService.class);
 }
