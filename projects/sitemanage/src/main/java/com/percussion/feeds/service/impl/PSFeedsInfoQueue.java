@@ -30,9 +30,7 @@ import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
-import com.percussion.security.PSEncryptor;
 import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,9 +40,9 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The feed info queue is a persistent queue that sends feed descriptors to the feed service in
@@ -52,19 +50,20 @@ import java.util.*;
  * @author erikserating
  *
  */
+@Deprecated //TODO: Refactor the feeds nonsense.  It should just be publishing feeds at publish time - not queuing and using a background thread.
 public class PSFeedsInfoQueue implements InitializingBean
 {
     /**
      * The metadata service, initialized in the ctor, never <code>null</code>
      * after that.
      */
-    private IPSMetadataService metadataService;
+    private final IPSMetadataService metadataService;
 
     /**
      * The delivery info service, initialized in the ctor, never <code>null</code>
      * after that.
      */
-    private IPSDeliveryInfoService deliveryInfoService;
+    private final IPSDeliveryInfoService deliveryInfoService;
 
     /**
      * Logger for this service.
