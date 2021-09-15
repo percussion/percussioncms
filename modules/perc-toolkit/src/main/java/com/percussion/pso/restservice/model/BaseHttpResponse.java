@@ -10,6 +10,7 @@
 package com.percussion.pso.restservice.model;
 
 import org.apache.commons.httpclient.Header;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class BaseHttpResponse {
 
@@ -64,7 +65,7 @@ public abstract class BaseHttpResponse {
 		}
 		
 		//If the last modified header isn't set, we'll use the date of the response.
-		if(ret == ""){
+		if(StringUtils.isEmpty(ret)){
 			for(int i = 0;i<headers.length;i++){
 				if(headers[i].getName().equals("Date")){
 					ret = headers[i].getValue(); 
