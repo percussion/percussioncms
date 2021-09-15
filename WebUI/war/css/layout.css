@@ -757,3 +757,8 @@ input:-moz-placeholder { color:#BCBCBC; }
     display: block;
     position: relative;
 }
+
+/*CMS-8508 : Overriding the z-index coming from optimizer to use the CMS provided z-index*/
+.ui-widget-overlay[style] {
+    z-index: 4999 !important;
+}
