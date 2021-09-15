@@ -31,8 +31,6 @@ import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
 import com.percussion.security.SecureStringUtils;
-import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSApplicationHandler;
 import com.percussion.server.PSBaseResponse;
@@ -41,7 +39,6 @@ import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.PSUserSession;
 import com.percussion.server.PSUserSessionManager;
-import com.percussion.server.ThreadLocalProperties;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSRoleMgrLocator;
 import com.percussion.services.security.PSServletRequestWrapper;
@@ -55,15 +52,6 @@ import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.tools.PSPatternMatcher;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-import com.percussion.xsl.encoding.PSBig5CharacterSet;
-import com.percussion.xsl.encoding.PSCp1252CharacterSet;
-import com.percussion.xsl.encoding.PSEUC_CNCharacterSet;
-import com.percussion.xsl.encoding.PSEUC_JPCharacterSet;
-import com.percussion.xsl.encoding.PSEUC_KRCharacterSet;
-import com.percussion.xsl.encoding.PSEUC_TWCharacterSet;
-import com.percussion.xsl.encoding.PSSJISCharacterSet;
-import com.percussion.xsl.encoding.PSUTF16BECharacterSet;
-import com.percussion.xsl.encoding.PSUTF16LECharacterSet;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -94,7 +82,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.transform.TransformerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -2176,60 +2163,6 @@ public class PSSecurityFilter implements Filter
       return m_configuredEntries;
    }
 
-   /**
-    * Define system properties needed for Rhythmyx
-    */
-   private static void defineSystemProperties()
-   {
-   
-      String parser = PSSecureXMLUtils.getSecuredSaxParserFactory(
-                      new PSXmlSecurityOptions(
-                              true,
-                              true,
-                              true,
-                              false,
-                              true,
-                              false
-                      )
-              )
-              .getClass().getName();
-      String transformer = TransformerFactory.newInstance().getClass().getName();
-      
-      ThreadLocalProperties.setupProperties();
-    
-      ms_log.info("System SAXParserFactory = {} setting to com.percussion.xml.PSSaxParserFactoryImpl", parser);
-      ms_log.info("System TransformerFactory = {} setting to com.icl.saxon.TransformerFactoryImpl", transformer);
 
-   }
 
-   /**
-    * Defines additional character encodings for the Saxon XSLT processor, by
-    * setting System properties that identify the class to use.
-    */
-   private static void defineSaxonCharacterencodings()
-   {
-      System.setProperty("encoding.windows-1252", PSCp1252CharacterSet.class
-            .getName());
-      System.setProperty("encoding.Big5", PSBig5CharacterSet.class.getName());
-      System.setProperty("encoding.SJIS", PSSJISCharacterSet.class.getName());
-      System.setProperty("encoding.EUC-CN", PSEUC_CNCharacterSet.class
-            .getName());
-      System.setProperty("encoding.EUC-JP", PSEUC_JPCharacterSet.class
-            .getName());
-      System.setProperty("encoding.EUC-KR", PSEUC_KRCharacterSet.class
-            .getName());
-      System.setProperty("encoding.EUC-TW", PSEUC_TWCharacterSet.class
-            .getName());
-      System.setProperty("encoding.UTF-16BE", PSUTF16BECharacterSet.class
-            .getName());
-      System.setProperty("encoding.UTF-16LE", PSUTF16LECharacterSet.class
-            .getName());
-   }
-
-   // Performs static Initialization of this class.
-   static
-   {
-      defineSaxonCharacterencodings();
-      defineSystemProperties();
-   }
 }
