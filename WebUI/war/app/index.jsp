@@ -162,7 +162,7 @@
 
 
         String sep = buff.length() == 0 ? "" : "&";
-        String url = proxyURL+"/cm/app/?" + buff.toString() + sep + "view=" + defaultView + "&nc=" + Math.random();
+        String url = proxyURL+"/cm/app/?" + buff.toString() + sep + "view=" + defaultView;
         response.setHeader( "Pragma", "no-cache" );
         response.setHeader( "Cache-Control", "no-cache" );
         response.setDateHeader( "Expires", 0 );
