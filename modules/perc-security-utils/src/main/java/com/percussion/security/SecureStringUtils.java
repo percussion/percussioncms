@@ -561,4 +561,36 @@ public class SecureStringUtils {
             return path.toAbsolutePath().normalize().equals(path2.toAbsolutePath().normalize());
         }
     }
+
+    /**
+     * Tests if the supplied string contains HTML.
+     * @param src A string.  May be null or empty.
+     * @return false if HTML is not detected.  true if it is.
+     */
+    public static boolean isHTML(String src){
+       boolean ret = false;
+        if (src != null && !StringUtils.isEmpty(src)) {
+            if (!src.equals(ESAPI.encoder().encodeForHTML(src))) {
+                ret = true;
+            }
+        }
+       return ret;
+    }
+
+    /**
+     * Tests if the supplied string contains XML.
+     * @param src A string.  May be null or empty.
+     * @return false if XML is not detected.  true if it is.
+     */
+    public static boolean isXML(String src){
+        boolean ret = false;
+        if (src != null && !StringUtils.isEmpty(src)) {
+            if (!src.equals(ESAPI.encoder().encodeForXML(src))) {
+                ret = true;
+            }
+        }
+        return ret;
+    }
+
+
 }

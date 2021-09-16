@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -107,5 +108,21 @@ public class TestSecureStringUtils {
         assertNull(testPath);
 
     }
+
+    @Test
+    public void testIsHTML(){
+        assertFalse(SecureStringUtils.isXML("x"));
+        assertTrue(SecureStringUtils.isXML("<div></div>"));
+        assertTrue(SecureStringUtils.isXML("<a href='#'>x</a>"));
+    }
+
+    @Test
+    public void testIsXML(){
+        assertFalse(SecureStringUtils.isXML("x"));
+        assertTrue(SecureStringUtils.isXML("<div></div>"));
+        assertTrue(SecureStringUtils.isXML("<a href='#'>x</a>"));
+
+    }
+
 
 }
