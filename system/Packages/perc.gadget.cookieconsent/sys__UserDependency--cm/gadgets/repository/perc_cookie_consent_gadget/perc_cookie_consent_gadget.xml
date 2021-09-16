@@ -124,7 +124,7 @@
 
             <!-- advanced button all sites -->
             <div id="delete-btn-all">
-                <button id="advanced-all-sites-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced">Advanced</button>
+                <button id="advanced-all-sites-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced" style = 'float:left'>Advanced</button>
                 <div id="advanced" class="collapse cookie-consent-advanced">
                     <p>Delete all cookie consent entries.</p>
                     <button id="cookie-consent-delete-btn" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
@@ -133,7 +133,7 @@
 
             <!-- advanced button for selected site -->
             <div id="delete-btn-site" style="display: none;">
-                <button id="advanced-site-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced-site">Advanced</button>
+                <button id="advanced-site-btn" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced-site" style = 'float:left'>Advanced</button>
                 <div id="advanced-site" class="collapse cookie-consent-advanced">
                     <p>Delete cookie consent entries for site: </p>
                     <button id="cookie-consent-site-delete-btn" aria-label="Delete cookie consent entries for selected site" class="cookie-consent-delete-btn">Delete entries for site</button>
