@@ -26,17 +26,15 @@ package com.percussion.services.assembly.impl;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.utils.xml.PSSaxHelper;
+import org.apache.commons.lang.StringUtils;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
+import javax.xml.stream.XMLStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
-
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.lang.StringUtils;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 /**
  * Cleanup unwanted div tags in the final assembled output. Div tags whose
@@ -54,7 +52,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
       if (originalValue instanceof String)
       {
          String oValue = (String)originalValue;
-         if (StringUtils.isBlank(oValue) || oValue.indexOf("<div") == -1)
+         if (StringUtils.isBlank(oValue) || !oValue.contains("<div"))
          {
             return originalValue;
          }
@@ -101,7 +99,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer) 
       {
-         super(writer, new HashMap<>(), true);
+         super(writer, null, new HashMap<>(), true);
       }
 
       /*

@@ -100,7 +100,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer,
             Map<String, String> namespaces) {
-         super(writer, new HashMap<>(), true);
+         super(writer, null, new HashMap<>(), true);
 
          mi_namespaces = namespaces;
       }

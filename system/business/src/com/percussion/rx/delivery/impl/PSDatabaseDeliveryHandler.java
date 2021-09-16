@@ -528,7 +528,7 @@ public class PSDatabaseDeliveryHandler extends PSBaseDeliveryHandler
        */
       public UnpublishingContentHandler(XMLStreamWriter writer,
             Map<String, String> renames) {
-         super(writer, renames, true);
+         super(writer, null, renames, true);
       }
 
       @Override

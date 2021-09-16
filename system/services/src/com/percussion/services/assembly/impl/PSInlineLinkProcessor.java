@@ -23,24 +23,21 @@
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.utils.codec.PSXmlEncoder;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 import com.percussion.utils.xml.PSSaxHelper;
-
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.Logger;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
 
 /**
  * The inline link processor substitutes assembled templates and links for
@@ -107,12 +104,12 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
             log.warn("Problem processing inline links", e);
             StringBuilder message = new StringBuilder();
             message
-                  .append("<div style='border: 2px solid red; background-color: #FFEEEE'>");
+                  .append("<div class='perc-assembly-error'>");
             message.append(PSI18nUtils
                   .getString("psx_assembly@Error processing inline link"));
             message.append(" ");
             message.append(enc.encode(e.getLocalizedMessage()));
-            message.append("<h2>Original content:</h2>");
+            message.append("<h2 class='perc-assembly-orginal-content'>Original content:</h2>");
             message.append(enc.encode(originalValue));
             message.append("</div>");
             return message.toString();
@@ -133,22 +130,25 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
     * @param body the body to be processed, assumed never <code>null</code> or
     *           empty
     * @return the processed body, never <code>null</code> or empty
-    * @throws ParserConfigurationException if a new parser cannot be created
     * @throws SAXException if a problem occurs during parser
     * @throws IOException should never occur
     * @throws XMLStreamException should never occur
     */
    private String processInlineLinks(String body)
-         throws ParserConfigurationException, SAXException, IOException,
+         throws SAXException, IOException,
          XMLStreamException
    {
       try {
-         return PSSaxHelper.parseWithXMLWriter(body,
-                 PSInlineLinkContentHandler.class, this);
+         //Don't bother trying to parse if the string doesn't contain html / xml
+         if(SecureStringUtils.isHTML(body) || SecureStringUtils.isXML(body)) {
+            return PSSaxHelper.parseWithXMLWriter(body,
+                    PSInlineLinkContentHandler.class, this);
+         }
       }catch (SAXException e){
-         log.debug("Skipping inline links for non XML field ", e);
-         return body;
+         log.error("Error parsing content for inline links in Content Type field. Error: {}. The offending source code was: {}",
+                 PSExceptionUtils.getMessageForLog(e), body);
       }
+      return body;
    }
 
    /**

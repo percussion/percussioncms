@@ -81,6 +81,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
 
    
    
-   private PSInlineLinkContentHandler inlineLinkContentHandler = this;
+   private final PSInlineLinkContentHandler inlineLinkContentHandler = this;
 
    
 
@@ -176,7 +177,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
        */
       public State nextState()
       {
-         if (this.equals(SKIP))
+         if (this == SKIP)
          {
             return PASSTHROUGH;
          }
@@ -275,17 +276,12 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    /**
     * Ctor
     * @param writer the stax output writer, never <code>null</code>
+    * @param source may be null.  the xml source, filename, or other context for use in debugging / error handling
     * @param proc the parent processor, never <code>null</code>
-    * @throws XMLStreamException
     */
-   public PSInlineLinkContentHandler(XMLStreamWriter writer, 
-         PSInlineLinkProcessor proc)
-         throws XMLStreamException {
-      super(writer, null, true);
-      if (proc == null)
-      {
-         throw new IllegalArgumentException("proc may not be null");
-      }
+   public PSInlineLinkContentHandler(XMLStreamWriter writer, String source,
+         PSInlineLinkProcessor proc) {
+      super(writer, source, null, true);
       m_processor = proc;
       
       // Clear stack
@@ -751,7 +747,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
                   int anchorindex = link.href.lastIndexOf("#");
                   if(anchorindex != -1) {
                      String anchor = link.href.substring(anchorindex+1);
-                     if (anchor != null && anchor.trim() != "") {
+                     if (anchor != null && !StringUtils.isEmpty(anchor.trim())) {
                         newHref = newHref + "#" + anchor;
                      }
                   }
@@ -833,7 +829,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          {
             // Suppress the underlying data
             link.replacementBody = new String(result.getResultData(),
-                  "UTF8");                     
+                  StandardCharsets.UTF_8);
          }
       }
       else
