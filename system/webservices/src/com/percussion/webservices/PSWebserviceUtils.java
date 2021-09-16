@@ -25,10 +25,22 @@ package com.percussion.webservices;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
-import com.percussion.cms.objectstore.*;
+import com.percussion.cms.objectstore.PSAaRelationship;
+import com.percussion.cms.objectstore.PSCmsObject;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSRelationshipFilter;
+import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSConfigurationFactory;
+import com.percussion.design.objectstore.PSContentEditorSharedDef;
+import com.percussion.design.objectstore.PSContentEditorSystemDef;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.design.objectstore.PSRelationshipConfigSet;
+import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSUserEntry;
@@ -39,7 +51,11 @@ import com.percussion.server.PSServer;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.server.config.PSConfigManager;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.assembly.data.PSTemplateSlot;
 import com.percussion.services.catalog.IPSCatalogItem;
 import com.percussion.services.catalog.IPSCatalogSummary;
@@ -97,7 +113,14 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 
@@ -121,12 +144,11 @@ public class PSWebserviceUtils
     * @return the object summaries with ACL and the lock information set if the
     * cataloged object is locked, never <code>null</code>.
     */
-   @SuppressWarnings("unchecked")
    public static List<IPSCatalogSummary> toObjectSummaries(Collection objects)
    {
 
       if (objects.isEmpty())
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
 
       Map<IPSGuid,IPSCatalogSummary> summaries = new HashMap<>();
 
@@ -413,7 +435,7 @@ public class PSWebserviceUtils
             default:
                throw new UnsupportedOperationException(
                      "the supplied id specifies an unsupported object type: "
-                           + type.toString());
+                           + type);
          }
       }
       catch (PSErrorResultsException e)
@@ -423,10 +445,8 @@ public class PSWebserviceUtils
 
          // copy all success results from the one catched
          Map<IPSGuid, Object> results = e.getResults();
-         Iterator resIter = results.entrySet().iterator();
-         while (resIter.hasNext())
-         {
-            Map.Entry entry = (Map.Entry) resIter.next();
+         for (Map.Entry<IPSGuid, Object> ipsGuidObjectEntry : results.entrySet()) {
+            Map.Entry entry = ipsGuidObjectEntry;
             newException.addResult((IPSGuid) entry.getKey(), entry.getValue());
          }
 
@@ -1681,17 +1701,16 @@ public class PSWebserviceUtils
           wf = svc.loadWorkflow(gmgr.makeGuid(workflowId,
             PSTypeEnum.WORKFLOW));
       }catch(Exception e){
-         log.error("Unable to load workflow with id: " + workflowId, e);
+         log.error("Unable to load workflow with id: {} Error:{}" , workflowId,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       
       if (wf == null)
       {
-         int errorCode = IPSWebserviceErrors.FAILED_LOAD_WORKFLOW;
-         PSErrorException error = new PSErrorException(errorCode,
-               PSWebserviceErrors.createErrorMessage(errorCode, new Integer(
-                     workflowId)), ExceptionUtils
+         throw new PSErrorException(IPSWebserviceErrors.FAILED_LOAD_WORKFLOW,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_LOAD_WORKFLOW,
+                     workflowId), ExceptionUtils
                      .getFullStackTrace(new Exception()));
-         throw error;
       }
 
       return wf;
@@ -1716,12 +1735,10 @@ public class PSWebserviceUtils
             return s;
       }
 
-      int errorCode = IPSWebserviceErrors.CANNOT_FIND_WORKFLOW_STATE_ID;
-      PSErrorException error = new PSErrorException(errorCode,
-            PSWebserviceErrors.createErrorMessage(errorCode, id, wf.getGUID()
+      throw new PSErrorException(IPSWebserviceErrors.CANNOT_FIND_WORKFLOW_STATE_ID,
+            PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.CANNOT_FIND_WORKFLOW_STATE_ID, id, wf.getGUID()
                   .longValue(), wf.getName()), ExceptionUtils
                   .getFullStackTrace(new Exception()));
-      throw error;
    }
 
    /**
@@ -1769,13 +1786,12 @@ public class PSWebserviceUtils
       }
       catch (PSException e)
       {
-         int errorCode = IPSWebserviceErrors.FAILED_TRANSITION_ITEM;
          Throwable rootCause = PSExceptionHelper.findRootCause(e,false);
-         PSErrorException error = new PSErrorException(errorCode,
-               PSWebserviceErrors.createErrorMessage(errorCode, trigger, id),
+         PSErrorException error = new PSErrorException(IPSWebserviceErrors.FAILED_TRANSITION_ITEM,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_TRANSITION_ITEM, trigger, id),
                ExceptionUtils.getFullStackTrace(rootCause),e);
-         PSErrorException error1 = new PSErrorException("Failed transition due to server error.",error);
-         throw error1;
+         throw new PSErrorException("Failed transition due to server error.",error);
+
       }
       finally
       {
@@ -2109,11 +2125,10 @@ public class PSWebserviceUtils
       }
       catch (PSException e)
       {
-         e.printStackTrace();
-         PSErrorException error = new PSErrorException(errorCode,
+         throw new PSErrorException(errorCode,
             PSWebserviceErrors.createErrorMessage(errorCode, e
                .getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
-         throw error;
+
       }
    }
    
@@ -2130,8 +2145,7 @@ public class PSWebserviceUtils
    public static boolean isRootCauseOfType(PSErrorException e, int errorCode)
    {
       Throwable rootCause = PSExceptionHelper.findRootCause(e, true);      
-      return (rootCause != null && (rootCause instanceof PSException) &&
-            ((PSException) rootCause).getErrorCode() == errorCode);
+      return rootCause instanceof PSException && ((PSException) rootCause).getErrorCode() == errorCode;
    }
 
    
@@ -2145,7 +2159,7 @@ public class PSWebserviceUtils
     * <p>
     * Initialized when class is loaded, then never modified.
     */
-   private static Map<PSRelationshipFilterCategory, String> ms_wsCategoryToRelationshipCategory = new HashMap<>();
+   private static final Map<PSRelationshipFilterCategory, String> ms_wsCategoryToRelationshipCategory = new HashMap<>();
 
    static
    {

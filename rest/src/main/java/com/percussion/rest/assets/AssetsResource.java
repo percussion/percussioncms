@@ -144,8 +144,8 @@ public class AssetsResource
 			 rows = assetAdaptor.previewAssetImport(uriInfo.getBaseUri(), osPath, assetPath, replace, onlyIfDifferent, autoApprove);
 			 out = new PSCSVStreamingOutput(rows);
 		} catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return Response.serverError().build();
 		}
         
@@ -237,8 +237,8 @@ public class AssetsResource
         try {
             out = assetAdaptor.getBinary(path);
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
         Asset asset = assetAdaptor.getSharedAssetByPath(uriInfo.getBaseUri(), path);
@@ -294,8 +294,8 @@ public class AssetsResource
         try {
             return assetAdaptor.createOrUpdateSharedAsset(uriInfo.getBaseUri(), path, asset);
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -323,8 +323,8 @@ public class AssetsResource
         try {
             return assetAdaptor.deleteSharedAssetByPath(path);
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -370,8 +370,8 @@ public class AssetsResource
         try {
             return assetAdaptor.renameSharedAsset(uriInfo.getBaseUri(), siteName, apiPath, assetName, newName);
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -403,7 +403,7 @@ public class AssetsResource
 		
 		} catch (Exception e) {
 		    log.error("Error occurred while generating Non ADA compliant images report, cause: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return Response.serverError().build();
 		}
 		// check for empty resultset, if empty then return No Content message | CMS-3216
@@ -448,7 +448,7 @@ public class AssetsResource
 		
 		} catch (Exception e) {
 		    log.error("Error occurred while generating Non ADA compliant files report, cause: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -495,7 +495,7 @@ public class AssetsResource
 		} catch (Exception e) {
             log.error("Error occurred while generating All images report, cause: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -541,7 +541,7 @@ public class AssetsResource
 		} catch (Exception e) {
             log.error("Error occurred while generating All files report, cause: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return Response.serverError().build();
 		}
         // check for empty resultset, if empty then return No Content message | CMS-3216
@@ -704,8 +704,8 @@ public class AssetsResource
             status.setMessage("Approved " + ctr + " Assets");
             return status;
         } catch (BackendException e) {
-    	    log.error(e.getMessage());
-    	    log.debug(e.getMessage(),e);
+    	    log.error(PSExceptionUtils.getMessageForLog(e));
+    	    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -729,8 +729,8 @@ public class AssetsResource
             status.setMessage("Archived " + ctr + " Assets");
             return status;
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -756,8 +756,8 @@ public class AssetsResource
             status.setMessage("Submitted " + ctr + " Assets");
             return status;
         } catch (BackendException e) {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(),e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new WebApplicationException(e);
         }
     }

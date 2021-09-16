@@ -27,6 +27,7 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
@@ -50,7 +51,6 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.workflow.service.IPSSteppedWorkflowService;
 import org.apache.commons.lang3.StringUtils;
@@ -71,6 +71,10 @@ import static com.percussion.itemmanagement.service.IPSItemWorkflowService.TRANS
 import static com.percussion.itemmanagement.service.IPSItemWorkflowService.TRANSITION_TRIGGER_LIVE;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfBlank;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfNull;
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_USER;
+import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
+import static com.percussion.utils.request.PSRequestInfoBase.setRequestInfo;
 import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
 import static com.percussion.webservices.PSWebserviceUtils.getStateById;
 import static com.percussion.webservices.PSWebserviceUtils.getUserRoles;
@@ -95,21 +99,21 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     /**
      * The navigation service, initialized by constructor.
      */
-    private IPSManagedNavService navService;
+    private final IPSManagedNavService navService;
 
     /**
      * The item definition manager, initialized by constructor.
      */
-    private PSItemDefManager itemDefManager;
+    private final PSItemDefManager itemDefManager;
 
     /**
      * Used for id to guid translation, initialized by constructor.
      */
-    private IPSIdMapper idMapper;
+    private final IPSIdMapper idMapper;
     
-    private IPSCmsObjectMgr cmsObjectMgr;
+    private final IPSCmsObjectMgr cmsObjectMgr;
     
-    private IPSMetadataService metadataService;
+    private final IPSMetadataService metadataService;
     
     /**
      * Create an instance of the workflow helper.
@@ -146,21 +150,21 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
         {
             // if we have caught this exception, the item has
             // no content type and we can do nothing.
-            log.error("Error transitioning landing/navigation page with id: {} Error: {}", id, e.getMessage());
+            log.error("Error transitioning landing/navigation page with id: {} Error: {}", id,
+                    PSExceptionUtils.getMessageForLog(e));
             return;
         }
         
          /*
           * Make request as the internal user to ensure permissions regardless of what workflow the item may be in
          */
-        PSRequest req = (PSRequest) PSRequestInfo
-                .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-        String userName = (String) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
+        PSRequest req = (PSRequest) getRequestInfo(KEY_PSREQUEST);
+        String userName = (String) getRequestInfo(KEY_USER);
         
         try
         {
             PSDesignModelUtils.setRequestToInternalUser(req);
-            PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_USER, PSSecurityProvider.INTERNAL_USER_NAME);
+            setRequestInfo(KEY_USER, PSSecurityProvider.INTERNAL_USER_NAME);
 
             IPSGuid navId = navService.findRelatedNavigationNodeId(id);
             if (navId == null) {
@@ -198,12 +202,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             return true;
         }
 
-        if (equalsIgnoreCase(TRANSITION_TRIGGER_LIVE, trigger) && isInLiveState(stateName))
-        {
-            return true;
-        }
-
-        return false;
+        return equalsIgnoreCase(TRANSITION_TRIGGER_LIVE, trigger) && isInLiveState(stateName);
     }
 
     /**
@@ -241,8 +240,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 	            PSLegacyGuid guid = (PSLegacyGuid)idMapper.getGuid(tid);
 	            transitionItem(guid.getContentId(), WF_TRIGGER_APPROVE, null, null);
         	}catch(Exception e){
-        		log.error("An error occurred while transitioning item id: {} to Pending.  Error: {}",tid , e.getMessage());
-        		log.debug(e.getMessage(),e);
+        		log.error("An error occurred while transitioning item id: {} to Pending.  Error: {}",tid ,
+                        PSExceptionUtils.getMessageForLog(e));
+        		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         	}
         }
     }
@@ -412,13 +412,13 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     public boolean isItemInApproveState(int contentId)
     {
         IPSItemEntry item = cmsObjectMgr.findItemEntry(contentId);
-        return item == null ? false : isInApproveState(item.getStateName());
+        return item != null && isInApproveState(item.getStateName());
     }
 
     public boolean isItemInStagingState(int contentId)
     {
         IPSItemEntry item = cmsObjectMgr.findItemEntry(contentId);
-        return item == null ? false : isInStagingState(item.getStateName());
+        return item != null && isInStagingState(item.getStateName());
     }
     
     /**
@@ -462,10 +462,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             {            
                 // check to see if it is a navon or navtree
                 long cTypeId = item.getContentTypeId();
-                if (cTypeId != navService.getNavonContentTypeId() && cTypeId != navService.getNavtreeContentTypeId())
-                {
-                    return true;
-                }
+                return cTypeId != navService.getNavonContentTypeId() && cTypeId != navService.getNavtreeContentTypeId();
             }
         }
         
@@ -509,8 +506,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
             }
             catch(Exception e)
             {
-                String msg = "Failed to get content type for item id = " + id;
-                log.error(msg, e);
+
+                log.error( "Failed to get content type for item id = {} Error: {}" , id,
+                        PSExceptionUtils.getMessageForLog(e));
             }
         }
         return type;
@@ -544,8 +542,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
         }
         catch(Exception e)
         {
-            String msg = "Failed to get content type for content type id = " + cTypeId;
-            log.error(msg, e);
+            log.error("Failed to get content type for content type id = {} Error: {}",
+                    cTypeId,
+                    PSExceptionUtils.getMessageForLog(e));
         }
         
         return type;
@@ -561,17 +560,18 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
      */
     private String getContentType(String id)
     {
+        if(id == null || StringUtils.isEmpty(id))
+            throw new IllegalArgumentException("id is required.");
+
         String ctype = null;
         IPSItemEntry item = getItemEntry(id);
-        
-        try
-        {
-            ctype = itemDefManager.contentTypeIdToName(item.getContentTypeId());
-        }
-        catch (Exception e)
-        {
-            String msg = "Failed to get content type for item id = " + id;
-            log.error(msg, e);
+        if(item != null) {
+            try {
+                ctype = itemDefManager.contentTypeIdToName(item.getContentTypeId());
+            } catch (Exception e) {
+                log.error("Failed to get content type for item id = {} Error: {}", id,
+                        PSExceptionUtils.getMessageForLog(e));
+            }
         }
         
         return ctype;
@@ -668,7 +668,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     /**
      * Logger for this service.
      */
-    public static Logger log = LogManager.getLogger(PSWorkflowHelper.class);
+    private static final Logger log = LogManager.getLogger(PSWorkflowHelper.class);
 
     /**
      * Constant for the name of the pending workflow state.
@@ -749,7 +749,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 		            PSLegacyGuid guid = (PSLegacyGuid)idMapper.getGuid(tid);
 		            transitionItem(guid.getContentId(), WF_TAKE_DOWN_TRANSITION, null, null);
 	        	}catch(Exception e){
-	        		log.error("An error occurred while transitioning item id:" + tid + " to Pending.",  e);
+	        		log.error("An error occurred while transitioning item id: {} to Pending. Error: {}", tid,
+                            PSExceptionUtils.getMessageForLog(e));
+	        		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	        	}
 	        }
 		
@@ -778,7 +780,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 		            PSLegacyGuid guid = (PSLegacyGuid)idMapper.getGuid(tid);
 		            transitionItem(guid.getContentId(), WF_TRIGGER_REVIEW, null, null);
 	        	}catch(Exception e){
-	        		log.error("An error occurred while transitioning item id:" + tid + " to Pending.",  e);
+	        		log.error("An error occurred while transitioning item id: {} to Pending. Error: {}", tid,
+                            PSExceptionUtils.getMessageForLog(e));
+	        		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	        	}
 	        }
 		

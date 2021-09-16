@@ -29,6 +29,7 @@ import com.percussion.delivery.metadata.IPSMetadataDao;
 import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
+import com.percussion.error.PSExceptionUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -78,7 +79,7 @@ public class PSMetadataDao implements IPSMetadataDao
     private static final Logger log = LogManager.getLogger(PSMetadataDao.class);
 
 
-    private static PSHashCalculator hashCalculator = new PSHashCalculator();
+    private static final PSHashCalculator hashCalculator = new PSHashCalculator();
 
     private final Pattern patternToGetDirectoryFromPagepath = Pattern.compile("(.+)/[^/]+");
 
@@ -103,7 +104,8 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx != null && tx.isActive()) {
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -126,7 +128,8 @@ public class PSMetadataDao implements IPSMetadataDao
                 if(tx !=null && tx.isActive()){
                     tx.rollback();
                 }
-                log.error(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         return false;
@@ -154,7 +157,7 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -181,7 +184,7 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -250,7 +253,7 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
         }
 
     }
@@ -464,7 +467,7 @@ public class PSMetadataDao implements IPSMetadataDao
             if(tx !=null && tx.isActive()){
                 tx.rollback();
             }
-            log.error(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(e.getMessage(),e);
         }
         return updatedRows;

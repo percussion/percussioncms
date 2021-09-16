@@ -557,12 +557,8 @@ public class PSItemService implements IPSItemService
     private void fillOwners(String assetId, Set<String> ownerPages, Set<String> ownerTemplates) throws PSValidationException {
     	Set<String> owners=null;
 
-    	try{
-    		owners = waRelService.getRelationshipOwners(assetId,true);
-    	}catch(Exception e){
-            log.error("An error occurred looking up relationships for Asset {} while processing Site Impact Error: {}", assetId,PSExceptionUtils.getMessageForLog(e) );
-            log.debug(e);
-    	}
+    	owners = waRelService.getRelationshipOwners(assetId,true);
+
     	if(owners != null){
         for (String owner : owners)
         {
