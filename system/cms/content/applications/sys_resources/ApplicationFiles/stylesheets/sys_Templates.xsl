@@ -963,7 +963,7 @@ onchange    %Script;       #IMPLIED
                </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
-               <xsl:value-of select="*"/>
+                <xsl:value-of select="DisplayLabel"/>
             </xsl:otherwise>
          </xsl:choose>
       </option>
@@ -1009,7 +1009,7 @@ onchange    %Script;       #IMPLIED
                         </xsl:call-template>
                      </xsl:when>
                      <xsl:otherwise>
-                        <xsl:value-of select="*"/>
+                         <xsl:value-of select="DisplayLabel"/>
                      </xsl:otherwise>
                   </xsl:choose>
                </xsl:for-each>
