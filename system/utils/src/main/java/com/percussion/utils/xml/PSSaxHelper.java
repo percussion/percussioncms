@@ -25,6 +25,8 @@ package com.percussion.utils.xml;
 
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -41,10 +43,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -114,15 +116,13 @@ public class PSSaxHelper
          StringWriter writer = new StringWriter();
          XMLOutputFactory ofact = XMLOutputFactory.newInstance();
          XMLStreamWriter xmlwriter = ofact.createXMLStreamWriter(writer);
-         int len = args != null ? args.length + 1 : 1;
+         int len = args != null ? args.length + 2 : 1;
          Object cargs[] = new Object[len];
          cargs[0] = xmlwriter;
+         cargs[1] = source;
          if (args != null)
          {
-            for (int i = 0; i < args.length; i++)
-            {
-               cargs[i + 1] = args[i];
-            }
+            System.arraycopy(args, 0, cargs, 2, args.length);
          }
          Constructor c = null;
          for (Constructor constructor : handler.getConstructors())
@@ -141,7 +141,7 @@ public class PSSaxHelper
          }
          Object contenthandler = c.newInstance(cargs);
          SAXParser parser = newSAXParser(contenthandler);
-         InputSource is = new InputSource(new StringReader(source));
+         InputSource is = new InputSource(new BOMInputStream(IOUtils.toInputStream(source, StandardCharsets.UTF_8),false));
          parser.parse(is, (DefaultHandler) contenthandler);
          xmlwriter.close();
          writer.close();
@@ -149,23 +149,10 @@ public class PSSaxHelper
          result = StringUtils.replace(result, PSSaxCopier.RX_FILLER, "");
          return result;
       }
-      catch (SecurityException e)
+      catch (SecurityException | FactoryConfigurationError | InstantiationException | IllegalAccessException e)
       {
          throw new RuntimeException(e);
-      }
-      catch (FactoryConfigurationError e)
-      {
-         throw new RuntimeException(e);
-      }
-      catch (InstantiationException e)
-      {
-         throw new RuntimeException(e);
-      }
-      catch (IllegalAccessException e)
-      {
-         throw new RuntimeException(e);
-      }
-      catch (InvocationTargetException e)
+      } catch (InvocationTargetException e)
       {
          throw new RuntimeException(e.getTargetException());
       }
