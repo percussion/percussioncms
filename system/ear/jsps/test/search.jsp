@@ -49,12 +49,12 @@
    String[] allNames = expandParam(request.getParameterValues("qname"), 6);
    String[] allValues = expandParam(request.getParameterValues("qvalue"),
            6);
-   String lastquery = request.getParameter("querybody");
+   String lastquery = SecureStringUtils.sanitizeStringForSQLStatement(sanitizeForHtml(request.getParameter("querybody")));
    if (lastquery == null || lastquery.trim().length() == 0)
    {
       lastquery = "select rx:sys_contentid, rx:sys_title, jcr:path from rx:percPage";
    }
-   lastquery = sanitizeForHtml(lastquery);
+   lastquery = SecureStringUtils.sanitizeStringForSQLStatement(sanitizeForHtml(lastquery));
 
 %>
 <h1>JCR Query Debugger</h1>
