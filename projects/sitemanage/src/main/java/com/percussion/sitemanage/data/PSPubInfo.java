@@ -36,6 +36,8 @@ public class PSPubInfo
     private String accessKey;
     private String secretKey;
     private String regionName;
+    private String useAssumeRole;
+    private String arnRole;
 
     public String getRegionName() {
         return regionName;
@@ -49,13 +51,14 @@ public class PSPubInfo
     public PSPubInfo()
     {
     }
-    public PSPubInfo(String bucketName, String accessKey, String secretKey,String regionName)
+    public PSPubInfo(String bucketName, String accessKey, String secretKey, String regionName)
     {
         this.bucketName = bucketName;
         this.accessKey = accessKey;
         this.secretKey = secretKey;
         this.regionName = regionName;
     }
+
     public String getBucketName()
     {
         return bucketName;
@@ -79,5 +82,21 @@ public class PSPubInfo
     public void setSecretKey(String secretKey)
     {
         this.secretKey = secretKey;
+    }
+
+    public String getUseAssumeRole() {
+        return useAssumeRole;
+    }
+
+    public void setUseAssumeRole(String useAssumeRole) {
+        this.useAssumeRole = useAssumeRole;
+    }
+
+    public String getArnRole() {
+        return arnRole;
+    }
+
+    public void setArnRole(String arnRole) {
+        this.arnRole = arnRole;
     }
 }
