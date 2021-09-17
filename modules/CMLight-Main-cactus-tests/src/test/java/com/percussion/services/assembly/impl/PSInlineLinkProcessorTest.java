@@ -27,9 +27,7 @@ import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.filter.data.PSItemFilter;
 
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a hard test to keep up to date. It needs to contain a body field
@@ -38,8 +36,7 @@ import org.junit.experimental.categories.Category;
  * 
  * @author dougrand
  */
-@Category(IntegrationTest.class)
-public class PSInlineLinkProcessorTest extends ServletTestCase
+public class PSInlineLinkProcessorTest
 {
    /**
     * Data for test

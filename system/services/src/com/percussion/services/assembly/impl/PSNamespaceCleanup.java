@@ -24,6 +24,7 @@
 package com.percussion.services.assembly.impl;
 
 import com.percussion.data.PSStylesheetCleanupFilter;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -100,7 +101,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer,
             Map<String, String> namespaces) {
-         super(writer, null, new HashMap<>(), true);
+         super(writer, new HashMap<>(), true);
 
          mi_namespaces = namespaces;
       }
@@ -227,9 +228,12 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
 
    public Object translate(Object originalValue)
    {
-      if (originalValue instanceof String)
+      if (originalValue instanceof String )
       {
-         if (StringUtils.isBlank((String) originalValue))
+         if (StringUtils.isBlank((String) originalValue)
+                 ||
+                 !(SecureStringUtils.isXML((String)originalValue)
+                         ||SecureStringUtils.isHTML((String)originalValue)))
          {
             return originalValue;
          }

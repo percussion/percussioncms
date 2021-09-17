@@ -116,13 +116,12 @@ public class PSSaxHelper
          StringWriter writer = new StringWriter();
          XMLOutputFactory ofact = XMLOutputFactory.newInstance();
          XMLStreamWriter xmlwriter = ofact.createXMLStreamWriter(writer);
-         int len = args != null ? args.length + 2 : 1;
+         int len = args != null ? args.length + 1 : 1;
          Object cargs[] = new Object[len];
          cargs[0] = xmlwriter;
-         cargs[1] = source;
          if (args != null)
          {
-            System.arraycopy(args, 0, cargs, 2, args.length);
+            System.arraycopy(args, 0, cargs, 1, args.length);
          }
          Constructor c = null;
          for (Constructor constructor : handler.getConstructors())

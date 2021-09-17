@@ -23,7 +23,6 @@
  */
 package com.percussion.utils.xml;
 
-import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSCatalogResolver;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,8 +35,8 @@ import org.xml.sax.ext.DefaultHandler2;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.percussion.utils.xml.PSSaxHelper.canBeSelfClosedElement;
 
@@ -55,9 +54,7 @@ public class PSSaxCopier extends DefaultHandler2
     * Logger for the sax copier
     */
    private static final Logger ms_log = LogManager.getLogger(PSSaxCopier.class);
-
-   private String originalSource = null;
-
+   
    /**
     * The stream writer, initialized in the Ctor and never modified
     */
@@ -71,7 +68,7 @@ public class PSSaxCopier extends DefaultHandler2
    /**
     * A map of elements to rename in copying
     */
-   protected Map<String,String> m_elementRenames = new ConcurrentHashMap<>();
+   protected Map<String,String> m_elementRenames = new HashMap<String,String>();
    
    /**
     * A filler string that is used to fill the empty elements. So that they
@@ -98,7 +95,6 @@ public class PSSaxCopier extends DefaultHandler2
     * Ctor
     * 
     * @param writer the stream writer, never <code>null</code>
-    * @param source may be null, the xml source in string form if it is available.
     * @param renames a map of names to modify when copying elements, may be
     * <code>null</code> or empty
     * @param addFillerTextToEmptyElements a flag to indicate whether the
@@ -107,7 +103,7 @@ public class PSSaxCopier extends DefaultHandler2
     * It is callers responsibility to replace this filler with empty string
     * after getting the string from the writer.
     */
-   public PSSaxCopier(XMLStreamWriter writer, String source, Map<String, String> renames,
+   public PSSaxCopier(XMLStreamWriter writer, Map<String, String> renames,
          boolean addFillerTextToEmptyElements)
    {
       if (writer == null)
@@ -118,25 +114,6 @@ public class PSSaxCopier extends DefaultHandler2
       if (renames != null)
          m_elementRenames = renames;
       m_addFillerTextToEmptyElements = addFillerTextToEmptyElements;
-      originalSource = source;
-   }
-
-   /**
-    * Ctor
-    *
-    * @param writer the stream writer, never <code>null</code>
-    * @param renames a map of names to modify when copying elements, may be
-    * <code>null</code> or empty
-    * @param addFillerTextToEmptyElements a flag to indicate whether the
-    * empty elements needs to be added with filler text so that the parser
-    * does not self close them. The filter text added is {@link #RX_FILLER}.
-    * It is callers responsibility to replace this filler with empty string
-    * after getting the string from the writer.
-    */
-   public PSSaxCopier(XMLStreamWriter writer, Map<String, String> renames,
-                      boolean addFillerTextToEmptyElements)
-   {
-      this(writer,null,renames,addFillerTextToEmptyElements);
    }
 
    /*
@@ -197,11 +174,9 @@ public class PSSaxCopier extends DefaultHandler2
    @Override
    public void error(SAXParseException error) throws SAXException
    {
-      ms_log.error("Problem processing data at line {} at column {}: {}", + error.getLineNumber() ,error.getColumnNumber(), error.getLocalizedMessage());
-
-      if(originalSource != null) {
-         ms_log.debug("Offending source was: {}", originalSource);
-      }
+      ms_log.error("Problem processing data at line "
+            + error.getLineNumber() + " at column " + error.getColumnNumber()
+            + ":" + error.getLocalizedMessage());
    }
 
    /* (non-Javadoc) 
@@ -210,14 +185,9 @@ public class PSSaxCopier extends DefaultHandler2
    @Override
    public void fatalError(SAXParseException error) throws SAXException
    {
-      ms_log.fatal("Problem processing data at line: {} at column: {} Error: {}" ,
-              error.getLineNumber(),
-              error.getColumnNumber(),
-              PSExceptionUtils.getMessageForLog(error));
-
-      if(originalSource != null) {
-         ms_log.fatal("Offending source was: {}", originalSource);
-      }
+      ms_log.fatal("Problem processing data at line "
+            + error.getLineNumber() + " at column " + error.getColumnNumber()
+            + ":" + error.getLocalizedMessage());
 
    }
 
@@ -307,10 +277,9 @@ public class PSSaxCopier extends DefaultHandler2
    @Override
    public void warning(SAXParseException warning) throws SAXException
    {
-      ms_log.warn("Problem processing data at line: {} at column: {} Error: {}" ,
-              warning.getLineNumber() ,
-              warning.getColumnNumber(),
-              PSExceptionUtils.getMessageForLog(warning));
+      ms_log.warn("Problem processing data at line "
+            + warning.getLineNumber() + " at column "
+            + warning.getColumnNumber() + ":" + warning.getLocalizedMessage());
 
    }
 

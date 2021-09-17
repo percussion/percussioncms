@@ -186,7 +186,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
          String db_drivertype = eval.getStringValue(DB_DRIVERTYPE, null, true);
          String db_database = eval.getStringValue(DB_DATABASE, null, false);
 
-         ms_log.debug("Starting db assembly for {}" , item.getId());
+         ms_log.debug("Starting db assembly for " + item.getId());
 
          formatter.writeStartDocument();
          startElement(formatter, "datapublisher");
@@ -203,7 +203,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
          formatter.writeCharacters("\n");
 
          // Copy the template into place
-         PSSaxCopier copier = new PSSaxCopier(formatter, item.toString(), null, true);
+         PSSaxCopier copier = new PSSaxCopier(formatter, null, true);
          SAXParser parser = PSSaxHelper.newSAXParser(copier);
          String template = (String) eval.evaluate(SYS_TEMPLATE);
          if (StringUtils.isBlank(template))

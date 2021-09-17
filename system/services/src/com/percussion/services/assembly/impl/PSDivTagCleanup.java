@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.security.SecureStringUtils;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.utils.xml.PSSaxHelper;
@@ -52,7 +53,9 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
       if (originalValue instanceof String)
       {
          String oValue = (String)originalValue;
-         if (StringUtils.isBlank(oValue) || !oValue.contains("<div"))
+         if (StringUtils.isBlank(oValue) ||
+         !(SecureStringUtils.isXML((String)originalValue)
+                 ||SecureStringUtils.isHTML((String)originalValue)))
          {
             return originalValue;
          }
@@ -99,7 +102,7 @@ public class PSDivTagCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer) 
       {
-         super(writer, null, new HashMap<>(), true);
+         super(writer, new HashMap<>(), true);
       }
 
       /*

@@ -100,7 +100,7 @@ public class PSSaxCopierTest extends TestCase
 
       XMLOutputFactory ofact = XMLOutputFactory.newInstance();
       XMLStreamWriter writer = ofact.createXMLStreamWriter(stringWriter);
-      PSSaxCopier copier = new PSSaxCopier(writer, doc.toString(), new HashMap<String,String>(), true);
+      PSSaxCopier copier = new PSSaxCopier(writer, new HashMap<String,String>(), true);
       sp.parse(ms_testFile, copier);
       writer.close();
       stringWriter.close();
