@@ -23,18 +23,18 @@
  */
 package com.percussion.util;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.apache.commons.lang.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Unit tests for the PSBaseHttpUtils class
@@ -75,7 +75,7 @@ public class PSBaseHttpUtilsTest extends TestCase
          "a?b=c",
          "a?b=c&"
       };
-      Map<String, Object> params = new HashMap<String, Object>();
+      Map<String, Object> params = new HashMap<>();
       params.put("z", "");
       params.put("x", "y");
       params.put("m", "n");
@@ -96,7 +96,7 @@ public class PSBaseHttpUtilsTest extends TestCase
       //the hex digits from encoding must be upper case
       assertEquals(result, "a%3f?%3Fx=y%26");
            
-      List<String> values = new ArrayList<String>();
+      List<String> values = new ArrayList<>();
       values.add("1");
       values.add("2");
       values.add("3");
@@ -207,7 +207,7 @@ public class PSBaseHttpUtilsTest extends TestCase
       for (int i = 0; i < testStrings.length; i++)
       {
          ByteArrayInputStream in = 
-            new ByteArrayInputStream(testStrings[i].getBytes("UTF-8"));
+            new ByteArrayInputStream(testStrings[i].getBytes(StandardCharsets.UTF_8));
 
          PSInputStreamReader rdr = new PSInputStreamReader(in);
 

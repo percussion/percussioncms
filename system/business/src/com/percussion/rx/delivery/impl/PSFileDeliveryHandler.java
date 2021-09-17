@@ -31,6 +31,9 @@ import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.rx.publisher.PSPublisherUtils;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,12 +41,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This handler delivers content to the file system.
@@ -196,17 +194,9 @@ public class PSFileDeliveryHandler extends PSBaseDeliveryHandler
                .getLocalizedMessage());
       }
 
-      try
-      {
-         return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
-               jobId, item.getReferenceId(), destPath.getBytes("UTF8"));
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         ms_log.error("Problem delivering item", e);
-         return new PSDeliveryResult(Outcome.FAILED, e.getLocalizedMessage(),
-               item.getId(), jobId, item.getReferenceId(), null);
-      }
+      return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
+               jobId, item.getReferenceId(), destPath.getBytes(StandardCharsets.UTF_8));
+
    }
 
    @Override

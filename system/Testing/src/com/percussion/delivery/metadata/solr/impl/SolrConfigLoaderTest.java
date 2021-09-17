@@ -25,15 +25,14 @@
 package com.percussion.delivery.metadata.solr.impl;
 
 import com.percussion.share.dao.PSSerializerUtils;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.TestCase;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.assertEquals;
 
@@ -57,7 +56,7 @@ public class SolrConfigLoaderTest
       InputStream stream;
      
       String testString = "<SolrConfig><SolrServer><serverType>STAGING</serverType><solrHost>url</solrHost><cleanAllOnFullPublish>false</cleanAllOnFullPublish><metadataMap><entry value=\"value\" key=\"key\"/></metadataMap><enabledSites><site>sitename</site></enabledSites></SolrServer></SolrConfig>";
-      stream = new ByteArrayInputStream(testString.getBytes("UTF-8"));
+      stream = new ByteArrayInputStream(testString.getBytes(StandardCharsets.UTF_8));
       PSSolrConfig config2 = PSSerializerUtils.unmarshalWithValidation(stream, PSSolrConfig.class);
       assertEquals(false,config2.getSolrServer().get(0).isCleanAllOnFullPublish());
 

@@ -27,6 +27,7 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
@@ -34,15 +35,15 @@ import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
-
-import java.io.File;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Vector;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Vector;
 
 /**
  * Deliver files via SFtp, a secure transfer mechanism. This borrows some 
@@ -529,12 +530,12 @@ public class PSSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          sftp.cd(path);
          sftp.put(inputStream, file.getName());
          return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
-               jobId, item.getReferenceId(), location.getBytes("UTF8"));
+               jobId, item.getReferenceId(), location.getBytes(StandardCharsets.UTF_8));
       }
       catch (Exception e)
       {
          return getItemResult(
-               Outcome.FAILED, item, jobId, e.getLocalizedMessage());
+               Outcome.FAILED, item, jobId, PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {

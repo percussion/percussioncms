@@ -43,6 +43,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -435,17 +436,10 @@ public class PSStylesheetCleanupFilter
    private static Document getDefaultFilterDocument() throws IOException,
          SAXException
    {
-      ByteArrayInputStream bis = null;
-      try
-      {
-         bis = new ByteArrayInputStream(DEFAULT_FILTER_XML.getBytes("utf8"));
-         return PSXmlDocumentBuilder.createXmlDocument(bis, false);
 
-      }
-      finally
+      try(ByteArrayInputStream bis = new ByteArrayInputStream(DEFAULT_FILTER_XML.getBytes(StandardCharsets.UTF_8)))
       {
-         if (bis != null)
-            bis.close();
+         return PSXmlDocumentBuilder.createXmlDocument(bis, false);
       }
    }
 

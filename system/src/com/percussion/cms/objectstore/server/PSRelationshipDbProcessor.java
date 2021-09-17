@@ -246,20 +246,20 @@ public class PSRelationshipDbProcessor
          {
             if (result==null)
             {
-               log.error("AA cache returned non null, service returned null for filter "+filter);
+               log.error("AA cache returned non null, service returned null for filter {}",filter);
             }
             
             if (result !=null && result.size()!=testResult.size())
             {
-               log.error("AA cache returned "+testResult.size()+" service returned "+result.size()+" items");
-               log.error("Filter = "+filter);
+               log.error("AA cache returned {} service returned {} items",testResult.size(),result.size());
+               log.error("Filter = {}",filter);
                for (int i=0; i< result.size(); i++)
                {
-                  log.error("item "+i+" : " + result.get(i));
+                  log.error("item {} : {}" ,i, result.get(i));
                }
                for (int i=0; i< result.size(); i++)
                {
-                  log.error("AA item "+i+" : " + testResult.get(i));
+                  log.error("AA item {} : {}", i,testResult.get(i));
                }
                
                
@@ -273,17 +273,17 @@ public class PSRelationshipDbProcessor
                if (!testResult.equals(result))
                {
                   
-                  log.error("Test results do not match "+filter, new Throwable());
-                  log.error("Cache Result ="+testResult);
-                  log.error("Server Result ="+result);
+                  log.error("Test results do not match {}",filter);
+                  log.error("Cache Result ={}",testResult);
+                  log.error("Server Result ={}",result);
 
                   if(result != null) {
                      for (int i = 0; i < result.size(); i++) {
                         if (!result.get(i).equals(testResult.get(i))) {
-                           log.error("non matching item pos " + i);
+                           log.error("non matching item pos {}" , i);
                            if (result.get(i).getProperties() != testResult.get(i).getProperties()) {
                               log.error("server props= {} ", result.get(i).getProperties());
-                              log.error("cache props=" + result.get(i).getProperties());
+                              log.error("cache props={}" , result.get(i).getProperties());
                            }
                         }
                      }
@@ -1246,7 +1246,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          {
             throw new PSCmsException(IPSCmsErrors.FOLDER_ERROR_MSG,
                "Error updating folder relationships." + newLine +
-               rel.toString());
+                       rel);
          }
       }
 
@@ -1260,7 +1260,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          {
             throw new PSCmsException(IPSCmsErrors.FOLDER_ERROR_MSG,
                "Error updating folder relationships." + newLine +
-               rel.toString());
+               rel);
          }
       }
 
@@ -1613,7 +1613,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       plan.put(PSApplicationBuilder.REQUEST_TYPE_VALUE_INSERT, inserts);
       plan.put(PSApplicationBuilder.REQUEST_TYPE_VALUE_UPDATE, updates);
       
-      Collection<Integer> relsExisting = getExisiting(relationships);
+      Collection<Integer> relsExisting = getExisting(relationships);
 
       for (PSRelationship psRelationship : (Iterable<PSRelationship>) relationships) {
          PSRelationship relationship = psRelationship;
@@ -1661,13 +1661,12 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * @return set of relationshipids from the set that DO exist in the database,
     *         never <code>null</code> may be empty.
     */
-   private Collection<Integer> getExisiting(PSRelationshipSet relationships)
+   private Collection<Integer> getExisting(PSRelationshipSet relationships)
    {
       Set<Integer> relIds = new HashSet<>(relationships.size());
       for (PSRelationship relationship : (Iterable<PSRelationship>) relationships) {
-         PSRelationship element = (PSRelationship) relationship;
-         if (element.getId() > 0)
-            relIds.add(element.getId());
+         if (relationship.getId() > 0)
+            relIds.add(relationship.getId());
       }
       
       IPSRelationshipService svc = PSRelationshipServiceLocator
@@ -1840,7 +1839,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
       List<String> paths = new ArrayList<>();
       while (tokenizer.hasMoreTokens())
          paths.add(tokenizer.nextToken());
-      if (paths.isEmpty() || paths.size() < 1)
+      if (paths.isEmpty())
       {
          throw new IllegalArgumentException(
                "path must have at least two token separated by '" + separator

@@ -9,13 +9,7 @@
  ******************************************************************************/
 package com.percussion.pso.assembler;
 
-import org.w3c.tidy.Tidy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-import java.util.HashMap;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -23,6 +17,13 @@ import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.tidy.Tidy;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -55,15 +56,15 @@ public class ValidatingContentAssemblerMerge {
 	      }
 	      	      
 	      String configTidyPropertiesFile=null;
-	      Boolean configForcePublish=false;
-	      Boolean configDontFixMarkup=false;
-	      Boolean configFailPublishOnErrors=true;
-	      Boolean configFailPublishOnWarnings=false;
-	      Boolean configIsXMLContent = false;
-	      Boolean configIsXHTMLContent = true;
-	      Boolean configIsHTMLContent = false;
+	      boolean configForcePublish=false;
+	      boolean configDontFixMarkup=false;
+	      boolean configFailPublishOnErrors=true;
+	      boolean configFailPublishOnWarnings=false;
+	      boolean configIsXMLContent = false;
+	      boolean configIsXHTMLContent = true;
+	      boolean configIsHTMLContent = false;
 	      
-	      log.debug("Init Params :" + def.getInitParameterNames().toString());
+	      log.debug("Init Params : {}" , def.getInitParameterNames());
 	      //Load up our parameters
 	      //Specifies the location of the Tidy properties file for this Assembler.
 	      configTidyPropertiesFile = PSServer.getRxFile(def.getInitParameter("com.percussion.extension.assembly.TidyPropertiesFile"));
@@ -106,13 +107,16 @@ public class ValidatingContentAssemblerMerge {
 	      boolean isSnippet;
 	      try{
 	      if ((parent != null) && (result.getId()!= parent.getId())) {
-	    	  log.debug("Not processing. Item "+ result.getId() + " has parent Item id="+parent.getId());
+	    	  log.debug("Not processing. Item {} has parent Item id={}",
+					  result.getId() ,parent.getId());
 	    	  isSnippet = true;
 	      } else {
-	    	  log.debug("No Parent Item Processing Item id="+ result.getId());
+	    	  log.debug("No Parent Item Processing Item id={}", result.getId());
 	    	  isSnippet = false;
 	      }
-	      }catch(Exception ex){log.debug("Unexpected Error " + ex.getMessage() + " Snippet detection logic");}
+	      }catch(Exception ex){
+	      	log.error("Unexpected Error {} Snippet detection logic",
+				  PSExceptionUtils.getMessageForLog(ex));}
 	      finally{
 	    	isSnippet=false;  //@TODO: FIGURE OUT WHY THIS IS CRASHING ON EVENTS
 	      }
@@ -123,7 +127,7 @@ public class ValidatingContentAssemblerMerge {
 	      
 	      PSAssemblyWorkItem work = (PSAssemblyWorkItem) result; 
 	     
-	      if (!isSnippet & context!=0) {
+	      if (!isSnippet && context!=0) {
 
 	    	  Tidy tidy = new Tidy();
 	    	
@@ -140,7 +144,7 @@ public class ValidatingContentAssemblerMerge {
 	    		  tidy.setXmlOut(configIsXMLContent);
 	    	  }
 	    	  
-	    	  log.debug("Loading Tidy Properties From " + configTidyPropertiesFile);
+	    	  log.debug("Loading Tidy Properties From: {} " , configTidyPropertiesFile);
 	    	  tidy.setConfigurationFromFile(configTidyPropertiesFile);
 	    	  
 	    	  ByteArrayOutputStream errors_out = new ByteArrayOutputStream();
@@ -156,14 +160,14 @@ public class ValidatingContentAssemblerMerge {
 	    	  tidyErrors.close();
 	    	  
 	    	  if((errors_out.size()>0)&&(configFailPublishOnErrors || configFailPublishOnWarnings)){	    		  
-	    		  work.setResultData(errors_out.toString().getBytes("UTF-8"));
+	    		  work.setResultData(errors_out.toString().getBytes(StandardCharsets.UTF_8));
 	    		  work.setStatus(Status.FAILURE);
 	    	  }else{
-	    		  work.setResultData(out.toString().getBytes("UTF-8"));
+	    		  work.setResultData(out.toString().getBytes(StandardCharsets.UTF_8));
 	    	  }
 	    	  
 	      } else {
-	    	work.setResultData(outputDoc.getBytes("UTF-8"));
+	    	work.setResultData(outputDoc.getBytes(StandardCharsets.UTF_8));
 	      }
 	      
 	      work.setMimeType(mimeType); 

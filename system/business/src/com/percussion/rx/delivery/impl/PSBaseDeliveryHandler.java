@@ -23,28 +23,6 @@
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
 import com.percussion.rx.delivery.IPSDeliveryItem;
@@ -55,7 +33,6 @@ import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.ItemState;
 import com.percussion.rx.publisher.IPSRxPublisherService;
-import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
 import com.percussion.rx.publisher.data.PSPubItemStatus;
@@ -74,6 +51,28 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Base delivery handler. This defines a basic mechanism that enables the
@@ -892,7 +891,7 @@ public abstract class PSBaseDeliveryHandler implements IPSDeliveryHandler
       {
          throw new IllegalArgumentException("result may not be null");
       }
-      return path.getBytes("UTF8");
+      return path.getBytes(StandardCharsets.UTF_8);
    }
 
    /**

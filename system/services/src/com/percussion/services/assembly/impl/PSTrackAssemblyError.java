@@ -25,16 +25,14 @@ package com.percussion.services.assembly.impl;
 
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
-import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.utils.codec.PSXmlEncoder;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class holds state in thread local storage for exception(s) that occur
@@ -223,15 +221,9 @@ public class PSTrackAssemblyError
             b.append(HEADER);
             b.append(toHTMLTable());
             b.append("</body></html>");
-            try
-            {
-               item.setResultData(b.toString().getBytes("UTF8"));
-            }
-            catch (UnsupportedEncodingException e)
-            {
-               // Impossible!
-               ms_log.error(e);
-            }
+
+            item.setResultData(b.toString().getBytes(StandardCharsets.UTF_8));
+
             item.setMimeType("text/html;charset=utf8");
          }
       }

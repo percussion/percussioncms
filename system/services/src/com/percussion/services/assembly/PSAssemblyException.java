@@ -64,6 +64,16 @@ public class PSAssemblyException extends PSBaseException
       super(msgCode);
    }
 
+
+   /**
+    * Ctor
+    * @param msgCode message code used to lookup message
+    * @param cause the exception that triggered this one
+    */
+   public PSAssemblyException(int msgCode, Throwable cause) {
+      super(msgCode,cause);
+   }
+
    @Override
    protected String getResourceBundleBaseName()
    {

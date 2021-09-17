@@ -23,8 +23,7 @@
  */
 package com.percussion.sitemanage.task.impl;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.rx.delivery.impl.PSDatabaseDeliveryHandler;
@@ -43,19 +42,21 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Date;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.Map;
+
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * This edition task is used to create or update the tables that is defined by perc.pageDatabase template.
@@ -187,12 +188,14 @@ public class PSUpdateTablesEditionTask implements IPSEditionTask
         InputStream in;
         try
         {
-            in = new ByteArrayInputStream(xml.getBytes("UTF8"));
+            in = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
             return PSXmlDocumentBuilder.createXmlDocument(new InputSource(in), false);
         }
         catch (Exception e)
         {
-            log.error("Failed to create XML for String: " + xml, e);
+            log.error("Failed to create XML for String: {} Error: {}" ,
+                    xml,
+                    PSExceptionUtils.getMessageForLog(e));
             return null;
         }
     }
