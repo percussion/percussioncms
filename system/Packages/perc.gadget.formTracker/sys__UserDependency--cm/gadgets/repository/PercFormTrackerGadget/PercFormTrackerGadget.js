@@ -96,6 +96,7 @@
     var formTrackerTable = undefined;
     var tableDiv;
     var siteName;
+    var rowsPerGadgetPage;
     
     // API for this library
     $.fn.PercFormTrackerGadget = function(site,rows) {
@@ -111,6 +112,12 @@
         siteName=site;
         tableDiv = $(this);
         gadgets.window.setTitle("FORMS TRACKER");
+
+        if(typeof(rows) ==='undefined'){
+            rowsPerGadgetPage = itemsPerPage;
+        }else{
+            rowsPerGadgetPage = rows;
+        }
 
         loadGadget(site);
     }
@@ -168,7 +175,7 @@
 
         var percColumnWidths = ["*","38","40"];
 
-        var config = {percRowDblclickCallback : openForm, percColumnWidths : percColumnWidths, percVisibleColumns : percVisibleColumns, iDisplayLength : itemsPerPage, percData : percData, percHeaders : percHeaders, aoColumns : aoColumns, percMenus : menus};
+        var config = {percRowDblclickCallback : openForm, percColumnWidths : percColumnWidths, percVisibleColumns : percVisibleColumns, iDisplayLength : rowsPerGadgetPage, percData : percData, percHeaders : percHeaders, aoColumns : aoColumns, percMenus : menus};
         config.oLanguage = { sZeroRecords: (message!= null)? message : "No forms found."};
         
         tableDiv.PercActionDataTable(config);
@@ -177,7 +184,7 @@
 
         // Fix height 10 pixels for the iframe so the actions menu from the middle fits to open downwards
         var iframe = this.window.parent.jQuery("div[name='Forms Tracker'] iframe");
-        iframe.height(320);        
+        iframe.height(330);
     }
 
     function displayErrorMessage(message) {

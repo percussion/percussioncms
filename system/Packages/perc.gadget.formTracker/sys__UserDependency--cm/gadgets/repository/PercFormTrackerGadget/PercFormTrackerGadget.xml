@@ -120,7 +120,7 @@
         $("#perc-formtracker-gadget").PercFormTrackerGadget(site,rows);
     });
 </script>
-<div id="perc-formtracker-gadget">
+<div id="perc-formtracker-gadget" style="overflow-y: auto; max-height: 300px; min-height: 300px;">
 </div>
      ]]>
   </Content> 
