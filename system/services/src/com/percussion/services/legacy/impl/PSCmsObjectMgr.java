@@ -45,6 +45,7 @@ import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.server.PSDatabaseComponentLoader;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSLocale;
 import com.percussion.search.PSSearchIndexEventQueue;
 import com.percussion.server.IPSHandlerInitListener;
@@ -161,7 +162,7 @@ public class PSCmsObjectMgr
    /**
     * Logger
     */
-   private static final Logger ms_log = LogManager.getLogger("PSCmsObjectMgr");
+   private static final Logger logger = LogManager.getLogger("PSCmsObjectMgr");
    
    private static final int BATCH_SIZE = 50;
    private static ThreadLocal<Integer> ms_itemCount = new ThreadLocal<>();
@@ -185,9 +186,9 @@ public class PSCmsObjectMgr
     */
    public PSCmsObjectMgr()
    {
-      String tables[] =
+      String[] tables =
       {"CONTENTSTATUS", "RXLOCALE"};
-      String pks[] =
+      String[] pks =
       {"CONTENTID", "LOCALEID"};
       Class clazz[] =
       {PSComponentSummary.class, PSLocale.class};
@@ -273,7 +274,8 @@ public class PSCmsObjectMgr
   		try{
             return session.createCriteria(PSUIMode.class).list();
         }catch(Exception e){
-            ms_log.warn("An error occurred while listing UI Contexts:" + e.getMessage());
+            logger.warn("An error occurred while listing UI Contexts: {}",
+                    PSExceptionUtils.getMessageForLog(e));
             return new ArrayList<>();
       }
 	}
@@ -285,7 +287,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSActionMenu.class).addOrder(Order.asc("sortOrder")).list();
         } catch (Exception e) {
-            ms_log.warn("An error occurred while listing action menus: {}" , e.getMessage());
+            logger.warn("An error occurred while listing action menus: {}" , PSExceptionUtils.getMessageForLog(e));
             return new ArrayList<>();
         }
     }
@@ -297,7 +299,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSActionMenu.class).add(Restrictions.ilike("type",type)).addOrder(Order.asc("sortOrder")).list();
         }catch(Exception e) {
-            ms_log.warn("An error occurred while listing action menus by type: {}" , e.getMessage());
+            logger.warn("An error occurred while listing action menus by type: {}" , PSExceptionUtils.getMessageForLog(e));
             return new ArrayList<>();
         }
    }
@@ -308,7 +310,7 @@ public class PSCmsObjectMgr
         try {
             return session.createCriteria(PSUiContext.class).list();
         }catch(Exception e) {
-            ms_log.warn("An error occurred while listing UI Contexts: {}" ,e.getMessage());
+            logger.warn("An error occurred while listing UI Contexts: {}" ,PSExceptionUtils.getMessageForLog(e));
             return new ArrayList<>();
         }
    }
@@ -358,8 +360,8 @@ public class PSCmsObjectMgr
     */
    public PSLocale loadLocale(int id)
    {
-      return (PSLocale) sessionFactory.getCurrentSession().get(PSLocale.class,
-            new Integer(id));
+      return sessionFactory.getCurrentSession().get(PSLocale.class,
+              id);
    }
 
    /*
@@ -375,7 +377,7 @@ public class PSCmsObjectMgr
          Criteria c = sessionFactory.getCurrentSession().createCriteria(PSLocale.class).add(
                Restrictions.eq("m_languageString", lang));
          List<PSLocale> locales = c.list();
-         if (locales != null && locales.size() > 0)
+         if (locales != null && !locales.isEmpty())
          {
             return locales.get(0);
          }
@@ -548,11 +550,11 @@ public class PSCmsObjectMgr
       if (StringUtils.isBlank(name))
          throw new IllegalArgumentException("name may not be null or empty.");
 
-      List<PSPersistentPropertyMeta> metas = sessionFactory.getCurrentSession()
+      return sessionFactory.getCurrentSession()
             .createQuery(
                   "from PSPersistentPropertyMeta pm where pm.userName like :name").setParameter(
                   "name", name).list();
-      return metas;
+
    }
 
    /**
@@ -582,11 +584,10 @@ public class PSCmsObjectMgr
       if (StringUtils.isBlank(userName))
          throw new IllegalArgumentException("userName may not be null or empty.");
 
-      List<PSPersistentProperty> props = sessionFactory.getCurrentSession()
+      return sessionFactory.getCurrentSession()
             .createQuery(
                   "from PSPersistentProperty p where p.m_userName like :name").setParameter(
                   "name", userName).list();
-      return props;
    }
 
    /*
@@ -665,7 +666,7 @@ public class PSCmsObjectMgr
 
          for (Integer id : ids)
          {
-            PSComponentSummary sum = (PSComponentSummary) s.get(PSComponentSummary.class, id);
+            PSComponentSummary sum = s.get(PSComponentSummary.class, id);
             if (sum != null)
                summaries.add(sum);
          }
@@ -900,7 +901,7 @@ public class PSCmsObjectMgr
 
       try
       {
-         ms_log.debug("Evicting " + id + " for class " + clazz);
+         logger.debug("Evicting {} for class {}",id,  clazz);
          SessionFactory sf = s.getSessionFactory();
          ClassMetadata cm = sf.getClassMetadata(clazz);
 
@@ -935,9 +936,9 @@ public class PSCmsObjectMgr
             }
          }
       }
-      catch (Throwable t)
+      catch (Exception t)
       {
-         throw new PSORMException("Problem evicting object of class " + clazz + " from cache with id " + id);
+         throw new PSORMException("Problem evicting object of class " + clazz + " from cache with id " + id,t);
       }
 
    }
@@ -1304,8 +1305,8 @@ public class PSCmsObjectMgr
          {
             fact.getCache().evictCollectionRegion(collection);
          }
-         if (ms_log.isDebugEnabled())
-            ms_log.debug("Flushed hibernate 2nd level cache.");
+         if (logger.isDebugEnabled())
+            logger.debug("Flushed hibernate 2nd level cache.");
          
          // Clear the Eh cache
          IPSCacheAccess cache = PSCacheAccessLocator.getCacheAccess();
@@ -1322,7 +1323,7 @@ public class PSCmsObjectMgr
               .createCriteria(PSRelationshipConfigName.class).list();
 
       if (names == null)
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
       else
          return names;
    }
@@ -1333,9 +1334,8 @@ public class PSCmsObjectMgr
    {
       Session sess = sessionFactory.getCurrentSession();
 
-         List rels = sess.createCriteria(PSRelationshipConfigName.class).add(Restrictions.ilike("config_name", name))
+         return sess.createCriteria(PSRelationshipConfigName.class).add(Restrictions.ilike("config_name", name))
                .list();
-         return rels;
 
       }
 
@@ -1428,18 +1428,17 @@ public class PSCmsObjectMgr
 
          Query query = session.createQuery("from PSCmsObject");
 
-         List<PSCmsObject> cmsObjects = (List<PSCmsObject>) query.list();
+         return (List<PSCmsObject>) query.list();
 
-         return cmsObjects;
 
 
    }
 
    public Set<Long> findContentTypesForIds(Collection<? extends Object> contentIds)
    {
-      if (contentIds.size() == 0)
+      if (contentIds.isEmpty())
       {
-         return Collections.EMPTY_SET;
+         return Collections.emptySet();
       }
       
       Session session = sessionFactory.getCurrentSession();
@@ -1456,7 +1455,7 @@ public class PSCmsObjectMgr
                }
                catch(NumberFormatException nfe)
                {
-                  ms_log.error("Bad content id found " + id);
+                  logger.error("Bad content id found {}" , id);
                }
             }
             else if (id instanceof Integer)
@@ -1469,7 +1468,7 @@ public class PSCmsObjectMgr
             }
             else
             {
-               ms_log.error("Bad contentid found (wrong class): " + id);
+               logger.error("Bad contentid found (wrong class): {}" , id);
             }
          }
          
@@ -1591,7 +1590,7 @@ public class PSCmsObjectMgr
       Map<Integer, String> map = new HashMap<>();
       if (wf == null)
       {
-         ms_log.warn("Failed to load workflow id = {}" , wfId);
+         logger.warn("Failed to load workflow id = {}" , wfId);
          wfStateIdNameMap.put(wfId, map);         
          return map;
       }
@@ -1648,7 +1647,7 @@ public class PSCmsObjectMgr
       }
       catch (PSInvalidContentTypeException e)
       {
-         ms_log.warn("Invalid content type id ({}) for contentId = {}",contentTypeId  , item.getContentId());
+         logger.warn("Invalid content type id ({}) for contentId = {}",contentTypeId  , item.getContentId());
       }
    }
    
@@ -1758,7 +1757,7 @@ public class PSCmsObjectMgr
         if(!listItems.isEmpty() ){
             //Should never happen unless corrupted data
             if(listItems.size() > 1){
-                ms_log.warn("Duplicate records found for id: {} Returning 1st record" , id);
+                logger.warn("Duplicate records found for id: {} Returning 1st record" , id);
             }
             return createItemEntry(listItems.get(0), wfStateIdNameMap, ctTypeIdLabelMap);
         }
@@ -1851,12 +1850,16 @@ public class PSCmsObjectMgr
             newHistory.setTitle(summary.getName());
             newHistory.setTransitionLabel("CheckOut");
             newHistory.setWorkflowId(summary.getWorkflowAppId());
-            newHistory.setSessionId(StringUtils.defaultString(sess.getId()));
+
+            if(sess!= null)
+                newHistory.setSessionId(StringUtils.defaultString(sess.getId()));
+            else
+                newHistory.setSessionId("");
             
             session.update(summary);
             svc.saveContentStatusHistory(newHistory);
             
-            //  Need to update change listners of checkin
+            //  Need to update change listeners of checkin
                PSEditorChangeEvent e = new PSEditorChangeEvent(PSEditorChangeEvent.ACTION_CHECKIN,
                      summary.getContentId(), tip, -1, -1, summary.getContentTypeId());
      
@@ -1865,12 +1868,13 @@ public class PSCmsObjectMgr
             if (handler!=null)
                handler.updateChangeListners(e);
             
-            ms_log.debug("Force Checked in "+summary.getContentId() + " for user "+ checkedOutTo);
+            logger.debug("Force Checked in {} for user {}",summary.getContentId(), checkedOutTo);
          }
          }
          catch (PSORMException | PSSystemValidationException e)
          {
-            ms_log.error("Failed to force checkin users ",e);
+            logger.error("Failed to force checkin users. Error: {} ",
+                    PSExceptionUtils.getMessageForLog(e));
          }
 
          
@@ -1954,11 +1958,11 @@ public class PSCmsObjectMgr
          if (folderCount > 0)
          {
             PSNotificationHelper.notifyEvent(EventType.WORKFLOW_FOLDER_ASSIGNMENT_QUEUEING,
-                  new Integer(folderCount * -1));
+                    folderCount * -1);
          }
       }
       
-      PSNotificationHelper.notifyEvent(EventType.WORKFLOW_FOLDER_ASSIGNMENT_PROCESSING, new Integer(itemCount));
+      PSNotificationHelper.notifyEvent(EventType.WORKFLOW_FOLDER_ASSIGNMENT_PROCESSING, itemCount);
       ms_itemCount.set(itemCount);
       
       // now perform an update for each state
@@ -1975,7 +1979,7 @@ public class PSCmsObjectMgr
          if (remaining > 0)
          {
             PSNotificationHelper.notifyEvent(EventType.WORKFLOW_FOLDER_ASSIGNMENT_PROCESSING,
-                  new Integer(itemCount * -1));
+                    itemCount * -1);
          }
       }
       
@@ -2015,14 +2019,14 @@ public class PSCmsObjectMgr
     */
    private Set<Integer> findCheckedOutContentIds(List<Integer> ids) throws PSORMException
    {
-      if (ids.size() == 0)
+      if (ids.isEmpty())
       {
-         return Collections.EMPTY_SET;
+         return Collections.emptySet();
       }
       
       Session session = sessionFactory.getCurrentSession();
 
-         Set<Long> rval = new HashSet<>();
+         Set<Long> rval;
          Set<Integer> results;
          // Grab max ids at a time from the list, if less than max do the
          // entire list
@@ -2137,7 +2141,7 @@ public class PSCmsObjectMgr
          int itemCount = ms_itemCount.get();
          if (itemCount > 0)
          {
-            PSNotificationHelper.notifyEvent(EventType.WORKFLOW_FOLDER_ASSIGNMENT_PROCESSING, new Integer(-1));
+            PSNotificationHelper.notifyEvent(EventType.WORKFLOW_FOLDER_ASSIGNMENT_PROCESSING, -1);
             itemCount--;    
             ms_itemCount.set(itemCount);
          }
@@ -2233,7 +2237,7 @@ public class PSCmsObjectMgr
         PSItemSummaryCache cache = PSItemSummaryCache.getInstance();
         if ((cache != null && dateToSet != null) && "m_contentPostDate".equals(fieldName))
             cache.updatePostDate(ids,dateToSet);
-                ms_log.debug(String.format("Updating %s with %d ids, result updated %d rows", fieldName, ids.size(), result));
+                logger.debug(String.format("Updating %s with %d ids, result updated %d rows", fieldName, ids.size(), result));
 
     }
 
@@ -2254,7 +2258,7 @@ public class PSCmsObjectMgr
                     idBatch.clear();
                 }
             }
-            if (idBatch.size() > 0)
+            if (!idBatch.isEmpty())
                 objMgr.updateSummaryDateFieldBatch(fieldName, dateToSet, idBatch, updateExisting);
         }
     }

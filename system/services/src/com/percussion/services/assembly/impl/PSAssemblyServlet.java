@@ -24,6 +24,7 @@
 package com.percussion.services.assembly.impl;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.server.PSServer;
 import com.percussion.services.PSMissingBeanConfigurationException;
@@ -233,22 +234,24 @@ public class PSAssemblyServlet extends HttpServlet
             }
          }
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          Throwable cause = PSExceptionHelper.findRootCause(e, true);
          if (PSServletUtils.isClientAbortException(e) ||
                cause.getMessage().startsWith("Software caused connection abort:") ||
                cause.getMessage().startsWith("Connection reset by peer:")) {
-            log.debug("Client aborted connection", e);
+            log.debug("Client aborted connection. Error: {}",
+                    PSExceptionUtils.getDebugMessageForLog(e));
             return; //Client closed connection, do not throw error   
          }
-         log.error("Problem in assembly servlet", e);
+         log.error("Problem in assembly servlet.  Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
          reportError(request, cause.getLocalizedMessage(), response);
       }
       finally
       {
          watch.stop();
-         log.debug("Assembling item {}, template {} took {}", request.getParameter(IPSHtmlParameters.SYS_CONTENTID),(template != null ? template : variantid), watch.toString());
+         log.debug("Assembling item {}, template {} took {}", request.getParameter(IPSHtmlParameters.SYS_CONTENTID),(template != null ? template : variantid), watch);
       }
 
    }
@@ -522,8 +525,9 @@ public class PSAssemblyServlet extends HttpServlet
       }
       catch (Exception e)
       {
-         log.error("Failed to report error: {}.  Error: {}", string, e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error("Failed to report error: {}.  Error: {}", string,
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

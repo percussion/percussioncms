@@ -276,12 +276,11 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    /**
     * Ctor
     * @param writer the stax output writer, never <code>null</code>
-    * @param source may be null.  the xml source, filename, or other context for use in debugging / error handling
     * @param proc the parent processor, never <code>null</code>
     */
-   public PSInlineLinkContentHandler(XMLStreamWriter writer, String source,
+   public PSInlineLinkContentHandler(XMLStreamWriter writer ,
          PSInlineLinkProcessor proc) {
-      super(writer, source, null, true);
+      super(writer, null, true);
       m_processor = proc;
       
       // Clear stack

@@ -50,6 +50,8 @@ import com.percussion.sitemanage.service.IPSSiteDataService;
 import com.percussion.utils.date.PSDateRange;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ import java.util.List;
 import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_ARCHIVE;
 import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_STATE_LIVE;
 import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.WF_TAKE_DOWN_TRANSITION;
-import static com.percussion.itemmanagement.service.impl.PSWorkflowHelper.log;
+
 
 /**
  * The traffic data service.  This service provides actual data.
@@ -107,7 +109,7 @@ public class PSTrafficService implements IPSTrafficService
         }
         catch (Exception e)
         {
-            throw new PSTrafficServiceException(notFoundError);
+            throw new PSTrafficServiceException(NOT_FOUND_ERROR);
         }
         
         //Create PSDateRange
@@ -424,13 +426,15 @@ public class PSTrafficService implements IPSTrafficService
         }
         return counts;
     }
-    
-    private IPSActivityService activityService;
-    private IPSAnalyticsProviderQueryService analyticsService;
-    private IPSAnalyticsProviderService providerService;
-    private IPSSiteDataService siteDataService;
-    private IPSPathService pathService;
-    private IPSFolderHelper folderHelper;
-    private String notFoundError = "Unable to retrieve analytics data. Please use the Google Setup gadget to select a profile for the desired site(s).";
-    private IPSPageService pageService;
+
+    private static final Logger log = LogManager.getLogger(PSTrafficService.class);
+
+    private final IPSActivityService activityService;
+    private final IPSAnalyticsProviderQueryService analyticsService;
+    private final IPSAnalyticsProviderService providerService;
+    private final IPSSiteDataService siteDataService;
+    private final IPSPathService pathService;
+    private final IPSFolderHelper folderHelper;
+    private static final String NOT_FOUND_ERROR = "Unable to retrieve analytics data. Please use the Google Setup gadget to select a profile for the desired site(s).";
+    private final IPSPageService pageService;
 }

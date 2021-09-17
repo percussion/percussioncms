@@ -26,6 +26,7 @@ package com.percussion.sitemanage.servlet;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSInlineLinkRequest;
 import com.percussion.pagemanagement.data.PSInlineRenderLink;
 import com.percussion.pagemanagement.service.impl.PSRenderLinkService;
@@ -99,12 +100,13 @@ public class PSPreviewItemContent extends HttpServlet
             disp.forward(forwardReq, response);
         } catch (UnsupportedOperationException unsupportedOpEx)
         {
-            log.warn(unsupportedOpEx,unsupportedOpEx);
+            log.warn(PSExceptionUtils.getMessageForLog(unsupportedOpEx));
             responseWithError(response, SC_BAD_REQUEST, unsupportedOpEx);
         }
         catch (Exception e)
         {
-            log.error("Preview Exception", e);
+            log.error("Preview Exception: {}",
+                    PSExceptionUtils.getMessageForLog(e));
             responseWithError(response, SC_INTERNAL_SERVER_ERROR, e);
         }
     }
@@ -113,11 +115,12 @@ public class PSPreviewItemContent extends HttpServlet
     {
         try
         {
-            response.sendError(status, e.getMessage());
+            response.sendError(status);
         }
         catch (IOException ioEx)
         {
-            log.error(ioEx);
+            response.setStatus(500);
+            log.error(PSExceptionUtils.getMessageForLog(ioEx));
         }
     }
 
@@ -233,8 +236,8 @@ public class PSPreviewItemContent extends HttpServlet
             }
         }
         catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return ret;
     }
