@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
@@ -152,9 +153,10 @@ public class PSJarFilter
       }
       writer.flush();
       String output = writer.toString();
-      byte bytes[] = output.getBytes("UTF8");
+      byte[] bytes = output.getBytes(StandardCharsets.UTF_8);
 
       JarEntry outentry = new JarEntry(entry.getName());
+
       // Copy information from original entry
       outentry.setExtra(entry.getExtra());
       outentry.setMethod(entry.getMethod());

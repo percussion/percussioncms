@@ -28,14 +28,14 @@ import com.percussion.utils.testing.UnitTest;
 import com.percussion.utils.timing.PSStopwatch;
 import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -73,14 +73,14 @@ public class PSXmlPITest
 
       // Dom handling
       sw.start();
-      InputStream stream = new ByteArrayInputStream(result.getSecond()
-            .getBytes("UTF8"));
-      Document doc = PSXmlDocumentBuilder.createXmlDocument(stream, false);
-      PSXmlPIUtils.substitutePIs(doc, result.getFirst());
-      String str = PSXmlDocumentBuilder.toString(doc);
-      sw.stop();
-      System.out.println("DOM took " + sw);
-      assertEquals(ms_result1, str);
+      try(InputStream stream = new ByteArrayInputStream(result.getSecond().getBytes(StandardCharsets.UTF_8))) {
+         Document doc = PSXmlDocumentBuilder.createXmlDocument(stream, false);
+         PSXmlPIUtils.substitutePIs(doc, result.getFirst());
+         String str = PSXmlDocumentBuilder.toString(doc);
+         sw.stop();
+         System.out.println("DOM took " + sw);
+         assertEquals(ms_result1, str);
+      }
    }
 
    @Test

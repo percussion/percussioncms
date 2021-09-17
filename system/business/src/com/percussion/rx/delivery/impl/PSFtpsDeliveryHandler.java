@@ -24,28 +24,28 @@
 
 package com.percussion.rx.delivery.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.SocketException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-
-import com.percussion.services.pubserver.IPSPubServer;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
-import org.apache.commons.net.ftp.FTPSClient;
-
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
+import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
@@ -571,7 +571,7 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
             ftp.storeFile(file.getName(), inputStream);
 
             return new PSDeliveryResult(Outcome.DELIVERED, null, item.getId(),
-                    jobId, item.getReferenceId(), location.getBytes("UTF8"));
+                    jobId, item.getReferenceId(), location.getBytes(StandardCharsets.UTF_8));
         }
         catch (Exception e)
         {

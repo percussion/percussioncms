@@ -47,6 +47,7 @@ import com.percussion.i18n.rxlt.PSLocaleRxResourceCopyHandler;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.data.PSTemplateSlot;
+import com.percussion.services.catalog.IPSCatalogIdentifier;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
@@ -122,6 +123,8 @@ import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUse
 public class PSContentDesignWs extends PSContentBaseWs implements
    IPSContentDesignWs
 {
+
+   private static final String IDS_NOT_EMPTY_MSG = "ids cannot be null or empty";
 
    /**
     * Gets the GUID from the specified item. If the revision of the id is
@@ -234,10 +237,10 @@ public class PSContentDesignWs extends PSContentBaseWs implements
          {
             id = new PSLegacyGuid(summary.getEditLocator());
          }
-         buffer.append("&sys_contentid=" + id.getContentId());
-         buffer.append("&sys_revision=" + id.getRevision());
+         buffer.append("&sys_contentid=").append(id.getContentId());
+         buffer.append("&sys_revision=").append(id.getRevision());
       }
-      buffer.append("&sys_view=" + viewName);
+      buffer.append("&sys_view=").append(viewName);
       return buffer.toString();
    }
    
@@ -248,7 +251,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       if (names == null || names.isEmpty())
          throw new IllegalArgumentException("names cannot be null or empty");
 
-      List<PSItemDefinition> itemDefs = new ArrayList<PSItemDefinition>();
+      List<PSItemDefinition> itemDefs = new ArrayList<>();
       for (String name : names)
       {
          // validate name
@@ -271,22 +274,9 @@ public class PSContentDesignWs extends PSContentBaseWs implements
 
             itemDefs.add(PSContentTypeHelper.createContentType(nodeDef));
          }
-         catch (IOException e)
+         catch (PSLockException |IOException | SAXException | PSUnknownNodeTypeException e)
          {
             throwOperationError("Failed to load default ce template", e);
-         }
-         catch (SAXException e)
-         {
-            throwOperationError("Failed to load default ce template", e);
-         }
-         catch (PSUnknownNodeTypeException e)
-         {
-            throwOperationError("Failed to load default ce template", e);
-         }
-         catch (PSLockException e)
-         {
-            // should never happen
-            throwOperationError("Failed to establish lock", e);
          }
       }
 
@@ -300,7 +290,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       if (names == null || names.isEmpty())
          throw new IllegalArgumentException("names cannot be null or empty");
 
-      List<PSKeyword> keywords = new ArrayList<PSKeyword>();
+      List<PSKeyword> keywords = new ArrayList<>();
       for (String name : names)
       {
          if (StringUtils.isBlank(name))
@@ -348,7 +338,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
          throw new IllegalArgumentException(
             "codes and labels must have the same number of elements");
 
-      List<PSLocale> results = new ArrayList<PSLocale>(codes.size());
+      List<PSLocale> results = new ArrayList<>(codes.size());
       IPSCmsObjectMgr mgr = PSCmsObjectMgrLocator.getObjectManager();
       IPSObjectLockService lockService = PSObjectLockServiceLocator
          .getLockingService();
@@ -401,7 +391,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       throws PSErrorsException
    {
       if (PSGuidUtils.isBlank(ids))
-         throw new IllegalArgumentException("ids cannot be null or empty");
+         throw new IllegalArgumentException(IDS_NOT_EMPTY_MSG);
 
       IPSObjectLockService lockService = PSObjectLockServiceLocator
          .getLockingService();
@@ -478,7 +468,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       String session, String user) throws PSErrorsException
    {
       if (PSGuidUtils.isBlank(ids))
-         throw new IllegalArgumentException("ids cannot be null or empty");
+         throw new IllegalArgumentException(IDS_NOT_EMPTY_MSG);
 
       IPSContentService service = PSContentServiceLocator.getContentService();
 
@@ -536,7 +526,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       String session, String user) throws PSErrorsException
    {
       if (PSGuidUtils.isBlank(ids))
-         throw new IllegalArgumentException("ids cannot be null or empty");
+         throw new IllegalArgumentException(IDS_NOT_EMPTY_MSG);
 
       IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
 
@@ -596,17 +586,17 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    // @see IPSContentDesignWs#findContentTypes(String)
    public List<IPSCatalogSummary> findContentTypes(String name)
    {
-      List<IPSCatalogSummary> sums = new ArrayList<IPSCatalogSummary>();
+      List<IPSCatalogSummary> sums = new ArrayList<>();
 
       IPSObjectLockService lockService = PSObjectLockServiceLocator
          .getLockingService();
       
       List<IPSNodeDefinition> nodeDefs = PSContentTypeHelper.loadNodeDefs(name);
       
-      if (nodeDefs!=null && nodeDefs.size()>0)
+      if (nodeDefs!=null && !nodeDefs.isEmpty())
       {
          
-         List<PSObjectLock> locks = lockService.findLocksByObjectIds(nodeDefs.stream().map( n -> n.getGUID()).collect(Collectors.toList()),null,null);
+         List<PSObjectLock> locks = lockService.findLocksByObjectIds(nodeDefs.stream().map(IPSCatalogIdentifier::getGUID).collect(Collectors.toList()),null,null);
          Map<IPSGuid,PSObjectLock> lockMap = locks.stream().collect(Collectors.toMap(PSObjectLock::getObjectId, Function.identity()));
                
          for (IPSNodeDefinition nodeDef : nodeDefs)
@@ -656,7 +646,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
 
       PSErrorResultsException results = new PSErrorResultsException();
-      List<PSContentTemplateDesc> descList = new ArrayList<PSContentTemplateDesc>();
+      List<PSContentTemplateDesc> descList = new ArrayList<>();
 
       try
       {
@@ -733,7 +723,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
 
       PSErrorResultsException results = new PSErrorResultsException();
       List<PSContentTypeWorkflow> ctWfList = 
-         new ArrayList<PSContentTypeWorkflow>();
+         new ArrayList<>();
 
       try
       {
@@ -830,19 +820,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
 
          return def;
       }
-      catch (IOException e)
-      {
-         throwUnexpectedError(e);
-      }
-      catch (SAXException e)
-      {
-         throwUnexpectedError(e);
-      }
-      catch (PSUnknownNodeTypeException e)
-      {
-         throwUnexpectedError(e);
-      }
-      catch (PSUnknownDocTypeException e)
+      catch (IOException | PSUnknownDocTypeException | PSUnknownNodeTypeException | SAXException e)
       {
          throwUnexpectedError(e);
       }
@@ -885,19 +863,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
 
          return def;
       }
-      catch (IOException e)
-      {
-         throwUnexpectedError(e);
-      }
-      catch (SAXException e)
-      {
-         throwUnexpectedError(e);
-      }
-      catch (PSUnknownNodeTypeException e)
-      {
-         throwUnexpectedError(e);
-      }
-      catch (PSUnknownDocTypeException e)
+      catch (IOException | SAXException | PSUnknownNodeTypeException | PSUnknownDocTypeException e)
       {
          throwUnexpectedError(e);
       }
@@ -916,7 +882,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       throws PSErrorResultsException
    {
       if (PSGuidUtils.isBlank(ids))
-         throw new IllegalArgumentException("ids cannot be null or empty");
+         throw new IllegalArgumentException(IDS_NOT_EMPTY_MSG);
 
       if (lock && StringUtils.isBlank(session))
          throw new IllegalArgumentException("session cannot be null or empty");
@@ -924,7 +890,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       if (lock && StringUtils.isBlank(user))
          throw new IllegalArgumentException("user cannot be null or empty");
 
-      Map<IPSGuid, PSItemDefinition> resultMap = new HashMap<IPSGuid, PSItemDefinition>();
+      Map<IPSGuid, PSItemDefinition> resultMap = new HashMap<>();
       PSErrorResultsException results = new PSErrorResultsException();
 
       // get list of node defs for locking later
@@ -973,38 +939,40 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       // walk list of requested ids, lock if required, add to results
       IPSObjectLockService lockService = PSObjectLockServiceLocator
          .getLockingService();
-      for (IPSNodeDefinition def : defs)
-      {
-         PSNodeDefinition nodeDef = (PSNodeDefinition) def;
-         PSItemDefinition itemDef = resultMap.get(nodeDef.getGUID());
-         if (itemDef == null)
+      if (defs != null) {
+         for (IPSNodeDefinition def : defs)
          {
-            // must have been an error
-            continue;
-         }
-
-         if (lock)
-         {
-            try
+            PSNodeDefinition nodeDef = (PSNodeDefinition) def;
+            PSItemDefinition itemDef = resultMap.get(nodeDef.getGUID());
+            if (itemDef == null)
             {
-               lockService.createLock(nodeDef.getGUID(), session, user, nodeDef
-                  .getVersion(), overrideLock);
+               // must have been an error
+               continue;
+            }
+
+            if (lock)
+            {
+               try
+               {
+                  lockService.createLock(nodeDef.getGUID(), session, user, nodeDef
+                     .getVersion(), overrideLock);
+                  results.addResult(nodeDef.getGUID(), itemDef);
+               }
+               catch (PSLockException e)
+               {
+                  int code = IPSWebserviceErrors.CREATE_LOCK_FAILED;
+                  PSLockErrorException error = new PSLockErrorException(code,
+                     PSWebserviceErrors.createErrorMessage(code, nodeDef
+                        .getClass().getName(), nodeDef.getGUID().longValue(), e
+                        .getLocalizedMessage()), ExceptionUtils
+                        .getFullStackTrace(e), e.getLocker(), e.getRemainigTime());
+                  results.addError(nodeDef.getGUID(), error);
+               }
+            }
+            else
+            {
                results.addResult(nodeDef.getGUID(), itemDef);
             }
-            catch (PSLockException e)
-            {
-               int code = IPSWebserviceErrors.CREATE_LOCK_FAILED;
-               PSLockErrorException error = new PSLockErrorException(code,
-                  PSWebserviceErrors.createErrorMessage(code, nodeDef
-                     .getClass().getName(), nodeDef.getGUID().longValue(), e
-                     .getLocalizedMessage()), ExceptionUtils
-                     .getFullStackTrace(e), e.getLocker(), e.getRemainigTime());
-               results.addError(nodeDef.getGUID(), error);
-            }
-         }
-         else
-         {
-            results.addResult(nodeDef.getGUID(), itemDef);
          }
       }
 
@@ -1024,7 +992,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       throws PSErrorResultsException
    {
       if (PSGuidUtils.isBlank(ids))
-         throw new IllegalArgumentException("ids cannot be null or empty");
+         throw new IllegalArgumentException(IDS_NOT_EMPTY_MSG);
 
       if (lock && StringUtils.isBlank(session))
          throw new IllegalArgumentException("session cannot be null or empty");
@@ -1076,7 +1044,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       throws PSErrorResultsException
    {
       if (PSGuidUtils.isBlank(ids))
-         throw new IllegalArgumentException("ids cannot be null or empty");
+         throw new IllegalArgumentException(IDS_NOT_EMPTY_MSG);
 
       if (lock && StringUtils.isBlank(session))
          throw new IllegalArgumentException("session cannot be null or empty");
@@ -1087,7 +1055,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
 
       PSErrorResultsException results = new PSErrorResultsException();
-      List<PSLocale> locales = new ArrayList<PSLocale>();
+      List<PSLocale> locales = new ArrayList<>();
       for (IPSGuid id : ids)
       {
 
@@ -1174,7 +1142,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
          throw new IllegalArgumentException("contentTypeId may not be null");
 
       if (PSGuidUtils.isBlank(templateIds))
-         templateIds = new ArrayList<IPSGuid>();
+         templateIds = new ArrayList<>();
 
       if (release && StringUtils.isBlank(session))
          throw new IllegalArgumentException("session cannot be null or empty");
@@ -1208,15 +1176,14 @@ public class PSContentDesignWs extends PSContentBaseWs implements
             Set<IPSGuid> curTemplates = nodeDef.getVariantGuids();
 
             // remove any existing not supplied
-            Set<IPSGuid> missingTemplates = new HashSet<IPSGuid>();
-            missingTemplates.addAll(curTemplates);
-            missingTemplates.removeAll(templateIds);
+            Set<IPSGuid> missingTemplates = new HashSet<>(curTemplates);
+            templateIds.forEach(missingTemplates::remove);
 
             PSErrorException error = null;
             if (!missingTemplates.isEmpty())
             {
                error = PSWebserviceUtils.checkAssociationDependencies(
-                  contentTypeId, new ArrayList<IPSGuid>(missingTemplates));
+                  contentTypeId, new ArrayList<>(missingTemplates));
             }
 
             if (error != null)
@@ -1331,7 +1298,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
          throw new IllegalArgumentException("contentTypeId may not be null");
 
       if (PSGuidUtils.isBlank(workflowIds))
-         workflowIds = new ArrayList<IPSGuid>();
+         workflowIds = new ArrayList<>();
 
       if (release && StringUtils.isBlank(user))
          throw new IllegalArgumentException("user cannot be null or empty");
@@ -1359,7 +1326,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
                nodeDef.setVersion(version);
             //Merge workflows
             PSContentTypeHelper.mergeWorkflowIds(nodeDef,
-                  new HashSet<IPSGuid>(workflowIds));
+                  new HashSet<>(workflowIds));
             // save
             mgr.saveNodeDefinitions(nodeDefs);
             // update the workflow info in the content editor.
@@ -1460,7 +1427,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
                PSItemDefManager.COMMUNITY_ANY);
          PSContentEditor ceditor = ceDef.getContentEditor();
          Set<IPSGuid> wfguids = nodeDef.getWorkflowGuids();
-         List<Integer> wfs = new ArrayList<Integer>();
+         List<Integer> wfs = new ArrayList<>();
          for (IPSGuid wfguid : wfguids)
          {
             wfs.add(new Integer("" + wfguid.longValue()));
@@ -1545,7 +1512,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
 
       if (release)
       {
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(id);
          List<PSObjectLock> locks = lockService.findLocksByObjectIds(ids,
             session, user);
@@ -1628,7 +1595,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
 
       if (release)
       {
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          ids.add(id);
          List<PSObjectLock> locks = lockService.findLocksByObjectIds(ids,
             session, user);
@@ -1653,7 +1620,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
 
       PSErrorsException results = new PSErrorsException();
       PSItemDefManager.getInstance().deferUpdateNotifications();
-      List<IPSGuid> ids = new ArrayList<IPSGuid>(contentTypes.size());
+      List<IPSGuid> ids = new ArrayList<>(contentTypes.size());
 
       try
       {
@@ -1840,7 +1807,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
 
       PSErrorsException results = new PSErrorsException();
-      List<IPSGuid> ids = new ArrayList<IPSGuid>(locales.size());
+      List<IPSGuid> ids = new ArrayList<>(locales.size());
       for (PSLocale locale : locales)
       {
          IPSGuid id = locale.getGUID();
@@ -1966,14 +1933,14 @@ public class PSContentDesignWs extends PSContentBaseWs implements
          {
             // load the current set
             List<PSAutoTranslation> curList = service.loadAutoTranslations();
-            Map<PSAutoTranslationPK, PSAutoTranslation> curMap = new HashMap<PSAutoTranslationPK, PSAutoTranslation>();
+            Map<PSAutoTranslationPK, PSAutoTranslation> curMap = new HashMap<>();
             for (PSAutoTranslation at : curList)
             {
                curMap.put(at.getKey(), at);
             }
 
             // process adds, edits, and deletes
-            Map<PSAutoTranslationPK, PSAutoTranslation> newMap = new HashMap<PSAutoTranslationPK, PSAutoTranslation>();
+            Map<PSAutoTranslationPK, PSAutoTranslation> newMap = new HashMap<>();
             for (PSAutoTranslation at : autoTranslations)
             {
                PSAutoTranslation cur = curMap.get(at.getKey());
@@ -2048,7 +2015,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
    public List<Node> findNodesByIds(List<IPSGuid> ids, boolean isSummary)
    {
       // make sure the revision is not -1; otherwise set to current revision
-      List<IPSGuid> idList = new ArrayList<IPSGuid>();
+      List<IPSGuid> idList = new ArrayList<>();
       for (IPSGuid id : ids)
       {
          if (((PSLegacyGuid)id).getRevision() == -1)
@@ -2122,7 +2089,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
       try
       {
          String errMsg = null;
-         Map<String, List<String>> errorsMap = new HashMap<String, List<String>>();
+         Map<String, List<String>> errorsMap = new HashMap<>();
 
          PSItemDefManager mgr = PSItemDefManager.getInstance();
          for (long id : mgr.getContentTypeIds(PSItemDefManager.COMMUNITY_ANY))
@@ -2147,12 +2114,7 @@ public class PSContentDesignWs extends PSContentBaseWs implements
             catch (PSSystemValidationException e)
             {
                String msg = e.getLocalizedMessage();
-               List<String> ctypes = errorsMap.get(msg);
-               if (ctypes == null)
-               {
-                  ctypes = new ArrayList<String>();
-                  errorsMap.put(msg, ctypes);
-               }
+               List<String> ctypes = errorsMap.computeIfAbsent(msg, k -> new ArrayList<>());
                ctypes.add(itemDef.getLabel());
             }
          }

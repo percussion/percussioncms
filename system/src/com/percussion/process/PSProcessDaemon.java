@@ -49,6 +49,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -547,7 +548,7 @@ public class PSProcessDaemon extends Thread
             else
             {
                String param = o.toString();
-               buf = param.getBytes("UTF8");
+               buf = param.getBytes(StandardCharsets.UTF_8);
                count = buf.length;
                is = new ByteArrayInputStream(buf);
             }
@@ -564,7 +565,7 @@ public class PSProcessDaemon extends Thread
          int bytes = dis.readInt();
          byte[] buf = new byte[bytes];
          dis.readFully(buf);
-         result.append(new String(buf, "UTF8"));
+         result.append(new String(buf, StandardCharsets.UTF_8));
          return errorCode;
       } 
       finally
@@ -846,7 +847,7 @@ public class PSProcessDaemon extends Thread
          {
             dos = new DataOutputStream(out);
             dos.writeInt(resultCode);
-            byte[] buf = text.getBytes("UTF8");
+            byte[] buf = text.getBytes(StandardCharsets.UTF_8);
             dos.writeInt(buf.length);
             IOTools.copyStream(new ByteArrayInputStream(buf), dos);
             dos.close();
@@ -874,7 +875,7 @@ public class PSProcessDaemon extends Thread
       private String handleExecProcess(List params)
          throws SAXException
       {
-         if (params.size() == 0)
+         if (params.isEmpty())
          {
             //let the processing below handle the error
             params.add(0, new byte[0]);

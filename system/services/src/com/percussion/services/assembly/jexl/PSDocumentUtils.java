@@ -37,7 +37,17 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.BasicScheme;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
+import javax.servlet.ServletException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,18 +58,7 @@ import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-
-import javax.servlet.ServletException;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.BasicScheme;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utilities to make document requests from a velocity macro
@@ -320,20 +319,20 @@ public class PSDocumentUtils extends PSJexlUtilBase
          {
             StringWriter w = new StringWriter();
             InputStream stream = new ByteArrayInputStream(
-                  input.getBytes("UTF8"));
+                  input.getBytes(StandardCharsets.UTF_8));
             PSHtmlBodyInputStream bodyInputStream = new PSHtmlBodyInputStream(
                   stream);
-            Reader r = new InputStreamReader(bodyInputStream, "UTF8");
-            char buf[] = new char[65536];
-            while (true)
-            {
-               int count = r.read(buf);
-               if (count <= 0)
-                  break;
-               w.write(buf, 0, count);
+            try(Reader r = new InputStreamReader(bodyInputStream, StandardCharsets.UTF_8)) {
+               char[] buf = new char[65536];
+               while (true) {
+                  int count = r.read(buf);
+                  if (count <= 0)
+                     break;
+                  w.write(buf, 0, count);
+               }
+               w.close();
+               return w.toString();
             }
-            w.close();
-            return w.toString();
          }
       }
       finally

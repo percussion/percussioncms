@@ -21,6 +21,8 @@ import com.percussion.util.IPSHtmlParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
+
 
 /**
  * This class can be used by content assemblers to validate rendered content 
@@ -121,7 +123,7 @@ public class ImportContentAssemblerMerge {
 	    	}
 	    	  
 	      } else {
-	    	work.setResultData(outputDoc.getBytes("UTF-8"));
+	    	work.setResultData(outputDoc.getBytes(StandardCharsets.UTF_8));
 	      }
 	      
 	      work.setMimeType(mimeType); 

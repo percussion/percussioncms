@@ -24,6 +24,7 @@
 package com.percussion.pagemanagement.assembler.impl;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.assembler.IPSRenderAssemblyBridge;
 import com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext.EditType;
 import com.percussion.pagemanagement.assembler.PSPageAssemblyContextFactory;
@@ -76,24 +77,24 @@ public class PSRenderAssemblyBridge implements IPSRenderAssemblyBridge
      * The id mapper, Initialized by constructor, never <code>null</code> after
      * that.
      */
-    private IPSIdMapper idMapper;
+    private final IPSIdMapper idMapper;
 
     /**
      * The assembly service, auto wired by Spring framework
      */
-    private IPSAssemblyService assemblyService;
+    private final IPSAssemblyService assemblyService;
 
     /**
      * The content design web-service. Initialized by constructor, never
      * <code>null</code> after that.
      */
-    private IPSContentDesignWs contentDesignWs;
+    private final IPSContentDesignWs contentDesignWs;
 
-    private IPSSiteManager siteManager;
+    private final IPSSiteManager siteManager;
     
-    private IPSContentWs contentWs;
+    private final IPSContentWs contentWs;
 
-    private IPSCmsObjectMgr cmsMgr;
+    private final IPSCmsObjectMgr cmsMgr;
     
     /**
      * The name of the system dispatch template for pages. Initialized in spring
@@ -144,7 +145,10 @@ public class PSRenderAssemblyBridge implements IPSRenderAssemblyBridge
         catch (Exception e)
         {
             String errorMsg = "Failed to preview page: " + id;
-            log.error(errorMsg);
+            log.error("{} Error: {}",
+                    errorMsg,
+                    PSExceptionUtils.getMessageForLog(e));
+
             throw new PSPageException(errorMsg, e);
         }
     }
@@ -183,7 +187,7 @@ public class PSRenderAssemblyBridge implements IPSRenderAssemblyBridge
         {
             if(log.isDebugEnabled()) {
                 String errorMsg = "Failed to preview: " + object;
-                log.error(errorMsg);
+                log.error("{} Error: {}", errorMsg, PSExceptionUtils.getMessageForLog(e));
             }
             throw new PSPageException("Failed to preview:", e);
         }
@@ -313,7 +317,9 @@ public class PSRenderAssemblyBridge implements IPSRenderAssemblyBridge
         catch (Exception e)
         {
             String error = "Failed to find dispatcher template: " + getDispatchTemplate();
-            log.error(error, e);
+            log.error("{} Error: {}",
+                    error,
+                    PSExceptionUtils.getMessageForLog(e));
             throw new PSPageException(error, e);
         }
     }
