@@ -24,9 +24,12 @@
 package com.percussion.rx.delivery.impl;
 
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -38,6 +41,11 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
+import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
+import com.amazonaws.services.securitytoken.model.AssumeRoleRequest;
+import com.amazonaws.services.securitytoken.model.AssumeRoleResult;
+import com.amazonaws.services.securitytoken.model.Credentials;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
@@ -51,7 +59,6 @@ import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -109,7 +116,6 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         }
         if(!jobTransferManagers.containsKey(jobid)) { // if key does not exist
             AmazonS3 s3Client = getAmazonS3Client(pubServer);
-
             TransferManager tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
             jobTransferManagers.put(jobid, tm);
         }
@@ -367,7 +373,9 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             }
         }
 
-        if(isEC2Instance()){
+        if(useAssumeRole(pubServer)){
+            s3 = getS3FromAssumeRole(pubServer);
+        }else if(isEC2Instance()){
             log.debug("EC2 Instance Running");
             s3 = AmazonS3ClientBuilder.standard()
                     .withCredentials(new InstanceProfileCredentialsProvider(false))
@@ -377,23 +385,80 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 
             String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
             String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
-
-
             try {
-
                 accessKey = decrypt(accessKey);
                 secretKey = decrypt(secretKey);
             } catch (Exception e) {
                 log.error(PSExceptionUtils.getMessageForLog(e));
                 throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
             }
-
-
             BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
             s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
         }
         return s3;
 
+    }
+
+    private boolean useAssumeRole(IPSPubServer pubServer){
+        String assumeVal = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE);
+        if("true".equals(assumeVal)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private AmazonS3 getS3FromAssumeRole(IPSPubServer pubServer) throws PSDeliveryException {
+
+        try {
+            String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
+            String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
+            String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
+            String roleARN = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE, "");
+            try {
+                accessKey = decrypt(accessKey);
+                secretKey = decrypt(secretKey);
+            } catch (Exception e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
+            }
+            BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+
+            // Creating the STS client is part of your trusted code. It has
+            // the security credentials you use to obtain temporary security credentials.
+            AWSSecurityTokenService stsClient = AWSSecurityTokenServiceClientBuilder.standard()
+                    .withCredentials(new ProfileCredentialsProvider())
+                    .withRegion(selectedRegionName)
+                    .build();
+
+            // Obtain credentials for the IAM role. Note that you cannot assume the role of an AWS root account;
+            // Amazon S3 will deny access. You must use credentials for an IAM user or an IAM role.
+            AssumeRoleRequest roleRequest = new AssumeRoleRequest()
+                    .withRoleArn(roleARN).withRequestCredentialsProvider(new AWSStaticCredentialsProvider(awsCreds));
+            AssumeRoleResult roleResponse = stsClient.assumeRole(roleRequest);
+
+            Credentials sessionCredentials = roleResponse.getCredentials();
+
+            // Create a BasicSessionCredentials object that contains the credentials you just retrieved.
+            BasicSessionCredentials awsCredentials = new BasicSessionCredentials(
+                    sessionCredentials.getAccessKeyId(),
+                    sessionCredentials.getSecretAccessKey(),
+                    sessionCredentials.getSessionToken());
+
+            // Provide temporary security credentials so that the Amazon S3 client
+            // can send authenticated requests to Amazon S3. You create the client
+            // using the sessionCredentials object.
+            AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                    .withRegion(selectedRegionName)
+                    .build();
+            return s3Client;
+
+        }
+        catch(SdkClientException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_COPY_TO_AMAMZON, e, getExceptionMessage(e));
+        }
     }
 
     /**

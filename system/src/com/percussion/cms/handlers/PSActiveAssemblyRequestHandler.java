@@ -27,27 +27,23 @@ import com.percussion.cms.IPSCmsErrors;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSActiveAssemblerHandlerRequest;
 import com.percussion.cms.objectstore.server.PSActiveAssemblerProcessor;
-import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.conn.PSServerException;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSException;
 import com.percussion.error.PSStandaloneException;
 import com.percussion.server.IPSLoadableRequestHandler;
-import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Redirects all requests to the <code>PSActiveAssemblyProcessor</code>.
@@ -63,7 +59,7 @@ public class PSActiveAssemblyRequestHandler implements IPSLoadableRequestHandler
    public void init(Collection requestRoots, InputStream config)
       throws PSServerException
    {
-      if (requestRoots == null || requestRoots.size() == 0)
+      if (requestRoots == null || requestRoots.isEmpty())
          throw new IllegalArgumentException(
             "must provide at least one request root" );
 
@@ -175,7 +171,7 @@ public class PSActiveAssemblyRequestHandler implements IPSLoadableRequestHandler
                IPSCmsErrors.MISSING_AA_PARAMETER, requiredParams);
          }
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          // create error response
          PSRequestException exception = null;

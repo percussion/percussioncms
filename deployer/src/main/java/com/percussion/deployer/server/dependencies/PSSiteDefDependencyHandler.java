@@ -63,6 +63,7 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -106,7 +107,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    {
       Document doc = null;
 
-      try(ByteArrayInputStream bis = new ByteArrayInputStream(siteStr.getBytes())){
+      try(ByteArrayInputStream bis = new ByteArrayInputStream(siteStr.getBytes(StandardCharsets.UTF_8))){
          String xmlElemName = "context-id";
          doc = PSXmlDocumentBuilder.createXmlDocument(bis, false);
          if (doc == null)
@@ -141,17 +142,11 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
             }
          }
       }
-      catch (SAXException e)
+      catch (SAXException | IOException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e,
                "could not parse serialized Site data, due to :"
-                     + e.getLocalizedMessage());
-      }
-      catch (IOException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e,
-               "could not parse serialized Site data, due to :"
-                     + e.getLocalizedMessage());
+                     + e.getMessage());
       }
       return PSXmlDocumentBuilder.toString(doc);
    }

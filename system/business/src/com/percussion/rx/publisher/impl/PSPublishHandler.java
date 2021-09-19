@@ -73,9 +73,9 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -391,14 +391,9 @@ public class PSPublishHandler implements MessageListener
                   result.setMimeType("text/plain");
                   String message = "Error expanding assembly result: " + 
                      ExceptionUtils.getFullStackTrace(e);
-                  try
-                  {
-                     result.setResultData(message.getBytes("UTF8"));
-                  }
-                  catch (UnsupportedEncodingException u)
-                  {
-                     throw new RuntimeException(u); // not possible
-                  }
+
+                     result.setResultData(message.getBytes(StandardCharsets.UTF_8));
+
                }
             }
             if (result.getTemplate() == null && work.isPublish())
@@ -421,14 +416,9 @@ public class PSPublishHandler implements MessageListener
          String msg = "Problem while handling assembly: ";
          setEncodedResultData(work, msg + th.getMessage()); 
          
-         try
-         {
+
             handleFailedResult((IPSAssemblyResult) work);
-         }
-         catch (UnsupportedEncodingException e)
-         {
-            // should never happen
-         }
+
          
          log.error(msg, th);
       }
@@ -438,18 +428,14 @@ public class PSPublishHandler implements MessageListener
     * Handle a given failed result.
     * 
     * @param result the failed result, assumed not <code>null</code>.
-    *
-    * @throws UnsupportedEncodingException if failed to convert string to
-    *    UTF-8 character-set.
     */
    private void handleFailedResult(IPSAssemblyResult result)
-      throws UnsupportedEncodingException
    {
       ItemState state = IPSPublisherJobStatus.ItemState.FAILED;
       long pubServerId = result.getPubServerId() == null ? -1 : result.getPubServerId();
       if (result.getPubServerId()==null)
       {
-         log.error("PubServerId not passed in IPSAssemblyItem" + result);
+         log.error("PubServerId not passed in IPSAssemblyItem: {}" , result);
       }
       
       PSPubItemStatus status = new PSPubItemStatus(result.getReferenceId(),
@@ -459,7 +445,7 @@ public class PSPublishHandler implements MessageListener
       // On failure, the result data is the message
       if (result.getResultData() != null)
       {
-         status.addMessage(new String(result.getResultData(), "UTF8"));
+         status.addMessage(new String(result.getResultData(), StandardCharsets.UTF_8));
       }
       else
       {
@@ -776,15 +762,8 @@ public class PSPublishHandler implements MessageListener
     */
    private void setEncodedResultData(IPSAssemblyItem work, String msg)
    {
-      try
-      {
-         work.setResultData(msg.getBytes("UTF8"));
+         work.setResultData(msg.getBytes(StandardCharsets.UTF_8));
          work.setMimeType("text/plain; charset=utf8");
-      }
-      catch (UnsupportedEncodingException e1)
-      {
-         log.error("Impossible, utf8 is not known");
-      }                  
    }
    
    /**

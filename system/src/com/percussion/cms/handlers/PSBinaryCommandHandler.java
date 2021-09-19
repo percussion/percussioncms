@@ -51,11 +51,11 @@ import com.percussion.design.objectstore.PSHtmlParameter;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSQueryPipe;
 import com.percussion.design.objectstore.PSRequestor;
+import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSTableLocator;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.design.objectstore.PSTextLiteral;
-import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSWhereClause;
 import com.percussion.design.objectstore.PSXmlField;
 import com.percussion.error.PSBackEndQueryProcessingError;
@@ -73,6 +73,7 @@ import com.percussion.server.PSUserSession;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSUniqueObjectGenerator;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,8 +81,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import org.w3c.dom.Document;
 
 /**
  * This class encapsulates behaviour to handle the binary commands.
@@ -173,7 +172,7 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
             }
          }
       }
-      catch (Throwable t)
+      catch (Exception t)
       {
          // catch anything that comes our way
          String source = COMMAND_NAME;
@@ -215,6 +214,7 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
    // see IPSRequestHandler interface for description
    public void shutdown()
    {
+
    }
 
    // see IPSInternalRequestHandler interface for description
@@ -483,9 +483,9 @@ public class PSBinaryCommandHandler extends PSCommandHandler implements
    /**
     * This method will add a new binary resource to the provided application.
     *
-    * @param tableLocator the table locator to use, assumed not
-    *    <code>null</code>.
     * @param app the application to add the binary resource to, assumed not
+    *    <code>null</code>.
+    * @param tableSet the table locator to use, assumed not
     *    <code>null</code>.
     * @param field a binary field to add the resource for, assumed not
     *    <code>null</code>.

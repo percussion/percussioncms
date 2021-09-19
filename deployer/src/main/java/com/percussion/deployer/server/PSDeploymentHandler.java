@@ -57,6 +57,7 @@ import com.percussion.design.objectstore.PSAclEntry;
 import com.percussion.design.objectstore.PSFeatureSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.rx.config.data.PSDescriptorSummaryReport;
@@ -94,7 +95,6 @@ import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IOTools;
 import com.percussion.util.IPSBrandCodeConstants;
 import com.percussion.util.PSFormatVersion;
-import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.codec.PSXmlDecoder;
 import com.percussion.utils.collections.PSMultiValueHashMap;
@@ -115,12 +115,12 @@ import javax.security.auth.login.LoginException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -130,6 +130,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static java.io.File.createTempFile;
 
 /**
  * Class to handle all requests from Deployment client. Loosely implements the
@@ -330,7 +332,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, msgArgs);
 
          Object[] args =
-         {root.getTagName(), une.getLocalizedMessage()};
+         {root.getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -561,8 +563,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
       catch (PSUnknownNodeTypeException une)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, une
-               .getLocalizedMessage());
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                 PSExceptionUtils.getMessageForLog(une));
       }
 
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -625,7 +627,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          catch (PSUnknownNodeTypeException une)
          {
             Object[] args =
-            {depEl.getTagName(), une.getLocalizedMessage()};
+            {depEl.getTagName(), PSExceptionUtils.getMessageForLog(une)};
             throw new PSDeployException(
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
@@ -704,7 +706,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_NULL, msgArgs);
 
          Object[] args =
-         {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+         {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -775,15 +777,20 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       PSXmlDecoder decoder = new PSXmlDecoder();
       PSXmlTreeWalker tree = new PSXmlTreeWalker(req.getInputDocument());
       Element xmlContent = tree.getNextElement("xmlContent");
-
-      File tempFile = null;
-      FileWriter fw = null;
-      try
+      File tempFile=null;
+      
+      try {
+         tempFile = createTempFile("PSX", null);
+         tempFile.deleteOnExit();
+      } catch (IOException e) {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, PSExceptionUtils.getMessageForLog(e));
+      }
+      
+      try(FileWriter fw =new FileWriter(tempFile) )
       {
          String content = (String) decoder.encode(PSXmlTreeWalker
                .getElementData(xmlContent));
-         tempFile = PSPurgableTempFile.createTempFile("PSX", null);
-         fw = new FileWriter(tempFile);
+         
          fw.write(content);
          fw.flush();
 
@@ -806,20 +813,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       }
       catch (Exception e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .toString());
-      }
-      finally
-      {
-         if (fw != null)
-            try
-            {
-               fw.close();
-            }
-            catch (IOException ignore)
-            {
-            }
-         tempFile.delete();
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -889,7 +883,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                   IPSObjectStoreErrors.XML_ELEMENT_NULL, msgArgs);
 
             Object[] args =
-            {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+            {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
             throw new PSDeployException(IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
          PSArchiveInfo info = new PSArchiveInfo(infoEl);
@@ -935,7 +929,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       {
          Object[] args =
          {req.getInputDocument().getDocumentElement().getTagName(),
-               une.getLocalizedMessage()};
+               PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -1014,9 +1008,9 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                 String[] v2Split = pkgInfo.getPackageVersion().split("\\.");
                 boolean isLowerVersion = true;
                 
-                ms_log.debug("Package is: " + pkgInfo.getPackageDescriptorName());
-                ms_log.debug("New pkg version: " + Arrays.toString(v1Split));
-                ms_log.debug("Installed pkg version: " + Arrays.toString(v2Split));
+                ms_log.debug("Package is: {}" ,pkgInfo.getPackageDescriptorName());
+                ms_log.debug("New pkg version: {}" , Arrays.toString(v1Split));
+                ms_log.debug("Installed pkg version: {}" , Arrays.toString(v2Split));
                 
                 if (expDesc.getVersion().equals(pkgInfo.getPackageVersion())
                         || Integer.parseInt(v1Split[0]) > Integer.parseInt(v2Split[0])
@@ -1358,7 +1352,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, msgArgs);
 
          Object[] args =
-         {root.getTagName(), une.getLocalizedMessage()};
+         {root.getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -1589,7 +1583,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_ATTR, msgArgs);
 
          Object[] args =
-         {root.getTagName(), une.getLocalizedMessage()};
+         {root.getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -1705,7 +1699,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       List<String[]> index = new ArrayList<>();
       for(PSPkgInfo info : pkgInfos)
       {
-        if(PackageAction.UNINSTALL.equals(info.getType()))
+        if(PackageAction.UNINSTALL.name().equalsIgnoreCase(info.getType().name()))
            continue;
         // Get elements
         List<PSPkgElement> pkgEls = pkgInfoSvc.findPkgElements(info.getGuid());
@@ -1923,7 +1917,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_NULL, msgArgs);
 
          Object[] args =
-         {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+         {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -1946,8 +1940,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
          else
-            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-                  .getLocalizedMessage());
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    PSExceptionUtils.getMessageForLog(e));
       }
 
       return comp;
@@ -2061,8 +2055,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          }
          catch (PSUnknownNodeTypeException e)
          {
-            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-                  .getLocalizedMessage());
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    PSExceptionUtils.getMessageForLog(e));
          }
       }
       else
@@ -2126,31 +2120,18 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    private void saveComponentToFile(File compFile, File parentDir,
          IPSDeployComponent comp) throws PSDeployException
    {
-      FileOutputStream out = null;
-      try
+      try(FileOutputStream out = new FileOutputStream(compFile))
       {
          Document doc = PSXmlDocumentBuilder.createXmlDocument();
          Element compEl = comp.toXml(doc);
          PSXmlDocumentBuilder.replaceRoot(doc, compEl);
          parentDir.mkdirs();
-         out = new FileOutputStream(compFile);
          PSXmlDocumentBuilder.write(doc, out);
       }
       catch (Exception e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try
-            {
-               out.close();
-            }
-            catch (IOException ex)
-            {
-            }
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+                 PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -2203,7 +2184,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                else
                {
                   String timeleft = String.valueOf((remainder) / oneMinute);
-                  Object args[] = new Object[]
+                  Object[] args = new Object[]
                   {m_lockedUser, timeleft};
                   throw new PSLockedException(
                         IPSDeploymentErrors.LOCK_ALREADY_HELD, args);
@@ -2640,34 +2621,20 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 
       // use descriptor name as archive ref
       File archiveFile = getExportArchiveFile(name);
-      FileInputStream in = null;
-      try
+
+      try(FileInputStream in = new FileInputStream(archiveFile))
       {
-         in = new FileInputStream(archiveFile);
          req.getResponse().setContent(in, archiveFile.length(),
                "application/octet-stream");
-         in = null;
 
       }
-      catch (FileNotFoundException e)
+      catch (IOException e)
       {
          Object[] args =
          {"Archive File", name};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_OBJECT_NOT_FOUND, args);
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      }
-
       return null;
    }
    
@@ -2701,34 +2668,20 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
       
-      ByteArrayInputStream in = null;
       String def = PSConfigDefGenerator.getInstance().generate(exportDesc);
-      try
+      try(ByteArrayInputStream in = new ByteArrayInputStream(def.getBytes(StandardCharsets.UTF_8)))
       {
-         in = new ByteArrayInputStream(def.getBytes("utf8"));
          req.getResponse().setContent(in, def.length(),
                "application/octet-stream");
-         in = null;
-
       }
       catch (Exception e)
       {
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          throw new PSDeployException(
                IPSDeploymentErrors.UNEXPECTED_ERROR, args);
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      }
+
       return null;
       
    }
@@ -2770,37 +2723,24 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       String solutionName = StringUtils.substringAfter(
             exportDesc.getName(), ".");
       
-      String configDefPath = TEMP_CONFIG_DIR + "/" + exportDesc.getName() + "_configDef.xml";
+      String configDefPath = TEMP_CONFIG_DIR + File.separatorChar + exportDesc.getName() + "_configDef.xml";
       
-      ByteArrayInputStream in = null;
+
       String defCon = PSDefaultConfigGenerator.getInstance().generateDefaultConfig(
             publisherName, publisherPrefix, solutionName, configDefPath);
-      try
+      try(ByteArrayInputStream in =  new ByteArrayInputStream(defCon.getBytes(StandardCharsets.UTF_8)))
       {
-         in = new ByteArrayInputStream(defCon.getBytes("utf8"));
          req.getResponse().setContent(in, defCon.length(),
                "application/octet-stream");
-         in = null;
-
       }
       catch (Exception e)
       {
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          throw new PSDeployException(
                IPSDeploymentErrors.UNEXPECTED_ERROR, args);
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      } 
+
       return null;
       
    }
@@ -2834,37 +2774,18 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       // get the descriptor name
       String name = getRequiredAttrFromRequest(req, DESC_NAME);
       PSExportDescriptor exportDesc = getDescriptor(name);
-      
-      
-      
-      ByteArrayInputStream in = null;
       PSDescriptorSummaryReport summary = new PSDescriptorSummaryReport();
       String report = summary.getReport(exportDesc);
-      try
-      {
-         in = new ByteArrayInputStream(report.getBytes("utf8"));
+      try(ByteArrayInputStream in = new ByteArrayInputStream(report.getBytes(StandardCharsets.UTF_8)) ){
          req.getResponse().setContent(in, report.length(),
                "application/octet-stream");
-         in = null;
-
       }
       catch (Exception e)
       {
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          throw new PSDeployException(
                IPSDeploymentErrors.UNEXPECTED_ERROR, args);
-      }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
       }
       return null;
       
@@ -2949,40 +2870,20 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
             inFile = (File) val;
          }
       }
-
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      try
+      
+      File archiveFile = getImportArchiveFile(archiveRef);
+      archiveFile.getParentFile().mkdirs();
+      
+      try(FileInputStream in = new FileInputStream(inFile))
       {
-         File archiveFile = getImportArchiveFile(archiveRef);
-         archiveFile.getParentFile().mkdirs();
-         out = new FileOutputStream(archiveFile);
-         in = new FileInputStream(inFile);
-         IOTools.copyStream(in, out);
+         try(FileOutputStream out = new FileOutputStream(archiveFile)) {
+            IOTools.copyStream(in, out);
+         }
       }
       catch (IOException e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
-      }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-         if (out != null)
-            try
-            {
-               out.close();
-            }
-            catch (IOException ex)
-            {
-            }
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+                 PSExceptionUtils.getMessageForLog(e));
       }
 
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -3042,44 +2943,24 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          }
       }
 
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      try
+      File configFile = getConfigTempFile(configRef);
+      configFile.getParentFile().mkdirs();
+      
+      try(FileInputStream in = new FileInputStream(inFile))
       {
-         File configFile = getConfigTempFile(configRef);
-         configFile.getParentFile().mkdirs();
-         out = new FileOutputStream(configFile);
-         in = new FileInputStream(inFile);
-         IOTools.copyStream(in, out);
+         try(FileOutputStream out =new FileOutputStream(configFile)) {
+            IOTools.copyStream(in, out);
+         }
       }
       catch (IOException e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
-      }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-         if (out != null)
-            try
-            {
-               out.close();
-            }
-            catch (IOException ex)
-            {
-            }
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                 PSExceptionUtils.getMessageForLog(e));
       }
 
       Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
       PSXmlDocumentBuilder.createRoot(respDoc,
-            "PSXDeploySaveCOnfigFileResponse");
+              SAVE_CFG_FILE_RESPONSE);
 
       return respDoc;
    }
@@ -3120,7 +3001,6 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       // build the response doc
       File fsFile = new File(CFG_DIR, PSFeatureSet.FEATURE_SET_FILE);
 
-      FileInputStream fIn = null;
       Document respDoc = null;
 
       try
@@ -3137,12 +3017,13 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
           */
          if (fsFile.exists())
          {
-            fIn = new FileInputStream(fsFile);
-            Document featureDoc = PSXmlDocumentBuilder.createXmlDocument(fIn,
-                  false);
-            Node importNode = respDoc.importNode(featureDoc
-                  .getDocumentElement(), true);
-            respRoot.appendChild(importNode);
+            try(FileInputStream fIn = new FileInputStream(fsFile)) {
+               Document featureDoc = PSXmlDocumentBuilder.createXmlDocument(fIn,
+                       false);
+               Node importNode = respDoc.importNode(featureDoc
+                       .getDocumentElement(), true);
+               respRoot.appendChild(importNode);
+            }
          }
          else
          {
@@ -3154,22 +3035,10 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       {
          // wrap exception
          Object[] args =
-         {e.getLocalizedMessage()};
+         {PSExceptionUtils.getMessageForLog(e)};
          PSServerException se = new PSServerException(
                IPSObjectStoreErrors.FEATURE_SET_LOAD_EXCEPTION, args);
-         PSDeployException de = new PSDeployException(se);
-         throw de;
-      }
-      finally
-      {
-         if (fIn != null)
-            try
-            {
-               fIn.close();
-            }
-            catch (Exception e)
-            { /* ignore */
-            }
+         throw new PSDeployException(se);
       }
 
       return respDoc;
@@ -3360,7 +3229,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       catch (PSDeployException e)
       {
          Object[] args =
-         {getName(), e.getLocalizedMessage()};
+         {getName(), PSExceptionUtils.getMessageForLog(e)};
          throw new PSServerException(
                IPSServerErrors.LOADABLE_HANDLER_UNEXPECTED_EXCEPTION, args);
       }
@@ -3530,12 +3399,11 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       catch (Exception e)
       {
     	  String msg="An unexpected error occurred while processing the Request.";
-    	  if(respDoc != null){
     		  try{
     			  msg = msg + " Request Source is: " + PSXMLDomUtil.toString(respDoc.getDocumentElement());
-    		  }catch(Exception ex){}
-    	  }
-    	  
+    		  }catch(Exception ex){
+    		     ms_log.error(PSExceptionUtils.getMessageForLog(e));
+              }
     	  ms_log.warn(msg);
           
     	  try{
@@ -3573,8 +3441,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
 	            de = new PSDeployException((PSException) e);
 	         else
 	         {
-	            de = new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-	                  .getLocalizedMessage());
+	            de = new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                        PSExceptionUtils.getMessageForLog(e));
 	         }
 	
 	         respDoc = PSXmlDocumentBuilder.createXmlDocument();
@@ -3625,7 +3493,8 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          try {
             return PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(null).INVALID_CRED(), key, pwd);
          }catch (Exception ex){
-            ms_log.error("Error: Pwd Decryption Failed " + ex.getMessage());
+            ms_log.error("Error: Pwd Decryption Failed: {}" ,
+                    PSExceptionUtils.getMessageForLog(ex));
             return "";
          }
       }
@@ -3689,30 +3558,16 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_OBJECT_NOT_FOUND, args);
       }
-
-      FileInputStream in = null;
-      try
+      
+      try(FileInputStream in = new FileInputStream(docFile))
       {
-         in = new FileInputStream(docFile);
          return PSXmlDocumentBuilder.createXmlDocument(in, false);
       }
       catch (Exception e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
-               .getLocalizedMessage());
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+                 PSExceptionUtils.getMessageForLog(e));
       }
-      finally
-      {
-         if (in != null)
-            try
-            {
-               in.close();
-            }
-            catch (IOException ex)
-            {
-            }
-      }
-
    }
 
    /**
@@ -3796,7 +3651,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          catch (PSUnknownNodeTypeException e)
          {
             Object[] args =
-            {doc.getDocumentElement().getTagName(), e.getLocalizedMessage()};
+            {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(e)};
             throw new PSDeployException(
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
@@ -3812,7 +3667,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
                IPSObjectStoreErrors.XML_ELEMENT_WRONG_TYPE, msgArgs);
 
          Object[] args =
-         {doc.getDocumentElement().getTagName(), une.getLocalizedMessage()};
+         {doc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(une)};
          throw new PSDeployException(
                IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
       }
@@ -3846,7 +3701,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
          catch (PSUnknownNodeTypeException une)
          {
             Object[] args =
-            {exportDescEl.getTagName(), une.getLocalizedMessage()};
+            {exportDescEl.getTagName(), PSExceptionUtils.getMessageForLog(une)};
             throw new PSDeployException(
                   IPSDeploymentErrors.SERVER_REQUEST_MALFORMED, args);
          }
@@ -4011,7 +3866,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
       
       List<Map<String, String>> pkgDeps = desc.getPkgDepList();
       Map<String, IPSGuid> pkgNameToGuid = new HashMap<>();
-      if (pkgDeps.size() > 0)
+      if (!pkgDeps.isEmpty())
          pkgNameToGuid = getPkgNameToGuidMap();
       for (Map<String, String> pkgDep : pkgDeps)
       {
@@ -4154,7 +4009,7 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
     * Mutex preventing concurrent access to a critical section by having threads
     * synchronize on it. Never modified.
     */
-   private Object m_mutexObject = new Object();
+   private final Object m_mutexObject = new Object();
 
    /**
     * Duration for which lock is held in milliseconds, currently 30 minutes.
@@ -4264,5 +4119,6 @@ public class PSDeploymentHandler implements IPSLoadableRequestHandler
    public static final String ARCHIVE_REF = "archiveRef";
    public static final String NULL_REQUEST_ERROR = "Request may not be null";
    public static final String TYPE_ATTR = "type";
+   public static final String SAVE_CFG_FILE_RESPONSE = "PSXDeploySaveConfigFileResponse";
    
 }

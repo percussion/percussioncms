@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.assembler.IPSRenderAssemblyBridge;
 import com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext.EditType;
 import com.percussion.pagemanagement.data.PSPage;
@@ -65,9 +66,9 @@ import static org.apache.commons.lang.Validate.notNull;
 public class PSRenderService implements IPSRenderService
 {
 
-    private IPSRenderAssemblyBridge renderAssemblyBridge;
-    private IPSPageService pageService;
-    private IPSTemplateService templateService;
+    private final IPSRenderAssemblyBridge renderAssemblyBridge;
+    private final IPSPageService pageService;
+    private final IPSTemplateService templateService;
 
     @Autowired
     public PSRenderService(IPSPageService pageService, IPSRenderAssemblyBridge renderAssemblyBridge,
@@ -94,8 +95,8 @@ public class PSRenderService implements IPSRenderService
             return createRenderResult(result, regionId);
 
         } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -109,8 +110,8 @@ public class PSRenderService implements IPSRenderService
             validateTemplate(template);
             return renderAssemblyBridge.renderTemplate(template, false);
         } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -127,8 +128,8 @@ public class PSRenderService implements IPSRenderService
             String result = renderAssemblyBridge.renderTemplate(template, false);
             return createRenderResult(result, regionId);
         } catch (IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceSaveException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -152,13 +153,13 @@ public class PSRenderService implements IPSRenderService
                     String result = renderAssemblyBridge.renderTemplate(template, false);
                     return createRenderResult(result, regionId);
                 } catch (IPSPageService.PSPageException psPageException) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(),e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     throw new WebApplicationException(e);
                 }
             } catch (PSValidationException | IPSDataService.DataServiceLoadException | IPSPageService.PSPageException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceSaveException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 throw new WebApplicationException(e);
             }
     }
@@ -210,8 +211,8 @@ public class PSRenderService implements IPSRenderService
             log.debug("renderPage, pageId: {}", id);
             return renderAssemblyBridge.renderPage(id, false, false);
         } catch (PSValidationException | IPSPageService.PSPageException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -235,8 +236,8 @@ public class PSRenderService implements IPSRenderService
                 page.getTemplateId();
                 return renderAssemblyBridge.renderTemplate(page.getTemplateId(), false);
             } catch (IPSDataService.DataServiceLoadException | IPSPageService.PSPageException | PSValidationException | IPSDataService.DataServiceNotFoundException dataServiceLoadException) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 throw new WebApplicationException(e);
             }
         }
@@ -264,8 +265,8 @@ public class PSRenderService implements IPSRenderService
             notEmpty(id, "id");
             return renderAssemblyBridge.renderPage(id, true, true, getEditType(editType));
         } catch (PSValidationException | IPSPageService.PSPageException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
 
@@ -283,8 +284,8 @@ public class PSRenderService implements IPSRenderService
             log.debug("renderTemplate, templateId: {}",  id);
             return renderAssemblyBridge.renderTemplate(id, false);
         } catch (PSValidationException | IPSPageService.PSPageException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

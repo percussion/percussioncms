@@ -27,23 +27,21 @@ import com.percussion.cms.objectstore.PSContentType;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.data.PSIdGenerator;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.server.PSRequest;
 import com.percussion.testing.IPSServerBasedJunitTest;
 import com.percussion.testing.PSRequestHandlerTestSuite;
+import com.percussion.utils.testing.IntegrationTest;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.junit.experimental.categories.Category;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import org.junit.experimental.categories.Category;
 
 /**
  * JUnit test that validates the indexing capability of the RW search engine.
@@ -423,19 +421,13 @@ public class PSSearchIndexerTest extends TestCase
    static Map getDocData(String specialWord)
    {
       Map data = null;
-      try
-      {
+
          data = new HashMap();
          data.put("sys_title", "First Doc");
          data.put("description", "This is George Bush's final hurrah.");
          data.put("body", (specialWord 
                + " Four score and seven years ago our forefathers brought "
-               + "forth on this great land.").getBytes("UTF8"));
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         fail("UTF8 not supported by String any more.");
-      }
+               + "forth on this great land.").getBytes(StandardCharsets.UTF_8));
       return data;      
    }
 

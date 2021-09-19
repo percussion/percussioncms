@@ -25,13 +25,15 @@
 package com.percussion.xml;
 
 //java
-import java.io.ByteArrayInputStream;
 
 import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.XNIException;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * This class is used for finding the root element of a DTD.
@@ -58,7 +60,7 @@ public class PSSaxDtdParser extends SAXParser
       {
          parse(is);
       }
-      catch (SAXException se)
+      catch (SAXException | IOException se)
       {
          String err = se.getMessage();
          if (err.startsWith(DTDROOTELEMENT_TAG))
@@ -68,9 +70,7 @@ public class PSSaxDtdParser extends SAXParser
             return ret;
          }
       }
-      catch (Exception ex)
-      {
-      }
+
       return null;
    }
 

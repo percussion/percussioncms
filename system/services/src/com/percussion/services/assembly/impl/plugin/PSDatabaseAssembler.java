@@ -26,6 +26,7 @@ package com.percussion.services.assembly.impl.plugin;
 import com.percussion.data.PSCachedStylesheet;
 import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -62,6 +63,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -258,7 +260,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
          }
          else
          {
-            item.setResultData(dbdoc.getBytes("UTF8"));
+            item.setResultData(dbdoc.getBytes(StandardCharsets.UTF_8));
             item.setMimeType("text/xml");
          }
          item.setStatus(IPSAssemblyResult.Status.SUCCESS);
@@ -269,8 +271,8 @@ public class PSDatabaseAssembler extends PSAssemblerBase
       }
       catch (Exception e)
       {
-         return getFailureResult(item, "Serious problem "
-               + e.getLocalizedMessage());
+         return getFailureResult(item, "Unexpected error: "
+               + PSExceptionUtils.getMessageForLog(e));
       }
 
       return (IPSAssemblyResult) item;

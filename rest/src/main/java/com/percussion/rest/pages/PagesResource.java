@@ -114,6 +114,7 @@ public class PagesResource
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
         try
         {
+
             path = java.net.URLDecoder.decode(path, "UTF-8");
         }
         catch (UnsupportedEncodingException e)
