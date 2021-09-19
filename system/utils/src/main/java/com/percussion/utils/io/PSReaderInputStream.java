@@ -26,6 +26,7 @@ package com.percussion.utils.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This class is an adapter that converts a java reader to an input stream. It
@@ -89,7 +90,7 @@ public class PSReaderInputStream extends InputStream
          if (count > 0)
          {
             String input = new String(m_input, 0, count);
-            m_buffer = input.getBytes("UTF8");
+            m_buffer = input.getBytes(StandardCharsets.UTF_8);
             m_count = m_buffer.length;
             m_pos = 0;
          }

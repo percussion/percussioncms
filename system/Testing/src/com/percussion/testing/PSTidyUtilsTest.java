@@ -26,24 +26,19 @@ package com.percussion.testing;
 
 import com.percussion.util.PSResourceUtils;
 import com.percussion.util.PSTidyUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Properties;
-
 import com.percussion.utils.testing.IntegrationTest;
-import com.percussion.utils.testing.UnitTest;
 import org.apache.commons.io.IOUtils;
-
-import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
 
@@ -66,7 +61,7 @@ public class PSTidyUtilsTest
        try
        {
           String text = IOUtils.toString(new FileInputStream(PSResourceUtils.getFile(PSTidyUtilsTest.class,"/com/percussion/testing/rxW2Ktidy.properties",null)));
-          input = new ByteArrayInputStream(text.getBytes("UTF-8"));
+          input = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
 
           m_tidyProperties.load(input);
           PSTidyUtils.setTidyProperties(m_tidyProperties);

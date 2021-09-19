@@ -792,6 +792,8 @@ public class PSPubServerService implements IPSPubServerService
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, accessKey);
         String secretKey = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pubInfo.getSecretKey());
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, secretKey);
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE, pubInfo.getArnRole());
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE, (pubInfo.getUseAssumeRole() == null ? "false" :pubInfo.getUseAssumeRole()));
         server.addProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, DRIVER_AMAZONS3);
         server.addProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY, "");
         server.addProperty(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false");
@@ -2162,9 +2164,22 @@ public class PSPubServerService implements IPSPubServerService
         if (regioProp != null){
             region = regioProp.getValue();
         }
+        String useAssumeRole = "false";
+        PSPubServerProperty useAssumeRoleProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE);
+        if (useAssumeRoleProp != null && useAssumeRoleProp.getValue() != null ){
+            useAssumeRole = useAssumeRoleProp.getValue();
+        }
+
+        String arnRole = null;
+        PSPubServerProperty arnRoleProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE);
+        if (arnRoleProp != null){
+            arnRole = arnRoleProp.getValue();
+        }
         if(equalsIgnoreCase(pubType, PublishType.amazon_s3.toString())
                 || equalsIgnoreCase(pubType, PublishType.amazon_s3_only.toString())){
             pubInfo = new PSPubInfo(bucketProperty,accessKey,securityKey,region);
+            pubInfo.setUseAssumeRole(useAssumeRole);
+            pubInfo.setArnRole(arnRole);
         }else{
             //In some cases the S3 publisher may not be the default - loop through pubservers to see if any are pointed at s3
             List<PSPublishServerInfo> pubservers = getPubServerList(siteId.toString());
@@ -2173,6 +2188,8 @@ public class PSPubServerService implements IPSPubServerService
                 if(equalsIgnoreCase(driver, PublishType.amazon_s3.toString())
                         || equalsIgnoreCase(pubType, PublishType.amazon_s3_only.toString())){
                     pubInfo = new PSPubInfo(bucketProperty,accessKey,securityKey,region);
+                    pubInfo.setUseAssumeRole(useAssumeRole);
+                    pubInfo.setArnRole(arnRole);
                     break;
                 }
             }

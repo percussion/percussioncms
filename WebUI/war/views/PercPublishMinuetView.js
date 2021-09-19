@@ -367,6 +367,20 @@ function bindServerPropertiesEvents() {
         $("#percPublishSecureSiteConfigOnExactPath").closest("div").show();
     });
 
+    $('#useAssumeRole').on("change", function(evt) {
+        if($('#useAssumeRole')[0].checked) {
+            $('#iamRole').prop('disabled', false);
+            $("#s3accessSecurityKey").show('fast');
+        }
+        else{
+            $('#iamRole').prop('disabled', true);
+            if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
+                $("#s3accessSecurityKey").hide('fast');
+            }else{
+                $("#s3accessSecurityKey").show('fast');
+            }
+        }
+    });
 
     $('.perc-driver-group').on("change", function(evt) {
         updateDriverPropertiesUi();
@@ -416,6 +430,7 @@ function bindServerPropertiesEvents() {
     $('#secureFTP').trigger('change');
     //  If we are on initial server setup, trigger change on server type
     $('#percServerType').trigger('change');
+    $('#useAssumeRole').trigger('change');
 
 }
 
@@ -478,11 +493,8 @@ function updateDriverPropertiesUi() {
         }
         else if(selectedType == 'File' && currentSection == 'percServerPropertiesFileLocalTarget' && selectedDriver == 'AMAZONS3') {
             $(this).hide('fast');
-            if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
-                $("#s3accessSecurityKey").hide('fast');
-            }else{
-                $("#s3accessSecurityKey").show('fast');
-            }
+            $("#s3accessSecurityKey").show('fast');
+
             return true;
         }
 

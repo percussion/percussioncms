@@ -23,24 +23,24 @@
  */
 package com.percussion.sitemanage.importer.theme;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notNull;
-import static org.springframework.util.StringUtils.endsWithIgnoreCase;
-
 import com.percussion.services.assembly.impl.PSReplacementFilter;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notNull;
+import static org.springframework.util.StringUtils.endsWithIgnoreCase;
 
 /**
  * Given an Url we can calculate his fully qualified URL, convert it to a theme
@@ -406,7 +406,7 @@ public class PSURLConverter
             try
             {
                 //Given the permutations... the quickest path is to just Base64 the query string.
-                alteredQueryString = new String(Base64.encodeBase64(alteredQueryString.getBytes("UTF-8"))); 
+                alteredQueryString = new String(Base64.encodeBase64(alteredQueryString.getBytes(StandardCharsets.UTF_8)));
                 returnString=returnString.substring(0, returnString.lastIndexOf("/") + 1) + alteredQueryString;
             }
             catch (Exception e)

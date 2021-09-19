@@ -36,6 +36,10 @@ public class PSPublisherInfo
 
     private Region region;
 
+    private String useAssumeRole;
+
+    private String arnRole;
+
     public Region getRegion() {
         return region;
     }
@@ -73,6 +77,22 @@ public class PSPublisherInfo
    {
        this.secretKey = secretKey;
    }
+
+    public String getUseAssumeRole() {
+        return useAssumeRole;
+    }
+
+    public void setUseAssumeRole(String useAssumeRole) {
+        this.useAssumeRole = useAssumeRole;
+    }
+
+    public String getArnRole() {
+        return arnRole;
+    }
+
+    public void setArnRole(String arnRole) {
+        this.arnRole = arnRole;
+    }
 }
            
            

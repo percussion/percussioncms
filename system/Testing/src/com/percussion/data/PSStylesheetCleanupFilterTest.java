@@ -25,13 +25,13 @@ package com.percussion.data;
 
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.ByteArrayInputStream;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
+
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertTrue;
 
@@ -90,21 +90,15 @@ public class PSStylesheetCleanupFilterTest{
     */
    private static void initFilter() throws Exception
    {
-      ByteArrayInputStream bis = null;
-      try
+
+      try(ByteArrayInputStream bis = new ByteArrayInputStream(FILTER_XML.getBytes(StandardCharsets.UTF_8)))
       {
          instance = new PSStylesheetCleanupFilterTest();
-         bis = new ByteArrayInputStream(FILTER_XML.getBytes("utf8"));
          Document doc = PSXmlDocumentBuilder.createXmlDocument(bis, false);
          instance.m_filter =
              PSStylesheetCleanupFilter.getInstance();
          instance.m_filter.fromXml(doc.getDocumentElement());
         
-      }
-      finally
-      {
-         if(bis != null)
-            bis.close();
       }
    }
 

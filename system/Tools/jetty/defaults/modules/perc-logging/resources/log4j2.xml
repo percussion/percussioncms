@@ -136,6 +136,11 @@
             <AppenderRef ref="FILE"/>
         </AsyncLogger>
 
+        <AsyncLogger name="com.zaxxer.hikari" level="ERROR" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
         <AsyncLogger name="com.percussion" level="info" includeLocation="true" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="FILE"/>

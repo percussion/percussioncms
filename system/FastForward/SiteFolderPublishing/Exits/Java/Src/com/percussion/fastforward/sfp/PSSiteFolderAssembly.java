@@ -99,9 +99,10 @@ public class PSSiteFolderAssembly extends PSDefaultExtension
       }
       catch (Exception e)
       {
-         // the relationship API failed -- return an empty location
-         log.error(this.getClass(), e);
-         throw new PSConversionException(0, e.getLocalizedMessage());
+         log.error("The relationship API failed -- returning an empty location. Class: {} Error: {}",
+                 this.getClass(),
+                 PSExceptionUtils.getMessageForLog(e));
+         throw new PSConversionException(0, PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -192,9 +193,8 @@ public class PSSiteFolderAssembly extends PSDefaultExtension
       catch (Exception e)
       {
          // the relationship API failed
-         log.error(e.getMessage());
-         throw new PSExtensionException(this.getClass().getName(), e
-               .getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         throw new PSExtensionException(this.getClass().getName(), PSExceptionUtils.getMessageForLog(e));
       }
 
       // add the additional scheme parameters (filename)

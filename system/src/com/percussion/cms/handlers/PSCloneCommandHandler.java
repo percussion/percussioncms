@@ -436,7 +436,7 @@ public class PSCloneCommandHandler extends PSCommandHandler
          
          if (relationship.isInlineRelationship())
          {
-            Integer key = new Integer(relationship.getId());
+            Integer key = relationship.getId();
             
             PSRelationship lastClone = null;
             Iterator clones = request.getRelationships();

@@ -171,11 +171,9 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
                | PSRelationshipConfig.FILTER_TYPE_FOLDER_PERMISSIONS);
    
       Arrays.sort(rids);
-   
-      Iterator it = relationships.iterator();
-      while (it.hasNext())
-      {
-         PSRelationship relationship = (PSRelationship) it.next();
+
+      for (PSRelationship psRelationship : (Iterable<PSRelationship>) relationships) {
+         PSRelationship relationship = psRelationship;
          int id = relationship.getId();
          if (Arrays.binarySearch(rids, id) >= 0)
             deletes.add(relationship);
@@ -701,7 +699,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
    }
 
    /**
-    * Just like {@link #add(String, PSKey, List)}, but in addition to that
+    * Just like {@link #add(String, List, PSLocator)}, but in addition to that
     * the relationships are inserted at the given index into the existing
     * order of relationships for the supplied type and owner. This requires
     * that the relationship configuration for the supplied type defines the

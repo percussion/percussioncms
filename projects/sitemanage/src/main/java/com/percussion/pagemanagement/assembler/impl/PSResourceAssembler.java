@@ -23,23 +23,26 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
-import com.percussion.pagemanagement.data.PSResourceInstance;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
+import com.percussion.pagemanagement.data.PSResourceInstance;
 import com.percussion.services.assembly.IPSAssembler;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.IPSAssemblyResult.Status;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.impl.plugin.PSAssemblerBase;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.percussion.services.assembly.PSAssemblyException.UNEXPECTED_ASSEMBLY_ERROR;
 
 /**
  * A dispatch like assembler that assembles resources.
@@ -61,8 +64,7 @@ public class PSResourceAssembler extends PSAssemblerBase implements IPSAssembler
     private IPSAssemblyService assemblyService;
     
     @Override
-    public IPSAssemblyResult assembleSingle(IPSAssemblyItem assemblyItem)
-    {
+    public IPSAssemblyResult assembleSingle(IPSAssemblyItem assemblyItem) throws PSAssemblyException {
         try
         {
             if ( ! isExpanded(assemblyItem)) {
@@ -94,8 +96,7 @@ public class PSResourceAssembler extends PSAssemblerBase implements IPSAssembler
         }
         catch (Exception e)
         {
-            // TODO Auto-generated catch block
-            throw new RuntimeException(e);
+            throw new PSAssemblyException(UNEXPECTED_ASSEMBLY_ERROR,e);
         }
         
     }
@@ -111,15 +112,9 @@ public class PSResourceAssembler extends PSAssemblerBase implements IPSAssembler
         String message = "The assembly item did not have a resource definition id.";
         work.setStatus(Status.SUCCESS);
         work.setMimeType("text/plain");
-        try
-        {
-            work.setResultData(message.getBytes("UTF8"));
-            return (IPSAssemblyResult) work;
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            throw new RuntimeException(e); // not possible
-        }
+
+        work.setResultData(message.getBytes(StandardCharsets.UTF_8));
+        return (IPSAssemblyResult) work;
     }
 
 
