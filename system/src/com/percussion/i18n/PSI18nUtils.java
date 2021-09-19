@@ -93,6 +93,7 @@ public class PSI18nUtils implements IPSI18nUtils {
     * <code>null</code> if language is not supported.
     * @see PSTmxResourceBundle
     */
+
    public static  Iterator getKeys(String language)
    {
       return PSTmxResourceBundle.getInstance().getKeys(language);
@@ -464,14 +465,13 @@ public class PSI18nUtils implements IPSI18nUtils {
     * @return the formatted message text, never <code>null</code> may be
     * <code>empty</code>
     */
-
    public static String formatMessage(String messageKey, String argList,
       String languageString)
    {
       if(messageKey == null || messageKey.length() < 1)
          return "";
 
-      List<String> list = null;
+      List list = null;
       //parse the argument list string to a list.
       if(argList != null && argList.length() > 0)
       {
@@ -533,19 +533,21 @@ public class PSI18nUtils implements IPSI18nUtils {
     * @see #LOOKUP_KEY_SEPARATOR
     * @see #LOOKUP_KEY_SEPARATOR_LAST
     */
-   public static  String makeLookupKey(List<String> subkeys)
+
+   public static  String makeLookupKey(List subkeys)
    {
       StringBuilder buf = new StringBuilder();
-      if(subkeys == null || !subkeys.isEmpty())
+      if(subkeys == null || subkeys.isEmpty())
          return buf.toString();
       //Make sure to remove all null/empty keys out of the list
       int index = subkeys.size()-1;
       while( index > -1 &&
-            (subkeys.get(index) == null ||
-             subkeys.get(index).length() < 1))
+              (subkeys.get(index) == null ||
+                      subkeys.get(index).toString().length() < 1))
       {
-         subkeys.remove(index--);
-      }
+            subkeys.remove(index--);
+         }
+
       //Generate the text lookup key from individual subkeys.
       Object obj = null;
       String temp = null;
