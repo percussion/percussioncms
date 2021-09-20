@@ -173,10 +173,9 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
       Arrays.sort(rids);
 
       for (PSRelationship psRelationship : (Iterable<PSRelationship>) relationships) {
-         PSRelationship relationship = psRelationship;
-         int id = relationship.getId();
+         int id = psRelationship.getId();
          if (Arrays.binarySearch(rids, id) >= 0)
-            deletes.add(relationship);
+            deletes.add(psRelationship);
       }
    
       m_dbProcessor.deleteRelationships(deletes);

@@ -177,11 +177,10 @@ public class PSRelationshipEffectProcessor
       //If relationship set to process was supplied process only those
       else
       {
-         for (int i = 0; i < m_relSetToProcess.size(); i++)
-         {
+         for (Object mRelSetToProcess : m_relSetToProcess) {
             //We always use the owner as the activation end point (I think
             //this is correct?)
-            runTests((PSRelationship) m_relSetToProcess.get(i), true);
+            runTests((PSRelationship) mRelSetToProcess, true);
          }
       }
       PSException ex = isAllTestsSuccess();
@@ -237,7 +236,7 @@ public class PSRelationshipEffectProcessor
    {
       Collection<PSRelationshipConfig> configs = getReleventRelationships();
       if (configs.isEmpty())
-         return Collections.EMPTY_LIST.iterator();
+         return Collections.emptyIterator();
       
       Set<PSRelationship> relationships = new HashSet<>();
 
@@ -494,7 +493,7 @@ public class PSRelationshipEffectProcessor
       PSExtensionRunner runner = null;
       PSTestResult result = null;
       if (m_relationshipsProcessed
-         .containsKey(new Integer(currentRel.getId())))
+         .containsKey(currentRel.getId()))
       {
          /** @todo: Relationship already processed. What to do??? */
          return;
@@ -513,7 +512,8 @@ public class PSRelationshipEffectProcessor
          {
               log.debug("pre_update setting source relationship to pre modified");
               sourceRel = getSourceRel(currentRel);
-              log.debug("source owner is {} dest owner is {} ", sourceRel.getOwner().getId(), currentRel.getOwner().getId());
+              if(sourceRel != null)
+                  log.debug("source owner is {} dest owner is {} ", sourceRel.getOwner().getId(), currentRel.getOwner().getId());
          }
          m_execData.setSourceRelationship(sourceRel);
 
@@ -553,7 +553,7 @@ public class PSRelationshipEffectProcessor
          }
          //Add to the map of processed relationships
          m_relationshipsProcessed.put(
-            new Integer(relEffectResults.getRelationship().getId()),
+                 relEffectResults.getRelationship().getId(),
             relEffectResults);
    
          /**
@@ -637,7 +637,8 @@ public class PSRelationshipEffectProcessor
             if (m_executionContext.isPreUpdate()) {
                 log.debug("pre_update setting source relationship to pre modified");
                 sourceRel = getSourceRel(relationship);
-                log.debug("source owner is {} dest owner is {} ", sourceRel.getOwner().getId(), relationship.getOwner().getId());
+                if(sourceRel != null)
+                  log.debug("source owner is {} dest owner is {} ", sourceRel.getOwner().getId(), relationship.getOwner().getId());
             }
              m_execData.setSourceRelationship(sourceRel);
 
@@ -740,12 +741,10 @@ public class PSRelationshipEffectProcessor
    {
       if (relation == null)
          throw new IllegalArgumentException("relation must not be null");
-      if (relation == null)
-         throw new IllegalArgumentException("relation must not be null");
 
       int id = locator.getId();
       int ownerId = relation.getOwner().getId();
-      return (id == ownerId) ? true : false;
+      return id == ownerId;
    }
 
    /**

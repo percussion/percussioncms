@@ -253,7 +253,27 @@
             <dependencies>
                 <dependency>
                     <groupId>com.percussion</groupId>
+                    <artifactId>rxutils</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.percussion</groupId>
+                    <artifactId>perc-security-utils</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.percussion</groupId>
+                    <artifactId>perc-xml-security</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.percussion</groupId>
                     <artifactId>perc-ant</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.percussion</groupId>
+                    <artifactId>perc-legacy</artifactId>
                     <version>${project.version}</version>
                 </dependency>
                 <dependency>

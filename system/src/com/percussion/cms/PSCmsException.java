@@ -42,6 +42,10 @@ public class PSCmsException extends PSException
       super(msgCode);
    }
 
+   public PSCmsException(int code, Throwable t){
+      super(code,t);
+   }
+
    public PSCmsException(Throwable t){
       super(t);
    }

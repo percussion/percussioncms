@@ -56,7 +56,6 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.error.PSException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSConsole;
@@ -87,12 +86,26 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.percussion.cms.IPSConstants.DB_ACTION_INSERT;
+import static com.percussion.cms.IPSConstants.DB_ACTION_TYPE;
+import static com.percussion.cms.IPSConstants.DB_ACTION_UPDATE;
+
 /**
  * A PSCoreItem that is Rhythmyx server aware.  Meaning it can persist itself
  * to the system.
  */
 public class PSServerItem extends PSCoreItem implements IPSPersister
 {
+   @Override
+   public boolean equals(Object obj) {
+      return super.equals(obj);
+   }
+
+   @Override
+   public int hashCode() {
+      return super.hashCode();
+   }
+
    /**
     * Construct a new object from the definition, default field values will not
     * be provided.
@@ -408,7 +421,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          throw new UnsupportedOperationException(
             "loading without the TYPE_FIELDS flag is not supported.");
 
-      boolean isNewItem = itemId == null ? true : false;
+      boolean isNewItem = itemId == null;
       m_loadFlags = loadFlags;
 
       if (!isNewItem)
@@ -533,7 +546,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
       String requestUrl = stripUrlExtras(ids.getEditorUrl());
 
       // set parameters:
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       if (!isNewItem)
       {
          params.put(IPSHtmlParameters.SYS_CONTENTID, "" + getContentId());
@@ -595,8 +608,8 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
     */
    private void extractLock(PSRequest request) throws PSCmsException
    {
-      Map<String, Integer> params = new HashMap<String, Integer>();
-      params.put(IPSHtmlParameters.SYS_CONTENTID, new Integer(getContentId()));
+      Map<String, Integer> params = new HashMap<>();
+      params.put(IPSHtmlParameters.SYS_CONTENTID, getContentId());
 
       // get parent doc:
       Document doc =
@@ -614,9 +627,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
             boolean isLocked;
 
             String theLock = PSXMLDomUtil.getElementData(lock);
-            if (theLock == null
-               || theLock.length() == 0
-               || theLock.equals("N"))
+            if (theLock.length() == 0 || theLock.equals("N"))
                isLocked = false;
             else
                isLocked = true;
@@ -922,31 +933,25 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
       
       PSRelationshipSet rset = processor.getRelatedContent(
          new PSLocator(getContentId(), getRevision()));
-      Iterator iter = rset.iterator();
-      while (iter.hasNext())
-      {
-         PSRelationship rs = (PSRelationship) iter.next();
+      for (PSRelationship psRelationship : (Iterable<PSRelationship>) rset) {
          PSItemRelatedItem relatedItem = new PSItemRelatedItem();
-         relatedItem.setRelationship(new PSAaRelationship(rs));
-         relatedItem.setRelatedType(rs.getConfig().getName());
-         relatedItem.setRelationshipId(rs.getId());
-         relatedItem.setDependentId(rs.getDependent().getId());
-         Map propertyMap = rs.getUserProperties();
-         Iterator mapIter = propertyMap.keySet().iterator();
-         while (mapIter.hasNext())
-         {
-            String key = (String) mapIter.next();
-            String value = (String) propertyMap.get(key);
+         relatedItem.setRelationship(new PSAaRelationship(psRelationship));
+         relatedItem.setRelatedType(psRelationship.getConfig().getName());
+         relatedItem.setRelationshipId(psRelationship.getId());
+         relatedItem.setDependentId(psRelationship.getDependent().getId());
+         Map<String, String> propertyMap = psRelationship.getUserProperties();
+         for (String o : propertyMap.keySet()) {
+            String key = o;
+            String value = propertyMap.get(key);
             relatedItem.addProperty(key, value);
          }
-         
-         if ((TYPE_RELATED_ITEM & m_loadFlags) == TYPE_RELATED_ITEM)
-         {
-            Element relatedItemData = loadRelatedItem(rs.getDependent()
-                  .getId(), request);
+
+         if ((TYPE_RELATED_ITEM & m_loadFlags) == TYPE_RELATED_ITEM) {
+            Element relatedItemData = loadRelatedItem(psRelationship.getDependent()
+                    .getId(), request);
             relatedItem.setRelatedItemData(relatedItemData);
          }
-         m_relatedItemsMap.put("" + rs.getId(), relatedItem);
+         m_relatedItemsMap.put("" + psRelationship.getId(), relatedItem);
       }
    }
 
@@ -978,9 +983,8 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
 
          PSServerItem item = new PSServerItem(def, loc, request, loadFlags);
 
-         Element xmlData = item
+         return item
                .toXml(PSXmlDocumentBuilder.createXmlDocument());
-         return xmlData;
       }
       catch (Exception e)
       {
@@ -1011,7 +1015,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
        */
       public Object getObject()
       {
-         return new Integer(rowId);
+         return rowId;
       }
 
       /**
@@ -1037,15 +1041,14 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
       throws PSCmsException
    {
       // set parameters:
-      Map<String, Object> params = new HashMap<String, Object>();
-      params.put(IPSHtmlParameters.SYS_CONTENTID, new Integer(getContentId()));
-      params.put(IPSHtmlParameters.SYS_REVISION, new Integer(getRevision()));
+      Map<String, Object> params = new HashMap<>();
+      params.put(IPSHtmlParameters.SYS_CONTENTID, getContentId());
+      params.put(IPSHtmlParameters.SYS_REVISION, getRevision());
       params.put(IPSHtmlParameters.SYS_COMMAND, "edit");
       params.put("sys_pageid", pageId);
 
-      Document doc = makeRequest(requestUrl, request, params, false);
+      return makeRequest(requestUrl, request, params, false);
 
-      return doc;
    }
 
    /**
@@ -1174,8 +1177,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
             }
             catch (Exception e)
             {
-               //Can this happen???
-               return;
+               throw new PSCmsException(IPSCmsErrors.UNEXPECTED_ERROR,e);
             }
          }
       }
@@ -1239,11 +1241,11 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          return;
          
       // update the fields
-      Map<String, Object> fieldParams = new HashMap<String, Object>();
+      Map<String, Object> fieldParams = new HashMap<>();
       fieldParams.put(PSContentEditorHandler.PAGE_ID_PARAM_NAME, "0");
       fieldParams.put(
-         "DBActionType",
-         (getContentId() == -1) ? "INSERT" : "UPDATE");
+         DB_ACTION_TYPE,
+         (getContentId() == -1) ? DB_ACTION_INSERT : DB_ACTION_UPDATE);
 
       Iterator fieldIter = getAllFields();
       populateFieldParams(fieldParams, fieldIter);
@@ -1290,7 +1292,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          }
          else if (field.getItemFieldMeta().isMultiValueField())
          {
-            List<String> newVals = new ArrayList<String>();
+            List<String> newVals = new ArrayList<>();
             Iterator values = field.getAllValues();
             while (values.hasNext())
             {
@@ -1328,7 +1330,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
       Iterator childIter = getAllChildren();
       while (childIter.hasNext())
       {
-         Map<String, String> baseParams = new HashMap<String, String>();
+         Map<String, String> baseParams = new HashMap<>();
 
          PSItemChild child = (PSItemChild) childIter.next();
          baseParams.put(
@@ -1339,7 +1341,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          while (childEntryIter.hasNext())
          {
             Map<String, String> childParams = 
-               new HashMap<String, String>(baseParams);
+               new HashMap<>(baseParams);
             PSItemChildEntry childEntry =
                (PSItemChildEntry) childEntryIter.next();
 
@@ -1348,7 +1350,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
                && !action.equals("")
                && !action.equalsIgnoreCase("ignore"))
             {
-               childParams.put("DBActionType", action.toUpperCase());
+               childParams.put(DB_ACTION_TYPE, action.toUpperCase());
                int childRowId = childEntry.getChildRowId();
                if (childRowId != -1)
                {
@@ -1391,7 +1393,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
          // if so then collect the rowIds and sortRanks and then update
          if (child.isSequenced())
          {
-            String childIdRows = "";
+            StringBuilder childIdRows = new StringBuilder();
             Iterator seqIter = child.getAllEntries();
             while (seqIter.hasNext())
             {
@@ -1401,20 +1403,20 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
                   .getAction()
                   .equalsIgnoreCase(PSItemChildEntry.CHILD_ACTION_DELETE))
                {
-                  childIdRows += String.valueOf(childEntry.getChildRowId());
+                  childIdRows.append(childEntry.getChildRowId());
 
                   if (seqIter.hasNext())
-                     childIdRows += ",";
+                     childIdRows.append(",");
                }
             }
             if (childIdRows.length() > 0)
             {
-               Map<String, String> seqParams = new HashMap<String, String>(baseParams);
+               Map<String, String> seqParams = new HashMap<>(baseParams);
                seqParams.put(
                   PSContentEditorHandler.CHILD_ROW_ID_PARAM_NAME,
-                  childIdRows);
+                  childIdRows.toString());
                seqParams.put(
-                  "DBActionType",
+                  DB_ACTION_TYPE,
                   PSContentEditorHandler.DB_ACTION_RESEQUENCE);
 
                processUpdateAction(path, request, seqParams);
@@ -1504,7 +1506,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
                   related.setDependentId(newItem.getKey().getId());
                }
             }
-            catch (PSUnknownNodeTypeException ex)
+            catch (PSUnknownNodeTypeException | PSInvalidContentTypeException ex)
             {
                /**
                * @todo is this right? do we really just want to ignore errors
@@ -1520,7 +1522,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
       relIter = getAllRelatedItems();
       while (relIter.hasNext())
       {
-         Map<String, String> relatedParams = new HashMap<String, String>();
+         Map<String, String> relatedParams = new HashMap<>();
 
          PSItemRelatedItem related = (PSItemRelatedItem) relIter.next();
          String action = related.getAction();
@@ -1592,8 +1594,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
     */
    private PSItemDefinition getItemDefinition(
       PSRequest request,
-      String contentTypeId)
-   {
+      String contentTypeId) throws PSInvalidContentTypeException {
       PSSecurityToken tok = request.getSecurityToken();
 
       PSItemDefManager mgr = PSItemDefManager.getInstance();
@@ -1625,10 +1626,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
 
       if (itemDef == null)
       {
-         /** @todo use PSInvalidContentTypeException here */
-         // content type does not exist
-         //         throw new PSException(IPSWebServicesErrors.WEB_SERVICE_CONTENT_TYPE_NOT_FOUND,
-         //            contentTypeId);
+            throw new PSInvalidContentTypeException(contentTypeId);
       }
       return itemDef;
    }
@@ -1702,12 +1700,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
                throw new PSCmsException(IPSCmsErrors.VALIDATION_ERROR, e
                      .getErrorArguments());
             }
-            catch (IOException e)
-            {
-               throw new PSCmsException(IPSCmsErrors.VALIDATION_ERROR, e
-                     .getLocalizedMessage());
-            }
-            catch (SAXException e)
+            catch (IOException | SAXException e)
             {
                throw new PSCmsException(IPSCmsErrors.VALIDATION_ERROR, e
                      .getLocalizedMessage());
@@ -1739,10 +1732,8 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
             request.setParameter(
                   PSContentEditorHandler.CHILD_ROW_ID_PARAM_NAME, childRowId);
       }
-      catch (PSException ex)
+      catch (Exception ex)
       {
-         if(ex instanceof PSCmsException)
-            throw (PSCmsException)ex;
          throw new PSCmsException(ex);
       }
    }
@@ -1755,7 +1746,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
     * from the server.  If loaded, data is not actually retrieved from the
     * server until the value is requested from the {@link PSBinaryValue} object.
     */
-   public final static int TYPE_BINARY = 0x1;
+   public static final int TYPE_BINARY = 0x1;
    
    /**
     * Flag to indicate fields should be loaded.  Absence of this flag means that
@@ -1763,26 +1754,26 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
     * specified.  If not loaded, item may still be saved without affecting
     * any field values.  TODO: This flag is not yet supported
     */
-   public final static int TYPE_FIELDS = 0x2;
+   public  static final int TYPE_FIELDS = 0x2;
    
    /**
     * Flag to indicate if child items should be loaded.  If not loaded, new 
     * child items may still be added and saved without affecting any existing 
     * child items. 
     */
-   public final static int TYPE_CHILD = 0x4;
+   public  static final int TYPE_CHILD = 0x4;
    
    /**
     * Flag to indicate if the relationships of the related items should be 
     * loaded. If not loaded, new item relationships may still be added and 
     * saved without affecting any existing item relationships.
     */
-   public final static int TYPE_RELATED = 0x08;
+   public  static final int TYPE_RELATED = 0x08;
 
    /**
     * Flag to indicate if the related (or dependent) items of the relationships
     * should be loaded. This has to be used in conjunction with 
-    * {@LInk #TYPE_RELATED} is on. If both {@link #TYPE_RELATED} and this flag
+    * {@link #TYPE_RELATED} is on. If both {@link #TYPE_RELATED} and this flag
     * are on, then load the relationships as well as the related items of the
     * relationships. 
     * <p>
@@ -1793,7 +1784,7 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
     * {@link #TYPE_FIELDS} and {@link #TYPE_CHILD} flags on, but the other
     * TYPE_XXX flags are off. 
     */
-   public final static int TYPE_RELATED_ITEM = 0x10;
+   public  static final int TYPE_RELATED_ITEM = 0x10;
 
    /**
     * Flag to indicate what types of data to load.  Any of the TYPE_XXX flags 
@@ -1807,5 +1798,5 @@ public class PSServerItem extends PSCoreItem implements IPSPersister
    /**
     * Lookup app resource for content status information.
     */
-   private static String CONTENT_STATUS_APP_URL = "sys_psxCms/contentStatus";
+   private static final String CONTENT_STATUS_APP_URL = "sys_psxCms/contentStatus";
 }
