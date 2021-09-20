@@ -283,7 +283,7 @@
                         var currentPath = self._normalizedPath(this.path);
                         var inPath = self._normalizedPath(self.settings.initialPath);
                         if(inPath === currentPath){
-                            chNode.activate();
+                            chNode.activateSilently();
                             self.settings.getInitialPathItem(chNode.data.pathItem);                                                
                             self.intialPathExpanded = true;
                         }
