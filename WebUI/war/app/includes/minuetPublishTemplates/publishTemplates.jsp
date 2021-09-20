@@ -521,18 +521,22 @@
     </div>
     <div class="form-group" id="assumeRole" >
         <div class="form-row">
-            <div class="form-check form-check-inline">
-                <input
-                        id="useAssumeRole"
-                        class="form-check-input"
-                        type="checkbox"
-                        percServerFileProp="useAssumeRole"
-                        name="useAssumeRole"
-                        {{#if (filterByValue serverInfo.properties 'key' 'useAssumeRole')}} checked{{/if}}>
-                <label for="useAssumeRole" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Use Assume Role"/></label>
-                <div class="input-group">
-                    <label for="iamRole">* <i18n:message key="perc.ui.publish.servers.s3@ARN Role Key"/>:</label>
-                    <div class="input-group-prepend">
+            <div style="width:25%;">
+                <div class="form-check form-check-inline">
+                    <input
+                            id="useAssumeRole"
+                            class="form-check-input"
+                            type="checkbox"
+                            percServerFileProp="useAssumeRole"
+                            name="useAssumeRole"
+                            {{#if (filterByValue serverInfo.properties 'key' 'useAssumeRole')}} checked{{/if}}>
+                    <label for="useAssumeRole" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Use Assume Role"/></label>
+                </div>
+            </div>
+            <div style="width:75%;" >
+                <div  class="input-group">
+                    <label  style="margin-right: 10px;" for="iamRole">* <i18n:message key="perc.ui.publish.servers.s3@ARN Role Key"/>:</label>
+                    <div   class="input-group-prepend">
                         <div class="input-group-text">
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
@@ -540,6 +544,7 @@
                     <input autocomplete="off" aria-required="true" class="form-control" percServerFileProp="iamRole" id="iamRole" name="iamRole" value="{{#filterByValue serverInfo.properties 'key' 'iamRole'}}{{/filterByValue}}">
                 </div>
             </div>
+
         </div>
     </div>
     <div class="form-group" id="s3accessSecurityKey" >
