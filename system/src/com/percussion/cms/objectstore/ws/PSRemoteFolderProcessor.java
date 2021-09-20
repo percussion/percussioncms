@@ -23,8 +23,6 @@
  */
 package com.percussion.cms.objectstore.ws;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSComponentProcessor;
@@ -53,6 +51,9 @@ import com.percussion.error.PSException;
 import com.percussion.util.IPSRemoteRequester;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -60,9 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This class handles the folder operations on the client side. This is
@@ -1002,7 +1001,7 @@ public class PSRemoteFolderProcessor extends PSProcessorCommon
     * See {@link IPSRelationshipProcessor#getRelationships(String, PSLocator, 
     * boolean) interface}
     *
-    * @throws UnsupportedOperationException Always.
+    * @throws UnsupportedOperationException Not implemented..
     */
    public PSRelationshipSet getRelationships(String relationshipType, 
       PSLocator locator, boolean owner) 
