@@ -260,6 +260,20 @@
 
     function declareCustomSortingFunctions()
     {
+
+        //CMS-8495 : Sorting the severity column issue on seo gadget.
+        $.fn.dataTableExt.afnSortData['perc-type-html-img'] = function(oSettings, iColumn)
+        {
+            var aData = [];
+
+            this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
+                var img = $($(td)[0]).find('img');
+                aData.push($(img[0]).attr('data-severity'));
+            } );
+
+            return aData;
+        };
+
         $.fn.dataTableExt.oSort['html-img-asc'] = function(x, y)
         {
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));

@@ -540,7 +540,12 @@
             var aData = [];
             var data;
             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
-                aData.push( $(td)[0].innerText);
+                var inText = $(td)[0].innerText;
+                //CMS-8495 : Activity gadget sorting issue as the values 1, 11, 12 etc were being treated as string rather than numerals.
+                if($.isNumeric(inText)){
+                    inText = parseInt(inText);
+                }
+                aData.push(inText);
             } );
 
             return aData;
