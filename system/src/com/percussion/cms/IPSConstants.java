@@ -583,7 +583,7 @@ public interface IPSConstants
 
    public static final String DB_ACTION_TYPE="DBActionType";
    public static final String DB_ACTION_INSERT="INSERT";
-   public static final String DB_ACTION_UPDATE="UDPATE";
+   public static final String DB_ACTION_UPDATE="UPDATE";
    public static final String DB_ACTION_DELETE="DELETE";
 
 
