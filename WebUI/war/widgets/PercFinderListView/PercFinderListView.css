@@ -115,4 +115,6 @@ body * {
     font-family: 'Open Sans', sans-serif;
 }
 
-
+tr.perc-datatable-head-row[style] {
+    height : auto !important;
+}
