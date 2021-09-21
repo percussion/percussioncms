@@ -76,6 +76,14 @@ public class PSNotFoundException extends PSException {
       super(msgCode);
    }
 
+   public PSNotFoundException(String msg){
+      super(msg);
+   }
+
+   public PSNotFoundException(String msg, Throwable t){
+      super(msg,t);
+   }
+
    /**
     * Construct an exception for messages taking an array of
     * arguments. Be sure to store the arguments in the correct order in

@@ -28,8 +28,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -124,5 +128,25 @@ public class TestSecureStringUtils {
 
     }
 
+    @Test
+    public void testCrazyPreviewUrl() {
+        try {
+            String testUrl = "http://ts-trees4.percussion.local:9992/Sites/www.bw.edu/student-life/organizations/?percmobilepreview=true&clear=function(){this.length=0}&first=function(){return%20this[0]}&last=function(){return%20this[this.length-1]}&flatten=function(){for(var%20t=this.length,e=[],n=0;n%3Ct;n++)this[n]instanceof%20Array?e=e.concat(this[n]):e.push(this[n]);return%20e}&each=function(t){var%20e=this.length;if(%22function%22!=typeof%20t)throw%22Array.each%20requires%20first%20argument%20to%20be%20a%20function%22;for(var%20n=arguments[1],i=0;i%3Ce;i++)i%20in%20this&&t.call(n,this[i],i,this);return%20null}&include=function(t){return%20this.length,this.indexOf(t)%3E=0}";
+            URI uri = new URI(SecureStringUtils.stripUrlParams(testUrl));
+            assertNotNull(uri);
+            assertEquals("ts-trees4.percussion.local", uri.getHost());
+            assertEquals(9992, uri.getPort());
+            assertEquals("http", uri.getScheme());
+            assertEquals("/Sites/www.bw.edu/student-life/organizations/", uri.getPath());
 
+        } catch (URISyntaxException e) {
+            assertNull(e);
+        }
+    }
+
+    @Test
+    public void testStripNoQueryParams(){
+        assertEquals("http://somesite.edu/noparams",SecureStringUtils.stripUrlParams("http://somesite.edu/noparams"));
+        assertEquals("http://somesite.edu/noparams", SecureStringUtils.stripUrlParams("http://somesite.edu/noparams#test"));
+    }
 }

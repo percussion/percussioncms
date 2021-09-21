@@ -23,19 +23,18 @@
  */
 package com.percussion.services.contentmgr.impl.legacy;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.services.contentmgr.impl.PSContentInternalLocator;
 import com.percussion.utils.beans.IPSPropertyLoader;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Load the body object for the content repository
@@ -96,10 +95,7 @@ public class PSContentPropertyLoader implements IPSPropertyLoader, Serializable
          }
          catch (RepositoryException e)
          {
-            ms_log.error("Error while trying to load a body field", e);
-         }
-         catch (Exception e){
-            e.printStackTrace();
+            ms_log.error("Error while trying to load a body field. Error: {}", PSExceptionUtils.getMessageForLog(e));
          }
       }
       return m_data;

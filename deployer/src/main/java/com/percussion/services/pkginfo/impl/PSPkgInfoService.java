@@ -240,8 +240,8 @@ implements IPSPkgInfoService
       if (id == null)
          throw new IllegalArgumentException("id may not be null");
       
-      PSPkgInfo pkgInfo = (PSPkgInfo) sessionFactory.getCurrentSession().
-         get(PSPkgInfo.class, new Long(id.longValue()));
+      PSPkgInfo pkgInfo = sessionFactory.getCurrentSession().
+         get(PSPkgInfo.class, id.longValue());
 
       if (pkgInfo == null)
          throw new PSNotFoundException(id);

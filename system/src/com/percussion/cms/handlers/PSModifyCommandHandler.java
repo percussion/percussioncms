@@ -1484,17 +1484,17 @@ public class PSModifyCommandHandler extends PSCommandHandler
    private int getPlanType(PSExecutionData data) 
       throws PSRequestValidationException
    {
-      int planType = PSModifyPlan.TYPE_INSERT_PLAN;
+      int planType;
       PSRequest request = data.getRequest();
       
       String dbActionType = request.getParameter(
          m_internalApp.getRequestTypeHtmlParamName(), "null");
 
-      if (dbActionType.equals(m_internalApp.getRequestTypeValueInsert()))
+      if (dbActionType.equalsIgnoreCase(m_internalApp.getRequestTypeValueInsert()))
          planType = PSModifyPlan.TYPE_INSERT_PLAN;
-      else if (dbActionType.equals(m_internalApp.getRequestTypeValueUpdate()))
+      else if (dbActionType.equalsIgnoreCase( m_internalApp.getRequestTypeValueUpdate()))
          planType = PSModifyPlan.TYPE_UPDATE_PLAN;
-      else if (dbActionType.equals(m_internalApp.getRequestTypeValueDelete()))
+      else if (dbActionType.equalsIgnoreCase( m_internalApp.getRequestTypeValueDelete()))
       {
          String childIdParamName = m_ceHandler.getParamName(
             PSContentEditorHandler.CHILD_ID_PARAM_NAME);         
@@ -1504,12 +1504,9 @@ public class PSModifyCommandHandler extends PSCommandHandler
          else
             planType = PSModifyPlan.TYPE_DELETE_COMPLEX_CHILD;
       }
-      else if (dbActionType.equals(
-                 PSContentEditorHandler.DB_ACTION_SEQUENCE_DECREMENT) ||
-               dbActionType.equals(
-                 PSContentEditorHandler.DB_ACTION_SEQUENCE_INCREMENT) ||
-               dbActionType.equals(
-                 PSContentEditorHandler.DB_ACTION_RESEQUENCE))
+      else if (dbActionType.equalsIgnoreCase( PSContentEditorHandler.DB_ACTION_SEQUENCE_DECREMENT) ||
+              dbActionType.equalsIgnoreCase( PSContentEditorHandler.DB_ACTION_SEQUENCE_INCREMENT) ||
+              dbActionType.equalsIgnoreCase( PSContentEditorHandler.DB_ACTION_RESEQUENCE))
       {
          planType = PSModifyPlan.TYPE_UPDATE_SEQUENCE;
       }

@@ -23,10 +23,11 @@
  */
 package com.percussion.pagemanagement.assembler;
 
-import java.util.Collection;
-
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.services.assembly.IPSAssemblyItem;
+import com.percussion.services.assembly.PSAssemblyException;
+
+import java.util.Collection;
 
 /**
  * Batch Assembles a collection of regions.
@@ -54,7 +55,7 @@ public interface IPSRegionsAssembler
             IPSRegionAssembler regionAssembler,
             IPSAssemblyItem assemblyItem, 
             PSPageAssemblyContext context,
-            Collection<PSMergedRegion> mergedRegions) throws IPSTemplateService.PSTemplateException;
+            Collection<PSMergedRegion> mergedRegions) throws IPSTemplateService.PSTemplateException, PSAssemblyException;
 
 }
 

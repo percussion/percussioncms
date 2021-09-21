@@ -24,6 +24,7 @@
 package com.percussion.utils.jsr170;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.beans.IPSPropertyLoader;
 import com.percussion.utils.beans.PSPropertyWrapper;
 import com.percussion.utils.io.PSReaderInputStream;
@@ -180,7 +181,7 @@ public class PSProperty extends PSPropertyWrapper
    }
 
    @Override
-   public void init()
+   public synchronized void init()
    {
       if (m_initialized)
          return;
@@ -217,8 +218,9 @@ public class PSProperty extends PSPropertyWrapper
          {
 
             log.warn(
-                  "Setting property to null as the interceptor threw an error: {}",e.getMessage());
-            log.debug(e.getMessage(),e);
+                  "Setting property to null as the interceptor threw an error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             m_value = null;
          }
       }
@@ -236,6 +238,8 @@ public class PSProperty extends PSPropertyWrapper
     */
    public PSProperty(String pname, Node parent, Object value)
          throws RepositoryException {
+         super(parent);
+
       if (StringUtils.isBlank(pname))
       {
          throw new IllegalArgumentException("pname may not be null or empty");
@@ -244,11 +248,13 @@ public class PSProperty extends PSPropertyWrapper
       {
          throw new IllegalArgumentException("parent may not be null");
       }
+
       m_depth = parent.getDepth() + 1;
       m_parent = parent;
       m_value = value;
       m_name = pname;
       m_initialized = true;
+
    }
 
    /*
@@ -695,12 +701,9 @@ public class PSProperty extends PSPropertyWrapper
     */
    public String getPath() throws RepositoryException
    {
-      StringBuilder b = new StringBuilder();
-      b.append(getParent().getPath());
-      b.append("/");
-      b.append(getName());
-
-      return b.toString();
+      return getParent().getPath() +
+              "/" +
+              getName();
    }
 
    /*

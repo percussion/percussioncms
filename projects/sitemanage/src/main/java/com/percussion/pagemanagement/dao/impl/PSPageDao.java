@@ -81,11 +81,11 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 
 	private static final Logger log = LogManager.getLogger(PSPageDao.class);
 
-	private IPSWidgetItemIdGenerator widgetItemIdGenerator;
+	private final IPSWidgetItemIdGenerator widgetItemIdGenerator;
 
-	private IPSIdMapper idMapper;
+	private final IPSIdMapper idMapper;
 
-	private PSJcrNodeFinder jcrNodeFinder;
+	private final PSJcrNodeFinder jcrNodeFinder;
 
 	/**
 	 * The cached page id, which is lazily coded.

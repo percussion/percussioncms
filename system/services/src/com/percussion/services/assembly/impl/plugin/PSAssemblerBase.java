@@ -244,7 +244,7 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
                int folderid = Integer.parseInt(folderidstr);
                PSRequest req = PSRequest.getContextForRequest();
                PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
-               PSLocator folderLocators[] = { new PSLocator(folderid) };
+               PSLocator[] folderLocators = { new PSLocator(folderid) };
 
                do
                {
@@ -342,13 +342,11 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
     * @throws IllegalStateException
     * @throws PSFilterException
     */
-   @SuppressWarnings("unchecked")
    private IPSAssemblyResult processGlobalTemplate(IPSAssemblyItem item,
          IPSAssemblyResult rval, IPSAssemblyService asm,
          IPSAssemblyTemplate global)
-      throws ItemNotFoundException, RepositoryException,
-      PSTemplateNotImplementedException, PSAssemblyException,
-      UnsupportedRepositoryOperationException, IllegalStateException,
+      throws  RepositoryException,
+      PSTemplateNotImplementedException, PSAssemblyException, IllegalStateException,
       IOException, PSFilterException
    {
       // First check that this is a valid result for a global template

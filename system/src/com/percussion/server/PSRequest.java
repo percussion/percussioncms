@@ -804,18 +804,20 @@ public class PSRequest
 
       Object o = m_params.get(name);
 
-      if (o instanceof List)
+      if(o instanceof char[]){
+         return String.valueOf(o);
+      }else if (o instanceof List)
       {
          // if we actually have some elements in the list
          // get the first one and return that as a string
          // otherwise just return the default value
          if (!((List<?>)o).isEmpty())
-            o = ((List<?>)o).get(0);
+            return String.valueOf(((List<?>)o).get(0));
          else
             return defValue;
       }
 
-      return (o != null) ? o.toString() : defValue;
+      return (o != null) ? String.valueOf(o) : defValue;
    }
 
    /**
