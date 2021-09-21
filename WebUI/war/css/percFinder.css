@@ -826,3 +826,8 @@ div#perc-finder-selected-label
 #perc-finder-listview .perc-datatable-head-column:last-child {
     border-right: none !important;
 }
+
+/*CMS-8525 : If you delete any site listed in list view the table comes to the bottom*/
+#perc-finder-table-top .mcol-direc {
+    vertical-align : top !important;
+}
