@@ -95,6 +95,7 @@ public class GadgetSettingsFormServlet extends HttpServlet
 
          if(!PSGadgetUtils.isValidGadgetPathInUrl(req, new URI(gadgetUrl))){
             resp.sendError(404);
+            return;
          }
 
          String moduleId = req.getParameter("mid");
