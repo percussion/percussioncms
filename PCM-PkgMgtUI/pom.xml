@@ -55,7 +55,7 @@
         <artifactId>gwt-maven-plugin</artifactId>
         <configuration>
             <webappDirectory>${project.build.directory}/classes/META-INF/resources/sys_resources/ui/gwt</webappDirectory>
-            <extraJvmArgs>-Xmx2048M -Xss1024k</extraJvmArgs>
+            <extraJvmArgs>-Xmx4096m -Xss1024k</extraJvmArgs>
         </configuration>
         <executions>
           <execution>
