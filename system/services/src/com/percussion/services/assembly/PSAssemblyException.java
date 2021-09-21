@@ -87,6 +87,7 @@ public class PSAssemblyException extends PSBaseException
    public static final int UNEXPECTED_ASSEMBLY_ERROR=5; //Unexpected exception while assembling one or more items
    public static final int AUTHTYPE_OR_FILTER_REQUIRED=6; //You must specify either the authtype or the item filter name
    public static final int SLOT_NOT_FOUND=11;//11=The slot specified by {0} was not found
+   public static final int PAGE_FAILED_TO_ASSEMBLE_REGION=24; //12=Failed to assemble region {}
 /*7=An item must be identified by either sys_contentid/sys_revision parameters, guid, or sys_path.
 8=The path {0} is invalid. Paths must contain at least one slash. Paths always start with a slash.
         9=The path {0} cannot be found

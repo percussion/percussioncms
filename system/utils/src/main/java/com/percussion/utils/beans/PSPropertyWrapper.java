@@ -23,13 +23,13 @@
  */
 package com.percussion.utils.beans;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * Provides a simple wrapper that allows access to an object "property" by
@@ -42,9 +42,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class PSPropertyWrapper
 {
-   private static final Class noparams[] = new Class[0];
+   private static final Class[] noparams = new Class[0];
 
-   private static final Object emptyargs[] = new Object[0];
+   private static final Object[] emptyargs = new Object[0];
 
    /**
     * The wrapped object, only <code>null</code> after the constructor is
@@ -130,7 +130,7 @@ public class PSPropertyWrapper
    /**
     * Storage for method maps by property and class
     */
-   private static Map<Key, Method> ms_methodMap = new ConcurrentHashMap<Key, Method>(16, 0.9f, 1);;
+   private static Map<Key, Method> ms_methodMap = new ConcurrentHashMap<>(16, 0.9f, 1);;
 
    /**
     * Create instance with an object to wrap
@@ -182,15 +182,13 @@ public class PSPropertyWrapper
          throw new IllegalArgumentException(
                "pname may not be null or contain less than 2 characters");
       }
-      
-      init();
 
       try
       {
          Method m = findMethod(pname, "get");
          return m.invoke(m_wrappedObject, emptyargs);
       }
-      catch (SecurityException e)
+      catch (SecurityException | InvocationTargetException | IllegalAccessException e)
       {
          throw new PSPropertyAccessException(e);
       }
@@ -198,14 +196,6 @@ public class PSPropertyWrapper
       {
          throw new PSPropertyAccessException(
                "No matching get method found for property " + pname, e);
-      }
-      catch (IllegalAccessException e)
-      {
-         throw new PSPropertyAccessException(e);
-      }
-      catch (InvocationTargetException e)
-      {
-         throw new PSPropertyAccessException(e);
       }
    }
 
@@ -217,7 +207,7 @@ public class PSPropertyWrapper
     * @return a method, which will be cached
     * @throws NoSuchMethodException
     */
-   private Method findMethod(String pname, String type)
+   private synchronized Method findMethod(String pname, String type)
          throws NoSuchMethodException
    {
       if (!type.equals("get") && !type.equals("set"))
@@ -226,14 +216,12 @@ public class PSPropertyWrapper
       }
       if (m_wrappedObject == null)
       {
-         throw new IllegalStateException("Trying to find the " + type + 
-               " method for property " + pname + " on a property that was " + 
-               " not lazy loaded.");
+        this.init();
       }
       Class clazz = m_wrappedObject.getClass();
       Key k = new Key(clazz, pname, type);
       Method m = null;
-      Class args[] = noparams;
+      Class[] args = noparams;
       if (type.equals("set"))
       {
          Method getm = findMethod(pname, "get");
@@ -241,21 +229,15 @@ public class PSPropertyWrapper
          {getm.getReturnType()};
       }
       m = ms_methodMap.get(k);
-      if (m == null)
-      {
-         synchronized(this)
-         {
-            if(m==null)
-            {   
-               StringBuilder str = new StringBuilder(40);
-               str.append(type);
-               str.append(Character.toTitleCase(pname.charAt(0)));
-               str.append(pname.substring(1));
-               m = clazz.getMethod(str.toString(), args);
-               ms_methodMap.put(k, m);
-            }
-         }
+
+      if (m == null) {
+         String str = type +
+                 Character.toTitleCase(pname.charAt(0)) +
+                 pname.substring(1);
+         m = clazz.getMethod(str, args);
+         ms_methodMap.put(k, m);
       }
+
       return m;
    }
 
@@ -280,11 +262,11 @@ public class PSPropertyWrapper
       try
       {
          Method m = findMethod(propertyName, "set");
-         Object args[] = new Object[]
+         Object[] args = new Object[]
          {value};
          m.invoke(m_wrappedObject, args);
       }
-      catch (SecurityException e)
+      catch (SecurityException | IllegalAccessException | InvocationTargetException e)
       {
          throw new PSPropertyAccessException(e);
       }
@@ -293,35 +275,28 @@ public class PSPropertyWrapper
          throw new PSPropertyAccessException(
                "No matching set method found for property " + propertyName, e);
       }
-      catch (IllegalAccessException e)
-      {
-         throw new PSPropertyAccessException(e);
-      }
-      catch (InvocationTargetException e)
-      {
-         throw new PSPropertyAccessException(e);
-      }
    }
 
    /**
     * Initialize, if this is a lazy loaded object, call the loader
     */
-   public void init()
-   {
-      if (m_initialized) return;
-      
-      m_initialized = true;
 
-      if (m_wrappedObject == null)
+   public synchronized void init()
+   {
+      if (m_initialized && m_wrappedObject != null) return;
+
+      m_initialized = false;
+      if (m_loader == null )
       {
-         if (m_loader == null)
-         {
+         if(m_wrappedObject == null) {
             throw new IllegalStateException(
-                  "Invalid state, wrapped object is null and no loader");
+                    "Invalid state, wrapped object is null and no loader");
          }
-         
+      }else {
          m_wrappedObject = m_loader.getLazy();
+         m_initialized = true;
       }
+
 
    }
 }

@@ -24,8 +24,9 @@
 
 package com.percussion.error;
 
-import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.Locale;
 
 
 /**
@@ -90,7 +91,7 @@ public class PSException extends java.lang.Exception
    implements IPSException
 {
 
-   private static IPSErrorManager errorManager = new PSErrorManagerDefaultImpl();
+   private static transient IPSErrorManager errorManager = new PSErrorManagerDefaultImpl();
 
    /**
     * 
@@ -116,6 +117,8 @@ public class PSException extends java.lang.Exception
    {
       super(msg);
    }
+
+
 
    /**
     * Construct an exception for messages taking only a single argument.
@@ -348,6 +351,7 @@ public class PSException extends java.lang.Exception
     *
     * @return               the localized detail message
     */
+   @Override
    public java.lang.String getLocalizedMessage()
    {
       if (m_overridingMessage != null)
@@ -366,6 +370,7 @@ public class PSException extends java.lang.Exception
     *
     * @return               the detail message
     */
+   @Override
    public java.lang.String getMessage()
    {
       return getLocalizedMessage();
@@ -377,6 +382,7 @@ public class PSException extends java.lang.Exception
     *
     * @return               the description
     */
+   @Override
    public java.lang.String toString()
    {
       return this.getClass().getName() + ": " + getLocalizedMessage();
@@ -516,7 +522,7 @@ public class PSException extends java.lang.Exception
 
 
    protected int        m_code;
-   protected Object[]   m_args;
+   protected transient Object[]   m_args;
    protected String     m_lang;
 
    /**

@@ -22,7 +22,6 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler.impl;
-import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 
 import com.percussion.pagemanagement.assembler.IPSRegionAssembler;
 import com.percussion.pagemanagement.assembler.IPSRegionsAssembler;
@@ -38,13 +37,13 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 
 /**
  * A non-concurrent batch regions assembler.
@@ -76,7 +75,7 @@ public class PSSerialRegionsAssembler implements IPSRegionsAssembler
             IPSRegionAssembler regionAssembler, 
             IPSAssemblyItem assemblyItem,
             PSPageAssemblyContext context, 
-            Collection<PSMergedRegion> mergedRegions) throws IPSTemplateService.PSTemplateException {
+            Collection<PSMergedRegion> mergedRegions) throws IPSTemplateService.PSTemplateException, PSAssemblyException {
         // hack pulled in from PSConcurrentRegionsAssembler
         setPreviewUrlGenerator();
         

@@ -25,12 +25,15 @@ package com.percussion.rx.ui.jsf.beans;
 
 import com.percussion.server.PSRequest;
 import com.percussion.services.utils.jspel.PSRoleUtilities;
-import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
 
 import javax.faces.model.DataModel;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
+import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
 
 /**
  * This tree model contains and tracks the top level navigation tabs for
@@ -436,9 +439,13 @@ public class PSTopNavigation extends DataModel
       if (path.equals("/ui/banner.jsp"))
       {
          // Invoked from xsl, use pagename instead
-         PSRequest req = (PSRequest) PSRequestInfo
-               .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-         m_path = req.getServletRequest().getParameter("sys_pagename");
+         PSRequest req = (PSRequest) getRequestInfo(KEY_PSREQUEST);
+         if(req != null) {
+            HttpServletRequest servletRequest = req.getServletRequest();
+            if (servletRequest != null) {
+               m_path = servletRequest.getParameter("sys_pagename");
+            }
+         }
       }
       else
       {

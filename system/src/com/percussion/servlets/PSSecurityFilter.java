@@ -26,6 +26,7 @@ package com.percussion.servlets;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSAuthenticationEvent;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSSecurityToken;
@@ -938,7 +939,7 @@ public class PSSecurityFilter implements Filter
                response.getWriter().write(json);
                return true;
              } catch (IOException e) {
-                ms_log.error("Invalid json object for sessioncheck");
+                ms_log.error("Invalid json object for sessioncheck. Error: {}", PSExceptionUtils.getMessageForLog(e));
                 sendAuthenticationError(request, response);
                 return true;
              }    
@@ -987,7 +988,7 @@ public class PSSecurityFilter implements Filter
       
       if (!reqHeader.isEmpty() && StringUtils.isNotBlank(reqHeader))
       {
-         URI headerURI = URI.create(reqHeader);
+            URI headerURI = URI.create(SecureStringUtils.stripUrlParams(reqHeader));
          return requestURI.getScheme().equals(headerURI.getScheme()) &&
                  requestURI.getHost().equals(headerURI.getHost()) &&
                  (requestURI.getPort() == headerURI.getPort());
@@ -1378,11 +1379,13 @@ public class PSSecurityFilter implements Filter
       }
       catch (IllegalStateException e)
       {
-         ms_log.error("IllegalState on session: {}" , sess.getId(), e);
+         ms_log.error("IllegalState on session: {} Error: {}" , sess.getId(),
+                 PSExceptionUtils.getMessageForLog(e));
       }
       catch (NullPointerException e)
       {
-         ms_log.error("Error on session: {}" , sess.getId(), e);
+         ms_log.error("Error on session: {} Error: {}" , sess.getId(),
+                 PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -1574,7 +1577,8 @@ public class PSSecurityFilter implements Filter
             }
             catch (MalformedURLException e)
             {
-               ms_log.error("Failed to determine url to force secure login", e);
+               ms_log.error("Failed to determine url to force secure login. Error: {}",
+                       PSExceptionUtils.getMessageForLog(e));
             }
          }
 

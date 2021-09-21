@@ -375,6 +375,30 @@ public class SecureStringUtils {
        return stripAllLineBreaks(rp);
     }
 
+    public static String urlEncode(String s){
+        String ret = "";
+
+        try{
+            ret = DefaultEncoder.getInstance().encodeForURL(s);
+        } catch (EncodingException e) {
+            log.error(e.getMessage());
+        }
+
+        return ret;
+
+    }
+
+    public static String stripUrlParams(String s){
+        String ret = s;
+        if(s.contains("?")) {
+            ret =  s.substring(0, s.indexOf("?"));
+        }
+        if(ret.contains("#")){
+            ret =  s.substring(0, s.indexOf("#"));
+        }
+        return ret;
+    }
+
     public static boolean isURLEncoded(String s){
         boolean ret = false;
         try{

@@ -40,6 +40,8 @@ import com.percussion.design.objectstore.PSContentEditorSystemDef;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSHandlerInitListener;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.PSRequest;
@@ -90,11 +92,9 @@ import com.percussion.utils.beans.PSPropertyWrapper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
-import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 import com.percussion.utils.jsr170.PSMultiProperty;
 import com.percussion.utils.jsr170.PSProperty;
 import com.percussion.utils.jsr170.PSValueFactory;
-import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.string.PSFolderStringUtils;
 import com.percussion.utils.string.PSXmlPIUtils;
 import com.percussion.utils.types.PSPair;
@@ -115,6 +115,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PreDestroy;
+import javax.inject.Singleton;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PropertyType;
@@ -126,13 +127,17 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
+import javax.naming.NamingException;
 import javax.persistence.Column;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -143,12 +148,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static com.percussion.services.utils.orm.PSDataCollectionHelper.clearIdSet;
 import static com.percussion.services.utils.orm.PSDataCollectionHelper.executeQuery;
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
+import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
 
 /**
  * Content repository implementation that stores content nodes, properties and
@@ -159,6 +168,7 @@ import static com.percussion.services.utils.orm.PSDataCollectionHelper.executeQu
  */
 @Transactional
 @PSBaseBean("sys_legacyContentRepository")
+@Singleton
 public class PSContentRepository
         implements
         IPSContentRepository,
@@ -207,7 +217,6 @@ public class PSContentRepository
             // Fix jcr:root
             path = path.replace("/jcr:root/", "//");
 
-            PSRequest req = PSRequest.getContextForRequest();
             PSServerFolderProcessor proc = PSServerFolderProcessor.getInstance();
             List<IPSGuid> rval;
 
@@ -220,9 +229,7 @@ public class PSContentRepository
                 rval = proc.findMatchingFolders(path);
                 if (rval == null)
                 {
-                    ms_log.warn("Root path '" + rootPath
-                            + "' not found", new Exception("Root path '" + rootPath
-                            + "' not found"));
+                    ms_log.debug("Root path '{}' not found", rootPath);
                     rval = new ArrayList<>();
                 }
             }
@@ -318,16 +325,16 @@ public class PSContentRepository
         }
 
         /**
-         * The place holder for removed configurations, never <code>null</code>,
+         * The placeholder for removed configurations, never <code>null</code>,
          * may be empty.
          */
-        Map<IPSTypeKey, PSTypeConfiguration> m_removedConfigs = new HashMap<>();
+        Map<IPSTypeKey, PSTypeConfiguration> m_removedConfigs = new ConcurrentHashMap<>();
 
         /**
-         * The place holder for added configurations, never <code>null</code>,
+         * The placeholder for added configurations, never <code>null</code>,
          * may be empty.
          */
-        Map<IPSTypeKey, PSTypeConfiguration> m_addedConfigs = new HashMap<>();
+        Map<IPSTypeKey, PSTypeConfiguration> m_addedConfigs = new ConcurrentHashMap<>();
     }
 
     /**
@@ -383,7 +390,7 @@ public class PSContentRepository
             String[] parts = columnNames[0].split("\\x2E");
             if (parts.length < 2)
             {
-                ms_log.warn("Field has incomplete column info: " + fieldName);
+                ms_log.warn("Field has incomplete column info: {}" , fieldName);
                 continue;
             }
             String column = parts[1];
@@ -405,7 +412,7 @@ public class PSContentRepository
     /**
      * The thread local memory to hold an instance of the changed configurations.
      */
-    private ThreadLocal<ChangedConfigs> ms_changedConfigs = new ThreadLocal<>();
+    private final ThreadLocal<ChangedConfigs> ms_changedConfigs = new ThreadLocal<>();
 
     /**
      * This reader/writer lock allows safe update of the content repository while
@@ -413,7 +420,7 @@ public class PSContentRepository
      * operations. The write lock is taken when the item def manager updates the
      * content repository information.
      */
-    private ReentrantReadWriteLock m_rwlock = new ReentrantReadWriteLock(true);
+    private final ReentrantReadWriteLock m_rwlock = new ReentrantReadWriteLock(true);
 
     /**
      * This listener instance is kept to allow it to be removed on destruction.
@@ -424,7 +431,7 @@ public class PSContentRepository
     /**
      * These are the capabilities implemented by the legacy content repository
      */
-    private final static Capability[] ms_capabilities = new Capability[]
+    private static final  Capability[] ms_capabilities = new Capability[]
             {Capability.READ};
 
     /**
@@ -432,7 +439,7 @@ public class PSContentRepository
      * references to the child configurations in the parent to enable child
      * loading.
      */
-    private static Map<IPSTypeKey, PSTypeConfiguration> ms_configuration = new HashMap<>();
+    private static final Map<IPSTypeKey, PSTypeConfiguration> ms_configuration = new ConcurrentHashMap<>();
 
     /**
      * Stores correspondances between content summary "properties" and the system
@@ -440,14 +447,12 @@ public class PSContentRepository
      * a subset is created for unit testing. Never <code>null</code> and never
      * empty after construction.
      */
-    private static Map<String, String> ms_csFieldToProperties = new HashMap<>();
+    private static final Map<String, String> ms_csFieldToProperties = new ConcurrentHashMap<>();
 
     /**
-     * @throws Exception
      *
      */
-    @SuppressWarnings("unchecked")
-    public PSContentRepository() throws Exception {
+    public PSContentRepository(){
         super();
         m_contentTypeChangeListener = new PSContentTypeChangeListener(this);
         // Register a listener with the item def manager
@@ -465,16 +470,14 @@ public class PSContentRepository
      *           <code>null</code>
      */
     static void addChildConfiguration(int parentid,
-                                      PSTypeConfiguration childconfig)
-    {
+                                      PSTypeConfiguration childconfig) throws PSNotFoundException {
         synchronized (ms_configuration)
         {
             PSContentTypeKey key = new PSContentTypeKey(parentid);
             PSTypeConfiguration parent = ms_configuration.get(key);
             if (parent == null)
             {
-                throw new RuntimeException(
-                        "Couldn't find parent config for type key " + key);
+                throw new PSNotFoundException("Couldn't find parent config for type key " + key);
             }
             parent.addChildConfiguration(childconfig);
         }
@@ -529,10 +532,6 @@ public class PSContentRepository
     public List<Node> loadByPath(List<String> paths, PSContentMgrConfig config)
             throws RepositoryException
     {
-        try
-        {
-            //m_rwlock.readLock().lock();
-            PSRequest req = PSRequest.getContextForRequest();
             IPSFolderProcessor proc = PSServerFolderProcessor.getInstance();
             // Translate each path to a component summary. From this the contentid
             // and revision can be extracted
@@ -542,7 +541,7 @@ public class PSContentRepository
                 try
                 {
                     int revision = 0;
-                    String parts[] = path.split("#");
+                    String[] parts = path.split("#");
                     if (parts.length > 2)
                     {
                         throw new RepositoryException(
@@ -581,11 +580,7 @@ public class PSContentRepository
                 }
             }
             return loadByGUID(guids, config);
-        }
-        finally
-        {
-            //m_rwlock.readLock().unlock();
-        }
+
     }
 
     /**
@@ -604,7 +599,6 @@ public class PSContentRepository
      * @see com.percussion.services.contentmgr.impl.IPSContentRepository#loadByGUID(java.util.List,
      *      com.percussion.services.contentmgr.PSContentMgrConfig)
      */
-    @SuppressWarnings("unchecked")
     public List<Node> loadByGUID(List<IPSGuid> guids, PSContentMgrConfig cconfig)
             throws RepositoryException
     {
@@ -624,7 +618,7 @@ public class PSContentRepository
             {
                 if (!(g instanceof PSLegacyGuid))
                 {
-                    ms_log.warn("Bad guid found: " + g);
+                    ms_log.warn("Bad guid found: {}" , g);
                     continue;
                 }
                 PSLegacyGuid guid = (PSLegacyGuid) g;
@@ -644,10 +638,10 @@ public class PSContentRepository
                     summarymap.put(s.getContentId(), s);
                 }
             }
-            ms_log.debug("Loaded all summaries  " + sw);
+            ms_log.debug("Loaded all summaries  {}" , sw);
             Map<PSLegacyGuid, GeneratedClassBase> loadedInstances = loadInstances(
                     session, guids, summarymap);
-            ms_log.debug("Loaded all instances  " + sw);
+            ms_log.debug("Loaded all instances  {}" , sw);
             for (IPSGuid guid : guids)
             {
                 if (!(guid instanceof PSLegacyGuid))
@@ -659,7 +653,7 @@ public class PSContentRepository
                 PSLegacyGuid legacyguid = (PSLegacyGuid) guid;
                 if (!legacyguid.isChildGuid())
                 {
-                    if (summaries.size() == 0)
+                    if (summaries.isEmpty())
                     {
                         throw new ItemNotFoundException("Item not found: " + guid);
                     }
@@ -683,19 +677,19 @@ public class PSContentRepository
                     // Add properties from content status
                     sw = new PSStopwatch();
                     addComponentSummaryFields(node, summary);
-                    ms_log.debug(" cs fields  " + sw);
+                    ms_log.debug(" cs fields  {}" , sw);
                     // Add revision as a property
                     node.addProperty(new PSProperty("rx:revision", node, legacyguid
                             .getRevision()));
                     if (instance == null)
                     {
-                        ms_log.warn("Could not find item in database: " + legacyguid);
+                        ms_log.warn("Could not find item in database: {}" , legacyguid);
                     }
                     else
                     {
                         addPropertiesFromConfig(node, config, instance, cconfig);
                     }
-                    ms_log.debug(" obj fields " + sw);
+                    ms_log.debug(" obj fields {}" , sw);
                     node.setContentManagerConfiguration(cconfig);
                     if (!options.contains(PSContentMgrOption.LAZY_LOAD_CHILDREN))
                     {
@@ -727,8 +721,8 @@ public class PSContentRepository
                             null, config, null, instance);
                     addPropertiesFromConfig(node, config, instance, null);
                     rval.add(node);
-                    ms_log.debug("Bound child " + legacyguid);
-                    ms_log.debug(" obj fields " + sw);
+                    ms_log.debug("Bound child {}" , legacyguid);
+                    ms_log.debug(" obj fields {}" , sw);
                 }
 
             }
@@ -779,7 +773,10 @@ public class PSContentRepository
             }
             catch (RepositoryException e)
             {
-                ms_log.error("Problem while creating lazy property " + property, e);
+                ms_log.error("Problem while creating lazy property: {} Error: {}" ,
+                        property,
+                        PSExceptionUtils.getMessageForLog(e));
+                ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }
@@ -833,13 +830,7 @@ public class PSContentRepository
             // stored
             if (field.isAllowActiveTags())
             {
-                property.addInterceptor(new IPSPropertyInterceptor()
-                {
-                    public Object translate(Object originalValue)
-                    {
-                        return PSXmlPIUtils.removePI((String) originalValue);
-                    }
-                });
+                property.addInterceptor(originalValue -> PSXmlPIUtils.removePI((String) originalValue));
             }
         }
     }
@@ -854,9 +845,8 @@ public class PSContentRepository
      * @param summarymap the summary map of component summaries, assumed not
      *           <code>null</code>
      * @return the map of instances
-     * @throws RepositoryException
+     * @throws RepositoryException When a backend exception is thrown
      */
-    @SuppressWarnings("unchecked")
     private Map<PSLegacyGuid, GeneratedClassBase> loadInstances(Session session,
                                                                 List<IPSGuid> guids, Map<Integer, PSComponentSummary> summarymap)
             throws RepositoryException
@@ -868,14 +858,14 @@ public class PSContentRepository
         {
             if (!(g instanceof PSLegacyGuid))
             {
-                ms_log.error("Bad guid found of class " + g.getClass());
+                ms_log.error("Bad guid found of class {}" , g.getClass());
                 continue;
             }
             PSLegacyGuid guid = (PSLegacyGuid) g;
             PSComponentSummary s = summarymap.get(guid.getContentId());
             if (s == null)
             {
-                ms_log.error("No component summary found for guid " + guid);
+                ms_log.error("No component summary found for guid {}" , guid);
                 continue;
             }
             long type = s.getContentTypeId();
@@ -894,11 +884,11 @@ public class PSContentRepository
         }
         // Now we have the ids grouped per type, we can load them in groups
         // using hibernate
-        for (long type : typeToClassMap.keySet())
+        for (Map.Entry<Long, Class> type : typeToClassMap.entrySet())
         {
-            Class iclass = typeToClassMap.get(type);
+            Class iclass = typeToClassMap.get(type.getKey());
             List<PSLegacyCompositeId> ids = (List<PSLegacyCompositeId>) typeToIdsMap
-                    .get(type);
+                    .get(type.getKey());
             List<GeneratedClassBase> results = new ArrayList<>();
             for (PSLegacyCompositeId id : ids)
             {
@@ -915,6 +905,7 @@ public class PSContentRepository
             for (GeneratedClassBase inst : results)
             {
                 PSPropertyWrapper w = new PSPropertyWrapper(inst);
+
                 PSLegacyCompositeId id = (PSLegacyCompositeId) w
                         .getPropertyValue(PSContentNode.ID_PROPERTY_NAME);
                 PSLegacyGuid guid = new PSLegacyGuid(id.getSys_contentid(), id
@@ -1015,16 +1006,17 @@ public class PSContentRepository
             {
                 query.append(" order by sys_sortrank asc");
             }
-            String params[] =
-                    {"cid", "rev"};
-            Object values[] =
-                    {content_id, revision};
             List children = sessionFactory.getCurrentSession().createQuery(
                     query.toString()).setParameter("cid",content_id).setParameter("rev",revision).list();
             for (Object rep : children)
             {
-                PSLegacyGuid legacyguid = new PSLegacyGuid(
-                        child.getContenttypeid(), child.getChildid(), getSysId(rep));
+                PSLegacyGuid legacyguid=null;
+                try {
+                    legacyguid = new PSLegacyGuid(
+                            child.getContenttypeid(), child.getChildid(), getSysId(rep));
+                } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+                    ms_log.error("Unexpected error generating Guid for {}" ,child.getChildid());
+                }
                 PSContentNode node = parent.addNode(child.getChildField(),
                         legacyguid);
                 node.setContentManagerConfiguration(cmgrConfig);
@@ -1045,19 +1037,10 @@ public class PSContentRepository
      * @param rep the internal object used by hibernate
      * @return the id
      */
-    private int getSysId(Object rep)
-    {
-        try
-        {
-            Method m = rep.getClass().getMethod("getSys_sysid", new Class[]
-                    {});
-            return (Integer) m.invoke(rep, new Object[]
-                    {});
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);
-        }
+    private int getSysId(Object rep) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+            Method m = rep.getClass().getMethod("getSys_sysid", new Class[]{});
+            return (Integer) m.invoke(rep, new Object[]{});
+
     }
 
     /**
@@ -1066,7 +1049,7 @@ public class PSContentRepository
      * used by the type configuration code, which needs to get all the
      * properties for a type.
      */
-    final static String ms_fieldToAdd[] = {
+     static final String[] ms_fieldToAdd = {
             IPSContentPropertyConstants.RX_SYS_CONTENTCREATEDBY,
             "contentCreatedBy",
             IPSContentPropertyConstants.RX_SYS_CONTENTCREATEDDATE,
@@ -1210,7 +1193,6 @@ public class PSContentRepository
      *
      * @throws Exception if there is a problem processing the configuration
      */
-    @SuppressWarnings("unchecked")
     public void configure(List<PSContentTypeChange> waitingChanges)
             throws Exception
     {
@@ -1257,10 +1239,8 @@ public class PSContentRepository
      * Note, this call will increase heap size (by hibernate), have seen the
      * heap size increased to 30MB in a customer's environment, 2M in FF.
      *
-     * @throws Exception if an error occurs during this process.
      */
-    private void createSessionFactory() throws Exception
-    {
+    private void createSessionFactory() throws SQLException, NamingException, IOException {
         // Recreate parent - child relationships between the configuration
         // objects
         for (Map.Entry<IPSTypeKey, PSTypeConfiguration> e : ms_configuration
@@ -1347,7 +1327,7 @@ public class PSContentRepository
         final boolean isDerby = isDerbyDatabase;
         // Now walk the list and recreate all that are being added (i.e.
         // not deleted)
-        Object args[] = new Object[]
+        Object[] args = new Object[]
                 {};
         for (PSContentTypeChange change : waitingChanges)
         {
@@ -1359,7 +1339,6 @@ public class PSContentRepository
                             @SuppressWarnings("unused")
                             public Object processParentElement(
                                     PSItemDefinition definition, Object[] a)
-                                    throws Exception
                             {
 
                                 IPSTypeKey key = new PSContentTypeKey(definition
@@ -1455,15 +1434,14 @@ public class PSContentRepository
      * @param args The args, may be <code>null</code>
      * @throws RepositoryException
      */
-    @SuppressWarnings("unchecked")
     protected void mapElements(PSItemDefinition def,
-                               IPSItemDefElementProcessor proc, Object args[])
+                               IPSItemDefElementProcessor proc, Object[] args)
             throws RepositoryException
     {
         try
         {
             PSCoreItem item = new PSCoreItem(def);
-            Object results[];
+            Object[] results;
 
             results = (Object[]) proc.processParentElement(def, args);
             ms_configuration.put((IPSTypeKey) results[0],
@@ -1483,7 +1461,7 @@ public class PSContentRepository
         }
         catch (PSInvalidContentTypeException icte)
         {
-            ms_log.warn("Skipping unknown content type " + def.getName());
+            ms_log.warn("Skipping unknown content type {}" , def.getName());
         }
         catch (PSCmsException ce)
         {
@@ -1491,7 +1469,8 @@ public class PSContentRepository
         }
         catch (Exception e)
         {
-            ms_log.error("Exception during item def processing", e);
+            ms_log.error("Exception during item def processing: {}",
+                    PSExceptionUtils.getMessageForLog(e));
             throw new RepositoryException(e);
         }
     }
@@ -1513,8 +1492,8 @@ public class PSContentRepository
                 PSTypeConfiguration parent = map.get(parentKey);
                 if (parent == null)
                 {
-                    ms_log.warn("Found child configuration without a parent: "
-                            + config.getChildField());
+                    ms_log.warn("Found child configuration without a parent: {}"
+                            ,config.getChildField());
                     continue;
                 }
                 parent.addChildConfiguration(config);
@@ -1534,10 +1513,9 @@ public class PSContentRepository
     protected PSItemDefinition getItemDef(PSKey cTypeKey)
             throws PSInvalidContentTypeException
     {
-        PSItemDefinition def = PSItemDefManager.getInstance().getItemDef(
+        return PSItemDefManager.getInstance().getItemDef(
                 cTypeKey.getPartAsInt(cTypeKey.getDefinition()[0]),
                 PSItemDefManager.COMMUNITY_ANY);
-        return def;
     }
 
     /**
@@ -1566,6 +1544,8 @@ public class PSContentRepository
     {
         PSItemDefManager.getInstance()
                 .removeListener(m_contentTypeChangeListener);
+
+        ms_changedConfigs.remove();
     }
 
     /**
@@ -1608,10 +1588,8 @@ public class PSContentRepository
      *
      * @see com.percussion.services.contentmgr.impl.IPSContentRepository#evict(java.util.List)
      */
-    @SuppressWarnings("unchecked")
     public void evict(List<IPSGuid> guids)
     {
-        Session session = sessionFactory.getCurrentSession();
         try
         {
             m_rwlock.readLock().lock();
@@ -1697,7 +1675,8 @@ public class PSContentRepository
         }
         catch (Exception e)
         {
-            ms_log.error("Problem while handling cache eviction", e);
+            ms_log.error("Problem while handling cache eviction. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
         }
         finally
         {
@@ -1753,7 +1732,10 @@ public class PSContentRepository
     {
         if (d.before(MIN_DATE) || d.after(MAX_DATE))
         {
-            ms_log.error("[" + tag + "] (" + Thread.currentThread().getId() + ") INVALID date: " +  d.toString());
+            ms_log.error("[{}] ({}) INVALID date: {}",
+                    tag,
+                    Thread.currentThread().getId(),
+                    d);
         }
     }
 
@@ -1779,7 +1761,12 @@ public class PSContentRepository
             validateDate(pname, dvalue);
         }
 
-        ms_log.debug("[" + Thread.currentThread().getId() + "] \"" + pname + "\" = " + value.toString() + ", " + value.getClass().getName());
+        ms_log.debug("[{}] {} {} {}",
+                Thread.currentThread().getId(),
+                pname,
+                value,
+                value.getClass().getName()
+                );
     }
 
     /**
@@ -1837,7 +1824,7 @@ public class PSContentRepository
     private String[] getQueryColumns(PSQuery psquery, Set<Long> typeids)
             throws InvalidQueryException
     {
-        String columns[] = psquery.getColumns();
+        String[] columns = psquery.getColumns();
         if (columns != null)
             return columns;
 
@@ -1915,7 +1902,7 @@ public class PSContentRepository
             if (val instanceof Boolean && (Boolean) val)
             {
                 // Reconstruct a true or false node here
-                Value lval = PSValueFactory.createValue(new Long(1));
+                Value lval = PSValueFactory.createValue(Long.valueOf(1));
                 PSQueryNodeValue left = new PSQueryNodeValue(lval);
                 left.setType(PropertyType.LONG);
                 PSQueryNodeValue right = new PSQueryNodeValue(lval);
@@ -1930,8 +1917,8 @@ public class PSContentRepository
             }
             else
             {
-                ms_log.error("Non boolean value returned for query reduction: "
-                        + val);
+                ms_log.error("Non boolean value returned for query reduction: {}"
+                        ,val);
                 return null;
             }
         }
@@ -2025,8 +2012,7 @@ public class PSContentRepository
         PSTypeConfiguration type = ms_configuration.get(key);
         if (type == null)
         {
-            ms_log.warn("Query problem: type not found for type id "
-                    + typeid);
+            ms_log.warn("Query problem: type not found for type id: {}", typeid);
             return null;
         }
 
@@ -2095,16 +2081,16 @@ public class PSContentRepository
         querystr.append(sort);
 
         if (ms_log.isDebugEnabled())
-            ms_log.debug("[" + Thread.currentThread().getId() + "] HQL Query execution: " + querystr.toString());
+            ms_log.debug("[{}] HQL Query execution: {}" , Thread.currentThread().getId(), querystr);
 
         Query q = s.createQuery(querystr.toString());
         Map<String, Object> qparams = wherebuilder.getQueryParams();
-        for (String pname : qparams.keySet())
+        for (Map.Entry<String, Object> pname : qparams.entrySet())
         {
-            Object value = qparams.get(pname);
-            logParameter(pname, value);
+            Object value = pname.getValue();
+            logParameter(pname.getKey(), value);
 
-            q.setParameter(pname, value);
+            q.setParameter(pname.getKey(), value);
         }
         if (maxresults > 0)
             q.setMaxResults(maxresults);
@@ -2229,7 +2215,7 @@ public class PSContentRepository
     @SuppressWarnings("unchecked")
     public QueryResult executeInternalQuery(javax.jcr.query.Query query,
                                             int maxresults, Map<String, ? extends Object> params, String locale)
-            throws InvalidQueryException, RepositoryException
+            throws RepositoryException
     {
         if (query == null)
         {
@@ -2240,7 +2226,7 @@ public class PSContentRepository
         PSQuery psquery = (PSQuery) query;
         Set<Long> typeids = getTypeIds(psquery);
 
-        String columns[] = getQueryColumns(psquery, typeids);
+        String[] columns = getQueryColumns(psquery, typeids);
 
         PSRowComparator rowcomparator = psquery.getSorter();
         if (StringUtils.isNotBlank(locale))
@@ -2249,7 +2235,7 @@ public class PSContentRepository
         }
         PSQueryResult rval = new PSQueryResult(columns, rowcomparator);
         Session s = sessionFactory.getCurrentSession();
-        List<Long> collectionIds = Collections.EMPTY_LIST;
+        List<Long> collectionIds = Collections.emptyList();
         try
         {
             s.enableFilter("relationshipConfigFilter");
@@ -2268,11 +2254,11 @@ public class PSContentRepository
 
                 PSStopwatch sw = new PSStopwatch();
                 sw.start();
-                List<Map> results = (collectionIds.size() > 0) ? (List)executeQuery(q) : q.list();
+                List<Map> results = (!collectionIds.isEmpty()) ? (List)executeQuery(q) : q.list();
                 sw.stop();
 
                 if (ms_log.isDebugEnabled())
-                    ms_log.debug("HQL Query execution on content type " + typeid + ":" + sw);
+                    ms_log.debug("HQL Query execution on content type {}:{}" , typeid,sw);
 
                 gatherQueryResults(results, rval);
             }
@@ -2343,22 +2329,22 @@ public class PSContentRepository
      *
      * @see com.percussion.services.contentmgr.impl.IPSContentRepository#loadBodies(java.util.List)
      */
-    @SuppressWarnings("unchecked")
     public void loadBodies(List<Node> nodes) throws RepositoryException
     {
         Session s = sessionFactory.getCurrentSession();
-        PSRequest req = (PSRequest) PSRequestInfo
-                .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-        boolean allowBinaryNew=false ;
-        if(req.getParameter("allowBinary")=="true"){
-            allowBinaryNew=true;
-            req.setParameter("allowBinary","false");
-        }
-        //Load Image Pages
-        if(req.getRequestFileURL() != null && req.getRequestFileURL().contains("percImageAsset")){
-            allowBinaryNew=true;
-        }
+        PSRequest req = (PSRequest) getRequestInfo(KEY_PSREQUEST);
+        boolean allowBinaryNew = false;
 
+        if(req != null) {
+            if (Objects.equals(req.getParameter("allowBinary", "false"), "true")) {
+                allowBinaryNew = true;
+                req.setParameter("allowBinary", "false");
+            }
+            //Load Image Pages
+            if (req.getRequestFileURL() != null && req.getRequestFileURL().contains("percImageAsset")) {
+                allowBinaryNew = true;
+            }
+        }
 
         // For each node, load the body data
         for (Node n : nodes)
@@ -2388,7 +2374,7 @@ public class PSContentRepository
                         if(type.getM_fieldToType().get(field)!=null && type.getM_fieldToType().get(field).equals(Blob.class))
                             continue;
 
-                        query.append("ab."+field + " as "+COLUMN_PREFIX_CGLIB+field+ ",");//FOR ANOTHER LIBRARY NEED TO CHANGE LOGIC
+                        query.append("ab.").append(field).append(" as ").append(COLUMN_PREFIX_CGLIB).append(field).append(",");//FOR ANOTHER LIBRARY NEED TO CHANGE LOGIC
                     }
 
                     //removing comma from endPSJdbcImportExportHelperTests
@@ -2396,9 +2382,10 @@ public class PSContentRepository
                         query.setLength(query.length() - 1);
                     }
                     query.append(" from ");
-                    query.append(ic.getName() + " ab");
-                    query.append(" where ab.sys_id.sys_contentid = :cid " +
+                    query.append(ic.getName()).append(" ab");
+                    query.append(" where ab.sys_id.sys_contentid = :cid ").append(
                             "and ab.sys_id.sys_revision = :rev");
+
                     List datas = s.createQuery(query.toString()).setParameter("cid",id.getSys_contentid())
                             .setParameter("rev", id.getSys_revision()).setResultTransformer(Transformers.aliasToBean(ic)).list();
 
@@ -2413,14 +2400,13 @@ public class PSContentRepository
 
             } else {
                 PSLegacyGuid pg = (PSLegacyGuid) parent.getGuid();
-                StringBuilder query = new StringBuilder();
-                query.append("from ");
-                query.append(ic.getName());
-                query.append(" where sys_contentid = :cid " +
-                        "and sys_revision = :rev and sys_sysid = :child");
+                String query = "from " +
+                        ic.getName() +
+                        " where sys_contentid = :cid " +
+                        "and sys_revision = :rev and sys_sysid = :child";
 
                 List children = sessionFactory.getCurrentSession().createQuery(
-                        query.toString()).setParameter("cid", pg.getContentId())
+                                query).setParameter("cid", pg.getContentId())
                         .setParameter("rev", pg.getRevision())
                         .setParameter("child", lg.getContentId()).list();
                 if (children.isEmpty()) continue;

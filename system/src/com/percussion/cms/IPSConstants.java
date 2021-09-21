@@ -586,6 +586,19 @@ public interface IPSConstants
    public static final String DB_ACTION_UPDATE="UPDATE";
    public static final String DB_ACTION_DELETE="DELETE";
 
+   /**
+    * Logger Categories
+    */
+   public static final String ASSEMBLY_LOG="Assembly";
+   public static final String PUBLISHING_LOG="Publishing";
+   public static final String API_LOG="API";
+   public static final String WORKFLOW_LOG="Workflow";
+   public static final String SECURITY_LOG="Security";
+   public static final String I18N_LOG="I18N";
+   public static final String SEARCH_LOG="Search";
+   public static final String SERVER_LOG="Server";
+
+
 
 
 }
