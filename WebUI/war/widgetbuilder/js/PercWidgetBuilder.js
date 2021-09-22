@@ -335,14 +335,14 @@ var WidgetBuilderApp = {};
                 var dataObj = prepareWidgetDef();
                 if(!validateTabData(true))
                 {
+                    WidgetBuilderApp.isValidationError = false;
+                }
+                else
+                {
                     WidgetBuilderApp.isValidationError = true;
                     if(callback)
                         callback();
                     return;
-                }
-                else
-                {
-                    WidgetBuilderApp.isValidationError = false;
                 }
                 $.PercBlockUI();
                 $.PercWidgetBuilderService.saveWidgetDef(dataObj, function(status, result){
