@@ -792,7 +792,7 @@ public class PSPubServerService implements IPSPubServerService
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, accessKey);
         String secretKey = PSEncryptor.encryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pubInfo.getSecretKey());
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, secretKey);
-        server.addProperty(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE, pubInfo.getArnRole());
+        server.addProperty(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE, pubInfo.getArnRole());
         server.addProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE, (pubInfo.getUseAssumeRole() == null ? "false" :pubInfo.getUseAssumeRole()));
         server.addProperty(IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, DRIVER_AMAZONS3);
         server.addProperty(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY, "");
@@ -1818,23 +1818,21 @@ public class PSPubServerService implements IPSPubServerService
         for (String property : requieredProperties)
         {
             String value = pubServerInfo.findProperty(property);
-            if (isBlank(value))
-            {
-                if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
-                    if(!isEC2Instance() || useAssumeRole){
-                        builder.rejectField(property,
-                                PROPERTY_FIELD_REQUIRED, property).throwIfInvalid();
-                    }
-                }else if(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY.equals(property)){
-                    if(!isEC2Instance() || useAssumeRole){
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  property).throwIfInvalid();
-                    }
-                }else if(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE.equals(property)){
-                    if(useAssumeRole) {
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  property).throwIfInvalid();
-                    }
+
+            if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
+                if(!isEC2Instance() || useAssumeRole){
+                    builder.rejectIfBlank(property, value).throwIfInvalid();
+                }
+            }else if(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY.equals(property)){
+                if(!isEC2Instance() || useAssumeRole){
+                    builder.rejectIfBlank(property,  value).throwIfInvalid();
+                }
+            }else if(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE.equals(property)){
+                if(useAssumeRole) {
+                    builder.rejectIfBlank(property, value).throwIfInvalid();
                 }
             }
+
         }
     }
 
@@ -2037,7 +2035,7 @@ public class PSPubServerService implements IPSPubServerService
     private String[] AMAZON_S3_PROPERTIES =
             {IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY,
                     IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY,
-                    IPSPubServerDao.PUBLISH_EC2_REGION,IPSPubServerDao.PUBLISH_AS3_IAM_ROLE,IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE};
+                    IPSPubServerDao.PUBLISH_EC2_REGION,IPSPubServerDao.PUBLISH_AS3_ARN_ROLE,IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE};
 
 
     private static String[] specialCasesValues =
@@ -2177,7 +2175,7 @@ public class PSPubServerService implements IPSPubServerService
         }
 
         String arnRole = null;
-        PSPubServerProperty arnRoleProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE);
+        PSPubServerProperty arnRoleProp = pubServer.getProperty(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE);
         if (arnRoleProp != null){
             arnRole = arnRoleProp.getValue();
         }

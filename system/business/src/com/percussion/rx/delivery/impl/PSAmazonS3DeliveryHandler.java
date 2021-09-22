@@ -414,7 +414,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
             String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
             String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
-            String roleARN = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE, "");
+            String roleARN = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE, "");
             try {
                 accessKey = decrypt(accessKey);
                 secretKey = decrypt(secretKey);

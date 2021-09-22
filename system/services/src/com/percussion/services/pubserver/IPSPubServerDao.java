@@ -62,7 +62,7 @@ public interface IPSPubServerDao
    public static final String PUBLISH_AS3_SECURITYKEY_PROPERTY = "securitykey";
    public static final String PUBLISH_AS3_ACCESSKEY_PROPERTY = "accesskey";
    public static final String PUBLISH_AS3_USE_ASSUME_ROLE = "useAssumeRole";
-   public static final String PUBLISH_AS3_IAM_ROLE = "iamRole";
+   public static final String PUBLISH_AS3_ARN_ROLE = "ARNRole";
    public static final String PUBLISH_RELATED_PROPERTY = "publishRelatedItems";
 
    @ToDoVulnerability
