@@ -1625,15 +1625,13 @@ public class PSPubServerService implements IPSPubServerService
         // Make sure server name is not blank
         if (isBlank(serverName))
         {
-            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_EMPTY, serverName);
-            builder.throwIfInvalid();
+            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_EMPTY, serverName).throwIfInvalid();
         }
 
         // Too long server name
         if (serverName.length() > NAME_MAX_LENGHT)
         {
-            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_TOO_LONG, serverName);
-            builder.throwIfInvalid();
+            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_TOO_LONG, serverName).throwIfInvalid();
         }
 
         // Validate characters
@@ -1641,8 +1639,7 @@ public class PSPubServerService implements IPSPubServerService
         Matcher matcher = pattern.matcher(serverName);
         if (!matcher.matches())
         {
-            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_INVALID, serverName);
-            builder.throwIfInvalid();
+            builder.rejectField(SERVER_NAME_FIELD, SERVER_NAME_IS_INVALID, serverName).throwIfInvalid();
         }
 
         // Unique server names
@@ -1813,23 +1810,32 @@ public class PSPubServerService implements IPSPubServerService
      */
     private void validatePropertiesByDriver(PSPublishServerInfo pubServerInfo, String[] requieredProperties) throws PSValidationException {
         PSValidationErrorsBuilder builder = validateParameters("validatePropertiesByDriver");
+        String val = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE);
+        boolean useAssumeRole = false;
+        if(val == null){
+            useAssumeRole = Boolean.valueOf(val);
+        }
         for (String property : requieredProperties)
         {
-            if (isBlank(pubServerInfo.findProperty(property)))
+            String value = pubServerInfo.findProperty(property);
+            if (isBlank(value))
             {
                 if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
-                    if(!isEC2Instance()){
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED, property);
+                    if(!isEC2Instance() || useAssumeRole){
+                        builder.rejectField(property,
+                                PROPERTY_FIELD_REQUIRED, value).throwIfInvalid();
                     }
                 }else if(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY.equals(property)){
-                    if(!isEC2Instance()){
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED, property);
+                    if(!isEC2Instance() || useAssumeRole){
+                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  value).throwIfInvalid();
+                    }
+                }else if(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE.equals(property)){
+                    if(useAssumeRole) {
+                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  value).throwIfInvalid();
                     }
                 }
-
             }
         }
-        builder.throwIfInvalid();
     }
 
     /**
@@ -2031,7 +2037,7 @@ public class PSPubServerService implements IPSPubServerService
     private String[] AMAZON_S3_PROPERTIES =
             {IPSPubServerDao.PUBLISH_DRIVER_PROPERTY, IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY,
                     IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY,
-                    IPSPubServerDao.PUBLISH_EC2_REGION};
+                    IPSPubServerDao.PUBLISH_EC2_REGION,IPSPubServerDao.PUBLISH_AS3_IAM_ROLE,IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE};
 
 
     private static String[] specialCasesValues =

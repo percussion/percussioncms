@@ -535,7 +535,7 @@
             </div>
             <div style="width:75%;" >
                 <div  class="input-group">
-                    <label  style="margin-right: 10px;" for="iamRole">* <i18n:message key="perc.ui.publish.servers.s3@ARN Role Key"/>:</label>
+                    <label  style="margin-right: 10px;" for="iamRole">* <i18n:message key="perc.ui.publish.servers.s3@Role ARN"/>:</label>
                     <div   class="input-group-prepend">
                         <div class="input-group-text">
                             <i aria-hidden class="fas fa-lock"></i>

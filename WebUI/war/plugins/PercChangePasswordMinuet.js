@@ -116,7 +116,7 @@
                 navigationEscapeListener(true);
                 $('#percNavigationBody').modal('_enforceFocus');
                 $('#percPasswordDialogTarget').hide();
-                $('.perc-toggle-password').focus();
+                $('.perc-toggle-password').trigger('focus');
             });
         }
 
