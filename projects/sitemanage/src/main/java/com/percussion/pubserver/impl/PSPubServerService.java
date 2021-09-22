@@ -1823,15 +1823,15 @@ public class PSPubServerService implements IPSPubServerService
                 if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
                     if(!isEC2Instance() || useAssumeRole){
                         builder.rejectField(property,
-                                PROPERTY_FIELD_REQUIRED, value).throwIfInvalid();
+                                PROPERTY_FIELD_REQUIRED, property).throwIfInvalid();
                     }
                 }else if(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY.equals(property)){
                     if(!isEC2Instance() || useAssumeRole){
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  value).throwIfInvalid();
+                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  property).throwIfInvalid();
                     }
                 }else if(IPSPubServerDao.PUBLISH_AS3_IAM_ROLE.equals(property)){
                     if(useAssumeRole) {
-                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  value).throwIfInvalid();
+                        builder.rejectField(property, PROPERTY_FIELD_REQUIRED,  property).throwIfInvalid();
                     }
                 }
             }
