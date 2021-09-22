@@ -49,6 +49,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,8 +60,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.percussion.pathmanagement.service.impl.PSPathUtils.SITES_FINDER_ROOT;
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * The servlet used to preview content of the item, where the item is specified by its folder path.
@@ -72,7 +71,7 @@ public class PSPreviewItemContent extends HttpServlet
     private static final long serialVersionUID = 1L;
     private static final Logger log = LogManager.getLogger(PSPreviewItemContent.class);
     private static PSRenderLinkService linkService;
-    private IPSiteDao siteDao;
+    private static IPSiteDao siteDao;
     
     public PSPreviewItemContent()
     {
@@ -98,30 +97,16 @@ public class PSPreviewItemContent extends HttpServlet
             
             RequestDispatcher disp = request.getRequestDispatcher("/assembler/render");
             disp.forward(forwardReq, response);
-        } catch (UnsupportedOperationException unsupportedOpEx)
-        {
-            log.warn(PSExceptionUtils.getMessageForLog(unsupportedOpEx));
-            responseWithError(response, SC_BAD_REQUEST, unsupportedOpEx);
+        }catch (ServletException | UnsupportedOperationException| PSCmsException | PSDataServiceException | PSRequestParsingException | PSNotFoundException | IOException e) {
+                log.error("Unable to preview resource:{} Error: {}",requestUri,
+                        PSExceptionUtils.getMessageForLog(e));
+                try {
+                    response.sendError(404);
+                } catch (IOException ioException) {
+                    response.setStatus(404);
+                }
         }
-        catch (Exception e)
-        {
-            log.error("Preview Exception: {}",
-                    PSExceptionUtils.getMessageForLog(e));
-            responseWithError(response, SC_INTERNAL_SERVER_ERROR, e);
-        }
-    }
 
-    private void responseWithError(HttpServletResponse response, int status, Exception e)
-    {
-        try
-        {
-            response.sendError(status);
-        }
-        catch (IOException ioEx)
-        {
-            response.setStatus(500);
-            log.error(PSExceptionUtils.getMessageForLog(ioEx));
-        }
     }
 
     
@@ -150,7 +135,7 @@ public class PSPreviewItemContent extends HttpServlet
      * @param renderType it is "xml", "html" or "database", assumed not blank.
      * @return the assembly URL, not blank.
      */
-    private String createAssemblyUrl(String path, String revision, String renderType) throws PSDataServiceException, PSNotFoundException, PSCmsException {
+    private String createAssemblyUrl(String path, String revision, String renderType) throws PSDataServiceException, PSNotFoundException, PSCmsException, UnsupportedEncodingException {
         IPSGuid id = getItemId(path, revision);
         if (id!=null) {
             IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
@@ -187,7 +172,7 @@ public class PSPreviewItemContent extends HttpServlet
      * @return the ID of the item, never <code>null</code>.
      * @throws PSNotFoundException if cannot find the item from the path.
      */
-    private IPSGuid getItemId(String path, String revision) throws PSNotFoundException, PSCmsException {
+    private IPSGuid getItemId(String path, String revision) throws PSNotFoundException, PSCmsException, UnsupportedEncodingException {
         path = escapeChars(path);
         path = PSPathUtils.getFolderPath(path);
 
@@ -226,40 +211,35 @@ public class PSPreviewItemContent extends HttpServlet
      * @return
      *      the same path but with the '+' symbol replaced by '%2B'
      */
-    private String escapeChars(String path)
-    {
+    private String escapeChars(String path) throws UnsupportedEncodingException {
         String ret = path;
-        try {
-            String test = URLDecoder.decode(path, "utf8");
-            if(!test.equals(path)) {
-                ret = test;
-            }
+
+        String test = URLDecoder.decode(path, "utf8");
+        if(!test.equals(path)) {
+            ret = test;
         }
-        catch (UnsupportedEncodingException e) {
-            log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-        }
+
         return ret;
     }
 
-    public void setRenderLinkService(PSRenderLinkService service)
+    public static void setRenderLinkService(PSRenderLinkService service)
     {
         linkService = service;
     }
     
-    public PSRenderLinkService getRenderLinkService()
+    public static PSRenderLinkService getRenderLinkService()
     {
         return linkService;
     }   
     
-    public IPSiteDao getSiteDao()
+    public static IPSiteDao getSiteDao()
     {
         return siteDao;
     }
 
-    public void setSiteDao(IPSiteDao siteDao)
+    public static void setSiteDao(IPSiteDao dao)
     {
-        this.siteDao = siteDao;
+        siteDao = dao;
     }
 
 }
