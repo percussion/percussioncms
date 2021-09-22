@@ -31,6 +31,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.error.PSErrorHandler;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.log.PSLogHandler;
 import com.percussion.security.PSRoleEntry;
 import com.percussion.security.PSSecurityCatalogException;
@@ -221,7 +222,7 @@ public class PSRequest
     */
    public PSRequest cloneRequest()
    {
-      HashMap<String, Object> htmlParams = m_params == null ? null : (HashMap<String, Object>) new HashMap<String,Object>(m_params).clone();
+      HashMap<String, Object> htmlParams = m_params == null ? null : (HashMap<String, Object>) new HashMap<>(m_params).clone();
 
       /* Some htmlParam entries can be ArrayList instead of string, these must
          be cloned individually for safety */
@@ -2080,9 +2081,9 @@ public class PSRequest
       isSecure = servletReq.isSecure();
 
       try {
-         behindProxyServer = Boolean.parseBoolean(PSServer.getProperty("requestBehindProxy", "false").toString());
+         behindProxyServer = Boolean.parseBoolean(PSServer.getProperty("requestBehindProxy", "false"));
       }catch(Exception e){
-         behindProxyServer = false;
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
 
       //This is an internal request
@@ -2365,7 +2366,8 @@ public class PSRequest
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error("Failed to load roles for internal server user", e);
+         log.error("Failed to load roles for internal server user. Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
       }
       
       return new PSUserEntry(
