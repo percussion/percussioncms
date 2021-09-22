@@ -34,6 +34,7 @@ import com.percussion.pubserver.data.PSPublishServerInfoList;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -139,6 +140,10 @@ public class PSPubServerRestService
             PSParameterValidationUtils.rejectIfBlank("create", "siteId", siteId);
             PSParameterValidationUtils.rejectIfBlank("create", "serverName", serverName);
             return service.createPubServer(siteId, serverName, pubServerInfo);
+        }catch(PSParametersValidationException ps){
+            log.error(ps.getMessage());
+            log.debug(ps.getMessage(),ps);
+            throw ps;
         } catch (PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
@@ -161,13 +166,16 @@ public class PSPubServerRestService
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPublishServerInfo updatePubServer(@PathParam("siteId")
                                                        String siteId, @PathParam("serverId")
-                                                       String serverId, PSPublishServerInfo pubServerInfo)
-    {
+                                                       String serverId, PSPublishServerInfo pubServerInfo) throws PSParametersValidationException {
         try {
             PSParameterValidationUtils.rejectIfBlank("update", "siteId", siteId);
             PSParameterValidationUtils.rejectIfBlank("update", "serverId", serverId);
 
             return service.updatePubServer(siteId, serverId, pubServerInfo);
+        }catch(PSParametersValidationException ps){
+            log.error(ps.getMessage());
+            log.debug(ps.getMessage(),ps);
+            throw ps;
         } catch (PSDataServiceException | PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
