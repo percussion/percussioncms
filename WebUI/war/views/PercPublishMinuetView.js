@@ -369,11 +369,11 @@ function bindServerPropertiesEvents() {
 
     $('#useAssumeRole').on("change", function(evt) {
         if($('#useAssumeRole')[0].checked) {
-            $('#iamRole').prop('disabled', false);
+            $('#ARNRole').prop('disabled', false);
             $("#s3accessSecurityKey").show('fast');
         }
         else{
-            $('#iamRole').prop('disabled', true);
+            $('#ARNRole').prop('disabled', true);
             if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
                 $("#s3accessSecurityKey").hide('fast');
             }else{

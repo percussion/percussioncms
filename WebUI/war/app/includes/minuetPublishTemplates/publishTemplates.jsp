@@ -535,13 +535,13 @@
             </div>
             <div style="width:75%;" >
                 <div  class="input-group">
-                    <label  style="margin-right: 10px;" for="iamRole">* <i18n:message key="perc.ui.publish.servers.s3@Role ARN"/>:</label>
+                    <label  style="margin-right: 10px;" for="ARNRole">* <i18n:message key="perc.ui.publish.servers.s3@Role ARN"/>:</label>
                     <div   class="input-group-prepend">
                         <div class="input-group-text">
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input autocomplete="off" aria-required="true" class="form-control" percServerFileProp="iamRole" id="iamRole" name="iamRole" value="{{#filterByValue serverInfo.properties 'key' 'iamRole'}}{{/filterByValue}}">
+                    <input autocomplete="off" aria-required="true" class="form-control" percServerFileProp="ARNRole" id="ARNRole" name="ARNRole" value="{{#filterByValue serverInfo.properties 'key' 'ARNRole'}}{{/filterByValue}}">
                 </div>
             </div>
 
