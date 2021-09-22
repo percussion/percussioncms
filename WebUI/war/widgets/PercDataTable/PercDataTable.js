@@ -542,7 +542,7 @@
             this.api().column( iColumn, {order:'index'} ).nodes().map( function ( td, iColumn ) {
                 var inText = $(td)[0].innerText;
                 //CMS-8495 : Activity gadget sorting issue as the values 1, 11, 12 etc were being treated as string rather than numerals.
-                if($.isNumeric(inText)){
+                if(isNumericValue(inText)){
                     inText = parseInt(inText);
                 }
                 aData.push(inText);
@@ -576,4 +576,10 @@
             return aData;
         };
     }
+
+    //To check if the column value is numeric for sorting.
+    function isNumericValue(str){
+        return !isNaN(parseFloat(str)) && isFinite(str);
+    }
+
 })(jQuery); 
