@@ -1812,7 +1812,7 @@ public class PSPubServerService implements IPSPubServerService
         PSValidationErrorsBuilder builder = validateParameters("validatePropertiesByDriver");
         String val = pubServerInfo.findProperty(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE);
         boolean useAssumeRole = false;
-        if(val == null){
+        if(val != null){
             useAssumeRole = Boolean.valueOf(val);
         }
         for (String property : requieredProperties)
