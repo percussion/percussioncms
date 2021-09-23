@@ -40,7 +40,7 @@
             <Description>This package contains structured content widgets: Person, Department and Organization that are used with the included Directory widget to display a paginated list of people belonging to a selected organization and enable users to search through the list.</Description>
             <Publisher name="Percussion Software Inc." url="Percussion Software Inc."/>
             <CmsVersion max="9.0.0" min="5.3.15"/>
-            <Version>2.0.2</Version>
+            <Version>2.0.3</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies>
