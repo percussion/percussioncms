@@ -105,6 +105,9 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     @Override
     public String pathToId(String path) throws DataServiceNotFoundException {
         String pathToId = null;
+        if(path==null){
+            throw new IllegalArgumentException("path may not be null or empty");
+        }
         if(path.contains(RECYCLING_ROOT)){
             //CMS-8526 : The id was being returned null as for recycle bin the relationship type should be RecycledContent and others FolderContent.
             //Null value led to other display properties not getting populated thus the relevant data in column was not showing up in list view of Recycle bin.
