@@ -72,7 +72,7 @@ public class PSItemSummaryServiceTest
         testIconService = new TestIconPSItemSummaryService();
     }
 
-    @Test(expected=IllegalArgumentException.class)
+    @Test(expected=NullPointerException.class)
     public void shouldFailForNullPath() throws Exception
     {
 
