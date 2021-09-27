@@ -24,10 +24,9 @@
 
 package com.percussion.delivery.integrations;
 
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.HEAD;
@@ -45,10 +44,15 @@ public class IntegrationsRestService {
     @HEAD
     @Path("/csrf")
     public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
-        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().loadToken(request);
-
-        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
-        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
-        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return;
+        }
+        for(Cookie cookie: cookies){
+            if("XSRF-TOKEN".equals(cookie.getName())){
+                response.setHeader("X-CSRF-HEADER", "X-XSRF-TOKEN");
+                response.setHeader("X-CSRF-TOKEN", cookie.getValue());
+            }
+        }
     }
 }

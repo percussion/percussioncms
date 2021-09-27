@@ -75,6 +75,7 @@
             <prop key="encryption.type">ENC</prop>
             <prop key="contentSecurityPolicy">default-src 'self';</prop>
             <prop key="cspReportOnly">false</prop>
+            <prop key="csrfCookieHttpOnly">false</prop>
             <prop key="xframeOptionsPolicy">SAMEORIGIN</prop>
             <prop key="xssProtection">true</prop>
             <prop key="accessControlAllowedOrigins">*</prop>

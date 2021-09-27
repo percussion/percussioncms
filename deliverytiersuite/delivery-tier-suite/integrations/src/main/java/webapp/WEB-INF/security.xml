@@ -89,7 +89,7 @@
     </security:authentication-manager>
 
     <beans:bean id="tokenRepository"
-                class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"
+                class="org.springframework.security.web.csrf.CookieCsrfTokenRepository"  cookieHttpOnly="${csrfCookieHttpOnly}"
     />
 
     <beans:bean id="preauthAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
