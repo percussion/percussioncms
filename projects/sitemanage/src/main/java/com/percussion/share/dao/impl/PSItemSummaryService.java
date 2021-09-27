@@ -30,6 +30,7 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
+import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.services.content.data.PSItemSummary;
 import com.percussion.services.content.data.PSItemSummary.ObjectTypeEnum;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -81,6 +82,8 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
     private static final String ASSET_ROOT = PSAssetPathItemService.ASSET_ROOT;
 
     private static final String FOLDER_RELATE_TYPE = PSRelationshipConfig.TYPE_FOLDER_CONTENT;
+    private static final String RECYCLED_TYPE = PSRelationshipConfig.TYPE_RECYCLED_CONTENT;
+    private static final String RECYCLING_ROOT = PSRecycleService.RECYCLING_ROOT;
 
     /**
      * Folders created by the system.
@@ -101,7 +104,18 @@ public class PSItemSummaryService implements IPSItemSummaryFactoryService, IPSDa
 
     @Override
     public String pathToId(String path) throws DataServiceNotFoundException {
-        return pathToId(path, FOLDER_RELATE_TYPE);
+        String pathToId = null;
+        if(path==null){
+            throw new IllegalArgumentException("path may not be null or empty");
+        }
+        if(path.contains(RECYCLING_ROOT)){
+            //CMS-8526 : The id was being returned null as for recycle bin the relationship type should be RecycledContent and others FolderContent.
+            //Null value led to other display properties not getting populated thus the relevant data in column was not showing up in list view of Recycle bin.
+            pathToId = pathToId(path, RECYCLED_TYPE);
+        }else{
+            pathToId = pathToId(path, FOLDER_RELATE_TYPE);
+        }
+        return pathToId;
     }
 
     @Override

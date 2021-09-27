@@ -46,24 +46,24 @@
             </psxctl:Param>
             <psxctl:Param name="organizationxmlurl" datatype="String" paramtype="generic">
                 <psxctl:Description>This parameter specifies the url location of a lookup application conforming to the sys_Lookup.dtd.  The current form values are sent to the query and are available for use in filtering the results.</psxctl:Description>
-                <psxctl:DefaultValue>/percDirectorySupport/organization</psxctl:DefaultValue>
+                <psxctl:DefaultValue>../percDirectorySupport/organization</psxctl:DefaultValue>
             </psxctl:Param>
             <psxctl:Param name="departmentparentxmlurl" datatype="String" paramtype="generic">
                 <psxctl:Description>This parameter specifies the url location of a lookup application conforming to the sys_Lookup.dtd.  The current form values are sent to the query and are available for use in filtering the results.</psxctl:Description>
-                <psxctl:DefaultValue>/percDirectorySupport/departmentParent</psxctl:DefaultValue>
+                <psxctl:DefaultValue>../percDirectorySupport/departmentParent</psxctl:DefaultValue>
             </psxctl:Param>
             <psxctl:Param name="departmentxmlurl" datatype="String" paramtype="generic">
                 <psxctl:Description>This parameter specifies the url location of a lookup application conforming to the sys_Lookup.dtd.  The current form values are sent to the query and are available for use in filtering the results.</psxctl:Description>
-                <psxctl:DefaultValue>/percDirectorySupport/department</psxctl:DefaultValue>
+                <psxctl:DefaultValue>../percDirectorySupport/department</psxctl:DefaultValue>
             </psxctl:Param>
         </psxctl:ParamList>
         <psxctl:AssociatedFileList>
             <psxctl:FileDescriptor name="directoryDropdown.css" type="css" mimetype="text/css">
-                <psxctl:FileLocation>/rx_resources/widgets/percDirectory/css/directoryDropdown.css</psxctl:FileLocation>
+                <psxctl:FileLocation>../rx_resources/widgets/percDirectory/css/directoryDropdown.css</psxctl:FileLocation>
                 <psxctl:Timestamp/>
             </psxctl:FileDescriptor>
             <psxctl:FileDescriptor name="directoryDropdown.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>/rx_resources/widgets/percDirectory/js/directoryDropdown.js</psxctl:FileLocation>
+                <psxctl:FileLocation>../rx_resources/widgets/percDirectory/js/directoryDropdown.js</psxctl:FileLocation>
                 <psxctl:Timestamp/>
             </psxctl:FileDescriptor>
         </psxctl:AssociatedFileList>

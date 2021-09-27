@@ -1127,6 +1127,8 @@ var layoutModel;
                         return;
                     // calculate the total width of this regionResizing plus sibling
                     totalSize = regionResizing.width() + rightSiblingRegion.width();
+                    //CMS-8532 : Initialize resizable
+                    regionResizing.resizable({ disabled: true });
                     // set a max for the resize to the total size
                     regionResizing.resizable('option','maxWidth',totalSize );
                 },

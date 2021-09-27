@@ -116,17 +116,17 @@ public abstract class PSBaseListViewHelper implements IPSListViewHelper
 
         if (currentDisplayProperties == null)
             currentDisplayProperties = new HashMap<>();
+        //Null check to avoid 500 error (CMS-8526)
+        if(newDisplayProperties!=null) {
+            for (Entry<String, String> entry : newDisplayProperties.entrySet()) {
+                // If the field is already present in the old display properties,
+                // then it's not overwritten.
+                if (currentDisplayProperties.containsKey(entry.getKey()))
+                    continue;
 
-        for (Entry<String, String> entry : newDisplayProperties.entrySet())
-        {
-            // If the field is already present in the old display properties,
-            // then it's not overwritten.
-            if (currentDisplayProperties.containsKey(entry.getKey()))
-                continue;
-
-            currentDisplayProperties.put(entry.getKey(), entry.getValue());
+                currentDisplayProperties.put(entry.getKey(), entry.getValue());
+            }
         }
-
         pathItem.setDisplayProperties(currentDisplayProperties);
     }
 
