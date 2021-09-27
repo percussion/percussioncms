@@ -370,14 +370,13 @@ function bindServerPropertiesEvents() {
     $('#useAssumeRole').on("change", function(evt) {
         if($('#useAssumeRole')[0].checked) {
             $('#ARNRole').prop('disabled', false);
-            $("#s3accessSecurityKey").show('fast');
-        }
-        else{
+            $("#s3accessSecurityKey").hide('fast');
+        }else{
             $('#ARNRole').prop('disabled', true);
-            if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
-                $("#s3accessSecurityKey").hide('fast');
-            }else{
+            if(isEC2Instance == null || JSON.parse(isEC2Instance) === false){
                 $("#s3accessSecurityKey").show('fast');
+            }else{
+                $("#s3accessSecurityKey").hide('fast');
             }
         }
     });

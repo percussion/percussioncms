@@ -411,19 +411,8 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
     private AmazonS3 getS3FromAssumeRole(IPSPubServer pubServer) throws PSDeliveryException {
 
         try {
-            String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
-            String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
             String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
             String roleARN = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE, "");
-            try {
-                accessKey = decrypt(accessKey);
-                secretKey = decrypt(secretKey);
-            } catch (Exception e) {
-                log.error(PSExceptionUtils.getMessageForLog(e));
-                throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
-            }
-            BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
-
             // Creating the STS client is part of your trusted code. It has
             // the security credentials you use to obtain temporary security credentials.
             AWSSecurityTokenService stsClient = AWSSecurityTokenServiceClientBuilder.standard()
@@ -434,9 +423,9 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             // Obtain credentials for the IAM role. Note that you cannot assume the role of an AWS root account;
             // Amazon S3 will deny access. You must use credentials for an IAM user or an IAM role.
             AssumeRoleRequest roleRequest = new AssumeRoleRequest()
-                    .withRoleArn(roleARN).withRequestCredentialsProvider(new AWSStaticCredentialsProvider(awsCreds));
+                    .withRoleArn(roleARN)
+                    .withRoleSessionName("CMS-S3Publishing-UsingAssumeRole");
             AssumeRoleResult roleResponse = stsClient.assumeRole(roleRequest);
-
             Credentials sessionCredentials = roleResponse.getCredentials();
 
             // Create a BasicSessionCredentials object that contains the credentials you just retrieved.
