@@ -46,8 +46,6 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.glassfish.jersey.server.internal.InternalServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
