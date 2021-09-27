@@ -118,10 +118,10 @@
 
 #perc-undo-tool, #perc-undo-tool-disabled  {
     cursor: pointer;
-    float: left;
+    float: right;
     height: 31px;
     margin-left: 5px;
-    margin-top: 12px;
+    margin-top: -31px;
     width: 31px;
     background: url("../images/images/undoNerror.png") repeat scroll 0 0 transparent;
 }
