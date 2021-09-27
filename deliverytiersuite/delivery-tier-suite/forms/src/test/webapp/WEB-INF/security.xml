@@ -58,8 +58,8 @@
    </security:http>
 
     <beans:bean id="tokenRepository"
-                class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"
-                />
+                class="org.springframework.security.web.csrf.CookieCsrfTokenRepository"  cookieHttpOnly="${csrfCookieHttpOnly}"
+    />
 
     <beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
         <beans:property name="corsConfigurations">

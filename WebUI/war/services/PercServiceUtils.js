@@ -62,8 +62,6 @@
 
     var CSRF_HEADER="X-CSRF-HEADER";
 
-
-    var CSRF_PARAM_HEADER="X-CSRF-PARAM";
     var CSRF_METADATA_PATH="/perc-metadata-services/metadata/csrf";
     var CSRF_FORMS_PATH="/perc-form-processor/forms/csrf";
     var CSRF_POLLS_PATH="/perc-polls-services/polls/csrf";
@@ -74,7 +72,6 @@
 
 
     function csrfGetURLFromServiceCall(url){
-
         if(typeof url === "undefined" || url == null)
             return null;
 
@@ -83,27 +80,27 @@
         var a = $('<a>', {
             href: url
         });
-        var path = a.prop("path");
+        var path = url;
 
-        if(path.contains("/perc-metadata-services/"))
+        if(path.includes("/perc-metadata-services/"))
             path = CSRF_METADATA_PATH;
-        else if(path.contains("/perc-form-processor/"))
+        else if(path.includes("/perc-form-processor/"))
             path = CSRF_FORMS_PATH;
-        else if(path.contains("/perc-polls-services"))
+        else if(path.includes("/perc-polls-services"))
             path = CSRF_POLLS_PATH;
-        else if(path.contains("/perc-integrations/"))
+        else if(path.includes("/perc-integrations/"))
             path = CSRF_INTEGRATION_PATH;
-        else if(path.contains("/perc-comments-services/"))
+        else if(path.includes("/perc-comments-services/"))
             path = CSRF_COMMENTS_PATH;
-        else if(path.contains("/perc-membership-services/"))
+        else if(path.includes("/perc-membership-services/"))
             path = CSRF_MEMBERSHIP_PATH;
-        else if(path.contains("/feeds/"))
+        else if(path.includes("/feeds/"))
             path = CSRF_FEEDS_PATH;
         else
             path = null;
 
         if(path!= null){
-            return a.prop("protocol") + a.prop("hostname") + ":" + a.prop("port") + path;
+            return path;
         }else{
             return null;
         }
@@ -111,7 +108,7 @@
     }
 
 
-    async function csrfGetToken(url,callback){
+    function csrfGetToken(url,callback){
 
         let csrfToken;
 
@@ -123,6 +120,7 @@
 
 
         let init = {
+            async: "false",
             method: TYPE_HEAD, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -132,51 +130,18 @@
                 "Accept": "text/plain"
             },
             redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin-when-cross-origin'
+            referrerPolicy: 'origin-when-cross-origin',
+            success: function(data, textstatus,response){
+                               callback(response);
+            },
+            error: function(request, textstatus, error){
+                console.debug(textstatus + ":" + error);
+            }
         };
 
-        const response = await fetch(url, init);
+        $.ajax( url, init);
 
-        response.text().then(data => {
-            if(response.ok) {
-                callback(response);
-            }else{
-                console.debug(response.text);
-            }
-        });
     }
-
-    function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
-        return (/^(GET|HEAD|OPTIONS)$/.test(method));
-    }
-
-
-    $.ajaxSetup({
-        timeout: 300000,
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                let u = csrfGetURLFromServiceCall(xhr.url);
-                if(u != null){
-                    csrfGetToken(u,function(response){
-                        if(typeof response !== 'undefined' && response != null)
-                            var tokenHeader = response.headers.get(CSRF_HEADER);
-                        if(typeof tokenHeader !== "undefined" && tokenHeader != null ){
-                            var token = jqXHR.getResponseHeader(tokenHeader);
-                            var param = jqXHR.getResponseHeader(CSRF_PARAM_HEADER);
-                            if(typeof(token) !== "undefined" && token !== null){
-                                xhr.setRequestHeader(tokenHeader,token);
-                            }
-
-                        }
-
-
-                    });
-                }
-
-            }
-        }
-    });
 
     function joinURL(firstPart, secondPart){
         if("undefined" !== typeof (firstPart)){
@@ -473,8 +438,8 @@
      */
     async function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
 
+        var isDTS = false;
         if(null === callback || 'undefined' === typeof (callback))
         {
             console.error("Callback cannot be null or undefined");
@@ -487,6 +452,7 @@
             if('function' === typeof (jQuery.getDeliveryServiceBase))
             {
                 servicebase = jQuery.getDeliveryServiceBase();
+                isDTS = true;
             }
             else
             {
@@ -499,45 +465,85 @@
             url = joinURL(servicebase,url);
         }
 
+        var body;
+        // Add payload object if it exists
+        if (null !== dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
+            body = JSON.stringify(dataObject);
+        }
+        makeAjaxCall(url, type,body,callback,this.crossDomain,isDTS);
+
+    }
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return !(['post','put','delete'].includes(method.toLowerCase()));
+    }
+
+    function loadcsrfToken(init){
+            let u = csrfGetURLFromServiceCall(init.url);
+            if (u != null) {
+                csrfGetToken(u, function (response) {
+                    if (typeof response !== 'undefined' && response != null)
+                        var tokenHeader = response.getResponseHeader(CSRF_HEADER);
+                    if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
+                        var token = response.getResponseHeader("X-CSRF-TOKEN");
+                        if(tokenHeader != null && token != null){
+                           init.headers[tokenHeader] = token;
+
+                        }
+                    }
+                    $.ajax(init);
+                });
+            }else{
+                $.ajax(init);
+            }
+         }
+
+    function makeAjaxCall(url,type,body,callback,crossDomain,isDTS){
+        const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
+        var header =   {
+            'Content-Type': 'application/json',
+                "Accept": "application/json",
+                "perc-version": version
+        };
         let init = {
-            method: type, // *GET, POST, PUT, DELETE, etc.
+            url: url,
+            dataType: "text",
+            contentType: "application/json",
+            type: type,
+            data:body,
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'omit', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                "Accept": "application/json,text/plain",
-                "perc-version": version
-            },
+            headers : header,
             redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin-when-cross-origin'
-        };
-
-        // Add payload object if it exists
-        if (null !== dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
-            init.body = JSON.stringify(dataObject);
-        }
-
-        const response = await fetch(url, init);
-
-        response.text().then(data => {
-            if(response.ok) {
-
+            referrerPolicy: 'origin-when-cross-origin',
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'origin-when-cross-origin',
+            success: function(data, textstatus){
                 let resp = {
                     data: data,
-                    status: response.status
+                    status: textstatus
                 };
-                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
-            }else{
+                callback(self.STATUS_SUCCESS,resp);
+            },
+            error: function(request, textstatus, error){
                 let resp = {
-                    message: response.message,
-                    status: response.status
+                    message: error,
+                    status: textstatus
                 };
                 callback(self.STATUS_ERROR, resp);
             }
-        });
+        };
+        if (!csrfSafeMethod(type) && !crossDomain && isDTS) {
+            loadcsrfToken(init);
+        }else{
+            $.ajax(init);
+        }
+
 
     }
+
 
     /**
      *  Makes a request to a specified url, returning status and results

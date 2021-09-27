@@ -51,7 +51,7 @@
             let isEditMode = queryString.isEditMode;
             var baseURL = "";
             var isPreviewMode = queryString.isPreviewMode;
-            if(isEditMode === "true" || isPreviewMode === "true"){
+            if(isEditMode === "true"){
                 var paths = window.location.pathname.split("/");
                 baseURL = "/" + paths[1] + "/" + paths[2];
             }else{

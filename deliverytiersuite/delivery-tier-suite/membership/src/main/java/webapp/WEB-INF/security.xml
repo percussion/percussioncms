@@ -53,6 +53,7 @@
                                 <beans:value>pingpong</beans:value>
                                 <beans:value>Access-Control-Allow-Origin</beans:value>
                                 <beans:value>X-CSRF-TOKEN</beans:value>
+                                <beans:value>X-XSRF-TOKEN</beans:value>
                                 <beans:value>Strict-Transport-Security</beans:value>
                                 <beans:value>X-XSS-Protection</beans:value>
                                 <beans:value>X-Frame-Options</beans:value>
@@ -99,7 +100,7 @@
     </security:authentication-manager>
 
     <beans:bean id="tokenRepository"
-                class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"
+                class="org.springframework.security.web.csrf.CookieCsrfTokenRepository"  cookieHttpOnly="${csrfCookieHttpOnly}"
     />
 
     <beans:bean id="preauthAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">

@@ -57,7 +57,7 @@
                 p,
                 a.PercServiceUtils.TYPE_POST,
                 function (r, t) {
-                    if (r === a.PercServiceUtils.STATUS_SUCCESS) {
+                    if (t.status === a.PercServiceUtils.STATUS_SUCCESS) {
                         var u = JSON.parse(t.data);
                         if (u.status === "SUCCESS") {
                             if (o === "Cookie") {
@@ -147,7 +147,7 @@
                         var n = d.find(".perc-poll-question:first").text();
                         var m = "/perc-polls-services/polls/canuservote/" + encodeURIComponent(n);
                         a.PercServiceUtils.makeXdmJsonRequest(null, m, a.PercServiceUtils.TYPE_GET, function (r, s) {
-                            if (r === a.PercServiceUtils.STATUS_SUCCESS) {
+                            if (s.status === a.PercServiceUtils.STATUS_SUCCESS) {
                                 if (s.data) {
                                     q(!0);
                                 } else {

@@ -31,8 +31,14 @@
    </security:http>
 
     <beans:bean id="tokenRepository"
-                class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"
-                />
+                class="org.springframework.security.web.csrf.CookieCsrfTokenRepository"  cookieHttpOnly="${csrfCookieHttpOnly}"
+    />
+
+    <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
+        <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
+        <beans:constructor-arg value="/polls/save"/>
+        <beans:constructor-arg value="true"/>
+    </beans:bean>
 
     <beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource">
         <beans:property name="corsConfigurations">
@@ -51,6 +57,7 @@
                                 <beans:value>pingpong</beans:value>
                                 <beans:value>Access-Control-Allow-Origin</beans:value>
                                 <beans:value>X-CSRF-TOKEN</beans:value>
+                                <beans:value>X-XSRF-TOKEN</beans:value>
                                 <beans:value>Strict-Transport-Security</beans:value>
                                 <beans:value>X-XSS-Protection</beans:value>
                                 <beans:value>X-Frame-Options</beans:value>

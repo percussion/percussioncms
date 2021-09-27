@@ -54,12 +54,11 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -114,6 +113,7 @@ import static com.percussion.security.SecureStringUtils.stripNonHttpProtocols;
 @Scope("singleton")
 public class PSFeedService extends PSAbstractRestService implements IPSFeedsRestService
 {
+
     public PSFeedService(){
 
     }
@@ -122,11 +122,16 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
     @HEAD
     @Path("/csrf")
     public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
-        CsrfToken csrfToken = new HttpSessionCsrfTokenRepository().generateToken(request);
-
-        response.setHeader("X-CSRF-HEADER", csrfToken.getHeaderName());
-        response.setHeader("X-CSRF-PARAM", csrfToken.getParameterName());
-        response.setHeader("X-CSRF-TOKEN", csrfToken.getToken());
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return;
+        }
+        for(Cookie cookie: cookies){
+            if("XSRF-TOKEN".equals(cookie.getName())){
+                response.setHeader("X-CSRF-HEADER", "X-XSRF-TOKEN");
+                response.setHeader("X-CSRF-TOKEN", cookie.getValue());
+            }
+        }
     }
 
     private PSHttpClient httpClient;
@@ -624,7 +629,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
         ).forceReplaceKeyFile(backToBytes,false);
     }
-    
+
     @Override
 	public String getVersion() {
     	
