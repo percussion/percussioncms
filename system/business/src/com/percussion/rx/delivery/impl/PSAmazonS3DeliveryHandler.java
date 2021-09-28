@@ -29,7 +29,6 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -115,7 +114,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             jobTransferManagers = new ConcurrentHashMap<>();
         }
         if(!jobTransferManagers.containsKey(jobid)) { // if key does not exist
-            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            AmazonS3 s3Client = getAmazonS3Client(pubServer,getConfiguredAWSRegion());
             TransferManager tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
             jobTransferManagers.put(jobid, tm);
         }
@@ -155,7 +154,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
         try
         {
-            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            AmazonS3 s3Client = getAmazonS3Client(pubServer,getConfiguredAWSRegion());
             s3Client.deleteObject(bucketName, destPath);
         }
         catch(PSDeliveryException e){
@@ -193,7 +192,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
         try
         {
-            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            AmazonS3 s3Client = getAmazonS3Client(pubServer,getConfiguredAWSRegion());
             TransferManager tm;
             if(jobTransferManagers.containsKey(jobId)){  // check for the jobId
                 tm = jobTransferManagers.get(jobId);
@@ -353,7 +352,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         return isEC2Instance;
     }
 
-    private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws PSDeliveryException{
+    public static AmazonS3 getAmazonS3Client(IPSPubServer pubServer,Region configuredRegion) throws PSDeliveryException{
         AmazonS3 s3 = null;
 
         String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
@@ -369,7 +368,9 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             }
             //Fallback to publisher-beans.xml
             if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
-                selectedRegionName = getConfiguredAWSRegion().getName();
+                if(configuredRegion != null) {
+                    selectedRegionName = configuredRegion.getName();
+                }
             }
         }
 
@@ -399,7 +400,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 
     }
 
-    private boolean useAssumeRole(IPSPubServer pubServer){
+    private static boolean useAssumeRole(IPSPubServer pubServer){
         String assumeVal = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_USE_ASSUME_ROLE);
         if("true".equals(assumeVal)){
             return true;
@@ -408,17 +409,39 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         }
     }
 
-    private AmazonS3 getS3FromAssumeRole(IPSPubServer pubServer) throws PSDeliveryException {
+    private static AmazonS3 getS3FromAssumeRole(IPSPubServer pubServer) throws PSDeliveryException {
 
         try {
             String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
             String roleARN = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE, "");
             // Creating the STS client is part of your trusted code. It has
             // the security credentials you use to obtain temporary security credentials.
-            AWSSecurityTokenService stsClient = AWSSecurityTokenServiceClientBuilder.standard()
-                    .withCredentials(new ProfileCredentialsProvider())
-                    .withRegion(selectedRegionName)
-                    .build();
+            AWSSecurityTokenService stsClient = null;
+            if(isEC2Instance()) {
+                log.debug("EC2 Instance Running");
+                stsClient = AWSSecurityTokenServiceClientBuilder.standard()
+                        .withCredentials(new InstanceProfileCredentialsProvider(false))
+                        .withRegion(selectedRegionName)
+                        .build();
+            }else {
+
+                String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
+                String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
+                try {
+                    accessKey = decrypt(accessKey);
+                    secretKey = decrypt(secretKey);
+                } catch (Exception e) {
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
+                }
+                BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+                stsClient = AWSSecurityTokenServiceClientBuilder.standard()
+                        .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+                        .withRegion(selectedRegionName)
+                        .build();
+            }
+
+
 
             // Obtain credentials for the IAM role. Note that you cannot assume the role of an AWS root account;
             // Amazon S3 will deny access. You must use credentials for an IAM user or an IAM role.
@@ -455,7 +478,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
      * @param dstr base64 encoded encrypted string
      * @return clear text version of the string.
      */
-    private String decrypt(String dstr) {
+    private static String decrypt(String dstr) {
 
         try {
 
@@ -474,7 +497,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         }
     }
 
-    private String getExceptionMessage(Exception e){
+    private static String getExceptionMessage(Exception e){
         return (StringUtils.isBlank(e
                 .getLocalizedMessage()) ? e.getClass().getName() : e
                 .getLocalizedMessage());
@@ -491,7 +514,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
         try
         {
-            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            AmazonS3 s3Client = getAmazonS3Client(pubServer,getConfiguredAWSRegion());
             s3Client.getS3AccountOwner();
             result = s3Client.doesBucketExistV2(bucketName);
         }
@@ -518,10 +541,10 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         TransferManager tm =null;
 
         try( InputStream in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + PERC_TEST_IMG_DIR + PERC_TEST_IMG)) {
-            AmazonS3 s3Client = getAmazonS3Client(pubServer);
+            AmazonS3 s3Client = getAmazonS3Client(pubServer,getConfiguredAWSRegion());
             tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
             copyToAmazon(tm, bucketName, key, in, "image/jpeg", in.available());
-            s3Client = getAmazonS3Client(pubServer);
+            s3Client = getAmazonS3Client(pubServer,getConfiguredAWSRegion());
             s3Client.getObject(bucketName, key);
             s3Client.deleteObject(bucketName, key);
 

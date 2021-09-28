@@ -370,13 +370,18 @@ function bindServerPropertiesEvents() {
     $('#useAssumeRole').on("change", function(evt) {
         if($('#useAssumeRole')[0].checked) {
             $('#ARNRole').prop('disabled', false);
-            $("#s3accessSecurityKey").hide('fast');
-        }else{
-            $('#ARNRole').prop('disabled', true);
-            if(isEC2Instance == null || JSON.parse(isEC2Instance) === false){
-                $("#s3accessSecurityKey").show('fast');
-            }else{
+            if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
                 $("#s3accessSecurityKey").hide('fast');
+            }else{
+                $("#s3accessSecurityKey").show('fast');
+            }
+        }
+        else{
+            $('#ARNRole').prop('disabled', true);
+            if(isEC2Instance != null && JSON.parse(isEC2Instance) === true){
+                $("#s3accessSecurityKey").hide('fast');
+            }else{
+                $("#s3accessSecurityKey").show('fast');
             }
         }
     });
@@ -492,7 +497,7 @@ function updateDriverPropertiesUi() {
         }
         else if(selectedType == 'File' && currentSection == 'percServerPropertiesFileLocalTarget' && selectedDriver == 'AMAZONS3') {
             $(this).hide('fast');
-            $("#s3accessSecurityKey").show('fast');
+            $('#useAssumeRole').trigger('change');
 
             return true;
         }

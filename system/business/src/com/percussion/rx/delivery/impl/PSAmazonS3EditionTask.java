@@ -24,13 +24,9 @@
 
 package com.percussion.rx.delivery.impl;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -42,8 +38,6 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.legacy.security.deprecated.PSAesCBC;
-import com.percussion.rx.delivery.IPSDeliveryErrors;
-import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
 import com.percussion.security.PSEncryptionException;
@@ -54,7 +48,6 @@ import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.types.PSPair;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -114,7 +107,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       TransferManager tm = null;
       try
       {
-         AmazonS3 s3Client = getAmazonS3Client(pubServer);
+         AmazonS3 s3Client = PSAmazonS3DeliveryHandler.getAmazonS3Client(pubServer,getConfiguredAWSRegion());
          tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
          //Get list of files to be deleted and to be uploaded
          PSPair<List<File>, List<String>> fileList = getFileList(s3Client, bucketName);
@@ -146,58 +139,6 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
 
    }
 
-   /**
-    * Creates amazon s3 client from the credentials.
-    * @param pubServer assumed not <code>null</code>
-    * @return AmazonS3 client.
-    * @throws Exception
-    */
-   private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws Exception
-   {
-       AmazonS3 s3 = null;
-       String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
-       if(selectedRegionName == null || selectedRegionName.trim().equals("")){
-
-           //Default to EC2 regions
-           try {
-               if (Regions.getCurrentRegion() != null){
-                   selectedRegionName = Regions.getCurrentRegion().getName();
-               }
-           }catch(Exception e){
-               //Do nothing
-           }
-           //Fallback to publisher-beans.xml
-           if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
-               selectedRegionName = getConfiguredAWSRegion().getName();
-           }
-       }
-
-       if(PSAmazonS3DeliveryHandler.isEC2Instance()){
-           log.debug("EC2 Instance Running");
-           s3 = AmazonS3ClientBuilder.standard()
-                   .withCredentials(new InstanceProfileCredentialsProvider(false))
-                   .withRegion(selectedRegionName)
-                   .build();
-       }else {
-           log.debug("Using Access/Security Key");
-           String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
-           String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
-
-           try {
-               accessKey = decrypt(accessKey);
-               secretKey = decrypt(secretKey);
-           } catch (Exception e) {
-               log.error(PSExceptionUtils.getMessageForLog(e));
-               throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
-           }
-
-
-           BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
-           s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
-       }
-       return s3;
-
-   }
     public String getTargetRegion()
     {
         return targetRegion;
