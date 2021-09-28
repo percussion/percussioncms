@@ -1818,18 +1818,15 @@ public class PSPubServerService implements IPSPubServerService
         for (String property : requieredProperties)
         {
             String value = pubServerInfo.findProperty(property);
-
-            if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
-                if(!isEC2Instance() ){
-                    if(!useAssumeRole) {
-                        builder.rejectIfBlank(property, value).throwIfInvalid();
-                    }
+            if(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY.equals(property)){
+                  builder.rejectIfBlank(property, value).throwIfInvalid();
+            }else if(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY.equals(property)){
+                if(!isEC2Instance()){
+                    builder.rejectIfBlank(property, value).throwIfInvalid();
                 }
             }else if(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY.equals(property)){
                 if(!isEC2Instance()){
-                    if(!useAssumeRole) {
-                        builder.rejectIfBlank(property, value).throwIfInvalid();
-                    }
+                    builder.rejectIfBlank(property,  value).throwIfInvalid();
                 }
             }else if(IPSPubServerDao.PUBLISH_AS3_ARN_ROLE.equals(property)){
                 if(useAssumeRole) {

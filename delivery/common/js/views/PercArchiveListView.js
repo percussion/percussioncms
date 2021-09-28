@@ -313,7 +313,7 @@
                 else
                 {
                     //Log the error and leave the original list entries as is
-                    console.error(err);
+                    console.error(status);
                 }
             });
 
