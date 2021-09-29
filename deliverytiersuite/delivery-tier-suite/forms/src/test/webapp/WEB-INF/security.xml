@@ -105,7 +105,7 @@
     </beans:bean>
 
     <beans:bean id="myPreAuthenticationFilter"
-                class="com.percussion.delivery.forms.PSPreAuthenticatedProcessingFilter">
+                class="com.percussion.delivery.spring.PSPreAuthenticatedProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />
     </beans:bean>
 
@@ -115,7 +115,7 @@
 
     <beans:bean id="preauthAuthProvider" class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
         <beans:property name="preAuthenticatedUserDetailsService">
-            <beans:bean class="com.percussion.delivery.forms.CustomAuthenticationProvider" />
+            <beans:bean class="com.percussion.delivery.spring.CustomAuthenticationProvider" />
         </beans:property>
     </beans:bean>
 
