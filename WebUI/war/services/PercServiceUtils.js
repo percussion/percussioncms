@@ -100,7 +100,7 @@
             path = null;
 
         if(path!= null){
-            return path;
+            return  path;
         }else{
             return null;
         }
@@ -109,16 +109,12 @@
 
 
     function csrfGetToken(url,callback){
-
         let csrfToken;
-
         if(typeof url != "undefined" && url != null){
             if(!url.endsWith("/csrf")){
                 url = csrfGetURLFromServiceCall(url);
             }
         }
-
-
         let init = {
             async: "false",
             method: TYPE_HEAD, // *GET, POST, PUT, DELETE, etc.
@@ -138,9 +134,7 @@
                 console.debug(textstatus + ":" + error);
             }
         };
-
         $.ajax( url, init);
-
     }
 
     function joinURL(firstPart, secondPart){
@@ -347,6 +341,8 @@
      */
     async function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
+
+        var isDTS = isDTSCall(dataObject);
         let version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         if (null === callback || 'undefined' === typeof (callback)) {
@@ -382,33 +378,43 @@
                 "perc-version": version
             },
             redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin-when-cross-origin'
+            referrerPolicy: 'origin-when-cross-origin',
+            success: function(data, textstatus){
+                let resp = {
+                    data: data,
+                    status: textstatus
+                };
+                callback(self.STATUS_SUCCESS,resp);
+            },
+            error: function(request, textstatus, error){
+                let resp = {
+                    message: error,
+                    status: textstatus
+                };
+                callback(self.STATUS_ERROR, resp);
+            }
         };
 
         // Add payload object if it exists
         if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
             init.body = JSON.stringify(dataObject);
         }
+        makeAjaxCall(url, type,this.crossDomain,isDTS,init);
 
-        const response = await fetch(url, init);
+    }
 
-        response.text().then(data => {
-            if(response.ok) {
-
-                let resp = {
-                    data: data,
-                    status: response.status
-                };
-                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
-            }else{
-                let resp = {
-                    message: response.message,
-                    status: response.status
-                };
-                callback(self.STATUS_ERROR, resp);
+    function isDTSCall(dataObject){
+        var isEditMode = false;
+        var isPreview = false;
+        if (typeof dataObject !== 'undefined' ){
+            if(typeof dataObject.isEditMode !== 'undefined' && dataObject.isEditMode === "true"){
+                isEditMode = true;
             }
-        });
-
+            if(typeof dataObject.isPreviewMode !== 'undefined' && dataObject.isPreviewMode === "true"){
+                isPreview = true;
+            }
+        }
+        return (isEditMode !== true && isPreview !== true);
     }
 
     /**
@@ -438,8 +444,7 @@
      */
     async function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-
-        var isDTS = false;
+        var isDTS = isDTSCall(dataObject);
         if(null === callback || 'undefined' === typeof (callback))
         {
             console.error("Callback cannot be null or undefined");
@@ -452,7 +457,6 @@
             if('function' === typeof (jQuery.getDeliveryServiceBase))
             {
                 servicebase = jQuery.getDeliveryServiceBase();
-                isDTS = true;
             }
             else
             {
@@ -470,41 +474,11 @@
         if (null !== dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
             body = JSON.stringify(dataObject);
         }
-        makeAjaxCall(url, type,body,callback,this.crossDomain,isDTS);
-
-    }
-
-    function csrfSafeMethod(method) {
-        // these HTTP methods do not require CSRF protection
-        return !(['post','put','delete'].includes(method.toLowerCase()));
-    }
-
-    function loadcsrfToken(init){
-            let u = csrfGetURLFromServiceCall(init.url);
-            if (u != null) {
-                csrfGetToken(u, function (response) {
-                    if (typeof response !== 'undefined' && response != null)
-                        var tokenHeader = response.getResponseHeader(CSRF_HEADER);
-                    if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
-                        var token = response.getResponseHeader("X-CSRF-TOKEN");
-                        if(tokenHeader != null && token != null){
-                           init.headers[tokenHeader] = token;
-
-                        }
-                    }
-                    $.ajax(init);
-                });
-            }else{
-                $.ajax(init);
-            }
-         }
-
-    function makeAjaxCall(url,type,body,callback,crossDomain,isDTS){
         const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
         var header =   {
             'Content-Type': 'application/json',
-                "Accept": "application/json",
-                "perc-version": version
+            "Accept": "application/json",
+            "perc-version": version
         };
         let init = {
             url: url,
@@ -535,13 +509,41 @@
                 callback(self.STATUS_ERROR, resp);
             }
         };
+        makeAjaxCall(url, type,this.crossDomain,isDTS,init);
+
+    }
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return !(['post','put','delete'].includes(method.toLowerCase()));
+    }
+
+    function loadcsrfToken(init){
+            let u = csrfGetURLFromServiceCall(init.url);
+             if (u != null) {
+                csrfGetToken(u, function (response) {
+                    if (typeof response !== 'undefined' && response != null)
+                        var tokenHeader = response.getResponseHeader(CSRF_HEADER);
+                    if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
+                        var token = response.getResponseHeader("X-CSRF-TOKEN");
+                        if(tokenHeader != null && token != null){
+                           init.headers[tokenHeader] = token;
+
+                        }
+                    }
+                    $.ajax(init);
+                });
+            }else{
+                $.ajax(init);
+            }
+         }
+
+    function makeAjaxCall(url,type,crossDomain,isDTS,init){
         if (!csrfSafeMethod(type) && !crossDomain && isDTS) {
             loadcsrfToken(init);
         }else{
             $.ajax(init);
         }
-
-
     }
 
 

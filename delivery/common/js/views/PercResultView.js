@@ -133,7 +133,7 @@
                 }
                 el.append(createTitleHtml(this.settings, numEntries));
                 el.append($("<div/>").addClass("perc-result-divider"));
-                if(0 < this.results.length)
+                if(typeof this.results !== 'undefined' && this.results.length >0)
                 {
                     for(var c = 0; c < this.results.length; c++)
                     {
