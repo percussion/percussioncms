@@ -30,6 +30,7 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
@@ -2506,7 +2507,8 @@ public class PSPublisherService
       }
       catch(Exception e)
       {
-         log.error("Problem updating publishing info", e);
+         log.error("Problem updating publishing info", PSExceptionUtils.getMessageForLog(e));
+         log.debug(e);
       }
 
       }
