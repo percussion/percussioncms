@@ -172,7 +172,8 @@
             }
             var blogPostFullPath = queryString.blogPostFullPath;
             var deliveryUrl = queryString.deliveryurl || "";
-            $.PercMostReadBlogPostsService.trackBlogPost(blogPostFullPath, deliveryUrl, $.noop);
+            if(queryString.isEditMode !== "true")
+                $.PercMostReadBlogPostsService.trackBlogPost(blogPostFullPath, deliveryUrl, $.noop);
         });
     }
 })(jQuery);
