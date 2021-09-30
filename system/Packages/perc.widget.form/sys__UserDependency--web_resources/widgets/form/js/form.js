@@ -47,14 +47,6 @@
 				return nameResult;
 			}
 
-			function getFreshToken(){
-                $( document ).ajaxSend(function( event, jqxhr, settings ) {
-                    if ( settings.url == "ajax/test.html" ) {
-                        $( ".log" ).text( "Triggered ajaxSend handler." );
-                    }
-                });
-            }
-
             $('.perc-form').find('form').each(function(){
 
                 //if the URL has a name parameter, it will set the default value of the send to option
@@ -69,12 +61,13 @@
 				}
 				
                 var formAction = $(this).attr("action");
+                formAction = formAction + "collect/";
                 if(formAction && formAction.indexOf("/perc-form-processor") === 0){
                     var version = typeof($.getCMSVersion) === "function" ?$.getCMSVersion():"";
 					var servicebase = typeof($.getDeliveryServiceBase)==="function"?$.getDeliveryServiceBase():"";
 
 
-                    formAction = $.PercServiceUtils.joinURL( servicebase, formAction + ((formAction.indexOf('?')!==-1)?"&":"?") + "perc-version=" + version);
+                    formAction = $.PercServiceUtils.joinURL( servicebase, formAction);
 
                     $(this).attr("action", formAction);
                     $(this).append(
@@ -84,12 +77,22 @@
                         attr("value", getLocation(location.href))
                     );
 
-                    let csrfToken = $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/forms/csrf"));
+                    var tokenHeader;
+                    var token;
 
-                    if(typeof csrfToken !== "undefined" && csrfToken != null) {
-                        //Add csrf token if available
-                        $(this).append('<input/>').attr("type", "hidden").attr("name", csrfToken.param).attr("value", csrfToken.token);
-                    }
+                    var doc=$(this);
+
+                    $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/perc-form-processor/forms/csrf"),function (response) {
+                        if (typeof response !== 'undefined' && response != null)
+                            tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
+                        if (typeof tokenHeader !== "undefined" && tokenHeader != null){
+                            token = response.getResponseHeader("X-CSRF-TOKEN");
+                            if(typeof token !== "undefined" && token != null) {
+                                formAction = formAction + ((formAction.indexOf('?')!==-1)?"&":"?") + "_csrf=" + token;
+                                doc.attr( "action", formAction);
+                            }
+                        }
+                    });
                 }
                 
                 var myRules = {};
@@ -116,6 +119,6 @@
                     rules:myRules				
                                     
                 });
-            });		
+            });
     });
 })(jQuery);
