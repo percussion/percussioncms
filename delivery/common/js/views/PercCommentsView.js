@@ -73,10 +73,26 @@
 
     $(function(){
         //Change the form action url to point to the right server
-        deliveryServicesURL = getDeliveryServicesDomain(".perc-comments-view");
+        deliveryServicesURL =  typeof($.getDeliveryServiceBase)==="function"?$.getDeliveryServiceBase():"";
         var version = typeof($.getCMSVersion) === "function" ?$.getCMSVersion():"";
-        var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment?perc-version=" + version);
-        $("form[name = 'commentForm']").attr("action", url);
+        var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment/addcomment");
+        var commentForm =  $("form[name = 'commentForm']");
+        commentForm.attr("action", url);
+        var tokenHeader;
+        var token;
+
+        $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(deliveryServicesURL,"/perc-comments-services/comment/csrf"),function (response) {
+            if (typeof response !== 'undefined' && response != null)
+                tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
+            if (typeof tokenHeader !== "undefined" && tokenHeader != null){
+                token = response.getResponseHeader("X-CSRF-TOKEN");
+                if(typeof token !== "undefined" && token != null) {
+                    url = url + ((url.indexOf('?')!==-1)?"&":"?") + "_csrf=" + token;
+                    commentForm.attr( "action", url);
+                }
+            }
+        });
+
     });
 
     var globals = {
@@ -190,7 +206,7 @@
     {
         var fullLink =  getUrl();
         var splittedLink = fullLink.split("?");
-        var href = splittedLink[0] + "/list"
+        var href = splittedLink[0];
         var qs = splittedLink[1];
         var splittedQs = qs.split('&');
         var body = {};
@@ -200,7 +216,7 @@
             body[t[0]] = t[1];
         }
 
-        $.ajax({
+        var init = {
             type: 'POST',
             data: JSON.stringify(body),
             crossDomain: true,
@@ -214,8 +230,24 @@
             {
                 callback(false);
             }
+        }
+
+        $.PercServiceUtils.csrfGetToken(href,function (response) {
+            if (typeof response !== 'undefined' && response != null) {
+                var tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
+                if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
+                    var token = response.getResponseHeader("X-CSRF-TOKEN");
+                    if (typeof token !== "undefined" && token != null) {
+                        if (tokenHeader != null && token != null) {
+                            init.headers[tokenHeader] = token;
+                        }
+                    }
+                }
+            }
+            $.ajax(init);
         });
     }
+
     
    /**
     * Create the url from the specified settings.
@@ -422,7 +454,7 @@
                 {
                     var tmp = obj.finderpath.split("/");
                     obj.site = tmp[2];
-                    obj.pagepath = "/" + tmp.slice(3).join("/");  
+                    obj.pagepath = "/" + tmp.slice(3).join("/");
                 }
                 $el.PercCommentsView(obj);
                 $el.PercCommentsView('show');

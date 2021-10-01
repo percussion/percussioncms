@@ -29,10 +29,16 @@ import com.percussion.delivery.comments.data.PSComments;
 import com.percussion.delivery.comments.data.PSPageSummaries;
 import com.percussion.delivery.services.IPSRestService;
 import org.glassfish.jersey.server.ContainerRequest;
-import org.glassfish.jersey.server.JSONP;
 
 import javax.annotation.security.RolesAllowed;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.HttpHeaders;
@@ -159,6 +165,7 @@ public interface IPSCommentRestService extends IPSRestService {
 	 * <code>null</code>, may be empty.
 	 */
 	@POST
+	@Path("/addcomment")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public abstract Response addComment( @Context ContainerRequest containerRequest,
 										@FormParam("action") String action, @Context HttpHeaders headers);

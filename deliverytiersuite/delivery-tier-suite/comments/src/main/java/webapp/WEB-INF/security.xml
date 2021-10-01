@@ -32,7 +32,7 @@
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
         <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
-        <beans:constructor-arg value="/comment/list,/comment/moderation/,/comment/updateOldSiteEntries/,/likes/updateOldSiteEntries/,/comment/csrf"/>
+        <beans:constructor-arg value="/comment/pageswithcomments,/comment/jsonp,/comment/addcomment,/comment/list,/comment/moderation/,/comment/updateOldSiteEntries/,/likes/"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
 
