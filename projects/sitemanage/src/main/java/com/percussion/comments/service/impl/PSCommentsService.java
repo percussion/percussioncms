@@ -54,6 +54,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -554,6 +555,10 @@ public class PSCommentsService implements IPSCommentsService
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
             deliveryClient.setLicenseOverride(licenseId);
 
+            PSDeliveryClient deliveryClient2 = new PSDeliveryClient();
+            deliveryClient2.setLicenseOverride(licenseId);
+            Header[] responseHeads =  deliveryClient2.getCsrfToken(new PSDeliveryActionOptions(server, "/perc-comments-services/comment/csrf", HttpMethodType.HEAD, true));
+            deliveryClient.setCsrfHeader(responseHeads);
             JSONArray siteInfo = deliveryClient.getJsonObject(new PSDeliveryActionOptions(server, url, HttpMethodType.POST, true),postJson.toString())
                     .getJSONArray("summaries");
             // Because we're looping through all servers, we need to

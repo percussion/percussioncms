@@ -35,6 +35,7 @@ import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
@@ -50,6 +51,7 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
@@ -89,6 +91,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
    public static final String PERC_VERSION_HEADER="perc-version";
    public static final String TOMCAT_USER="tomcat-user";
    public static final String TOMCAT_PASSWORD="tomcat-password";
+
+   private static final String CSRF_HEADER_NAME="X-CSRF-HEADER";
+    private static final String CSRF_TOKEN_NAME="X-XSRF-TOKEN";
 
 
    /**
@@ -187,6 +192,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     private String password ;
 
     private Object requestMessageBody;
+
+
+
+    private Header[] csrfHeader;
 
     private String requestUrl;
 
@@ -364,6 +373,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         return response;
     }
 
+
+    public void setCsrfHeader(Header[] csrfHeader) {
+        this.csrfHeader = csrfHeader;
+    }
     /**
      * Requests a JSON Object from a delivery server. Requires that
      * <code>this.url</code> is already set.
@@ -409,7 +422,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonObject(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions, java.lang.Object)
      */
-    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
+    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions,Object requestMessageBody)
     {
         prepare(actionOptions, requestMessageBody);
         return getJsonObject();
@@ -603,7 +616,110 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
 
     }
-    
+    public Header[] getCsrfToken(PSDeliveryActionOptions actionOptions) throws IOException {
+        if(actionOptions.getDeliveryInfo() == null)
+        {
+            String error = "Error getting info from delivery config file";
+            log.error(error);
+            throw new PSDeliveryClientException(error);
+        }
+
+        ProtocolSocketFactory socketFactory = null;
+        boolean sslEnabled = isSslEnabled(actionOptions);
+
+        if(sslEnabled){
+            if (actionOptions.getDeliveryInfo().getAllowSelfSignedCertificate() != null &&
+                    actionOptions.getDeliveryInfo().getAllowSelfSignedCertificate())
+            {
+                socketFactory = new EasySSLProtocolSocketFactory();
+            }
+            else //Not using self-signed so setup SSL accordingly
+            {
+                socketFactory = new TLSProtocolSocketFactory();
+            }
+        }
+        PSDeliveryInfo server = actionOptions.getDeliveryInfo();
+        URI uri;
+        String protocol;
+        String port;
+
+        try
+        {
+            uri = new URI(server.getAdminUrl(), false);
+            if (!sslEnabled)
+            {
+                // Parse delivery server url to get the protocol and port
+                uri = new URI(server.getUrl(), false);
+            }
+        }
+        catch (URIException e)
+        {
+            log.error("Error getting info from delivery config file");
+            throw new PSDeliveryClientException("Error getting info from delivery config file", e);
+        }
+
+        protocol = uri.getScheme();
+
+        if (sslEnabled)
+        {
+            port = (uri.getPort() <= 0) ? "443" : Integer.toString(uri.getPort());
+            Protocol.registerProtocol(protocol, new Protocol(protocol, socketFactory, Integer.parseInt(port)));
+        }else{
+            port = (uri.getPort() <= 0) ? "80" : Integer.toString(uri.getPort());
+        }
+
+        this.requestType = actionOptions.getHttpMethod();
+        this.requestMessageBody = requestMessageBody;
+
+        if (actionOptions.getSuccessfullHttpStatusCodes() != null &&
+                !actionOptions.getSuccessfullHttpStatusCodes().isEmpty())
+            successfulHttpStatusCodes.addAll(actionOptions.getSuccessfullHttpStatusCodes());
+
+        // Request information
+        if (this.requestType.equals(HttpMethodType.GET) && requestMessageBody != null)
+            throw new IllegalArgumentException("Attempting to execute GET method with message body.  Body is: " + requestMessageBody);
+
+        this.requestUrl = processUrl(actionOptions);
+
+        // Authentication information
+        String userName = actionOptions.getDeliveryInfo().getUsername();
+        String password = actionOptions.getDeliveryInfo().getPassword();
+        this.userName = userName;
+        this.password = password;
+
+        if (isNotBlank(userName) && isBlank(password))
+            log.warn("Executing HTTP request with username but blank password.  This is probably not what you intended.");
+
+        if (StringUtils.isNotEmpty(userName)) {
+            AuthScope authScope = AuthScope.ANY;
+            try {
+                authScope = new AuthScope(uri.getHost(), uri.getPort(),server.getRealm());
+            } catch (URIException e) {
+                log.error(e.getMessage());
+                log.debug(e.getMessage(), e);
+            }
+            this.getState().setCredentials(authScope, new UsernamePasswordCredentials(userName, password));
+        }
+
+        if (proxyConfig == null)
+        {
+            if (this.proxyConfigService == null)
+                this.proxyConfigService = getProxyConfigService();
+            if (this.proxyConfigService != null)
+                this.proxyConfig = proxyConfigService
+                        .findByProtocol(protocol);
+            else
+                this.proxyConfig = new PSProxyConfig();
+        }
+
+        HeadMethod headMethod = new HeadMethod(this.requestUrl);
+        headMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, this.responseMessageBodyContentType);
+        this.executeMethod(headMethod);
+       return headMethod.getResponseHeaders();
+
+
+    }
+
 	/**
 	 * Process the delivery server host URL, and returns the appropriate
 	 * one according to the type of service (admin or non-admin) in the
@@ -731,6 +847,24 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                 @SuppressWarnings("rawtypes")
                NameValuePair[] parts = (NameValuePair[]) ((Collection) this.requestMessageBody).toArray(
                         new NameValuePair[0]);
+
+                if(csrfHeader != null) {
+                    String headerName = null;
+                    String token = null;
+                    for(Header header: csrfHeader){
+                        if(header.getName().equals(CSRF_HEADER_NAME)){
+                             headerName = header.getValue();
+
+                        }else if(header.getName().equals(CSRF_TOKEN_NAME)){
+                            token = header.getValue();
+                        }
+                    }
+                    if(headerName != null && token != null) {
+                        postMethod.addRequestHeader(headerName, token);
+                    }
+                    //reset is after use
+                    csrfHeader = null;
+                }
                 postMethod.setRequestBody(parts);
             }
             catch (Exception ex)
