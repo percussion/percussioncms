@@ -74,14 +74,12 @@
     function csrfGetURLFromServiceCall(url){
         if(typeof url === "undefined" || url == null)
             return null;
-
         //Create a new link with the url as its href:
         var ret;
         var a = $('<a>', {
             href: url
         });
         var path = url;
-
         if(path.includes("/perc-metadata-services/"))
             path = CSRF_METADATA_PATH;
         else if(path.includes("/perc-form-processor/"))
@@ -107,12 +105,19 @@
 
     }
 
-
     function csrfGetToken(url,callback){
         let csrfToken;
         if(typeof url != "undefined" && url != null){
             if(!url.endsWith("/csrf")){
                 url = csrfGetURLFromServiceCall(url);
+            }
+
+            if(!url.startsWith("http")){
+                var servicebase;
+                if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
+                    servicebase = jQuery.getDeliveryServiceBase();
+                    url = joinURL(servicebase,url);
+                }
             }
         }
         let init = {
@@ -341,8 +346,6 @@
      */
     async function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-
-        var isDTS = isDTSCall(dataObject);
         let version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         if (null === callback || 'undefined' === typeof (callback)) {
@@ -399,22 +402,8 @@
         if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
             init.body = JSON.stringify(dataObject);
         }
-        makeAjaxCall(url, type,this.crossDomain,isDTS,init);
+        makeAjaxCall(url, type,this.crossDomain,init);
 
-    }
-
-    function isDTSCall(dataObject){
-        var isEditMode = false;
-        var isPreview = false;
-        if (typeof dataObject !== 'undefined' ){
-            if(typeof dataObject.isEditMode !== 'undefined' && dataObject.isEditMode === "true"){
-                isEditMode = true;
-            }
-            if(typeof dataObject.isPreviewMode !== 'undefined' && dataObject.isPreviewMode === "true"){
-                isPreview = true;
-            }
-        }
-        return (isEditMode !== true && isPreview !== true);
     }
 
     /**
@@ -444,7 +433,6 @@
      */
     async function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        var isDTS = isDTSCall(dataObject);
         if(null === callback || 'undefined' === typeof (callback))
         {
             console.error("Callback cannot be null or undefined");
@@ -509,7 +497,7 @@
                 callback(self.STATUS_ERROR, resp);
             }
         };
-        makeAjaxCall(url, type,this.crossDomain,isDTS,init);
+        makeAjaxCall(url, type,this.crossDomain,init);
 
     }
 
@@ -528,7 +516,6 @@
                         var token = response.getResponseHeader("X-CSRF-TOKEN");
                         if(tokenHeader != null && token != null){
                            init.headers[tokenHeader] = token;
-
                         }
                     }
                     $.ajax(init);
@@ -538,8 +525,8 @@
             }
          }
 
-    function makeAjaxCall(url,type,crossDomain,isDTS,init){
-        if (!csrfSafeMethod(type) && !crossDomain && isDTS) {
+    function makeAjaxCall(url,type,crossDomain,init){
+        if (!csrfSafeMethod(type) && !crossDomain ) {
             loadcsrfToken(init);
         }else{
             $.ajax(init);
