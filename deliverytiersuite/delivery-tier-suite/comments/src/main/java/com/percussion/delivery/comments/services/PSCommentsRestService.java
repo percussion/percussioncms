@@ -122,7 +122,6 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      */
     @Override
     @POST
-    @Path("/comment/list")
     @Produces(MediaType.APPLICATION_JSON)
     public PSComments getComments(PSCommentCriteria criteria)
     {
