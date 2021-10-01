@@ -43,8 +43,6 @@ import org.apache.logging.log4j.Logger;
 import org.glassfish.jersey.server.ContainerRequest;
 import org.glassfish.jersey.server.internal.InternalServerProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
@@ -389,6 +387,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      */
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("/addcomment")
     @Override
     public Response addComment(@Context ContainerRequest containerRequest, @FormParam("action") String action, @Context HttpHeaders headers)
     {
