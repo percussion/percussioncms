@@ -742,6 +742,62 @@
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
             </replace>
 
+            <if>
+                <and>
+                    <equals arg1="@{type}" arg2="Production"/>
+                    <available file="${install.dir}/Deployment/Server/conf/server.xml" type="file"/>
+                </and>
+                <then>
+                    <echo>Fixing line endings in ${install.dir}...for Production</echo>
+                    <fixcrlf srcdir="${install.dir}/Deployment"  preservelastmodified="true">
+                        <patternset refid="text.files"/>
+                    </fixcrlf>
+                    <fixcrlf srcdir="${install.dir}" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                    <fixcrlf srcdir="${install.dir}" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                    <echo>Fixing executable file permissions...</echo>
+                    <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                        <fileset dir="${install.dir}/Deployment">
+                            <include name="**/*.sh"/>
+                            <include name="**/*.bin"/>
+                        </fileset>
+                    </chmod>
+                    <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                        <fileset dir="${install.dir}">
+                            <include name="TomcatStartup.sh"/>
+                            <include name="TomcatShutdown.sh"/>
+                        </fileset>
+                    </chmod>
+                </then>
+            </if>
+
+            <if>
+            <and>
+                <equals arg1="@{type}" arg2="Staging"/>
+                <available file="${install.dir}/Staging/Deployment/Server/conf/server.xml" type="file"/>
+            </and>
+            <then>
+                <echo>Fixing line endings in ${install.dir}/Staging...for Staging</echo>
+                <fixcrlf srcdir="${install.dir}/Staging/Deployment"  preservelastmodified="true">
+                    <patternset refid="text.files"/>
+                </fixcrlf>
+                <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatStartup.sh" preservelastmodified="true"  />
+                <fixcrlf srcdir="${install.dir}/Staging" includes="TomcatShutdown.sh" preservelastmodified="true" />
+                <echo>Fixing executable file permissions for Staging...</echo>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Staging/Deployment">
+                        <include name="**/*.sh"/>
+                        <include name="**/*.bin"/>
+                    </fileset>
+                </chmod>
+                <chmod failonerror="false" verbose="true" perm="ugo+rx">
+                    <fileset dir="${install.dir}/Staging">
+                        <include name="TomcatStartup.sh"/>
+                        <include name="TomcatShutdown.sh"/>
+                    </fileset>
+                </chmod>
+            </then>
+            </if>
+
 
         </sequential>
     </macrodef>
