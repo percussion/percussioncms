@@ -110,7 +110,7 @@
 
     }
 
-    async function csrfGetToken(url,callback){
+    function csrfGetToken(url,callback){
         let csrfToken;
         if(typeof url != "undefined" && url != null){
             if(!url.endsWith("/csrf")){
@@ -146,24 +146,8 @@
             }
         };
 
-        const response = await fetch(url, init);
+        $.ajax( url, init);
 
-        response.text().then(data => {
-            if(response.ok) {
-
-                let resp = {
-                    data: data,
-                    status: response.status
-                };
-                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
-            }else{
-                let resp = {
-                    message: response.message,
-                    status: response.status
-                };
-                callback(self.STATUS_ERROR, resp);
-            }
-        });
     }
 
     function joinURL(firstPart, secondPart){

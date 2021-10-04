@@ -25,6 +25,7 @@
 package com.percussion.share.extension;
 
 import com.percussion.delivery.service.impl.PSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSEncryptor;
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
@@ -32,14 +33,12 @@ import com.percussion.server.PSServer;
 import com.percussion.utils.io.PathUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.percussion.error.PSExceptionUtils;
-import java.io.*;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,8 +54,7 @@ import java.util.concurrent.TimeUnit;
 
         private static final Logger log = LogManager.getLogger(PSRotateSecureKey.class.getName());
         private static final String SECURE_KEY_ROTATION_TIME_PROP = "secureKeyRotationTime";
-        //Default Value is 90 days
-        private static final int SECURE_KEY_ROTATION_TIME_DEFAULT = 90;
+        private static final int SECURE_KEY_ROTATION_TIME_DEFAULT = 0;
 
 
         public PSRotateSecureKey(){
@@ -108,24 +106,29 @@ import java.util.concurrent.TimeUnit;
                 return;
             }
             try {
+                String rotationTime = PSServer.getServerProps().getProperty(SECURE_KEY_ROTATION_TIME_PROP, String.valueOf(SECURE_KEY_ROTATION_TIME_DEFAULT));
+                long rotationDays = Long.parseLong(rotationTime);
+                //Don't do rotation
+                if(rotationDays <= 0){
+                    return;
+                }
+//                if (rotationDays == 0) {
+//                    rotationDays = SECURE_KEY_ROTATION_TIME_DEFAULT;
+//                }
                 String keyLocation = PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR);
                 String SECURE_KEY_FILE = ".key";
                 Path secureKeyFile = Paths.get(keyLocation + SECURE_KEY_FILE);
                 BasicFileAttributes attr =
                         Files.readAttributes(secureKeyFile, BasicFileAttributes.class);
                 FileTime lastModified = attr.lastModifiedTime();
-                String rotationTime = PSServer.getServerProps().getProperty(SECURE_KEY_ROTATION_TIME_PROP, String.valueOf(SECURE_KEY_ROTATION_TIME_DEFAULT));
-                long rotationDays = Long.parseLong(rotationTime);
-                if (rotationDays == 0) {
-                    rotationDays = SECURE_KEY_ROTATION_TIME_DEFAULT;
-                }
+
                 long ft = lastModified.toMillis();
                 long now = System.currentTimeMillis();
                 long diff = now - ft;
                 long days = TimeUnit.MILLISECONDS.toDays(diff);
                 if (days > rotationDays) {
-log.info("Rotating the system security key based as it is {} days old based on the policy setting {}={} ...",days,SECURE_KEY_ROTATION_TIME_PROP, rotationDays);
-rotateKey();
+                    log.info("Rotating the system security key based as it is {} days old based on the policy setting {}={} ...",days,SECURE_KEY_ROTATION_TIME_PROP, rotationDays);
+                    rotateKey();
                 }else{
                     //Set Timer for those many days to rotate
                     Timer timer = new Timer();
