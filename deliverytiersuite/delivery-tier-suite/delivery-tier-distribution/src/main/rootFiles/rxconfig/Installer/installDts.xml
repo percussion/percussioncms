@@ -343,6 +343,8 @@
                 <!-- Entries to remove -->
                 <entry key="Access-Control-Allow-Origin" operation="del" />
                 <entry key="ContentSecurityPolicy" operation="del" />
+                <entry key="cacheControlMaxAgeValue" default="60" />
+                <entry key="cacheControlMaxAgeUnit" default="SECONDS" />
             </propertyfile>
             <if>
                 <isfalse value="@{upgrade}"/>
