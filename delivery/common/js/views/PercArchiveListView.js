@@ -124,8 +124,10 @@
                                 //Set the link for the item Year
                                 yearParam1 = row.year + "-01-01 00:00:00";
                                 yearParam2 = row.year + "-12-31 23:59:59";
-                                if (("undefined" !== typeof (pageResult) && "" !== pageResult && isEditMode !== "true" && isPreviewMode === "true") || (isEditMode === "false" && isPreviewMode === "false") )
-                                {
+                                if ("undefined" === typeof (pageResult) || "" === pageResult || isEditMode === "true"){
+                                    anchorYear = $("<a href='#'>")
+                                        .text(linkYearText);
+                                }else{
                                     query = JSON.parse( strJSON );
                                     query.criteria.push("dcterms:created >= '" + yearParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + yearParam2 + "'");
@@ -135,10 +137,7 @@
                                         .text(linkYearText);
 
                                 }
-                                else{
-                                      anchorYear = $("<a href='#'>")
-                                        .text(linkYearText);
-                                }
+
                                  yearLi = $("<li>")
                                     .addClass("perc-archive-year")
                                     .append(anchorYear);
@@ -184,8 +183,10 @@
                                     }
 
                                     //Set the link for the item month
-                                    if (("undefined" !== typeof (pageResult) && "" !== pageResult && isEditMode !== "true" && isPreviewMode === "true" ) || (isEditMode === "false" && isPreviewMode === "false" ))
-                                    {
+                                    if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult){
+                                        a = $("<a href='#'>")
+                                            .text(linkText);
+                                    }else{
                                         query = JSON.parse( strJSON );
                                         query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                         query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
@@ -193,12 +194,8 @@
                                         a = $("<a>")
                                             .attr("href", baseURL + pageResult + "?filter="+  row2.month + " " + row.year + encodedQuery)
                                             .text(linkText);
+                                    }
 
-                                    }
-                                    else{
-                                         a = $("<a href='#'>")
-                                            .text(linkText);
-                                    }
                                      li = $("<li>")
                                         .addClass("perc-archive-month")
                                         .append(a);
@@ -273,8 +270,10 @@
                                 }
 
                                 //Set the link for the item month
-                                if (typeof(pageResult) !== "undefined" && pageResult !== "")
-                                {
+                                if (typeof(pageResult) === "undefined" ||  pageResult === "" || isEditMode === "true" ){
+                                    a = $("<a href = '#'>")
+                                        .text(linkText);
+                                }else {
                                     let query = JSON.parse(strJSON );
                                     query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
@@ -283,10 +282,7 @@
                                         .attr("href", baseURL + pageResult + "?filter="+ row2.month + " " + row.year + encodedQuery)
                                         .text(linkText);
                                 }
-                                else{
-                                    a = $("<a href = '#'>")
-                                        .text(linkText);
-                                }
+
                                 let li = $("<li>")
                                     .addClass("perc-archive-month")
                                     .append(a);
