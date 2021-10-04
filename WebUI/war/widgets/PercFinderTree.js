@@ -123,7 +123,7 @@
             }
             $.PercServiceUtils.makeJsonRequest(
                 $.perc_paths.PATH_FOLDER + '/',
-                $.PercServiceUtils.GET, 
+                $.PercServiceUtils.TYPE_GET,
                 false, 
                 function(status, result)
                 {
@@ -236,7 +236,7 @@
             }
             $.PercServiceUtils.makeJsonRequest(
                 url, 
-                $.PercServiceUtils.GET, 
+                $.PercServiceUtils.TYPE_GET,
                 false, 
                 function(status, result){
                     if(status === $.PercServiceUtils.STATUS_ERROR)
@@ -313,7 +313,7 @@
             url = $.perc_paths.PATH_PAGINATED_FOLDER + dtdata.parentNode.data.pathItem.path + "?startIndex=" + dtdata.startIndex + "&maxResults=" + $.PercFinderTreeConstants.MAX_RESULTS;
             $.PercServiceUtils.makeJsonRequest(
                 url, 
-                $.PercServiceUtils.GET, 
+                $.PercServiceUtils.TYPE_GET,
                 false, 
                 function(status, result){
                     if(status === $.PercServiceUtils.STATUS_ERROR)

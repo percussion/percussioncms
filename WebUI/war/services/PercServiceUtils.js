@@ -554,6 +554,9 @@
     }
 
     function csrfSafeMethod(method) {
+         if(typeof method === 'undefined' || method === null){
+             return true;
+         }
         // these HTTP methods do not require CSRF protection
         return !(['post','put','delete'].includes(method.toLowerCase()));
     }
