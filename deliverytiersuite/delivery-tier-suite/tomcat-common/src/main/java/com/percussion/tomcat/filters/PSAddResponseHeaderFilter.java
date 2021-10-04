@@ -42,16 +42,41 @@ public class PSAddResponseHeaderFilter implements Filter {
 
     private static String PERC_SECURITY_PROPS_ROOT = "/conf/perc/perc-security.properties";
     private static String CATALINA_BASE = "catalina.base";
-    private Long cachingAgeTimeValue = Long.valueOf(60);
-    private TimeUnit cachingAgeTimeUnit = TimeUnit.SECONDS;
+    private Long cachingAgeTimeValue = null;
+    private TimeUnit cachingAgeTimeUnit = null;
     private String CACHING_MAX_AGE_VALUE_PROPERTY_KEY="cacheControlMaxAgeValue";
     private String CACHING_MAX_AGE_UNIT_PROPERTY_KEY="cacheControlMaxAgeUnit";
+    private static final String PERC_SECURITY_PROPERTIES = "/WEB-INF/perc-security.properties";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         if ( response instanceof HttpServletResponse) {
             HttpServletResponse httpResp = (HttpServletResponse) response;
+
+            //If global perc-security.properties does not have cache-control properties then look into service level perc-security.properties.
+            //This will help service level configuration by removing the global value and configuring each service level values. If service level values do not exist set default value.
+            if(cachingAgeTimeValue == null || cachingAgeTimeUnit == null){
+                Properties contextProps = new Properties();
+                ServletContext contextPath = request.getServletContext();
+                InputStream in = contextPath.getResourceAsStream(PERC_SECURITY_PROPERTIES);
+                contextProps.load(in);
+
+                String contextCachingAgeTimeVal = contextProps.getProperty(CACHING_MAX_AGE_VALUE_PROPERTY_KEY);
+                if (contextCachingAgeTimeVal != null && contextCachingAgeTimeVal.trim() != "") {
+                    cachingAgeTimeValue = Long.parseLong(contextCachingAgeTimeVal);
+                }else{
+                    cachingAgeTimeValue = Long.valueOf(60);
+                }
+
+                String contextCachingAgeUnitVal = contextProps.getProperty(CACHING_MAX_AGE_UNIT_PROPERTY_KEY);
+                if (contextCachingAgeUnitVal != null && contextCachingAgeUnitVal.trim() != "") {
+                    cachingAgeTimeUnit = TimeUnit.valueOf(contextCachingAgeUnitVal);
+                }else{
+                    cachingAgeTimeUnit = TimeUnit.SECONDS;
+                }
+
+            }
 
             httpResp.setHeader("Cache-Control", CacheControl.maxAge(cachingAgeTimeValue, cachingAgeTimeUnit).getHeaderValue());
             chain.doFilter(request, response);
@@ -90,6 +115,6 @@ public class PSAddResponseHeaderFilter implements Filter {
 
     @Override
     public void destroy() {
-        // ...
+
     }
 }
