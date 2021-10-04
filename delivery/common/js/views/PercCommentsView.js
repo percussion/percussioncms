@@ -176,7 +176,7 @@
                 {
                     console.error('Error retrieving comments from DTS service.');
                 }
-                var lastComment = $('.perc-coment-highlight');
+                var lastComment = $('.perc-comment-highlight');
                 if (lastComment.position()) {
                     $('html,body').animate({ scrollTop : lastComment.position().top }, 200 );
                 }
@@ -207,7 +207,7 @@
         var fullLink =  getUrl();
         var splittedLink = fullLink.split("?");
         var href = splittedLink[0];
-        var qs = splittedLink[1];
+        var qs = splittedLink[0] + "/list"
         var splittedQs = qs.split('&');
         var body = {};
 
