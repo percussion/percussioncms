@@ -23,20 +23,20 @@
  */
 package com.percussion.cms.objectstore.server;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSObjectPermissions;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * This is a system exit which given contenid calculates permissions
@@ -200,11 +200,9 @@ public class PSGetFolderPermissions extends PSDefaultExtension
       }
       catch(Exception ex)
       {
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         ex.printStackTrace(printer);
-         request.printTraceMessage("Error: " + writer.toString());
-         throw new PSExtensionProcessingException(ms_className, ex);
+          log.error(PSExceptionUtils.getMessageForLog(ex));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(ex));
+          throw new PSExtensionProcessingException(ms_className, ex);
       }
    }
 
@@ -274,14 +272,12 @@ public class PSGetFolderPermissions extends PSDefaultExtension
    private static final String ms_className = "PSGetFolderPermissions";
 
    /**
-    * HTML parameter representing content id of the folder
-    */
-   static private final String PARAM_SYS_CONTENTID = "sys_contentid";
-
-   /**
     * The number of expected parameters, intialized to 2
     */
    private static final int EXPECTED_NUMBER_OF_PARAMS = 2;
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.SECURITY_LOG);
+
 }
 
 

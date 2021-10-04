@@ -29,6 +29,7 @@ import com.percussion.cms.PSDisplayFieldElementBuilder;
 import com.percussion.cms.handlers.PSSearchCommandHandler;
 import com.percussion.cms.objectstore.IPSFieldCataloger;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
+import com.percussion.cms.objectstore.PSDbComponent;
 import com.percussion.cms.objectstore.PSDisplayFormat;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSSearch;
@@ -45,6 +46,7 @@ import com.percussion.design.objectstore.PSEntry;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -73,8 +75,6 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -85,6 +85,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
@@ -225,17 +226,11 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
-         
-         StringWriter stackWriter = new StringWriter();
-         request.printTraceMessage(ms_msgPrefix + "Caught exception: " + 
-            e.getLocalizedMessage());
-         PrintWriter printWriter = new PrintWriter(stackWriter);
-         e.printStackTrace(printWriter);
-         printWriter.close();
-         request.printTraceMessage(ms_msgPrefix + "Stack trace: " + 
-            stackWriter.toString());   
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
+         request.printTraceMessage(ms_msgPrefix + "Stack trace: " +
+                 PSExceptionUtils.getMessageForLog(e));
          throw new PSExtensionProcessingException(ms_fullExtensionName, e);  
       }
    }
@@ -429,8 +424,8 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
          // fields with choices and non-external date and number fields can have
          // multiple values
          String dimension = PSDisplayFieldElementBuilder.DIMENSION_SINGLE;
-         if (choices != null || !(useExternal || 
-            type == PSSearchField.TYPE_TEXT))
+         if (choices != null || !(useExternal ||
+                 Objects.equals(type, PSSearchField.TYPE_TEXT)))
          {
             dimension = PSDisplayFieldElementBuilder.DIMENSION_ARRAY;
          }
@@ -877,24 +872,22 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
       PSComponentProcessorProxy proc) 
          throws PSUnknownNodeTypeException, PSCmsException
    {
-      List choices = new ArrayList();
-      Element[] elements = proc.load(PSDisplayFormat.getComponentType(
+      List<PSEntry> choices = new ArrayList<>();
+      Element[] elements = proc.load(PSDbComponent.getComponentType(
          PSDisplayFormat.class), null);
-      for (int i = 0; i < elements.length; i++)
-      {
-         PSDisplayFormat df = new PSDisplayFormat(elements[i]);
+      for (Element element : elements) {
+         PSDisplayFormat df = new PSDisplayFormat(element);
          if (!df.isValidForRelatedContent())
             continue;
-         
-         PSEntry entry = new PSEntry(String.valueOf(df.getDisplayId()), 
-            df.getDisplayName());
+
+         PSEntry entry = new PSEntry(String.valueOf(df.getDisplayId()),
+                 df.getDisplayName());
          choices.add(entry);
       }
       
-      PSDisplayChoices dispChoices = new PSDisplayChoices(choices.iterator(), 
+      return new PSDisplayChoices(choices.iterator(),
          null);
-      
-      return dispChoices;
+
    }
 
    /**
@@ -971,14 +964,14 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
     */
    @SuppressWarnings("unused")
    public PSSearchFieldFilterMap getSearchFieldFilterMap(
-      final IPSRequestContext request, String slotId) throws IOException
+      final IPSRequestContext request, String slotId)
    {
       if (request == null)
          throw new IllegalArgumentException("request may not be null");
       if (slotId == null || slotId.trim().length() == 0)
          throw new IllegalArgumentException("slotId may not be null or empty");
             
-      PSSearchFieldFilterMap filterMap = 
+      return
          new PSSearchFieldFilterMap(slotId)
       {
          protected Document getDocumentFromServer(String url) 
@@ -1008,8 +1001,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
              return result;
           }
       };
-      
-      return filterMap;
+
    }
 
    /**
@@ -1146,7 +1138,7 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
     * {@link #init(IPSExtensionDef, File)} method, never <code>null</code>, 
     * empty, or modified after that.
     */
-   static private String ms_fullExtensionName = "";
+   private static  String ms_fullExtensionName = "";
    
    /**
     * The message prefix that includes the extension name and is used 
@@ -1205,12 +1197,9 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
          
          List parentFields = new ArrayList();
          if (choiceFilter != null)
-         {             
-            Iterator depFields = 
-               choiceFilter.getDependentFields().iterator();
-            while (depFields.hasNext())
-            {
-               DependentField depField = (DependentField)depFields.next();
+         {
+            for (Object o : choiceFilter.getDependentFields()) {
+               DependentField depField = (DependentField) o;
                parentFields.add(depField.getFieldRef());
             }
             
@@ -1380,11 +1369,9 @@ public class PSGenerateSearchQueryExit extends PSDefaultExtension
          root.setAttribute("name", mi_name);
          
          // add parent field names
-         Iterator parents = mi_parentFields.iterator();
-         while (parents.hasNext())
-         {
-            PSXmlDocumentBuilder.addElement(doc, root, "ParentField", 
-               (String)parents.next());            
+         for (Object mi_parentField : mi_parentFields) {
+            PSXmlDocumentBuilder.addElement(doc, root, "ParentField",
+                    (String) mi_parentField);
          }
          
          // add key data

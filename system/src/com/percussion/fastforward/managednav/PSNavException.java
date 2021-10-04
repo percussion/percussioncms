@@ -23,11 +23,8 @@
  */
 package com.percussion.fastforward.managednav;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSRuntimeException;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 
 /**
  * A general purpose exception for the Navigation package.
@@ -104,16 +101,9 @@ public class PSNavException extends PSRuntimeException
     * @param ex the exception.
     * @return the error message. Never <code>null</code>.
     */
-   @Deprecated
    public static String handleException(Exception ex)
    {
-      StringWriter sw = new StringWriter();
-      PrintWriter pw = new PrintWriter((Writer) sw);
-      pw.println("Exception " + ex.toString());
-      pw.println("Message: " + ex.getLocalizedMessage());
-      ex.printStackTrace(pw);
-      pw.flush();
-      return sw.toString();
+      return PSExceptionUtils.getMessageForLog(ex);
    }
 
    /***

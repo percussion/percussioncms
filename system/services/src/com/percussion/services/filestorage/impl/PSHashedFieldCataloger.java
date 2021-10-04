@@ -24,19 +24,19 @@
 
 package com.percussion.services.filestorage.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
-import com.percussion.data.PSMetaDataCache;
 import com.percussion.design.objectstore.IPSBackEndMapping;
 import com.percussion.design.objectstore.PSBackEndColumn;
-import com.percussion.design.objectstore.PSBackEndTable;
 import com.percussion.design.objectstore.PSContentEditorMapper;
 import com.percussion.design.objectstore.PSContentEditorSharedDef;
 import com.percussion.design.objectstore.PSContentEditorSystemDef;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSSharedFieldGroup;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.filestorage.IPSFileStorageService;
 import com.percussion.services.filestorage.IPSHashedFieldCataloger;
@@ -44,21 +44,24 @@ import com.percussion.services.filestorage.IPSHashedFieldCatalogerDAO;
 import com.percussion.services.filestorage.data.PSHashedColumn;
 import com.percussion.services.filestorage.error.PSBinaryMigrationException;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.naming.NamingException;
-
-import org.springframework.transaction.annotation.Transactional;
-
 public class PSHashedFieldCataloger implements IPSHashedFieldCataloger
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
    IPSHashedFieldCatalogerDAO dao;
 
@@ -81,42 +84,28 @@ public class PSHashedFieldCataloger implements IPSHashedFieldCataloger
       PSContentEditorSystemDef systemDef = PSServer.getContentEditorSystemDef();
       HashSet<PSHashedColumn> columns = new HashSet<>();
       HashSet<PSField> fields = new HashSet<>();
-      for (PSField fs : systemDef.getFieldSet().getAllFields())
-      {
-         fields.add(fs);
-      }
+      Collections.addAll(fields, systemDef.getFieldSet().getAllFields());
+
       Iterator sharedGroupsIt = sharedDef.getFieldGroups();
       while (sharedGroupsIt.hasNext())
       {
          PSSharedFieldGroup group = (PSSharedFieldGroup) sharedGroupsIt.next();
-         for (PSField fs : group.getFieldSet().getAllFields())
-         {
-            fields.add(fs);
-         }
+         Collections.addAll(fields, group.getFieldSet().getAllFields());
       }
-
-      // PSSharedFieldGroup fg =
-      // (PSSharedFieldGroup)sharedDef.getFieldGroups().next();
 
       PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
 
       long[] typeIds = itemDefMgr.getAllContentTypeIds(-1);
-      for (int i = 0; i < typeIds.length; i++)
-      {
+      for (long typeId : typeIds) {
          PSItemDefinition itemDef;
-         try
-         {
-            itemDef = itemDefMgr.getItemDef(typeIds[i], -1);
+         try {
+            itemDef = itemDefMgr.getItemDef(typeId, -1);
             PSContentEditorMapper mapper = itemDef.getContentEditorMapper();
             PSFieldSet fieldSet = mapper.getFieldSet();
 
-            for (PSField fs : fieldSet.getAllFields())
-            {
-               fields.add(fs);
-            }
-         }
-         catch (PSInvalidContentTypeException e)
-         {
+            Collections.addAll(fields, fieldSet.getAllFields());
+
+         } catch (PSInvalidContentTypeException e) {
             throw new PSBinaryMigrationException("Invalid content type ", e);
          }
       }
@@ -210,55 +199,26 @@ public class PSHashedFieldCataloger implements IPSHashedFieldCataloger
 
       Set<PSHashedColumn> dbColumns = getStoredColumns();
 
-      Connection conn = null;
-      ResultSet rs = null;
-      try
+      try(Connection conn = PSConnectionHelper.getDbConnection())
       {
-         conn = PSConnectionHelper.getDbConnection();
          String schema = PSConnectionHelper.getConnectionDetail().getOrigin();
          DatabaseMetaData md = conn.getMetaData();
          for (PSHashedColumn column : dbColumns)
          {
 
-            rs = md.getColumns(null, schema, column.getTablename(), column.getColumnName());
-            if (rs.next())
-               column.setColumnExists(true);
-            rs.close();
+            try(ResultSet rs = md.getColumns(null, schema, column.getTablename(), column.getColumnName())) {
+               if (rs.next())
+                  column.setColumnExists(true);
+            }
+
             if (serverColumns.contains(column))
             {
                column.setFieldExists(true);
             }
          }
-
-      }
-      catch (NamingException e)
-      {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-      catch (SQLException e)
-      {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-      finally
-      {
-         try
-         {
-            if (rs!=null) rs.close();
-         }
-         catch (SQLException e)
-         {
-            // Ignore
-         }
-         try
-         {
-            if(conn!=null) conn.close();
-         }
-         catch (SQLException e)
-         {
-            // Ignore
-         }
+      } catch (SQLException | NamingException e) {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       return dbColumns;

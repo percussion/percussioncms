@@ -1221,9 +1221,9 @@ public class PSCmsObjectMgr
       }
       catch (PSUnknownNodeTypeException e)
       {
-         // this is not possible
-         e.printStackTrace();
-         throw new PSCmsException(IPSCmsErrors.FAILED_GET_REL_CONFIG_FROM_XML, e.getLocalizedMessage());
+          logger.error(PSExceptionUtils.getMessageForLog(e));
+          logger.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new PSCmsException(IPSCmsErrors.FAILED_GET_REL_CONFIG_FROM_XML, e);
       }
    }
 

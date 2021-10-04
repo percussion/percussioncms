@@ -597,6 +597,8 @@ public interface IPSConstants
    public static final String I18N_LOG="I18N";
    public static final String SEARCH_LOG="Search";
    public static final String SERVER_LOG="Server";
+   public static final String CONTENTREPOSITORY_LOG="Content Repository";
+
 
 
 

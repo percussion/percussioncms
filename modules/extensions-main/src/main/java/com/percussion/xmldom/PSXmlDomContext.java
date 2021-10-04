@@ -23,6 +23,7 @@
  */
 package com.percussion.xmldom;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
@@ -33,9 +34,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Properties;
 
 
@@ -316,17 +314,7 @@ public class PSXmlDomContext
    public void handleException(Exception e, boolean throwException)
          throws PSExtensionProcessingException
    {
-      StringBuilder estr = new StringBuilder("Unexpected exception in ");
-      estr.append(m_function).append("\n");
-      estr.append(e.toString()).append("\n");
-      estr.append(e.getMessage().toString()).append("\n");
-
-      //print the stack trace into the tracing log.
-      StringWriter stackWriter = new StringWriter();
-      e.printStackTrace(new PrintWriter((Writer) stackWriter, true));
-      estr.append(stackWriter.toString());
-
-      printTraceMessage(estr.toString());
+      printTraceMessage(PSExceptionUtils.getMessageForLog(e));
 
       if (throwException)
          throw new PSExtensionProcessingException(m_function, e);

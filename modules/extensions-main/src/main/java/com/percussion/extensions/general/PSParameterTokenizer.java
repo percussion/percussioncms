@@ -24,15 +24,17 @@
 
 package com.percussion.extensions.general;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -67,6 +69,8 @@ import java.util.StringTokenizer;
 public class PSParameterTokenizer extends PSDefaultExtension implements
 IPSRequestPreProcessor {
 
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
+
 /**
  * Process the pre-exit request.
  *
@@ -83,7 +87,7 @@ IPSRequestPreProcessor {
          throws PSExtensionProcessingException, PSParameterMismatchException
    {
    int i;
-   ArrayList outputParams = new ArrayList(params.length);
+   ArrayList<HTMLParameter> outputParams = new ArrayList<>(params.length);
 
    try  {
 
@@ -108,14 +112,14 @@ IPSRequestPreProcessor {
          // there's no input parameter in the map.
          request.printTraceMessage("The input parameter is null");
          return;
-         };
+         }
 
       //special case: an empty string, we leave now.
       //Note: this won't catch an empty array list
       if(inputArray.toString().trim().length() == 0) {
          request.printTraceMessage("The input parameter is empty");
          return;
-         };
+         }
 
       // now look at the rest of the parameter list and build the name list.
       for(i=1; i < params.length && params[i] != null; i++) {
@@ -135,34 +139,25 @@ IPSRequestPreProcessor {
             return;
             }
          request.printTraceMessage("multiple values found:"
-            + inputArray.toString());
-
-         ArrayList contentList = new ArrayList(inputList.size());
-         ArrayList variantList = new ArrayList(inputList.size());
+            + inputArray);
 
          //iterate across the list of input parameters
-         Iterator inTer = inputList.iterator();
-         while(inTer.hasNext()) {
-            String inputValue = (String) inTer.next();
-            StringTokenizer tok = new StringTokenizer(inputValue,SEPARATORS);
+         for (Object o : inputList) {
+            String inputValue = (String) o;
+            StringTokenizer tok = new StringTokenizer(inputValue, SEPARATORS);
             //now iterate across the tokens of the string
-            Iterator outTer = outputParams.iterator();
-            while(outTer.hasNext()) {
-               HTMLParameter currParam = (HTMLParameter) outTer.next();
-               if(tok.hasMoreTokens()) {
+            for (HTMLParameter currParam : outputParams) {
+               if (tok.hasMoreTokens()) {
                   currParam.addParamValue(tok.nextToken());
-                  }
-               else {
+               } else {
                   currParam.addParamValue("");
-                  }
-               }   // while more tokens
-            }  // while more parameters
+               }
+            }   // while more tokens
+         }  // while more parameters
          // now go back and add the parameters to the request's map
-         Iterator outTer = outputParams.iterator();
-         while(outTer.hasNext()) {
-            HTMLParameter currParam = (HTMLParameter) outTer.next();
-            htmlParams.put(currParam.getName(),currParam.getArray());
-            }
+         for (HTMLParameter currParam : outputParams) {
+            htmlParams.put(currParam.getName(), currParam.getArray());
+         }
          }
       else
          {
@@ -172,24 +167,17 @@ IPSRequestPreProcessor {
          StringTokenizer tok = new StringTokenizer(inputValue,SEPARATORS);
 
          //iterate across the tokens
-         Iterator outTer = outputParams.iterator();
-         while(outTer.hasNext()) {
-            HTMLParameter currParam = (HTMLParameter) outTer.next();
-            //this is much easier, just add to the HTML parameter map directly
-            if(tok.hasMoreTokens()) {
-               htmlParams.put(currParam.getName(),tok.nextToken());
+            for (HTMLParameter currParam : outputParams) {
+               //this is much easier, just add to the HTML parameter map directly
+               if (tok.hasMoreTokens()) {
+                  htmlParams.put(currParam.getName(), tok.nextToken());
                }
             }
          }
-      return;
 
    } catch (Exception e){ // just in case we missed something
-      StringWriter stackWriter = new StringWriter();
-      stackWriter.write("Unexpected Exception in " +
-         this.getClass().getName() + "\n");
-      e.printStackTrace(new java.io.PrintWriter((java.io.Writer)stackWriter,
-         true));
-      request.printTraceMessage(stackWriter.toString());
+      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+      request.printTraceMessage(PSExceptionUtils.getMessageForLog(e));
       throw new PSExtensionProcessingException(this.getClass().getName(),e);
       }
 }

@@ -23,7 +23,9 @@
  */
 package com.percussion.cas;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.extension.PSDefaultExtension;
@@ -32,13 +34,12 @@ import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.HashMap;
-
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import java.util.HashMap;
 
 /**
  * Builds a delivery location by concatenating all the text nodes of the
@@ -49,6 +50,9 @@ import org.w3c.dom.Node;
 public class PSGenericAssembly extends PSDefaultExtension
    implements IPSAssemblyLocation
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
+
    /**
     * This method creates a new publishing location string using the provided
     * parameters.
@@ -109,7 +113,7 @@ public class PSGenericAssembly extends PSDefaultExtension
 
          String resource = params[0].toString().trim();
 
-         HashMap newHTMLParams = new HashMap();
+         HashMap<String,String> newHTMLParams = new HashMap<>();
          if ((params.length >= 2) && (params[1] != null) &&
             (params[1].toString().trim().length() > 0))
          {
@@ -133,7 +137,7 @@ public class PSGenericAssembly extends PSDefaultExtension
             throw new PSExtensionException(ms_className, msg);
          }
 
-         String location = "";
+         StringBuilder location = new StringBuilder();
          Document doc = iReq.getResultDoc();
          if (doc != null)
          {
@@ -141,20 +145,19 @@ public class PSGenericAssembly extends PSDefaultExtension
             Node node = walker.getNext();
             while (node != null)
             {
-               location += PSXmlTreeWalker.getElementData(node);
+               location.append(PSXmlTreeWalker.getElementData(node));
                node = walker.getNext();
             }
          }
          request.printTraceMessage(
             ms_className + "#createLocation location = " + location);
-         return location;
+
+         return location.toString();
       }
       catch (PSInternalRequestCallException ex)
       {
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         ex.printStackTrace(printer);
-         request.printTraceMessage("Error: " + writer.toString());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(ex));
+         request.printTraceMessage("Error: " + PSExceptionUtils.getMessageForLog(ex));
          throw new PSExtensionException(ms_className, ex.getLocalizedMessage());
       }
    }

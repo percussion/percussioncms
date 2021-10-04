@@ -26,6 +26,8 @@ package com.percussion.server.actions;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,9 +37,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Tracks the results of the execution of a single action set.  Each action
@@ -160,33 +159,29 @@ public class PSActionSetResult
       Element root = PSXmlDocumentBuilder.createRoot( doc, "StoredActionResults" );
       root.setAttribute( "actionSetName", m_actionSetName );
       root.setAttribute( "originalHref", m_originalHref );
-      for (Iterator results = m_actionNames.iterator(); results.hasNext();)
-      {
-         String actionName = (String) results.next();
-         ActionResult result = (ActionResult) m_actionResults.get( actionName );
-         Element actionEl = doc.createElement( "ActionResult" );
-         actionEl.setAttribute( "actionName", actionName );
-         actionEl.setAttribute( "status", result.getStatusString() );
+      for (Object m_actionName : m_actionNames) {
+         String actionName = (String) m_actionName;
+         ActionResult result = (ActionResult) m_actionResults.get(actionName);
+         Element actionEl = doc.createElement("ActionResult");
+         actionEl.setAttribute("actionName", actionName);
+         actionEl.setAttribute("status", result.getStatusString());
          Object resultObject = result.getResult();
-         if (resultObject instanceof Exception)
-         {
+         if (resultObject instanceof Exception) {
             Exception e = (Exception) resultObject;
-            Element errorEl = doc.createElement( "Error" );
-            errorEl.setAttribute( "className", e.getClass().toString() );
-            PSXmlDocumentBuilder.addElement( doc, errorEl, "Description",
-               e.getLocalizedMessage() );
+            Element errorEl = doc.createElement("Error");
+            errorEl.setAttribute("className", e.getClass().toString());
+            PSXmlDocumentBuilder.addElement(doc, errorEl, "Description",
+                    e.getMessage());
             StringWriter callstack = new StringWriter();
-            e.printStackTrace( new PrintWriter( callstack ) );
-            PSXmlDocumentBuilder.addElement( doc, errorEl, "Callstack",
-               callstack.toString() );
-            actionEl.appendChild( errorEl );
-         }
-         else if (resultObject instanceof Document)
-         {
+            e.printStackTrace(new PrintWriter(callstack));
+            PSXmlDocumentBuilder.addElement(doc, errorEl, "Callstack",
+                    callstack.toString());
+            actionEl.appendChild(errorEl);
+         } else if (resultObject instanceof Document) {
             // for future use, when update statistics can be tracked
-            actionEl.appendChild( ((Document) resultObject).getDocumentElement() );
+            actionEl.appendChild(((Document) resultObject).getDocumentElement());
          }
-         root.appendChild( actionEl );
+         root.appendChild(actionEl);
       }
       return doc;
    }
@@ -208,7 +203,7 @@ public class PSActionSetResult
       }
       catch (IOException ioe)
       {
-         return null;
+         return "";
       }
 
       return out.toString();

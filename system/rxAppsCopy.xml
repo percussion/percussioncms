@@ -467,10 +467,11 @@
       <copy todir="${FF_DIST_MANAGEDNAV_DIR}/Exits">
          <fileset dir="${FF_MANAGEDNAV}/Exits"/>
       </copy>
-      <mkdir dir="${FF_DIST_SITEFOLDER_DIR}/Exits"/>
+ <!--     <mkdir dir="${FF_DIST_SITEFOLDER_DIR}/Exits"/>
       <copy todir="${FF_DIST_SITEFOLDER_DIR}/Exits">
          <fileset dir="${FF_SITEFOLDER}/Exits"/>
       </copy>
+      -->
       <mkdir dir="${FF_DIST_DEFAULTTEMPLATE_DIR}/Exits"/>
       <copy todir="${FF_DIST_DEFAULTTEMPLATE_DIR}/Exits">
          <fileset dir="${FF_DEFAULTTEMPLATE}/Exits"/>
