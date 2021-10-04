@@ -122,6 +122,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      */
     @Override
     @POST
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
     public PSComments getComments(PSCommentCriteria criteria)
     {
@@ -187,59 +188,10 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
     //@Produces({ "application/x-javascript", "application/json"})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public GenericEntity getCommentsP(PSCommentCriteria criteria/*
-            @QueryParam("callback") @DefaultValue(CALLBACK_FN) String callback,
-            @QueryParam("pagepath") String pagepath,
-            @QueryParam("site") String site,
-            @QueryParam("username") String username,
-            @QueryParam("state") String state,
-            @QueryParam("maxresults") String maxResults,
-            @QueryParam("startindex") String startIndex,
-            @QueryParam("tag") String tag,
-            @QueryParam("sortby") String sortby,
-            @QueryParam("ascending") String ascending,
-            @QueryParam("moderated") String moderated,
-            @QueryParam("viewed") String viewed,
-            @QueryParam("lastcommentid") String lastCommentId*/
-    )
-    {
+    public GenericEntity getCommentsP(PSCommentCriteria criteria){
         try
         {
-          /*  PSCommentCriteria criteria = new PSCommentCriteria();
-            if(StringUtils.isNotBlank(pagepath))
-                criteria.setPagepath(pagepath);
-            if(StringUtils.isNotBlank(site))
-                criteria.setSite(site);
-            if(StringUtils.isNotBlank(username))
-                criteria.setUsername(username);
-            if(StringUtils.isNotBlank(state))
-                criteria.setState(getState(state));
-            if(StringUtils.isNotBlank(maxResults))
-                criteria.setMaxResults(getIntValue(maxResults, "maxresults"));
-            if(StringUtils.isNotBlank(startIndex))
-                criteria.setStartIndex(getIntValue(startIndex, "startindex"));
-            if(StringUtils.isNotBlank(tag))
-                criteria.setTag(tag);
-            if(StringUtils.isNotBlank(moderated))
-                criteria.setModerated(Boolean.valueOf(moderated));
-            if(StringUtils.isNotBlank(viewed))
-                criteria.setViewed(Boolean.valueOf(viewed));
-            if(StringUtils.isNotBlank(lastCommentId))
-                criteria.setLastCommentId(lastCommentId);
-
-            if(StringUtils.isNotBlank(sortby))
-            {
-                boolean asc = StringUtils.isNotBlank(ascending) && ascending.equalsIgnoreCase("true");
-                PSCommentSort commentSort = new PSCommentSort(getSortBy(sortby), asc);
-                criteria.setSort(commentSort);
-            }
-
-            if(log.isDebugEnabled()){
-                log.debug("Criteria in the service is :" + criteria.toJSON());
-            }
-
-            validateCallback(callback);*/
-             if(criteria.getCallback().isEmpty())
+             if(criteria.getCallback() == null || criteria.getCallback().isEmpty())
                 criteria.setCallback(CALLBACK_FN);
 
             if(StringUtils.isNotBlank(criteria.getSortby()))

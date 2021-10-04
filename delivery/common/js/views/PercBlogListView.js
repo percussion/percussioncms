@@ -40,7 +40,7 @@
 
 (function($)
 {
-    $(document).ready(function(){
+    $(function(){
         $.PercBlogListView.updatePageLists();
     });
     $.PercBlogListView = {
@@ -155,7 +155,15 @@
         target.settings.query.maxResults = target.settings.maxResults;
         target.settings.query.totalMaxResults = target.settings.totalMaxResults;
         target.settings.query.startIndex = (target.settings.maxResults*(startPage - 1));
-        target.settings.baseURL = window.location.protocol + '//' + window.location.host + window.location.pathname
+        //Set the base URL to create the href for each item then
+        var baseURL = "";
+        if(target.settings.isEditMode === "true" || target.settings.isPreviewMode === "true"){
+            var paths = window.location.pathname.split("/");
+            baseURL = "/" + paths[1] + "/" + paths[2];
+        }else{
+            baseURL = window.location.protocol + '//' + window.location.host;
+        }
+        target.settings.baseURL = baseURL + window.location.pathname;
 
         // Adding the filters from the query
         var urlstring = $.deparam.querystring();

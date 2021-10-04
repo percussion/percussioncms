@@ -82,16 +82,12 @@
                  <div class = "perc-form-name">$renderedForm </div>
                  #if($formdata.contains('Honeypot'))##
                      <script >
-                     window.addEventListener('DOMContentLoaded', function() {
-                         validatePercForm();
-                       });
-                     function validatePercForm() {
+                         function validatePercForm() {
                              if(!document.getElementById("topyenoh").value) {
                                  return true;
                              }
                              return false;
                          }
-
                      </script>
                  #end##
               #elseif ($perc.isEditMode())

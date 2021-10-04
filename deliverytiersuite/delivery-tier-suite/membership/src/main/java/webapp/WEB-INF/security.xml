@@ -32,7 +32,7 @@
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
         <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
-        <beans:constructor-arg value="/membership/admin/"/>
+        <beans:constructor-arg value="/membership/registration/confirm,/membership/pwd/reset/,/membership/user,/membership/pwd/validate,/membership/pwd/requestReset/membership/logout,/membership/login,/membership/session,/membership/admin/"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
 
