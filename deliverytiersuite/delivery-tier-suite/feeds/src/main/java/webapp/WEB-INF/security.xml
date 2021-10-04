@@ -25,6 +25,7 @@
             <security:frame-options policy="${xframeOptionsPolicy}" />
             <security:content-security-policy policy-directives="${contentSecurityPolicy}" report-only="${cspReportOnly}"/>
             <security:xss-protection block="${xssProtection}"/>
+            <security:cache-control />
         </security:headers>
         <security:cors configuration-source-ref="corsSource" />
         <security:http-basic/>
