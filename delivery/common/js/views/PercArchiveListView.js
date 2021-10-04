@@ -63,7 +63,7 @@
 
             //Set the base URL to create the href for each item then
             var baseURL = "";
-            if(isEditMode==="true" || isPreviewMode === "true"){
+            if(isEditMode==="true"){
                 var paths = window.location.pathname.split("/");
                 baseURL = "/" + paths[1] + "/" + paths[2];
             }else{
