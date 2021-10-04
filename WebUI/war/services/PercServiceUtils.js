@@ -70,6 +70,11 @@
     var CSRF_MEMBERSHIP_PATH="/perc-membership-services/membership/csrf";
     var CSRF_FEEDS_PATH="/feed/rss/csrf";
 
+    $.ajaxSetup({
+        timeout: 300000
+    });
+
+
 
     function csrfGetURLFromServiceCall(url){
         if(typeof url === "undefined" || url == null)
@@ -105,7 +110,7 @@
 
     }
 
-    function csrfGetToken(url,callback){
+    async function csrfGetToken(url,callback){
         let csrfToken;
         if(typeof url != "undefined" && url != null){
             if(!url.endsWith("/csrf")){
@@ -121,6 +126,7 @@
             }
         }
         let init = {
+            url:url,
             async: "false",
             method: TYPE_HEAD, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -139,7 +145,25 @@
                 console.debug(textstatus + ":" + error);
             }
         };
-        $.ajax( url, init);
+
+        const response = await fetch(url, init);
+
+        response.text().then(data => {
+            if(response.ok) {
+
+                let resp = {
+                    data: data,
+                    status: response.status
+                };
+                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
+            }else{
+                let resp = {
+                    message: response.message,
+                    status: response.status
+                };
+                callback(self.STATUS_ERROR, resp);
+            }
+        });
     }
 
     function joinURL(firstPart, secondPart){
@@ -215,6 +239,7 @@
             dataType: 'json',
             async: !sync,
             contentType: 'application/json',
+            method: type,
             type: type,
             url: url,
             headers: {"perc-version": version},
@@ -254,7 +279,30 @@
         if (ajaxTimeout) {
             $.extend(args, {timeout: ajaxTimeout});
         }
-        return $.ajax(args);
+        makeAjaxRequest(args);
+    }
+    function makeAjaxRequest(args){
+        if(!csrfSafeMethod(args.method)) {
+            let u = csrfGetURLFromServiceCall(args.url);
+            if (u != null) {
+                csrfGetToken(u, function (response) {
+                    if (typeof response !== 'undefined' && response != null)
+                        var tokenHeader = response.getResponseHeader(CSRF_HEADER);
+                    if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
+                        var token = response.getResponseHeader("X-CSRF-TOKEN");
+                        if (tokenHeader != null && token != null) {
+                            args.headers[tokenHeader] = token;
+                        }
+                    }
+                    $.ajax(args);
+                });
+            } else {
+                $.ajax(args);
+            }
+        }else{
+            $.ajax(args);
+        }
+
     }
 
     /**
@@ -279,6 +327,7 @@
                 json: "application/json, text/javascript"
             },
             async: !sync,
+            method:type,
             contentType: contentType,
             type: type,
             url: (noEscape) ? url : escape(url),
@@ -316,7 +365,8 @@
         if (dataObject) {
             $.extend(args, {data: JSON.stringify(dataObject)});
         }
-        $.ajax(args);
+        makeAjaxRequest(args);
+
     }
 
     /**
@@ -371,6 +421,7 @@
             url = joinURL(servicebase,url);
         }
         let init = {
+            url:url,
             method: type, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -402,9 +453,10 @@
         if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
             init.body = JSON.stringify(dataObject);
         }
-        makeAjaxCall(url, type,this.crossDomain,init);
 
-    }
+
+        makeAjaxRequest(init);
+   }
 
     /**
      * Make a cross domain JSON ajax request to the delivery sevices. The request content type will be
@@ -431,7 +483,7 @@
      * </pre>
      * @param dataObject JSON payload object for request, may be null.
      */
-    async function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
+     function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
         if(null === callback || 'undefined' === typeof (callback))
         {
@@ -473,6 +525,7 @@
             dataType: "text",
             contentType: "application/json",
             type: type,
+            method:type,
             data:body,
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -497,40 +550,12 @@
                 callback(self.STATUS_ERROR, resp);
             }
         };
-        makeAjaxCall(url, type,this.crossDomain,init);
-
+        makeAjaxRequest(init);
     }
 
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return !(['post','put','delete'].includes(method.toLowerCase()));
-    }
-
-    function loadcsrfToken(init){
-            let u = csrfGetURLFromServiceCall(init.url);
-             if (u != null) {
-                csrfGetToken(u, function (response) {
-                    if (typeof response !== 'undefined' && response != null)
-                        var tokenHeader = response.getResponseHeader(CSRF_HEADER);
-                    if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
-                        var token = response.getResponseHeader("X-CSRF-TOKEN");
-                        if(tokenHeader != null && token != null){
-                           init.headers[tokenHeader] = token;
-                        }
-                    }
-                    $.ajax(init);
-                });
-            }else{
-                $.ajax(init);
-            }
-         }
-
-    function makeAjaxCall(url,type,crossDomain,init){
-        if (!csrfSafeMethod(type) && !crossDomain ) {
-            loadcsrfToken(init);
-        }else{
-            $.ajax(init);
-        }
     }
 
 
@@ -571,6 +596,7 @@
             dataType: 'xml',
             async: !sync,
             contentType: 'application/xml',
+            method:type,
             type: type,
             url: url,
             headers: {"perc-version": version},
@@ -598,7 +624,7 @@
         if (dataString) {
             $.extend(args, {data: dataString});
         }
-        $.ajax(args);
+        makeAjaxRequest(args);
     }
 
     /**
@@ -634,6 +660,7 @@
             dataType: 'text',
             async: !sync,
             contentType: 'application/xml',
+            method: self.TYPE_DELETE,
             type: self.TYPE_DELETE,
             url: url,
             headers: {"perc-version": version},
@@ -661,7 +688,7 @@
         if (dataString) {
             $.extend(args, {data: dataString});
         }
-        $.ajax(args);
+        makeAjaxRequest(args);
     }
 
 
