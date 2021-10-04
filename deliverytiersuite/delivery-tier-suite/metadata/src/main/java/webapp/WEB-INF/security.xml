@@ -32,7 +32,7 @@
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
         <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
-        <beans:constructor-arg value="/blogs/get,/trackblogpost,/topblogposts,/categories/update/,/tags/get,/dated/get,/delete,/blog/getCurrent,/categories/get,/indexer/entry/,/metadata/clean/,/metadata/consent/log,/metadata/delete,/metadata/updateOldSiteEntries/,/indexer/,/metadata/categories/update/"/>
+        <beans:constructor-arg value="/metadata/get,/blogs/get,/trackblogpost,/topblogposts,/categories/update/,/tags/get,/dated/get,/delete,/blog/getCurrent,/categories/get,/indexer/entry/,/metadata/clean/,/metadata/consent/log,/metadata/delete,/metadata/updateOldSiteEntries/,/indexer/,/metadata/categories/update/"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
 
