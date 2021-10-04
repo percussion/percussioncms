@@ -25,10 +25,8 @@ package com.percussion.workflow;
 
 import com.percussion.data.PSConversionException;
 import com.percussion.data.PSDataExtractionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * Performs the same functionality as the base class 
@@ -42,6 +40,7 @@ public class PSGetUserCheckoutStatus extends PSGetCheckoutStatus
     * expects the first parameter to be the checkedout user name.  May be 
     * <code>null</code> or empty.
     */
+   @Override
    public Object processUdf(Object[] params, IPSRequestContext request)
       throws PSConversionException
    {
@@ -49,7 +48,7 @@ public class PSGetUserCheckoutStatus extends PSGetCheckoutStatus
       if ( null == params || params.length < 1)
          return "";
       
-      String result = "Default";
+      String result;
       String checkedoutUser = params[0] == null ? "" : params[0].toString();
       
       try 
@@ -58,11 +57,7 @@ public class PSGetUserCheckoutStatus extends PSGetCheckoutStatus
       }
       catch (PSDataExtractionException e)
       {
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         e.printStackTrace(printer);
-         request.printTraceMessage("Error: " + e.getLocalizedMessage() +
-            "\n" + writer.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new PSConversionException(e.getErrorCode(),
             e.getErrorArguments());
       }

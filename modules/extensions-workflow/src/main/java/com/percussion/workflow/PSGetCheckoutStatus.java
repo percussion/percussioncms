@@ -28,21 +28,22 @@ package com.percussion.workflow;
 import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSConversionException;
 import com.percussion.data.PSDataExtractionException;
-import com.percussion.data.PSSqlException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
+import com.percussion.server.IPSServerErrors;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.naming.NamingException;
-
 /**
- * This class implements the UDF processor interface so it can be used as a
+ * This class implements the UDF processor interface, so it can be used as a
  * Rhythmyx function. See {@link #processUdf(Object[], IPSRequestContext)
  * processUdf} for a description. This UDF is sepcifically designed for Content
  * Explorer, though it can be theoretically used elsewhere.
@@ -86,55 +87,46 @@ public class PSGetCheckoutStatus extends PSSimpleJavaUdfExtension
       throws PSConversionException
    {
       if ( null == params || params.length < 1 || null == params[0]
-         || 0 == params[0].toString().trim().length())
+         || 0 == params[0].toString().trim().length()||!StringUtils.isNumeric(params[0].toString().trim()))
          return "";
 
 
       String contentid = params[0].toString().trim();
       String result = "Default";
-      String userName = "";
+
       PSConnectionMgr connectionMgr = null;
       PSContentStatusContext csc = null;
-      
-      try
+
+      try{
+         connectionMgr = new PSConnectionMgr();
+      } catch (SQLException e) {
+         log.error("Error getting JDBC Connection Manager. Error: {}",PSExceptionUtils.getMessageForLog(e));
+         throw new PSConversionException(e);
+      }
+
+      try(Connection conn = connectionMgr.getConnection())
       {
          int iContentId = Integer.parseInt(contentid);
-         connectionMgr = new PSConnectionMgr();
-         Connection conn = connectionMgr.getConnection();
+
          csc = new PSContentStatusContext(conn, iContentId);
          String checkoutuser = csc.getContentCheckedOutUserName();
          result = getCheckoutStatus(checkoutuser, params, request);
       }
       catch (PSException e)
       {
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         e.printStackTrace(printer);
-         request.printTraceMessage("Error: " + e.getLocalizedMessage() +
-            "\n" + writer.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new PSConversionException(e.getErrorCode(),
             e.getErrorArguments());
       }
       catch (SQLException e)
       {
-         String msg = PSSqlException.getFormattedExceptionText(e);
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         e.printStackTrace(printer);
-         request.printTraceMessage("Error: " + e.getLocalizedMessage() +
-            "\n" + writer.toString());
-         throw new PSConversionException(0, msg);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         throw new PSConversionException(IPSServerErrors.SQL_PROBLEM, PSExceptionUtils.getMessageForLog(e));
       }
       catch (NamingException e)
       {
-         throw new RuntimeException(e);
-      }
-      finally
-      {
-         if (csc != null)
-            csc.close();
-         if (connectionMgr != null)
-            try {connectionMgr.releaseConnection();} catch (SQLException e){}
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         throw new PSConversionException(e);
       }
       
       return result;
@@ -183,9 +175,8 @@ public class PSGetCheckoutStatus extends PSSimpleJavaUdfExtension
       
       return result;
    }
-   
-   //String constants for the temporary XML document
-   static private final String ELEMENT_ITEM = "Item";
-   static private final String ATTRIB_CONTENTID = "contentid";
+
+    protected static final Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
+
 }
 

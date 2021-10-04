@@ -64,8 +64,7 @@ public class PSConnectionMgr
    public synchronized Connection getConnection()
       throws SQLException, NamingException
    {
-      Connection connection =  getWithOptionsConnection();
-      return connection;
+      return getWithOptionsConnection();
    }
 
    /**
@@ -73,7 +72,6 @@ public class PSConnectionMgr
     * 
     * @throws SQLException if there are any errors. 
     */
-   @SuppressWarnings("deprecation")
    public synchronized void releaseConnection()
       throws SQLException
    {

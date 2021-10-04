@@ -23,6 +23,8 @@
  */
 package com.percussion.services.publisher.ui;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -30,28 +32,27 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.services.sitemgr.data.PSSite;
 import com.percussion.services.sitemgr.data.PSSiteProperty;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
+import javax.faces.model.SelectItem;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * A managed bean for JSF front end for site selection.
@@ -61,6 +62,9 @@ import org.w3c.dom.NodeList;
  */
 public class PSSiteListSelect
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.PUBLISHING_LOG);
+
    /**
     * an iterator for site list ui. This has the action methods for the
     * following:
@@ -91,11 +95,10 @@ public class PSSiteListSelect
       private String m_folderRoot;
 
       /**
-       * dummy ctor 
-       * todo - remove this after testing
-       * @param sitename
-       * @param folderRoot
-       * @param site_id
+       * dummy ctor
+       * @param sitename The site name
+       * @param folderRoot The site folder root
+       * @param site_id The site id
        */
       public SiteEntry(String sitename, String folderRoot, long site_id)
       {
@@ -134,7 +137,7 @@ public class PSSiteListSelect
       /**
        * set the root folder in the cms repository for this site
        * 
-       * @param folderRoot
+       * @param folderRoot the root folder in the cms repository for this site
        */
       public void setFolderRoot(String folderRoot)
       {
@@ -178,8 +181,8 @@ public class PSSiteListSelect
        */
       public String edit() throws PSNotFoundException {
          String name = getName();
-         System.out.println("Editing this site with id:" +name);
-         
+         log.debug("Editing this site with name: {}" ,name);
+
          IPSSite s = ms_siteMgr.loadSite(name);
          setCurrent(s);
          return "edit";
@@ -198,7 +201,7 @@ public class PSSiteListSelect
     * @author vamsinukala
     * 
     */
-   public class SiteProperty
+   public static class SiteProperty
    {
       /**
        * the site property id
@@ -218,8 +221,7 @@ public class PSSiteListSelect
       private String m_value;
 
       /**
-       * dummy ctor 
-       * todo - remove this after testing
+       * dummy ctor
        * @param name
        * @param val
        * @param p_id
@@ -307,7 +309,7 @@ public class PSSiteListSelect
       public String remove()
       {
          String name = getName();
-         System.out.println("Editing this site property:" +name);
+         log.debug("Editing this site property: {}" , name);
          return "remove";
       }
 
@@ -435,14 +437,9 @@ public class PSSiteListSelect
    protected static Map<String, String> queryForNavThemes() throws Exception
    {
       Map<String, String> navThemesList = new HashMap<>();
-//      String url = "http://localhost:9992/Rhythmyx/sys_ceSupport/lookup";
+
       Map<String, String> reqParams = new HashMap<>();
-      reqParams.put("key", "331");
-//      PSRequest req = (PSRequest) PSRequestInfo
-//            .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-//      PSInternalRequest ireq = PSServer.getInternalRequest(url, req, reqParams,
-//            false, null);
-//      Document doc = ireq.getResultDoc();
+      reqParams.put("key", "331"); //TODO: Why is this hard coded?
       String docStr = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>"
             + "<sys_Lookup>" + "<PSXEntry default=\"no\" sequence=\"\">"
             + "<PSXDisplayText>Enterprise Investments</PSXDisplayText> "
@@ -453,7 +450,7 @@ public class PSSiteListSelect
             + "<PSXEntry default=\"no\" sequence=\"1\">"
             + "<PSXDisplayText>None</PSXDisplayText> " + "<Value>none</Value> "
             + "</PSXEntry>" + "</sys_Lookup>";
-      StringReader docStringReader = new StringReader(docStr.toString());
+      StringReader docStringReader = new StringReader(docStr);
       
       Document doc = PSXmlDocumentBuilder.createXmlDocument(docStringReader,
             false);
@@ -483,7 +480,6 @@ public class PSSiteListSelect
    /**
     * A site list for GUI
     * @return Returns the entries.
-    * @throws PSSiteManagerException
     */
    public List<SiteEntry> getEntries() throws PSNotFoundException {
       List<SiteEntry> rval = new ArrayList<>();
@@ -514,16 +510,14 @@ public class PSSiteListSelect
          try
          {
             m_navThemeList = queryForNavThemes();
+         } catch (Exception e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
-         catch (Exception e)
-         {
-            // todo
-            e.printStackTrace();
-         }
+
       }
       // Get global templates
       Set<IPSAssemblyTemplate> globalTmps = null;
-      if ( m_globalTemplateList.size() == 0 )
+      if ( m_globalTemplateList.isEmpty() )
       {
          try
          {
@@ -531,8 +525,7 @@ public class PSSiteListSelect
          }
          catch (PSAssemblyException e)
          {
-            // todo
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
          if (globalTmps != null)
          {
@@ -880,7 +873,7 @@ public class PSSiteListSelect
          Set<String> keys = pMap.keySet();
          for (String k : keys)
          {
-            System.out.println("Edited Property ["+k+","+pMap.get(k)+"]");
+            log.debug("Edited Property [{},{}]",k, pMap.get(k));
          }
       }
       return s;

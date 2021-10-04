@@ -23,6 +23,7 @@
  */
 package com.percussion.cas;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
@@ -30,8 +31,6 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSRequestContext;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * This assembly location generator concatenates all provided parameters.
@@ -59,25 +58,23 @@ public class PSConcatAssemblyLocation implements IPSAssemblyLocation
       String exitName = getClass().getName();
       request.printTraceMessage("Entering " + exitName + ".createLocation");
 
-      String location = "";
+      StringBuilder location = new StringBuilder();
       try
       {
-         for (int i=0; i<params.length; i++)
-            location += params[i].toString();
+         for (Object param : params) {
+            location.append(param.toString());
+         }
          
          request.printTraceMessage("Location= " + location);
       }
       catch (Exception e)
       {
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         e.printStackTrace(printer);
-         request.printTraceMessage("Error: " + writer.toString());
+         request.printTraceMessage("Error: " + PSExceptionUtils.getMessageForLog(e));
          
          Object[] args = 
          { 
             m_def.getRef().getExtensionName(), 
-            e.getLocalizedMessage()
+            PSExceptionUtils.getMessageForLog(e)
          };
          throw new PSExtensionException(
             IPSExtensionErrors.EXT_PROCESSOR_EXCEPTION, args);
@@ -85,8 +82,9 @@ public class PSConcatAssemblyLocation implements IPSAssemblyLocation
       finally
       {
          request.printTraceMessage("Leaving " + exitName + ".createLocation");
-         return location;
       }
+
+      return location.toString();
    }
    
    /**

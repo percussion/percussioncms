@@ -23,6 +23,8 @@
  */
 package com.percussion.cas;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
@@ -30,16 +32,19 @@ import com.percussion.extension.PSExtensionException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 /**
  * The default location generator for content assemblers.
  */
 public class PSDefaultAssemblyLocation implements IPSAssemblyLocation
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
+
    // See interface for details
    public void init(IPSExtensionDef def, File codeRoot)
       throws PSExtensionException
@@ -58,16 +63,17 @@ public class PSDefaultAssemblyLocation implements IPSAssemblyLocation
     * See {@link IPSAssemblyLocation#createLocation(Object[], IPSRequestContext) createLocation} 
     * for details.
     *
-    * @param params[0] root the site root which makes up the start of the
+    * @param params [0] root the site root which makes up the start of the
     *    location url created. Forward and backward slashes are allowed, if 
     *    it does not ent with a path delimiter, one will be added.
-    * @param params[1] path the resource path which makes up the middle part
+    *    params[1] path the resource path which makes up the middle part
     *    of the created location url. Forward and backward slashes are 
     *    allowed. The path can be provided with or without path delimiter
     *    at its start and/or end.
-    * @param params[2] suffix the resource suffix which makes up the end part
+    *    params[2] suffix the resource suffix which makes up the end part
     *    of the created location url. It can be provided with or without 
     *    suffix delimiter.
+    * @param request The request context, never null.
     */
    public String createLocation(Object[] params, IPSRequestContext request)
       throws PSExtensionException
@@ -112,16 +118,14 @@ public class PSDefaultAssemblyLocation implements IPSAssemblyLocation
       }
       catch (Exception e)
       {
-         StringWriter writer = new StringWriter();
-         PrintWriter printer = new PrintWriter(writer, true);
-         e.printStackTrace(printer);
-         request.printTraceMessage("Error: " + writer.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         request.printTraceMessage("Error: " + PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
          request.printTraceMessage("Leaving " + exitName + ".createLocation");
-         return location;
       }
+      return location;
    }
    
    /**

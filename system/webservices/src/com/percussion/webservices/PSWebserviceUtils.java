@@ -672,7 +672,9 @@ public class PSWebserviceUtils
       }
       catch (PSLockException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
          int code = IPSWebserviceErrors.SAVE_FAILED;
          PSDesignGuid guid = new PSDesignGuid(id);
          PSErrorException error = new PSErrorException(code,
@@ -697,9 +699,13 @@ public class PSWebserviceUtils
       if (depTypes != null)
       {
          int code = IPSWebserviceErrors.DELETE_FAILED_DEPENDENTS;
+         PSTypeEnum type = PSTypeEnum.valueOf(id.getType());
+         String displayName = "Undefined";
+         if(type!=null){
+            displayName = type.getDisplayName();
+         }
          error = new PSErrorException(code, PSWebserviceErrors
-               .createErrorMessage(code, PSTypeEnum.valueOf(id.getType())
-                     .getDisplayName(), id.longValue(), depTypes),
+               .createErrorMessage(code,displayName, id.longValue(), depTypes),
                ExceptionUtils.getFullStackTrace(new Exception()));
 
       }

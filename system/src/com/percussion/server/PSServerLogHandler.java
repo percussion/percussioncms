@@ -29,6 +29,7 @@ import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSApplicationAuthorizationError;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.error.PSErrorManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSFatalError;
 import com.percussion.error.PSInternalError;
 import com.percussion.error.PSRequestHandlerNotFoundError;
@@ -40,13 +41,10 @@ import com.percussion.log.PSLogHandler;
 import com.percussion.log.PSLogInformation;
 import com.percussion.log.PSLogSubMessage;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.InetAddress;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.net.InetAddress;
 
 /**
  * The PSServerLogHandler class provides logging utilities for use within
@@ -237,8 +235,9 @@ public class PSServerLogHandler {
       logUserActivityForError(req);
 
       String sessId = "";
-      if (req.getUserSession() != null)
-      sessId = req.getUserSessionId();
+      if (req.getUserSession() != null) {
+          sessId = req.getUserSessionId();
+      }
 
       Object[] params = { sessId, req.getRequestFileURL(), applName };
 
@@ -273,8 +272,9 @@ public class PSServerLogHandler {
       logUserActivityForError(req);
 
       String sessId = "";
-      if (req.getUserSession() != null)
-      sessId = req.getUserSessionId();
+      if (req.getUserSession() != null) {
+          sessId = req.getUserSessionId();
+      }
 
       Object[] params = { sessId, applName, dataSetName, requestType };
 
@@ -321,18 +321,11 @@ public class PSServerLogHandler {
     */
    public static void logMessage(PSLogInformation msg)
    {
-      /*
-      PSLogHandler lh = PSServer.getLogHandler();
-      if (lh != null)
-         lh.write(msg);
-      else
-         logToScreen(msg);
-         */
-      String message = "appid: " + msg.getApplicationId()
-         + " type: " + msg.getMessageType() 
-         + " time: " + msg.getMessageTime()
-         + " msg: " + msg.getSubMessageText();
-      ms_logger.info(message);
+      ms_logger.info("appid: {} type: {} time: {} msg: {}" ,
+              msg.getApplicationId(),
+              msg.getMessageType(),
+              msg.getMessageTime(),
+              msg.getSubMessageText());
    }
 
    /**
@@ -351,21 +344,15 @@ public class PSServerLogHandler {
       if (t == null)
          throw new IllegalArgumentException("Throwable must not be null");
 
-      StringWriter callStack = new StringWriter();
-      PrintWriter p = new PrintWriter(callStack);
-      t.printStackTrace(p);
+      Object[] args = { String.format("%s Error: %s", message,
+              PSExceptionUtils.getMessageForLog((Exception)t)), PSExceptionUtils.getDebugMessageForLog((Exception)t) };
 
-      if (message==null || message.trim().length()<=0)
-         message = "" + t.getLocalizedMessage();
-
-      Object[] args = { message, callStack.toString() };
-
-      PSLogInformation logInfo =
+       PSLogError logInfo =
          new PSInternalError(IPSServerErrors.UNEXPECTED_EXCEPTION_LOG, args);
 
       logMessage(logInfo);
 
-      return (PSLogError)logInfo;
+      return logInfo;
    }
 
 
@@ -385,7 +372,6 @@ public class PSServerLogHandler {
       try {
          if (conn != null) {
             resp = new PSResponse(null);
-            // PSRequest.discard(conn);
          }
       } catch (Exception e) { /* not much we can do here */ }
 
@@ -464,8 +450,11 @@ public class PSServerLogHandler {
    {
       PSLogSubMessage[] msgs = err.getSubMessages();
       if (msgs != null) {
-         for (int i = 0; i < msgs.length; i++)
-            PSConsole.printMsg("Server", msgs[i].getText(), null);
+          for (PSLogSubMessage msg : msgs) {
+              if(msg != null && msg.getText() !=null) {
+                  PSConsole.printMsg("Server", msg.getText(), null);
+              }
+          }
       }
    }
 

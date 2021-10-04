@@ -1,3 +1,4 @@
+<%@ page import="com.percussion.error.PSExceptionUtils" %>
 <%@page contentType="text/html; charset=utf-8" isErrorPage="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -31,23 +32,21 @@
       errorMessages = new String[0];
    Integer errorCode = (Integer)session.getAttribute("errorCode");
    if (errorCode == null)
-      errorCode = new Integer(500);
-   response.setStatus(errorCode.intValue());
+      errorCode = 500;
+   response.setStatus(errorCode);
    
    if (exception != null)
    {
-	   java.io.StringWriter w = new java.io.StringWriter();
-	   java.io.PrintWriter pw = new java.io.PrintWriter(w);
-	   exception.printStackTrace(pw);
-	   pw.close();
-	   pageContext.setAttribute("message",exception.getLocalizedMessage());
-	   pageContext.setAttribute("stacktrace", w.toString());
+	   pageContext.setAttribute("message", PSExceptionUtils.getMessageForLog((Exception)exception));
+       //stack trace is no longer sent
+	   pageContext.setAttribute("stacktrace", "");
    }
    else
    {
 	   pageContext.setAttribute("message","");
    }
 %>
+<!DOCTYPE html>
 <html>
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -86,7 +85,7 @@
                   </tr>
                   <tr>
                      <td>
-                        <table width="100%" cellpadding="0" cellspacing="1" border="0" class="backgroundcolor">
+                        <table border="0" cellpadding="0" cellspacing="1" class="backgroundcolor" width="100%">
                            <tr class="headercell">
                               <td class="headercell2font">ID</td>
                               <td class="headercell2font">Message</td>
