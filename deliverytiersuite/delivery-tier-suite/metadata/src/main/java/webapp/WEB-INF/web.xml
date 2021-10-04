@@ -59,6 +59,16 @@
       <url-pattern>/*</url-pattern>
    </filter-mapping>
 
+   <filter>
+      <filter-name>PSAddResponseHeaderFilter</filter-name>
+      <filter-class>com.percussion.tomcat.filters.PSAddResponseHeaderFilter</filter-class>
+   </filter>
+
+   <filter-mapping>
+      <filter-name>PSAddResponseHeaderFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+   </filter-mapping>
+
    <servlet>
       <servlet-name>Jersey Spring Web Application</servlet-name>
       <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
