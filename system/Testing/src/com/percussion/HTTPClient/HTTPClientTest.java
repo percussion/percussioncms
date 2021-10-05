@@ -23,17 +23,20 @@
  */
 package com.percussion.HTTPClient;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.testing.PSClientTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.IOException;
-import java.util.Properties;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+
+import java.io.IOException;
+import java.util.Properties;
 
 import static org.junit.Assert.assertTrue;
 
@@ -41,6 +44,8 @@ import static org.junit.Assert.assertTrue;
 @Category(IntegrationTest.class)
 public class HTTPClientTest extends PSClientTestCase
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
+
    /**
     * Ctor.
     * @param name - test name.
@@ -111,7 +116,7 @@ public class HTTPClientTest extends PSClientTestCase
             "'/Rhythmyx/rxwebdav/Sites/CorporateInvestments/Files' response doesn't have:" +
             " 'D:multistatus' ", nl.getLength() > 0);
 
-      System.out.println(respData);
+      log.info(respData);
 
    }
 
@@ -124,7 +129,7 @@ public class HTTPClientTest extends PSClientTestCase
       }
       catch (Exception e)
       {
-         System.err.println(e.toString());
+        log.error(PSExceptionUtils.getMessageForLog(e));
       }
    }
 }
