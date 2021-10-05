@@ -23,21 +23,24 @@
  */
 package com.percussion.cms.objectstore.ws;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSStopwatch;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This is a unit test for {@link PSWebServiceAgent}. It can also be used to
@@ -46,6 +49,9 @@ import org.w3c.dom.Element;
 @Category(IntegrationTest.class)
 public class PSWebServiceAgentTest
 {
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
+
    /**
     * Constructor, called by main with the loaded properties file.
     *
@@ -212,13 +218,13 @@ public class PSWebServiceAgentTest
    }
 
    /**
-    * Write a message to the log file, to System.out for now.
+    * Write a message to the log file
     *
     * @param msg the message to write
     */
    private void writeToLog(String msg)
    {
-      System.out.println(msg);
+      log.info(msg);
    }
 
    /**
@@ -238,16 +244,15 @@ public class PSWebServiceAgentTest
       }
       catch (FileNotFoundException e)
       {
-         System.out.println("Unable to locate file: " + DEFAULT_PROPERTIES_FILE);
+         log.error("Unable to locate file: {}" , DEFAULT_PROPERTIES_FILE);
          System.exit(-1);
       }
       catch (IOException e)
       {
-         System.out.println(
-            "Error loading properties from file ("
-               + DEFAULT_PROPERTIES_FILE
-               + "): "
-               + e.toString());
+         log.error(
+            "Error loading properties from file ({}): {}" ,
+                 DEFAULT_PROPERTIES_FILE,
+                 PSExceptionUtils.getMessageForLog(e));
          System.exit(-1);
       }
       finally
