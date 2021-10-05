@@ -53,4 +53,7 @@ public interface IPSLogger
     * <code>empty</code>.
     */
    void logDebugMessage(String msg);
+
+   static String LOG_CATEGORY="Table Factory";
+
 }

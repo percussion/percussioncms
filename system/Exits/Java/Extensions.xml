@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percussion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Erik Serating (Percussion Software) -->
 <PSXExtensionHandlerConfiguration handlerName="Java">
    <!-- 
@@ -40,6 +16,43 @@
       old exit names were left for compatibility, but they all point to the
       new java classes.
    -->
+   <Extension name="uploadAppendFileAttributes" context="global/" handler="Java" deprecated="yes">
+      <initParam name="com.percussion.user.description">This exit appends the size and modified datetimestamps to the update statistics document. This exit shall always goes with uploadFileAttributes preprocessor exit. The result statistics document shall have two elements added as first children, viz. size and modified.</initParam>
+      <initParam name="com.percussion.extension.version">6</initParam>
+      <initParam name="className">com.percussion.uploadexits.PSUploadAppendFileAttrs</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <resource href="file:classes"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>FileSizeParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the file size. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>DateParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the modified date. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+   </Extension>
+   <Extension name="sys_ftUploadAppendFileAttributes" context="global/percussion/filetracker" handler="Java"
+              categorystring="filetracker">
+      <initParam name="com.percussion.user.description">This exit appends the size and modified datetimestamps to the update statistics document. This exit shall always goes with uploadFileAttributes preprocessor exit. The result statistics document shall have two elements added as first children, viz. size and modified.</initParam>
+      <initParam name="com.percussion.extension.version">6</initParam>
+      <initParam name="className">com.percussion.filetracker.PSUploadAppendFileAttrs</initParam>
+      <initParam name="com.percussion.extension.reentrant">yes</initParam>
+      <resource href="file:classes"/>
+      <interface name="com.percussion.extension.IPSResultDocumentProcessor"/>
+      <PSXExtensionParamDef id="0">
+         <name>FileSizeParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the file size. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+      <PSXExtensionParamDef id="0">
+         <name>DateParam</name>
+         <dataType>String</dataType>
+         <description>This is the name of the HTML parameter that stores the modified date. This must be the same as that was given for the preprocessor exit uploadFileAttributes. Always literal.</description>
+      </PSXExtensionParamDef>
+   </Extension>
    <Extension name="defaultPasswordFilter" context="global/percussion/filter/" handler="Java" deprecated="yes">
       <initParam name="com.percussion.user.description">Takes a plaintext string and encrypts it.</initParam>
       <initParam name="com.percussion.extension.version">1</initParam>

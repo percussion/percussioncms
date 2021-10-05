@@ -184,8 +184,9 @@ public class RxJdbcTableFactory
                      eData!=null;
                      eData = walkerTableData.getNextElement("table", getSibling))
             {
-               if(eData.getAttribute("name").trim().equals(sTableName))
-               break;
+               if(eData.getAttribute("name").trim().equals(sTableName)) {
+                   break;
+               }
             }
 
             RxTables rxTable = null;
@@ -251,7 +252,7 @@ public class RxJdbcTableFactory
          }
          else
          {
-            System.out.println("No failed transaction while processing original data");
+             m_logger.logMessage("No failed transaction while processing original data");
          }
       }
       finally

@@ -23,6 +23,9 @@
  */
 package com.percussion.utils.testing;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -37,9 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author DougRand
@@ -180,8 +180,8 @@ public class PSReflectionHelper
        * Create an empty accessor map.
        */
       public AccessorMap() {
-         mi_fieldMap = new HashMap<String, Accessor>();
-         mi_sortedFields = new TreeSet<String>();
+         mi_fieldMap = new HashMap<>();
+         mi_sortedFields = new TreeSet<>();
       }
 
       /**
@@ -591,7 +591,7 @@ public class PSReflectionHelper
          // Assign to the first object, test for equals
 
          accessor.getSetMethod().invoke(a, args);
-         if (a.equals(b) == false)
+         if (!a.equals(b))
          {
             throw new Exception(
                   "Updating first object should restore equals for field "

@@ -328,7 +328,7 @@
 
         <!-- Upgrade Files -->
         <PSCopy todir="${assembly-directory}/upgrade">
-            <fileset dir="${rxbase}/release/src/com/percussion/rxupgrade" />
+            <fileset dir="${rxbase}/src/main/resources/com/percussion/rxupgrade" />
         </PSCopy>
         <!-- Upgrade DTD Files -->
         <mkdir dir="${assembly-directory}/upgrade" />

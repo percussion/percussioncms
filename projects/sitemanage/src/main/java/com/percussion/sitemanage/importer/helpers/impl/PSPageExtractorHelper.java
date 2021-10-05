@@ -27,6 +27,7 @@ import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.data.IPSHtmlMetadata;
@@ -66,8 +67,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -145,13 +144,8 @@ class PageSaveRunner implements Runnable {
         }
         catch (Exception e)
         {
-        	log.error(e.getMessage());
-        	log.debug(e.getMessage(),e);
+			context.getLogger().appendLogMessage(PSLogEntryType.ERROR, STATUS_MESSAGE, PSExceptionUtils.getMessageForLog(e));
             getSiteQueue(siteId).removeImportingId(id);
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            String exceptionAsString = sw.toString();
-            context.getLogger().appendLogMessage(PSLogEntryType.ERROR, STATUS_MESSAGE, exceptionAsString);
         }
         finally
         {
@@ -255,11 +249,8 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 							"The page body was successfully imported into HTML widget.");
 			endTimer();
 		} catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			e.printStackTrace(new PrintWriter(sw));
-			String exceptionAsString = sw.toString();
 			context.getLogger().appendLogMessage(PSLogEntryType.ERROR,
-					STATUS_MESSAGE, exceptionAsString);
+					STATUS_MESSAGE, PSExceptionUtils.getMessageForLog(e));
 		}
 	}
 

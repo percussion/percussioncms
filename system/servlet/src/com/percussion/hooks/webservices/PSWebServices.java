@@ -32,6 +32,7 @@ import com.percussion.HTTPClient.HTTPResponse;
 import com.percussion.HTTPClient.ModuleException;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.hooks.PSUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
@@ -216,8 +217,8 @@ public class PSWebServices
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new SOAPException(Constants.FAULT_CODE_CLIENT, "Exception "
+         ms_logger.error(PSExceptionUtils.getMessageForLog(e));
+         throw new SOAPException(Constants.FAULT_CODE_CLIENT, "Exception: "
                + e.getMessage());
       }
       finally
