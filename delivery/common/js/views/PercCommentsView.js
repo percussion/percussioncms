@@ -74,13 +74,16 @@
     $(function(){
         //Change the form action url to point to the right server
         deliveryServicesURL =  typeof($.getDeliveryServiceBase)==="function"?$.getDeliveryServiceBase():"";
+
         var version = typeof($.getCMSVersion) === "function" ?$.getCMSVersion():"";
         var url =  joinURL(deliveryServicesURL, "/perc-comments-services/comment/addcomment");
         var commentForm =  $("form[name = 'commentForm']");
         commentForm.attr("action", url);
         var tokenHeader;
         var token;
-
+       if( $.isEditMode === "true" || commentForm.length === 0){
+           return;
+       }
         $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(deliveryServicesURL,"/perc-comments-services/comment/csrf"),function (response) {
             if (typeof response !== 'undefined' && response != null)
                 tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
