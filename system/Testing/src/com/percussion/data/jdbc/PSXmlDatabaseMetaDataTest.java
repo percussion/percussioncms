@@ -23,10 +23,19 @@
  */
 package com.percussion.data.jdbc;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.data.vfs.PSVirtualApplicationDirectory;
-import com.percussion.error.PSIllegalArgumentException;
+import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSUserSession;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,16 +46,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -55,6 +57,8 @@ import static org.junit.Assert.assertTrue;
 
 public class PSXmlDatabaseMetaDataTest
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
+
    @Rule
    public TemporaryFolder tempFolder = new TemporaryFolder();
 
@@ -71,16 +75,16 @@ public class PSXmlDatabaseMetaDataTest
    private static String ms_singleElementFileName;
 
    /** the expected fields of the single root element doc */
-   private static HashMap ms_singleElementExpectedFields;
+   private static HashMap<String, Boolean> ms_singleElementExpectedFields;
 
    /** a document with multiple elements */
    private static String ms_multiElementsFileName;
 
    /** the expected fields of the multi elements doc */
-   private static HashMap ms_multiElementsExpectedFields;
+   private static HashMap<String,Boolean> ms_multiElementsExpectedFields;
 
    /** the expected fields for the CGI variables column request */
-   private static HashMap ms_cgiVarExpectedFields;
+   private static HashMap<String,Boolean> ms_cgiVarExpectedFields;
 
 
    public PSXmlDatabaseMetaDataTest()
@@ -90,7 +94,7 @@ public class PSXmlDatabaseMetaDataTest
 
    private static class DirMap extends PSVirtualApplicationDirectory
    {
-      public DirMap(File f) throws PSIllegalArgumentException
+      public DirMap(File f)
       {
          super(f.getName(), f, null);
       }
@@ -138,10 +142,11 @@ public class PSXmlDatabaseMetaDataTest
          f.deleteOnExit();
          Document doc = PSXmlDocumentBuilder.createXmlDocument();
          Element docRoot = PSXmlDocumentBuilder.createRoot(doc, "SingleElementDocument");
-         FileOutputStream out = new FileOutputStream(f);
-         PSXmlDocumentBuilder.write(doc, out);
-         out.close();
-         ms_singleElementExpectedFields = new HashMap();
+         try(FileOutputStream out = new FileOutputStream(f)) {
+            PSXmlDocumentBuilder.write(doc, out);
+         }
+
+         ms_singleElementExpectedFields = new HashMap<>();
          ms_singleElementExpectedFields.put("SingleElementDocument", Boolean.TRUE);
 
          // create a document with multiple nested elements
@@ -182,14 +187,14 @@ public class PSXmlDatabaseMetaDataTest
                }
             }
          } 
-         out = new FileOutputStream(f);
-         PSXmlDocumentBuilder.write(doc, out);
-         out.close();
+         try(FileOutputStream out = new FileOutputStream(f)) {
+            PSXmlDocumentBuilder.write(doc, out);
+         }
 
          // now create the desired list of fields that should be returned when this
          // document is cataloged, using a similar method to how we created the
          // document
-         ms_multiElementsExpectedFields = new HashMap();
+         ms_multiElementsExpectedFields = new HashMap<>();
          for (int i = 0; i < 10; i++)
          {
             if (shouldHaveData(i, i + 1))
@@ -210,14 +215,13 @@ public class PSXmlDatabaseMetaDataTest
             }
          }
 
-         ms_cgiVarExpectedFields = new HashMap();
-         Class serverVariables = com.percussion.server.IPSCgiVariables.class;
+         ms_cgiVarExpectedFields = new HashMap<>();
+         Class<IPSCgiVariables> serverVariables = IPSCgiVariables.class;
          Field[] serverVariableFields = serverVariables.getFields();
-         
-         for (int i = 0; i < serverVariableFields.length; i++)
-         {
+
+         for (Field serverVariableField : serverVariableFields) {
             ms_cgiVarExpectedFields.put(
-               serverVariableFields[i].get(null).toString(), Boolean.TRUE);
+                    serverVariableField.get(null).toString(), Boolean.TRUE);
          }
 
          ms_inited = true;
@@ -308,7 +312,7 @@ public class PSXmlDatabaseMetaDataTest
       
       while (rs.next())
       {
-         System.err.println(rs.getString(1) + "\t"
+         log.info(rs.getString(1) + "\t"
             + rs.getString(2) + "\t" + rs.getString(3) + "\t"
             + rs.getString(4) + "\t" + rs.getString(5));
       }
@@ -317,22 +321,21 @@ public class PSXmlDatabaseMetaDataTest
    }
 
 
-   private void testGetColumns(ResultSet rs, HashMap expectedFields)
+   private void testGetColumns(ResultSet rs, HashMap<String,Boolean> expectedFields)
       throws SQLException
    {
-      Map ef = (Map)expectedFields.clone();
+      HashMap<String,Boolean> ef = new HashMap<>(expectedFields);
       while (rs.next())
       {
          String table_cat = rs.getString(1);
          String table_schem = rs.getString(2);
          String table_name = rs.getString(3);
          String col_name = rs.getString(4);
-         System.err.println(table_cat + "\t" + table_schem + "\t" +
+         log.info(table_cat + "\t" + table_schem + "\t" +
             table_name + "\t" + col_name);
-         System.err.flush();
           assertTrue(col_name, ef.containsKey(col_name));
          ef.remove(col_name);
-         assertTrue(!ef.containsKey(col_name));
+         assertFalse(ef.containsKey(col_name));
       }
       assertTrue(ef.toString(), ef.isEmpty());
    }
