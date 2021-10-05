@@ -273,6 +273,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
 	@POST
     @Path("/readExternalFeed")
     @Produces(MediaType.APPLICATION_XML)
+    @Consumes(MediaType.APPLICATION_JSON)
     @ToDoVulnerability
     public String readExternalFeed(PSFeedDTO psFeedDTO)
     {
@@ -281,6 +282,9 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         HttpURLConnection con = null;
         String feeds = "";
         String decodedUrl="";
+        if(psFeedDTO == null){
+            return feeds;
+        }
         String feedUrl = psFeedDTO.getFeedsUrl();
 
         log.debug("URL is: {}",feedUrl);

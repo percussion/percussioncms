@@ -68,7 +68,7 @@
     var CSRF_INTEGRATION_PATH="/perc-integrations/integrations/csrf";
     var CSRF_COMMENTS_PATH="/perc-comments-services/comment/csrf";
     var CSRF_MEMBERSHIP_PATH="/perc-membership-services/membership/csrf";
-    var CSRF_FEEDS_PATH="/feed/rss/csrf";
+    var CSRF_FEEDS_PATH="/feeds/rss/csrf";
 
     $.ajaxSetup({
         timeout: 300000
@@ -404,12 +404,19 @@
         if(!url.startsWith(servicebase) && !url.startsWith("http")){
             url = joinURL(servicebase,url);
         }
+        var body;
+        // Add payload object if it exists
+        if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
+            body = JSON.stringify(dataObject);
+        }
         let init = {
             url:url,
+            async: true,
             method: type, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'omit', // include, *same-origin, omit
+            body:body,
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "application/xml",
@@ -417,29 +424,27 @@
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
-            success: function(data, textstatus){
+
+        };
+
+        const response = await fetch(url, init);
+
+        response.text().then(data => {
+            if(response.ok) {
+
                 let resp = {
                     data: data,
-                    status: textstatus
+                    status: response.status
                 };
-                callback(self.STATUS_SUCCESS,resp);
-            },
-            error: function(request, textstatus, error){
+                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
+            }else{
                 let resp = {
-                    message: error,
-                    status: textstatus
+                    message: response.message,
+                    status: response.status
                 };
                 callback(self.STATUS_ERROR, resp);
             }
-        };
-
-        // Add payload object if it exists
-        if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
-            init.body = JSON.stringify(dataObject);
-        }
-
-
-        makeAjaxRequest(init);
+        });
    }
 
     /**
@@ -501,7 +506,7 @@
         const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
         var header =   {
             'Content-Type': 'application/json',
-            "Accept": "application/json",
+            "Accept": "application/json,text/plain",
             "perc-version": version
         };
         let init = {
@@ -510,13 +515,12 @@
             contentType: "application/json",
             type: type,
             method:type,
+            async: true,
             data:body,
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'omit', // include, *same-origin, omit
             headers : header,
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin-when-cross-origin',
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
             success: function(data, textstatus){
