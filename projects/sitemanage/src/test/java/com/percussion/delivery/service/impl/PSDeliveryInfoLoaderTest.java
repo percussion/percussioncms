@@ -24,22 +24,11 @@
 
 package com.percussion.delivery.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.server.config.PSServerConfigException;
 import com.percussion.share.dao.PSSerializerUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,10 +38,23 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 public class PSDeliveryInfoLoaderTest
 {
 
-    private static final Logger log = LogManager.getLogger(PSDeliveryInfoLoaderTest.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -83,9 +85,9 @@ public class PSDeliveryInfoLoaderTest
     {
         // No delivery servers
         loader = getDeliveryInfoLoader("fileDoesNotExists.xml");
-        
-        assertTrue("delivery servers list no null", loader.getDeliveryServers() != null);
-        assertTrue("delivery servers list is empty", loader.getDeliveryServers().size() == 0);
+
+        assertNotNull("delivery servers list no null", loader.getDeliveryServers());
+        assertEquals("delivery servers list is empty", 0, loader.getDeliveryServers().size());
     }
     
     @Test
@@ -93,16 +95,16 @@ public class PSDeliveryInfoLoaderTest
     {
         // No delivery servers
         loader = getDeliveryInfoLoader("DeliveryServerConfigTest_Empty.xml");
-        
-        assertTrue("delivery servers list no null", loader.getDeliveryServers() != null);
-        assertTrue("delivery servers list is empty", loader.getDeliveryServers().size() == 0);
+
+        assertNotNull("delivery servers list no null", loader.getDeliveryServers());
+        assertEquals("delivery servers list is empty", 0, loader.getDeliveryServers().size());
     }
     
     @Test
     public void testGetDeliveryServers_SomeDeliveryServers() throws Exception
     {
         loader = getDeliveryInfoLoader("DeliveryServerConfigTest.xml");
-        assertTrue(loader.getDeliveryServers().size() == 2);
+        assertEquals(2, loader.getDeliveryServers().size());
     }
     
     @Test
@@ -111,7 +113,7 @@ public class PSDeliveryInfoLoaderTest
         //load a properly formatted delivery-servers with staging, production and licensing servers.
         File tempConfigFile = createTempConfigFileBasedOn(this.getClass().getResourceAsStream("ThreeDeliveryServerConfigTest.xml"));
         loader = new PSDeliveryInfoLoader(tempConfigFile);
-        assertTrue(loader.getDeliveryServers().size() == 3);
+        assertEquals(3, loader.getDeliveryServers().size());
     }
     
     @Test
@@ -125,7 +127,7 @@ public class PSDeliveryInfoLoaderTest
         }
         catch(PSServerConfigException configException)
         {
-            assertTrue(configException.getErrorCode() == IPSDeliveryErrors.BAD_DELIVERY_SERVER_CONFIGURATION);
+            assertEquals(IPSDeliveryErrors.BAD_DELIVERY_SERVER_CONFIGURATION, configException.getErrorCode());
         }
 
     }
@@ -141,8 +143,9 @@ public class PSDeliveryInfoLoaderTest
         }
         catch(PSServerConfigException configException)
         {
-            configException.printStackTrace();
-            assertFalse(configException.getErrorCode() == IPSDeliveryErrors.BAD_DELIVERY_SERVER_CONFIGURATION);
+            log.error(PSExceptionUtils.getDebugMessageForLog(configException));
+
+            assertNotEquals(IPSDeliveryErrors.BAD_DELIVERY_SERVER_CONFIGURATION, configException.getErrorCode());
         }
 
     }
