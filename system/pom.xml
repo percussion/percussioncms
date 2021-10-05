@@ -34,7 +34,7 @@
   <version>8.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <build>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>Testing/src</testSourceDirectory>
         <resources>
             <resource>
@@ -118,16 +118,7 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>release/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>rxfiletracker/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
+                <directory>/src/main/resources</directory>
             </resource>
             <resource>
                 <directory>business/src</directory>
@@ -148,20 +139,7 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
                 <directory>Tools/Converters/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>misctools/src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
@@ -244,7 +222,6 @@
                                 <source>beans/src</source>
                                 <source>i18n/src</source>
                                 <source>release/src</source>
-                                <source>rxfiletracker/src</source>
                                 <source>business/src</source>
                                 <source>services/src</source>
                                 <source>servlet/src</source>
@@ -252,7 +229,6 @@
                                 <source>Tools/InstallerBot/src</source>
                                 <source>Tools/RxFix/src</source>
                                 <source>uploader/src</source>
-                                <source>misctools/src</source>
                                 <source>Tools/InlineLinkConverter/src</source>
                                 <source>controls/src</source>
                             </sources>

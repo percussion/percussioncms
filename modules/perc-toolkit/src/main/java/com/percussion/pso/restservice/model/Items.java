@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 @XmlRootElement(name = "Items")
 public class Items {
-   private List<Item> items = new ArrayList<Item>();
+   private List<Item> items = new ArrayList<>();
    private List<Error> errors = null;
 
 
@@ -52,35 +52,35 @@ public void setErrors(List<Error> errors) {
 }
 
 public void addError(Error.ErrorCode error, String message) {
-	if(errors == null) errors = new ArrayList<Error>(); 
+	if(errors == null) errors = new ArrayList<>();
 	errors.add(new Error(error,message));
 	log.debug("Error is: {}", message);
 }
 
 
 public void addError(Error.ErrorCode error,Exception e) {
-	if(errors == null) errors = new ArrayList<Error>();
+	if(errors == null) errors = new ArrayList<>();
 	String message = e.getMessage() ;
 	StringWriter sw = new StringWriter();
 	e.printStackTrace(new PrintWriter(sw));
-	errors.add(new Error(error,message + ":"+sw.toString()));
+	errors.add(new Error(error,message + ":"+sw));
 }
 
 public void addError(Error.ErrorCode error,String message, Exception e) {
-	if(errors == null) errors = new ArrayList<Error>();
+	if(errors == null) errors = new ArrayList<>();
 	String messageex = e.getMessage() +"\n";
 	StringWriter sw = new StringWriter();
 	e.printStackTrace(new PrintWriter(sw));
-	errors.add(new Error(error,messageex + "\n"+ message +"\n"+sw.toString()));
+	errors.add(new Error(error,messageex + "\n"+ message +"\n"+sw));
 	log.debug("Error is: {}", message);
 	
 }
 
 
 public void addError(Error.ErrorCode error) {
-	if(errors == null) errors = new ArrayList<Error>();
+	if(errors == null) errors = new ArrayList<>();
 	errors.add(new Error(error));
-	log.debug("Error is: {}", error.toString());
+	log.debug("Error is: {}", error);
 }
 
 public boolean hasError(Error.ErrorCode error) {

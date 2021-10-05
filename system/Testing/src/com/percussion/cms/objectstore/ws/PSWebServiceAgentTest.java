@@ -284,9 +284,9 @@ public class PSWebServiceAgentTest
          PSWebServiceAgentTest agentTest = new PSWebServiceAgentTest(props);
          agentTest.performTransitions();
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       System.exit(0);

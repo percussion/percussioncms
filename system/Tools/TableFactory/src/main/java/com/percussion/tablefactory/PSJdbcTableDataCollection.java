@@ -24,12 +24,16 @@
 
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import static com.percussion.tablefactory.IPSLogger.LOG_CATEGORY;
 
 /**
  * This class is a container for a list of PSJdbcTableData objects, enabling
@@ -37,6 +41,8 @@ import org.w3c.dom.Element;
  */
 public class PSJdbcTableDataCollection extends PSCollection
 {
+   private static final Logger log = LogManager.getLogger(LOG_CATEGORY);
+
    /**
     * Constructs an empty PSJdbcTableDataCollection
     */
@@ -134,9 +140,8 @@ public class PSJdbcTableDataCollection extends PSCollection
 
       // create the root element
       Element   root = doc.createElement(NODE_NAME);
-      for (int i = 0; i < size(); i++)
-      {
-         PSJdbcTableData table = (PSJdbcTableData)get(i);
+      for (Object o : this) {
+         PSJdbcTableData table = (PSJdbcTableData) o;
          root.appendChild(table.toXml(doc));
       }
          
@@ -162,16 +167,13 @@ public class PSJdbcTableDataCollection extends PSCollection
 
       PSJdbcTableData tableData = null;
 
-      for (int i = 0; i < size(); i++)
-      {
-         PSJdbcTableData tempTable = (PSJdbcTableData)get(i);
-         if (tempTable.getName().equalsIgnoreCase(name))
-         {
-             if (tableData!=null)
-             {
-                 System.out.println("Duplicate table data for table "+name);
-             } else
-                 tableData = tempTable;
+      for (Object o : this) {
+         PSJdbcTableData tempTable = (PSJdbcTableData) o;
+         if (tempTable.getName().equalsIgnoreCase(name)) {
+            if (tableData != null) {
+               log.info("Duplicate table data for table {}", name);
+            } else
+               tableData = tempTable;
 
          }
       }
@@ -186,40 +188,32 @@ public class PSJdbcTableDataCollection extends PSCollection
    {
       if (args.length != 1)
       {
-         System.out.println("test usage: ");
-         System.out.println("java PSJdbcTableDataCollection <tables>");
-         System.out.println(
+         log.info("test usage: ");
+         log.info("java PSJdbcTableDataCollection <tables>");
+         log.info(
             "where <tables> is an xml file containing the expected xml.");
          System.exit(1);
       }
-
-      java.io.FileInputStream in = null;
-      java.io.FileOutputStream out = null;
-      try
+      try(java.io.FileInputStream in = new java.io.FileInputStream(args[0]))
       {
-         in = new java.io.FileInputStream(args[0]);
+
          Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
          PSJdbcTableDataCollection coll = new PSJdbcTableDataCollection(doc);
-         out = new java.io.FileOutputStream(args[0] + ".tst");
-         PSXmlDocumentBuilder.write(coll.toXml(doc), out);
-      }
-      catch (Throwable t)
-      {
-         t.printStackTrace(System.out);
-      }
-      finally
-      {
-         if (in != null)
-            try{in.close();} catch(Exception e){}
 
-         if (out != null)
-            try{out.close();} catch(Exception e){}
+        try (java.io.FileOutputStream out = new java.io.FileOutputStream(args[0] + ".tst") ){
+           PSXmlDocumentBuilder.write(coll.toXml(doc), out);
+        }
+      }
+      catch (Exception e)
+      {
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
    /**
     * The name of this objects root Xml element.
     */
-   public static String NODE_NAME = "tables";
+   public static final String NODE_NAME = "tables";
+
 }
 
