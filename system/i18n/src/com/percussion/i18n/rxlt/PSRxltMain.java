@@ -23,6 +23,7 @@
  */
 package com.percussion.i18n.rxlt;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.xml.PSEntityResolver;
 
 import java.io.BufferedReader;
@@ -31,6 +32,7 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /**
  * This is the main class for the Percussion Language Tool. Runs the processor in
@@ -39,6 +41,8 @@ import java.util.ResourceBundle;
  */
 public class PSRxltMain
 {
+   private static final Logger log = Logger.getLogger("I18N");
+
    /**
     * Main method. Accepts three optional commandline arguments ?, -noui and
     * -R<rxroot>. Option ? displays the usage syntax, -noui runs the tool without
@@ -68,15 +72,15 @@ public class PSRxltMain
          }
          else if(temp.equals("?"))
          {
-            System.out.println(getVersionString());
-            System.out.println("Usage: java com.percussion.i18n.rxlt.PXRXLTMain"
+            log.info(getVersionString());
+            log.info("Usage: java com.percussion.i18n.rxlt.PXRXLTMain"
                + " [options]");
-            System.out.println("Options:");
-            System.out.println("-noui           No user interaction. Run the " +
+            log.info("Options:");
+            log.info("-noui           No user interaction. Run the " +
                "tool with default settings");
-            System.out.println("-R<rxroot>      Use the supplied Rhythmyx " +
+            log.info("-R<rxroot>      Use the supplied Rhythmyx " +
                "Root Directory (No space betweenn -R and <rxroot>");
-            System.out.println("?               Display this message");
+            log.info("?               Display this message");
             System.exit(0);
          }
       }
@@ -115,12 +119,12 @@ public class PSRxltMain
             }
             catch(PSActionProcessingException e)
             {
-               System.out.println(e.getMessage());
+               log.severe(PSExceptionUtils.getMessageForLog(e));
                return false;
             }
             if(ui && loop)
             {
-               System.out.println("Press ENTER to continue...");
+               log.info("Press ENTER to continue...");
                conReader.readLine();
             }
          }while(ui && loop);
@@ -182,7 +186,7 @@ public class PSRxltMain
       catch (MissingResourceException e)
       {
          // this should never happen
-         e.printStackTrace();
+         log.severe(PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -200,9 +204,9 @@ public class PSRxltMain
          if (!rxRoot.isDirectory())
             rxRoot = new File("."); //default to current dir
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
-         e.printStackTrace();
+        log.severe(PSExceptionUtils.getMessageForLog(e));
       }
    }
    
