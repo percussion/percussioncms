@@ -589,6 +589,7 @@ public interface IPSConstants
    /**
     * Logger Categories
     */
+   public static final String TEST_LOG="Testing";
    public static final String ASSEMBLY_LOG="Assembly";
    public static final String PUBLISHING_LOG="Publishing";
    public static final String API_LOG="API";
