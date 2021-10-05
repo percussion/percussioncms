@@ -23,6 +23,10 @@
  */
 package com.percussion.data.jdbc;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -35,29 +39,30 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 /**
  *   Unit tests for the PSFileSystemStatementTest class
  */
 public class PSFileSystemStatementTest
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
+
    @Rule
    public TemporaryFolder tempFolder = new TemporaryFolder();
 
    public static void main(String[] args)
    {
       StringBuilder buf = new StringBuilder(args.length * 10);
-      for (int i = 0; i < args.length; i++)
-      {
-         buf.append(args[i]);
+      for (String arg : args) {
+         buf.append(arg);
          buf.append(" ");
       }
 
       String query = buf.toString();
-      System.err.print("Executing query: \"");
-      System.err.print(query);
-      System.err.println("\"");
+      log.info("Executing query: \"");
+      log.info(query);
+      log.info("\"");
 
       try
       {
@@ -66,15 +71,15 @@ public class PSFileSystemStatementTest
          int i = 0;
          while (result.next())
          {
-            System.err.print(result.getLong("length") + " ");
-            System.err.print(result.getString("modified") + " ");
-            System.err.println("" + result.getString("fullname"));
+            log.info(result.getLong("length") + " ");
+            log.info(result.getString("modified") + " ");
+            log.info("" + result.getString("fullname"));
             i++;
          }
       }
-      catch (Throwable t)
+      catch (Exception t)
       {
-         t.printStackTrace();
+        log.error(PSExceptionUtils.getDebugMessageForLog(t));
       }
    }
 
@@ -150,7 +155,7 @@ public class PSFileSystemStatementTest
          }
       } catch (IOException e)
       {
-         System.err.println(e);
+         log.error(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -168,32 +173,32 @@ public class PSFileSystemStatementTest
       int i = 0;
       while (result.next())
       {
-         System.err.print(result.getLong("length") + " ");
-         System.err.print(result.getString("modified") + " ");
-         System.err.println("" + result.getString("fullname"));
+         log.info(result.getLong("length") + " ");
+         log.info(result.getString("modified") + " ");
+         log.info("" + result.getString("fullname"));
          i++;
       }
 
       // test the meta data and make sure the columns match
       ResultSetMetaData meta = result.getMetaData();
-      assertTrue(meta != null);
+      assertNotNull(meta);
 
       assertEquals("Column count", 5, meta.getColumnCount());
 
       assertEquals("Name column type should be VARCHAR",
-         meta.getColumnType(1), java.sql.Types.VARCHAR);
+              java.sql.Types.VARCHAR, meta.getColumnType(1));
 
       assertEquals("Fullname column type should be VARCHAR",
-         meta.getColumnType(2), java.sql.Types.VARCHAR);
+              java.sql.Types.VARCHAR, meta.getColumnType(2));
 
       assertEquals("Path column type should be VARCHAR",
-         meta.getColumnType(3), java.sql.Types.VARCHAR);
+              java.sql.Types.VARCHAR, meta.getColumnType(3));
 
       assertEquals("Modified column type should be VARCHAR",
-         meta.getColumnType(4), java.sql.Types.VARCHAR);
+              java.sql.Types.VARCHAR, meta.getColumnType(4));
 
       assertEquals("Length column type should be BIGINT",
-         meta.getColumnType(5), java.sql.Types.BIGINT);
+              java.sql.Types.BIGINT, meta.getColumnType(5));
 
       assertEquals(m_totalNumFiles, i);
 
