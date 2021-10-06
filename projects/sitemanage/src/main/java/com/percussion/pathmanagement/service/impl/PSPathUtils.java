@@ -352,11 +352,15 @@ public class PSPathUtils
                 
                 prop1 = getRealDataType(prop1str);
                 prop2 = getRealDataType(prop2str);
-                
-                int compareResult =
-                        new CompareToBuilder()
-                            .append(prop1, prop2)
-                            .toComparison();
+                int compareResult = 1;
+                try {
+                    compareResult =
+                            new CompareToBuilder()
+                                    .append(prop1, prop2)
+                                    .toComparison();
+                }catch (Exception e){
+                    //Some times Prop1 is String and Prop 2 is Date and comparator fails.
+                }
                 
                 return sortOrderNumber * compareResult;
             }

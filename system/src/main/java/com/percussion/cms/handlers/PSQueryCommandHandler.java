@@ -79,7 +79,6 @@ import org.w3c.dom.ProcessingInstruction;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -333,13 +332,9 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
       // Empty implementation
    }
 
-
-
    // see interface for description
    public void processRequest(PSRequest req)
    {
-      ByteArrayOutputStream out = null;
-      ByteArrayInputStream in = null;
 
       // store handlers so we can clean them up at the end.
       List execDataCleanupList = new ArrayList();
@@ -414,36 +409,45 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
          if ( PSRequest.PAGE_TYPE_HTML == req.getRequestPageType())
          {
             // merge the doc w/ the stylesheet
-            out = new ByteArrayOutputStream();
-            PSStyleSheetMerger merger =
-                  PSStyleSheetMerger.getMerger( mergeStylesheet );
-            if ( !( merger instanceof PSXslStyleSheetMerger ))
-            {
-               throw new PSConversionException(
-                     IPSServerErrors.CE_UNSUPPORTED_MERGER,
-                     mergeStylesheet.toString());
-            }
-            PSXslStyleSheetMerger xslMerger = (PSXslStyleSheetMerger) merger;
+            try(ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+               PSStyleSheetMerger merger =  PSStyleSheetMerger.getMerger(mergeStylesheet);
+               if (!(merger instanceof PSXslStyleSheetMerger)) {
+                  throw new PSConversionException(IPSServerErrors.CE_UNSUPPORTED_MERGER,
+                          mergeStylesheet.toString());
+               }
+               PSXslStyleSheetMerger xslMerger = (PSXslStyleSheetMerger) merger;
 
             /* if this refereneces a different app, we need to strip off the
                leading .. */
-            String urlPath = mergeStylesheet.getFile();
-            if ( urlPath.startsWith( "../" ))
-               urlPath = urlPath.substring( 3 );
-            mergeStylesheet = new URL( "file:" + urlPath );
-            xslMerger.merge(req, resultDoc, out, mergeStylesheet );
-            in = new ByteArrayInputStream(out.toByteArray());
+               try {
+                  String urlPath = mergeStylesheet.getFile();
+                  if (urlPath.startsWith("../"))
+                     urlPath = urlPath.substring(3);
+                  mergeStylesheet = new URL("file:" + urlPath);
+                  xslMerger.merge(req, resultDoc, out, mergeStylesheet);
+                  try (ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
 
-            if (null == contentHeader)
-            {
-               String mimeType = IPSMimeContentTypes.MIME_TYPE_TEXT_HTML;
-               // stylesheet could have set any encoding, so don't specify one
-               contentHeader = PSBaseHttpUtils.constructContentTypeHeader(mimeType,
-                  null);
+                     if (null == contentHeader) {
+                        String mimeType = IPSMimeContentTypes.MIME_TYPE_TEXT_HTML;
+                        // stylesheet could have set any encoding, so don't specify one
+                        contentHeader = PSBaseHttpUtils.constructContentTypeHeader(mimeType,
+                                null);
+                     }
+                     resp.setContent(in, out.size(), contentHeader, false);
+
+                  }
+               } catch (PSConversionException e) {
+                  PSUserSession sess = req.getUserSession();
+                  String sessId = "";
+                  if (sess != null)
+                     sessId = sess.getId();
+
+                  int errorCode= e.getErrorCode();
+                  Object[] errorArgs= e.getErrorArguments();
+                  m_appHandler.reportError(req, new PSXmlProcessingError(
+                          m_appHandler.getId(),sessId,errorCode,errorArgs,null));
+               }
             }
-
-            resp.setContent( in, out.size(), contentHeader, false );
-            in = null;
          }
          else
          {
@@ -541,25 +545,6 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
       }
       finally
       {
-         // clean up
-         try
-         {
-            if ( null != in )
-            {
-               in.close();
-               in = null;
-            }
-            if ( null != out )
-            {
-               out.close();
-               out = null;
-            }
-         }
-         catch (IOException ioe)
-         {
-            /* this should not happen on byte streams */
-         }
-
          cleanup(data, resultSetCleanupList, execDataCleanupList);
       }
    }
