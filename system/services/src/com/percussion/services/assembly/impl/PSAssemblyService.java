@@ -623,10 +623,11 @@ public class PSAssemblyService implements IPSAssemblyService
       try
       {
          ms_item.set(item);
-         processBindings(item, eval);
+
          Number count = null;
          try
          {
+            processBindings(item, eval);
             count = (Number) eval.evaluate(PAGE_COUNT);
          }
          catch (Exception e)

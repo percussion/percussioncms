@@ -306,9 +306,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             decodedUrl = stripNonHttpProtocols(decodedUrl);
 
             if(StringUtils.isEmpty(decodedUrl)){
-                //Url provided was not valid http or https
-                throw new WebApplicationException("Invalid url supplied to getExternalFeed",
-                        Status.NOT_ACCEPTABLE);
+                //this is the case for initial time when RSS Widget is added to the page, thuse returning empty String
+               return feeds;
             }
         }catch(PSEncryptionException e){
             //Means EncryptionKey Not generated yet

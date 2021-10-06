@@ -28,6 +28,9 @@
 	};
 
 	function getExternalFeed(feedUrl, queryString, callback) {
+		if(feedUrl === "" || typeof feedUrl === 'undefined'){
+			return "";
+		}
     	let deliveryUrl = "";
     	try{
     		if ("undefined" !== typeof (queryString.deliveryurl)){

@@ -1659,7 +1659,7 @@ public class PSSqlHelper
 
    public static boolean isMsSql(String driverName)
    {
-      return (driverName.toUpperCase().contains("MSSQL")||driverName.toUpperCase().contains("JTDS"));
+      return (driverName.toUpperCase().contains("MSSQL") || driverName.toUpperCase().contains("SQLSERVER") || driverName.toUpperCase().contains("JTDS"));
    }
 
    public static boolean isDB2(String driverName)

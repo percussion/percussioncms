@@ -24,8 +24,6 @@
 
 package com.percussion.pagemanagement.service.impl;
 
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.pagemanagement.data.PSNonSEOPagesRequest;
 import com.percussion.pagemanagement.data.PSPage;
@@ -41,8 +39,6 @@ import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
 import com.percussion.searchmanagement.service.IPSSearchService;
-import com.percussion.security.SecureStringUtils;
-import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.system.IPSSystemService;
 import com.percussion.share.dao.IPSFolderHelper;
@@ -57,8 +53,6 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.web.service.PSRestServicePathConstants;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +71,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.Map;
 
 import static com.percussion.share.web.service.PSRestServicePathConstants.DELETE_PATH;
 import static com.percussion.share.web.service.PSRestServicePathConstants.LOAD_PATH;
@@ -139,14 +132,14 @@ public class PSPageRestService
     @DELETE
     @Path(DELETE_PATH)
     public void delete(@PathParam("id")
-                                   String id)
+                                   String id) throws PSValidationException
     {
         try {
             pageService.delete(id);
         } catch (PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e);
+            throw e;
         }
     }
 
@@ -156,38 +149,38 @@ public class PSPageRestService
      */
     @GET
     @Path("/forceDelete/{id}")
-    public void forceDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
+    public void forceDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id) throws PSValidationException
     {
         try {
             pageService.delete(id, true);
         } catch (PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e);
+            throw e;
         }
     }
 
     @DELETE
     @Path("/purge/{id}")
-    public void purge(@PathParam("id") String id) {
+    public void purge(@PathParam("id") String id) throws PSValidationException{
         try {
             pageService.delete(id, false, true);
         } catch (PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e);
+            throw e;
         }
     }
 
     @DELETE
     @Path("/forcePurge/{id}")
-    public void forcePurge(@PathParam("id") String id) {
+    public void forcePurge(@PathParam("id") String id) throws PSValidationException {
         try {
             pageService.delete(id, true, true);
         } catch (PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e);
+            throw e;
         }
     }
 
@@ -197,10 +190,14 @@ public class PSPageRestService
     @POST
     @Path("/copy/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String copy(@PathParam("id") String id, @QueryParam("addToRecent") boolean addToRecent)
+    public String copy(@PathParam("id") String id, @QueryParam("addToRecent") boolean addToRecent) throws PSBeanValidationException
     {
         try {
             return pageService.copy(id, addToRecent);
+        }catch (PSBeanValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
         } catch (IPSPathService.PSPathNotFoundServiceException | PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
@@ -215,11 +212,15 @@ public class PSPageRestService
     @GET
     @Path(LOAD_PATH)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPage find(@PathParam("id") String id)
+    public PSPage find(@PathParam("id") String id) throws PSValidationException
     {
         try {
             return pageService.load(id);
-        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
+        } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -229,11 +230,15 @@ public class PSPageRestService
     @GET
     @Path("/folderpath/{fullPath:.*}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSPage findPageByPath(@PathParam("fullPath") String fullPath)
+    public PSPage findPageByPath(@PathParam("fullPath") String fullPath) throws PSValidationException
     {
         try {
             return pageService.findPageByPath(fullPath);
-        } catch (PSValidationException | PSPageException e) {
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
+        } catch ( PSPageException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -258,10 +263,14 @@ public class PSPageRestService
     public PSPagedItemList findPagesByTemplate(@PathParam("templateId") String templateId,
             @QueryParam("startIndex") Integer startIndex, @QueryParam("maxResults") Integer maxResults,
             @QueryParam("sortColumn") String sortColumn, @QueryParam("sortOrder") String sortOrder,
-            @QueryParam("pageId") String pageId)
+            @QueryParam("pageId") String pageId) throws PSValidationException
     {
         try {
             return pageService.findPagesByTemplate(templateId, startIndex, maxResults, sortColumn, sortOrder, pageId);
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
         } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
@@ -301,10 +310,14 @@ public class PSPageRestService
     @POST
     @Path("/clearMigrationEmptyFlag/{pageid}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSNoContent clearMigrationEmptyFlag(@PathParam("pageid") String pageid)
+    public PSNoContent clearMigrationEmptyFlag(@PathParam("pageid") String pageid) throws PSValidationException
     {
         try {
             return pageService.clearMigrationEmptyFlag(pageid);
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
         } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
@@ -315,11 +328,15 @@ public class PSPageRestService
     @GET
     @Path("/migrationEmptyFlag/{pageid}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Boolean getMigrationEmptyFlag(@PathParam("pageid") String pageid)
+    public Boolean getMigrationEmptyFlag(@PathParam("pageid") String pageid) throws PSValidationException
     {
         try {
             return pageService.getMigrationEmptyWidgetFlag(pageid);
-        } catch (IPSDataService.DataServiceLoadException | PSValidationException | IPSDataService.DataServiceNotFoundException e) {
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
+        } catch (IPSDataService.DataServiceLoadException| IPSDataService.DataServiceNotFoundException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -361,7 +378,7 @@ public class PSPageRestService
     @PUT
     @Path("/changeTemplate/{pageId}/{templateId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSNoContent changeTemplate(@PathParam("pageId") String pageId, @PathParam("templateId") String templateId)
+    public PSNoContent changeTemplate(@PathParam("pageId") String pageId, @PathParam("templateId") String templateId) throws PSValidationException
     {
         try {
             isTrue(isNotBlank(pageId), "pageId may not be blank");
@@ -370,6 +387,10 @@ public class PSPageRestService
             pageService.changeTemplate(pageId, templateId);
 
             return new PSNoContent("Changed template for page.");
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
         } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
@@ -385,7 +406,7 @@ public class PSPageRestService
     @PUT
     @Path("/restorePage/{pageId}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSNoContent restorePage(@PathParam("pageId") String pageId) throws PSPageException
+    public PSNoContent restorePage(@PathParam("pageId") String pageId) throws PSPageException,PSValidationException
     {
         isTrue(isNotBlank(pageId), "pageId may not be blank");
 
@@ -396,6 +417,10 @@ public class PSPageRestService
             String folderPath = item.getFolderPaths().get(0);
             String pathToCheck = PSFolderHelper.getOppositePath(folderPath);
             isValidForRecycle = folderHelper.isFolderValidForRecycleOrRestore(pathToCheck, folderPath, FOLDER_TYPE, RECYCLED_TYPE);
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
         } catch (Exception e) {
             hasErrors = true;
         }
@@ -436,11 +461,15 @@ public class PSPageRestService
     @Path(VALIDATE_PATH)
     @Produces(value= {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSValidationErrors validate(PSPage object)
+    public PSValidationErrors validate(PSPage object) throws PSValidationException
     {
         try {
             return pageService.validate(object);
-        } catch (PSValidationException | DataServiceSaveException e) {
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
+        } catch (DataServiceSaveException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
             throw new WebApplicationException(e);
@@ -450,7 +479,7 @@ public class PSPageRestService
     @GET
     @Path("/validateDelete/{id}")
     @Produces(value= {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    public PSNoContent validateDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id)
+    public PSNoContent validateDelete(@PathParam(PSRestServicePathConstants.ID_PATH_PARAM) String id) throws PSValidationException
     {
         try {
             pageService.validateDelete(id);
@@ -459,7 +488,7 @@ public class PSPageRestService
         } catch (PSValidationException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);
-            throw new WebApplicationException(e);
+            throw e;
         }
     }
 
@@ -467,10 +496,14 @@ public class PSPageRestService
     @Path("/nonSEOPages")
     @Produces(value= {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request)
+    public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request)  throws PSValidationException
     {
         try {
             return new PSSEOStatisticsList(pageService.findNonSEOPages(request));
+        }catch (PSValidationException ex){
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(),ex);
+            throw ex;
         } catch (PSDataServiceException e) {
             log.error(e.getMessage());
             log.debug(e.getMessage(),e);

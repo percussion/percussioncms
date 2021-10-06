@@ -48,6 +48,7 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.system.IPSSystemService;
+import com.percussion.services.system.PSSystemServiceLocator;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
@@ -115,7 +116,11 @@ public class PSSearchService implements IPSSearchService
         this.workflowService = PSWorkflowServiceLocator.getWorkflowService();
         this.uiService = uiService;
         this.recycleService=recycleService;
-        this.systemService = systemService;
+        if(systemService != null) {
+            this.systemService = systemService;
+        }else{
+            this.systemService = PSSystemServiceLocator.getSystemService();
+        }
     }
 
     /*
@@ -651,7 +656,7 @@ public class PSSearchService implements IPSSearchService
 
     private IPSRecycleService recycleService;
 
-    private final IPSSystemService systemService;
+    private IPSSystemService systemService = PSSystemServiceLocator.getSystemService();
     
     /**
      * The id of the workflow used for local content, set in {@link #getLocalContentWfId()}.
