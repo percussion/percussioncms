@@ -29,6 +29,7 @@ import com.percussion.delivery.utils.security.PSHttpClient;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -102,28 +103,6 @@ public class PSFeedsServiceTests{
 
     }
 
-    @Test
-    public void testInvalidJARURL() throws PSEncryptionException {
-
-        PSFeedService svc = new PSFeedService(feedsDao,httpClient);
-
-        PSFeedDTO feedDTO = new PSFeedDTO();
-
-        String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),"jar://www.nasa.gov/rss/dyn/breaking_news.jar");
-        feedDTO.setFeedsUrl(url);
-
-        boolean passed = false;
-        try {
-            String xml = svc.readExternalFeed(feedDTO);
-        }
-        catch(WebApplicationException x){
-            log.error(PSExceptionUtils.getMessageForLog(x));
-            log.debug(x);
-            passed = true;
-        }
-
-        assertTrue(passed);
-    }
 
     @Test
     public void testInvalidFileURL() throws PSEncryptionException {
@@ -138,11 +117,12 @@ public class PSFeedsServiceTests{
         boolean passed = false;
         try {
             String xml = svc.readExternalFeed(feedDTO);
+            assertTrue(StringUtils.isEmpty(xml));
+            passed=true;
         }
         catch(WebApplicationException x){
             log.error(PSExceptionUtils.getMessageForLog(x));
             log.debug(x);
-            passed = true;
         }
 
         assertTrue(passed);
@@ -155,17 +135,19 @@ public class PSFeedsServiceTests{
 
         PSFeedDTO feedDTO = new PSFeedDTO();
 
+        //Feed should come back empty as the url is not valid
         String url = PSEncryptor.encryptString(temporaryFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),"data://www.nasa.gov/rss/dyn/breaking_news.jar");
         feedDTO.setFeedsUrl(url);
 
         boolean passed = false;
         try {
             String xml = svc.readExternalFeed(feedDTO);
+            assertTrue("Feed should be empty.", StringUtils.isEmpty(xml));
+            passed = true;
         }
         catch(WebApplicationException x){
             log.error(PSExceptionUtils.getMessageForLog(x));
             log.debug(x);
-            passed = true;
         }
 
         assertTrue(passed);
