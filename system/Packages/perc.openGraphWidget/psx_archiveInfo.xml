@@ -40,7 +40,7 @@
             <Description>Provides a Widget for adding  Open Graph metadata to the Template or Page.  This metadata is used by social networks when content is shared.</Description>
             <Publisher name="Percussion Software, Inc." url="http://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="5.2.5"/>
-            <Version>1.1.5</Version>
+            <Version>1.1.6</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
