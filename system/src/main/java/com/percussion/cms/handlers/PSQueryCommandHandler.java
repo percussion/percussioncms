@@ -68,6 +68,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestStatistics;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.server.PSResponse;
+import com.percussion.server.PSServerLogHandler;
 import com.percussion.server.PSUserSession;
 import com.percussion.util.PSBaseHttpUtils;
 import com.percussion.util.PSIteratorUtils;
@@ -117,6 +118,8 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
     * indexes into an array if desired.
     */
    public static final int ROOT_PARENT_PAGE_ID = 0;
+
+   private static final String XSL_PARSER_ERROR_STRING = "Failed to process XSL stylesheets for the content editor.Please see server log for errors.";
 
    /**
     * Looks in the system def for pre/post exits assigned to this handler and
@@ -419,12 +422,19 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
 
             /* if this refereneces a different app, we need to strip off the
                leading .. */
+               String urlPath = "";
                try {
-                  String urlPath = mergeStylesheet.getFile();
+                  urlPath = mergeStylesheet.getFile();
                   if (urlPath.startsWith("../"))
                      urlPath = urlPath.substring(3);
                   mergeStylesheet = new URL("file:" + urlPath);
                   xslMerger.merge(req, resultDoc, out, mergeStylesheet);
+               } catch (PSConversionException e) {
+                  PSServerLogHandler.logException(XSL_PARSER_ERROR_STRING + urlPath,e);
+                  resp.setStatus(IPSHttpErrors.HTTP_INTERNAL_SERVER_ERROR,XSL_PARSER_ERROR_STRING);
+                  return;
+               }
+               if(out != null) {
                   try (ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray())) {
 
                      if (null == contentHeader) {
@@ -436,17 +446,8 @@ public abstract class PSQueryCommandHandler extends PSCommandHandler implements
                      resp.setContent(in, out.size(), contentHeader, false);
 
                   }
-               } catch (PSConversionException e) {
-                  PSUserSession sess = req.getUserSession();
-                  String sessId = "";
-                  if (sess != null)
-                     sessId = sess.getId();
-
-                  int errorCode= e.getErrorCode();
-                  Object[] errorArgs= e.getErrorArguments();
-                  m_appHandler.reportError(req, new PSXmlProcessingError(
-                          m_appHandler.getId(),sessId,errorCode,errorArgs,null));
                }
+
             }
          }
          else
