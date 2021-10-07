@@ -40,7 +40,7 @@
             <Description>Background process monitor gadget displays the background processes and their status.</Description>
             <Publisher name="Percussion Software Inc" url="https://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="3.4.1"/>
-            <Version>1.1.4</Version>
+            <Version>1.1.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>

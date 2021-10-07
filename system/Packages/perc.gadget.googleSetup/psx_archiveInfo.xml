@@ -40,7 +40,7 @@
             <Description>A gadget that allows an administrator to configure Google Analytics to use the correct account and profile for each site managed by CMS. The user must have Admin permissions to use this gadget.</Description>
             <Publisher name="Percussion Software Inc" url="www.percussion.com"/>
             <CmsVersion max="9.0.0" min="1.5.0"/>
-            <Version>1.1.7</Version>
+            <Version>1.1.8</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
