@@ -104,7 +104,10 @@ public class PSCatalogResolver extends CatalogResolver{
      */
     @Override
     public String getResolvedEntity(String publicId, String systemId) {
-        super.getCatalog().getCatalogManager().debug.setDebug(99);
+        //Only want this if debug is explicitly enabled.
+        if (log.isDebugEnabled()) {
+            super.getCatalog().getCatalogManager().debug.setDebug(99);
+        }
         return super.getResolvedEntity(publicId, systemId);
     }
 
@@ -135,7 +138,12 @@ public class PSCatalogResolver extends CatalogResolver{
      */
     @Override
     public InputSource resolveEntity(String publicId, String systemId) {
-        super.getCatalog().getCatalogManager().debug.setDebug(99);
+
+        //Only want this if debug is explicitly enabled.
+        if (log.isDebugEnabled()) {
+            super.getCatalog().getCatalogManager().debug.setDebug(99);
+        }
+
         InputSource is=null;
         try {
             is = super.resolveEntity(publicId, systemId);
@@ -164,7 +172,11 @@ public class PSCatalogResolver extends CatalogResolver{
         if(href==null || "".equalsIgnoreCase(href)){
             return null;
         }
-        super.getCatalog().getCatalogManager().debug.setDebug(99);
+        //Only want this if debug is explicitly enabled.
+        if (log.isDebugEnabled()) {
+            super.getCatalog().getCatalogManager().debug.setDebug(99);
+        }
+
         Source s = null;
 
         //Process any internal requests to the XML application server first
