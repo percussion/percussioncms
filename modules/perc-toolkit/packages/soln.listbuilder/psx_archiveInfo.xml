@@ -16,7 +16,7 @@
             <Description>Solutions List Builder enables building Manual and Auto Lists by the content contributor.</Description>
             <Publisher name="Percussion Software, Inc." url="http://www.percussion.com"/>
             <CmsVersion max="9.0.0" min="6.7.0"/>
-            <Version>1.0.2</Version>
+            <Version>1.0.3</Version>
             <ImplConfigFile>C:\Solutions\PackageSource\soln.listbuilder_configDef.xml</ImplConfigFile>
             <LocalConfigFile>C:\Solutions\PackageSource\soln.listbuilder_defaultConfig.xml</LocalConfigFile>
             <PKGDependencies>
