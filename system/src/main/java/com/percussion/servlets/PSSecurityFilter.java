@@ -89,6 +89,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -949,15 +950,26 @@ public class PSSecurityFilter implements Filter
    
       return false;
    }
-   
-   /*
-    * 
+
+   /**
+    * Attempts to determine if the request is a potential cross site forgery attack.
+    *
+    * @param request The current http request, never null
+    * @return when true, the request may be an attack.
     */
    private boolean checkForCrossSiteRequestForgery(HttpServletRequest request)
    {
       StringBuffer reqURL = request.getRequestURL();
-      URI reqURI = URI.create(reqURL.toString());
-      
+      URI reqURI;
+
+      try {
+         reqURI = new URI(reqURL.toString());
+      } catch (URISyntaxException e) {
+         ms_log.warn("Invalid URL detected in request: URI: {} Error: {}",
+                 reqURL, PSExceptionUtils.getMessageForLog(e));
+         return true;
+      }
+
       if (reqURI.getPath().equals(request.getContextPath() + "/login"))
          return false;
       
