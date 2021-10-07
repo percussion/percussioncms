@@ -184,7 +184,8 @@ var baseURL;
         let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
 
         let href = "#";
-        if ("undefined" !== typeof (pageResult) && "" !== pageResult) {
+        var isEditMode = query.isEditMode;
+        if ("undefined" !== typeof (pageResult) && "" !== pageResult  && isEditMode !== "true") {
             href = baseURL + pageResult + "?filter=" + node.category + encodedQuery;
         }
 
