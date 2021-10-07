@@ -124,7 +124,7 @@
                                 //Set the link for the item Year
                                 yearParam1 = row.year + "-01-01 00:00:00";
                                 yearParam2 = row.year + "-12-31 23:59:59";
-                                if ("undefined" === typeof (pageResult) || "" === pageResult || isEditMode === "true"){
+                                if ("undefined" === typeof (pageResult) || "" === pageResult || isEditMode === "true" || isPreviewMode === "true"){
                                     anchorYear = $("<a href='#'>")
                                         .text(linkYearText);
                                 }else{
@@ -183,7 +183,7 @@
                                     }
 
                                     //Set the link for the item month
-                                    if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult){
+                                    if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult || isPreviewMode === "true"){
                                         a = $("<a href='#'>")
                                             .text(linkText);
                                     }else{
