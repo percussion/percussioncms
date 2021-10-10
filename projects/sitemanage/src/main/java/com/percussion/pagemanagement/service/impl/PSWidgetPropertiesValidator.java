@@ -31,11 +31,9 @@ import com.percussion.pagemanagement.data.PSWidgetProperties.PSWidgetProperty;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetPropertyBlankStringCoercionException;
 import com.percussion.pagemanagement.service.impl.PSWidgetUtils.PSWidgetPropertyCoercionException;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSPropertiesValidationException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSAbstractPropertiesValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -121,6 +119,17 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         }
     }
 
+    private Object fixUpgrdePropertyIssue(String name, Object object, T userPref, Map<String, Object> properties, Errors errors){
+        String propName = "sortby";
+        String wrongValue = "rx:sys_contentpostdate desc";
+        String correctValue = "rx:sys_contentpostdate";
+        if(propName.equalsIgnoreCase(name) && wrongValue.equalsIgnoreCase(object.toString())){
+            properties.put(name,correctValue);
+            return correctValue;
+        }
+        return object;
+    }
+
     @Override
     protected Class<PSWidgetItem> getType()
     {
@@ -166,8 +175,15 @@ public abstract class PSWidgetPropertiesValidator<T extends AbstractUserPref> ex
         boolean valid = validateType(klass, userPref.getDisplayName(), object, errors);
         if (valid &&  isEnum(userPref)) {
             valid = getEnums(userPref).contains(object);
-            if ( ! valid )
-                errors.rejectValue(name, "widgetItem.badEnumValue", "Bad enum value");
+            if ( ! valid ) {
+                //Try to see if Upgraded Property and fix it, else throw error.
+                //Doing it here to not have performance impact on all properties.
+                Object obj = fixUpgrdePropertyIssue(name, object, userPref, properties, errors);
+                valid = getEnums(userPref).contains(obj);
+                if ( ! valid ) {
+                    errors.rejectValue(name, "widgetItem.badEnumValue", "Bad enum value");
+                }
+            }
         }
     }
     
