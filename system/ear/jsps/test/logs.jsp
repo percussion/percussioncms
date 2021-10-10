@@ -4,6 +4,8 @@
          contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"
 %>
+<%@ page import="org.owasp.encoder.Encoder" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
@@ -169,7 +171,7 @@
             sb.setLength(0); // set length of buffer to 0
             sb.trimToSize(); // trim the underlying buffer
             while ((line = reader.readLine()) != null) {
-                if (line == "")
+                if (line.equalsIgnoreCase(""))
                     continue;
                 if (line.contains("INFO"))
                     displayClass = "";
@@ -180,8 +182,9 @@
                 if (line.contains("start()"))
                     displayClass = "success";
 
-
-                sb.append("<tr rownum='" + i + "' id='line-" + i + "' class='" + displayClass + "'><td>" + line + "</td></tr>");
+                line = Encode.forHtml(line);
+                sb.append("<tr rownum='").append( i).append("' id='line-").append(i).append("' class='").append(displayClass).append("'><td>").append(
+                        line).append("</td></tr>");
                 lastLine = line;
                 i++;
             }
