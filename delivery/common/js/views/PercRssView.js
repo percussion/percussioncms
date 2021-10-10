@@ -68,7 +68,6 @@
                 } else {
                     // Handle no items or error here
                 }
-                console.log("feed = " + feedItem);
                 currentFeedWidget.append(feedItem);
                 currentFeedWidget.attr("aria-busy","false");
             });
