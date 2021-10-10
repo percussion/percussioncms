@@ -23,6 +23,7 @@
  */
 package com.percussion.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -95,19 +96,15 @@ public class PSDtdTreeMergeManager
 
 // test using: java -Djava.compiler=none com/percussion/xml/PSDtdTreeMergeManager test.dtd test1.dtd
          Iterator iterator = masterTree.elementKeyIterator();
-//      System.out.println( "---------- Master Tree -------------" );
-//         System.out.println( masterTree.toDTD(false) );
-//         System.out.println( "------------------------------------" );
 
          PSDtdTreeMergeManager mergeObj = new PSDtdTreeMergeManager( masterTree );
          masterTree = mergeObj.updateTreeForUserMod( masterTree, slaveTree );
 
-//         System.out.println( masterTree.toDTD(false) );
       }
-      catch (Throwable t)
+      catch (Exception t)
       {
-         log.error(t.getMessage());
-         log.debug(t.getMessage(), t);
+         log.error(PSExceptionUtils.getMessageForLog(t));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(t));
       }
   }
 
@@ -267,11 +264,6 @@ public class PSDtdTreeMergeManager
    /**
     * Merges the slave attribute to the master attribute by finding an attribute
     * in the master tree (for this element) that has the same name.
-    *
-    * @param master The master PSDtdElement which may or may not have attributes.
-    * The merge will do nothing if master is <CODE>null</CODE>.
-    * @param slave The slave PSDtdElement which may or may not have attibutes.
-    * The merge will do nothing if slave is <CODE>null</CODE>.
     */
    private void mergeAttributes( String key )
    {
@@ -840,9 +832,9 @@ public class PSDtdTreeMergeManager
    /**
     * Recursively adds nodes in NodeLists to the storage HashMap.
     *
-    * @param map The HashMap used for data storage, basically the a HashMap
+    * @param mMap The HashMap used for data storage, basically the a HashMap
     * version of the master NodeList. This should never be <CODE>null</CODE>.
-    * @param nodeList The current node element (which is a PSDtdNodeList) that
+    * @param sNodeList The current node element (which is a PSDtdNodeList) that
     * is being traversed. This has to be the slave NodeList.
     * @return boolean <CODE>true</CODE> if contains a PCDATA.
     */

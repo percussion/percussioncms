@@ -24,26 +24,25 @@
 
 package com.percussion.tools;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.StringTokenizer;
-
-import com.percussion.utils.io.PathUtils;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import javax.xml.parsers.DocumentBuilder;
-
 import com.percussion.install.RxAppConverter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import com.percussion.utils.io.PathUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 /**
 *

@@ -153,9 +153,6 @@ public abstract class HTMLNode implements Node
       if (newChild == null)
          throw new HTMLException((short)0, "Cannot insert null child under " + this);
 
-      // System.out.println("Adding " + newChild + " to " + this
-      //    + " before " + refChild);
-
       // stitch together the new child's previous sibling with
       // the new child's next sibling
       HTMLNode nChild = (HTMLNode)newChild;

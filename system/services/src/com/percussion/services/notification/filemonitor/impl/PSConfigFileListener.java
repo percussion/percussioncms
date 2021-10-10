@@ -23,20 +23,20 @@
  */
 package com.percussion.services.notification.filemonitor.impl;
 
-import java.io.File;
-
+import com.percussion.cms.IPSConstants;
+import com.percussion.services.notification.PSNotificationHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.percussion.services.notification.PSNotificationHelper;
+import java.io.File;
 
 /**
  * Class used to implement a Configuration File Listener for the File
  * Monitor Notification Service.
  *
  * NOTE that in its current implementation, this class is "called back" 
- * by all file changes within a monitored directory {@link #PSDirectoryWatcher.java}
+ * by all file changes within a monitored directory
  * and therefore must use the file's name to differentiate between instances of
  * this class.
  */
@@ -81,7 +81,7 @@ public class PSConfigFileListener extends PSBaseListener
             String absPath = resource.getAbsolutePath();
             if (resource.isFile() && absPath.equals(m_configFileFullPath)) 
             {
-                //System.out.println("Starting to monitor " + absPath);
+                log.info("Starting to monitor {} ..." , absPath);
             }
         }
     }
@@ -90,7 +90,7 @@ public class PSConfigFileListener extends PSBaseListener
     * Called whenever the File Monitor Notification Service stops monitoring
     * a file.
     * 
-    * @param monitoredResource The resource being monitored. Should be an 
+    * @param notMonitoredResource The resource being monitored. Should be an
     * instance of a File object. Can be <code>null</code>.
     */
     public void onStop(Object notMonitoredResource)
@@ -101,7 +101,7 @@ public class PSConfigFileListener extends PSBaseListener
           String absPath = resource.getAbsolutePath();
           if (resource.isFile() && absPath.equals(m_configFileFullPath)) 
           {
-              //System.out.println("Halting the monitoring of " + absPath);
+              log.info("Halting the monitoring of {}" , absPath);
           }
       }
     }
@@ -110,7 +110,7 @@ public class PSConfigFileListener extends PSBaseListener
      * Called whenever the File Monitor Notification Service detects a file
      * being added to the monitored directory.
      * 
-     * @param monitoredResource The resource being monitored. Should be an 
+     * @param newResource The resource being monitored. Should be an
      * instance of a File object. Can be <code>null</code>.
      */
     public void onAdd(Object newResource)
@@ -121,7 +121,7 @@ public class PSConfigFileListener extends PSBaseListener
             String absPath = file.getAbsolutePath();
             if (file.isFile() && absPath.equals(m_configFileFullPath)) 
             {
-                //System.out.println(absPath + " is added");
+                log.info("{} is now monitored",absPath);
             }
         }
     }
@@ -130,26 +130,26 @@ public class PSConfigFileListener extends PSBaseListener
      * Called whenever the File Monitor Notification Service detects a change
      * to a file in the monitored directory.
      * 
-     * @param monitoredResource The resource being monitored. Should be an 
+     * @param changedResource The resource being monitored. Should be an
      * instance of a File object. Can be <code>null</code>.
      */
     public void onChange(Object changedResource)
     {
-       if (ms_log.isDebugEnabled())
-          ms_log.debug("onChange");
+       if (log.isDebugEnabled())
+          log.debug("onChange");
        
         if (changedResource instanceof File)
         {
             File file = (File) changedResource;
             String absPath = file.getAbsolutePath();
 
-            if (ms_log.isDebugEnabled())
-               ms_log.debug("file-path: " + absPath);
+            if (log.isDebugEnabled())
+               log.debug("onChange for file with file-path: {}" , absPath);
 
             if (file.isFile() && absPath.equals(m_configFileFullPath)) 
             {
-               if (ms_log.isDebugEnabled())
-                  ms_log.debug("notifyFile file-path: " + absPath);
+               if (log.isDebugEnabled())
+                  log.debug("notifyFile file-path: {}" , absPath);
 
                PSNotificationHelper.notifyFile((File) changedResource);                  
             }
@@ -161,7 +161,7 @@ public class PSConfigFileListener extends PSBaseListener
      * Called whenever the File Monitor Notification Service detects a deletion
      * of a file in the monitored directory.
      * 
-     * @param monitoredResource The resource being monitored. Should be an 
+     * @param deletedResource The resource being monitored. Should be an
      * instance of a File object. Can be <code>null</code>.
      */
     public void onDelete(Object deletedResource)
@@ -169,13 +169,13 @@ public class PSConfigFileListener extends PSBaseListener
         if (deletedResource instanceof String)
         {
             String deletedFile = (String) deletedResource;
-            System.out.println(deletedFile + " is deleted");
+            log.info( "Resource: {} was deleted.", deletedFile);
         }
     }
     
     /**
      * Logger for this class.
      */
-    private static final Logger ms_log = LogManager.getLogger("PSConfigFileListener");
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 }
 
