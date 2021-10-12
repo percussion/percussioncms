@@ -201,11 +201,11 @@
                             <csrf:form method="post" action="navigationTemplates.jsp">
                                 <div class="form-group">
                                     <label for="percNewPassword"><i18n:message key="perc.ui.change.pw@Enter New Password" /></label>
-                                    <input name="password" type="password" class="form-control perc-change-password-field" id="percNewPassword" placeholder='<i18n:message key="perc.ui.change.pw@Enter New Password" />'>
+                                    <input name="password" type="password" class="form-control perc-change-password-field" id="percNewPassword" autocomplete="off" placeholder='<i18n:message key="perc.ui.change.pw@Enter New Password" />'>
                                 </div>
                                 <div class="form-group">
                                     <label for="percConfirmNewPassword"><i18n:message key="perc.ui.change.pw@Confirm New Password" /></label>
-                                    <input name="confirmPassword" type="password" class="form-control perc-change-password-field" id="percConfirmNewPassword" placeholder='<i18n:message key="perc.ui.change.pw@Confirm New Password" />'>
+                                    <input name="confirmPassword" type="password" class="form-control perc-change-password-field" id="percConfirmNewPassword" autocomplete="off" placeholder='<i18n:message key="perc.ui.change.pw@Confirm New Password" />'>
                                 </div>
                             </csrf:form>
                             <p class="perc-change-password-error"><span>&nbsp;<span></p>
