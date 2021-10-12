@@ -5,6 +5,7 @@
 
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.ui.PSI18NTranslationKeyValues" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -54,14 +55,74 @@
             msiever = ua.charAt(ua.indexOf("MSIE ") + 5);
     }
 
-    //Set inline help message
-    Boolean hasSites = (Boolean) request.getAttribute("hasSites");
-    if(hasSites==null)
-        hasSites=false;
+    String site = request.getParameter("site");
+    if (site == null)
+        site = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(site)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid Site Name!");
+    }
+    String name = request.getParameter("name");
+    if (name == null)
+        name = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(name)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid Name!");
+    }
+    String path = request.getParameter("path");
+    if (path == null)
+        path = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(path)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid Path!");
+    }
+    String pathType = request.getParameter("pathType");
+    if (pathType == null)
+        pathType = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(pathType)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid pathType!");
+    }
+    String view = request.getParameter("view");
+    if (view == null)
+        view = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(view)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid view!");
+    }
+    String id = request.getParameter("id");
+    if (id == null)
+        id = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidPercId(id)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid Id!");
+    }
+    String mode = request.getParameter("mode");
+    if (mode == null)
+        mode = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(mode)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid mode!");
+    }
 
-    Boolean isAdmin = (Boolean) request.getAttribute("isAdmin");
-    if(isAdmin==null)
-        isAdmin = false;
+    //Set inline help message
+    Boolean hasSites = false;
+    try {
+        hasSites = (Boolean) request.getAttribute("hasSites");
+        if (hasSites == null)
+            hasSites = false;
+    }catch (Exception e){
+        response.sendError(response.SC_FORBIDDEN, "Invalid hasSites param!");
+    }
+
+    Boolean isAdmin = false;
+    try {
+        isAdmin = (Boolean) request.getAttribute("isAdmin");
+        if(isAdmin==null)
+            isAdmin = false;
+    }catch (Exception e){
+        response.sendError(response.SC_FORBIDDEN, "Invalid isAdmin param!");
+    }
 
     String inlineHelpMsg = PSI18nUtils.getString("perc.ui.home@Click on Site Work on Pages", locale)
             + PSI18nUtils.getString("perc.ui.home@Click A Folder Work on Assets", locale);
