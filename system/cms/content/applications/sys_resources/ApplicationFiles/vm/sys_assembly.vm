@@ -491,10 +491,12 @@ percCanonicalRedirect('${defaultDocument}');
 #set($widgetitemUI = $instanceUI.getItem())##
 #set($includeUIOnPublishedPage = $widgetitemUI.getProperties().get("includeUIOnPublishedPage"))##
 #set($jQueryUICSSTheme = $widgetitemUI.getProperties().get("jQueryUICSSTheme"))##
-#if("$!{jQueryUICSSTheme}" != "" )## load the jquery-ui.css provided by the user on jquery ui widget
+#if("$!{jQueryUICSSTheme}" != ""  && $widgetitemUI.getProperties().get("includeUIOnPublishedPage")  !=  "no")## load the jquery-ui.css provided by the user on jquery ui widget
 <link rel="stylesheet" href="$jQueryUICSSTheme">
 #else## if user has not provided jquery-ui.css then load default css
+#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($widgetitemUI.getProperties().get("includeUIOnPublishedPage")  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($widgetitemUI.getProperties().get("includeUIOnPublishedPage")  !=  "no")) || $perc.isEditMode())##
 <link rel="stylesheet" href="$css_link">
+#end##
 #end##
 #else## in this case load default jquery-ui.css file
 #if($perc.linkContext.site.overrideSystemJQueryUI==false || $perc.isEditMode())##
@@ -1067,13 +1069,13 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #if(!$rx.pageutils.isLinkGood("$!{jQueryLocation}",$mode,$dontcache))##
 ## The jQueryLink link provided is no good
 <!-- Unable to verify CDN link - defaulting to system jquery version -->
-#if($perc.linkContext.mode.toString() == "PUBLISH")##
+#if($perc.linkContext.mode.toString() == "PUBLISH" && $widgetitem.getProperties().get("includeUIOnPublishedPage")  !=  "no")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.js")##
 #else##
 #set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
 #end##
-#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($includeOnPublishedPage  !=  "no")))##
+#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($widgetitem.getProperties().get("includeUIOnPublishedPage")  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($widgetitem.getProperties().get("includeUIOnPublishedPage")  !=  "no")))##
 <script src="$!{jQueryLocation}"
 #if($isDeferred == "yes")
 defer
