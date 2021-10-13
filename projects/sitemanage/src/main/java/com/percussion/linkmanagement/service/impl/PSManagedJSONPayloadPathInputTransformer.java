@@ -85,6 +85,15 @@ public class PSManagedJSONPayloadPathInputTransformer extends PSDefaultExtension
 			return "";
 		}
 
+		//Fix Old Data for Image Slider
+		if(request != null && "percImageSlider.xml".equalsIgnoreCase(request.getRequestPage())){
+			if(jsonPayload != null){
+				jsonPayload = jsonPayload.replaceAll(IPSManagedLinkService.PERC_OLD_IMAGE_SLIDER_CONFIG_ATTR,IPSManagedLinkService.PERC_CONFIG);
+				jsonPayload = jsonPayload.replaceAll(IPSManagedLinkService.PERC_OLD_IMAGE_SLIDER_IMAGEPATH_ATTR,IPSManagedLinkService.PERC_IMAGEPATH);
+				log.info("Updated Old data in ImageSlider");
+			}
+		}
+
         JSONObject object = null;
 
 		try {
