@@ -460,7 +460,7 @@
 
           ## First check if path is broken
           ## If path is broken the image has been deleted and should not be included in the slider
-          #if( $image.percImagePath && $image.percImagePath != '#' )##
+          #if( $image.percImagePath && $image.percImagePath != '#' && $image.linkSetting == "internal" && $image.percImageContentId)##
           #set( $query = "" )##
           #set( $query = "select * from rx:percImageAsset where rx:sys_contentid = ${image.percImageContentId}")##
           #set( $maxResults = 1 )##
