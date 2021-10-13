@@ -27,8 +27,8 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.auth.STSAssumeRoleSessionCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -42,9 +42,6 @@ import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
-import com.amazonaws.services.securitytoken.model.AssumeRoleRequest;
-import com.amazonaws.services.securitytoken.model.AssumeRoleResult;
-import com.amazonaws.services.securitytoken.model.Credentials;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
@@ -441,29 +438,17 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
                         .build();
             }
 
+            STSAssumeRoleSessionCredentialsProvider.Builder assumeRoleSessionBuilder =
+                    new STSAssumeRoleSessionCredentialsProvider.Builder(roleARN,"CMS-S3Publishing-UsingAssumeRole");
 
-
-            // Obtain credentials for the IAM role. Note that you cannot assume the role of an AWS root account;
-            // Amazon S3 will deny access. You must use credentials for an IAM user or an IAM role.
-            AssumeRoleRequest roleRequest = new AssumeRoleRequest()
-                    .withRoleArn(roleARN)
-                    .withRoleSessionName("CMS-S3Publishing-UsingAssumeRole");
-            AssumeRoleResult roleResponse = stsClient.assumeRole(roleRequest);
-            Credentials sessionCredentials = roleResponse.getCredentials();
-
-            // Create a BasicSessionCredentials object that contains the credentials you just retrieved.
-            BasicSessionCredentials awsCredentials = new BasicSessionCredentials(
-                    sessionCredentials.getAccessKeyId(),
-                    sessionCredentials.getSecretAccessKey(),
-                    sessionCredentials.getSessionToken());
 
             // Provide temporary security credentials so that the Amazon S3 client
             // can send authenticated requests to Amazon S3. You create the client
             // using the sessionCredentials object.
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                    .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                     .withRegion(selectedRegionName)
-                    .build();
+                    .withCredentials(assumeRoleSessionBuilder.withStsClient(stsClient).build()).build();
+
             return s3Client;
 
         }

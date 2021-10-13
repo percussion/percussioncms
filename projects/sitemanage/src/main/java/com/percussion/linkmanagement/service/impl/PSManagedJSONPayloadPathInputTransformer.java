@@ -25,6 +25,7 @@ package com.percussion.linkmanagement.service.impl;
 
 import com.percussion.data.PSConversionException;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSFieldInputTransformer;
 import com.percussion.extension.PSDefaultExtension;
@@ -45,13 +46,13 @@ import org.codehaus.jettison.json.JSONObject;
 import java.io.File;
 
 /**
- * A field input transformer to process/update an item path. Expects a JSON object with an array named percJSONConfigas an input, calls the managedlink service to manage any links in the payload, 
- * the payload is updated and returned with the resulting link id's updated.  
- * 
+ * A field input transformer to process/update an item path. Expects a JSON object with an array named percJSONConfigas an input, calls the managedlink service to manage any links in the payload,
+ * the payload is updated and returned with the resulting link id's updated.
+ *
  * For new items the item id is not yet created, so PSManagedItemPathPreProcessor should be added to initialized new item links in the service
- * to track that and set a request private object as a marker. The managed link post processor exit checks the private object and if it is there 
+ * to track that and set a request private object as a marker. The managed link post processor exit checks the private object and if it is there
  * and if its value is true then updates the parent id.
- * 
+ *
  * @author NateChadwick
  *
  */
@@ -61,7 +62,7 @@ public class PSManagedJSONPayloadPathInputTransformer extends PSDefaultExtension
 	private static final Logger log = LogManager.getLogger(PSManagedJSONPayloadPathInputTransformer.class);
 
     private IPSManagedLinkService service;
-    
+
     /* (non-Javadoc)
      * @see com.percussion.extension.IPSExtension#init(com.percussion.extension.IPSExtensionDef, java.io.File)
      */
@@ -79,127 +80,108 @@ public class PSManagedJSONPayloadPathInputTransformer extends PSDefaultExtension
     {
         PSExtensionParams ep = new PSExtensionParams(params);
         String jsonPayload = ep.getStringParam(0, null, true);
-        
+
         if(StringUtils.isBlank(jsonPayload)) {
 			return "";
 		}
-        
-        
+
+		//Fix Old Data for Image Slider
+		if(request != null && "percImageSlider.xml".equalsIgnoreCase(request.getRequestPage())){
+			if(jsonPayload != null){
+				jsonPayload = jsonPayload.replaceAll(IPSManagedLinkService.PERC_OLD_IMAGE_SLIDER_CONFIG_ATTR,IPSManagedLinkService.PERC_CONFIG);
+				jsonPayload = jsonPayload.replaceAll(IPSManagedLinkService.PERC_OLD_IMAGE_SLIDER_IMAGEPATH_ATTR,IPSManagedLinkService.PERC_IMAGEPATH);
+				log.info("Updated Old data in ImageSlider");
+			}
+		}
+
         JSONObject object = null;
-        
+
 		try {
-			if(log.isDebugEnabled()) {
-				log.debug("Parsing JSONPayload: " + jsonPayload);
-			}
+			log.debug("Parsing JSONPayload: " + jsonPayload);
 			object = new JSONObject(jsonPayload);
-			if(log.isDebugEnabled()) {
-				log.debug("Returned from parsing JSONPayload.");
-			}
-			
-			if(log.isDebugEnabled()) {
-				log.debug("Parsing for " + IPSManagedLinkService.PERC_CONFIG);
-			}
-	        JSONArray objectArray = object.getJSONArray(IPSManagedLinkService.PERC_CONFIG);
-	        if(log.isDebugEnabled()) {
+			log.debug("Returned from parsing JSONPayload.");
+			log.debug("Parsing for " + IPSManagedLinkService.PERC_CONFIG);
+			JSONArray objectArray;
+			try {
+				objectArray = object.getJSONArray(IPSManagedLinkService.PERC_CONFIG);
 				log.debug("Found " + IPSManagedLinkService.PERC_CONFIG + " array.");
+			}catch (JSONException e){
+				//Unable to get the array so log an error that it is missing
+				log.error("An error occurred while trying to manage links in a JSONPayload field.", PSExceptionUtils.getMessageForLog(e));
+				log.debug("An error occurred while trying to manage links in a JSONPayload field.", e);
+				return null;
 			}
-	        
+
 	        String newLinkId = "";
-	        
+
 	        for (int i = 0; i < objectArray.length(); i++) {
 	            JSONObject entry = objectArray.getJSONObject(i);
-	            
-	            if(log.isDebugEnabled()) {
-					log.debug("Processing array entry " + i);
-				}
-	            
+				log.debug("Processing array entry " + i);
+
 	            //Images
 	            if(entry.has(IPSManagedLinkService.PERC_IMAGEPATH)){
 	            	if(entry.has(IPSManagedLinkService.PERC_IMAGEPATH_LINKID)){
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Processing ImagePath entry with path " + entry.getString(IPSManagedLinkService.PERC_IMAGEPATH) + " and Link Id" + entry.getString(IPSManagedLinkService.PERC_IMAGEPATH_LINKID));
-						 }
-	     	            
+						 log.debug("Processing ImagePath entry with path " + entry.getString(IPSManagedLinkService.PERC_IMAGEPATH) + " and Link Id" + entry.getString(IPSManagedLinkService.PERC_IMAGEPATH_LINKID));
+
 	            		newLinkId = manageLinks(request, entry.getString(IPSManagedLinkService.PERC_IMAGEPATH), entry.getString(IPSManagedLinkService.PERC_IMAGEPATH_LINKID));
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Updating Image JSONPayload entry:" + entry.getString(IPSManagedLinkService.PERC_IMAGEPATH) + " with Link Id" + newLinkId);
-						 }
-		     	            
+
+	            		log.debug("Updating Image JSONPayload entry:" + entry.getString(IPSManagedLinkService.PERC_IMAGEPATH) + " with Link Id" + newLinkId);
+
+
 	            		entry.put(IPSManagedLinkService.PERC_IMAGEPATH_LINKID, newLinkId);
 	            		objectArray.put(i,entry);
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Done updating.");
-						 }
-		     	    
+
+						log.debug("Done updating.");
+
 	            	}
 	            }
-	            
+
 	            //Files
 	            if(entry.has(IPSManagedLinkService.PERC_FILEPATH)){
 	            	if(entry.has(IPSManagedLinkService.PERC_FILEPATH_LINKID)){
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Processing filePath entry with path " + entry.getString(IPSManagedLinkService.PERC_FILEPATH) + " and Link Id" + entry.getString(IPSManagedLinkService.PERC_FILEPATH_LINKID));
-						 }
-		     	            
-	            		newLinkId = manageLinks(request, entry.getString(IPSManagedLinkService.PERC_FILEPATH), entry.getString(IPSManagedLinkService.PERC_FILEPATH_LINKID));
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Updating File JSONPayload entry:" + entry.getString(IPSManagedLinkService.PERC_FILEPATH) + " with Link Id" + newLinkId);
-						 }
-	            		entry.put(IPSManagedLinkService.PERC_FILEPATH_LINKID, newLinkId);
-	            		objectArray.put(i,entry);
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Done updating.");
-						 }
+
+						log.debug("Processing filePath entry with path " + entry.getString(IPSManagedLinkService.PERC_FILEPATH) + " and Link Id" + entry.getString(IPSManagedLinkService.PERC_FILEPATH_LINKID));
+						newLinkId = manageLinks(request, entry.getString(IPSManagedLinkService.PERC_FILEPATH), entry.getString(IPSManagedLinkService.PERC_FILEPATH_LINKID));
+						log.debug("Updating File JSONPayload entry:" + entry.getString(IPSManagedLinkService.PERC_FILEPATH) + " with Link Id" + newLinkId);
+						entry.put(IPSManagedLinkService.PERC_FILEPATH_LINKID, newLinkId);
+						objectArray.put(i,entry);
+						log.debug("Done updating.");
+
 	            	}
 	            }
-	            
+
 	            //Pages
 	            if(entry.has(IPSManagedLinkService.PERC_PAGEPATH)){
 	            	if(entry.has(IPSManagedLinkService.PERC_PAGEPATH_LINKID)){
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Processing pagePath entry with path " + entry.getString(IPSManagedLinkService.PERC_PAGEPATH) + " and Link Id" + entry.getString(IPSManagedLinkService.PERC_PAGEPATH_LINKID));
-						 }
-		     	       
-	            		newLinkId = manageLinks(request, entry.getString(IPSManagedLinkService.PERC_PAGEPATH), entry.getString(IPSManagedLinkService.PERC_PAGEPATH_LINKID));
-	            		 if(log.isDebugEnabled()) {
-							 log.debug("Updating Page JSONPayload entry:" + entry.getString(IPSManagedLinkService.PERC_PAGEPATH) + " with Link Id" + newLinkId);
-						 }
-	            		entry.put(IPSManagedLinkService.PERC_PAGEPATH_LINKID, newLinkId);
-	            		objectArray.put(i,entry);
-	              		 if(log.isDebugEnabled()) {
-							 log.debug("Done updating.");
-						 }
+						log.debug("Processing pagePath entry with path " + entry.getString(IPSManagedLinkService.PERC_PAGEPATH) + " and Link Id" + entry.getString(IPSManagedLinkService.PERC_PAGEPATH_LINKID));
+						newLinkId = manageLinks(request, entry.getString(IPSManagedLinkService.PERC_PAGEPATH), entry.getString(IPSManagedLinkService.PERC_PAGEPATH_LINKID));
+
+						log.debug("Updating Page JSONPayload entry:" + entry.getString(IPSManagedLinkService.PERC_PAGEPATH) + " with Link Id" + newLinkId);
+
+						entry.put(IPSManagedLinkService.PERC_PAGEPATH_LINKID, newLinkId);
+						objectArray.put(i,entry);
+
+						log.debug("Done updating.");
+
 	            	}
 	            }
 	        }
-	     
-	   		 if(log.isDebugEnabled()) {
-				 log.debug("Updating JSONPayload to use updated array");
-			 }
-			
+			 log.debug("Updating JSONPayload to use updated array");
 	   		 object.put(IPSManagedLinkService.PERC_CONFIG, objectArray);
-			
-			 if(log.isDebugEnabled()) {
-				 log.debug("Done updating.");
-			 }
-			 
+			 log.debug("Done updating.");
+
 		} catch (JSONException ex) {
-			log.error("An error occurred while trying to manage links in a JSONPayload field.");
-			if(log.isDebugEnabled()) {
-				log.debug("Error occurred. Returning original payload:" + jsonPayload, ex);
-			}
+			log.error("An error occurred while trying to manage links in a JSONPayload field.", PSExceptionUtils.getMessageForLog(ex));
+			log.debug("Error occurred. Returning original payload:" + jsonPayload, ex);
 			return jsonPayload;
 		}
-		
-		if(log.isDebugEnabled()) {
-			log.debug("Returning updated payload:" + object.toString());
-		}
-	
+
+		log.debug("Returning updated payload:" + object.toString());
 		return object.toString();
     }
-    
+
     private String manageLinks(IPSRequestContext request, String path, String linkId){
-    	
+
     	String result = "";
         String cid = request.getParameter(IPSHtmlParameters.SYS_CONTENTID);
         if(StringUtils.isBlank(cid) || !StringUtils.isNumeric(cid))
@@ -218,7 +200,7 @@ public class PSManagedJSONPayloadPathInputTransformer extends PSDefaultExtension
 
     /**
      * Setter for dependency injection
-     * 
+     *
      * @param service the service to set
      */
     public void setService(IPSManagedLinkService service)

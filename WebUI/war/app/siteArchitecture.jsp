@@ -5,6 +5,8 @@
 
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.ui.PSI18NTranslationKeyValues" %>
+<%@ page import="org.jsecurity.util.StringUtils" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 
 <%--
   ~     Percussion CMS
@@ -47,6 +49,10 @@
     String site = request.getParameter("site");
     if (site == null)
         site = "";
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(site)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid Site Name!");
+    }
     Boolean hasSites = (Boolean) request.getAttribute("hasSites");
     String inlineHelpMsg = hasSites != null && hasSites
             ? PSI18nUtils.getString("perc.ui.site.architecture@Work On Navigation", locale)

@@ -142,6 +142,43 @@ public class SecureStringUtils {
     }
 
     /**
+     * Checks if the supplied time is a valie time.
+     * @param id  the id  test
+     * @return true if the id is valid, false if not
+     */
+    public static boolean isValidPercId(String id){
+        if(id == null || id.trim().equals("")){
+            return true;
+        }
+        return id.matches("^[0-9-]*$");
+    }
+
+
+    /**
+     * Checks if the supplied time is a valie time.
+     * @param string the stringto test
+     * @return true if the string is valid, false if not
+     */
+    public static boolean isValidString(String string){
+        if(string == null || string.trim().equals("")){
+            return true;
+        }
+         return string.matches("^[a-zA-Z0-9_.-/]*$");
+    }
+
+    /**
+     * Checks if the supplied time is a valie time.
+     * @param url  the url to test
+     * @return true if the url is valid, false if not
+     */
+    public static boolean isValidDBUrl(String url){
+        if(url == null || url.trim().equals("")){
+            return true;
+        }
+        return url.matches("^[a-zA-Z0-9_.-/?@&:;=]*$");
+    }
+
+    /**
      * Will return an instance of secure random.  Will attempt to return a StrongSecureRandom first
      * but will return a standard SecureRandom if Strong is unavailable.  May return null if
      * secure random cannot be initialized.
@@ -615,6 +652,8 @@ public class SecureStringUtils {
         }
         return ret;
     }
+
+
 
 
 }

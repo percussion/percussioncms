@@ -23,14 +23,13 @@
  */
 package com.percussion.linkmanagement.service;
 
+import com.percussion.pagemanagement.data.PSRenderLinkContext;
+import com.percussion.services.linkmanagement.data.PSManagedLink;
+import org.jsoup.nodes.Element;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.jsoup.nodes.Element;
-
-import com.percussion.pagemanagement.data.PSRenderLinkContext;
-import com.percussion.services.linkmanagement.data.PSManagedLink;
 
 
 
@@ -47,6 +46,8 @@ public interface IPSManagedLinkService
     public static final String PERC_LINKID_OLD_ATTR = "perc-linkId";
     public static final String PERC_MANAGED_ATTR = "data-perc-managed";
     public static final String PERC_LINKID_ATTR = "data-perc-linkId";
+    public static final String PERC_OLD_IMAGE_SLIDER_CONFIG_ATTR = "config";
+    public static final String PERC_OLD_IMAGE_SLIDER_IMAGEPATH_ATTR = "imagePath";
     public static final String TRUE_VAL = "true";
     public static final String HREF_ATTR = "href";
     public static final String SRC_ATTR = "src";

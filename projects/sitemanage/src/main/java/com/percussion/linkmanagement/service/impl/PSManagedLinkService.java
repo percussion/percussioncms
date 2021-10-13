@@ -26,6 +26,7 @@ package com.percussion.linkmanagement.service.impl;
 import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
 import com.percussion.pagemanagement.assembler.PSRenderAsset;
@@ -292,11 +293,12 @@ public class PSManagedLinkService implements IPSManagedLinkService
                 try {
                     objectArray = object.getJSONArray(PERC_CONFIG);
 		            log.debug("Done parsing payload array");
-                }catch(JSONException e){
+                }catch(JSONException js){
                     //Unable to get the array so log an error that it is missing
-                    log.error(e.getMessage());
-                    log.debug(e);
+                    log.error("An error occurred while trying to manage links in a JSONPayload field.", PSExceptionUtils.getMessageForLog(js));
+                    log.debug("An error occurred while trying to manage links in a JSONPayload field.", js);
                     return null;
+
                 }
 
 
