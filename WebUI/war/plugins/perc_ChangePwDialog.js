@@ -121,11 +121,11 @@
 				 '        <p>' +
 				 '            <label for="newPassword">' +
 				 '                <span>' + I18N.message("perc.ui.change.pw@New Password") + '</span>' +
-				 '                <input type="password" id="newPassword" name="newPassword" placeholder= ' + I18N.message("perc.ui.change.pw@Enter New Password") + ' autofocus />' +
+				 '                <input type="password" id="newPassword" name="newPassword" placeholder= "' + I18N.message("perc.ui.change.pw@Enter New Password") + '" autofocus autocomplete="off" />' +
 				 '            </label>' +
 				 '            <label for="confirmPassword">' +
 				 '                <span>' + I18N.message("perc.ui.change.pw@Confirm New Password") + '</span>' +
-				 '                <input type="password" id="confirmPassword" name="confirmPassword" placeholder= ' + I18N.message("perc.ui.change.pw@Confirm New Password") + ' />' +
+				 '                <input type="password" id="confirmPassword" name="confirmPassword" placeholder= "' + I18N.message("perc.ui.change.pw@Confirm New Password") + '" autocomplete="off" />' +
 				 '            </label>' +
 				 '                <button class="pw-submit" type="submit">'+ I18N.message("perc.ui.change.pw@Change Password") + '</button>' +
 				 '                <span class="pw-message" style="display:none">' + I18N.message("perc.ui.change.pw@Working on it") + '</span>' +

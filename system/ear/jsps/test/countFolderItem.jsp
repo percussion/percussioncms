@@ -11,6 +11,7 @@
     import="javax.jcr.query.Row, javax.jcr.query.RowIterator, javax.servlet.jsp.JspWriter"
     import="java.util.*,com.percussion.server.PSServer"
     import="com.percussion.services.utils.jspel.PSRoleUtilities"
+    import="com.percussion.security.SecureStringUtils"
     import="com.percussion.i18n.PSI18nUtils"
 %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
@@ -242,6 +243,10 @@ table#results th{
          {
             lastquery = "//Sites/EnterpriseInvestments/InvestmentAdvice";
          }
+        //Checking for vulnerability
+        if(!SecureStringUtils.isValidString(lastquery)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid folderpath!");
+        }
          
 %>
 <p><input type="text" name="folderpath" size="80" value="<%=lastquery%>" /><input type="submit" name="execute" value="execute" label="Execute" /></p>

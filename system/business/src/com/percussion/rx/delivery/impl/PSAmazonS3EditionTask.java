@@ -105,9 +105,10 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       IPSPubServer pubServer = getPubServerDao().findPubServer(edition.getPubServerId());
       String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
       TransferManager tm = null;
+      AmazonS3 s3Client = null;
       try
       {
-         AmazonS3 s3Client = PSAmazonS3DeliveryHandler.getAmazonS3Client(pubServer,getConfiguredAWSRegion());
+         s3Client = PSAmazonS3DeliveryHandler.getAmazonS3Client(pubServer,getConfiguredAWSRegion());
          tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
          //Get list of files to be deleted and to be uploaded
          PSPair<List<File>, List<String>> fileList = getFileList(s3Client, bucketName);
@@ -133,8 +134,11 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       }
       finally
       {
+
          if (tm != null)
             tm.shutdownNow();
+         if(s3Client != null)
+            s3Client.shutdown();
       }
 
    }

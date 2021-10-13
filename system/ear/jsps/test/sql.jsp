@@ -11,6 +11,7 @@
 %>
 <%@ page import="java.util.regex.Pattern" %>
 <%@ page import="java.util.regex.Matcher" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
@@ -126,6 +127,10 @@ SQL Execution
 String dburl="java:jdbc/RhythmyxData";
 if(request.getParameter("dburl") != null){
 	dburl = request.getParameter("dburl");
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidDBUrl(dburl)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid Site Name!");
+    }
 }
 
 String dbquery = "";
