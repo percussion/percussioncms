@@ -503,7 +503,7 @@
         <if>
             <available file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js" type="file" />
             <then>
-                <delete file="${install.dir}/web_resources/cm//jslib/jquery-ui.1.12.1.js"/>
+                <delete file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js"/>
             </then>
         </if>
     </target>

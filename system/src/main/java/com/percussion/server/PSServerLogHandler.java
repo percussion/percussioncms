@@ -345,7 +345,7 @@ public class PSServerLogHandler {
          throw new IllegalArgumentException("Throwable must not be null");
 
       Object[] args = { String.format("%s Error: %s", message,
-              PSExceptionUtils.getMessageForLog((Exception)t)), PSExceptionUtils.getDebugMessageForLog((Exception)t) };
+              PSExceptionUtils.getMessageForLog((Exception)t)), PSExceptionUtils.getMessageForLog((Exception)t) };
 
        PSLogError logInfo =
          new PSInternalError(IPSServerErrors.UNEXPECTED_EXCEPTION_LOG, args);
