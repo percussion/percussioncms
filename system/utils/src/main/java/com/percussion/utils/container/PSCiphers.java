@@ -24,13 +24,12 @@
 
 package com.percussion.utils.container;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
 
 public class PSCiphers
 {
@@ -59,7 +58,7 @@ public class PSCiphers
           for (String cipher : cipherSuites)
           {
              system_ciphers.add(cipher);
-             if (systemCiphers.length()>0);
+             if (systemCiphers.length()>0)
                 systemCiphers.append(",");
              systemCiphers.append(cipher);
              
@@ -68,35 +67,24 @@ public class PSCiphers
       } catch (NoSuchAlgorithmException ex) {
          throw new IllegalArgumentException("Error getting cipher list ",ex);
       }
-      
+
       modern_ciphers.add("TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384");
       modern_ciphers.add("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384");
       modern_ciphers.add("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256");
       modern_ciphers.add("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256");
-      modern_ciphers.add("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384");
-      modern_ciphers.add("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384");
-      modern_ciphers.add("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256");
-      modern_ciphers.add("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256");
+      modern_ciphers.add("TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256");
+      modern_ciphers.add("TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256");
+      modern_ciphers.add("TLS_AES_128_GCM_SHA256");
+      modern_ciphers.add("TLS_AES_256_GCM_SHA384");
+      modern_ciphers.add("TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256");
+      modern_ciphers.add("TLS_CHACHA20_POLY1305_SHA256");
+      modern_ciphers.add("TLS_DH_RSA_WITH_AES_128_GCM_SHA256");
 
       intermediate_ciphers.add("TLS_DHE_RSA_WITH_AES_128_GCM_SHA256");
       intermediate_ciphers.add("TLS_DHE_RSA_WITH_AES_256_GCM_SHA384");
-      intermediate_ciphers.add("TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA");
-      intermediate_ciphers.add("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA");
-      intermediate_ciphers.add("TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA");
-      intermediate_ciphers.add("TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA");
-      intermediate_ciphers.add("TLS_DHE_RSA_WITH_AES_128_CBC_SHA256");
-      intermediate_ciphers.add("TLS_DHE_RSA_WITH_AES_128_CBC_SHA");
-      intermediate_ciphers.add("TLS_DHE_RSA_WITH_AES_256_CBC_SHA256");
-      intermediate_ciphers.add("TLS_DHE_RSA_WITH_AES_256_CBC_SHA");
-      intermediate_ciphers.add("TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA");
-      intermediate_ciphers.add("TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA");
       intermediate_ciphers.add("TLS_RSA_WITH_AES_128_GCM_SHA256");
       intermediate_ciphers.add("TLS_RSA_WITH_AES_256_GCM_SHA384");
-      intermediate_ciphers.add("TLS_RSA_WITH_AES_128_CBC_SHA256");
-      intermediate_ciphers.add("TLS_RSA_WITH_AES_256_CBC_SHA256");
-      intermediate_ciphers.add("TLS_RSA_WITH_AES_128_CBC_SHA");
-      intermediate_ciphers.add("TLS_RSA_WITH_AES_256_CBC_SHA");
-      intermediate_ciphers.add("TLS_RSA_WITH_3DES_EDE_CBC_SHA");
+
       
       modern_combined_ciphers = new ArrayList<String>(modern_ciphers);
       modern_combined_ciphers.retainAll(system_ciphers);
