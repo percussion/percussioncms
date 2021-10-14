@@ -24,6 +24,9 @@
 
 package com.percussion.delivery.polls;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.percussion.delivery.exceptions.PSJsonMappingErrorResponse;
+import com.percussion.delivery.exceptions.PSUncaughtError;
 import com.percussion.delivery.polls.services.PSPollsRestService;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -47,7 +50,9 @@ import javax.ws.rs.ApplicationPath;
             register(PSPollsRestService.class);
             register(LoggingFeature.class);
             register(RolesAllowedDynamicFeature.class);
-
+            register(PSJsonMappingErrorResponse.class);
+            register(PSUncaughtError.class);
+            register(JacksonJaxbJsonProvider.class);
 
         }
     }
