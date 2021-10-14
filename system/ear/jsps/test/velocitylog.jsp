@@ -5,6 +5,7 @@
         import="com.percussion.i18n.*"
         import="java.nio.charset.StandardCharsets"
 %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
@@ -46,8 +47,21 @@
 
 %>
 <%
+    //Checking for vulnerability
+    String str = request.getQueryString();
+    if(str != null && str != ""){
+        response.sendError(response.SC_FORBIDDEN, "Invalid token!");
+    }
     String refresh = request.getParameter("refresh");
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(refresh)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid refresh!");
+    }
     String warningstr = request.getParameter("warning");
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(warningstr)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid warningStr!");
+    }
     boolean warning = !(warningstr == null || warningstr.trim().length() == 0);
     if (refresh == null) {
         // Default value for warning
