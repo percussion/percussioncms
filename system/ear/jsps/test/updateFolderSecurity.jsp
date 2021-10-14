@@ -16,6 +16,7 @@
     import="com.percussion.server.PSServer"
     %>
 <%@ page import="org.apache.logging.log4j.LogManager" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
@@ -242,27 +243,59 @@ Use this page to update community and security of a folder and its descendant fo
 <csrf:form method="POST" action="/test/updateFolderSecurity.jsp">
 
 <%
+    //Checking for vulnerability
+    String str = request.getQueryString();
+    if(str != null && str != ""){
+        response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
+    }
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
-         String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
+    String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
+    for (int i = 0; i < allNames.length; i++)
+    {
+        String pNameLoop = allNames[i];
+        String pValLoop = allValues[i];
+        //Checking for vulnerability
+        if(!SecureStringUtils.isValidString(pNameLoop)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid pNameLoop!");
+        }
+        //Checking for vulnerability
+        if(!SecureStringUtils.isValidString(pValLoop)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid pValLoop!");
+        }
 
-		 String lastCommunityId = request.getParameter("CommunityId");
-         if (StringUtils.isBlank(lastCommunityId))
-         {
-            lastCommunityId = "-1";
-         }
-         
-		 String lastVirtualPerm = request.getParameter("VirtualPerm");
-         if (StringUtils.isBlank(lastVirtualPerm))
-         {
-            lastVirtualPerm = "";
-         }
-		 
-         String lastquery = request.getParameter("folderpath");
-         if (StringUtils.isBlank(lastquery))
-         {
-            lastquery = "//Folders/Folder1";
-         }
-         
+    }
+    String lastCommunityId = request.getParameter("CommunityId");
+    if (StringUtils.isBlank(lastCommunityId))
+    {
+        lastCommunityId = "-1";
+    }
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidPercId(lastCommunityId)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid lastCommunityId!");
+    }
+
+    String lastVirtualPerm = request.getParameter("VirtualPerm");
+    if (StringUtils.isBlank(lastVirtualPerm))
+    {
+        lastVirtualPerm = "";
+    }
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(lastVirtualPerm)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid lastVirtualPerm!");
+    }
+
+    String lastquery = request.getParameter("folderpath");
+    if (StringUtils.isBlank(lastquery))
+    {
+        lastquery = "//Folders/Folder1";
+    }
+
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(lastquery)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid lastQuery!");
+    }
+
+
 %>
 
 Community ID

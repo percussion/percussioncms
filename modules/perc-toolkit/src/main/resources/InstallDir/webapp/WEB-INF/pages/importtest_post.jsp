@@ -2,13 +2,14 @@
 		 pageEncoding="UTF-8"
 		 import="com.percussion.design.objectstore.PSLocator"
 		 import="com.percussion.pso.utils.IPSOItemSummaryFinder"
+		 import="com.percussion.security.SecureStringUtils"
 		 import="com.percussion.services.contentmgr.IPSContentMgr"
 		 import="com.percussion.services.contentmgr.IPSNode"
 		 import="com.percussion.services.contentmgr.PSContentMgrConfig"
-		 import="com.percussion.services.contentmgr.PSContentMgrLocator"
-		 import="com.percussion.services.guidmgr.IPSGuidManager, com.percussion.services.guidmgr.PSGuidManagerLocator, com.percussion.services.guidmgr.PSGuidUtils, com.percussion.services.legacy.IPSCmsObjectMgr, com.percussion.services.legacy.PSCmsObjectMgrLocator, com.percussion.utils.guid.IPSGuid, com.percussion.webservices.content.IPSContentWs, com.percussion.webservices.content.PSContentWsLocator, com.percussion.webservices.security.IPSSecurityWs, com.percussion.webservices.security.PSSecurityWsLocator, javax.servlet.jsp.JspWriter"
-		 import="java.util.List"
+		 import="com.percussion.services.contentmgr.PSContentMgrLocator, com.percussion.services.guidmgr.IPSGuidManager, com.percussion.services.guidmgr.PSGuidManagerLocator, com.percussion.services.guidmgr.PSGuidUtils, com.percussion.services.legacy.IPSCmsObjectMgr, com.percussion.services.legacy.PSCmsObjectMgrLocator, com.percussion.utils.guid.IPSGuid, com.percussion.webservices.content.IPSContentWs, com.percussion.webservices.content.PSContentWsLocator, com.percussion.webservices.security.IPSSecurityWs, com.percussion.webservices.security.PSSecurityWsLocator"
+		 import="javax.servlet.jsp.JspWriter"
 %>
+<%@ page import="java.util.List" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 
@@ -27,7 +28,16 @@
 	%>
 	
 	<%
+		//Checking for vulnerability
+		String str = request.getQueryString();
+		if(str != null && str != ""){
+			response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
+		}
 	String cid=request.getParameter("sys_contentid");
+		//Checking for vulnerability
+		if(!SecureStringUtils.isValidPercId(cid)){
+			response.sendError(response.SC_FORBIDDEN, "Invalid cid!");
+		}
 	PSLocator loc = isFinder.getCurrentOrEditLocator(cid);
 	IPSGuid contentGUID=gmgr.makeGuid(loc);
 	List myGuid = PSGuidUtils.toGuidList(contentGUID);
