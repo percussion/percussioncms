@@ -48,7 +48,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author erikserating
@@ -1703,7 +1710,58 @@ public class PSMetadataQueryServiceTest extends TestCase
         }
     }
 
+    /**
+     * Customer query that failed to sort
+     * {"criteria":["type = 'page'","dcterms:created >= '2020-06-01T00:00:00'","site = 'portal'","folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'","dcterms:source = 'Noticias-Noticia-Single'"],"maxResults":3,"totalMaxResults":500,"isEditMode":"false","orderBy":"dcterms:created desc, linktext_lower asc","returnTotalEntries":true,"startIndex":0}
+     */
+    @Test
+    public void testBadInputs() {
+        PSMetadataQuery query = new PSMetadataQuery();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            query = mapper.readValue(
+                    "{\"criteria\":[\"type = 'page'\",\"site = 'portal'\",\"folder LIKE '/noticias/destacadas/noticias-destacadas-2021/%'\",\"dcterms:source = 'Noticias-Noticia-Single'\"],\"maxResults\":0<img src=&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3a;alert&#x28;1237&#x29;>\",\"totalMaxResults\":\"0<img src=&#x6a;&#x61;&#x76;&#x61;&#x73;&#x63;&#x72;&#x69;&#x70;&#x74;&#x3a;alert&#x28;1237&#x29;>\",\"isEditMode\":\"false\",\"orderBy\":\"dcterms:created desc, linktext_lower asc\",\"returnTotalEntries\":true,\"startIndex\":0}",
+                    PSMetadataQuery.class);
+
+            PSPair<List<IPSMetadataEntry>, Integer> searchResults = service.executeQuery(query);
+            List<IPSMetadataEntry> results = searchResults.getFirst();
+
+            assertNotNull("entries not null", results);
+
+            Date latest=null;
+            //Test descending query
+            for(IPSMetadataEntry e : results){
+                Map<String,IPSMetadataProperty> props = toPropsMap(e.getProperties());
+
+                Date curDate = props.get("dcterms:created").getDatevalue();
+
+                if(latest == null) {
+                    latest = curDate;
+                    System.out.println("Starting date is " + latest.toString());
+                }else{
+                    assertTrue(latest.after(curDate));
+                    System.out.println(latest.toString() + " is more recent than " + curDate.toString());
+                    latest = curDate;
+                }
+
+            }
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            log.debug(e.getMessage(),e);
+            fail(e.getMessage());
+        }
+    }
+
+
+
+
 }
+
+
+
+
+
 
 interface PropertyValueChecker<T>
 {
