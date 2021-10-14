@@ -1,7 +1,8 @@
 <%@page import="com.percussion.pso.preview.SiteFolderLocation"%>
+<%@page import="com.percussion.security.SecureStringUtils"%>
 <%@page import="org.apache.commons.lang.StringUtils"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
+<%@ page import="java.util.List" %>
 <html>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
@@ -15,9 +16,28 @@
 <body>
 <h2>Preview Tester</h2>
 <%
-String cid = StringUtils.defaultString(request.getParameter("sys_contentid"));
-String fid = StringUtils.defaultString(request.getParameter("sys_folderid")); 
-String sid = StringUtils.defaultString(request.getParameter("sys_siteid")); 
+
+      //Checking for vulnerability
+      String str = request.getQueryString();
+      if(str != null && str != ""){
+            response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
+      }
+
+      String cid = StringUtils.defaultString(request.getParameter("sys_contentid"));
+      //Checking for vulnerability
+      if(!SecureStringUtils.isValidPercId(cid)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid cid!");
+      }
+      String fid = StringUtils.defaultString(request.getParameter("sys_folderid"));
+      //Checking for vulnerability
+      if(!SecureStringUtils.isValidPercId(fid)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid fid!");
+      }
+      String sid = StringUtils.defaultString(request.getParameter("sys_siteid"));
+      //Checking for vulnerability
+      if(!SecureStringUtils.isValidPercId(sid)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid sid!");
+      }
 %>
 <csrf:form method="POST" action="PreviewTest.jsp">
 <p>Content ID:<input name="sys_contentid" type="text" value="<%=cid%>" /> </p>

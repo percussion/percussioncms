@@ -460,12 +460,13 @@
 
           ## First check if path is broken
           ## If path is broken the image has been deleted and should not be included in the slider
-          #if( $image.percImagePath && $image.percImagePath != '#' )##
+          #if( $image.percImagePath && $image.percImagePath != '#' && $image.linkSetting == "internal" && $image.percImageContentId)##
           #set( $query = "" )##
-          #set( $query = "select * from rx:percImageAsset where rx:sys_contentid = ${image.percImageContentId}")##
+          #set( $query = "select * from rx:percImageAsset where rx:sys_contentid = :contentId")##
           #set( $maxResults = 1 )##
           #set( $params= $rx.string.stringToMap(null) )##
-          #set( $dummy = $params.put('query', $query) )##
+          #set( $dummy = $params.put('query', $query) )#
+          #set( $dummy = $params.put('contentId', $image.percImageContentId) )#
           #set( $dummy = $params.put('max_results', $maxResults) )##
           #set( $finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder" )##
           #set( $result = "" )##
@@ -507,10 +508,11 @@
           #if( $image.percPagePath && $image.percPagePath != "#" )
           ## check the content status of the linked internal page
           #set( $query = "" )##
-          #set( $query = "select * from rx:percPage where rx:sys_contentid = ${image.percPageContentId}")##
+          #set( $query = "select * from rx:percPage where rx:sys_contentid = :contentId")##
           #set( $maxResults = 1 )##
           #set( $params = $rx.string.stringToMap(null) )##
           #set( $dummy = $params.put('query', $query) )##
+          #set( $dummy = $params.put('contentId', $image.percPageContentId) )##
           #set( $dummy = $params.put('max_results', $maxResults) )##
           #set( $finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder" )##
           #set( $pageResult = "" )##
