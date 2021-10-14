@@ -123,7 +123,11 @@ SQL Execution
   </nav>
 
 <%
-
+    //Checking for vulnerability
+    String str = request.getQueryString();
+    if(str != null && str != ""){
+        response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
+    }
 String dburl="java:jdbc/RhythmyxData";
 if(request.getParameter("dburl") != null){
 	dburl = request.getParameter("dburl");
@@ -133,10 +137,16 @@ if(request.getParameter("dburl") != null){
     }
 }
 
-String dbquery = "";
-if(request.getParameter("dbquery")!= null){
-	dbquery = sanitizeForHtml(request.getParameter("dbquery"));
-}
+    String dbquery = request.getParameter("dbquery");
+    if(dbquery != null){
+        //Checking for vulnerability
+        if(!SecureStringUtils.isValidString(dbquery)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid dbquery!");
+        }
+        dbquery = sanitizeForHtml(dbquery);
+    }else{
+        dbquery = "";
+    }
 
 %>
 <csrf:form method="POST" role="form" action="/test/sql.jsp">

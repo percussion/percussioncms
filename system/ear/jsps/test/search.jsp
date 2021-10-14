@@ -45,10 +45,29 @@
 </head>
 <body>
 <%
+   //Checking for vulnerability
+   String str = request.getQueryString();
+   if(str != null && str != ""){
+      response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
+   }
    IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
    String[] allNames = expandParam(request.getParameterValues("qname"), 6);
-   String[] allValues = expandParam(request.getParameterValues("qvalue"),
-           6);
+   String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
+   for (int i = 0; i < allNames.length; i++)
+   {
+      String pNameLoop = allNames[i];
+      String pValLoop = allValues[i];
+      //Checking for vulnerability
+      if(!SecureStringUtils.isValidString(pNameLoop)){
+         response.sendError(response.SC_FORBIDDEN, "Invalid pNameLoop!");
+      }
+      //Checking for vulnerability
+      if(!SecureStringUtils.isValidString(pValLoop)){
+         response.sendError(response.SC_FORBIDDEN, "Invalid pValLoop!");
+      }
+
+   }
+
    String lastquery = SecureStringUtils.sanitizeStringForSQLStatement(sanitizeForHtml(request.getParameter("querybody")));
    if (lastquery == null || lastquery.trim().length() == 0)
    {

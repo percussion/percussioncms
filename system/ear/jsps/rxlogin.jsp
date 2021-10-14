@@ -3,6 +3,7 @@
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.PSLocaleManager" %>
 <%@ page import="com.percussion.i18n.PSLocale" session="true" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="http://rhythmyx.percussion.com/components"
 		   prefix="rxcomp"%>
@@ -31,6 +32,11 @@
   --%>
 
 <%
+	//Checking for vulnerability
+	String str = request.getQueryString();
+	if(str != null && str != ""){
+		response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
+	}
 	String username = request.getParameter("j_username");
 	String password = request.getParameter("j_password");
 	String locale = request.getParameter("j_locale");
