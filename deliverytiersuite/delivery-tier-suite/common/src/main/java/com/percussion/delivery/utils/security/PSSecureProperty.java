@@ -23,7 +23,6 @@
  */
 package com.percussion.delivery.utils.security;
 
-import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
@@ -324,5 +323,7 @@ public class PSSecureProperty
    /**
     * Constant for the encryption algorithm.
     */
+   @Deprecated
+   @ToDoVulnerability
    private static final String ENC_AES_ALGORITHM = "PBEWITHSHA256AND128BITAES-CBC-BC";
 }

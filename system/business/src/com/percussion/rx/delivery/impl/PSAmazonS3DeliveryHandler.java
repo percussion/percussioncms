@@ -291,7 +291,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(mimeType);
             metadata.setContentLength(contentLength);
-            metadata.setCacheControl("max-age=20");
+            metadata.setCacheControl("max-age=0");
             Upload myUpload = tm.upload(new PutObjectRequest(bucketName, key, is, metadata));
             myUpload.waitForCompletion();
         }

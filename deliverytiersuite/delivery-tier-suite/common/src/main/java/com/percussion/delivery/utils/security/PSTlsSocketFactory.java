@@ -24,7 +24,6 @@
 
 package com.percussion.delivery.utils.security;
 
-import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 import org.apache.commons.lang.StringUtils;
@@ -40,7 +39,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -57,36 +55,27 @@ public class PSTlsSocketFactory implements SecureProtocolSocketFactory
 {
 
 	   public static final Logger log = LogManager.getLogger(PSTlsSocketFactory.class);
-	   private final static String defaultProtocols = "TLSv1.1,TLSv1.2";
+	   private  static final String defaultProtocols = "TLSv1.1,TLSv1.2";
 	   private final String[] protocols;
 	   private SSLSocketFactory internalSSLSocketFactory;
-	   private String enabledCiphers[];
-	   private String defaultCiphers[] = {
+	   private String[] enabledCiphers;
+	   private String[] defaultCiphers = {
 	         "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-	         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
-	         "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
-	         "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
-	         "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-	         "TLS_RSA_WITH_AES_256_CBC_SHA",
-	         "TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA",
-	         "TLS_ECDH_RSA_WITH_AES_256_CBC_SHA",
-	         "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
-	         "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-	         "TLS_RSA_WITH_AES_128_CBC_SHA",
-	         "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA",
-	         "TLS_ECDH_RSA_WITH_AES_128_CBC_SHA",
-	         "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA",
-	         "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
-	         "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
-	         "TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA",
-	         "TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA",
-	         "TLS_ECDHE_ECDSA_WITH_RC4_128_SHA",
-	         "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
-	         "SSL_RSA_WITH_RC4_128_SHA",
-	         "TLS_ECDH_ECDSA_WITH_RC4_128_SHA",
-	         "TLS_ECDH_RSA_WITH_RC4_128_SHA",
-	         "SSL_RSA_WITH_RC4_128_MD5",
-	         "TLS_EMPTY_RENEGOTIATION_INFO_SCSV"};
+			   "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+			   "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+			   "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+			   "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+			   "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+			   "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+			   "TLS_AES_128_GCM_SHA256",
+			   "TLS_AES_256_GCM_SHA384",
+			   "TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+			   "TLS_CHACHA20_POLY1305_SHA256",
+			   "TLS_DH_RSA_WITH_AES_128_GCM_SHA256",
+			   "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
+			   "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
+			   "TLS_RSA_WITH_AES_128_GCM_SHA256",
+			   "TLS_RSA_WITH_AES_256_GCM_SHA384"};
 	   
 	   public PSTlsSocketFactory(String ciphers) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 	        String protString = System.getProperty("jdk.tls.client.protocols");
@@ -135,8 +124,8 @@ public class PSTlsSocketFactory implements SecureProtocolSocketFactory
 	      }
 	       
 	        
-	        log.debug("Initialized TLSSocketFactory enabled protocols to :"+Arrays.toString(protocols));
-	        log.debug("Using Security Provider:" + context.getProvider().toString());
+	        log.debug("Initialized TLSSocketFactory enabled protocols to : {}",Arrays.toString(protocols));
+	        log.debug("Using Security Provider: {}" , context.getProvider());
 	       
 	        TrustManagerFactory trustManagerFactory;
 	      try
@@ -171,7 +160,7 @@ public class PSTlsSocketFactory implements SecureProtocolSocketFactory
 	        for(String s : enabledCiphers){
 	           s = s.trim();
 	        }
-	       
+
 	    }
 
 	    @Override
@@ -180,12 +169,12 @@ public class PSTlsSocketFactory implements SecureProtocolSocketFactory
 	    }
 
 	    @Override
-	    public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
+	    public Socket createSocket(String host, int port) throws IOException {
 	        return enableTLSOnSocket(internalSSLSocketFactory.createSocket(host, port));
 	    }
 
 	    @Override
-	    public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException, UnknownHostException {
+	    public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
 	        return enableTLSOnSocket(internalSSLSocketFactory.createSocket(host, port, localHost, localPort));
 	    }
 
@@ -194,35 +183,34 @@ public class PSTlsSocketFactory implements SecureProtocolSocketFactory
 	       if(log.isDebugEnabled()){
 	          try{
 	             SSLContext context = SSLContext.getDefault();
-	             log.debug("Default TLS Provider is: " + context.getProvider().getName());
+	             log.debug("Default TLS Provider is: {}" , context.getProvider().getName());
 	          }
-	          catch (NoSuchAlgorithmException e)
-	          {
-	             log.debug("WARNING!  No TLS Providers are available!");
-	          }finally{}
+	          catch (NoSuchAlgorithmException e) {
+				  log.debug("WARNING!  No TLS Providers are available!");
+			  }
 	          log.debug("--- Enabled Protocols ---");
 	       for(String s : socket.getEnabledProtocols()){
-	          log.debug("Protocol: " + s + ":ENABLED");
+	          log.debug("Protocol:{} :ENABLED",s);
 	     }
 	       log.debug("--- Enabled Cipher Suites ---");
 	       for(String s : socket.getEnabledCipherSuites()){
-	          log.debug("Cipher: " + s + ":ENABLED");
+	          log.debug("Cipher: {} :ENABLED",s);
 	       }
 	     
 	       log.debug("--- Supported Cipher Suites ---");
 	       for(String s : socket.getSupportedCipherSuites()){
-	          log.debug("Cipher: " + s + ":Supported");
+	          log.debug("Cipher: {} :Supported",s);
 	       }
 	       
 	       }
 	    
 	    }
 	    private Socket enableTLSOnSocket(Socket socket) {
-	        if(socket != null && (socket instanceof SSLSocket)) {
+	        if(socket instanceof SSLSocket) {
 	           SSLSocket sslSocket = (SSLSocket) socket;
 	              sslSocket.setEnabledProtocols(protocols);
 	            sslSocket.setEnabledCipherSuites(enabledCiphers);
-	            log.debug("Setting Enabled Ciphers to: " + StringUtils.join(enabledCiphers,","));
+	            log.debug("Setting Enabled Ciphers to: {}" , StringUtils.join(enabledCiphers,","));
 	            logTLSConfig(sslSocket);
 	        }
 	        return socket;
@@ -230,7 +218,7 @@ public class PSTlsSocketFactory implements SecureProtocolSocketFactory
 
 	   @Override
 	   public Socket createSocket(String host, int port, InetAddress localAddress, int localPort, HttpConnectionParams params)
-	         throws IOException, UnknownHostException, ConnectTimeoutException
+	         throws IOException
 	   {
 	      return enableTLSOnSocket(internalSSLSocketFactory.createSocket(host, port, localAddress, localPort));
 	   }
