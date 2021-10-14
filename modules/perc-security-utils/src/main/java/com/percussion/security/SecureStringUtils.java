@@ -163,7 +163,8 @@ public class SecureStringUtils {
         if(string == null || string.trim().equals("")){
             return true;
         }
-         return string.matches("^[a-zA-Z0-9_.-/]*$");
+
+         return string.matches("[a-zA-Z0-9,.;/=?@&:_'\\s-]*");
     }
 
     /**
@@ -175,7 +176,7 @@ public class SecureStringUtils {
         if(url == null || url.trim().equals("")){
             return true;
         }
-        return url.matches("^[a-zA-Z0-9_.-/?@&:;=]*$");
+        return url.matches("[a-zA-Z0-9,.;/=?@&:_'\\\\'\\s-]*");
     }
 
     /**
