@@ -23,6 +23,8 @@
  */
 package com.percussion.webservices.assembly.impl;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
@@ -150,7 +152,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
       if (names == null || names.isEmpty())
          throw new IllegalArgumentException("names cannot be null or empty");
 
-      List<IPSTemplateSlot> slots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> slots = new ArrayList<>();
       for (String name : names)
       {
          if (StringUtils.isBlank(name))
@@ -428,7 +430,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
       }
       catch (PSAssemblyException e)
       {
-         e.printStackTrace();
+         ms_logger.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
       return PSWebserviceUtils.toObjectSummaries(templates);
@@ -1053,8 +1055,7 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
             IPSCacheAccess.IN_MEMORY_STORE);
       if (imgMap == null)
       {
-         HashMap<String, String> mapImp = new HashMap<String, String>();
-         mapImp.putAll(PSTemplateImageUtils.getImageFileNames());
+         HashMap<String, String> mapImp = new HashMap<>(PSTemplateImageUtils.getImageFileNames());
          cache.save(IMG_FILE_MAP, mapImp, IPSCacheAccess.IN_MEMORY_STORE);
          imgMap = mapImp;
       }
@@ -1095,10 +1096,10 @@ public class PSAssemblyDesignWs extends PSAssemblyBaseWs implements
     * The image file mapping, used to cache the mapping since it is not 
     * expected to change after the server started. 
     */
-   private final static String IMG_FILE_MAP = "sys_image_file_mappings";
+   private  static final String IMG_FILE_MAP = "sys_image_file_mappings";
    
    /**
     * The logger for this class
     */
-   private static final Logger ms_logger = LogManager.getLogger("PSAssemblyDesignWs");
+   private static final Logger ms_logger = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
 }

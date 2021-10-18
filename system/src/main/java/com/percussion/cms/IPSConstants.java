@@ -600,6 +600,7 @@ public interface IPSConstants
    public static final String SERVER_LOG="Server";
    public static final String CONTENTREPOSITORY_LOG="Content Repository";
    public static final String DASHBOARD_LOG = "Dashboard";
+   public static final String WEBSERVICES_LOG = "Web Services";
 
 }
 
