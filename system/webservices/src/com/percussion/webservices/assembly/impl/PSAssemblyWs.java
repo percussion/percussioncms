@@ -23,11 +23,19 @@
  */
 package com.percussion.webservices.assembly.impl;
 
-import com.percussion.services.assembly.*;
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.util.PSBaseBean;
 import com.percussion.webservices.assembly.IPSAssemblyWs;
 import com.percussion.webservices.assembly.data.PSAssemblyTemplateWs;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -62,7 +70,7 @@ public class PSAssemblyWs extends PSAssemblyBaseWs implements IPSAssemblyWs
       }
       catch (PSAssemblyException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
       
@@ -82,4 +90,7 @@ public class PSAssemblyWs extends PSAssemblyBaseWs implements IPSAssemblyWs
       List<IPSTemplateSlot> rval = service.findSlotsByName(name);
       return rval;
    }
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
+
 }

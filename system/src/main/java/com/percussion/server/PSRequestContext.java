@@ -600,7 +600,7 @@ public class PSRequestContext implements IPSRequestContext
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getSubjectRoles()
     */
-   public List getSubjectRoles()
+   public List<String> getSubjectRoles()
    {
       return getSubjectRoles((PSSubject) null);
    }
@@ -621,13 +621,13 @@ public class PSRequestContext implements IPSRequestContext
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getSubjectRoles(com.percussion.design.objectstore.PSSubject)
     */
-   public List getSubjectRoles( PSSubject subject )
+   public List<String> getSubjectRoles( PSSubject subject )
    {
       if ( subject == null )
       {
          subject = getSubjectFromSession();
          if ( null == subject )
-            return new ArrayList();
+            return new ArrayList<>();
       }
 
       return PSRoleManager.getInstance().memberRoleList(

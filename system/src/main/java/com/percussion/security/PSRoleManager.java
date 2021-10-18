@@ -27,6 +27,7 @@ import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSGlobalSubject;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
 import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.server.PSUserSession;
@@ -186,7 +187,7 @@ public class PSRoleManager
     * @throws PSSecurityException If the meta data to process the request
     *    can't be obtained.
     */
-   public List memberRoleList(PSUserSession session, PSSubject subject)
+   public List<String> memberRoleList(PSUserSession session, PSSubject subject)
    {
       if (session == null)
          throw new IllegalArgumentException("session may not be null");
@@ -195,7 +196,7 @@ public class PSRoleManager
          throw new IllegalArgumentException("subject may not be null");
 
 
-      List roles = null;
+      List<String> roles = null;
 
       if (subject.getType() == PSSubject.SUBJECT_TYPE_USER && 
          session.hasAuthenticatedUserEntry(subject.getName()))
@@ -205,10 +206,9 @@ public class PSRoleManager
 
 
       // use a set to build final distinct list
-      Set resultSet = new HashSet();
       // add the user's roles from all security providers
-      resultSet.addAll(getSecurityProviderRoles(subject.getName(), 
-         subject.getType()));
+      Set<String> resultSet = new HashSet<>(getSecurityProviderRoles(subject.getName(),
+              subject.getType()));
 
       if (subject.getType() == PSSubject.SUBJECT_TYPE_USER)
       {
@@ -235,9 +235,9 @@ public class PSRoleManager
     *    catalogers in which the supplied subject is a member. Never 
     *    <code>null</code>, may be empty.
     */
-   private Set getSecurityProviderRoles(String subjectName, int subjectType)
+   private Set<String> getSecurityProviderRoles(String subjectName, int subjectType)
    {
-      Set resultSet = new HashSet();
+      Set<String> resultSet = new HashSet<>();
       IPSRoleMgr roleMgr = PSRoleMgrLocator.getRoleManager();
       List<String> definedRoles = roleMgr.getDefinedRoles();
 
@@ -281,8 +281,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return resultSet;

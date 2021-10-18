@@ -23,6 +23,7 @@
  */
 package com.percussion.search.lucene;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSContentType;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.PSKey;
@@ -409,7 +410,7 @@ public class PSSearchAdminImpl extends PSSearchAdmin
    /**
     * Reference to log for this class
     */
-   private final static Logger log = LogManager.getLogger(PSSearchAdminImpl.class);
+   private final static Logger log = LogManager.getLogger(IPSConstants.SEARCH_LOG);
 
 
    

@@ -508,7 +508,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
          }
          catch (PSUiException e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
       }
 
@@ -617,7 +617,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
             getNodePath(parentNode, nodes);
          else
             //throw new IllegalArgumentException("Parent Node for the recursive call cannot be null");
-            ms_log.error("Parent Node for the recursive call cannot be null. " + nodePath.toString());
+            ms_log.error("Parent Node for the recursive call cannot be null. {}" , nodePath);
       }
 
       return nodePath.toString();
@@ -1324,8 +1324,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         // not possible
-         e.printStackTrace();
+        log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to create displayformat object.", e);
       }
 
@@ -1434,7 +1433,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed creating PSSearch with \"" + name + "\" and \"" + type
                + "\" type, due to exception: " + e);
       }
@@ -1514,8 +1513,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (SQLException e)
       {
-         // this is not possible
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to get next id for \"" + key + "\", due to exception.", e);
       }
    }
@@ -1796,11 +1794,15 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
-         int code = IPSWebserviceErrors.SAVE_FAILED;
+         log.error(PSExceptionUtils.getMessageForLog(e));
+
          PSDesignGuid guid = new PSDesignGuid(id);
-         PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code, cz.getName(),
-               guid.longValue(), e.getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
+         PSErrorException error = new PSErrorException(IPSWebserviceErrors.SAVE_FAILED,
+                 PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.SAVE_FAILED,
+                         cz.getName(),
+               guid.longValue(),
+                         PSExceptionUtils.getMessageForLog(e)),
+                 PSExceptionUtils.getDebugMessageForLog(e));
          results.addError(guid, error);
          return false;
       }
@@ -2004,16 +2006,17 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         PSExceptionUtils.getMessageForLog(e);
          if (results == null)
          {
             throw e;
          }
          else
          {
-            int code = IPSWebserviceErrors.DELETE_FAILED;
-            PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code,
-                  cz.getName(), id.longValue(), e.getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
+            PSErrorException error = new PSErrorException(IPSWebserviceErrors.DELETE_FAILED,
+                    PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.DELETE_FAILED,
+                  cz.getName(), id.longValue(), PSExceptionUtils.getMessageForLog(e)),
+                    PSExceptionUtils.getDebugMessageForLog(e));
             results.addError(id, error);
          }
       }
@@ -2032,8 +2035,8 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         // this is not possible
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+
          throw new RuntimeException("Failed to create PSComponentProcessorProxy.");
       }
    }

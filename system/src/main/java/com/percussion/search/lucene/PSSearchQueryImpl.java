@@ -23,6 +23,7 @@
  */
 package com.percussion.search.lucene;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSContentType;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
@@ -494,6 +495,6 @@ public class PSSearchQueryImpl extends PSSearchQuery implements Closeable
    /**
     * Reference to log for this class
     */
-   private static final Logger log = LogManager.getLogger(PSSearchQueryImpl.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.SEARCH_LOG);
 
 }

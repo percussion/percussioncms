@@ -26,6 +26,7 @@ package com.percussion.user.service.impl;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSUserManagementEvent;
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSAttribute;
@@ -166,7 +167,7 @@ import static org.apache.commons.lang.Validate.notNull;
 @Lazy
 public class PSUserService implements IPSUserService
 {
-    private static final Logger log = LogManager.getLogger(PSUserService.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SECURITY_LOG);
 
     public static final String VAR_CONFIG_PATH="var" + File.separatorChar + "config";
 

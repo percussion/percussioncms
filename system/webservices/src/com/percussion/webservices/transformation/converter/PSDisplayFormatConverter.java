@@ -29,24 +29,23 @@ import com.percussion.cms.objectstore.PSDFMultiProperty;
 import com.percussion.cms.objectstore.PSDisplayColumn;
 import com.percussion.cms.objectstore.PSDisplayFormat;
 import com.percussion.cms.objectstore.PSKey;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.webservices.ui.data.CommunityRef;
+import com.percussion.webservices.ui.data.PSDisplayFormatColumnsColumn;
 import com.percussion.webservices.ui.data.PSDisplayFormatColumnsColumnRenderType;
 import com.percussion.webservices.ui.data.PSDisplayFormatColumnsColumnSortOrder;
-
-import com.percussion.webservices.ui.data.PSDisplayFormatColumnsColumn;
-import com.percussion.webservices.ui.data.CommunityRef;
 import com.percussion.webservices.ui.data.Property;
+import org.apache.axis.types.UnsignedInt;
+import org.apache.commons.beanutils.BeanUtilsBean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.axis.types.UnsignedInt;
-import org.apache.commons.beanutils.BeanUtilsBean;
 
 /**
  * Converts objects between the classes
@@ -55,6 +54,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
  */
 public class PSDisplayFormatConverter extends PSConverter
 {
+
    /* (non-Javadoc)
     * @see PSConverter#PSConvert(BeanUtilsUtil)
     */
@@ -97,7 +97,7 @@ public class PSDisplayFormatConverter extends PSConverter
          }
          catch (Exception e)
          {
-            e.printStackTrace(); // should never happen here
+            log.error(PSExceptionUtils.getMessageForLog(e));
             throw new RuntimeException(e);
          }
          
@@ -112,7 +112,7 @@ public class PSDisplayFormatConverter extends PSConverter
          CommunityRef[] communities = getCommunities(source);
          Property[] properties = getProperties(source);
          PSDesignGuid guid = new PSDesignGuid(source.getGUID());
-         com.percussion.webservices.ui.data.PSDisplayFormat target =
+         return
             new com.percussion.webservices.ui.data.PSDisplayFormat(
                guid.getValue(),
                source.getDescription(),
@@ -122,7 +122,6 @@ public class PSDisplayFormatConverter extends PSConverter
                source.getInternalName(),
                source.getDisplayName());
 
-         return target;
       }
    }
    /**
@@ -132,7 +131,7 @@ public class PSDisplayFormatConverter extends PSConverter
     */
    private Property[] getProperties(PSDisplayFormat source)
    {
-      List<Property> resultList = new ArrayList<Property>();
+      List<Property> resultList = new ArrayList<>();
 
       // handle all community property
       if (source.doesPropertyHaveValue(PSDisplayFormat.PROP_COMMUNITY,
@@ -318,7 +317,7 @@ public class PSDisplayFormatConverter extends PSConverter
       {
          PSKey key = PSDisplayColumn.createKey(col.getName(), displayId, false);
          isAscendingSort = col.getSortOrder().getValue().equalsIgnoreCase(
-               SORT_ORDER_ASCENDING) ? true : false;
+                 SORT_ORDER_ASCENDING);
          groupType = col.isCategory() ? PSDisplayColumn.GROUPING_CATEGORY
                : PSDisplayColumn.GROUPING_FLAT;
          

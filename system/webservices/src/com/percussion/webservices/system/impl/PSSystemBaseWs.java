@@ -23,13 +23,16 @@
  */
 package com.percussion.webservices.system.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSWebserviceErrors;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,6 +44,8 @@ public class PSSystemBaseWs
 {
 
    private SessionFactory sessionFactory;
+
+   protected static final Logger log = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
 
    public SessionFactory getSessionFactory() {
       return sessionFactory;
@@ -69,12 +74,11 @@ public class PSSystemBaseWs
       }
       catch (PSException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          int code = IPSWebserviceErrors.FAILED_LOAD_REL_CONFIGS;
-         PSErrorException error = new PSErrorException(code, PSWebserviceErrors
-               .createErrorMessage(code, e.getLocalizedMessage()),
-               ExceptionUtils.getFullStackTrace(e));
-         throw error;
+         throw new PSErrorException(code, PSWebserviceErrors
+               .createErrorMessage(code,PSExceptionUtils.getMessageForLog(e)),
+                 PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

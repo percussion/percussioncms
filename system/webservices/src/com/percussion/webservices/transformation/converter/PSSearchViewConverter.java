@@ -29,6 +29,7 @@ import com.percussion.cms.objectstore.PSSFields;
 import com.percussion.cms.objectstore.PSSearch;
 import com.percussion.cms.objectstore.PSSearchField;
 import com.percussion.cms.objectstore.PSSearchMultiProperty;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -43,16 +44,15 @@ import com.percussion.webservices.ui.data.Property;
 import com.percussion.webservices.ui.data.SearchField;
 import com.percussion.webservices.ui.data.SearchFieldType;
 import com.percussion.webservices.ui.data.SearchViewParentCategory;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Converts between {@link com.percussion.cms.objectstore.PSSearch}
@@ -233,7 +233,7 @@ public class PSSearchViewConverter extends PSConverter
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
    }
@@ -315,7 +315,7 @@ public class PSSearchViewConverter extends PSConverter
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
    }

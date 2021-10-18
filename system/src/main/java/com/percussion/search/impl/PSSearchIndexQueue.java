@@ -23,6 +23,7 @@
  */
 package com.percussion.search.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSIdGenerator;
 import com.percussion.search.IPSSearchIndexQueue;
 import com.percussion.search.PSSearchIndexEventQueue;
@@ -444,5 +445,5 @@ public class PSSearchIndexQueue  implements IPSSearchIndexQueue
     * code a little clearer. Initialized during class construction, then never
     * <code>null</code> or modified.
     */
-   private static final Logger m_logger = LogManager.getLogger(PSSearchIndexQueue.class);
+   private static final Logger m_logger = LogManager.getLogger(IPSConstants.SEARCH_LOG);
 }

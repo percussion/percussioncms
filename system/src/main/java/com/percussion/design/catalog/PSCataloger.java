@@ -26,6 +26,7 @@ package com.percussion.design.catalog;
 
 import com.percussion.conn.PSDesignerConnection;
 import com.percussion.conn.PSServerException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSEncryptionException;
@@ -46,7 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * To use the cataloger, a connection to the E2 server must first be
  * established. Requests can then be made through this object. This is
  * done by passing a set of properties to the <code>catalog</code>
- * method. This method analyzes the request and calls the approriate
+ * method. This method analyzes the request and calls the appropriate
  * PSCatalogHandler extension. See the IPSCatalogHandler interface and
  * the classes implementing it for a list of the supported properties.
  * The catalog handler takes the input properties and creates a request
@@ -80,19 +81,19 @@ import java.util.concurrent.ConcurrentHashMap;
  *         PSCatalogResultsWalker  walker   = new PSCatalogResultsWalker(xmlDoc);
  *
  *         // Get data from the request info
- *         System.out.println("Table: " + walker.getRequestData("tableName"));
+ *         log.info("Table: " + walker.getRequestData("tableName"));
  *
- *         System.out.println("Column");
- *         System.out.println("------------------------------");
+ *         log.info("Column");
+ *         log.info("------------------------------");
  *
  *         // now walk all the child objects (Column elements) to
  *         // get the column names
  *         while (walker.nextResultObject("Column")) {
- *            System.out.println(walker.getResultData("name"));
+ *            log.info(walker.getResultData("name"));
  *         }
  *      }
  *      catch (Exception e) {
- *         e.printStackTrace();
+ *         log.error(PSExceptionUtils.getMessageForLog(e));
  *      }
  *
  * </code></pre>
@@ -133,7 +134,9 @@ public class PSCataloger
       if (conn == null)
          throw new IllegalArgumentException("conn obj null");
 
-      m_conn = conn;
+      synchronized (m_conn) {
+         m_conn = conn;
+      }
    }
 
    /**
@@ -260,7 +263,7 @@ public class PSCataloger
                PSAuthenticationFailedException,
                PSAuthorizationException, java.io.IOException
    {
-      System.out.println("Performing catalog: " + req.toString());
+      logger.info("Performing catalog: {}" , req);
 
       /* check the request type to determine which handler to use */
       String reqCategory   = (String)req.get("RequestCategory");
@@ -282,24 +285,12 @@ public class PSCataloger
       /* send the request to the server */
       Document respDoc;
 
-      // try {
-      //    System.out.println("Request XML data:");
-      //    com.percussion.util.PSXmlDocumentBuilder.write(sendDoc, System.out);
-      //    System.out.println();
-      //    System.out.println();
-      // } catch (IOException e) { e.printStackTrace(); }
 
       synchronized (m_conn) {
          m_conn.setRequestType("design-catalog-" + reqCategory);
          respDoc = m_conn.execute(sendDoc);
       }
 
-      // try {
-      //    System.out.println("Response XML data:");
-      //    com.percussion.util.PSXmlDocumentBuilder.write(respDoc, System.out);
-      //    System.out.println();
-      //    System.out.println();
-      // } catch (IOException e) { e.printStackTrace(); }
 
       return respDoc;
    }
@@ -310,11 +301,11 @@ public class PSCataloger
       IPSCatalogHandler handler = null;
 
       if (m_Handlers != null) {
-         handler = (IPSCatalogHandler)m_Handlers.get(
+         handler = m_Handlers.get(
             reqCategory + "-" + reqType);
       }
       else {
-         m_Handlers = new ConcurrentHashMap();
+         m_Handlers = new ConcurrentHashMap<>();
       }
 
       if (handler == null) {
@@ -340,7 +331,7 @@ public class PSCataloger
       try {
          return PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pw);
       } catch (PSEncryptionException e) {
-         logger.error("Error encrypting password: {}", e.getMessage());
+         logger.error("Error encrypting password: {}", PSExceptionUtils.getMessageForLog(e));
          logger.debug(e);
          return "";
       }
@@ -349,8 +340,8 @@ public class PSCataloger
 
 
 
-   private PSDesignerConnection      m_conn;
+   private volatile PSDesignerConnection      m_conn;
 
-   private volatile static ConcurrentHashMap         m_Handlers = null;
+   private static ConcurrentHashMap<String,IPSCatalogHandler>         m_Handlers = null;
 }
 

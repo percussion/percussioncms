@@ -29,7 +29,7 @@ import com.percussion.cms.IPSEditorChangeListener;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.handlers.PSContentEditorHandler;
-import com.percussion.cms.objectstore.IPSCataloger;
+import com.percussion.cms.objectstore.IPSFieldCataloger;
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSBinaryValue;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -50,6 +50,7 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.search.data.PSSearchIndexQueueItem;
 import com.percussion.search.lucene.PSSearchUtils;
 import com.percussion.security.PSThreadRequestUtils;
@@ -72,9 +73,7 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.util.PSIteratorUtils;
-import com.percussion.util.PSStopwatch;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,7 +83,6 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -93,6 +91,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.percussion.utils.request.PSRequestInfoBase.resetRequestInfo;
 
 /**
  * Persisted queue for events which require reindexing. All events are queued
@@ -201,6 +201,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
          m_queueThread = new Thread(QUEUE_THREAD_NAME)
          {
+            @Override
             public void run()
             {
                PSThreadRequestUtils.initServerThreadRequest();
@@ -217,23 +218,19 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                   {
                      Thread.currentThread().interrupt();
                      break;
-                  }
-                  catch (Throwable t)
+                  } catch (PSException e) {
+                     PSConsole.printMsg(QUEUE_THREAD_NAME, e);
+                     Thread.currentThread().interrupt();
+                     break;
+                  } finally
                   {
-                     PSConsole.printMsg(QUEUE_THREAD_NAME, t);
-                     if (t instanceof ThreadDeath)
-                        break;
-                  }
-                  finally
-                  {
-                     //Bug: request is null guaranteed to be dereferenced in com.percussion.search.PSSearchIndexEventQueue$1.run() on exception path
                      if(request != null){
-                     request.release();
+                       request.release();
                   }
                }
                }
 
-               PSRequestInfo.resetRequestInfo();
+               resetRequestInfo();
 
                // we've finished, so notify the shutdown method if it's waiting
                m_run = false;
@@ -254,17 +251,11 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       }
    }
 
-   private IPSNotificationService getNotificationService()
+   private synchronized IPSNotificationService getNotificationService()
    {
       if (notificationService == null)
       {
-         synchronized (nsLock)
-         {
-            if (notificationService == null)
-            {
-               notificationService = PSNotificationServiceLocator.getNotificationService();
-            }
-         }
+         notificationService = PSNotificationServiceLocator.getNotificationService();
       }
 
       return notificationService;
@@ -329,16 +320,16 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       int pauseCount = m_pausedCount.incrementAndGet();
       boolean wasPaused = pauseCount > 1;
 
-      String result = QUEUE_ALREADY_PAUSED;
+      String result;
       if (!wasPaused)
       {
          result = "Pausing Search Index Queue processing with " + size() + " entries in the queue";
-         m_logger.info(result);
+         log.info(result);
          notifyStatusChange();
       }
       else 
       {
-         m_logger.debug("Pause called when already called with " +pauseCount+ " pause requests");
+         log.debug("Pause called when already called with {} pause requests", pauseCount);
       }
 
       return !wasPaused;
@@ -348,9 +339,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     * Resumes processing of queued events if the queue is paused (see
     * {@link #pause()}). If this method is called and the queue is not paused,
     * it is a no-op and a warning is logged.
-    * 
-    * @param warn <code>true</code> to log a warning if the queue processing is
-    *           already running, <code>false</code> to suppress these warnings.
+    *
     * 
     * @return Any results, never <code>null</code>.
     */
@@ -360,16 +349,16 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     
       if (pausedCount==0)
       {
-         m_logger.info("Resuming Search Index Queue processing with " + size() + " entries in the queue");
+         log.info("Resuming Search Index Queue processing with {} entries in the queue", size());
          notifyStatusChange();
       } else if (pausedCount<0)
       {
-         m_logger.info("Indexer resume called when already resumed");
+         log.info("Indexer resume called when already resumed");
          notifyStatusChange();
          m_pausedCount.set(0);
       }
       else
-         m_logger.debug("Resume Search Index Queue called still "+pausedCount+ " resumes until indexer restarts");
+         log.debug("Resume Search Index Queue called still resumes until indexer restarts: {} paused", pausedCount);
       
       return pausedCount<=0;
    }
@@ -418,7 +407,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       persistEvent(changeEvent);
 
       getNotificationService().notifyEvent(
-            new PSNotificationEvent(EventType.SEARCH_INDEX_ITEM_QUEUED, Integer.valueOf(1)));
+            new PSNotificationEvent(EventType.SEARCH_INDEX_ITEM_QUEUED, 1));
    }
 
    /**
@@ -492,12 +481,13 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     */
    public int indexContentType(int contentTypeId) throws PSSearchException
    {
+      int results = -1;
       try
       {
          // validate the content type
          if (!canIndexContentType(contentTypeId))
          {
-            return (-1);
+            return (results);
          }
 
          IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
@@ -507,36 +497,42 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
          PSNodeDefinition nodeDef = PSContentTypeHelper.findNodeDef(contentTypeGuid);
 
-         Collection<IPSGuid> guids = mgr.findItemIdsByNodeDefinition(nodeDef);
+         if (nodeDef != null) {
+            Collection<IPSGuid> guids = mgr.findItemIdsByNodeDefinition(nodeDef);
 
-         // Tech Support requested to leave this logging in and on all the time
-         m_logger.info("Inserting " + Integer.toString(guids.size()) + " content items for content type "
-               + nodeDef.getName() + " (" + Integer.toString(contentTypeId) + ")" + " into Search Index Queue.");
+            // Tech Support requested to leave this logging in and on all the time
+            log.info("Inserting {} content items for content type {} ({}) into Search Index Queue.",
+                    guids.size(),
+                    nodeDef.getName(),
+                    contentTypeId
+            );
 
-         int results = 0;
-         for (IPSGuid guid : guids)
-         {
-            int contentId = ((PSLegacyGuid) guid).getContentId();
-            if (contentId != PSFolder.ROOT_ID)
-            {
-               boolean isLast = results == guids.size() - 1;
-               PSSearchEditorChangeEvent event = new PSSearchEditorChangeEvent(PSEditorChangeEvent.ACTION_REINDEX,
-                     contentId, ((PSLegacyGuid) guid).getRevision(), contentTypeId, isLast);
-               event.setPriority(REINDEX_PRIORITY);
-               queueEvent(event);
+
+            for (IPSGuid guid : guids) {
+               int contentId = ((PSLegacyGuid) guid).getContentId();
+               if (contentId != PSFolder.ROOT_ID) {
+                  boolean isLast = results == guids.size() - 1;
+                  PSSearchEditorChangeEvent event = new PSSearchEditorChangeEvent(PSEditorChangeEvent.ACTION_REINDEX,
+                          contentId, ((PSLegacyGuid) guid).getRevision(), contentTypeId, isLast);
+                  event.setPriority(REINDEX_PRIORITY);
+                  queueEvent(event);
+               }
+               results++;
             }
-            results++;
+            return results;
+         }else{
+            log.warn("Unable to load the requested content type: {} for indexing.  It will be excluded from the index.",contentTypeId );
          }
-         return results;
       }
       catch (RepositoryException e)
       {
          String msg = "Error searching for items for reindexing: ";
 
-         m_logger.error(msg, e);
+         log.error(msg, e);
          // internal search should not fail for any reason
          throw new RuntimeException(msg, e);
       }
+      return results;
    }
 
    /**
@@ -552,7 +548,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
    }
 
    /**
-    * Convenience method calls {@link #canIndexContentType(int, int)
+    * Convenience method calls {@link #canIndexContentType(long, int)}
     * canIndexContentType(contentTypeId, -1)}.
     */
    private boolean canIndexContentType(long contentTypeId)
@@ -592,7 +588,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
          retryCount--;
          PSItemDefManager mgr = PSItemDefManager.getInstance();
 
-         long visTypes[] = mgr.getContentTypeIds(PSItemDefManager.COMMUNITY_ANY);
+         long[] visTypes = mgr.getContentTypeIds(PSItemDefManager.COMMUNITY_ANY);
          long[] allowedTypes = new long[visTypes.length + 1];
          System.arraycopy(visTypes, 0, allowedTypes, 0, visTypes.length);
          // allow folders to be indexed
@@ -672,28 +668,27 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     * @throws PSException if there are any other errors.
     */
    @SuppressWarnings("unchecked")
-   private void processNextEventSet(long timeOut, PSRequest request) throws InterruptedException, PSSearchException,
-         PSCmsException, PSException
+   private void processNextEventSet(long timeOut, PSRequest request) throws InterruptedException, PSException
    {
       List<PSSearchIndexQueueItem> eventSet = getNextEventSet(timeOut);
       if (eventSet != null && !eventSet.isEmpty())
       {
-         List<String> queueIdList = new ArrayList<String>();
+         List<String> queueIdList = new ArrayList<>();
 
          int loadFlags = 0;
          boolean indexParent = false;
          boolean deleteParent = false;
          boolean reindex = false;
-         Set binaryFields = new HashSet();
-         Map childRows = new HashMap();
-         List childDeletes = new ArrayList();
+         Set binaryFields = new HashSet<>();
+         Map childRows = new HashMap<>();
+         List childDeletes = new ArrayList<>();
          long contentTypeId = -1;
          boolean commit = false;
          int revision = -1;
          boolean deleteAll = false;
          int contentid = eventSet.get(0).getContentId();
          
-         m_logger.debug("Processing "+eventSet.size()+" queue entry for id "+contentid);
+         log.debug("Processing {} queue entry for id {}",eventSet.size(),contentid);
          
          for (PSSearchIndexQueueItem queueItem : eventSet)
          {
@@ -701,7 +696,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
             if (changeEvent.getRevisionId() == -2)
             {
-               m_logger.debug("Missing CONTENTSTATUS record for contentid "+contentid+" Must have been purged, deleting records for this id");
+               log.warn("Missing CONTENTSTATUS record for contentid {}. Must have been purged, deleting index queue records for this id.", contentid);
                deleteParent = true;
             }
             if (changeEvent.getRevisionId() > revision)
@@ -717,12 +712,12 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
             queueIdList.add(String.valueOf(queueItem.getQueueId()));
 
             // log the event processing
-            if (PSSearchEngine.getInstance().isTraceEnabled() && m_logger.isInfoEnabled())
+            if (PSSearchEngine.getInstance().isTraceEnabled() && log.isInfoEnabled())
             {
                Document doc = PSXmlDocumentBuilder.createXmlDocument();
                String out = "processing event: [" + queueItem.getQueueId() + "]:\n";
                out += PSXmlDocumentBuilder.toString(changeEvent.toXml(doc));
-               m_logger.info(out);
+               log.info(out);
             }
 
             int childId = changeEvent.getChildId();
@@ -731,12 +726,12 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                if (actionType == PSEditorChangeEvent.ACTION_DELETE)
                {
                   deleteParent = true;
-                  m_logger.debug("Handling delete event for item"+contentid);
+                  log.debug("Handling delete event for item: {}", contentid);
                }
                else if (actionType == PSEditorChangeEvent.ACTION_REINDEX)
                {
                   reindex = true;
-                  m_logger.debug("Handling reindex event for item "+contentid);
+                  log.debug("Handling reindex event for item: {}", contentid);
                }
                else
                {
@@ -755,8 +750,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                // continue
                if (!canIndexContentType(contentTypeId, changeEvent.getChildId()))
                {
-                  m_logger.error("Found invalid content type id " + contentTypeId
-                        + " in index queue.  Removing entries");
+                  log.warn("Found invalid content type id {} in index queue.  Removing queued entries", contentTypeId);
                   deletePersistedEventsForType(contentTypeId);
                   return;
                }
@@ -781,7 +775,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                      Set childBinFields = (Set) childRows.get(childLoc);
                      if (childBinFields == null)
                      {
-                        childBinFields = new HashSet();
+                        childBinFields = new HashSet<>();
                         childRows.put(childLoc, childBinFields);
                      }
                      childBinFields.addAll(PSIteratorUtils.cloneList(changeEvent.getBinaryFields()));
@@ -792,13 +786,11 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
          PSLocator parentLoc = new PSLocator(contentid, revision);
 
-         // PSSecurityToken tok = request.getSecurityToken();
-
          // see if we have an invalid content type. If so, delete the events
          // and throw an exception to be logged and written to the console
          if (!canIndexContentType(contentTypeId))
          {
-            m_logger.error("Found invalid content type id " + contentTypeId + " in index queue.  Removing entries");
+            log.error("Found invalid content type id {} in index queue.  Removing entries", contentTypeId);
             deletePersistedEventsForType(contentTypeId);
             return;
 
@@ -859,19 +851,18 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                   }
                   PSServerItem item = null;
 
-                  if (m_logger.isDebugEnabled())
+                  if (log.isDebugEnabled())
                   {
                      boolean binaries = ((loadFlags & PSServerItem.TYPE_BINARY) == PSServerItem.TYPE_BINARY);
-                     m_logger.debug("Loading item for index " + parentLoc.getId() + " revision="
-                           + parentLoc.getRevision() + ", binaries = " + binaries);
+                     log.debug("Loading item for index {} revision={}, binaries = {}",parentLoc.getId() , parentLoc.getRevision() , binaries);
                   }
                   try
                   {
                      item = loadItem(request, parentLoc, loadFlags);
                      indexItemChanges(cTypeKey, item, itemChanges, commit);
 
-                     m_logger.debug("Finished Indexing item " + parentLoc.getId() + " revision="
-                           + parentLoc.getRevision());
+                     log.debug("Finished Indexing item {} revision={}"
+                           ,parentLoc.getId() , parentLoc.getRevision());
                   }
                   catch (Exception e)
                   {
@@ -881,9 +872,8 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                      if (sum != null)
                         throw e;
 
-                     if (m_logger.isDebugEnabled())
-                        m_logger.debug("Item +" + parentLoc.getId()
-                              + " Deleted from CONTENTSTATUS while attempting to index, cleaning up");
+                     if (log.isDebugEnabled())
+                        log.debug("Item {} deleted from CONTENTSTATUS while attempting to index, cleaning up", parentLoc.getId());
                      deleteAll = true;
 
                   }
@@ -895,8 +885,9 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
          catch (Exception e)
          {
 
-            m_logger.error("There was an error indexing item " + String.valueOf(contentid) + " change will be skipped",
-                  e);
+            log.error("There was an error indexing item {} change will be skipped. Error: {}",
+                    contentid,
+                    PSExceptionUtils.getMessageForLog(e));
             deleteAll = true;
          }
          // now delete these events from the repository
@@ -910,7 +901,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
          // If we have checked no items still in queue after timeout then do an
          // indexer optimize and try again.
-         m_logger.debug("No items in indexer queue, optimizing");
+         log.debug("No items in indexer queue, optimizing");
          PSSearchEngine engine = PSSearchEngine.getInstance();
          PSSearchIndexer indexer = engine.getSearchIndexer();
          try
@@ -922,8 +913,6 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
             engine.releaseSearchIndexer(indexer);
          }
       }
-
-      return;
    }
 
    /**
@@ -1014,9 +1003,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       try
       {
          // load the item
-         PSServerItem item = PSServerItem.loadItem(itemLoc, req, loadFlags);
-
-         return item;
+         return PSServerItem.loadItem(itemLoc, req, loadFlags);
       }
       finally
       {
@@ -1137,13 +1124,13 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
             if (m_fieldValueModifier != null)
                m_fieldValueModifier.modifyFields(fragment);
 
-            if (engine.isTraceEnabled() && m_logger.isInfoEnabled())
+            if (engine.isTraceEnabled() && log.isInfoEnabled())
             {
                StringBuilder buf = new StringBuilder();
                buf.append("Update index: \n");
                buf.append(PSXmlDocumentBuilder.toString(key.toXml(PSXmlDocumentBuilder.createXmlDocument())));
                buf.append(fragment);
-               m_logger.info(buf.toString());
+               log.info(buf.toString());
             }
 
             indexer.update(unitId, fragment, false);
@@ -1179,7 +1166,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       // get system field catalog
       PSRequest req = PSRequest.getContextForRequest();
       PSLocalCataloger cat = new PSLocalCataloger(req);
-      Set systemFieldNames = cat.getSystemFields(IPSCataloger.FLAG_USER_SEARCH | IPSCataloger.FLAG_INCLUDE_HIDDEN);
+      Set systemFieldNames = cat.getSystemFields(IPSFieldCataloger.FLAG_USER_SEARCH | IPSFieldCataloger.FLAG_INCLUDE_HIDDEN);
 
       Map fields = loadFields(key.getId(), systemFieldNames);
 
@@ -1197,7 +1184,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     */
    private Map<String, String> loadAdditionalFields(PSServerItem item) throws PSSearchException
    {
-      Set<String> additionalFieldNames = new HashSet<String>();
+      Set<String> additionalFieldNames = new HashSet<>();
 
       Collection<PSField> searchableFields = PSSearchUtils.getSearchableFields(item.getItemDefinition());
       for (PSField field : searchableFields)
@@ -1227,12 +1214,12 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
    @SuppressWarnings("unchecked")
    private Map<String, String> loadFields(int contentId, Set fieldNames) throws PSSearchException
    {
-      Map<String, String> fields = new HashMap<String, String>();
+      Map<String, String> fields = new HashMap<>();
 
       PSRequest req = PSRequest.getContextForRequest();
 
-      List idList = new ArrayList();
-      idList.add(new Integer(contentId));
+      List<Integer> idList = new ArrayList<>();
+      idList.add(contentId);
 
       IPSExecutableSearch search = PSExecutableSearchFactory.createExecutableSearch(req, fieldNames, idList);
       PSWSSearchResponse searchResponse = search.executeSearch();
@@ -1291,7 +1278,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
          else
          {
             // build space delimited list of string values (words)
-            String val = "";
+            StringBuilder val = new StringBuilder();
             Iterator values = itemField.getAllValues();
             while (values.hasNext())
             {
@@ -1304,12 +1291,12 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                if (value != null && value.trim().length() > 0)
                {
                   if (val.length() > 0)
-                     val += " ";
-                  val += value;
+                     val.append(" ");
+                  val.append(value);
                }
             }
 
-            fragment.put(itemField.getName(), val);
+            fragment.put(itemField.getName(), val.toString());
          }
       }
 
@@ -1333,19 +1320,19 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
    {
       PSSearchEngine engine = PSSearchEngine.getInstance();
       PSSearchIndexer indexer = engine.getSearchIndexer();
-      Collection<PSSearchKey> unitIds = new ArrayList<PSSearchKey>();
+      Collection<PSSearchKey> unitIds = new ArrayList<>();
       try
       {
          if (childIds == null)
          {
-            if (engine.isTraceEnabled() && m_logger.isInfoEnabled())
+            if (engine.isTraceEnabled() && log.isInfoEnabled())
             {
                StringBuilder buf = new StringBuilder();
                buf.append("delete from index: \n");
                Document doc = PSXmlDocumentBuilder.createXmlDocument();
                buf.append(PSXmlDocumentBuilder.toString(contentType.toXml(doc)));
                buf.append(PSXmlDocumentBuilder.toString(itemId.toXml(doc)));
-               m_logger.info(buf.toString());
+               log.info(buf.toString());
             }
 
             PSSearchKey unitId = new PSSearchKey(contentType, itemId, null);
@@ -1358,7 +1345,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
             {
                PSItemChildLocator childLoc = (PSItemChildLocator) children.next();
 
-               if (engine.isTraceEnabled() && m_logger.isInfoEnabled())
+               if (engine.isTraceEnabled() && log.isInfoEnabled())
                {
                   StringBuilder buf = new StringBuilder();
                   buf.append("delete from index: \n");
@@ -1366,7 +1353,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
                   buf.append(PSXmlDocumentBuilder.toString(contentType.toXml(doc)));
                   buf.append(PSXmlDocumentBuilder.toString(itemId.toXml(doc)));
                   buf.append(PSXmlDocumentBuilder.toString(childLoc.toXml(doc)));
-                  m_logger.info(buf.toString());
+                  log.info(buf.toString());
                }
 
                PSSearchKey unitId = new PSSearchKey(contentType, itemId, childLoc);
@@ -1413,7 +1400,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
             if (m_processingEvents.isEmpty())
             {
                m_queueService.waitForPoll(timeOut);
-               m_logger.debug("Waking up for Queue Poll");
+               log.debug("Waking up for Queue Poll");
             }
          }
          else
@@ -1425,7 +1412,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
          }
 
       }
-      return null;
+      return new ArrayList<>();
    }
 
    /**
@@ -1438,8 +1425,11 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
    @SuppressWarnings("unchecked")
    private int persistEvent(PSSearchEditorChangeEvent event)
    {
-      m_logger
-      .debug("Indexer Change Event for id="+ event.getContentId() + " rev=" + event.getRevisionId() + "\n" + "Event is " + event.getActionTypeName());
+      log
+      .debug("Indexer Change Event for id={} rev={}. Event is {}",
+              event.getContentId() ,
+              event.getRevisionId(),
+              event.getActionTypeName());
 
       try
       {
@@ -1449,14 +1439,13 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       }
       catch (Exception e)
       {
-         throw new RuntimeException("Unable to persist queue event:" + e.getLocalizedMessage());
+         throw new RuntimeException("Unable to persist queue event.", e);
       }
    }
 
    /**
     * Deletes the specified events from the repository
     *
-    * @param request The request to use, assumed not <code>null</code>.
     * @param queueIdList The list of queue id's to delete, as
     *           <code>String</code> objects, assumed not <code>null</code>.
     */
@@ -1467,7 +1456,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       {
          try
          {
-            Collection<Integer> queueIds = new ArrayList<Integer>();
+            Collection<Integer> queueIds = new ArrayList<>();
             for (Object textQID : queueIdList)
             {
                Integer queueId = Integer.decode(textQID.toString());
@@ -1507,7 +1496,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
    /**
     * Deletes the specified contenttypeid from the repository
     *
-    * @param contentid the contenttypeid to remove
+    * @param contentTypeId the contenttypeid to remove
     */
    private void deletePersistedEventsForType(long contentTypeId)
    {
@@ -1515,11 +1504,11 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       {
          m_queueService.deleteTypeIdItems(contentTypeId);
          getNotificationService().notifyEvent(
-               new PSNotificationEvent(EventType.SEARCH_INDEX_ITEM_PROCESSED, Integer.valueOf(-1)));
+               new PSNotificationEvent(EventType.SEARCH_INDEX_ITEM_PROCESSED, -1));
       }
       catch (Exception e)
       {
-         throw new RuntimeException("Unable to delete persisted queue event:" + e.getLocalizedMessage());
+         throw new RuntimeException("Unable to delete persisted queue event." ,e);
       }
    }
 
@@ -1533,7 +1522,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     */
    private Map<Integer, List<PSSearchIndexQueueItem>> getPersistedEventsByIds()
    {
-      Map<Integer, List<PSSearchIndexQueueItem>> events = new HashMap<Integer, List<PSSearchIndexQueueItem>>();
+      Map<Integer, List<PSSearchIndexQueueItem>> events = new HashMap<>();
 
       List<PSSearchIndexQueueItem> items = m_queueService.loadItems(QUERY_MAX_EVENT_IDS);
 
@@ -1546,14 +1535,14 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
          List<PSSearchIndexQueueItem> eventList = events.get(id);
          if (eventList == null)
          {
-            eventList = new ArrayList<PSSearchIndexQueueItem>();
+            eventList = new ArrayList<>();
             events.put(id, eventList);
          }
 
          eventList.add(item);
 
       }
-      m_logger.debug("Pulled "+items.size()+" index entries from database for ids :"+ events.keySet());
+      log.debug("Pulled {} index entries from database for ids : {}", items.size(), events.keySet());
       
       return events;
    }
@@ -1584,7 +1573,7 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       PSSearchEditorChangeEvent ev = new PSSearchEditorChangeEvent(e.getActionType(), e.getContentId(),
             e.getRevisionId(), e.getContentTypeId(), true);
       ev.setPriority(e.getPriority());
-      List<String> fields = new ArrayList<String>();
+      List<String> fields = new ArrayList<>();
       Iterator it = e.getBinaryFields();
       while (it.hasNext())
       {
@@ -1644,15 +1633,13 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     * Monitor object to provide synchronization of start and shutdown. Never
     * <code>null</code> or modified.
     */
-   private Object m_runMonitor = new Object();
-
-   private Object nsLock = new Object();
+   private final Object m_runMonitor = new Object();
 
    /**
     * Monitor object to provide synchronized access to the {@link #m_shutdown}
     * flag. Never <code>null</code> or modified.
     */
-   private Object m_shutdownMonitor = new Object();
+   private final Object m_shutdownMonitor = new Object();
 
    /**
     * Indicates if the queue is running. Initially <code>false</code>, set to
@@ -1705,10 +1692,10 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
 
    static
    {
-      ms_insertParamMap = new HashMap<String, String>();
+      ms_insertParamMap = new HashMap<>();
       ms_insertParamMap.put("DBActionType", "INSERT");
 
-      ms_deleteParamMap = new HashMap<String, String>();
+      ms_deleteParamMap = new HashMap<>();
       ms_deleteParamMap.put("DBActionType", "DELETE");
    }
 
@@ -1722,152 +1709,13 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
     * code a little clearer. Initialized during class construction, then never
     * <code>null</code> or modified.
     */
-   private Logger m_logger = LogManager.getLogger(getClass());
-
-   /**
-    * Used for keeping performance metrics and logging results to the server
-    * console when debug is enabled.
-    */
-
-   private QueuePerformaceLogging m_perfLogger = new QueuePerformaceLogging();
+   private static final Logger log = LogManager.getLogger(IPSConstants.SEARCH_LOG);
 
    private IPSNotificationService notificationService;
 
    private IPSFieldValueModifier m_fieldValueModifier = null;
 
-   private Map<Integer, List<PSSearchIndexQueueItem>> m_processingEvents = new HashMap<Integer, List<PSSearchIndexQueueItem>>();
-
-   /**
-    * Encapsulates a set of events to process for a single content id.
-    */
-   private class PSQueueEventSet
-   {
-      /**
-       * Construct an event set
-       *
-       * @param queueKey The key for which all events in the set are to be
-       *           processed, may not be <code>null</code>.
-       */
-      public PSQueueEventSet(PSQueueKey queueKey)
-      {
-         if (queueKey == null)
-            throw new IllegalArgumentException("queueKey may not be null");
-
-         m_queueKey = queueKey;
-      }
-
-      /**
-       * Adds the supplied queue event to this set.
-       *
-       * @param queueEvent The event to add, may not be <code>null</code>, must
-       *           match this set's queue key.
-       */
-      @SuppressWarnings("unchecked")
-      public void addQueueEvent(PSQueueEvent queueEvent)
-      {
-         if (queueEvent == null)
-            throw new IllegalArgumentException("changeEvent may not be null");
-
-         PSQueueKey key = new PSQueueKey(queueEvent.getChangeEvent());
-         if (!m_queueKey.equals(key))
-            throw new IllegalArgumentException("invalid queue key");
-
-         m_eventList.add(queueEvent);
-      }
-
-      /**
-       * Gets the queue key supplied during construction.
-       *
-       * @return The key.
-       */
-      public PSQueueKey getQueueKey()
-      {
-         return m_queueKey;
-      }
-
-      /**
-       * Gets the events in this set.
-       *
-       * @return An iterator over zero or more <code>PSQueueEvent</code>
-       *         objects, never <code>null</code>.
-       *
-       */
-      public Iterator getChangeEvents()
-      {
-         return m_eventList.iterator();
-      }
-
-      /**
-       * The key used to construct this object, never <code>null</code> or
-       * modified after that.
-       */
-      private PSQueueKey m_queueKey;
-
-      /**
-       * The list of queue events, never <code>null</code>, may be empty. Events
-       * are added by {@link #addQueueEvent(PSQueueEvent)}.
-       */
-      private List m_eventList = new ArrayList();
-
-      public int getEventCount()
-      {
-         return m_eventList.size();
-      }
-   }
-
-   /**
-    * Represents an event in the queue. Objects of this class are immutable.
-    */
-   private class PSQueueEvent
-   {
-      /**
-       * Construct a queue event from an editor change event.
-       *
-       * @param queueId The queue id to assign to this change event
-       * @param changeEvent The change event that will be processed, may not be
-       *           <code>null</code>.
-       */
-      public PSQueueEvent(int queueId, PSSearchEditorChangeEvent changeEvent)
-      {
-         if (changeEvent == null)
-            throw new IllegalArgumentException("changeEvent may not be null");
-
-         m_queueid = queueId;
-         m_changeEvent = changeEvent;
-      }
-
-      /**
-       * Get the id assigned to this event.
-       *
-       * @return The queueId supplied in the ctor.
-       */
-      public int getQueueId()
-      {
-         return m_queueid;
-      }
-
-      /**
-       * Get the change event supplied during construction.
-       *
-       * @return The change event, never <code>null</code>.
-       */
-      public PSSearchEditorChangeEvent getChangeEvent()
-      {
-         return m_changeEvent;
-      }
-
-      /**
-       * The queue id assigned to this event, intialized during construction,
-       * greater than 0, never modified after that.
-       */
-      private int m_queueid;
-
-      /**
-       * The editor change event supplied during construction, never
-       * <code>null</code> or modified after that.
-       */
-      private PSSearchEditorChangeEvent m_changeEvent;
-   }
+   private Map<Integer, List<PSSearchIndexQueueItem>> m_processingEvents = new HashMap<>();
 
    /**
     * Key that can be used to identify a change for a particular content item.
@@ -1957,262 +1805,5 @@ public class PSSearchIndexEventQueue implements IPSEditorChangeListener, IPSHand
       private int m_revisionId;
    }
 
-   /**
-    * Handles in-memory queue operations for events of a particular priority.
-    * May also handle events of a different priority if events for the same item
-    * have already been queued. It is the responsibility of the caller to
-    * synchronize access to this object where required.
-    */
-   private class PSPriorityEventQueue
-   {
-      /**
-       * Construct a queue for the specified priority.
-       *
-       * @param priority The priority assigned to this queue. This object does
-       *           not interpret this value relative to that of other
-       *           priorities; it is the callers responsibility to determine how
-       *           to interpret this value.
-       */
-      public PSPriorityEventQueue(int priority)
-      {
-         m_priority = priority;
-      }
-
-      /**
-       * Returns a value equal to the number of entries in this queue.
-       *
-       * @return A value of 0 or higher.
-       */
-      public int size()
-      {
-         return m_eventQueue.size();
-      }
-
-      /**
-       * Get the priority of this queue.
-       *
-       * @return The priority specified during construction.
-       */
-      public int getPriority()
-      {
-         return m_priority;
-      }
-
-      /**
-       * Determine if this queue contains any events.
-       *
-       * @return <code>true</code> if this queue is empty, <code>false</code> if
-       *         not.
-       */
-      public boolean isEmpty()
-      {
-         return m_eventQueue.isEmpty();
-      }
-
-      /**
-       * Queues the supplied change event. Will only queue the event if the
-       * priority matches, or if there are already events queued for the same
-       * item.
-       *
-       * @param queueId The id uniquely identifying this event in the
-       *           repository.
-       * @param changeEvent The change event that is to be queued, assumed not
-       *           <code>null</code>.
-       *
-       * @return <code>true</code> if the item was queued, <code>false</code> if
-       *         not.
-       */
-      @SuppressWarnings("unchecked")
-      public boolean queueEvent(int queueId, PSSearchEditorChangeEvent changeEvent)
-      {
-         PSQueueEvent queueEvent = new PSQueueEvent(queueId, changeEvent);
-
-         // check map to see if item is already in the queue
-         PSQueueKey queueKey = new PSQueueKey(changeEvent);
-         PSQueueEventSet queueEventSet = (PSQueueEventSet) m_queueIdEventMap.get(queueKey);
-
-         // accept if we have an event set, or if priority matches
-         boolean accept = (changeEvent.getPriority() == m_priority || queueEventSet != null);
-         if (accept)
-         {
-            if (queueEventSet == null)
-            {
-               // add content id to the queue, add an event set with this event
-               // to the map
-               m_eventQueue.add(queueKey);
-               queueEventSet = new PSQueueEventSet(queueKey);
-               m_queueIdEventMap.put(queueKey, queueEventSet);
-
-               // add to content id map so we can handle item deletes by content
-               // id
-               Integer ctId = new Integer(changeEvent.getContentId());
-               Set idSet = (Set) m_contentIdEventMap.get(ctId);
-               if (idSet == null)
-               {
-                  idSet = new HashSet();
-                  m_contentIdEventMap.put(ctId, idSet);
-               }
-               idSet.add(queueKey);
-            }
-            queueEventSet.addQueueEvent(queueEvent);
-         }
-
-         return accept;
-      }
-
-      /**
-       * Clears all events from this queue.
-       */
-      public void clear()
-      {
-         m_eventQueue.clear();
-         m_queueIdEventMap.clear();
-         m_contentIdEventMap.clear();
-      }
-
-      /**
-       * The priority assigned to this queue during construction, never modified
-       * after that.
-       */
-      private int m_priority;
-
-      /**
-       * Queue'd list of keys as <code>PSQueueKey</code> objects. Never
-       * <code>null</code>, keys are added as events are queued and removed as
-       * they are retrieved.
-       */
-      private List m_eventQueue = new ArrayList(50);
-
-      /**
-       * Map of queue keys as <code>PSQueueKey</code> objects to queued events
-       * as <code>PSQueueEventSet</code> objects. Entries are added as events
-       * are queued and removed as they are retrieved.
-       */
-      private Map m_queueIdEventMap = new HashMap();
-
-      /**
-       * Map of content ids as <code>Integer</code> objects to all queued events
-       * for the same content id. Value is a <code>Set</code> of
-       * <code>PSQueueKey</code> objects. Entries are added as events are queued
-       * and removed as they are retrieved.
-       */
-      private Map m_contentIdEventMap = new HashMap();
-
-   }
-
-   /**
-    * This class is used for logging performance metrics for the indexing of
-    * items.
-    */
-   private class QueuePerformaceLogging
-   {
-      /**
-       * Starts the timer and keeps a count of how many times we have done a
-       * commit since the queue started or was empty.
-       */
-      public void startCommittMetrics()
-      {
-         if (!m_logger.isDebugEnabled())
-         {
-            return;
-         }
-
-         ++mi_commitCount;
-         mi_swTimeSpentCommitting.start();
-      }
-
-      /**
-       * Logs the metrics accumulated during the commit of indexing events
-       */
-      public void logCommitMetrics()
-      {
-         if (!m_logger.isDebugEnabled())
-         {
-            return;
-         }
-
-         mi_swTimeSpentCommitting.stop();
-         int count = mi_itemCount - mi_itemsLastCommit;
-
-         m_logger.debug(count + " items committed in " + mi_swTimeSpentCommitting.elapsed());
-         mi_commitTime += mi_swTimeSpentCommitting.elapsed();
-         mi_itemsLastCommit = mi_itemCount;
-      }
-
-      /**
-       * Logs the metrics accumulated during the indexing of events since the
-       * last time the queue started or was empty.
-       */
-      public void logIndexingMetrics()
-      {
-         if (!m_logger.isDebugEnabled())
-         {
-            return;
-         }
-
-         mi_end_time = new Date();
-         if (mi_swTimeSinceEmpty.elapsed() > 0)
-         {
-            mi_swTimeSinceEmpty.stop();
-         }
-         if (mi_itemCount > 0)
-         {
-            m_logger.debug("Queue started processing at " + mi_start_time + " and finished at " + mi_end_time);
-            m_logger.debug(mi_itemCount + " items processed in " + mi_swTimeSinceEmpty);
-            m_logger.debug(mi_commitCount + " commits in " + mi_commitTime);
-         }
-      }
-
-      /**
-       * Sets up the state for measuring the performance of indexing the events
-       * until the queue empties.
-       */
-      public void startIndexingMetrics()
-      {
-         if (!m_logger.isDebugEnabled())
-         {
-            return;
-         }
-
-         mi_itemCount = 0;
-         mi_commitCount = 0;
-         mi_commitTime = 0;
-         mi_swTimeSinceEmpty.start();
-         mi_start_time = new Date();
-         mi_itemsLastCommit = 0;
-      }
-
-      /**
-       * Used to keep track of the number of events processed since the last
-       * time the queue was started or empty.
-       * 
-       * @param eventSet - the set of events that are about to be processed.
-       */
-      public void setEventCount(PSQueueEventSet eventSet)
-      {
-         if (!m_logger.isDebugEnabled() || eventSet == null)
-         {
-            return;
-         }
-
-         mi_itemCount += eventSet.getEventCount();
-      }
-
-      private int mi_itemCount = 0;
-
-      private PSStopwatch mi_swTimeSinceEmpty = new PSStopwatch();
-
-      private PSStopwatch mi_swTimeSpentCommitting = new PSStopwatch();
-
-      private Date mi_start_time;
-
-      private Date mi_end_time;
-
-      private int mi_commitTime = 0;
-
-      private int mi_commitCount = 0;
-
-      private int mi_itemsLastCommit = 0;
-   }
 
 }

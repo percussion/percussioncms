@@ -24,6 +24,7 @@
 
 package com.percussion.search;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
@@ -127,7 +128,7 @@ public class PSAddVariantSiteFolder extends PSDefaultExtension
    /**
     * Commons logger
     */
-    private static final Logger ms_log = LogManager.getLogger(PSAddVariantSiteFolder.class);
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.SEARCH_LOG);
    
    /*
     * (non-Javadoc)

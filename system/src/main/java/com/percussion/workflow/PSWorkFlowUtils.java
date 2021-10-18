@@ -28,6 +28,7 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -57,6 +58,7 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.string.PSStringUtils;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -560,7 +562,8 @@ public class PSWorkFlowUtils
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         ms_log.error(PSExceptionUtils.getMessageForLog(e));
+         ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -1301,6 +1304,7 @@ public class PSWorkFlowUtils
     * @return          <CODE>String</CODE> containing the stack trace
     * @throws IllegalArgumentException if the input is <CODE>null</CODE>
     */
+   @SuppressFBWarnings()
    public static String stackTraceString(Throwable throwable)
    {
       if (null == throwable )

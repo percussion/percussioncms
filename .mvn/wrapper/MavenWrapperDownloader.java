@@ -19,6 +19,7 @@ import java.nio.channels.*;
 import java.util.Properties;
 
 @SuppressWarnings("java:S106")
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class MavenWrapperDownloader {
 
     private static final String WRAPPER_VERSION = "0.5.5";

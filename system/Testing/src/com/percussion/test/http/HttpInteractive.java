@@ -26,6 +26,7 @@ package com.percussion.test.http;
 import com.percussion.test.io.IOTools;
 import com.percussion.test.io.LogSink;
 import com.percussion.util.PSURLEncoder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,6 +47,7 @@ import java.io.OutputStream;
  * GET and POST requests to an HTTP server, allowing you to set individual
  * header values and whatnot.
  */
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class HttpInteractive implements LogSink
 {
 

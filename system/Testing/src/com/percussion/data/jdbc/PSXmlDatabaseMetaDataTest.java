@@ -28,6 +28,7 @@ import com.percussion.data.vfs.PSVirtualApplicationDirectory;
 import com.percussion.server.IPSCgiVariables;
 import com.percussion.server.PSUserSession;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -55,6 +56,7 @@ import static org.junit.Assert.assertTrue;
  *   Unit tests for the PSXmlDatabaseMetaDataTest class
  */
 
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class PSXmlDatabaseMetaDataTest
 {
    private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);

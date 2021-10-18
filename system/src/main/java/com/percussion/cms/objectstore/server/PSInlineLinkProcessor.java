@@ -48,7 +48,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ import java.util.Map;
  */
 public class PSInlineLinkProcessor
 {
-   private static final Logger logger = LogManager.getLogger(PSInlineLinkProcessor.class);
+   private static final Logger logger = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
    /**
     * Force users to use the static methods.
     */
@@ -318,7 +317,7 @@ public class PSInlineLinkProcessor
       {
          // assume the text is a valid XML document, already tidied
          Document fieldDoc = PSXmlDocumentBuilder.createXmlDocument(
-            new InputSource((Reader) new StringReader(text)), false);
+            new InputSource( new StringReader(text)), false);
 
          PSInlineLinkField.modifyField(fieldDoc.getDocumentElement(),
             relationshipMap);

@@ -29,6 +29,17 @@ import com.percussion.server.PSConsole;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import junit.framework.Test;
+import junit.framework.TestFailure;
+import junit.framework.TestResult;
+import junit.textui.TestRunner;
+import org.apache.log4j.AppenderSkeleton;
+import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -46,18 +57,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-
-import junit.framework.Test;
-import junit.framework.TestFailure;
-import junit.framework.TestResult;
-import junit.textui.TestRunner;
-
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This loadable handler instantiantes a JUnit class and execute the test suite
@@ -91,7 +90,7 @@ import org.w3c.dom.Element;
  * dir=c:/e2/classes/com/percussion/cms/dg
  * </pre>
  */
-
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class PSJunitRequestHandler implements IPSLoadableRequestHandler
 {
    /**
