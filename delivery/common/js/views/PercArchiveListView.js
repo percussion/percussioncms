@@ -63,7 +63,7 @@
 
             //Set the base URL to create the href for each item then
             var baseURL = "";
-            if(isEditMode==="true"){
+            if(isEditMode==="true" || isPreviewMode == "true"){
                 var paths = window.location.pathname.split("/");
                 baseURL = "/" + paths[1] + "/" + paths[2];
             }else{
@@ -114,6 +114,7 @@
                             let linkText = "";
                             let a ="";
                             let li = "";
+                            let href="";
 
                             // If year don't have any entry - skip the year
                             if(0 < row.yearCount)
@@ -124,7 +125,7 @@
                                 //Set the link for the item Year
                                 yearParam1 = row.year + "-01-01 00:00:00";
                                 yearParam2 = row.year + "-12-31 23:59:59";
-                                if ("undefined" === typeof (pageResult) || "" === pageResult || isEditMode === "true" || isPreviewMode === "true"){
+                                if ("undefined" === typeof (pageResult) || "" === pageResult || isEditMode === "true"){
                                     anchorYear = $("<a href='#'>")
                                         .text(linkYearText);
                                 }else{
@@ -132,8 +133,9 @@
                                     query.criteria.push("dcterms:created >= '" + yearParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + yearParam2 + "'");
                                     encodedQuery =  "&query=" + encodeURIComponent(JSON.stringify(query));
+                                    href =  baseURL + pageResult + "?filter="+ encodeURIComponent(row.year) + encodedQuery;
                                     anchorYear = $("<a>")
-                                        .attr("href", baseURL + pageResult + "?filter="+  row.year + encodedQuery)
+                                        .attr("href",href)
                                         .text(linkYearText);
 
                                 }
@@ -183,7 +185,7 @@
                                     }
 
                                     //Set the link for the item month
-                                    if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult || isPreviewMode === "true"){
+                                    if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult ){
                                         a = $("<a href='#'>")
                                             .text(linkText);
                                     }else{
@@ -191,8 +193,9 @@
                                         query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                         query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
                                         encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
+                                        href = baseURL + pageResult + "?filter="+  encodeURIComponent(row2.month + " " + row.year )+ encodedQuery;
                                         a = $("<a>")
-                                            .attr("href", baseURL + pageResult + "?filter="+  row2.month + " " + row.year + encodedQuery)
+                                            .attr("href",href )
                                             .text(linkText);
                                     }
 
@@ -278,8 +281,9 @@
                                     query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
                                     let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
+                                     href = baseURL + pageResult + "?filter="+ encodeURIComponent(row2.month +" "+ row.year) + encodedQuery;
                                     a = $("<a>")
-                                        .attr("href", baseURL + pageResult + "?filter="+ row2.month + " " + row.year + encodedQuery)
+                                        .attr("href", href)
                                         .text(linkText);
                                 }
 
