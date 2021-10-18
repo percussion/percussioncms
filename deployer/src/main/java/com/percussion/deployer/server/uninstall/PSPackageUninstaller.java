@@ -53,7 +53,6 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -91,10 +90,9 @@ public class PSPackageUninstaller
    public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry) throws PSNotFoundException {
       if (packageNames == null)
          throw new IllegalArgumentException("packageNames must not be null");
-      List<IPSUninstallResult> messages = new ArrayList<>();
-      PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> pkgPair = 
+      PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> pkgPair =
          loadPackages(packageNames);
-      messages.addAll(pkgPair.getSecond());
+      List<IPSUninstallResult> messages = new ArrayList<>(pkgPair.getSecond());
       List<PSPkgInfo> pkgInfos = pkgPair.getFirst();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
@@ -175,7 +173,7 @@ public class PSPackageUninstaller
             String errMsg = "Skipped uninstalling of the supplied package as no"
                   + " package exists with the name: " + pkgname;
             PSUninstallResult msg = new PSUninstallResult(pkgname,
-                  PSUninstallResultType.ERROR);
+                  PSUninstallResultType.INFO);
             msg.setMessage(errMsg);
             messages.add(msg);
          }
@@ -208,9 +206,8 @@ public class PSPackageUninstaller
       IPSConfigService cfgSrvc = PSConfigServiceLocator.getConfigService();
       cfgSrvc.deApplyConfiguration(pkgInfo.getPackageDescriptorName());
       boolean wasContentTypeDeleted = false;
-      
-      List<IPSUninstallResult> messages = new ArrayList<>();
-      messages.addAll(deletePackageElements(pkgInfo));
+
+      List<IPSUninstallResult> messages = new ArrayList<>(deletePackageElements(pkgInfo));
       
       // 'skipped deletion' warnings were previously errors.  now being flagged
       // as warnings but need to be careful not to change behavior
@@ -248,14 +245,11 @@ public class PSPackageUninstaller
       String configName = pkgInfo.getPackageDescriptorName();
       Map<File, Exception> cfgErrors = cfgSrvc
             .uninstallConfiguration(configName);
-      Iterator<File> iter = cfgErrors.keySet().iterator();
-      while (iter.hasNext())
-      {
-         File file = iter.next();
+      for (File file : cfgErrors.keySet()) {
          PSUninstallResult res = new PSUninstallResult(configName,
-               PSUninstallResultType.WARN);
+                 PSUninstallResultType.WARN);
          res.setMessage("Failed to uninstall configuration file "
-               + file.getName());
+                 + file.getName());
          res.setException(cfgErrors.get(file));
       }
       return messages;
@@ -308,7 +302,7 @@ public class PSPackageUninstaller
           }
       }
       
-      if(messages.size() > 0)
+      if(!messages.isEmpty())
           return messages;
 
       for (IPSGuid guid : pkgElems)
@@ -381,7 +375,7 @@ public class PSPackageUninstaller
                   PSUninstallResultType.ERROR);
             er.setPackageGuid(pkgInfo.getGuid());
             er.setMessage("Failed to delete the element with guid "
-                  + objGuid.toString()
+                  + objGuid
                   + " failed to find a handler to delete the object.");
             er.setObjectGuid(objGuid);
 
@@ -502,8 +496,6 @@ public class PSPackageUninstaller
       PSDependencyManager dm = dh.getDependencyManager();
       List<String> ignoreTypes = dm.getUninstallIgnoreTypes();
       PSTypeEnum type = PSTypeEnum.valueOf(guid.getType());
-      if (type == null || ignoreTypes.contains(type.name()))
-         return true;
-      return false;
+      return type == null || ignoreTypes.contains(type.name());
    }
 }
