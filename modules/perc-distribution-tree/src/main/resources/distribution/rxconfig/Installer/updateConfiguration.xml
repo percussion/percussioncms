@@ -349,6 +349,13 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">]]></repla
 
         </if>
 
+        <echo message="Removing old jetty console logs to free disk space..." />
+        <delete verbose="true" failonerror="false">
+            <fileset dir="${install.dir}/jetty/base/logs">
+                <include name="**/*.jetty.log" />
+            </fileset>
+        </delete>
+
     </target>
 
 </project>
