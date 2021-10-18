@@ -5,7 +5,6 @@
       "name": "shared-common-minuet.js",
       "files": [
         "jslib/profiles/3x/jquery/jquery-3.6.0.js",
-        "jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js",
         "jslib/profiles/3x/libraries/bowser/es5.js",
         "jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js",
         "jslib/profiles/3x/libraries/popper/popper.js",

@@ -44,6 +44,6 @@ public interface IPSUtilsConstants
     * characters are representable.This is the Java name for 
     * {@link #RX_STANDARD_ENC}.
     */
-   public static final String RX_JAVA_ENC = "UTF8";
+   public static final String RX_JAVA_ENC = "UTF-8";
 }
 
