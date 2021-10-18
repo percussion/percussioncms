@@ -119,10 +119,8 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     *
     * @throws IllegalStateException if {@link #createInstance()} has already
     *    been called.
-    * @throws PSCacheException if other error occurs.
     */
-   public static PSFolderRelationshipCache createInstance()
-         throws PSCacheException
+   public static synchronized PSFolderRelationshipCache createInstance()
    {
       if (ms_instance != null)
          throw new IllegalStateException(
@@ -170,8 +168,10 @@ public class PSFolderRelationshipCache  implements IPSNotificationListener
     */
    public static PSFolderRelationshipCache getInstance()
    {
-      if (ms_instance == null)
-         return null;
+      if (ms_instance == null){
+         createInstance();
+      }
+
       
       ms_instance.m_rwlock.readLock().lock();
       try

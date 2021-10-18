@@ -23,9 +23,11 @@
  */
 package com.percussion.webservices.ui.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.IPSDbComponent;
 import com.percussion.cms.objectstore.PSAction;
 import com.percussion.cms.objectstore.PSSearch;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSInternalRequest;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSServer;
@@ -38,6 +40,8 @@ import com.percussion.webservices.PSWebserviceErrors;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +52,11 @@ import org.w3c.dom.NodeList;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Common implementations used with the public and private ui webservices.
@@ -57,6 +65,8 @@ import java.util.*;
 @Transactional
 public class PSUiBaseWs
 {
+
+   protected static final Logger log = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
 
    private SessionFactory sessionFactory;
 
@@ -160,7 +170,7 @@ public class PSUiBaseWs
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+
          int code = IPSWebserviceErrors.FIND_FAILED;
          PSErrorException error = new PSErrorException(code, PSWebserviceErrors
             .createErrorMessage(code, PSAction.class.getName(), name, label, e
@@ -220,17 +230,14 @@ public class PSUiBaseWs
          throw new IllegalArgumentException("objClass cannot be null");
 
       Constructor ctor;
-      Object obj;
       try
       {
          ctor = objClass.getConstructor(new Class[] { Element.class });
-         obj = ctor.newInstance(new Object[] { source });
-         return (IPSDbComponent) obj;
+         return (IPSDbComponent)  ctor.newInstance(new Object[] { source });
       }
       catch (Exception e)
       {
-         // not possible
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to create object with type '"
             + objClass.getName() + "' from its XML: \n"
             + PSXmlDocumentBuilder.toString(source));

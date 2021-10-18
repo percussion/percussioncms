@@ -29,6 +29,7 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,6 +49,7 @@ import java.util.ResourceBundle;
  * PSDeploymentErrorStringBundle resource bundle using error codes and 
  * arguments.  Localization is also supported.
  */
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class PSDeployException extends Exception
 {
 
@@ -309,6 +311,7 @@ public class PSDeployException extends Exception
     * 
     * @throws IllegalArgumentException if <code>t</code> is <code>null</code>.
     */
+   @SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
    public static String getStackTraceAsString(Throwable t)
    {
       if (t == null)

@@ -59,19 +59,19 @@ import org.w3c.dom.Document;
  *       PSCatalogResultsWalker  walker   = new PSCatalogResultsWalker(xmlDoc);
  *
  *       // Get data from the request info
- *       System.out.println("Table: " + walker.getRequestData("tableName"));
+ *       log.info("Table: {}" , walker.getRequestData("tableName"));
  *
- *       System.out.println("Column");
- *       System.out.println("------------------------------");
+ *       log.info("Column");
+ *       log.info("------------------------------");
  *
  *       // now walk all the child objects (Column elements) to
  *       // get the column names
  *       while (walker.nextResultObject("Column")) {
- *          System.out.println(walker.getResultData("name"));
+ *          log.info(walker.getResultData("name"));
  *       }
  *    }
  *    catch (Exception e) {
- *       e.printStackTrace();
+ *       log.error(PSExceptionUtils.getMessageForLog(e));
  *    }
  *
  * </code></pre>

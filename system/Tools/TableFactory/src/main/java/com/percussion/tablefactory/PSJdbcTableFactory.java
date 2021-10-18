@@ -24,6 +24,7 @@
 
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tablefactory.tools.PSCatalogTableData;
 import com.percussion.util.PSBase64Encoder;
 import com.percussion.util.PSLogger;
@@ -174,7 +175,7 @@ public class PSJdbcTableFactory
                   tmd.getPrimaryKeyName(), pkeys,
                   PSJdbcTableComponent.ACTION_CREATE));
 
-            List<PSJdbcForeignKey> fKeys = new ArrayList<PSJdbcForeignKey>();
+            List<PSJdbcForeignKey> fKeys = new ArrayList<>();
             tableSchema.setForeignKeys(fKeys);
             
             for (Entry<String, List<String[]>> fKeysEntry : tmd.getForeignKeys().entrySet()) {
@@ -486,8 +487,8 @@ public class PSJdbcTableFactory
    }
 
    /**
-    * Convenient method, calls {@link processTable(Connection, PSJdbcDbmsDef,
-    * null, PSJdbcTableSchema, PrintStream, boolean)}.
+    * Convenient method, calls processTable(Connection, PSJdbcDbmsDef,
+    * null, PSJdbcTableSchema, PrintStream, boolean).
     */
    public static void processTable(Connection conn, PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchema tableSchema, PrintStream logOut, boolean logDebug)
@@ -568,8 +569,8 @@ public class PSJdbcTableFactory
    }
 
    /**
-    * Convenient method, calls {@link processTables(Connection,PSJdbcDbmsDef,
-    * null,PSJdbcTableSchemaCollection,PrintStream,boolean)}.
+    * Convenient method, calls processTables(Connection,PSJdbcDbmsDef,
+    * null,PSJdbcTableSchemaCollection,PrintStream,boolean).
     */
    public static void processTables(Connection conn, PSJdbcDbmsDef dbmsDef,
       PSJdbcTableSchemaCollection tables, PrintStream logOut, boolean logDebug)
@@ -1075,7 +1076,7 @@ public class PSJdbcTableFactory
                }
                else
                {
-                  System.out.println("Invalid argument: " + args[i]);
+                  log.error("Invalid argument: " + args[i]);
                   showUsage();
                   System.exit(1);
                }
@@ -1094,11 +1095,11 @@ public class PSJdbcTableFactory
          String tableDefXmlPath = tableDefXml.getAbsolutePath();
          if (!tableDefXml.isFile())
          {
-            System.out.println("invalid table definition xml : " + tableDefXmlPath);
+            log.error("invalid table definition xml : {}" , tableDefXmlPath);
             return;
          }
 
-         System.out.println("parsing table definition xml : " + tableDefXmlPath);
+         log.info("parsing table definition xml : {}" , tableDefXmlPath);
          Document def = PSXmlDocumentBuilder.createXmlDocument(
             new FileInputStream(args[2]), false);
 
@@ -1187,14 +1188,15 @@ public class PSJdbcTableFactory
                    in = new BufferedReader(new PSXmlNormalizingReader(inputXml));
                    Document tableData = PSXmlDocumentBuilder.createXmlDocument(in, false);
                    in.close();
-                   System.out.println("Started processing: " + tableName);
+                   log.info("Started processing: " + tableName);
                    processTables(dbmsDef, null, tableDef, tableData, null, false);
-                   System.out.println("Finished processing: " + tableName);
+                   log.info("Finished processing: " + tableName);
                 }
                 catch (Exception e) {
-                   log.error("Error occurred while importing table data : {}", tableName);
-                   log.error(e.getMessage());
-                   log.debug(e.getMessage(), e);
+                   log.error("Error occurred while importing table data : {} Error: {}",
+                           tableName,
+                           PSExceptionUtils.getMessageForLog(e));
+                   log.debug(e);
                 }finally{
                    if(inputXml!=null)
                       inputXml.close();
@@ -1505,7 +1507,7 @@ public class PSJdbcTableFactory
     * @return <code>true</code> if the table has rows, <code>false</code> if
     * not.
     *
-    * @throws IllegalArgumentExcpetion if conn, dbmsDef, or tableSchema is
+    * @throws IllegalArgumentException if conn, dbmsDef, or tableSchema is
     * <code>null</code>.
     * @throws PSJdbcTableFactoryException if the table does not exist or any
     * other errors occur.
@@ -1628,13 +1630,13 @@ public class PSJdbcTableFactory
       {
          step.execute(conn);
          // walk result and for each row, build a row of column data
-         List rowList = new ArrayList();
+         List<PSJdbcRowData> rowList = new ArrayList<>();
          PSJdbcRowData row = step.next();
          long count=0;
          while (row != null)
          {
              count++;
-             System.out.println("Processing row " + count);
+             log.debug("Processing row {}" , count);
             rowList.add(row);
             row = step.next();
          }
@@ -1645,7 +1647,7 @@ public class PSJdbcTableFactory
       }
       catch (SQLException e)
       {
-         Object args[] = {tableSchema.getName(),
+         Object[] args = {tableSchema.getName(),
             PSJdbcTableFactoryException.formatSqlException(e)};
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.SQL_CATALOG_DATA, args, e);

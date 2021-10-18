@@ -23,8 +23,12 @@
  */
 package com.percussion.webservices.contentdesign;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.design.objectstore.PSContentEditorSharedDef;
 import com.percussion.design.objectstore.PSContentEditorSystemDef;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -43,12 +47,9 @@ import com.percussion.webservices.content.PSContentType;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.content.PSKeyword;
 import com.percussion.webservices.content.PSLocale;
-import com.percussion.webservices.faults.PSContractViolationFault;
-import com.percussion.webservices.faults.PSErrorResultsFault;
-import com.percussion.webservices.faults.PSErrorsFault;
-import com.percussion.webservices.faults.PSInvalidSessionFault;
 import com.percussion.webservices.faults.PSLockFault;
-import com.percussion.webservices.faults.PSNotAuthorizedFault;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -69,8 +70,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#createContentTypes(String[])
     */
    public PSContentType[] createContentTypes(String[] names)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "createContentTypes";
       try
@@ -90,7 +90,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RemoteException(e.getLocalizedMessage());
       }
       catch (RuntimeException e)
@@ -98,8 +98,8 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          handleRuntimeException(e, serviceName);
       }
       
-      // will never get here
-      return null;
+      // Should never get here - return empty array if we do
+      return new PSContentType[]{};
    }
 
    /*
@@ -107,8 +107,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * 
     * @see ContentDesign#createKeywords(String[])
     */
-   public PSKeyword[] createKeywords(String[] names) throws RemoteException,
-      PSInvalidSessionFault, PSContractViolationFault, PSNotAuthorizedFault
+   public PSKeyword[] createKeywords(String[] names) throws RemoteException
    {
       final String serviceName = "createKeywords";
       try
@@ -131,8 +130,8 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          handleRuntimeException(e, serviceName);
       }
       
-      // will never get here
-      return null;
+      // Should never get here - return an empty array in case
+      return new PSKeyword[]{};
    }
 
    /*
@@ -141,8 +140,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#createLocales(CreateLocalesRequest)
     */
    public PSLocale[] createLocales(
-      CreateLocalesRequest createLocalesRequest) throws RemoteException,
-      PSInvalidSessionFault, PSContractViolationFault, PSNotAuthorizedFault
+      CreateLocalesRequest createLocalesRequest) throws RemoteException
    {
       final String serviceName = "createLocales";
       try
@@ -170,7 +168,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RemoteException(e.getLocalizedMessage());
       }
       catch (RuntimeException e)
@@ -179,7 +177,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       
       // will never get here
-      return null;
+      return new PSLocale[] {};
    }
 
    /*
@@ -189,8 +187,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public void deleteContentTypes(
       DeleteContentTypesRequest deleteContentTypesRequest)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "deleteContentTypes";
       try
@@ -205,8 +202,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
             deleteContentTypesRequest.getId(), PSTypeEnum.NODEDEF);
 
          Boolean ignore = deleteContentTypesRequest.getIgnoreDependencies();
-         boolean ignoreDependencies = ignore == null ? 
-            false : ignore.booleanValue();
+         boolean ignoreDependencies = ignore != null && ignore;
          
          service.deleteContentTypes(ids, ignoreDependencies, session, user);
       }
@@ -230,8 +226,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#deleteKeywords(DeleteKeywordsRequest)
     */
    public void deleteKeywords(DeleteKeywordsRequest deleteKeywordsRequest)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "deleteKeywords";
       try
@@ -245,8 +240,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          List<IPSGuid> ids = PSGuidUtils.toGuidList(
             deleteKeywordsRequest.getId(), PSTypeEnum.KEYWORD_DEF);
          Boolean ignore = deleteKeywordsRequest.getIgnoreDependencies();
-         boolean ignoreDependencies = ignore == null ? 
-            false : ignore.booleanValue();
+         boolean ignoreDependencies = ignore != null && ignore;
          service.deleteKeywords(ids, ignoreDependencies, session, user);
       }
       catch (IllegalArgumentException e)
@@ -269,8 +263,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#deleteLocales(DeleteLocalesRequest)
     */
    public void deleteLocales(DeleteLocalesRequest deleteLocalesRequest)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "deleteLocales";
       try
@@ -285,8 +278,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
             deleteLocalesRequest.getId(), PSTypeEnum.LOCALE);
 
          Boolean ignore = deleteLocalesRequest.getIgnoreDependencies();
-         boolean ignoreDependencies = ignore == null ? 
-            false : ignore.booleanValue();
+         boolean ignoreDependencies = ignore != null && ignore;
          
          service.deleteLocales(ids, ignoreDependencies, session, user);
       }
@@ -310,8 +302,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#findContentTypes(FindContentTypesRequest)
     */
    public PSObjectSummary[] findContentTypes(
-      FindContentTypesRequest findContentTypesRequest) throws RemoteException,
-      PSInvalidSessionFault, PSContractViolationFault
+      FindContentTypesRequest findContentTypesRequest) throws RemoteException
    {
       try
       {
@@ -320,7 +311,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          IPSContentDesignWs service = 
             PSContentWsLocator.getContentDesignWebservice();
          
-         List sums = service.findContentTypes(
+         List<IPSCatalogSummary> sums = service.findContentTypes(
             findContentTypesRequest.getName());
          
          return (PSObjectSummary[]) convert(PSObjectSummary[].class, 
@@ -329,7 +320,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (IllegalArgumentException e)
       {
          handleInvalidContract(e, "findContentTypes");
-         return null;
+         return new PSObjectSummary[]{};
       }
    }
 
@@ -339,7 +330,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#findKeywords(FindKeywordsRequest)
     */
    public PSObjectSummary[] findKeywords(FindKeywordsRequest findKeywordsRequest)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault
+      throws RemoteException
    {
       final String serviceName = "findKeywords";
       try
@@ -349,15 +340,15 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          IPSContentDesignWs service = 
             PSContentWsLocator.getContentDesignWebservice();
          
-         List summaries = service.findKeywords(findKeywordsRequest.getName());
+         List<IPSCatalogSummary> summaries = service.findKeywords(findKeywordsRequest.getName());
 
          return (PSObjectSummary[]) convert(PSObjectSummary[].class, summaries);
       }
       catch (IllegalArgumentException e)
       {
          handleInvalidContract(e, serviceName);
-         return null;
       }
+      return new PSObjectSummary[]{};
    }
 
    /*
@@ -366,7 +357,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#findLocales(FindLocalesRequest)
     */
    public PSObjectSummary[] findLocales(FindLocalesRequest findLocalesRequest)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault
+      throws RemoteException
    {
       try
       {
@@ -375,7 +366,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          IPSContentDesignWs service = 
             PSContentWsLocator.getContentDesignWebservice();
          
-         List sums = service.findLocales(findLocalesRequest.getCode(), 
+         List<IPSCatalogSummary> sums = service.findLocales(findLocalesRequest.getCode(),
             findLocalesRequest.getName());
          
          return (PSObjectSummary[]) convert(PSObjectSummary[].class, 
@@ -384,8 +375,8 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (IllegalArgumentException e)
       {
          handleInvalidContract(e, "findLocales");
-         return null;
       }
+      return new PSObjectSummary[]{};
    }
 
    /*
@@ -394,9 +385,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#loadContentTypes(LoadContentTypesRequest)
     */
    public PSContentType[] loadContentTypes(
-      LoadContentTypesRequest loadContentTypesRequest) throws RemoteException,
-      PSErrorResultsFault, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      LoadContentTypesRequest loadContentTypesRequest) throws RemoteException
    {
       final String serviceName = "loadContentTypes";
       try
@@ -410,11 +399,10 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          List<IPSGuid> ids = PSGuidUtils.toGuidList(
             loadContentTypesRequest.getId(), PSTypeEnum.NODEDEF);
          Boolean lockValue = loadContentTypesRequest.getLock();
-         boolean lock = lockValue == null ? false : lockValue.booleanValue();
+         boolean lock = lockValue != null && lockValue;
          Boolean overrideLockValue = loadContentTypesRequest.getOverrideLock();
-         boolean overrideLock = overrideLockValue == null ? false : 
-            overrideLockValue.booleanValue();
-         List defs = service.loadContentTypes(ids, lock, overrideLock, session, 
+         boolean overrideLock = overrideLockValue != null && overrideLockValue;
+         List<PSItemDefinition> defs = service.loadContentTypes(ids, lock, overrideLock, session,
             user);
 
          return (PSContentType[]) convert(PSContentType[].class, 
@@ -434,7 +422,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       
       // will never get here
-      return null;
+      return new PSContentType[]{};
    }
 
    /*
@@ -443,8 +431,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#loadKeywords(LoadKeywordsRequest)
     */
    public PSKeyword[] loadKeywords(LoadKeywordsRequest loadKeywordsRequest)
-      throws RemoteException, PSErrorResultsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "loadKeywords";
       try
@@ -461,7 +448,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
             loadKeywordsRequest.getLock(), false);
          boolean overrideLock = extractBooleanValue(
             loadKeywordsRequest.getOverrideLock(), false);
-         List keywords = service.loadKeywords(ids, lock, overrideLock, 
+         List<com.percussion.services.content.data.PSKeyword> keywords = service.loadKeywords(ids, lock, overrideLock,
             session, user);
 
          return (PSKeyword[]) convert(PSKeyword[].class, keywords);
@@ -480,7 +467,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       
       // will never get here
-      return null;
+      return new PSKeyword[]{};
    }
 
    /*
@@ -489,8 +476,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     * @see ContentDesign#loadLocales(LoadLocalesRequest)
     */
    public PSLocale[] loadLocales(LoadLocalesRequest loadLocalesRequest)
-      throws RemoteException, PSErrorResultsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "loadLocales";
       try
@@ -504,11 +490,10 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          List<IPSGuid> ids = PSGuidUtils.toGuidList(
             loadLocalesRequest.getId(), PSTypeEnum.LOCALE);
          Boolean lockValue = loadLocalesRequest.getLock();
-         boolean lock = lockValue == null ? false : lockValue.booleanValue();
+         boolean lock = lockValue != null && lockValue;
          Boolean overrideLockValue = loadLocalesRequest.getOverrideLock();
-         boolean overrideLock = overrideLockValue == null ? false : 
-            overrideLockValue.booleanValue();
-         List locales = service.loadLocales(ids, lock, overrideLock, session, 
+         boolean overrideLock = overrideLockValue != null && overrideLockValue;
+         List<com.percussion.i18n.PSLocale> locales = service.loadLocales(ids, lock, overrideLock, session,
             user);
 
          return (PSLocale[]) convert(PSLocale[].class, 
@@ -528,7 +513,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       
       // will never get here
-      return null;
+      return new PSLocale[]{};
    }
 
    /*
@@ -538,9 +523,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    @SuppressWarnings(value={"unchecked"})
    public void saveContentTypes(
-      SaveContentTypesRequest saveContentTypesRequest) throws RemoteException,
-      PSErrorsFault, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      SaveContentTypesRequest saveContentTypesRequest) throws RemoteException
    {
       final String serviceName = "saveContentTypes";
       try
@@ -554,7 +537,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          List contentTypes = (List) convert(
             List.class, 
             saveContentTypesRequest.getPSContentType());
-         Boolean release = saveContentTypesRequest.getRelease() == null ? 
+         boolean release = saveContentTypesRequest.getRelease() == null ?
             Boolean.TRUE : saveContentTypesRequest.getRelease().booleanValue();
          
          service.saveContentTypes(contentTypes, release, 
@@ -581,8 +564,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    @SuppressWarnings("unchecked")
    public void saveKeywords(SaveKeywordsRequest saveKeywordsRequest)
-      throws RemoteException, PSErrorsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveKeywords";
       try
@@ -620,8 +602,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    @SuppressWarnings(value={"unchecked"})
    public void saveLocales(SaveLocalesRequest saveLocalesRequest)
-      throws RemoteException, PSErrorsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveLocales";
       try
@@ -635,7 +616,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          List locales = (List) convert(
             List.class, 
             saveLocalesRequest.getPSLocale());
-         Boolean release = saveLocalesRequest.getRelease() == null ? 
+         boolean release = saveLocalesRequest.getRelease() == null ?
             Boolean.TRUE : saveLocalesRequest.getRelease().booleanValue();
          
          service.saveLocales(locales, release, session, user);
@@ -661,8 +642,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public LoadSharedDefinitionResponse loadSharedDefinition(
       LoadSharedDefinitionRequest loadSharedDefinitionRequest)
-      throws RemoteException, PSInvalidSessionFault, PSLockFault,
-      PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "loadSharedDefinition";
       try
@@ -698,7 +678,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RemoteException(e.getLocalizedMessage());
       }
       catch (RuntimeException e)
@@ -717,8 +697,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public LoadSystemDefinitionResponse loadSystemDefinition(
       LoadSystemDefinitionRequest loadSystemDefinitionRequest)
-      throws RemoteException, PSInvalidSessionFault, PSLockFault,
-      PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "loadSystemDefinition";
       try
@@ -754,7 +733,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RemoteException(e.getLocalizedMessage());
       }
       catch (RuntimeException e)
@@ -773,8 +752,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public void saveSharedDefinition(
       SaveSharedDefinitionRequest saveSharedDefinitionRequest)
-      throws RemoteException, PSInvalidSessionFault, PSLockFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveSharedDefinition";
       try
@@ -803,7 +781,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RemoteException(e.getLocalizedMessage());
       }
       catch (RuntimeException e)
@@ -819,8 +797,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public void saveSystemDefinition(
       SaveSystemDefinitionRequest saveSystemDefinitionRequest)
-      throws RemoteException, PSInvalidSessionFault, PSLockFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveSystemDefinition";
       try
@@ -849,7 +826,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RemoteException(e.getLocalizedMessage());
       }
       catch (RuntimeException e)
@@ -863,8 +840,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public PSContentTemplateDesc[] loadAssociatedTemplates(
       LoadAssociatedTemplatesRequest loadAssociatedTemplatesRequest) 
-      throws RemoteException, PSErrorResultsFault, PSInvalidSessionFault, 
-         PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "loadAssociatedTemplates";
       try
@@ -878,16 +854,15 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          long contentTypeId = loadAssociatedTemplatesRequest.getContentTypeId();
          
          Boolean lockValue = loadAssociatedTemplatesRequest.getLock();
-         boolean lock = lockValue == null ? false : lockValue.booleanValue();
+         boolean lock = lockValue != null && lockValue;
          Boolean overrideLockValue = 
             loadAssociatedTemplatesRequest.getOverrideLock();
-         boolean overrideLock = overrideLockValue == null ? false : 
-            overrideLockValue.booleanValue();
+         boolean overrideLock = overrideLockValue != null && overrideLockValue;
          IPSGuid guid = null;
          if (contentTypeId != -1)
             guid = new PSGuid(PSTypeEnum.NODEDEF, contentTypeId);
          
-         List results = service.loadAssociatedTemplates(guid, lock, 
+         List<com.percussion.services.contentmgr.data.PSContentTemplateDesc> results = service.loadAssociatedTemplates(guid, lock,
             overrideLock, session, user);
 
          return (PSContentTemplateDesc[]) convert(PSContentTemplateDesc[].class, 
@@ -907,7 +882,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       
       // will never get here
-      return null;
+      return new PSContentTemplateDesc[]{};
    }
 
    /* (non-Javadoc)
@@ -915,8 +890,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public void saveAssociatedTemplates(
       SaveAssociatedTemplatesRequest saveAssociatedTemplatesRequest) 
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault, 
-         PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveContentTypes";
       try
@@ -932,7 +906,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          if (templateIds == null)
             templateIds = new long[0];
          
-         Boolean release = saveAssociatedTemplatesRequest.getRelease() == null ? 
+         boolean release = saveAssociatedTemplatesRequest.getRelease() == null ?
             Boolean.TRUE : 
                saveAssociatedTemplatesRequest.getRelease().booleanValue();
          
@@ -960,8 +934,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
     */
    public PSAutoTranslation[] loadTranslationSettings(
       LoadTranslationSettingsRequest loadTranslationSettingsRequest) 
-      throws RemoteException, PSInvalidSessionFault, PSNotAuthorizedFault, 
-      PSLockFault
+      throws RemoteException
    {
       final String serviceName = "loadTranslationSettings";
       try
@@ -973,12 +946,11 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
             PSContentWsLocator.getContentDesignWebservice();
 
          Boolean lockValue = loadTranslationSettingsRequest.getLock();
-         boolean lock = lockValue == null ? false : lockValue.booleanValue();
+         boolean lock = lockValue != null && lockValue;
          Boolean overrideLockValue = 
             loadTranslationSettingsRequest.getOverrideLock();
-         boolean overrideLock = overrideLockValue == null ? false : 
-            overrideLockValue.booleanValue();
-         List ats = service.loadTranslationSettings(lock, overrideLock, 
+         boolean overrideLock = overrideLockValue != null && overrideLockValue;
+         List<com.percussion.services.content.data.PSAutoTranslation> ats = service.loadTranslationSettings(lock, overrideLock,
             session, user);
 
          return (PSAutoTranslation[]) convert(PSAutoTranslation[].class, ats);
@@ -989,18 +961,15 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSLockErrorException e)
       {
-         PSLockFault fault = (PSLockFault) convert(
-            PSLockFault.class, e);
-         
-         throw fault;
+         throw (PSLockFault) convert(
+                 PSLockFault.class, e);
       }
       catch (RuntimeException e)
       {
          handleRuntimeException(e, serviceName);
       }
-      
-      // will never get here
-      return null;
+
+      return new PSAutoTranslation[]{};
    }
 
    /* (non-Javadoc)
@@ -1009,8 +978,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
    @SuppressWarnings(value={"unchecked"})
    public void saveTranslationSettings(
       SaveTranslationSettingsRequest saveTranslationSettingsRequest) 
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault, 
-         PSNotAuthorizedFault, PSLockFault
+      throws RemoteException
    {
       final String serviceName = "saveTranslationSettings";
       try
@@ -1021,20 +989,19 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
          IPSContentDesignWs service = 
             PSContentWsLocator.getContentDesignWebservice();
 
-         List ats;
+         List<com.percussion.services.content.data.PSAutoTranslation> ats;
          if (saveTranslationSettingsRequest.getPSAutoTranslation() == null)
          {
-            ats = new ArrayList<
-               com.percussion.services.content.data.PSAutoTranslation>();
+            ats = new ArrayList<>();
          }
          else
          {
-            ats = (List) convert(
+            ats = (List<com.percussion.services.content.data.PSAutoTranslation>) convert(
                List.class, 
                saveTranslationSettingsRequest.getPSAutoTranslation());
          }
          
-         Boolean release = saveTranslationSettingsRequest.getRelease() == null ? 
+         boolean release = saveTranslationSettingsRequest.getRelease() == null ?
             Boolean.TRUE : 
                saveTranslationSettingsRequest.getRelease().booleanValue();
          
@@ -1046,14 +1013,15 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSLockErrorException e)
       {
-         PSLockFault fault = (PSLockFault) convert(
-            PSLockFault.class, e);
          
-         throw fault;
+         throw (PSLockFault) convert(
+                 PSLockFault.class, e);
       }
       catch (RuntimeException e)
       {
          handleRuntimeException(e, serviceName);
       }
    }
+   
+   private static final Logger log = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
 }

@@ -23,6 +23,7 @@
  */
 package com.percussion.webservices.transformation.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSAction;
 import com.percussion.cms.objectstore.PSCoreItem;
@@ -39,6 +40,7 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRole;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSLocale;
 import com.percussion.search.objectstore.PSWSSearchField;
 import com.percussion.search.objectstore.PSWSSearchParams;
@@ -169,6 +171,11 @@ import com.percussion.webservices.transformation.converter.PSTransitionConverter
 import com.percussion.webservices.transformation.converter.PSWorkflowConverter;
 import com.percussion.webservices.transformation.converter.PSWorkflowRoleConverter;
 import com.percussion.webservices.ui.data.NodeType;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConvertUtilsBean;
+import org.apache.commons.beanutils.Converter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -178,16 +185,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.ConvertUtilsBean;
-import org.apache.commons.beanutils.Converter;
-
 /**
  * This factory is used to transform server objects to axis generated
  * web services objects and vice versa.
  */
 public class PSTransformerFactory
 {
+   protected static final Logger log = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
+
    /**
     * Get the transformation factory.
     *
@@ -632,7 +637,7 @@ public class PSTransformerFactory
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
    }

@@ -24,6 +24,7 @@
 
 package com.percussion.data;
 
+import com.percussion.cms.IPSConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -138,7 +139,7 @@ public class PSTransformErrorListener implements ErrorListener
     **/
    public void error(TransformerException exception) throws TransformerException
    {
-      Logger l = LogManager.getLogger(getClass());
+      Logger l = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
       l.error(exception);
       
       if(m_printWriter != null)
@@ -165,7 +166,7 @@ public class PSTransformErrorListener implements ErrorListener
    public void fatalError(TransformerException exception)
                               throws TransformerException
    {
-      Logger l = LogManager.getLogger(getClass());
+      Logger l = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
       l.fatal(exception);
             
       if(m_printWriter != null)
@@ -195,7 +196,7 @@ public class PSTransformErrorListener implements ErrorListener
    public void warning(TransformerException exception)
                            throws TransformerException
    {
-      Logger l = LogManager.getLogger(getClass());
+      Logger l = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
       l.warn(exception);
             
       if(m_printWriter != null)

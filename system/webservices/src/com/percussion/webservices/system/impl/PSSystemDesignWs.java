@@ -26,6 +26,8 @@ package com.percussion.webservices.system.impl;
 import com.percussion.design.objectstore.PSPropertySet;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
@@ -44,7 +46,13 @@ import com.percussion.services.locking.IPSObjectLockService;
 import com.percussion.services.locking.PSLockException;
 import com.percussion.services.locking.PSObjectLockServiceLocator;
 import com.percussion.services.locking.data.PSObjectLock;
-import com.percussion.services.security.*;
+import com.percussion.services.security.IPSAcl;
+import com.percussion.services.security.IPSAclEntry;
+import com.percussion.services.security.IPSAclService;
+import com.percussion.services.security.PSAclServiceLocator;
+import com.percussion.services.security.PSPermissions;
+import com.percussion.services.security.PSSecurityException;
+import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.services.system.IPSSystemService;
@@ -54,12 +62,16 @@ import com.percussion.services.system.data.PSConfigurationTypes;
 import com.percussion.services.system.data.PSDependency;
 import com.percussion.services.system.data.PSMimeContentAdapter;
 import com.percussion.services.system.data.PSSharedProperty;
-import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.webservices.*;
+import com.percussion.webservices.IPSWebserviceErrors;
+import com.percussion.webservices.PSErrorException;
+import com.percussion.webservices.PSErrorResultsException;
+import com.percussion.webservices.PSErrorsException;
+import com.percussion.webservices.PSLockErrorException;
+import com.percussion.webservices.PSWebserviceErrors;
+import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.system.IPSSystemDesignWs;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
@@ -70,7 +82,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.acl.NotOwnerException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * The private system design webservice implementations.
@@ -120,7 +139,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       if (names == null || names.isEmpty())
          throw new IllegalArgumentException("names cannot be null or empty");
 
-      List<PSItemFilter> filters = new ArrayList<PSItemFilter>();
+      List<PSItemFilter> filters = new ArrayList<>();
       for (String name : names)
       {
          if (StringUtils.isBlank(name))
@@ -192,7 +211,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
    // @see IPSSystemDesignWs#createRelationshipType(String, String)
    public List<PSRelationshipConfig> createRelationshipTypes(
       List<String> names, List<String> categories, String session, String user)
-      throws PSLockErrorException, PSErrorException
+      throws PSErrorException
    {
       PSWebserviceUtils.validateParameters(names, "names", true, session, user);
       PSWebserviceUtils.validateParameters(categories, "categories", true,
@@ -204,7 +223,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       PSRelationshipConfigSet configSet = getRelationshipConfigSet();
       final PSRelationshipConfig aaConfig = configSet
          .getConfig(PSRelationshipConfig.TYPE_ACTIVE_ASSEMBLY);
-      List<PSRelationshipConfig> result = new ArrayList<PSRelationshipConfig>();
+      List<PSRelationshipConfig> result = new ArrayList<>();
       for (int i = 0; i < names.size(); i++)
       {
          if (configSet.getConfig(names.get(i)) != null)
@@ -433,7 +452,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
        * has dependencies will fail if its dependency was deleted before the 
        * lookup.
        */
-      Map<IPSGuid, IPSItemFilter> deletes = new HashMap<IPSGuid, IPSItemFilter>();
+      Map<IPSGuid, IPSItemFilter> deletes = new HashMap<>();
       PSErrorsException results = new PSErrorsException();
       for (IPSGuid id : ids)
       {
@@ -483,11 +502,10 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       /*
        * Now walk all collected deletes and do the actual delete.
        */
-      for (IPSGuid id : deletes.keySet())
-      {
+      deletes.keySet().forEach(id -> {
          service.deleteFilter(deletes.get(id));
          results.addResult(id);
-      }
+      });
 
       // release locks for all successfully deleted objects
       PSWebserviceUtils.releaseLocks(results.getResults(), session, user);
@@ -547,7 +565,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
          name = "*";
       name = StringUtils.replaceChars(name, '*', '%');
 
-      Set<IPSItemFilter> filters = new HashSet<IPSItemFilter>(service
+      Set<IPSItemFilter> filters = new HashSet<>(service
          .findFiltersByName(name));
       return PSWebserviceUtils.toObjectSummaries(filters);
    }
@@ -568,12 +586,8 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       if (!StringUtils.isBlank(name))
          name = name.replace('*', '%');
 
-      List<IPSCatalogSummary> sums = new ArrayList<IPSCatalogSummary>();
+      return new ArrayList<>(PSWorkflowServiceLocator.getWorkflowService().findWorkflowSummariesByName(name));
 
-      IPSWorkflowService svc = PSWorkflowServiceLocator.getWorkflowService();
-      sums.addAll(svc.findWorkflowSummariesByName(name));
-
-      return sums;
    }
 
    // @see IPSSystemDesignWs#getLockedSummaries(String, String)
@@ -607,7 +621,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       List<PSObjectSummary> objects = PSWebserviceUtils
          .getObjectSummaries(locks);
 
-      List<PSObjectSummary> summaries = new ArrayList<PSObjectSummary>();
+      List<PSObjectSummary> summaries = new ArrayList<>();
       for (IPSGuid id : ids)
       {
          boolean found = false;
@@ -648,7 +662,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       IPSAclService aclService = PSAclServiceLocator.getAclService();
       PSErrorResultsException results = new PSErrorResultsException();
       
-      List<IPSAcl> acls = null;
+      List<IPSAcl> acls;
       if (ids == null)
       {
          try
@@ -668,7 +682,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       }
       else
       {
-         acls = new ArrayList<IPSAcl>();
+         acls = new ArrayList<>();
          List<IPSAcl> existingAcls;
          if (lock)
             existingAcls = aclService.loadAclsForObjectsModifiable(ids);
@@ -679,7 +693,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
          {
             if (acl == null)
             {
-               acl = (PSAclImpl) aclService.createAcl(ids.get(i),
+               acl = aclService.createAcl(ids.get(i),
                      new PSTypedPrincipal(user, PrincipalTypes.USER));
                configureDefaultAclEntries(acl);
                }
@@ -688,8 +702,8 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
          }
       }
       
-      List<IPSGuid> aclIds = new ArrayList<IPSGuid>();
-      List<Integer> aclVersions = new ArrayList<Integer>();
+      List<IPSGuid> aclIds = new ArrayList<>();
+      List<Integer> aclVersions = new ArrayList<>();
       for (IPSAcl acl : acls)
       {
          aclIds.add(acl.getGUID());
@@ -717,7 +731,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
          }
          throw results;
       }
-      List<PSAclImpl> aclList = new ArrayList<PSAclImpl>(acls.size());
+      List<PSAclImpl> aclList = new ArrayList<>(acls.size());
       for (IPSAcl acl : acls)
       {
          PSAclImpl aclImpl = (PSAclImpl) acl;
@@ -725,7 +739,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
          results.addResult(aclImpl.getObjectGuid(), aclImpl);
 
          try {
-            aclService.saveAcls(Arrays.asList(acl));
+            aclService.saveAcls(Collections.singletonList(acl));
          } catch (PSSecurityException e) {
             results.addError(acl.getGUID(), e);
          }
@@ -872,13 +886,13 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
                try
                {
                   // create or extend lock with version = 1
-                  lockService.createLock(id, session, user, new Integer(1),
+                  lockService.createLock(id, session, user, 1,
                      overrideLock);
                   results.addResult(id, c);
                }
                catch (PSLockException e)
                {
-                  e.printStackTrace();
+                  log.error(PSExceptionUtils.getMessageForLog(e));
                   results.addError(id, e);
                }
             }
@@ -909,7 +923,6 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
     * @see IPSSystemDesignWs#loadSharedProperties(String[], boolean, boolean, 
     *    String, String)
     */
-   @SuppressWarnings("unchecked")
    public List<PSSharedProperty> loadSharedProperties(String[] names,
       boolean lock, boolean overrideLock, String session, String user)
       throws PSErrorResultsException
@@ -926,7 +939,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       IPSSystemService service = PSSystemServiceLocator.getSystemService();
 
       // load all properties first
-      Set<PSSharedProperty> properties = new TreeSet<PSSharedProperty>();
+      Set<PSSharedProperty> properties = new TreeSet<>();
       for (String name : names)
       {
          boolean done = false;
@@ -975,7 +988,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
             throw errors;
       }
 
-      return new ArrayList<PSSharedProperty>(properties);
+      return new ArrayList<>(properties);
    }
 
    // @see IPSSystemDesignWs#releaseLocks(List, String, String)
@@ -1006,19 +1019,19 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       IPSAclService aclService = PSAclServiceLocator.getAclService();
       
       PSErrorResultsException results = new PSErrorResultsException();
-      List<IPSAcl> saveList = new ArrayList<IPSAcl>(1);
+      List<IPSAcl> saveList = new ArrayList<>(1);
       
-      List<IPSGuid> aclIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> aclIds = new ArrayList<>();
       for (IPSAcl acl : acls)
          aclIds.add(acl.getGUID());
       List<PSObjectLock> aclLocks = lockService.findLocksByObjectIds(aclIds,
             session, user);
       Map<IPSGuid, PSObjectLock> aclIdToLock = 
-         new HashMap<IPSGuid, PSObjectLock>();
+         new HashMap<>();
       for (PSObjectLock l : aclLocks)
          aclIdToLock.put(l.getObjectId(), l);
       
-      Map<IPSGuid, Exception> errors = new HashMap<IPSGuid, Exception>();
+      Map<IPSGuid, Exception> errors = new HashMap<>();
       
       String className = PSAclImpl.class.getName();
       for (PSAclImpl acl : acls)
@@ -1027,7 +1040,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
          PSObjectLock lock;
          lock = aclIdToLock.get(id);
          /* todo: this should consider the session too, but be careful,
-          * the seesion passed in is the server session, but the session in
+          * the session passed in is the server session, but the session in
           * the lock may be a different session. The lock svc should be used
           * to check if a lock matches a user and session
           */
@@ -1086,14 +1099,15 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
             if (errors.get(id) == null)
                results.addError(id, error);
          }
-         assert(errors.size() == acls.size());
+         log.debug("ACL Error count: {} ACL Size: {} Error: {}",errors.size(),
+                 acls.size(), PSExceptionUtils.getDebugMessageForLog(e));
       }
       
-      List<PSObjectLock> locksToProcess = new ArrayList<PSObjectLock>();
-      List<Integer> aclVersions = new ArrayList<Integer>();
-      List<IPSGuid> savedAclIds = new ArrayList<IPSGuid>();
+      List<PSObjectLock> locksToProcess = new ArrayList<>();
+      List<Integer> aclVersions = new ArrayList<>();
+      List<IPSGuid> savedAclIds = new ArrayList<>();
       
-      for (IPSAcl acl : acls)
+      for (PSAclImpl acl : acls)
       {
          IPSGuid id = acl.getGUID();
          Exception e = errors.get(id);
@@ -1101,7 +1115,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
          {
             savedAclIds.add(id);
             locksToProcess.add(aclIdToLock.get(id));
-            aclVersions.add(((PSAclImpl) acl).getVersion());
+            aclVersions.add((acl).getVersion());
          }
       }
 
@@ -1224,7 +1238,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       IPSFilterService service = PSFilterServiceLocator.getFilterService();
 
       PSErrorsException results = new PSErrorsException();
-      List<IPSGuid> ids = new ArrayList<IPSGuid>(filters.size());
+      List<IPSGuid> ids = new ArrayList<>(filters.size());
       for (PSItemFilter filter : filters)
       {
          IPSGuid id = filter.getGUID();
@@ -1319,8 +1333,8 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       PSRelationshipConfigSet configSet = getRelationshipConfigSet();
 
       PSErrorsException results = new PSErrorsException();
-      List<IPSGuid> releasedIds = new ArrayList<IPSGuid>();
-      Class cz = PSRelationshipConfig.class;
+      List<IPSGuid> releasedIds = new ArrayList<>();
+      Class<PSRelationshipConfig> cz = PSRelationshipConfig.class;
       for (PSRelationshipConfig config : configs)
       {
          IPSGuid id = config.getGUID();
@@ -1331,7 +1345,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
                setRelationshipConfig(config, configSet);
                if (!release)
                   PSWebserviceUtils.extendLock(id, cz, session, user,
-                     new Integer(1), results);
+                          1, results);
                else
                   releasedIds.add(id);
 
@@ -1378,7 +1392,7 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
 
       IPSSystemService service = PSSystemServiceLocator.getSystemService();
 
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
 
       IPSObjectLockService lockService = PSObjectLockServiceLocator
          .getLockingService();
@@ -1546,8 +1560,8 @@ public class PSSystemDesignWs extends PSSystemBaseWs implements
       }
       catch (PSLockException e)
       {
-         // not possible, the lock is already aquired by the caller
-         e.printStackTrace();
+         // not possible, the lock is already acquired by the caller
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException(e);
       }
    }

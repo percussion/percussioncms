@@ -23,6 +23,7 @@
  */
 package com.percussion.search;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.search.lucene.PSSearchQueryImpl;
 import com.percussion.server.IPSServerErrors;
@@ -87,7 +88,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class PSSearchEngine
 {
-   private static final Logger logger = LogManager.getLogger(PSSearchEngine.class);
+   private static final Logger logger = LogManager.getLogger(IPSConstants.SEARCH_LOG);
 
    private static final CountDownLatch latch = new CountDownLatch(1);
   

@@ -741,7 +741,7 @@ public interface IPSRequestContext
     *
     * @since 4.0
     */
-   public List getSubjectRoles();
+   public List<String> getSubjectRoles();
 
 
    /**

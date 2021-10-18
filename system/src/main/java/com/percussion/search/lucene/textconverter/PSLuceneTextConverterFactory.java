@@ -23,6 +23,7 @@
  */
 package com.percussion.search.lucene.textconverter;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSSearchConfig;
@@ -215,5 +216,5 @@ public class PSLuceneTextConverterFactory
     * Reference to log for this class
     */
    private final static Logger log = LogManager
-         .getLogger(PSLuceneTextConverterFactory.class);
+         .getLogger(IPSConstants.SEARCH_LOG);
 }

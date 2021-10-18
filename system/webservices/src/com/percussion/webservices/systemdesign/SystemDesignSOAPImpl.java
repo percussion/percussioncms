@@ -23,6 +23,7 @@
  */
 package com.percussion.webservices.systemdesign;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -45,10 +46,7 @@ import com.percussion.webservices.common.PSObjectSummary;
 import com.percussion.webservices.faults.PSContractViolationFault;
 import com.percussion.webservices.faults.PSErrorResultsFault;
 import com.percussion.webservices.faults.PSErrorsFault;
-import com.percussion.webservices.faults.PSInvalidSessionFault;
 import com.percussion.webservices.faults.PSLockFault;
-import com.percussion.webservices.faults.PSNotAuthorizedFault;
-import com.percussion.webservices.faults.PSUnknownConfigurationFault;
 import com.percussion.webservices.system.IPSSystemDesignWs;
 import com.percussion.webservices.system.PSAclImpl;
 import com.percussion.webservices.system.PSDependency;
@@ -58,6 +56,7 @@ import com.percussion.webservices.system.PSRelationshipConfig;
 import com.percussion.webservices.system.PSSharedProperty;
 import com.percussion.webservices.system.PSSystemWsLocator;
 import com.percussion.webservices.system.RelationshipCategory;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -66,8 +65,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * Server side implementations for web services defined in
@@ -82,8 +79,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#createAcls(long[])
     */
    public PSAclImpl[] createAcls(long[] ids)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      throws RemoteException
    {
       String session = authenticate();
       String user = getRemoteUser();
@@ -97,7 +93,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
          
          IPSSystemDesignWs svce = PSSystemWsLocator.getSystemDesignWebservice();
          List<com.percussion.services.security.data.PSAclImpl> aclList = 
-            new ArrayList<com.percussion.services.security.data.PSAclImpl>(
+            new ArrayList<>(
                ids.length);
          for (long id : ids)
          {
@@ -130,8 +126,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    public PSRelationshipConfig[] createRelationshipTypes(
       CreateRelationshipTypesRequest req)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      throws RemoteException
    {
       String session = authenticate();
       String user = getRemoteUser();
@@ -179,7 +174,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    private List<String> getRelationshipCategories(RelationshipCategory[] cats)
    {
-      List<String> categories = new ArrayList<String>();
+      List<String> categories = new ArrayList<>();
       for (RelationshipCategory cat : cats)
       {
          if (cat == null)
@@ -195,8 +190,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#deleteAcls(DeleteAclsRequest)
     */
    public void deleteAcls(DeleteAclsRequest deleteAclsRequest)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String service = "deleteAcls";
       String session = authenticate();
@@ -210,7 +204,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
             throw new IllegalArgumentException("Ids may not be null");
          
          // convert ids to a list of GUIDs
-         List<IPSGuid> ids = new ArrayList<IPSGuid>();
+         List<IPSGuid> ids = new ArrayList<>();
          for (long id : idarr)
             ids.add(new PSGuid(PSTypeEnum.ACL, id));
          
@@ -240,15 +234,14 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    public void deleteRelationshipTypes(
       DeleteRelationshipTypesRequest req)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String service = "deleteRelationshipTypes";
       String session = authenticate();
       String user = getRemoteUser();
 
       // convert ids to a list of GUIDs
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       for (long id : req.getId())
          ids.add(new PSDesignGuid(id));
       
@@ -286,8 +279,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
    @SuppressWarnings("unchecked")
    public void deleteSharedProperties(
       DeleteSharedPropertiesRequest deleteSharedPropertiesRequest)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "deleteSharedProperties";
       try
@@ -353,8 +345,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * 
     * @see SystemDesign#extendLocks(long[])
     */
-   public void extendLocks(long[] extendLockRequest) throws RemoteException,
-      PSInvalidSessionFault, PSErrorsFault, PSContractViolationFault
+   public void extendLocks(long[] extendLockRequest) throws RemoteException
    {
       final String serviceName = "extendLocks";
       try
@@ -399,7 +390,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#findDependencies(long[])
     */
    public PSDependency[] findDependencies(long[] findDependenciesRequest)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault
+      throws RemoteException
    {
       try
       {
@@ -414,13 +405,12 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
          IPSSystemDesignWs service = 
             PSSystemWsLocator.getSystemDesignWebservice();
          
-         List<IPSGuid> ids = new ArrayList<IPSGuid>(
+         List<IPSGuid> ids = new ArrayList<>(
             findDependenciesRequest.length);
-         for (int i = 0; i < findDependenciesRequest.length; i++)
-         {
-            ids.add(new PSDesignGuid(findDependenciesRequest[i]));
+         for (long l : findDependenciesRequest) {
+            ids.add(new PSDesignGuid(l));
          }
-         List deps = service.findDependencies(ids);
+         List<com.percussion.services.system.data.PSDependency> deps = service.findDependencies(ids);
          
          return (PSDependency[]) convert(PSDependency[].class, deps);
       }
@@ -440,7 +430,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    public PSObjectSummary[] findRelationshipTypes(
       FindRelationshipTypesRequest req)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault
+      throws RemoteException
    {
       PSObjectSummary[] result = null;
       String service = "findRelationshipTypes";
@@ -472,8 +462,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#findWorkflows(FindWorkflowsRequest)
     */
    public PSObjectSummary[] findWorkflows(
-      FindWorkflowsRequest findWorkflowsRequest) throws RemoteException,
-      PSInvalidSessionFault, PSContractViolationFault
+      FindWorkflowsRequest findWorkflowsRequest) throws RemoteException
    {
       authenticate();
 
@@ -484,7 +473,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       objects = PSWebserviceUtils.toObjectSummaries(objects);
 
       List<com.percussion.services.catalog.data.PSObjectSummary> summaries = 
-         new ArrayList<com.percussion.services.catalog.data.PSObjectSummary>(
+         new ArrayList<>(
             objects.size());
       for (IPSCatalogSummary object : objects)
          summaries
@@ -498,8 +487,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#loadAcls(LoadAclsRequest)
     */
    public PSAclImpl[] loadAcls(LoadAclsRequest req)
-      throws RemoteException, PSErrorResultsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       String service = "loadAcls";
       try
@@ -510,7 +498,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
          IPSSystemDesignWs svce = PSSystemWsLocator.getSystemDesignWebservice();
          
          // convert long[] to List<IPSGuid>
-         List<IPSGuid> guids = new ArrayList<IPSGuid>();
+         List<IPSGuid> guids = new ArrayList<>();
          long[] ids = req.getId();
          if (ids == null || ids.length == 0)
          {
@@ -543,7 +531,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
 
       // will never get here
-      return null;
+      return new PSAclImpl[] {};
    }
 
    /*
@@ -553,8 +541,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    public LoadConfigurationResponse loadConfiguration(
       LoadConfigurationRequest loadConfigurationRequest)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault,
-      PSUnknownConfigurationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "loadConfiguration";
       String session = authenticate();
@@ -587,14 +574,13 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       catch (PSLockErrorException e)
       {
-         PSLockFault fault = (PSLockFault) convert(
-            PSLockFault.class, e);
          
-         throw fault;
+         throw (PSLockFault) convert(
+                 PSLockFault.class, e);
       }
       catch (FileNotFoundException e)
       {
-         e.printStackTrace();
+         logger.error(PSExceptionUtils.getMessageForLog(e));
          throw new RemoteException(e.getLocalizedMessage());
       }
       catch (RuntimeException e)
@@ -613,8 +599,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    public PSRelationshipConfig[] loadRelationshipTypes(
       LoadRelationshipTypesRequest req)
-      throws RemoteException, PSErrorResultsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       String service = "loadRelationshipTypes";
       try
@@ -625,7 +610,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
          IPSSystemDesignWs svce = PSSystemWsLocator.getSystemDesignWebservice();
          
          // convert long[] to List<IPSGuid>
-         List<IPSGuid> guids = new ArrayList<IPSGuid>();
+         List<IPSGuid> guids = new ArrayList<>();
          long[] ids = req.getId();
          if (ids != null)
          {
@@ -653,7 +638,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
 
       // will never get here
-      return null;
+      return new PSRelationshipConfig[]{};
    }
 
    /*
@@ -661,11 +646,9 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * 
     * @see SystemDesign#loadSharedProperties(LoadSharedPropertiesRequest)
     */
-   @SuppressWarnings("unchecked")
    public PSSharedProperty[] loadSharedProperties(
       LoadSharedPropertiesRequest loadSharedPropertiesRequest)
-      throws RemoteException, PSErrorResultsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "loadSharedProperties";
       try
@@ -681,7 +664,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
          boolean overrideLock = extractBooleanValue(
             loadSharedPropertiesRequest.getOverrideLock(), false);
          
-         List properties = service.loadSharedProperties(
+         List<com.percussion.services.system.data.PSSharedProperty> properties = service.loadSharedProperties(
             loadSharedPropertiesRequest.getName(), lock, overrideLock, 
             session, user);
    
@@ -709,7 +692,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       
       // will never get here
-      return null;
+      return new PSSharedProperty[]{};
    }
 
    /*
@@ -717,8 +700,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * 
     * @see SystemDesign#releaseLocks(long[])
     */
-   public void releaseLocks(long[] releaseLockRequest) throws RemoteException,
-      PSInvalidSessionFault, PSContractViolationFault
+   public void releaseLocks(long[] releaseLockRequest) throws RemoteException
    {
       final String serviceName = "releaseLocks";
       try
@@ -764,7 +746,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
          IPSSystemDesignWs service = 
             PSSystemWsLocator.getSystemDesignWebservice();
          
-         List summaries = service.getLockedSummaries(session, user);
+         List<com.percussion.services.catalog.data.PSObjectSummary> summaries = service.getLockedSummaries(session, user);
          return (PSObjectSummary[]) convert(PSObjectSummary[].class, summaries);
       }
       catch (IllegalArgumentException e)
@@ -785,8 +767,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#createLocks(CreateLocksRequest)
     */
    public void createLocks(CreateLocksRequest createLocksRequest) 
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault, 
-         PSContractViolationFault
+      throws RemoteException
    {
       final String serviceName = "createLocks";
       try
@@ -822,7 +803,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#isLocked(long[])
     */
    public PSObjectSummary[] isLocked(long[] isLockedRequest) 
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault
+      throws RemoteException
    {
       final String serviceName = "isLocked";
       try
@@ -876,8 +857,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    @SuppressWarnings(value={"unchecked"})
    public SaveAclsResponsePermissions[] saveAcls(SaveAclsRequest req)
-      throws RemoteException, PSErrorResultsFault, PSInvalidSessionFault,
-         PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       SaveAclsResponsePermissions[] results = null;
 
@@ -943,8 +923,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    public void saveConfiguration(
       SaveConfigurationRequest saveConfigurationRequest)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveConfiguration";
       String session = authenticate();
@@ -960,7 +939,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
             com.percussion.services.system.data.PSMimeContentAdapter.class, 
             saveConfigurationRequest.getPSMimeContentAdapter());
          
-         Boolean release = saveConfigurationRequest.getRelease() == null ? 
+         boolean release = saveConfigurationRequest.getRelease() == null ?
             Boolean.TRUE : saveConfigurationRequest.getRelease().booleanValue();
          
          service.saveConfiguration(config, release, session, user);
@@ -971,15 +950,14 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       catch (PSLockErrorException e)
       {
-         PSLockFault fault = (PSLockFault) convert(
-            PSLockFault.class, e);
          
-         throw fault;
+         throw (PSLockFault) convert(
+                 PSLockFault.class, e);
       }
       catch (IOException e)
       {
-         e.printStackTrace();
-         throw new RemoteException(e.getLocalizedMessage());
+         logger.error(PSExceptionUtils.getMessageForLog(e));
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e),e);
       }
       catch (RuntimeException e)
       {
@@ -995,8 +973,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
    @SuppressWarnings("unchecked")
    public void saveRelationshipTypes(
       SaveRelationshipTypesRequest req)
-      throws RemoteException, PSErrorsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveRelationshipTypes";
       
@@ -1035,8 +1012,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
    @SuppressWarnings("unchecked")
    public void saveSharedProperties(
       SaveSharedPropertiesRequest saveSharedPropertiesRequest)
-      throws RemoteException, PSErrorsFault, PSInvalidSessionFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveSharedProperties";
       try
@@ -1100,7 +1076,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#createGuids(CreateGuidsRequest)
     */
    public long[] createGuids(CreateGuidsRequest createGuidsRequest) 
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault
+      throws RemoteException
    {
       final String serviceName = "createGuids";
       try
@@ -1115,7 +1091,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
                "an unknown type was specified with the supplied request");
          
          int count = createGuidsRequest.getCount() == null ? 
-            1 : createGuidsRequest.getCount().intValue();
+            1 : createGuidsRequest.getCount();
          
          authenticate();
 
@@ -1138,8 +1114,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#createItemFilters(String[])
     */
    public PSItemFilter[] createItemFilters(String[] createItemFiltersRequest)
-      throws RemoteException, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "createItemFilters";
       try
@@ -1167,7 +1142,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       
       // will never get here
-      return null;
+      return new PSItemFilter[]{};
    }
 
    /* (non-Javadoc)
@@ -1175,8 +1150,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    public void deleteItemFilters(
       DeleteItemFiltersRequest deleteItemFiltersRequest)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "deleteItemFilters";
       try
@@ -1218,15 +1192,14 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#findItemFilters(FindItemFiltersRequest)
     */
    public PSObjectSummary[] findItemFilters(
-      FindItemFiltersRequest findItemFiltersRequest) throws RemoteException,
-      PSInvalidSessionFault
+      FindItemFiltersRequest findItemFiltersRequest) throws RemoteException
    {
       authenticate();
 
       IPSSystemDesignWs service = 
          PSSystemWsLocator.getSystemDesignWebservice();
       
-      List summaries = service.findItemFilters(
+      List<IPSCatalogSummary> summaries = service.findItemFilters(
          findItemFiltersRequest.getName());
 
       return (PSObjectSummary[]) convert(PSObjectSummary[].class, summaries);
@@ -1236,9 +1209,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     * @see SystemDesign#loadItemFilters(LoadItemFiltersRequest)
     */
    public PSItemFilter[] loadItemFilters(
-      LoadItemFiltersRequest loadItemFiltersRequest) throws RemoteException,
-      PSErrorResultsFault, PSInvalidSessionFault, PSContractViolationFault,
-      PSNotAuthorizedFault
+      LoadItemFiltersRequest loadItemFiltersRequest) throws RemoteException
    {
       final String serviceName = "loadItemFilters";
       try
@@ -1255,7 +1226,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
             loadItemFiltersRequest.getLock(), false);
          boolean overrideLock = extractBooleanValue(
             loadItemFiltersRequest.getOverrideLock(), false);
-         List filters = service.loadItemFilters(ids, lock, overrideLock, 
+         List<com.percussion.services.filter.data.PSItemFilter> filters = service.loadItemFilters(ids, lock, overrideLock, 
             session, user);
 
          return (PSItemFilter[]) convert(PSItemFilter[].class, filters);
@@ -1281,7 +1252,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       
       // will never get here
-      return null;
+      return new PSItemFilter[]{};
    }
 
    /* (non-Javadoc)
@@ -1289,8 +1260,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
     */
    @SuppressWarnings("unchecked")
    public void saveItemFilters(SaveItemFiltersRequest saveItemFiltersRequest)
-      throws RemoteException, PSInvalidSessionFault, PSErrorsFault,
-      PSContractViolationFault, PSNotAuthorizedFault
+      throws RemoteException
    {
       final String serviceName = "saveItemFilters";
       try

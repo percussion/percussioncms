@@ -25,18 +25,18 @@ package com.percussion.webservices.transformation.converter;
 
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.webservices.system.RelationshipConfigSummary;
 import com.percussion.webservices.system.RelationshipConfigSummaryType;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.IOException;
-import java.io.StringReader;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * Convert between 
@@ -155,24 +155,11 @@ public class PSRelationshipConfigConverter extends PSTransitionBaseConverter
          Document doc = PSXmlDocumentBuilder.createXmlDocument(reader, false);
          return new PSRelationshipConfig(doc.getDocumentElement());         
       }
-      catch (IOException e)
+      catch (IOException | SAXException | PSUnknownNodeTypeException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to create an XML document from \""
                + xmlString + "\"", e);
-      }
-      catch (SAXException e)
-      {
-         e.printStackTrace();
-         throw new RuntimeException("Failed to create an XML document from \""
-               + xmlString + "\"", e);
-      }
-      catch (PSUnknownNodeTypeException e)
-      {
-         e.printStackTrace();
-         throw new RuntimeException(
-               "Failed to create a PSRelationshipConfig from XML \"" + xmlString
-                     + "\"", e);
       }
    }
 }

@@ -28,6 +28,7 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.testing.PSClientTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
@@ -42,6 +43,7 @@ import static org.junit.Assert.assertTrue;
 
 @Deprecated
 @Category(IntegrationTest.class)
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class HTTPClientTest extends PSClientTestCase
 {
    private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);

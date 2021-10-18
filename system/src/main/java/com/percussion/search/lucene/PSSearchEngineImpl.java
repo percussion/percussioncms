@@ -23,6 +23,7 @@
  */
 package com.percussion.search.lucene;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.search.PSSearchAdmin;
 import com.percussion.search.PSSearchEngine;
@@ -267,7 +268,7 @@ public class PSSearchEngineImpl extends PSSearchEngine
    /**
     * Reference to log for this class
     */
-   private static final Logger ms_log = LogManager.getLogger(PSSearchEngineImpl.class);
+   private static final Logger ms_log = LogManager.getLogger(IPSConstants.SEARCH_LOG);
    
    /**
     * Holds the current state of the engine as one of the <code>STATUS_xxx

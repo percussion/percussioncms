@@ -23,6 +23,7 @@
  */
 package com.percussion.search.lucene;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.PSItemChildLocator;
@@ -761,11 +762,11 @@ public class PSSearchIndexerImpl extends PSSearchIndexer
     * Reference to log for this class
     */
    private static final Logger ms_log = 
-      LogManager.getLogger(PSSearchIndexerImpl.class);
+      LogManager.getLogger(IPSConstants.SEARCH_LOG);
 
    /**
     * Map of content type ids and index writers that need to be optimized
     */
    private Map<Long, IndexWriter> m_indexesNotCommitted = 
-      new HashMap<Long, IndexWriter>();
+      new HashMap<>();
 }

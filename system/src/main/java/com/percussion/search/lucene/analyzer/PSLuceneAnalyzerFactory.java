@@ -23,6 +23,7 @@
  */
 package com.percussion.search.lucene.analyzer;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSExtensionCall;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSSearchConfig;
@@ -270,5 +271,5 @@ public class PSLuceneAnalyzerFactory
    /**
     * Static instance of logger for this class.
     */
-   private static final Logger log = LogManager.getLogger(PSLuceneAnalyzerFactory.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.SEARCH_LOG);
 }

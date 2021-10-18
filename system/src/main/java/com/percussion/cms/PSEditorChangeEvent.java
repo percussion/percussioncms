@@ -191,7 +191,7 @@ public class PSEditorChangeEvent
     * version of the collection set by calls to 
     * {@link #setBinaryFields(Collection)}.
     */
-   public Iterator getBinaryFields()
+   public Iterator<String> getBinaryFields()
    {      
       return Collections.unmodifiableCollection(m_binaryFields).iterator();      
    }
@@ -206,7 +206,7 @@ public class PSEditorChangeEvent
     * collection after calling this method do not have any effect on this 
     * object.
     */
-   public void setBinaryFields(Collection fields)
+   public void setBinaryFields(Collection<String> fields)
    {      
       m_binaryFields.clear();
       if (fields != null)
@@ -280,12 +280,9 @@ public class PSEditorChangeEvent
       {
          Element binFieldsEl = PSXmlDocumentBuilder.addEmptyElement(doc, root, 
             BIN_FIELDS_ELEMENT);
-         Iterator binFields = m_binaryFields.iterator();
-         while (binFields.hasNext())
-         {
-            String binField = (String)binFields.next();
-            PSXmlDocumentBuilder.addElement(doc, binFieldsEl, BIN_FIELD_ELEMENT, 
-               binField);
+         for (String binField : m_binaryFields) {
+            PSXmlDocumentBuilder.addElement(doc, binFieldsEl, BIN_FIELD_ELEMENT,
+                    binField);
          }
       }
       
@@ -487,7 +484,7 @@ public class PSEditorChangeEvent
     * <code>String</code> objects.  Never <code>null</code>, modified by
     * calls to {@link #setBinaryFields(Collection)}.
     */
-   private Collection m_binaryFields = new HashSet();
+   private Collection<String> m_binaryFields = new HashSet<>();
    
    /**
     * Content type id of the item, set during the ctor, never modified after 
