@@ -386,7 +386,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    // get the relationships according to the query criteria
    if (relId!=-1)
    {
-      PSRelationship rel = null;
+      PSRelationship rel;
       try {
          rel = relCache.getRelationship(relId);
          if (rel != null)
@@ -757,9 +757,8 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          (doNotApplyFilters & PSRelationshipConfig.FILTER_TYPE_FOLDER_COMMUNITY) 
             == PSRelationshipConfig.FILTER_TYPE_FOLDER_COMMUNITY;
       
-      return  (notByCom && notByItemCom && notByFolderCom)
-         || (notByItemCom && notByFolderCom) 
-         || notByCom;
+      return (notByItemCom && notByFolderCom)
+              || notByCom;
 
    }
 

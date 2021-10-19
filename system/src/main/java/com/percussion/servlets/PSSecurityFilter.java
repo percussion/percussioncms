@@ -1006,10 +1006,17 @@ public class PSSecurityFilter implements Filter
       
       if (!reqHeader.isEmpty() && StringUtils.isNotBlank(reqHeader))
       {
+            String requestURIScheme = requestURI.getScheme();
+
+            //if reqHeader value is 127.0.0.1:9992 it gives invalid character exception for scheme while forming the URI
+            if("http".equalsIgnoreCase(requestURIScheme) && !reqHeader.contains("http")){
+               reqHeader = requestURI.getScheme()+"://"+reqHeader;
+            }else if("https".equalsIgnoreCase(requestURIScheme) && !reqHeader.contains("https")){
+               reqHeader = requestURI.getScheme()+"://"+reqHeader;
+            }
             URI headerURI = URI.create(SecureStringUtils.stripUrlParams(reqHeader));
 
             //In case of host header the scheme http or https is not present in the URI.
-            String requestURIScheme = requestURI.getScheme();
             if("http".equalsIgnoreCase(requestURIScheme) && !"http".equalsIgnoreCase(headerURI.getScheme())){
                headerURI = URI.create(requestURI.getScheme()+"://"+SecureStringUtils.stripUrlParams(reqHeader));
             }else if("https".equalsIgnoreCase(requestURIScheme) && !"https".equalsIgnoreCase(headerURI.getScheme())){

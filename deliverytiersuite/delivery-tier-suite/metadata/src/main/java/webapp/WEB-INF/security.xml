@@ -32,7 +32,7 @@
     </security:http>
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
-        <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
+        <beans:constructor-arg value="^(GET|HEAD)$" />
         <beans:constructor-arg value="/metadata/get,/blogs/get,/trackblogpost,/topblogposts,/categories/update/,/tags/get,/dated/get,/delete,/blog/getCurrent,/categories/get,/indexer/entry/,/metadata/clean/,/metadata/consent/log,/metadata/delete,/metadata/updateOldSiteEntries/,/indexer/,/metadata/categories/update/"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
@@ -72,7 +72,6 @@
                                 <beans:value>PUT</beans:value>
                                 <beans:value>DELETE</beans:value>
                                 <beans:value>HEAD</beans:value>
-                                <beans:value>OPTIONS</beans:value>
                             </beans:list>
                         </beans:property>
                         <beans:property name="allowedOrigins">
