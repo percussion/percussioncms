@@ -49,6 +49,7 @@
                        printExceptionStackTrace="true"
                        qualifyViewNames="PSX_QJOB_LISTENERS"
                        sql="DROP TABLE PSX_QJOB_LISTENERS IF EXISTS"
+                       sqlMysql="DROP TABLE IF EXISTS PSX_QJOB_LISTENERS"
                        sqlDerby="DROP TABLE PSX_QJOB_LISTENERS"
                        failonerror="false"
                        silenceerrors="true"
@@ -75,6 +76,7 @@
         <echo>dropping views..</echo>
         <PSExecSQLStmt rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
                        qualifyViewNames="" sql="DROP VIEW RXSITEITEMS"
+                       sqlMysql="DROP VIEW IF EXISTS RXSITEITEMS"
                        failonerror="false"
                        silenceerrors="true"/>
 
@@ -82,6 +84,7 @@
                 printExceptionStackTrace="true"
                 qualifyViewNames="RXSITEITEMS"
                 sql="DROP VIEW RXSITEITEMS"
+                sqlMysql="DROP VIEW IF EXISTS RXSITEITEMS"
                 failonerror="false"
                 silenceerrors="true"
         />
