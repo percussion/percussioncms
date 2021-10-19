@@ -32,7 +32,7 @@
     </security:http>
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
-        <beans:constructor-arg value="^(GET|HEAD|TRACE|OPTIONS)$" />
+        <beans:constructor-arg value="^(GET|HEAD)$" />
         <beans:constructor-arg value="/integrations/csrf,/integrations/ems"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
@@ -61,7 +61,6 @@
                                 <beans:value>PUT</beans:value>
                                 <beans:value>DELETE</beans:value>
                                 <beans:value>HEAD</beans:value>
-                                <beans:value>OPTIONS</beans:value>
                             </beans:list>
                         </beans:property>
                         <beans:property name="allowedOrigins">
