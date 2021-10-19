@@ -85,7 +85,6 @@
                                 <beans:value>PUT</beans:value>
                                 <beans:value>DELETE</beans:value>
                                 <beans:value>HEAD</beans:value>
-                                <beans:value>OPTIONS</beans:value>
                             </beans:list>
                         </beans:property>
                         <beans:property name="allowedOrigins">
