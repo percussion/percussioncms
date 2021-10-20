@@ -31,10 +31,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.owasp.encoder.Encode;
 import org.owasp.esapi.ESAPI;
-import org.owasp.esapi.codecs.Codec;
-import org.owasp.esapi.codecs.DB2Codec;
-import org.owasp.esapi.codecs.MySQLCodec;
-import org.owasp.esapi.codecs.OracleCodec;
 import org.owasp.esapi.errors.EncodingException;
 import org.owasp.esapi.reference.DefaultEncoder;
 
@@ -481,7 +477,12 @@ public class SecureStringUtils {
      * @return The sanitized string, will use {@link #sanitizeStringForFileSystem(String)} if no ESAPI codec is available.
      */
     public static String sanitizeStringForSQLStatement(String str, DatabaseType dbType){
-        Codec codec;
+        return sanitizeStringForSQLStatement(str);
+
+        /**
+         *
+         * This is not Consistent across multiple DB Types and  thus commented.
+         * Codec codec;
         switch(dbType){
             case DERBY:
             case DB2:
@@ -499,9 +500,8 @@ public class SecureStringUtils {
         if(codec == null) {
             return sanitizeStringForSQLStatement(str);
         }else{
-
             return DefaultEncoder.getInstance().encodeForSQL(codec,str);
-        }
+        }**/
     }
 
     /**
@@ -531,11 +531,6 @@ public class SecureStringUtils {
             while(ret.contains("//")) {
                 ret = ret.replace("//", "/");
             }
-
-            //Remove /Rhythmyx/ if present
-          //  while(ret.contains("/Rhythmyx/")) {
-          //      ret = ret.replace("/Rhythmyx/", "/");
-          //  }
 
             String[] dotdots = ret.split("\\.\\./");
             for(String s : resourcePaths){

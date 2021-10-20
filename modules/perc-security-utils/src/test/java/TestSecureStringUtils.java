@@ -149,4 +149,19 @@ public class TestSecureStringUtils {
         assertEquals("http://somesite.edu/noparams",SecureStringUtils.stripUrlParams("http://somesite.edu/noparams"));
         assertEquals("http://somesite.edu/noparams", SecureStringUtils.stripUrlParams("http://somesite.edu/noparams#test"));
     }
+
+    @Test
+    public void testSanitizeStringForSQLStatementDerby(){
+        assertEquals("http://somesite.edu/noparams",SecureStringUtils.sanitizeStringForSQLStatement("http://somesite.edu/noparams", SecureStringUtils.DatabaseType.DERBY));
+    }
+
+    @Test
+    public void testSanitizeStringForSQLStatementMySql(){
+        assertEquals("http://somesite.edu/noparams",SecureStringUtils.sanitizeStringForSQLStatement("http://somesite.edu/noparams", SecureStringUtils.DatabaseType.MYSQL));
+    }
+
+    @Test
+    public void testSanitizeStringForSQLStatementSqlServer(){
+        assertEquals("http://somesite.edu/noparams",SecureStringUtils.sanitizeStringForSQLStatement("http://somesite.edu/noparams", SecureStringUtils.DatabaseType.MSSQL));
+    }
 }
