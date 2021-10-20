@@ -187,7 +187,7 @@
             <AppenderRef ref="FILE"/>
         </AsyncLogger>
 
-        <AsyncLogger name="org.apache.shindig" level="error" includeLocation="true" additivity="false">
+        <AsyncLogger name="org.apache.shindig" level="off" includeLocation="true" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="FILE"/>
         </AsyncLogger>
