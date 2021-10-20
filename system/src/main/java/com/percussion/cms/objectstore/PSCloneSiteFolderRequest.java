@@ -36,6 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Object store implementation for the <code>CloneSiteFolderRequest</code> 
@@ -72,11 +73,11 @@ public class PSCloneSiteFolderRequest extends PSComponent
    /**
     * Constructs the clond site fodler request from its XML representation.
     * 
-    * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList) for parameter 
+    * @see IPSComponent#fromXml(Element, IPSDocument, List) for parameter
     *    descriptions.
     */
    public PSCloneSiteFolderRequest(Element source, IPSDocument parent,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(source, parent, parentComponents);
    }
@@ -176,7 +177,7 @@ public class PSCloneSiteFolderRequest extends PSComponent
     * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList)
     */
    public void fromXml(Element source, IPSDocument parent,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (source == null)
          throw new PSUnknownNodeTypeException(

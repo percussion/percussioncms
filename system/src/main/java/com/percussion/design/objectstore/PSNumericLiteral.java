@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * The PSNumericLiteral class is used to define a replacement value is a
@@ -67,7 +68,7 @@ public class PSNumericLiteral extends PSLiteral
     *                                                                                    appropriate type
     */
    public PSNumericLiteral(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -291,7 +292,7 @@ public class PSNumericLiteral extends PSLiteral
     *                                                                                             of type PSXNumericLiteral
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -299,7 +300,7 @@ public class PSNumericLiteral extends PSLiteral
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
       //make sure we got the ACL type node
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

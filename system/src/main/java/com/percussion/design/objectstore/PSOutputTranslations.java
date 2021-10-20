@@ -27,8 +27,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation for the PSXOutputTranslations DTD in BasicObjects.dtd.
@@ -56,7 +56,7 @@ public class PSOutputTranslations extends PSCollectionComponent
     *    the appropriate type
     */
    public PSOutputTranslations(Element sourceNode, IPSDocument parentDoc,
-                               ArrayList parentComponents)
+                               List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -129,7 +129,7 @@ public class PSOutputTranslations extends PSCollectionComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -182,9 +182,7 @@ public class PSOutputTranslations extends PSCollectionComponent
       Element root = doc.createElement(XML_NODE_NAME);
 
       // create the mappings
-      Iterator it = iterator();
-      while (it.hasNext())
-         root.appendChild(((IPSComponent) it.next()).toXml(doc));
+      for (Object o : this) root.appendChild(((IPSComponent) o).toXml(doc));
 
       return root;
    }

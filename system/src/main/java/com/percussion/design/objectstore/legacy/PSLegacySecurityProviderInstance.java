@@ -67,7 +67,7 @@ public class PSLegacySecurityProviderInstance extends PSSecurityProviderInstance
     * appropriate type
     */
    public PSLegacySecurityProviderInstance(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -125,14 +125,14 @@ public class PSLegacySecurityProviderInstance extends PSSecurityProviderInstance
     * of type PSXBackEndConnection
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
          IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

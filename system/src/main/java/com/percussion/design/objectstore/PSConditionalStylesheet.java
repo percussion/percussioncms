@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -41,7 +42,7 @@ public class PSConditionalStylesheet extends PSStylesheet
     * Create a new conditional stylesheet for the provided request and
     * conditions.
     *
-    * @param the stylesheet request, not <code>null</code>.
+    * @param request the stylesheet request, not <code>null</code>.
     * @param conditions a collection of PSRule objects, never 
     *    <code>null</code> or empty.
     * @throws IllegalArgumentException if the stylesheet request or 
@@ -58,7 +59,7 @@ public class PSConditionalStylesheet extends PSStylesheet
     * Create a new conditional stylesheet for the provided stylesheet and
     * conditions.
     *
-    * @param the stylesheet, not <code>null</code>.
+    * @param stylesheet the stylesheet, not <code>null</code>.
     * @param conditions a collection of PSRule objects, never 
     *    <code>null</code> or empty.
     * @throws IllegalArgumentException if the stylesheet or conditions are 
@@ -84,7 +85,7 @@ public class PSConditionalStylesheet extends PSStylesheet
     *    the appropriate type
     */
    public PSConditionalStylesheet(Element sourceNode, IPSDocument parentDoc, 
-                                  ArrayList parentComponents)
+                                  List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -166,7 +167,7 @@ public class PSConditionalStylesheet extends PSStylesheet
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

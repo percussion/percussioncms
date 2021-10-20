@@ -26,7 +26,7 @@ package com.percussion.design.objectstore;
 
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSCgiVariable class is used to define a replacement value is a
@@ -51,7 +51,7 @@ public class PSCgiVariable extends PSNamedReplacementValue
     *   appropriate type
     */
    public PSCgiVariable(Element sourceNode, IPSDocument parentDoc,
-                        ArrayList parentComponents)
+                        List parentComponents)
          throws PSUnknownNodeTypeException
    {
       super( sourceNode, parentDoc, parentComponents );

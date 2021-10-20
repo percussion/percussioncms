@@ -29,8 +29,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -323,8 +323,9 @@ public class PSRelation extends PSDatabaseComponent
     * @throws  PSUnknownNodeTypeException if the XML element node does not
     *          contain at least two elements each with (#PCDATA) as their value.
     */
+   @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

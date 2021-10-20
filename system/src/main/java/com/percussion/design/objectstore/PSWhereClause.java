@@ -28,6 +28,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 
 /**
  * The PSWhereClause class extends the concept of conditionals to
@@ -67,7 +69,7 @@ public class PSWhereClause extends PSConditional
     *                              appropriate type
     */
    public PSWhereClause(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -88,7 +90,7 @@ public class PSWhereClause extends PSConditional
     *
     * @param op            the relational operator to use when comparing
     *
-    * @param val            the value the variable must match
+    * @param value            the value the variable must match
     *
     * @param omitWhenNull   <code>true</code> to omit the condition from the
     *                      WHERE clause when the value is NULL,
@@ -129,9 +131,7 @@ public class PSWhereClause extends PSConditional
 
    public boolean equals(Object o)
    {
-      boolean bEqual = true;
-      if (!super.equals(o))
-         bEqual = false;
+      boolean bEqual = super.equals(o);
       if ( bEqual && o instanceof PSWhereClause )
       {
          PSWhereClause other = (PSWhereClause) o;
@@ -211,7 +211,7 @@ public class PSWhereClause extends PSConditional
     *                                        of type PSXWhereClause
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -222,7 +222,7 @@ public class PSWhereClause extends PSConditional
             throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-         if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+         if (!ms_NodeType.equals(sourceNode.getNodeName()))
          {
             Object[] args = { ms_NodeType, sourceNode.getNodeName() };
             throw new PSUnknownNodeTypeException(

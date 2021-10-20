@@ -29,7 +29,8 @@
     <Code type="jexl">
         <![CDATA[
     $linkContext = $perc.linkContext;
-    $isEditMode = $perc.isEditMode() || $perc.isPreviewMode();
+    $isEditMode = $perc.isEditMode();
+    $isPreviewMode =  $perc.isPreviewMode();
     $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
     $perc.setWidgetContents($assetItems);
     $display = $perc.widget.item.properties.get('perc_display_option');
@@ -148,6 +149,7 @@
 
         $dynamicListData = $dynamicListData + ", &quot;deliveryurl&quot;:&quot;" + $dsUrl + "&quot;";
         $dynamicListData = $dynamicListData + ", &quot;isEditMode&quot;:&quot;" + $isEditMode + "&quot;";
+        $dynamicListData = $dynamicListData + ", &quot;isPreviewMode&quot;:&quot;" + $isPreviewMode + "&quot;";
         $dynamicListData = $dynamicListData + "}";
         ##Category list query ends
     }

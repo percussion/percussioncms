@@ -66,7 +66,7 @@ public class PSPropertySet extends PSCollectionComponent
    @Override
    public void fromXml(Element sourceNode, 
          @SuppressWarnings("unused") IPSDocument parentDoc, 
-         ArrayList parentComponents) throws PSUnknownNodeTypeException
+         List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

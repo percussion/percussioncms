@@ -31,6 +31,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -66,7 +67,7 @@ public class PSDataMapping extends PSComponent
     *                              appropriate type
     */
    public PSDataMapping(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -147,7 +148,7 @@ public class PSDataMapping extends PSComponent
     * Set the document mapping (Udf, Xml field/att) for this
     * mapping.
     *
-    * @param      the name of the XML field being mapped
+    * @param   docMap   the name of the XML field being mapped
     */
    public void setDocumentMapping(IPSDocumentMapping docMap)
    {
@@ -451,7 +452,7 @@ public class PSDataMapping extends PSComponent
     *                                        of type PSXDataMapping
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -462,7 +463,7 @@ public class PSDataMapping extends PSComponent
             throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-         if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+         if (!ms_NodeType.equals(sourceNode.getNodeName()))
          {
             Object[] args = { ms_NodeType, sourceNode.getNodeName() };
             throw new PSUnknownNodeTypeException(
@@ -724,7 +725,7 @@ public class PSDataMapping extends PSComponent
 
    private IPSComponent createMappingObject(
       Element mappingNode, String nodeSource,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       return (IPSComponent)

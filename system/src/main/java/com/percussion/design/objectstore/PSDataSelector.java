@@ -33,6 +33,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -74,7 +75,7 @@ public class PSDataSelector extends PSComponent
     *                              appropriate type
     */
    public PSDataSelector(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -749,7 +750,7 @@ public class PSDataSelector extends PSComponent
     *                                        of type PSXDataSelector
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
    throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

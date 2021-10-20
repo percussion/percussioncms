@@ -27,6 +27,7 @@ package com.percussion.thumbnail;
 
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.io.PathUtils;
+import com.percussion.utils.tools.IPSUtilsConstants;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
@@ -65,7 +66,12 @@ import java.util.Set;
 
 public class PSScreenCapture {
 
-    protected static final Logger log = LogManager.getLogger(PSScreenCapture.class);
+
+    private PSScreenCapture(){
+        //Hide public constructor
+    }
+
+    protected static final Logger log = LogManager.getLogger(IPSUtilsConstants.RX_JAVA_ENC);
 
     public static final String EMPTY_THUMB_RESOURCE = "META-INF/resources/sys_resources/images/thumbnail/empty-thumb.jpg";
     public static final String WEB_CAP_JS_RESOURCE = "META-INF/resources/sys_resources/js/webcap.js";
@@ -83,8 +89,7 @@ public class PSScreenCapture {
     private static final File WEB_CAP_PATH = new File(PathUtils.getRxDir(null), "sys_resources/js/webcap.js");
 
 
-    public static void generateEmptyThumb(String imagePathForGeneration)
-            throws IOException {
+    public static void generateEmptyThumb(String imagePathForGeneration) {
         copyResource(EMPTY_THUMB_RESOURCE, new File(imagePathForGeneration));
 
     }
@@ -114,15 +119,19 @@ public class PSScreenCapture {
 
 
             DefaultExecutor exec = new DefaultExecutor();
-            PumpStreamHandler streamHandler = new PumpStreamHandler(new ExecLogHandler(log, Level.DEBUG), new ExecLogHandler(log, Level.ERROR));
+            try( ExecLogHandler debugLogHandler =new ExecLogHandler(log, Level.DEBUG) ) {
+                try (ExecLogHandler errorLogHandler = new ExecLogHandler(log, Level.ERROR)) {
 
-            exec.setStreamHandler(streamHandler);
-            exec.setExitValue(0);
-            ExecuteWatchdog watchdog = new ExecuteWatchdog(60000);
-            exec.setWatchdog(watchdog);
+                    PumpStreamHandler streamHandler = new PumpStreamHandler(debugLogHandler, errorLogHandler);
 
-            exec.execute(commandline);
+                    exec.setStreamHandler(streamHandler);
+                    exec.setExitValue(0);
+                    ExecuteWatchdog watchdog = new ExecuteWatchdog(60000);
+                    exec.setWatchdog(watchdog);
 
+                    exec.execute(commandline);
+                }
+            }
         } catch (Exception e) {
             log.error("Error taking screen capture using phantomjs with error: {}" ,PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
@@ -263,10 +272,10 @@ public class PSScreenCapture {
                 }
             }
         } catch (FileNotFoundException e) {
-            log.error("Cannot find file extracting tar for phantomjs install: {}" , e.getMessage());
+            log.error("Cannot find file extracting tar for phantomjs install: {}" , PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
         } catch (IOException e) {
-            log.error("Error reading extracting tar file for phantomjs install: {}" , e.getMessage());
+            log.error("Error reading extracting tar file for phantomjs install: {}" , PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
         }
     }
@@ -303,7 +312,7 @@ public class PSScreenCapture {
                 }
             }
         } catch (ArchiveException | IOException e) {
-            log.error("Unexpected Archive error while installing phantomjs for the thumbnail service: {}" , e.getMessage());
+            log.error("Unexpected Archive error while installing phantomjs for the thumbnail service: {}" , PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
         }
     }
@@ -315,8 +324,6 @@ public class PSScreenCapture {
 
     private static void copyResource(String resourceName, File destination) {
         ClassLoader classLoader = PSScreenCapture.class.getClassLoader();
-
-        OutputStream resStreamOut = null;
 
         try ( InputStream stream = classLoader.getResourceAsStream(resourceName)){
 

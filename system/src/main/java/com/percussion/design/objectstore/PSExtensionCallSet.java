@@ -28,7 +28,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -61,7 +61,7 @@ public class PSExtensionCallSet extends PSCollectionComponent
     *                              appropriate type
     */
    public PSExtensionCallSet(Element sourceNode, IPSDocument parentDoc, 
-                             ArrayList parentComponents)
+                             List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -132,7 +132,7 @@ public class PSExtensionCallSet extends PSCollectionComponent
     *                                        of type PSXExtensionCallSet
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

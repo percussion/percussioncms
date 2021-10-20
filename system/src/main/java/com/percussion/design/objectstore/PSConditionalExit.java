@@ -28,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -71,7 +72,7 @@ public class PSConditionalExit extends PSComponent
     *    the appropriate type
     */
    public PSConditionalExit(Element sourceNode, IPSDocument parentDoc,
-                            ArrayList parentComponents)
+                            List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -213,7 +214,7 @@ public class PSConditionalExit extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

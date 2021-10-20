@@ -28,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSExtensionParamValue class is used to set the value associated with a
@@ -58,7 +59,7 @@ public class PSExtensionParamValue
     * <code>null</code> or the XML element node is not of the appropriate type
     */
    public PSExtensionParamValue(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       super(sourceNode, parentDoc, parentComponents);

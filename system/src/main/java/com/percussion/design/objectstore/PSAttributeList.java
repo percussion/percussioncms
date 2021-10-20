@@ -245,19 +245,19 @@ public class PSAttributeList extends PSDatabaseComponentCollection
     * @throws   PSUnknownNodeTypeException if the XML element node is not
     *                                        of type PSXRole
     *
-    * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList) for the 
+    * @see IPSComponent#fromXml(Element, IPSDocument, List) for the
     * interface description
     */
    @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

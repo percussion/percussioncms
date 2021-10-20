@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * The PSFile abstract class represents the file data of a request to load, save,
@@ -514,7 +515,7 @@ public abstract class PSFile extends PSComponent
     *                                        class.
     */
    public abstract void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException;
 
    /**
@@ -538,7 +539,7 @@ public abstract class PSFile extends PSComponent
     *
     */
    protected void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents, String nodeType)
+                        List parentComponents, String nodeType)
       throws PSUnknownNodeTypeException
    {
       String lastModified = null;

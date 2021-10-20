@@ -24,6 +24,7 @@
 package com.percussion.design.objectstore;
 
 
+import com.percussion.cms.objectstore.IPSCmsComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -140,8 +141,9 @@ public class PSJavaPluginConfig implements IPSJavaPluginConfig
 
    //Implementation of the method defined in the intreface
    //Implementation of the interface method
+   @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if(!sourceNode.getTagName().equals(XML_NODE_NAME))
@@ -177,6 +179,7 @@ public class PSJavaPluginConfig implements IPSJavaPluginConfig
     * See the {@link IPSCmsComponent#equals(Object) interface} for complete
     * details.
     */
+   @Override
    public boolean equals( Object o )
    {
       if ( !(o instanceof PSJavaPluginConfig ))
@@ -246,6 +249,7 @@ public class PSJavaPluginConfig implements IPSJavaPluginConfig
    /**
     * See IPSComponent.
     */
+   @Override
    public Object clone()
    {
       throw new UnsupportedOperationException("clone is not implemented");

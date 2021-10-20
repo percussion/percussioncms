@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation for the PSXActionLinkList DTD in BasicObjects.dtd.
@@ -62,7 +63,7 @@ public class PSActionLinkList extends PSCollectionComponent
     *    the appropriate type
     */
    public PSActionLinkList(Element sourceNode, IPSDocument parentDoc,
-                           ArrayList parentComponents)
+                           List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -81,6 +82,7 @@ public class PSActionLinkList extends PSCollectionComponent
    /**
     * @return a deep-copy clone of this vector.
     */
+   @Override
    public synchronized Object clone()
    {
       PSActionLinkList copy = (PSActionLinkList) super.clone();
@@ -101,7 +103,7 @@ public class PSActionLinkList extends PSCollectionComponent
     *
     * @param c a valid PSField, not <code>null</code>.
     */
-   public void copyFrom(PSActionLinkList c)
+   public synchronized void copyFrom(PSActionLinkList c)
    {
       try
       {
@@ -109,7 +111,7 @@ public class PSActionLinkList extends PSCollectionComponent
       }
       catch (IllegalArgumentException e)
       {
-         throw new IllegalArgumentException(e.getLocalizedMessage());
+         throw new IllegalArgumentException(e);
       }
    }
 
@@ -120,6 +122,7 @@ public class PSActionLinkList extends PSCollectionComponent
     * @return <code>true</code> if this and o are equal,
     *    <code>false</code> otherwise.
     */
+   @Override
    public boolean equals(Object o)
    {
       if (!(o instanceof PSActionLinkList))
@@ -158,7 +161,7 @@ public class PSActionLinkList extends PSCollectionComponent
 
    // see IPSComponent
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

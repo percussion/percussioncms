@@ -28,8 +28,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -56,7 +56,7 @@ public class PSTableSet extends PSComponent
    /**
     * Creates a new table set.
     *
-    * @param tableLocation the table locator, not <code>null</code>.
+    * @param tableLocator the table locator, not <code>null</code>.
     * @param tableRefs a collection of PSTableRef objects, not
     *    <code>null</code> or empty.
     */
@@ -79,7 +79,7 @@ public class PSTableSet extends PSComponent
     *    the appropriate type
     */
    public PSTableSet(Element sourceNode, IPSDocument parentDoc,
-                     ArrayList parentComponents)
+                     List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -254,7 +254,7 @@ public class PSTableSet extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -184,7 +184,7 @@ public class PSRelationship extends PSComponent
     *    the appropriate type
     */
    public PSRelationship(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
          throws PSUnknownNodeTypeException
    {
       this(sourceNode, parentDoc, parentComponents, null);
@@ -219,7 +219,7 @@ public class PSRelationship extends PSComponent
     *    the appropriate type
     */
    public PSRelationship(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents, PSRelationshipConfig config)
+      List parentComponents, PSRelationshipConfig config)
          throws PSUnknownNodeTypeException
    {
       m_config = config;
@@ -849,7 +849,7 @@ public class PSRelationship extends PSComponent
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, 
       @SuppressWarnings("unused") IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

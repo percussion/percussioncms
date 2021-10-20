@@ -32,6 +32,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -39,8 +40,6 @@ import java.util.Objects;
  * The PSBackEndCredential class defines access credentials for a
  * back-end data store. The credentials are then used by the server
  * whenever accessing the particular back-end.
- *
- * @see PSApplication#getDefaultBackEndCredentials
  *
  * @author      Tas Giakouminakis
  * @version      1.0
@@ -66,7 +65,7 @@ public class PSBackEndCredential extends PSComponent
     *                              appropriate type
     */
    public PSBackEndCredential(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -223,7 +222,7 @@ public class PSBackEndCredential extends PSComponent
 
    /**
     * Set the conditions which must be met for these credentials to be used.
-    * @param   cond  a collection of PSConditional objects
+    * @param   conds  a collection of PSConditional objects
     */
    public void setConditionals(PSCollection conds)
    {
@@ -363,14 +362,14 @@ public class PSBackEndCredential extends PSComponent
     *                               of type PSXBackEndCredential
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

@@ -28,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -58,7 +59,7 @@ public class PSFieldTranslation extends PSComponent
     *    the appropriate type
     */
    public PSFieldTranslation(Element sourceNode, IPSDocument parentDoc,
-                             ArrayList parentComponents)
+                             List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -75,7 +76,7 @@ public class PSFieldTranslation extends PSComponent
     * Get the field translations.
     *
     * @return the field translations, never
-    *    <code>null</code>, migt be empty. Garanteed only UDF's.
+    *    <code>null</code>, might be empty. Guaranteed only UDF's.
     */
    public PSExtensionCallSet getTranslations()
    {
@@ -158,7 +159,7 @@ public class PSFieldTranslation extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

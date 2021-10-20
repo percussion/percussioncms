@@ -26,7 +26,7 @@ package com.percussion.design.objectstore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is used to extract parameters through macros.
@@ -37,7 +37,7 @@ public class PSMacro extends PSNamedReplacementValue
     * Construct a Java object from it's XML representation.
     *
     * @param source the XML element node to construct this object from, not
-    *    <code>null</code>, see {@link toXml(Document)} for the expected XML
+    *    <code>null</code>, see {@link #toXml(Document)} for the expected XML
     *    format.
     * @param parent the Java object which is the parent of this object, may be
     *    <code>null</code>.
@@ -47,7 +47,7 @@ public class PSMacro extends PSNamedReplacementValue
     *    appropriate type.
     */
    public PSMacro(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(source, parent, parentComponents);
       fromXml(source, parent, parentComponents);
@@ -86,7 +86,7 @@ public class PSMacro extends PSNamedReplacementValue
     *    in the expected format.
     */
    public void fromXml(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super.fromXml(source, parent, parentComponents);
    }

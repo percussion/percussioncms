@@ -31,6 +31,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * The PSDateLiteral class is used to define a replacement value is a
@@ -66,7 +67,7 @@ public class PSDateLiteral extends PSLiteral
     *                              appropriate type
     */
    public PSDateLiteral(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -277,7 +278,7 @@ public class PSDateLiteral extends PSLiteral
     *                                        of type PSXDateLiteral
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

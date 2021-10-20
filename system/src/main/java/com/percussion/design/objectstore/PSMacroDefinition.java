@@ -28,7 +28,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is used to define a macro definition.
@@ -49,7 +49,7 @@ public class PSMacroDefinition extends PSComponent
     *    appropriate type.
     */
    public PSMacroDefinition(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(source, parent, parentComponents);
    }
@@ -173,7 +173,7 @@ public class PSMacroDefinition extends PSComponent
     *    in the expected format.
     */
    public void fromXml(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       PSXmlTreeWalker tree = new PSXmlTreeWalker(source);
       

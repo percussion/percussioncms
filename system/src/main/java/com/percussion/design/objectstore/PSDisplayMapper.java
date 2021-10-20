@@ -65,7 +65,7 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @throws ClassCastException if the class could be found.
     */
    public PSDisplayMapper(Element sourceNode, IPSDocument parentDoc,
-                          ArrayList parentComponents)
+                          List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -84,6 +84,7 @@ public class PSDisplayMapper extends PSCollectionComponent
    /**
     * @return a deep-copy clone of this vector.
     */
+   @Override
    public synchronized Object clone()
    {
       PSDisplayMapper copy = (PSDisplayMapper) super.clone();
@@ -151,6 +152,7 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @return <code>true</code> if this and o are equal,
     *    <code>false</code> otherwise.
     */
+   @Override
    public boolean equals(Object o)
    {
       if (!(o instanceof PSDisplayMapper))
@@ -194,7 +196,7 @@ public class PSDisplayMapper extends PSCollectionComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -631,7 +633,7 @@ public class PSDisplayMapper extends PSCollectionComponent
    private void mergeMapper(PSDisplayMapper targetDisplayMapper,
       boolean mergeDefault, Iterator targetDefaultUISet, List fieldExcludes,
       PSDisplayMapper sourceMapper, Iterator sourceDefaultUISet,
-      boolean mergeChild, ArrayList usedMappings)
+      boolean mergeChild, List usedMappings)
       throws PSSystemValidationException
    {
       /* walk the mapper, and for any "placeholders", create a new merged
@@ -1106,8 +1108,7 @@ public class PSDisplayMapper extends PSCollectionComponent
    }
 
    /**
-    * Worker method for {@link #demerge(boolean, Iterator, PSUIDefinition,
-    * PSFieldSet, List) demerge} method. Here lists the additional parameter
+    * Here lists the additional parameter
     * description. Please see the above link for more description.
     *
     * @param localMapper the mapper that needs to be demerged from source def,
@@ -1188,8 +1189,8 @@ public class PSDisplayMapper extends PSCollectionComponent
 
    /**
     * Demerges the target mapping from source mapping and recursively demerges
-    * all child mappers. See {@link #demerge(boolean, Iterator, PSUIDefinition,
-    * PSFieldSet, List) demerge} for more description demerging process.
+    * all child mappers. See {@link #demergeMapping(Iterator, PSDisplayMapping, boolean, Iterator, PSDisplayMapping)}
+    * for more description de-merging process.
     *
     * @param sourceDefaultUI The source default ui to merge uiset in source
     * mapping, may be <code>null</code>

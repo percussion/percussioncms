@@ -441,7 +441,7 @@ public class PSJdbcUtils
          strDBBackend = DERBY_DB_BACKEND;
       else if (driver.equals(MYSQL_DRIVER))
           strDBBackend = MYSQL_DB_BACKEND;
-      else if (driver.equals(JTDS_DRIVER) || driver.equalsIgnoreCase(MICROSOFT_DRIVER))
+      else if (driver.equals(JTDS_DRIVER) || driver.equalsIgnoreCase(MICROSOFT_DRIVER) || driver.equalsIgnoreCase(MICROSOFT_DRIVER))
          strDBBackend = JTDS_DB_BACKEND;
       else
       {

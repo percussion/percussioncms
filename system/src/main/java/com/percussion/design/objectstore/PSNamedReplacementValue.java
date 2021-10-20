@@ -29,7 +29,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The base class for the group of replacement values that use a name as a key
@@ -65,7 +65,7 @@ public abstract class PSNamedReplacementValue extends PSComponent
     * in the expected format.
     */
    public PSNamedReplacementValue(Element sourceNode, IPSDocument parentDoc,
-                                  ArrayList parentComponents)
+                                  List parentComponents)
          throws PSUnknownNodeTypeException
    {
       if (null == sourceNode)
@@ -115,7 +115,7 @@ public abstract class PSNamedReplacementValue extends PSComponent
     * in the expected format
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
          throws PSUnknownNodeTypeException
    {
       validateElementName(sourceNode, getNodeName());

@@ -259,16 +259,15 @@ public class PSSlot extends PSCmsComponent
     * @param parentComponents Unused.
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (null == sourceNode)
          throw new IllegalArgumentException("sourceNode must be supplied");
-      //todo:
    }
 
    /**
-    * See {@link #PSSlot(String name, int id, String description)
+    * See {@link #PSSlot(String, int, String, Map)} 
     * ctor} for description. Set in ctor or <code>toXml</code> method.
     * Never <code>null</code> or empty after construction.
     */

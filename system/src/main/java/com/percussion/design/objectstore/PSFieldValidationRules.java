@@ -32,6 +32,7 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,7 +53,7 @@ public class PSFieldValidationRules extends PSComponent
     *    the appropriate type
     */
    public PSFieldValidationRules(Element sourceNode, IPSDocument parentDoc,
-                                 ArrayList parentComponents)
+                                 List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -263,7 +264,7 @@ public class PSFieldValidationRules extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

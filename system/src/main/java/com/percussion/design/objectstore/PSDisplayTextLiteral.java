@@ -30,7 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a string literal that displays a different value in the user
@@ -77,7 +77,7 @@ public class PSDisplayTextLiteral extends PSLiteral
     * appropriate type or if sourceNode is <code>null</code>
     */
    public PSDisplayTextLiteral(Element sourceNode, IPSDocument parentDoc,
-                               ArrayList parentComponents)
+                               List parentComponents)
          throws PSUnknownNodeTypeException
    {
       fromXml( sourceNode, parentDoc, parentComponents );
@@ -106,7 +106,7 @@ public class PSDisplayTextLiteral extends PSLiteral
 
    // see interface for description; see toXml() for the format
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
          throws PSUnknownNodeTypeException
    {
       validateElementName( sourceNode, XML_NODE_NAME );

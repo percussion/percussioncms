@@ -67,7 +67,7 @@ public class PSAttribute extends PSDatabaseComponentCollection
     *                              appropriate type or null
     */
    public PSAttribute(Element sourceNode,
-      IPSDocument parentDoc, ArrayList<?> parentComponents)
+      IPSDocument parentDoc, List<?> parentComponents)
       throws PSUnknownNodeTypeException
    {
       // This constructor takes an arraylist because of the specification
@@ -349,11 +349,11 @@ public class PSAttribute extends PSDatabaseComponentCollection
     * @throws   PSUnknownNodeTypeException if the XML element node is not
     *                                        of type PSXRole
     *
-    * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList) for the
+    * @see IPSComponent#fromXml(Element, IPSDocument, List) for the
     * interface description
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -363,7 +363,7 @@ public class PSAttribute extends PSDatabaseComponentCollection
       }
 
       //make sure we got the Attribute type node
-      if (false == ms_NodeType.equals(sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

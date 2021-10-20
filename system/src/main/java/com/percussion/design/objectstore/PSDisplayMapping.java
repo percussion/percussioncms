@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for the PSXDisplayMapping DTD in BasicObjects.dtd.
@@ -67,7 +68,7 @@ public class PSDisplayMapping extends PSComponent
     *    the appropriate type
     */
    public PSDisplayMapping(Element sourceNode, IPSDocument parentDoc,
-                           ArrayList parentComponents)
+                           List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -222,7 +223,7 @@ public class PSDisplayMapping extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

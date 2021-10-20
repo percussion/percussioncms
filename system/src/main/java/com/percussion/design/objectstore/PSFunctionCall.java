@@ -75,11 +75,11 @@ public class PSFunctionCall
     * <code>null</code> or the XML element node is not of the appropriate type
     */
    public PSFunctionCall(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       super(sourceNode, parentDoc, parentComponents);
-      m_parentComponents = new ArrayList();
+      m_parentComponents = new ArrayList<>();
       if (parentComponents != null)
          m_parentComponents.addAll(parentComponents);
    }
@@ -103,7 +103,7 @@ public class PSFunctionCall
     */
    public PSFunctionCall(
       String dbFuncName, PSFunctionParamValue[] params,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
    {
       super(dbFuncName);
       parentComponents = updateParentList(parentComponents);
@@ -508,7 +508,7 @@ public class PSFunctionCall
     * {@link #toXml(Document) toXml()}
     */
    public void fromXml(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -934,8 +934,8 @@ public class PSFunctionCall
    /**
     * The tag name of the root element from which this object can be
     * constructed.
-    * @see toXml(Document)
-    * @see getNodename()
+    * @see #toXml(Document)
+    * @see #getNodeName()
     */
    public static final String XML_NODE_NAME = "PSXFunctionCall";
 

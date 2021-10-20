@@ -35,6 +35,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -69,7 +70,7 @@ public class PSResultPage extends PSComponent
     *                                          appropriate type
     */
    public PSResultPage(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -266,7 +267,7 @@ public class PSResultPage extends PSComponent
     * component. Derived classes should implement this method for their data,
     * calling the base class method first.
     *
-    * @param pipe a valid PSResultPage. 
+    * @param page a valid PSResultPage.
     */
    public void copyFrom( PSResultPage page )
    {
@@ -380,8 +381,8 @@ public class PSResultPage extends PSComponent
 
       // conditionals are a collection
       if (m_conditionals != null) {
-         for (int i = 0; i < m_conditionals.size(); i++) {
-            comp = (IPSComponent)m_conditionals.get(i);
+         for (Object m_conditional : m_conditionals) {
+            comp = (IPSComponent) m_conditional;
             if (comp != null)
                root.appendChild(comp.toXml(doc));
          }
@@ -429,7 +430,7 @@ public class PSResultPage extends PSComponent
     *                                                   of type PSXResultPage
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

@@ -28,8 +28,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A collection of PSCloneHandlerConfig objects. It creates or
@@ -51,7 +51,7 @@ public class PSCloneHandlerConfigSet extends PSCollectionComponent
     *    the appropriate type
     */
    public PSCloneHandlerConfigSet(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(PSCloneHandlerConfig.class);
 
@@ -86,7 +86,7 @@ public class PSCloneHandlerConfigSet extends PSCollectionComponent
    
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

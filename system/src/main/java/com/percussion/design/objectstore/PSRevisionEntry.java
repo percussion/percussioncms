@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 
 import java.text.ParsePosition;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -278,7 +279,7 @@ public class PSRevisionEntry extends PSComponent
     *                                        of type PSXRevisionEntry
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

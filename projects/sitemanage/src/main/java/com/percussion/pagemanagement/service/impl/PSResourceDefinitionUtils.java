@@ -62,7 +62,6 @@ public class PSResourceDefinitionUtils
          * It should take less than n*n times to sort the deps.
          * If it takes longer we have cycle(s).
          */
-        //FB: UC_USELESS_CONDITION  NC 1-16-16
         int cutOff = (size - 1) * (size - 1) + 4;
         
         List<T> resourceBag = new ArrayList<>();

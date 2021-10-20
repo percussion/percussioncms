@@ -27,7 +27,7 @@ package com.percussion.design.objectstore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSFunctionParamValue class is used to set the value associated with a
@@ -58,7 +58,7 @@ public class PSFunctionParamValue
     * <code>null</code> or the XML element node is not of the appropriate type
     */
    public PSFunctionParamValue(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       super(sourceNode, parentDoc, parentComponents);
@@ -69,8 +69,6 @@ public class PSFunctionParamValue
     *
     * @param value the value to use at run-time for the parameter, may not be
     * <code>null</code>
-    *
-    * @see PSAbstractParamValue#setValue()
     */
    public PSFunctionParamValue(IPSReplacementValue value)
    {
@@ -120,7 +118,7 @@ public class PSFunctionParamValue
     * @return the name of the root node of the XML document returned by a call
     * to {@link #toXml(Document) toXml()} method.
     *
-    * @see toXml(Document)
+    * @see #toXml(Document)
     */
    public String getNodeName()
    {
@@ -176,8 +174,8 @@ public class PSFunctionParamValue
    /**
     * The tag name of the root element from which this object can be
     * constructed.
-    * @see toXml(Document)
-    * @see getNodename()
+    * @see #toXml(Document)
+    * @see #getNodeName()
     */
    public static final String NODE_NAME = "PSXFunctionParamValue";
 }

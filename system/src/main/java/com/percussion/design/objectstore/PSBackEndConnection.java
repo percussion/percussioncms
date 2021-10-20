@@ -30,7 +30,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -42,7 +42,6 @@ import java.util.Objects;
  * overhead of opening a connection.
  *
  * @see         PSServerConfiguration
- * @see         PSServerConfiguration#getBackEndConnections
  *
  * @author      Tas Giakouminakis
  * @version    1.0
@@ -67,7 +66,7 @@ public class PSBackEndConnection extends PSComponent
     *                              appropriate type
     */
    public PSBackEndConnection(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -499,7 +498,7 @@ public class PSBackEndConnection extends PSComponent
      * type PSXBackEndConnection
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

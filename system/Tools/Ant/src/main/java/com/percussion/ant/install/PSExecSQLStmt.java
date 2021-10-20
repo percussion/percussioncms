@@ -162,6 +162,7 @@ public class PSExecSQLStmt extends PSAction
             else if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL_DRIVER))
                dbStrStmt = sqlMysql;
             else if (driver.equalsIgnoreCase(PSJdbcUtils.JTDS_DRIVER) ||
+                    driver.equalsIgnoreCase(PSJdbcUtils.MICROSOFT_DRIVER) ||
                     driver.equalsIgnoreCase(PSJdbcUtils.SPRINTA))
                dbStrStmt = sqlSqlServer;
             else if (driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY))
@@ -183,28 +184,11 @@ public class PSExecSQLStmt extends PSAction
             try (Statement stmt = conn.createStatement()) {
                stmt.execute(strStmt);
             } catch (Exception e) {
-               PSLogger.logError(e);
+               handleException(e);
             }
 
          } catch (Exception ex) {
-            if (!isFailonerror()) {
-               if (!isSilenceErrors()) {
-                  PSLogger.logError(ex.getMessage());
-                  if (getPrintExceptionStackTrace()) {
-                     PSLogger.logError(ex);
-                  }
-               }
-               return;
-            } else {
-               if (!isSilenceErrors()) {
-                  PSLogger.logError(ex.getMessage());
-                  if (getPrintExceptionStackTrace()) {
-                     PSLogger.logError(ex);
-                  }
-               }
-
-               throw new BuildException(ex);
-            }
+           handleException(ex);
          } finally {
             if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER))
                InstallUtil.shutDownDerby();
@@ -219,6 +203,27 @@ public class PSExecSQLStmt extends PSAction
       } catch (PSJdbcTableFactoryException e) {
          log.error(e.getMessage());
          log.debug(e.getMessage(), e);
+      }
+   }
+
+   private void handleException(Exception ex){
+      if (!isFailonerror()) {
+         if (!isSilenceErrors()) {
+            PSLogger.logError(ex.getMessage());
+            if (getPrintExceptionStackTrace()) {
+               PSLogger.logError(ex);
+            }
+         }
+         return;
+      } else {
+         if (!isSilenceErrors()) {
+            PSLogger.logError(ex.getMessage());
+            if (getPrintExceptionStackTrace()) {
+               PSLogger.logError(ex);
+            }
+         }
+
+         throw new BuildException(ex);
       }
    }
 

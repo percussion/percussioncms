@@ -355,7 +355,7 @@ public abstract class PSDatabaseComponent
     * @throws PSDatabaseComponentException If there are any problems
     * loading the component
     *
-    * @throws PSUnkownNodeTypeException if the component can not instantiate
+    * @throws PSUnknownNodeTypeException if the component can not instantiate
     * itself from the supplied XML
     */
    public static IPSDatabaseComponent newComponentInstance(

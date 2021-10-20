@@ -27,8 +27,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * A collection of PSRelationship objects. See PSXRelationshipSet.dtd.
@@ -77,7 +77,7 @@ public class PSRelationshipSet extends PSCollectionComponent
     *    the appropriate type
     */
    public PSRelationshipSet(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(PSRelationship.class);
 
@@ -86,7 +86,7 @@ public class PSRelationshipSet extends PSCollectionComponent
 
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

@@ -26,7 +26,7 @@ package com.percussion.design.objectstore;
 
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSHtmlParameter class is used to define a replacement value is a
@@ -72,7 +72,7 @@ public class PSHtmlParameter extends PSNamedReplacementValue
     *   appropriate type
     */
    public PSHtmlParameter(Element sourceNode, IPSDocument parentDoc,
-                          ArrayList parentComponents)
+                          List parentComponents)
          throws PSUnknownNodeTypeException
    {
       super( sourceNode, parentDoc, parentComponents );

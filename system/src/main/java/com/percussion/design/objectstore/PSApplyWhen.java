@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -57,7 +58,7 @@ public class PSApplyWhen extends PSCollectionComponent
     *    the appropriate type
     */
    public PSApplyWhen(Element sourceNode, IPSDocument parentDoc,
-                      ArrayList parentComponents)
+                      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -124,7 +125,7 @@ public class PSApplyWhen extends PSCollectionComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

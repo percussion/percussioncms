@@ -28,6 +28,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 /**
  * The PSLiteralSet class is used to maintain a grouping of literals. The
  * number of objects permitted can be limited, such as when using a
@@ -61,7 +63,7 @@ public class PSLiteralSet extends PSCollectionComponent implements IPSReplacemen
     *                              appropriate type
     */
    public PSLiteralSet(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this(PSLiteral.class);
@@ -132,7 +134,7 @@ public class PSLiteralSet extends PSCollectionComponent implements IPSReplacemen
    }
 
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
 
    {

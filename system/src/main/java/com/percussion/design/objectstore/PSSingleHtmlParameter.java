@@ -27,7 +27,7 @@ package com.percussion.design.objectstore;
 
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSSingleHtmlParameter class is used to define a replacement value that is
@@ -49,7 +49,7 @@ public class PSSingleHtmlParameter extends PSHtmlParameter
     *   appropriate type
     */
    public PSSingleHtmlParameter(Element sourceNode, IPSDocument parentDoc,
-                                ArrayList parentComponents)
+                                List parentComponents)
          throws PSUnknownNodeTypeException
    {
       super( sourceNode, parentDoc, parentComponents );

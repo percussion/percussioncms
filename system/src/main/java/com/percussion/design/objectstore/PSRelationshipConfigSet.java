@@ -52,7 +52,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
     *    the appropriate type
     */
    public PSRelationshipConfigSet(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       this();
 
@@ -69,7 +69,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
 
    /**
     * Convenience constructor, calls
-    * {@link #PSRelationshipConfigSet(Element, IPSDocument, ArrayList) 
+    * {@link #PSRelationshipConfigSet(Element, IPSDocument, List)
     * PSRelationshipConfigSet(Element, null, null)}
     */
    public PSRelationshipConfigSet(Element sourceNode)
@@ -333,7 +333,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
     */
    @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
@@ -411,7 +411,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
     *    the appropriate type
     */
    protected PSRelationshipConfig createMemberObject(Element sourceNode,
-         IPSDocument parentDoc, ArrayList parentComponents)
+         IPSDocument parentDoc, List parentComponents)
          throws PSUnknownNodeTypeException
    {
       return new PSRelationshipConfig(sourceNode, parentDoc, parentComponents);

@@ -211,7 +211,7 @@ public class PSCatalogResultColumn implements IPSDeployComponent
          throw new IllegalArgumentException("sourceNode may not be null");
          
       //make sure we got the correct root node tag
-      if (false == XML_NODE_NAME.equals (sourceNode.getNodeName()))
+      if (!XML_NODE_NAME.equals(sourceNode.getNodeName()))
       {
          Object[] args = { XML_NODE_NAME, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

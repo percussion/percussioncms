@@ -31,9 +31,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -131,7 +131,7 @@ public class PSSearchConfig extends PSComponent
    public PSSearchConfig(
       Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this(); // Setup defaults
@@ -150,7 +150,7 @@ public class PSSearchConfig extends PSComponent
    /**
     * Generates an element that conforms to the following dtd. All optional
     * and implied values are added when the node is created, but they are not
-    * required when calling the {@link #fromXml(Element, IPSDocument, ArrayList) 
+    * required when calling the {@link #fromXml(Element, IPSDocument, List)
     * fromXml} method.
     * <p>See the interface for further details.
     * 
@@ -263,10 +263,11 @@ public class PSSearchConfig extends PSComponent
     * @param sourceNode Expected to comply w/ the dtd defined in the {@link 
     * #toXml(Document) toXml} method.
     */
+   @Override
    public void fromXml(
       Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       PSXmlTreeWalker walker = new PSXmlTreeWalker(sourceNode);
@@ -435,6 +436,7 @@ public class PSSearchConfig extends PSComponent
    }
 
    //see base class
+   @Override
    public Object clone()
    {
       return new PSSearchConfig(this);
@@ -446,6 +448,7 @@ public class PSSearchConfig extends PSComponent
     * this method. The custom property names and values are considered case-
     * sensitive. 
     */
+   @Override
    public boolean equals(Object o)
    {
       if (!(o instanceof PSSearchConfig))

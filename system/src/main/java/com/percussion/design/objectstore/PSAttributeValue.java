@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSAttributeValue class is used to store an attribute value.
@@ -58,7 +58,7 @@ public class PSAttributeValue extends PSDatabaseComponent
     *                              appropriate type
     */
    PSAttributeValue(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       // Arraylist is used in this ctor because of the definition
@@ -204,11 +204,11 @@ public class PSAttributeValue extends PSDatabaseComponent
     * @throws   PSUnknownNodeTypeException if the XML element node is not
     *                                        of type PSXRole
     *
-    * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList) for the 
+    * @see IPSComponent#fromXml(Element, IPSDocument, List) for the
     * interface description
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -52,7 +52,7 @@ public class PSManagedLinksPostProcessor extends PSDefaultExtension implements I
 {
 
     private IPSManagedLinkService service;
-    public static String PERC_UPDATE_NEW_MANAGED_LINKS = "perc_updateNewManagedLinks";
+    public static final String PERC_UPDATE_NEW_MANAGED_LINKS = "perc_updateNewManagedLinks";
 
     
     /* (non-Javadoc)

@@ -29,7 +29,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a content type from the content management system.
@@ -86,7 +86,7 @@ public class PSContentType extends PSComponent
     *    or <code>null</code>
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       validateElementName( sourceNode, XML_NODE_NAME );
 

@@ -28,6 +28,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 
 /**
  * The PSDataMapper class provides a way to map XML elements and attributes
@@ -67,7 +69,7 @@ public class PSDataMapper extends PSCollectionComponent
     *                              appropriate type
     */
    public PSDataMapper(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -143,7 +145,7 @@ public class PSDataMapper extends PSCollectionComponent
     *                                        of type PSXDataMapper
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -154,7 +156,7 @@ public class PSDataMapper extends PSCollectionComponent
             throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-         if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+         if (!ms_NodeType.equals(sourceNode.getNodeName()))
          {
             Object[] args = { ms_NodeType, sourceNode.getNodeName() };
             throw new PSUnknownNodeTypeException(

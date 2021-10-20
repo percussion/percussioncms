@@ -23,14 +23,15 @@
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -59,10 +60,10 @@ public class PSDirectorySet extends PSCollectionComponent
    /**
     * Constucts an empty property set.
     * 
-    * @param name the name of this property set, see {@link setName(String)} for
+    * @param name the name of this property set, see {@link #setName(String)} for
     *    more information.
     * @param userAttributeName the attribute name under which users are found
-    *    in this directory set, see {@link setUserAttributeName(String)} for
+    *    in this directory set
     *    more information.
     */
    public PSDirectorySet(String name, String userAttributeName)
@@ -186,7 +187,7 @@ public class PSDirectorySet extends PSCollectionComponent
 
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
@@ -436,7 +437,7 @@ public class PSDirectorySet extends PSCollectionComponent
    /**
     * A map that holds all required attribute names. All attribute names are 
     * initialized to <code>null<code> and can be set through the appropriate
-    * set method such as {@link setEmailAttributeName(String)}. Initialized
+    * set method such as {@link #setEmailAttributeName(String)}. Initialized
     * while constructed, never <code>null<code> or empty after that.
     */
    private Map m_requiredAttributeNames = null;

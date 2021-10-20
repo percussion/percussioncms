@@ -28,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for the PSXParam DTD in BasicObjects.dtd.
@@ -59,7 +60,7 @@ public class PSParam extends PSComponent implements IPSParameter
     *    the appropriate type
     */
    public PSParam(Element sourceNode, IPSDocument parentDoc,
-                  ArrayList parentComponents)
+                  List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -73,6 +74,7 @@ public class PSParam extends PSComponent implements IPSParameter
    }
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSParam copy = (PSParam) super.clone();
@@ -251,7 +253,7 @@ public class PSParam extends PSComponent implements IPSParameter
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

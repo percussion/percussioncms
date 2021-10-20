@@ -41,6 +41,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -135,7 +136,7 @@ public class PSContentEditor extends PSDataSet
     *            appropriate type
     */
    public PSContentEditor(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException
+         List parentComponents) throws PSUnknownNodeTypeException
    {
       this(sourceNode, parentDoc, parentComponents,true);
    }
@@ -155,7 +156,7 @@ public class PSContentEditor extends PSDataSet
     * appropriate type
     */
    public PSContentEditor(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents, boolean runUpdater)
+         List parentComponents, boolean runUpdater)
       throws PSUnknownNodeTypeException
    {
       /*
@@ -720,7 +721,7 @@ public class PSContentEditor extends PSDataSet
     */
    @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException
+         List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

@@ -35,6 +35,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A collection of PSAaRelationship objects. See PSXAaRelationshipList.dtd. The
@@ -67,7 +68,7 @@ public class PSAaRelationshipList
     *    the appropriate type
     */
    public PSAaRelationshipList(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(PSRelationship.class);
 
@@ -76,7 +77,7 @@ public class PSAaRelationshipList
 
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

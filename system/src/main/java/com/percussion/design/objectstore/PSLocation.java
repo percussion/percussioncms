@@ -64,7 +64,7 @@ public class PSLocation extends PSComponent
     *    the appropriate type
     */
    public PSLocation(Element sourceNode, IPSDocument parentDoc,
-                     ArrayList parentComponents)
+                     List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -296,7 +296,7 @@ public class PSLocation extends PSComponent
 
    // see IPSComponent
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -32,6 +32,7 @@ import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,7 +53,7 @@ public class PSChoiceFilter extends PSComponent
     *    the appropriate type
     */
    public PSChoiceFilter(Element sourceNode, IPSDocument parentDoc,
-                         ArrayList parentComponents)
+                         List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -66,7 +67,7 @@ public class PSChoiceFilter extends PSComponent
     */
    public PSChoiceFilter(PSCollection dependentFields, PSUrlRequest lookup)
    {
-      if (dependentFields == null || dependentFields.size()<=0)
+      if (dependentFields == null || dependentFields.isEmpty())
          throw new IllegalArgumentException("dependentFields cannot be null or empty");
 
       if (lookup == null)
@@ -80,7 +81,7 @@ public class PSChoiceFilter extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -313,7 +314,7 @@ public class PSChoiceFilter extends PSComponent
        * @see IPSComponent
        */
       public void fromXml(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents)
+         List parentComponents)
          throws PSUnknownNodeTypeException
       {
          if (sourceNode == null)
@@ -350,6 +351,7 @@ public class PSChoiceFilter extends PSComponent
        * Validates that all of the required items are present.
        * See IPSComponent.
        */
+      @Override
       public void validate(IPSValidationContext context)
          throws PSSystemValidationException
       {

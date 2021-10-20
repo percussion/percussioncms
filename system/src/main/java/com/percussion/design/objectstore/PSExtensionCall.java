@@ -66,7 +66,7 @@ public class PSExtensionCall extends PSComponent
     */
    public PSExtensionCall(Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents
+      List parentComponents
       )
       throws PSUnknownNodeTypeException
    {
@@ -116,7 +116,7 @@ public class PSExtensionCall extends PSComponent
    /**
     * Shallow-copy constructor.
     *
-    * @param call object to shallow-copy from; may not be <code>null</code>.
+    * @param source call object to shallow-copy from; may not be <code>null</code>.
     */
    protected PSExtensionCall(PSExtensionCall source)
    {
@@ -337,15 +337,15 @@ public class PSExtensionCall extends PSComponent
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSExtensionCall copy = (PSExtensionCall) super.clone();
       // PSExtensionRef is immutable
       copy.m_params = new ArrayList( m_params.size() );
-      for (Iterator iter = m_params.iterator(); iter.hasNext();)
-      {
-         PSExtensionParamValue value = (PSExtensionParamValue) iter.next();
-         copy.m_params.add( value.clone() );
+      for (Object m_param : m_params) {
+         PSExtensionParamValue value = (PSExtensionParamValue) m_param;
+         copy.m_params.add(value.clone());
       }
       return copy;
    }
@@ -437,7 +437,7 @@ public class PSExtensionCall extends PSComponent
     * @exception   PSUnknownNodeTypeException if the XML element node is not
     *                                      of type PSXExtensionCall
     */
-   public void fromXml(Element sourceNode, IPSDocument parentDoc, ArrayList parentComponents)
+   public void fromXml(Element sourceNode, IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

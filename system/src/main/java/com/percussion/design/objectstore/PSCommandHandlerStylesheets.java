@@ -33,6 +33,7 @@ import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -87,7 +88,7 @@ public class PSCommandHandlerStylesheets extends PSComponent
     *    the appropriate type
     */
    public PSCommandHandlerStylesheets(Element sourceNode, IPSDocument parentDoc,
-                                      ArrayList parentComponents)
+                                      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -155,7 +156,7 @@ public class PSCommandHandlerStylesheets extends PSComponent
     * @param name a valid command handler name, never
     *    <code>null</code> or empty.
     * @param stylesheet the default stylesheet, never <code>null</code>.
-    * @throws IllegalArgumentExcption if the provided command handler name is
+    * @throws IllegalArgumentException if the provided command handler name is
     *    <code>null</code> or empty or if the stylesheet is <code>null</code>.
     */
    @SuppressWarnings("unchecked")
@@ -213,7 +214,7 @@ public class PSCommandHandlerStylesheets extends PSComponent
     *    never <code>null</code>, must have at least one entry, the last
     *    entry is the default stylesheet with a condition always
     *    <code>true</code>.
-    * @throws IllegalArgumentExcption if the provided command handler name is
+    * @throws IllegalArgumentException if the provided command handler name is
     *    <code>null</code> or empty or if the stylesheet collection is
     *    <code>null</code> or empty.
     */
@@ -234,7 +235,7 @@ public class PSCommandHandlerStylesheets extends PSComponent
     *    <code>null</code> or empty.
     * @param stylesheets a collection of PSConditionalStylesheet objects,
     *    not <code>null</code>, might be empty.
-    * @throws IllegalArgumentExcption if the provided command handler name is
+    * @throws IllegalArgumentException if the provided command handler name is
     *    <code>null</code> or empty or if the stylesheet collection is
     *    <code>null</code> or if no command handler was found for the provided
     *    name.
@@ -348,7 +349,7 @@ public class PSCommandHandlerStylesheets extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

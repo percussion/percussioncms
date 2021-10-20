@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -75,7 +75,7 @@ public abstract class PSReplacementValueFactory
     * is not a known replacement value, or if a reflection error occurs.
     */
    public static IPSReplacementValue getReplacementValueFromXml(
-      IPSDocument parentDoc, ArrayList parentComponents,
+      IPSDocument parentDoc, List parentComponents,
       Element node, String xmlNodeName, String xmlVarName)
       throws PSUnknownNodeTypeException
    {
@@ -101,7 +101,7 @@ public abstract class PSReplacementValueFactory
          Class[] constrArgs = {
             org.w3c.dom.Element.class,
             com.percussion.design.objectstore.IPSDocument.class,
-            java.util.ArrayList.class };
+            java.util.List.class };
 
          Constructor constr =
             replValueClass.getDeclaredConstructor(constrArgs);
@@ -110,7 +110,7 @@ public abstract class PSReplacementValueFactory
 
          // we need to special case XML fields as they're not always real
          // XML fields
-         if ((value != null) && (value instanceof PSXmlField)) {
+         if (value instanceof PSXmlField) {
             PSXmlField xmlField = (PSXmlField)value;
             value = getReplacementValueFromXmlFieldName(xmlField.getName());
          }

@@ -26,8 +26,8 @@ package com.percussion.design.objectstore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -243,13 +243,13 @@ public class PSJavaPlugin implements IPSJavaPlugin
    //Implementation of the intreface method
    public boolean isStaticVersioning()
    {
-      return m_versioningType.equalsIgnoreCase(VERSIONING_TYPE_STATIC)?true:false;
+      return m_versioningType.equalsIgnoreCase(VERSIONING_TYPE_STATIC);
    }
 
    //Implementation of the interface method
    public void fromXml(Element sourceNode, 
       @SuppressWarnings("unused") IPSDocument parentDoc, 
-      @SuppressWarnings("unused") ArrayList parentComponents)
+      @SuppressWarnings("unused") List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if(sourceNode == null)

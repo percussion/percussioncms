@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * The PSApplicationFile object represents the file data of a request by
@@ -232,15 +233,12 @@ public class PSApplicationFile extends PSFile
     */
    @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       String isFolderStr = 
          sourceNode.getAttribute(ATTR_IS_FOLDER);
-      if(isFolderStr == null || !isFolderStr.equals("true"))
-         setIsFolder(false);
-      else
-         setIsFolder(true);
+      setIsFolder(isFolderStr != null && isFolderStr.equals("true"));
       super.fromXml(sourceNode, parentDoc, parentComponents, ms_nodeType);
    }
    

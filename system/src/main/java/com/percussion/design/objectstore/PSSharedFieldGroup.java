@@ -28,8 +28,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation for the PSXSharedFieldGroup DTD in
@@ -68,7 +68,7 @@ public class PSSharedFieldGroup extends PSComponent
     *    the appropriate type
     */
    public PSSharedFieldGroup(Element sourceNode, IPSDocument parentDoc,
-                             ArrayList parentComponents)
+                             List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -369,7 +369,7 @@ public class PSSharedFieldGroup extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

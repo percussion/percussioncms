@@ -982,8 +982,14 @@ public class PSSecurityFilter implements Filter
       if (!requestHeaderMatchesRequest(reqURI, request.getHeader("Referer")))
          return true;
 
+      // If host exists and does not match request then go to login. For host header injection issue
+      if (!requestHeaderMatchesRequest(reqURI, request.getHeader("Host")))
+         return true;
+
       // If Origin exists and does not match request then go to login.
       return !requestHeaderMatchesRequest(reqURI, request.getHeader("Origin"));
+
+
    }
    
    /**
@@ -1000,7 +1006,23 @@ public class PSSecurityFilter implements Filter
       
       if (!reqHeader.isEmpty() && StringUtils.isNotBlank(reqHeader))
       {
+            String requestURIScheme = requestURI.getScheme();
+
+            //if reqHeader value is 127.0.0.1:9992 it gives invalid character exception for scheme while forming the URI
+            if("http".equalsIgnoreCase(requestURIScheme) && !reqHeader.contains("http")){
+               reqHeader = requestURI.getScheme()+"://"+reqHeader;
+            }else if("https".equalsIgnoreCase(requestURIScheme) && !reqHeader.contains("https")){
+               reqHeader = requestURI.getScheme()+"://"+reqHeader;
+            }
             URI headerURI = URI.create(SecureStringUtils.stripUrlParams(reqHeader));
+
+            //In case of host header the scheme http or https is not present in the URI.
+            if("http".equalsIgnoreCase(requestURIScheme) && !"http".equalsIgnoreCase(headerURI.getScheme())){
+               headerURI = URI.create(requestURI.getScheme()+"://"+SecureStringUtils.stripUrlParams(reqHeader));
+            }else if("https".equalsIgnoreCase(requestURIScheme) && !"https".equalsIgnoreCase(headerURI.getScheme())){
+               headerURI = URI.create(requestURI.getScheme()+"://"+SecureStringUtils.stripUrlParams(reqHeader));
+            }
+
          return requestURI.getScheme().equals(headerURI.getScheme()) &&
                  requestURI.getHost().equals(headerURI.getHost()) &&
                  (requestURI.getPort() == headerURI.getPort());

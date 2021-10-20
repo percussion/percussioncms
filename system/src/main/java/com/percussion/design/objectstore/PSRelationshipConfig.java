@@ -52,7 +52,6 @@ import java.util.Set;
  * sys_RelationshipConfigLookup.dtd. The contents of RelationshipConfig
  * elements are expanded using the sys_RelationshipConfig.dtd.
  */
-@SuppressWarnings("serial")
 public class PSRelationshipConfig extends PSComponent
    implements IPSCatalogSummary, IPSCloneTuner
 {
@@ -69,13 +68,13 @@ public class PSRelationshipConfig extends PSComponent
     *    the appropriate type
     */
    public PSRelationshipConfig(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
 
    /**
-    * Simply call {@link #PSRelationshipConfig(Element, IPSDocument, ArrayList)
+    * Simply call {@link #PSRelationshipConfig(Element, IPSDocument, List)
     *  PSRelationshipConfig(Element, null, null)}
     */
    public PSRelationshipConfig(Element sourceNode) 
@@ -994,8 +993,9 @@ public class PSRelationshipConfig extends PSComponent
    }
 
    /** @see IPSComponent */
+   @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

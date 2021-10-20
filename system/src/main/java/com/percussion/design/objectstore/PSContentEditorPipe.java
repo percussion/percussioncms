@@ -32,8 +32,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,7 +78,7 @@ public class PSContentEditorPipe  extends PSPipe
     *    the appropriate type
     */
    public PSContentEditorPipe(Element sourceNode, IPSDocument parentDoc,
-                              ArrayList parentComponents)
+                              List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -177,7 +177,7 @@ public class PSContentEditorPipe  extends PSPipe
     * But the control dependencies are added to the input data extensions during
     * toXml. Inorder to avoid confusion, this method has been overwritten to
     * throw UnsupportedOperationException exception. 
-    * Use {@link setContentEditorInputDataExtensions()} to set the input data
+    * Use {@link #setContentEditorInputDataExtensions(PSExtensionCallSet)} to set the input data
     * extensions. 
     */
    @Override
@@ -187,7 +187,7 @@ public class PSContentEditorPipe  extends PSPipe
    }
    
    /**
-    * Same as {@link PSPipe#setInputDataExtensions()} to set just input
+    * Same as {@link PSPipe#setInputDataExtensions(PSExtensionCallSet)} to set just input
     * data extesnions. The control dependency extensions will be added to
     * input data extensions during the toXML() of this object.
     */
@@ -290,7 +290,7 @@ public class PSContentEditorPipe  extends PSPipe
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
@@ -597,7 +597,7 @@ public class PSContentEditorPipe  extends PSPipe
    /**
     * Manages the controls dependencies based on the pipe's user properties,
     * never <code>null</code>, modified by 
-    * {@link #fromXml(Element, IPSDocument, ArrayList)}.
+    * {@link #fromXml(Element, IPSDocument, List)}.
     */
    private PSControlDependencyMap m_controlDepMap = 
       new PSControlDependencyMap();

@@ -28,6 +28,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 
 /**
  * The PSErrorWebPages class defines the pages which will be returned
@@ -72,7 +74,7 @@ public class PSErrorWebPages extends PSCollectionComponent
     *                              appropriate type
     */
    public PSErrorWebPages(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -209,9 +211,8 @@ public class PSErrorWebPages extends PSCollectionComponent
       //convert all PSCustormErros to xml
       PSCustomError      customError;
       int size = size();
-      for (int i=0; i < size; i++)
-      {
-         customError = (PSCustomError)get(i);
+      for (Object o : this) {
+         customError = (PSCustomError) o;
          root.appendChild(customError.toXml(doc));
       }
 
@@ -227,7 +228,7 @@ public class PSErrorWebPages extends PSCollectionComponent
     *                                        of type PSXErrorWebPages
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

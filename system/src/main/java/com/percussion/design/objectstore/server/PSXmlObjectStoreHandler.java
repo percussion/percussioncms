@@ -68,6 +68,7 @@ import com.percussion.design.objectstore.legacy.PSConfigurationCtx;
 import com.percussion.design.objectstore.legacy.PSTableLocatorConverter;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSRuntimeException;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
@@ -236,7 +237,7 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
       m_LogHandler = new com.percussion.log.PSLogHandler(logger);
 
       /* build the hash of request handler methods */
-      m_requestHandlerMethods = new HashMap();
+      m_requestHandlerMethods = new HashMap<>();
 
       // set up legacy converters
       PSComponent.setComponentConverters(createComponentConverters());
@@ -263,11 +264,10 @@ public class PSXmlObjectStoreHandler extends PSObjectFactory
             }
             catch (IllegalArgumentException ex)
             {
-               Object[] args = new Object[] { app.getName(), 
-                  ex.getLocalizedMessage() };
+               Object[] args = new Object[] { app.getName(),
+                       PSExceptionUtils.getMessageForLog(ex) };
                PSLogManager.write(new PSLogServerWarning(APP_LOAD_EXCEPTION,
                   args, true, "ObjectStore"));
-               continue;
             }
          }
       } // end loop over all apps

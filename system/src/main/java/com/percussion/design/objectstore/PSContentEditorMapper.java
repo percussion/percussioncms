@@ -83,7 +83,7 @@ public class PSContentEditorMapper extends PSComponent
     *    the appropriate type
     */
    public PSContentEditorMapper(Element sourceNode, IPSDocument parentDoc,
-                                ArrayList parentComponents)
+                                List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -320,7 +320,7 @@ public class PSContentEditorMapper extends PSComponent
     */
    @SuppressWarnings("unchecked")//$NON-NLS-1$
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents)
+         List parentComponents)
    throws PSUnknownNodeTypeException  
    {
       if (sourceNode == null)

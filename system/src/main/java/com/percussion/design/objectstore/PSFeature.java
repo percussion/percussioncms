@@ -25,6 +25,7 @@
 package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class PSFeature
     * @param sourceNode the Xml element node from which to construct this object.
     *                   must contain at least one PSXVersion node.
     * @throws PSUnknownNodeTypeException if node is not found or invalid
-    * @see PSFeatureSet#fromXml(Document) for more information.
+    * @see PSFeatureSet#fromXml(Document)  for more information.
     */
    public PSFeature(Element sourceNode) throws PSUnknownNodeTypeException
    {
