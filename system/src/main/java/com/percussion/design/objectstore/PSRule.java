@@ -29,8 +29,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation for the PSXRule DTD in BasicObjects.dtd.
@@ -73,7 +73,7 @@ public class PSRule extends PSComponent
     *    the appropriate type
     */
    public PSRule(Element sourceNode, IPSDocument parentDoc,
-                 ArrayList parentComponents)
+                 List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -89,6 +89,7 @@ public class PSRule extends PSComponent
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSRule copy = (PSRule) super.clone();
@@ -296,7 +297,7 @@ public class PSRule extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

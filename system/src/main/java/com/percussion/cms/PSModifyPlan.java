@@ -24,6 +24,7 @@
 
 package com.percussion.cms;
 
+import com.percussion.data.PSConditionalEvaluator;
 import com.percussion.data.PSExecutionData;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSSystemValidationException;
@@ -34,6 +35,7 @@ import com.percussion.server.PSServer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -87,6 +89,7 @@ public class PSModifyPlan
       m_steps.add(step);
    }
 
+   final Object stepLock = new Object();
 
    /**
     * Executes each step of the plan
@@ -114,16 +117,12 @@ public class PSModifyPlan
             "data and appName must be supplied");
 
       int stepCount = 0;
-      Iterator steps = m_steps.iterator();
-      while (steps.hasNext())
-      {
-         IPSModifyStep step = (IPSModifyStep)steps.next();
+      for (IPSModifyStep step : m_steps) {
          // need to synchronize on this in case another thread is checking
-         synchronized(step)
-         {
+         synchronized (stepLock) {
             if (step.getHandler() == null)
                step.setHandler(PSServer.getInternalRequestHandler(appName +
-                  "/" + step.getName()));
+                       "/" + step.getName()));
          }
          step.execute(data);
          stepCount++;
@@ -175,7 +174,7 @@ public class PSModifyPlan
     * <code>null</code>, then the field should always be considered to have
     * been modified.
     */
-   public void setBinaryFields(Map binFields)
+   public void setBinaryFields(Map<String, List<PSConditionalEvaluator>> binFields)
    {
       if (binFields == null)
          throw new IllegalArgumentException("binFields may not be null");
@@ -191,7 +190,7 @@ public class PSModifyPlan
     * may be empty.  The returned map should be treated read-only as it is the 
     * copy owned by this class.
     */
-   public Map getBinaryFields()
+   public Map<String, List<PSConditionalEvaluator>> getBinaryFields()
    {
       return m_binFields;
    }
@@ -265,13 +264,13 @@ public class PSModifyPlan
     * The list of steps, never <code>null</code>, may be empty.  Steps are added
     * by a call to {@link #addModifyStep(IPSModifyStep) addModifyStep()}
     */
-   private ArrayList m_steps = new ArrayList();
+   private ArrayList<IPSModifyStep> m_steps = new ArrayList<>();
 
    /**
     * A Map of binary field names possibly updated by this 
     * plan, never <code>null</code>, may be empty.  Modified by calls to 
     * {@link #setBinaryFields(Map)}, see that method for more info.
     */
-   private Map m_binFields = new HashMap();
+   private Map<String, List<PSConditionalEvaluator>> m_binFields = new HashMap<>();
 
 }

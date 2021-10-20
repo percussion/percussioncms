@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -68,7 +69,7 @@ public class PSDataSet extends PSComponent
    * if the XML element node is not of the appropriate type
    */
    public PSDataSet(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
    throws PSUnknownNodeTypeException
    {
       this();
@@ -761,7 +762,7 @@ public class PSDataSet extends PSComponent
     *                                        of type PSXDataSet
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      java.util.ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -772,7 +773,7 @@ public class PSDataSet extends PSComponent
             throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-         if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+         if (!ms_NodeType.equals(sourceNode.getNodeName()))
          {
             Object[] args = { ms_NodeType, sourceNode.getNodeName() };
                throw new PSUnknownNodeTypeException(

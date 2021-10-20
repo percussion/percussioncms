@@ -75,7 +75,7 @@ public class PSUIDefinition extends PSComponent
     *    the appropriate type
     */
    public PSUIDefinition(Element sourceNode, IPSDocument parentDoc,
-                         ArrayList parentComponents)
+                         List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -104,7 +104,7 @@ public class PSUIDefinition extends PSComponent
     *
     * @param defaultUI the new defaul UI collection, may be <code>null</code>
     *    but not empty.
-    * @throws IllegalArgumentExcption if the provided defaultUI is
+    * @throws IllegalArgumentException if the provided defaultUI is
     *    <code>null</code>, empty or of wrong object type.
     */
    public void setDefaultUI(PSCollection defaultUI)
@@ -280,7 +280,7 @@ public class PSUIDefinition extends PSComponent
     * is done as a case sensitive compare of the field set name against the
     * supplied name.
     *
-    * @param the mapper fieldSetRef we are looking for
+    * @param fieldSetRef the mapper fieldSetRef we are looking for
     * @return the mapper found for the provieded id or <code>null</code> if
     *    not found.
     */
@@ -326,7 +326,7 @@ public class PSUIDefinition extends PSComponent
    /**
     * Get the mapper for the supplied id, recursing all mappings.
     *
-    * @param the mapper id we are looking for.
+    * @param id the mapper id we are looking for.
     * @return the mapper found for the provieded id or <code>null</code> if
     *    not found.
     */
@@ -384,7 +384,7 @@ public class PSUIDefinition extends PSComponent
       catch (IllegalArgumentException e)
       {
          throw new IllegalArgumentException(e.getLocalizedMessage());
-      };
+      }
 
       m_defaultUI = c.m_defaultUI;
       setDisplayMapper(c.getDisplayMapper());
@@ -407,7 +407,7 @@ public class PSUIDefinition extends PSComponent
 
    // see IPSComponent
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

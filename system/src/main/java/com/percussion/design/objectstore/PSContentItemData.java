@@ -25,7 +25,7 @@ package com.percussion.design.objectstore;
 
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The replacement values used for content item data information.
@@ -46,7 +46,7 @@ public class PSContentItemData extends PSNamedReplacementValue
     *    in the expected format.
     */
    public PSContentItemData(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(source, parent, parentComponents);
    }

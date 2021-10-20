@@ -28,7 +28,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -96,7 +96,7 @@ public class PSSearchProperties extends PSComponent
 
    /**
     * Convenience method that constructs a default object, then calls {@link
-    * #fromXml(Element, IPSDocument, ArrayList) 
+    * #fromXml(Element, IPSDocument, List)
     * fromXml(source, <code>null</code>, <code>null</code>)} on it.
     * <p>See that method for details on param and exception.
     */
@@ -329,7 +329,7 @@ public class PSSearchProperties extends PSComponent
     * See base class for description of params.    
     */
    public void fromXml(Element source, IPSDocument parentDoc,
-         ArrayList parentComponents)
+         List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (source == null)

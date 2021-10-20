@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation for the PSXValidationRules DTD in BasicObjects.dtd.
@@ -56,7 +57,7 @@ public class PSValidationRules extends PSCollectionComponent
     *    the appropriate type
     */
    public PSValidationRules(Element sourceNode, IPSDocument parentDoc,
-                            ArrayList parentComponents)
+                            List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -158,7 +159,7 @@ public class PSValidationRules extends PSCollectionComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -27,7 +27,6 @@ package com.percussion.design.objectstore;
 import com.percussion.util.PSStringOperation;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +48,7 @@ public class PSContentItemStatus extends PSNamedReplacementValue
     *    in the expected format.
     */
    public PSContentItemStatus(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(source, parent, parentComponents);
    }

@@ -94,7 +94,7 @@ public class PSFieldSet extends PSComponent
     *    the appropriate type
     */
    public PSFieldSet(Element sourceNode, IPSDocument parentDoc,
-                     ArrayList parentComponents)
+                     List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -605,7 +605,7 @@ public class PSFieldSet extends PSComponent
     * Convenience method equivalent to calling
     * {@link #getAll(boolean) getAll(<code>false</code>)}.
     */
-   public Iterator getAll()
+   public Iterator<PSComponent> getAll()
    {
       return getAll(false);
    }
@@ -620,22 +620,15 @@ public class PSFieldSet extends PSComponent
     * <code>null</code>, may be empty. Each object is either a <code>PSField
     * </code> or a <code>PSFieldSet</code>.
     */
-   public Iterator getAll(boolean systemModOnly)
+   public Iterator<PSComponent> getAll(boolean systemModOnly)
    {
       List<PSComponent> retList = new ArrayList<>();
-      Iterator<PSComponent> i = m_fields.values().iterator();
-      while (i.hasNext())
-      {
-         PSComponent c = i.next();
-         if (c instanceof PSField)
-         {
-            if (isSystemModOnly((PSField)c, systemModOnly))
-            {
+      for (PSComponent c : m_fields.values()) {
+         if (c instanceof PSField) {
+            if (isSystemModOnly((PSField) c, systemModOnly)) {
                retList.add(c);
             }
-         }
-         else
-         {
+         } else {
             retList.add(c);
          }
       }
@@ -932,7 +925,7 @@ public class PSFieldSet extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

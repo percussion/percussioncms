@@ -27,7 +27,7 @@ package com.percussion.design.objectstore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -89,7 +89,7 @@ public interface IPSComponent extends Cloneable {
     * represent a type supported by the class.
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException;
 
    /**
@@ -120,6 +120,7 @@ public interface IPSComponent extends Cloneable {
     * 
     * @return a deep-copy clone of this instance, never <code>null</code>.
     */
+   @Deprecated
    public Object clone();
 }
 

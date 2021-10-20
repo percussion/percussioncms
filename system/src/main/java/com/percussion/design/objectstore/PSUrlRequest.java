@@ -29,9 +29,9 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -85,7 +85,7 @@ public class PSUrlRequest extends PSComponent implements IPSReplacementValue
    public PSUrlRequest(
       Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       // allow subclasses to override (don't use "this")
@@ -107,7 +107,7 @@ public class PSUrlRequest extends PSComponent implements IPSReplacementValue
 
    /**
     * Constructor for XML serialization by subclasses.  Needed because if
-    * subclass calls {@link #PSUrlRequest(Element,IPSDocument,ArrayList) super}
+    * subclass calls {@link #PSUrlRequest(Element,IPSDocument,List) super}
     * in its constructor, then this class will call the subclass <code>
     * fromXml()</code> (because of it is overridden), but the subclass hasn't
     * had a chance to initialize its fields -- null pointer!
@@ -392,7 +392,7 @@ public class PSUrlRequest extends PSComponent implements IPSReplacementValue
    public void fromXml(
       Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

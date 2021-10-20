@@ -39,6 +39,7 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -224,7 +225,7 @@ public class PSField extends PSComponent
     *    the appropriate type
     */
    public PSField(Element sourceNode, IPSDocument parentDoc,
-                  ArrayList parentComponents)
+                  List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -1861,7 +1862,7 @@ public class PSField extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -34,6 +34,7 @@ import org.w3c.dom.Node;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -72,7 +73,7 @@ public class PSRequestor extends PSComponent
     *                              appropriate type
     */
    public PSRequestor(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -280,7 +281,7 @@ public class PSRequestor extends PSComponent
     * the PSRequestor object. Any subsequent changes made to the object by
     * the caller will also effect the requestor object.
     *
-    * @param exits   the new input data validation rules (may be null). If
+    * @param rules   the new input data validation rules (may be null). If
     * <code>null</code>, all existing rules are cleared.
     *
     * @see            #getValidationRules
@@ -532,7 +533,7 @@ public class PSRequestor extends PSComponent
     *                                        of type PSXRequestor
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -786,9 +787,6 @@ public class PSRequestor extends PSComponent
     *    as the value.
     * <B> Note: </B> Modifications to this class will be reflected in
     *    this requestor!
-    *
-    * @param  fileExtension  The extension of the request.
-    *                      Can be <code>null</code>
     */
    public HashMap getMimeProperties()
    {

@@ -27,6 +27,8 @@ package com.percussion.design.objectstore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 /**
  * The IPSDocumentMapping interface must be implemented by any class which
  * will be used as a document (eg, XML) mapping in a PSDataMapping object.
@@ -73,7 +75,7 @@ public interface IPSDocumentMapping
     * Abstract fromXml function for DocumentMappings
     */
    public abstract void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException;
 }
 

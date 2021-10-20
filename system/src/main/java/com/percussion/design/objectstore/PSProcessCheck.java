@@ -30,8 +30,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implements the PSXProcessCheck element defined in sys_CloneHandlerConfig.dtd.
@@ -51,7 +51,7 @@ public class PSProcessCheck extends PSComponent
     *    the appropriate type
     */
    public PSProcessCheck(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
@@ -139,7 +139,7 @@ public class PSProcessCheck extends PSComponent
    
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

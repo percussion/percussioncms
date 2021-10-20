@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -93,7 +94,7 @@ public class PSBackEndJoin extends PSComponent
     *                              appropriate type
     */
    public PSBackEndJoin(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -448,7 +449,7 @@ public class PSBackEndJoin extends PSComponent
     * in the expected format
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

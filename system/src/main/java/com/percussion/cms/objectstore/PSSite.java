@@ -51,11 +51,11 @@ public class PSSite extends PSComponent
    /**
     * Constructs the site from its XML representation.
     * 
-    * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList) for parameter 
+    * @see IPSComponent#fromXml(Element, IPSDocument, List) for parameter
     *    descriptions.
     */
    public PSSite(Element source, IPSDocument parent,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(source, parent, parentComponents);
    }
@@ -164,10 +164,10 @@ public class PSSite extends PSComponent
     *    userId CDATA #IMPLIED
     * &gt;
     * 
-    * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList)
+    * @see IPSComponent#fromXml(Element, IPSDocument, List)
     */
    public void fromXml(Element source, IPSDocument parent,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (source == null)
          throw new PSUnknownNodeTypeException(
@@ -282,7 +282,7 @@ public class PSSite extends PSComponent
    /**
     * Set a new site name.
     * 
-    * @param the new site name, not <code>null</code> or empty.
+    * @param name the new site name, not <code>null</code> or empty.
     */
    public void setName(String name)
    {
@@ -309,7 +309,7 @@ public class PSSite extends PSComponent
    /**
     * Set the new folder root for this site.
     * 
-    * @param the new folder root, may be <code>null</code> or empty.
+    * @param folderRoot the new folder root, may be <code>null</code> or empty.
     */
    public void setFolderRoot(String folderRoot)
    {

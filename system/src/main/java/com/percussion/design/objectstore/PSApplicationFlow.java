@@ -32,6 +32,7 @@ import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -66,7 +67,7 @@ public class PSApplicationFlow extends PSComponent
     *
     * @param name the name of the command handler to create this for, never
     *    <code>null</code> or empty.
-    * @param requests a collection of PSConditionalRequest objects for
+    * @param redirects a collection of PSConditionalRequest objects for
     *    the provided command handler name. Not <code>null</code> or empty.
     *    The last entry must have a condition evaluating to <code>true</code>.
     */
@@ -88,7 +89,7 @@ public class PSApplicationFlow extends PSComponent
     *    the appropriate type
     */
    public PSApplicationFlow(Element sourceNode, IPSDocument parentDoc,
-                            ArrayList parentComponents)
+                            List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -199,7 +200,7 @@ public class PSApplicationFlow extends PSComponent
     * @param name a valid command handler name, never
     *    <code>null</code> or empty.
     * @param redirect the default redirect, never <code>null</code>.
-    * @throws IllegalArgumentExcption if the provided command handler name is
+    * @throws IllegalArgumentException if the provided command handler name is
     *    <code>null</code> or empty or if the redirect is <code>null</code>.
     */
    @SuppressWarnings("unchecked")
@@ -258,7 +259,7 @@ public class PSApplicationFlow extends PSComponent
     *    never <code>null</code>, must have at least one entry, the last
     *    entry is the default redirect with a condition always
     *    <code>true</code>.
-    * @throws IllegalArgumentExcption if the provided command handler name is
+    * @throws IllegalArgumentException if the provided command handler name is
     *    <code>null</code> or empty or if the redirect collection is
     *    <code>null</code>.
     */
@@ -277,9 +278,9 @@ public class PSApplicationFlow extends PSComponent
     *
     * @param name a valid command handler name, never
     *    <code>null</code> or empty.
-    * @param redirect a collection of PSConditionalRequest objects,
+    * @param redirects a collection of PSConditionalRequest objects,
     *    not <code>null</code>, might be empty.
-    * @throws IllegalArgumentExcption if the provided command handler name is
+    * @throws IllegalArgumentException if the provided command handler name is
     *    <code>null</code> or empty or if the redirect collection is
     *    <code>null</code> or if no command handler was found for the provided
     *    name.
@@ -392,7 +393,7 @@ public class PSApplicationFlow extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -468,7 +469,7 @@ public class PSApplicationFlow extends PSComponent
             }
 
             // REQUIRED: the default redirect
-            if (redirects.size() > 0)
+            if (!redirects.isEmpty())
                node = tree.getNextElement(PSUrlRequest.XML_NODE_NAME, nextFlags);
             else
                node = tree.getNextElement(PSUrlRequest.XML_NODE_NAME, firstFlags);

@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation for the PSXInputTranslations DTD in BasicObjects.dtd.
@@ -57,7 +58,7 @@ public class PSInputTranslations extends PSCollectionComponent
     *    the appropriate type
     */
    public PSInputTranslations(Element sourceNode, IPSDocument parentDoc,
-                              ArrayList parentComponents)
+                              List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -130,7 +131,7 @@ public class PSInputTranslations extends PSCollectionComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

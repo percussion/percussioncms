@@ -29,6 +29,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -63,7 +64,7 @@ public class PSResultPageSet extends PSComponent implements IPSResults
     *                                    appropriate type
     */
    public PSResultPageSet(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -191,7 +192,7 @@ public class PSResultPageSet extends PSComponent implements IPSResults
     *                                             of type PSXResults
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

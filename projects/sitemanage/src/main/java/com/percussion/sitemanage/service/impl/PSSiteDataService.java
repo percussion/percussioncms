@@ -32,6 +32,7 @@ import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.designmanagement.service.IPSFileSystemService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.service.IPSItemService;
@@ -701,7 +702,8 @@ import static org.apache.commons.lang.Validate.notNull;
                 }
                 catch (Exception e)
                 {
-                    log.error("Error adding the publishing info to the site.", e);
+                    log.error("Error adding the publishing info to the site. Error:{}",
+                            PSExceptionUtils.getMessageForLog(e));
                 }
             }
         }

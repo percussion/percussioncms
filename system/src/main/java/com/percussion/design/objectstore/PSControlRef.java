@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -70,7 +71,7 @@ public class PSControlRef extends PSComponent
     *
     * @param name the name of this control reference, never <code>null</code>
     *    or empty.
-    * @param paramters a collection of PSParam objects, not <code>null</code>
+    * @param parameters a collection of PSParam objects, not <code>null</code>
     *    may be empty.
     */
    PSControlRef(String name, PSCollection parameters)
@@ -92,7 +93,7 @@ public class PSControlRef extends PSComponent
     *    the appropriate type
     */
    public PSControlRef(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -100,6 +101,7 @@ public class PSControlRef extends PSComponent
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSControlRef copy = (PSControlRef) super.clone();
@@ -194,7 +196,7 @@ public class PSControlRef extends PSComponent
 
    // see interface for description
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       validateElementName( sourceNode, XML_NODE_NAME );

@@ -28,7 +28,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -113,7 +113,7 @@ public class PSWorkflow extends PSComponent
     *    or <code>null</code>
     */
    public void fromXml( Element sourceNode, IPSDocument parentDoc,
-                        ArrayList parentComponents )
+                        List parentComponents )
          throws PSUnknownNodeTypeException
    {
       validateElementName( sourceNode, XML_NODE_NAME );

@@ -29,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for the PSXDisplayText DTD in BasicObjects.dtd.
@@ -63,7 +64,7 @@ public class PSDisplayText extends PSComponent
     *    the appropriate type
     */
    public PSDisplayText(Element sourceNode, IPSDocument parentDoc,
-                        ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -157,7 +158,7 @@ public class PSDisplayText extends PSComponent
     * @see com.percussion.design.objectstore.IPSComponent#fromXml(org.w3c.dom.Element, com.percussion.design.objectstore.IPSDocument, java.util.ArrayList)
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

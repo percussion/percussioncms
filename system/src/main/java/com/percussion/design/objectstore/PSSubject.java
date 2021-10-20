@@ -31,8 +31,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * The PSSubject class defines a subject (group or user) to be stored
@@ -189,7 +189,7 @@ public abstract class PSSubject extends PSDatabaseComponent
     * @throws  IllegalArgumentException if sourceNode is <code>null</code>.
     */
    public PSSubject(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -446,8 +446,8 @@ public abstract class PSSubject extends PSDatabaseComponent
     *                node is not of type PSXSubject
     */
    public void fromXml(Element sourceNode,
-         @SuppressWarnings("unused") IPSDocument parentDoc,
-         @SuppressWarnings("unused") ArrayList parentComponents)
+         IPSDocument parentDoc,
+         List parentComponents)
                        throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -611,7 +611,7 @@ public abstract class PSSubject extends PSDatabaseComponent
 
    /**
     * Loads this object from the supplied element using {@link
-    * PSSubject#fromXml(Element, IPSDocument, ArrayList) fromXml},
+    * PSSubject#fromXml(Element, IPSDocument, List) fromXml},
     * then loads all attributes for this subject using the supplied
     * loader.  See {@link PSDatabaseComponent#fromDatabaseXml} for
     * more information.

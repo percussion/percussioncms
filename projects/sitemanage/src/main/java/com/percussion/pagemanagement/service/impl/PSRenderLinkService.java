@@ -86,6 +86,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -710,6 +711,15 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
                 return new PSRenderLink("", resource);
         }
         String regionCssPath = getRegionCSSRelativePath(themeName, useCachedRegionCSS, summary);
+        //Check if file is empty
+        try {
+            File file = new File(regionCssPath);
+            if (file == null || file.length() == 0) {
+                return new PSRenderLink("", resource);
+            }
+        }catch (Exception e){
+            log.warn("Region CSS File not found. Filename: {} Error:{}",regionCssPath,e.getMessage());
+        }
         final String baseUrl = resourceInstanceHelper.getBaseUrlPath(context);
         String url = makeThemeURL(context, baseUrl, regionCssPath, useCachedRegionCSS);
         String renderUrl = escapePathForUrl(url);

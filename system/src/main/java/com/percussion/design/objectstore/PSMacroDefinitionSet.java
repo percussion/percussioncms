@@ -27,8 +27,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class represents a collection of <code>PSMacroDefinition</code> objects.
@@ -60,12 +60,12 @@ public class PSMacroDefinitionSet extends PSCollectionComponent
    }
 
    /** 
-    * See {@link toXml(Document) for the expected XML format.
+    * See {@link #toXml(Document)} for the expected XML format.
     * 
     * @see IPSComponent 
     */
    public void fromXml(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (source == null)
          throw new PSUnknownNodeTypeException(

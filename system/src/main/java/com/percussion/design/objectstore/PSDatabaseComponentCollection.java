@@ -32,8 +32,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * The PSDatabaseComponentCollection class is responsible for encapsulating
@@ -51,7 +51,7 @@ public class PSDatabaseComponentCollection extends PSDatabaseComponent
     * collection.  This class must implement an empty constructor that this
     * class can access the constructor to.  May not be <code>null</code>.
     *
-    * @param resourceName The dataset name to be used to retrieve this
+    * @param datasetName The dataset name to be used to retrieve this
     *    collection of components.  May not be <code>null</code> or empty.
     *
     * @throws IllegalArgumentException if any argument is invalid.
@@ -186,7 +186,7 @@ public class PSDatabaseComponentCollection extends PSDatabaseComponent
     *                                           by the class.
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                        ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       m_components.clear();

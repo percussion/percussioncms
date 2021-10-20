@@ -25,7 +25,7 @@ package com.percussion.design.objectstore;
 
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSRelationshipProperty class is used to define a replacement value as
@@ -49,7 +49,7 @@ public class PSOriginatingRelationshipProperty extends PSNamedReplacementValue
     * in the expected format.
     */
    public PSOriginatingRelationshipProperty(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(source, parent, parentComponents);
    }

@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,7 +53,7 @@ public class PSTableLocator extends PSComponent
     * exist and can either reference another table locator or backend
     * credentials.
     *
-    * @param alias a backend credential alias reference, not
+    * @param aliasRef a backend credential alias reference, not
     *    <code>null</code> or empty.
     */
    public PSTableLocator(String aliasRef)
@@ -73,7 +74,7 @@ public class PSTableLocator extends PSComponent
     *    the appropriate type
     */
    public PSTableLocator(Element sourceNode, IPSDocument parentDoc,
-                         ArrayList parentComponents)
+                         List parentComponents)
       throws PSUnknownNodeTypeException
    {
       // check for a converter
@@ -275,7 +276,7 @@ public class PSTableLocator extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

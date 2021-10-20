@@ -32,7 +32,6 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -75,7 +74,7 @@ public class PSContentEditorSharedDef extends PSComponent
     *            appropriate type
     */
    public PSContentEditorSharedDef(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException {
+         List parentComponents) throws PSUnknownNodeTypeException {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
 
@@ -344,7 +343,7 @@ public class PSContentEditorSharedDef extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException
+         List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

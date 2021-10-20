@@ -72,7 +72,7 @@ public class PSControlParameter extends PSComponent
     *    or <code>null</code>
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
          throws PSUnknownNodeTypeException
    {
       validateElementName(sourceNode, XML_NODE_NAME);
@@ -165,7 +165,7 @@ public class PSControlParameter extends PSComponent
     * Performs a shallow copy of the data in the supplied component to this
     * component.
     *
-    * @param control a valid (not null) <code>PSControlParameter</code>
+    * @param object a valid (not null) <code>PSControlParameter</code>
     */
    public void copyFrom(PSComponent object)
    {

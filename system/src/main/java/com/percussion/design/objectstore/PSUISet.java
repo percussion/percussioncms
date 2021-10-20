@@ -30,8 +30,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implementation for the PSXUISet DTD in BasicObjects.dtd.
@@ -56,7 +56,7 @@ public class PSUISet extends PSComponent
     *    the appropriate type
     */
    public PSUISet(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
@@ -494,7 +494,7 @@ public class PSUISet extends PSComponent
 
    // @see IPSComponent
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

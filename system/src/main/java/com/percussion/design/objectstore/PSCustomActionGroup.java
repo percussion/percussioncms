@@ -32,6 +32,7 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -64,7 +65,7 @@ public class PSCustomActionGroup extends PSComponent
     *    the appropriate type
     */
    public PSCustomActionGroup(Element sourceNode, IPSDocument parentDoc,
-                              ArrayList parentComponents)
+                              List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -72,6 +73,7 @@ public class PSCustomActionGroup extends PSComponent
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSCustomActionGroup copy = (PSCustomActionGroup) super.clone();
@@ -236,7 +238,7 @@ public class PSCustomActionGroup extends PSComponent
 
    // see IPSComponent
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -2082,7 +2082,7 @@ public class PSApplication implements IPSDocument
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
       //make sure we got the correct root node tag
-      if (false == ms_NodeType.equals(root.getNodeName()))
+      if (!ms_NodeType.equals(root.getNodeName()))
       {
          Object[] args = { ms_NodeType, root.getNodeName()};
          throw new PSUnknownDocTypeException(
@@ -2177,7 +2177,7 @@ public class PSApplication implements IPSDocument
 
          setName(tree.getElementData("name"));
       } catch (IllegalArgumentException e) {
-         throw new PSUnknownDocTypeException(ms_NodeType, "name", new PSException (e.getLocalizedMessage()));
+         throw new PSUnknownDocTypeException(ms_NodeType, "name", new PSException (e));
       }
 
       // set the conversion context now that we know the name
@@ -2215,7 +2215,7 @@ public class PSApplication implements IPSDocument
             | PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS;
 
       // now build the arraylist we'll use in the fromXml calls
-      java.util.ArrayList parentComponents = new java.util.ArrayList();
+      java.util.List parentComponents = new java.util.ArrayList<>();
 
       // now position the walker on the first child of the application
       tree.getNext();   // we don't actually care what it is

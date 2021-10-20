@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * The PSExtensionFile class represents the file data of a request by
@@ -200,7 +201,7 @@ public class PSExtensionFile extends PSFile
     *                                           by the class.
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                        java.util.ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       super.fromXml(sourceNode, parentDoc, parentComponents, ms_nodeType);

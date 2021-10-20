@@ -23,6 +23,7 @@
  */
 package com.percussion.cms.objectstore;
 
+import com.percussion.design.objectstore.IPSComponent;
 import com.percussion.design.objectstore.IPSDocument;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSLocator;
@@ -33,7 +34,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This object encapsulates a locator together with properties.
@@ -219,7 +220,7 @@ public class PSDependent extends PSCmsComponent
     * @see IPSComponent for additional information.
     */
    public void fromXml(Element source, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (source == null)
          throw new IllegalArgumentException("source must be supplied");

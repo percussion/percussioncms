@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implements the PSXConditionalEffect element defined in
@@ -59,7 +60,7 @@ public class PSConditionalEffect extends PSComponent
     * appropriate type
     */
    public PSConditionalEffect(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException
+         List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
@@ -147,7 +148,7 @@ public class PSConditionalEffect extends PSComponent
 
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException
+         List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

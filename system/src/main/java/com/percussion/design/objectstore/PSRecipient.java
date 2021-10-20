@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -65,7 +66,7 @@ public class PSRecipient extends PSComponent
     *                              appropriate type
     */
    public PSRecipient(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -130,8 +131,8 @@ public class PSRecipient extends PSComponent
          return new PSIllegalArgumentException(
             IPSObjectStoreErrors.RECIPIENT_NAME_EMPTY);
       else if (name.length() > MAX_RECIPIENT_NAME_LEN) {
-         Object[] args = { new Integer(MAX_RECIPIENT_NAME_LEN),
-                           new Integer(name.length()) };
+         Object[] args = {MAX_RECIPIENT_NAME_LEN,
+                 name.length()};
          return new PSIllegalArgumentException(
             IPSObjectStoreErrors.RECIPIENT_NAME_TOO_BIG, args);
       }
@@ -1148,14 +1149,14 @@ public class PSRecipient extends PSComponent
     *                                        of type PSXRecipient
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

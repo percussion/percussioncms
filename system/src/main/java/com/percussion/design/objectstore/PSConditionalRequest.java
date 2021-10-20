@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Implements the PSXConditionalRequest DTD defined in BasicObjects.dtd.
@@ -94,7 +95,7 @@ public class PSConditionalRequest extends PSUrlRequest
     *    the appropriate type
     */
    public PSConditionalRequest(Element sourceNode, IPSDocument parentDoc,
-                               ArrayList parentComponents)
+                               List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -102,6 +103,7 @@ public class PSConditionalRequest extends PSUrlRequest
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSConditionalRequest copy = (PSConditionalRequest) super.clone();
@@ -202,7 +204,7 @@ public class PSConditionalRequest extends PSUrlRequest
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

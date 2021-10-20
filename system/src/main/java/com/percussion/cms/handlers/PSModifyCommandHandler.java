@@ -57,6 +57,7 @@ import com.percussion.data.PSViewEvaluator;
 import com.percussion.design.objectstore.PSApplication;
 import com.percussion.design.objectstore.PSBackEndColumn;
 import com.percussion.design.objectstore.PSBackEndTable;
+import com.percussion.design.objectstore.PSComponent;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSDataMapper;
@@ -77,6 +78,7 @@ import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSEvaluationException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -253,19 +255,13 @@ public class PSModifyCommandHandler extends PSCommandHandler
     *    may be empty. See {@link #m_inlineLinkFields} for detailed info on 
     *    the map.
     */
-   @SuppressWarnings("unchecked")
-   private Map prepareInlineLinkFields(PSFieldSet fieldSet, Map allLinkFields)
+   private Map<String,List<PSField>> prepareInlineLinkFields(PSFieldSet fieldSet, Map<String,List<PSField>> allLinkFields)
    {
       if (allLinkFields == null)
-         allLinkFields = new HashMap();
+         allLinkFields = new HashMap<>();
          
       String key = fieldSet.getName();
-      List value = (List) allLinkFields.get(key);
-      if (value == null)
-      {
-         value = new ArrayList();
-         allLinkFields.put(key, value);
-      }
+      List<PSField> value = allLinkFields.computeIfAbsent(key, k -> new ArrayList<>());
       return prepareInlineLinkFields(fieldSet, value, allLinkFields);
    }
    
@@ -287,13 +283,12 @@ public class PSModifyCommandHandler extends PSCommandHandler
     * field set is found in <code>fs</code>, this is passed back to the other
     * method in a recursive call.
     *  
-    * @return Always <code>allLinkFields</code>. 
+    * @return Always <code>allLinkFields</code>.
     */
-   @SuppressWarnings("unchecked")
-   private Map prepareInlineLinkFields(PSFieldSet fs, List linkFields, 
-         Map allLinkFields)
+   private Map<String,List<PSField>> prepareInlineLinkFields(PSFieldSet fs, List<PSField> linkFields,
+         Map<String,List<PSField>> allLinkFields)
    {
-      Iterator fields = fs.getAll();
+      Iterator<PSComponent> fields = fs.getAll();
       while (fields.hasNext())
       {
          Object o = fields.next();
@@ -347,7 +342,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
       PSExecutionData execData)
       throws PSRequestValidationException, PSAuthorizationException,
          PSErrorException, PSConversionException, PSDataExtractionException,
-         SQLException, PSInternalRequestCallException, IOException,
+         SQLException, IOException,
          PSAuthenticationFailedException, PSSystemValidationException, PSCmsException
    {
 
@@ -394,7 +389,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
       }
       
       // get the mapper id
-      int id = 0;
+      int id;
       String strId = request.getParameter(
          PSContentEditorHandler.CHILD_ID_PARAM_NAME, "0");
 
@@ -446,7 +441,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
       String dbAction = app.getRequestTypeHtmlParamName();
       String dbActionInsert = app.getRequestTypeValueInsert();
       String actualType = request.getParameter( dbAction );
-      if ( null != actualType && dbActionInsert.equals( actualType ))
+      if ( dbActionInsert.equals( actualType ))
          level = IPSConstants.ASSIGNMENT_TYPE_READER;
       else
          level = IPSConstants.ASSIGNMENT_TYPE_ASSIGNEE;
@@ -493,7 +488,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
 
       // execute the plan
       PSModifyPlanSet modifyPlanSet = (PSModifyPlanSet)m_modifyPlanSets.get(
-         new Integer(id));
+              id);
       final PSModifyPlan modifyPlan = modifyPlanSet.getPlan(planType);
       
       // TODO: we temporarily don't have plans for delete as we are only 
@@ -513,7 +508,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
       // Only run unique name validation if it was not run via the
       // PSValidateUniqueName system exit.
       if(uniqueValidated != null && uniqueValidated.equalsIgnoreCase("yes")
-            && isModifyParent.booleanValue())
+            && isModifyParent)
       {
          PSRequestContext reqCtx = new PSRequestContext(request);
          boolean isInsert = planType == PSModifyPlan.TYPE_INSERT_PLAN; 
@@ -540,8 +535,10 @@ public class PSModifyCommandHandler extends PSCommandHandler
                stepsExecuted = 1;
             else 
             {
-               stepsExecuted = modifyPlan.execute(execData, 
-                                          m_internalApp.getName());
+               if(modifyPlan != null) {
+                  stepsExecuted = modifyPlan.execute(execData,
+                          m_internalApp.getName());
+               }
             }
          }
          else
@@ -570,44 +567,38 @@ public class PSModifyCommandHandler extends PSCommandHandler
          {
             proc = new PSChangeEventProcessor()
             {
-               @SuppressWarnings("unchecked")
                @Override
                public PSEditorChangeEvent processEvent(PSEditorChangeEvent e)
                {
                   // determine which binary fields have been modified and set
                   // on the event
-                  Set modified = new HashSet();
-                  Map binFields = modifyPlan.getBinaryFields();
-                  Iterator entries = binFields.entrySet().iterator();
-                  while (entries.hasNext())
-                  {
-                     Map.Entry entry = (Entry)entries.next();
-                     String field = (String)entry.getKey();
-                     
-                     /*
-                      * see if there are conditionals.  If not, then consider
-                      * the field modified.  If so, evaluate them to 
-                      * determine if modified.
-                      */
-                     List condList = (List)entry.getValue();
-                     boolean hasChanged = true;
-                     if (condList != null)
-                     {
-                        Iterator conds = condList.iterator();
-                        hasChanged = false;
-                        while (conds.hasNext() && !hasChanged)
-                        { 
-                           PSConditionalEvaluator eval = 
-                              (PSConditionalEvaluator)conds.next();
-                           if (eval.isMatch(finData))
-                              hasChanged = true;                     
+                  Set<String> modified = new HashSet<>();
+                  if(modifyPlan != null) {
+                     Map<String, List<PSConditionalEvaluator>> binFields = modifyPlan.getBinaryFields();
+                     for (Entry<String, List<PSConditionalEvaluator>> stringListEntry : binFields.entrySet()) {
+                        String field = stringListEntry.getKey();
+
+                        /*
+                         * see if there are conditionals.  If not, then consider
+                         * the field modified.  If so, evaluate them to
+                         * determine if modified.
+                         */
+                        List<PSConditionalEvaluator> condList = stringListEntry.getValue();
+                        boolean hasChanged = true;
+                        if (condList != null) {
+                           Iterator<PSConditionalEvaluator> conds = condList.iterator();
+                           hasChanged = false;
+                           while (conds.hasNext() && !hasChanged) {
+                              PSConditionalEvaluator eval = conds.next();
+                              if (eval.isMatch(finData))
+                                 hasChanged = true;
+                           }
                         }
+
+                        if (hasChanged)
+                           modified.add(field);
                      }
-                     
-                     if (hasChanged)                     
-                        modified.add(field);
                   }
-                  
                   e.setBinaryFields(modified);
                   
                   return e;
@@ -656,10 +647,10 @@ public class PSModifyCommandHandler extends PSCommandHandler
          if (mapper == null)
             return;
             
-         List fieldList = (List) m_inlineLinkFields.get(
+         List<PSField> fieldList = m_inlineLinkFields.get(
             mapper.getFieldSetRef());
 
-         Iterator fields = fieldList.iterator();
+         Iterator<PSField> fields = fieldList.iterator();
          PSRelationshipSet deletes = new PSRelationshipSet();
          PSRelationshipSet modifies = new PSRelationshipSet();
          
@@ -678,42 +669,32 @@ public class PSModifyCommandHandler extends PSCommandHandler
             {
                PSRelationshipSet all = PSInlineLinkField.getInlineRelationships(
                   new PSRequestContext(request));
-               Iterator relationships = all.iterator();
-               while (relationships.hasNext())
-               {
-                  PSRelationship relationship = 
-                     (PSRelationship) relationships.next();
-                  String inlineRelationshipId = relationship.getProperty(
-                     PSRelationshipConfig.PDU_INLINERELATIONSHIP);
-                  for (int i=0; i<fieldList.size(); i++)
-                  {
-                     PSField field = (PSField) fieldList.get(i);
-                     Object test1 = m_flatInlinelinkFields.get(
-                        PSInlineLinkField.getFieldName(inlineRelationshipId));
-                     if (test1 == null)
-                     {
+               for (PSRelationship psRelationship : (Iterable<PSRelationship>) all) {
+                  String inlineRelationshipId = psRelationship.getProperty(
+                          PSRelationshipConfig.PDU_INLINERELATIONSHIP);
+                  for (PSField o : fieldList) {
+                     PSField test1 = m_flatInlinelinkFields.get(
+                             PSInlineLinkField.getFieldName(inlineRelationshipId));
+                     if (test1 == null) {
                         /*
                          * If this is not an inline link field anymore, we
                          * add it to the delete list. This cleans up orphaned
                          * inline relationships.
                          */
-                        deletes.add(relationship);
+                        deletes.add(psRelationship);
                         break;
-                     }
-                     else
-                     {
+                     } else {
                         /*
                          * If this inline relationship is processed with this
-                         * request, we add it to the dlete list. We also 
+                         * request, we add it to the delete list. We also
                          * test for the value 'yes', which was the old format
                          * for this property.
                          */
                         String test = PSInlineLinkField.getInlineRelationshipId(
-                           request, field);
-                        if (inlineRelationshipId.equals(
-                              PSInlineLinkField.RS_YES))
-                        {
-                           deletes.add(relationship);
+                                request, o);
+                        if (test.equals(
+                                PSInlineLinkField.RS_YES)) {
+                           deletes.add(psRelationship);
                            break;
                         }
                      }
@@ -731,8 +712,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
             {                 
                while (fields.hasNext())
                {
-                  PSInlineLinkField field = new PSInlineLinkField(
-                     (PSField)fields.next());
+                  PSInlineLinkField field = new PSInlineLinkField(fields.next());
                   field.preProcess(request, deletes, modifies);
                }
             }
@@ -743,7 +723,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
       }
       catch (SAXException e)
       {
-         throw new PSCmsException(1001, e.getLocalizedMessage());
+         throw new PSCmsException(1001, PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -825,11 +805,10 @@ public class PSModifyCommandHandler extends PSCommandHandler
          // these are pre-formatted error we've thrown
          m_appHandler.reportError(request, err.getLogError());
       }
-      catch (Throwable t)
+      catch (Exception t)
       {
          /* catch anything that comes our way */
          PSConsole.printMsg("Cms", t);
-         String source = COMMAND_NAME;
 
          String sessId = "";
          PSUserSession sess = request.getUserSession();
@@ -839,7 +818,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
          int errorCode;
          Object[] errorArgs;
 
-         PSException e = null;
+         PSException e;
 
          if (t instanceof PSException) {
             e = (PSException)t;
@@ -854,7 +833,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
 
          PSBackEndUpdateProcessingError err =
             new PSBackEndUpdateProcessingError(
-            m_appHandler.getId(), sessId, errorCode, errorArgs, source);
+            m_appHandler.getId(), sessId, errorCode, errorArgs, COMMAND_NAME);
          m_appHandler.reportError(request, err);
       }
       finally
@@ -881,40 +860,32 @@ public class PSModifyCommandHandler extends PSCommandHandler
       if (runnerMap == null)
          return;
 
-      Iterator<String> names = runnerMap.keySet().iterator();
-      while (names.hasNext())
-      {
-         String name = names.next();
+      for (String name : runnerMap.keySet()) {
          PSTransformRunner transform = runnerMap.get(name);
          List<PSExtensionRunner> runners = transform.getTransforms();
          String errMsg = transform.getErrorMsg();
          if (!StringUtils.isBlank(errMsg))
             errMsg += ": ";
-         
+
          // currently only one exit supported for field translations
          PSExtensionRunner runner = runners.get(0);
-         
-         try
-         {
+
+         try {
             Object result = runner.processUdfCallExtractor(data);
-            if (result != null)
-            {
+            if (result != null) {
                PSRequest request = data.getRequest();
                request.setParameter(name, result);
             }
-         }
-         catch (Exception e)
-         {
+         } catch (Exception e) {
             Object[] args = {name, errMsg + e.getLocalizedMessage()};
-            if (e instanceof PSDataExtractionException)
-            {
+            if (e instanceof PSDataExtractionException) {
                throw new PSDataExtractionException(
-                  IPSServerErrors.FIELD_TRANSFORM_ERROR, args);               
+                       IPSServerErrors.FIELD_TRANSFORM_ERROR, args);
             }
-            
+
             throw new PSConversionException(
-               IPSServerErrors.FIELD_TRANSFORM_ERROR, args);
-         }         
+                    IPSServerErrors.FIELD_TRANSFORM_ERROR, args);
+         }
       }
    }
 
@@ -937,7 +908,6 @@ public class PSModifyCommandHandler extends PSCommandHandler
     * the data.
     * @throws IOException if there are any problems sending the redirect.
     */
-   @SuppressWarnings("unchecked")
    private void redirectToError(PSExecutionData data,
       PSErrorCollector errorCollector, Integer pageId)
          throws PSDataExtractionException, IOException
@@ -956,7 +926,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
          request.setParameter(PSContentEditorHandler.PAGE_ID_PARAM_NAME,
             pageId);
          // add the view so the correct fields will be hidden in the cached doc
-         String nextView = m_viewEvaluator.getNextView(data, pageId.intValue());
+         String nextView = m_viewEvaluator.getNextView(data, pageId);
          String currentView = request.getParameter(IPSHtmlParameters.SYS_VIEW);
          if (currentView == null || !currentView.startsWith(
                IPSConstants.SYS_HIDDEN_FIELDS_VIEW_NAME))
@@ -999,7 +969,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
                int cacheId = PSPageCache.addPage(doc);
 
                String url = request.getRequestFileURL();
-               Map params = new HashMap();
+               Map<String,String> params = new HashMap<>();
                params.put(PSContentEditorHandler.COMMAND_PARAM_NAME,
                   PSEditCommandHandler.COMMAND_NAME);
                params.put(PSContentEditorHandler.CACHE_ID_PARAM_NAME,
@@ -1044,14 +1014,14 @@ public class PSModifyCommandHandler extends PSCommandHandler
       if (list.getLength() <= 0)
          return;
 
-      String errorMsg = "";
+      StringBuilder errorMsg = new StringBuilder();
       for (int i=0; i < list.getLength(); i++)
       {
          Element errorElem = (Element) list.item(i);
-         errorMsg = errorMsg + PSXmlDocumentBuilder.toString(errorElem);
+         errorMsg.append(PSXmlDocumentBuilder.toString(errorElem));
       }
 
-      request.setParameter(IPSHtmlParameters.SYS_VALIDATION_ERROR, errorMsg);
+      request.setParameter(IPSHtmlParameters.SYS_VALIDATION_ERROR, errorMsg.toString());
    }
 
    /**
@@ -1327,38 +1297,37 @@ public class PSModifyCommandHandler extends PSCommandHandler
          fieldSet);
       modifyPlanSet.addPlan(deleteItemPlan);
       PSModifyPlan insertPlan = null;
-      if (fieldSet.getType() == PSFieldSet.TYPE_PARENT)
-      {
-         insertPlan = m_insertPlanBuilder.createModifyPlan(mapper,
-            fieldSet);
-      }
-      else if (fieldSet.getType() == PSFieldSet.TYPE_COMPLEX_CHILD)
-      {
-         insertPlan = m_childInsertPlanBuilder.createModifyPlan(mapper,
-            fieldSet);
+
+      if(fieldSet != null) {
+         if (fieldSet.getType() == PSFieldSet.TYPE_PARENT) {
+            insertPlan = m_insertPlanBuilder.createModifyPlan(mapper,
+                    fieldSet);
+         } else if (fieldSet.getType() == PSFieldSet.TYPE_COMPLEX_CHILD) {
+            insertPlan = m_childInsertPlanBuilder.createModifyPlan(mapper,
+                    fieldSet);
+         }
       }
 
       modifyPlanSet.addPlan(insertPlan);
 
-      if (fieldSet.getType() == PSFieldSet.TYPE_COMPLEX_CHILD)
-      {
-         PSModifyPlan deletePlan = m_childDeletePlanBuilder.createModifyPlan(
-            mapper, fieldSet);
-         modifyPlanSet.addPlan(deletePlan);
+      if(fieldSet != null) {
+         if (fieldSet.getType() == PSFieldSet.TYPE_COMPLEX_CHILD) {
+            PSModifyPlan deletePlan = m_childDeletePlanBuilder.createModifyPlan(
+                    mapper, fieldSet);
+            modifyPlanSet.addPlan(deletePlan);
 
-         // now set up sequence updates
-         if (fieldSet.isSequencingSupported())
-         {
-            PSModifyPlan seqUpdatePlan = m_sequencePlanBuilder.createModifyPlan(
-               mapper, fieldSet);
-            modifyPlanSet.addPlan(seqUpdatePlan);
+            // now set up sequence updates
+            if (fieldSet.isSequencingSupported()) {
+               PSModifyPlan seqUpdatePlan = m_sequencePlanBuilder.createModifyPlan(
+                       mapper, fieldSet);
+               modifyPlanSet.addPlan(seqUpdatePlan);
 
-            // need to create a query to retreive current sort rank values
-            String queryReqName = createSequenceQueryDataSet(mapper, fieldSet);
-            m_seqQueryResources.put(new Integer(setId), queryReqName);
+               // need to create a query to retreive current sort rank values
+               String queryReqName = createSequenceQueryDataSet(mapper, fieldSet);
+               m_seqQueryResources.put(new Integer(setId), queryReqName);
+            }
          }
       }
-
       /* if the current mapper contains any simple children mappers, need
        * to create delete and inserts for them as well, to be processed with
        * the parent data.  Otherwise they need their own datasets created.
@@ -2256,7 +2225,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
     * respective parent lists. Initialized in constructor, never
     * <code>null</code> or changed after that, may be empty.
     */
-   private Map m_inlineLinkFields = null;
+   private Map<String,List<PSField>> m_inlineLinkFields = null;
 
    /**
     * A map of fields that need special inline link processing. The map key is
@@ -2265,7 +2234,7 @@ public class PSModifyCommandHandler extends PSCommandHandler
     * but may be empty. Initialized in {@link #prepareInlineLinkFields(
     * PSFieldSet, Map)}, never changed after that.
     */
-   private Map m_flatInlinelinkFields = new HashMap();
+   private Map<String,PSField> m_flatInlinelinkFields = new HashMap<>();
 
    /**
     * A Thread local object to store a <code>Boolean</code> object,

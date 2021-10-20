@@ -198,7 +198,7 @@ public class PSApplicationIdContextTest extends TestCase
       req = new PSUrlRequest(null, "bar", urlparams);
       urlCtx = new PSAppUrlRequestIdContext(req);
       assertTrue(urlCtx.equals(testXml(urlCtx)));
-      req = new PSUrlRequest(null, null, urlparams);
+      req = new PSUrlRequest((String) null, null, urlparams);
       urlCtx = new PSAppUrlRequestIdContext(req);
       assertTrue(urlCtx.equals(testXml(urlCtx)));
       

@@ -27,7 +27,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -106,7 +106,7 @@ public class PSServerCacheSettings  extends PSComponent
     * the expected format.
     */
    public PSServerCacheSettings(Element source, IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if(source == null)
@@ -208,7 +208,7 @@ public class PSServerCacheSettings  extends PSComponent
     * the expected format.
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -32,8 +32,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author RammohanVangapalli
@@ -65,7 +65,7 @@ public class PSCloneOverrideFieldList extends PSCollectionComponent
    public PSCloneOverrideFieldList(
       Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -104,7 +104,7 @@ public class PSCloneOverrideFieldList extends PSCollectionComponent
    public void fromXml(
       Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

@@ -31,7 +31,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Object representation of a JDBC driver configuration.  Provides default 
@@ -145,7 +145,7 @@ public class PSJdbcDriverConfig extends PSComponent
     */
    public void fromXml(Element sourceNode,
          @SuppressWarnings("unused") IPSDocument parentDoc,
-         @SuppressWarnings("unused") ArrayList parentComponents)
+         @SuppressWarnings("unused") List parentComponents)
          throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -201,7 +201,7 @@ public class PSJdbcDriverConfig extends PSComponent
 
    /**
     * Get the default container type mapping for this driver.  See {@link 
-    * com.percussion.utils.jboss.PSJndiDatasource#getContainerTypeMapping() 
+    * PSJndiGroupProviderInstance#PSJndiGroupProviderInstance(String, int)}  
     * PSJndiDatasource.getContainerTypeMapping()} for more info.
     * 
     * @return The type mapping, never <code>null</code> or empty.

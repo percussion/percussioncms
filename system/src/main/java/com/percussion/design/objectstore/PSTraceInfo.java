@@ -34,6 +34,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -55,7 +56,7 @@ public class PSTraceInfo extends PSComponent
     * appropriate type
     * @roseuid 39F46A7B02BF
     */
-   public PSTraceInfo(Element sourceNode, IPSDocument parentDoc, ArrayList parentComponents) throws PSUnknownNodeTypeException
+   public PSTraceInfo(Element sourceNode, IPSDocument parentDoc, List parentComponents) throws PSUnknownNodeTypeException
    {
       this(sourceNode, parentDoc, parentComponents, Locale.getDefault());
    }
@@ -336,10 +337,9 @@ public class PSTraceInfo extends PSComponent
     * @throws PSUnknownNodeTypeException  if the XML element node does not
     * represent a type supported
     * by the class.
-    * @roseuid 39F72D38036B
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
 
@@ -657,7 +657,7 @@ public class PSTraceInfo extends PSComponent
     * @roseuid 3A06C9CE000F
     */
    public PSTraceInfo(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents, Locale locale)
+         List parentComponents, Locale locale)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -769,7 +769,7 @@ public class PSTraceInfo extends PSComponent
    /**
     * The composite flag object which maintains the initial enabled state of
     * each trace option.  Initialized during constructor execution or in fromXml.
-    * @see #fromXml(Element, IPSDocument, ArrayList)
+    * @see #fromXml(Element, IPSDocument, List)
     */
    private PSTraceFlag m_initialTraceFlag = null;
 

@@ -28,8 +28,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -51,7 +51,7 @@ public class PSConditionalExtension extends PSComponent
     *    the appropriate type.
     */
    public PSConditionalExtension(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode annot be null");
@@ -166,7 +166,7 @@ public class PSConditionalExtension extends PSComponent
 
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

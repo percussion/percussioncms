@@ -106,7 +106,7 @@ public class PSChoiceTableInfo extends PSComponent
     *            appropriate type
     */
    public PSChoiceTableInfo(Element sourceNode, IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException {
+         List parentComponents) throws PSUnknownNodeTypeException {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
 
@@ -176,8 +176,8 @@ public class PSChoiceTableInfo extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, 
-      @SuppressWarnings("unused") IPSDocument parentDoc,
-         ArrayList parentComponents) throws PSUnknownNodeTypeException
+         IPSDocument parentDoc,
+         List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

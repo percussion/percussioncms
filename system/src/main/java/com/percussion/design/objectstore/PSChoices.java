@@ -32,6 +32,7 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -96,7 +97,7 @@ public class PSChoices extends PSComponent
     *    the appropriate type
     */
    public PSChoices(Element sourceNode, IPSDocument parentDoc,
-                    ArrayList parentComponents)
+                    List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -104,6 +105,7 @@ public class PSChoices extends PSComponent
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSChoices copy = (PSChoices) super.clone();
@@ -335,7 +337,7 @@ public class PSChoices extends PSComponent
     *
     * @param defaultSelected a collection of PSDefaultSelected objects, might
     *    be <code>null</code> or empty.
-    * @throws IllegalArgumentExcption if the provided collection is of wrong
+    * @throws IllegalArgumentException if the provided collection is of wrong
     *    objects types.
     */
    public void setDefaultSelected(PSCollection defaultSelected)
@@ -407,7 +409,7 @@ public class PSChoices extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

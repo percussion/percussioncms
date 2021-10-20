@@ -36,7 +36,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An item definition contains all of the design elements that define what an
@@ -305,7 +305,7 @@ public class PSItemDefSummary extends PSCmsComponent implements
     */
    public void fromXml(Element source,
          @SuppressWarnings("unused") IPSDocument parentDoc,
-         @SuppressWarnings("unused") ArrayList parentComponents)
+         @SuppressWarnings("unused") List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (null == source)

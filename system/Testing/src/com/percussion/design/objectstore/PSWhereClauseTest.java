@@ -25,23 +25,20 @@ package com.percussion.design.objectstore;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Unit tests for the PSWhereClause class.
  */
-public class PSWhereClauseTest extends TestCase
+public class PSWhereClauseTest
 {
-   public PSWhereClauseTest(String name)
-   {
-      super(name);
-   }
 
+   @Test
    public void testXml() throws Exception
    {
       PSTextLiteral foo = new PSTextLiteral("foo");
@@ -56,10 +53,4 @@ public class PSWhereClauseTest extends TestCase
       assertEquals(clause, otherClause);
    }
 
-   public static Test suite()
-   {
-      TestSuite suite = new TestSuite();
-      suite.addTest(new PSWhereClauseTest("testXml"));
-      return suite;
-   }
 }

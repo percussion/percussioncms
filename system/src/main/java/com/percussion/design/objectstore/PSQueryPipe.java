@@ -31,6 +31,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 
 /**
  * The PSQueryPipe class extends the PSPipe class providing support for
@@ -61,7 +63,7 @@ public class PSQueryPipe extends PSPipe
     * appropriate type
     */
    public PSQueryPipe(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -274,7 +276,7 @@ public class PSQueryPipe extends PSPipe
     * PSXQueryPipe
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -286,7 +288,7 @@ public class PSQueryPipe extends PSPipe
             throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-         if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+         if (!ms_NodeType.equals(sourceNode.getNodeName()))
          {
             Object[] args = { ms_NodeType, sourceNode.getNodeName() };
             throw new PSUnknownNodeTypeException(

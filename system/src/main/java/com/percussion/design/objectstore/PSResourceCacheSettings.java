@@ -250,7 +250,7 @@ public class PSResourceCacheSettings extends PSComponent
     * the expected format.
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

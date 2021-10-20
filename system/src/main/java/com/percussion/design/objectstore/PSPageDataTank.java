@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -66,7 +67,7 @@ public class PSPageDataTank extends PSComponent
     *                              appropriate type
     */
    public PSPageDataTank(Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -279,14 +280,14 @@ public class PSPageDataTank extends PSComponent
     *                                        of type PSXPageDataTank
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

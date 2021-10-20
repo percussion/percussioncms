@@ -285,17 +285,18 @@ public class PSManagedLinkService implements IPSManagedLinkService
 	     
 	        try {
 	        	 if(log.isDebugEnabled())
-	             	log.debug("Parsing JSON Payload" + jsonPayload);
+	             	log.debug("Parsing JSON Payload: {}" , jsonPayload);
 	        	object = new JSONObject(jsonPayload);
 
-	        	log.debug("Done parsing payload, parsing " + PERC_CONFIG + " array.");
+	        	log.debug("Done parsing payload, parsing {} array.",  PERC_CONFIG );
 
                 try {
                     objectArray = object.getJSONArray(PERC_CONFIG);
 		            log.debug("Done parsing payload array");
                 }catch(JSONException js){
                     //Unable to get the array so log an error that it is missing
-                    log.error("An error occurred while trying to manage links in a JSONPayload field.", PSExceptionUtils.getMessageForLog(js));
+                    log.error("An error occurred while trying to manage links in a JSONPayload field. Error: {}",
+                            PSExceptionUtils.getMessageForLog(js));
                     log.debug("An error occurred while trying to manage links in a JSONPayload field.", js);
                     return null;
 
@@ -306,7 +307,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		        
 		        for (int i = 0; i < objectArray.length(); i++) {
 		        	PSManagedLink mLink = null;
-                    log.debug("Processing payload entry " + i);
+                    log.debug("Processing payload entry {}" , i);
                     JSONObject entry = objectArray.getJSONObject(i);
 
 
@@ -315,17 +316,19 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		            	if(entry.has(PERC_IMAGEPATH_LINKID)){
 		            		if(!StringUtils.isBlank(entry.getString(PERC_IMAGEPATH_LINKID))){
 		            			if(log.isDebugEnabled())
-		            				log.debug("Getting updated path for Image entry: " + entry.getString(PERC_IMAGEPATH_LINKID) + 
-		            						" with current path of " + entry.get(PERC_IMAGEPATH));
+		            				log.debug("Getting updated path for Image entry: {} with current path of {}" ,
+                                            entry.getString(PERC_IMAGEPATH_LINKID),
+                                            entry.get(PERC_IMAGEPATH));
 		            			mLink = dao.findLinkByLinkId(Integer.parseInt(entry.getString(PERC_IMAGEPATH_LINKID)));
 		            			newPath = renderHref(mLink,linkContext, isStaging);
 		            			if(log.isDebugEnabled())
-		            				log.debug("Updating payload for Image entry: " + entry.getString(PERC_IMAGEPATH_LINKID) + " with new path of " + newPath);
+		            				log.debug("Updating payload for Image entry: {} with new path of {}",
+                                             entry.getString(PERC_IMAGEPATH_LINKID) , newPath);
 		            			
 		            			entry.put(PERC_IMAGEPATH, newPath);
 			            		objectArray.put(i,entry);
 			            		if(log.isDebugEnabled())
-			            			log.debug("Done updating.");
+			            			log.debug("Done updating links.");
 		            		}
 		            	}
 		            }
@@ -335,17 +338,20 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		            	if(entry.has(PERC_FILEPATH_LINKID)){
 		            		if(!StringUtils.isBlank(entry.getString(PERC_FILEPATH_LINKID))){
 		            			if(log.isDebugEnabled())
-		            				log.debug("Getting updated path for File entry: " + entry.getString(PERC_FILEPATH_LINKID) + 
-		            						" with current path of " + entry.get(PERC_FILEPATH));
+		            				log.debug("Getting updated path for File entry: {} with current path of {}" ,
+                                            entry.getString(PERC_FILEPATH_LINKID),
+                                            entry.get(PERC_FILEPATH));
 		            			mLink = dao.findLinkByLinkId(Integer.parseInt(entry.getString(PERC_FILEPATH_LINKID)));
 		            			newPath = renderHref(mLink,linkContext, isStaging);
 			            		if(log.isDebugEnabled())
-		            				log.debug("Updating payload for File entry: " + entry.getString(PERC_FILEPATH_LINKID) + " with new path of " + newPath);
+		            				log.debug("Updating payload for File entry: {} with new path of {}",
+                                            entry.getString(PERC_FILEPATH_LINKID),
+                                            newPath);
 		            			
 			              		entry.put(PERC_FILEPATH, newPath);
 			            		objectArray.put(i,entry);
 			            		if(log.isDebugEnabled())
-			            			log.debug("Done updating.");
+			            			log.debug("Done updating links.");
 		            		}
 		            	}
 		            }
@@ -355,12 +361,15 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		            	if(entry.has(PERC_PAGEPATH_LINKID)){
 		            		if(!StringUtils.isBlank(entry.getString(PERC_PAGEPATH_LINKID))){
 		            			if(log.isDebugEnabled())
-		            				log.debug("Getting updated path for Page entry: " + entry.getString(PERC_PAGEPATH_LINKID) + 
-		            						" with current path of " + entry.get(PERC_PAGEPATH));
+		            				log.debug("Getting updated path for Page entry: {} with current path of {}" ,
+                                            entry.getString(PERC_PAGEPATH_LINKID),
+                                            entry.get(PERC_PAGEPATH));
 		            			mLink = dao.findLinkByLinkId(Integer.parseInt(entry.getString(PERC_PAGEPATH_LINKID)));
 		            			newPath = renderHref(mLink,linkContext, isStaging);
 			            		if(log.isDebugEnabled())
-		            				log.debug("Updating payload for Page entry: " + entry.getString(PERC_PAGEPATH_LINKID) + " with new path of " + newPath);
+		            				log.debug("Updating payload for Page entry: {} with new path of {}" ,
+                                            entry.getString(PERC_PAGEPATH_LINKID) ,
+                                            newPath);
 			            		entry.put(PERC_PAGEPATH, newPath);
 			            		objectArray.put(i,entry);
 			            		if(log.isDebugEnabled())
@@ -378,13 +387,14 @@ public class PSManagedLinkService implements IPSManagedLinkService
                     jsonPayload = "";
                 }
 
-	            log.error("An error occurred while trying to manage links in a JSONPayload field. Payload was: " + jsonPayload + " Error was: " + ex.getMessage());
+	            log.error("An error occurred while trying to manage links in a JSONPayload field. Payload was: {} Error was: {}",
+                        jsonPayload, PSExceptionUtils.getMessageForLog(ex));
 
-				log.debug("Error occurred.  Returning original payload: " + jsonPayload, ex);
+				log.debug("Error occurred.  Returning original payload: {}" , jsonPayload, ex);
 				return jsonPayload;
 			}
 
-	        log.debug("Returning updated payload with any managed path updates: " + object.toString());
+	        log.debug("Returning updated payload with any managed path updates: {}" , object);
 	        return object.toString();
 	}
     
@@ -460,12 +470,12 @@ public class PSManagedLinkService implements IPSManagedLinkService
         List<Long> linkIds = newLinkIds.get();
         if (linkIds == null)
         {
-            log.warn("newLInkIds not initialized for current thread, no links will be updated for parent Id: " + parentId);
+            log.warn("newLInkIds not initialized for current thread, no links will be updated for parent Id: {}" , parentId);
             return;
         }
         
         // clear the new item link cache
-        newLinkIds.set(null);
+        newLinkIds.remove();
         
         for (Long linkId : linkIds)
         {
@@ -481,7 +491,8 @@ public class PSManagedLinkService implements IPSManagedLinkService
                 }
                 catch (Exception e)
                 {
-                    log.error("Unable to update manage link: " + link.toString() + " for parent id: " + parentId + " - "+ e.getLocalizedMessage(), e);
+                    log.error("Unable to update manage link: {} for parent id: {}. Error: {}",
+                            link, parentId, PSExceptionUtils.getMessageForLog(e));
                 }
             }
         }
@@ -576,7 +587,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         Integer copiedAssetId = assetIdMap.get(link.getChildId());
         if (copiedAssetId != null)
         {
-            link.setChildId(copiedAssetId.intValue());
+            link.setChildId(copiedAssetId);
             dao.saveLink(link);
             return;
         }
@@ -591,9 +602,10 @@ public class PSManagedLinkService implements IPSManagedLinkService
         IPSGuid guid = contentWs.getIdByPath(path);
         if (guid == null)
         {
-            log.warn("Found a page from original site (" + origSiteRoot + relativePath
-                    + "), but cannot find the copied page (" + path + "). Skip updating managed link: "
-                    + link.toString());
+            log.warn("Found a page from original site ( {} ), but cannot find the copied page ( {} ). Skip updating managed link: {}",
+                    origSiteRoot + relativePath,
+                    path
+                    , link);
             return;
         }
         int childId = idMapper.getContentId(guid);
@@ -694,6 +706,16 @@ public class PSManagedLinkService implements IPSManagedLinkService
     {
     	return path.startsWith("/Sites/") || path.startsWith("/Assets/") || path.startsWith("//Sites/") || path.startsWith("//Assets/"); 	
     }
+
+
+    /**
+     * Given a link element, checks to see if the target is blank and if it is, updates the link to include the
+     * @param link
+     */
+    protected void addReferrerIfMissing(Element link){
+
+    }
+
 	private void addBrokenClasses(Element link, PSManagedLink mLink,boolean brokenLink) {
 		if(mLink==null || brokenLink)
 		{
@@ -953,7 +975,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		if(URLValidator.isValid("http://localhost" + href + analyticsId)){
 			href += analyticsId;
 		} else{
-			log.warn("The link to asset: " + href + " with encoded analytics id of " + analyticsId + " failed to form a valid URL.");
+			log.warn("The link to asset: {} with encoded analytics id of {} failed to form a valid URL.",
+                    href,analyticsId
+                    );
 		}
 		
 		return href;
@@ -1721,10 +1745,13 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (RepositoryException e)
         {
-            log.error("Unable to get node for alt and title text with ID: " + childId +
-                    " and error message:"+ e.getMessage());
+            log.error("Unable to get node for alt and title text with ID: {} and error message: {}",
+                    childId,
+                    PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
         }
         return null;
     }
+
+
 }

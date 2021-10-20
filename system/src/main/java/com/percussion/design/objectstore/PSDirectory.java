@@ -56,7 +56,7 @@ public class PSDirectory extends PSComponent
     *    the appropriate type
     */
    public PSDirectory(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+                      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
@@ -408,7 +408,7 @@ public class PSDirectory extends PSComponent
    
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
@@ -703,7 +703,7 @@ public class PSDirectory extends PSComponent
    /**
     * A flag that indicates whether or not to output directory service debug 
     * information to the system output stream. Initialized in 
-    * {@link #fromXml(Element, IPSDocument, ArrayList)}, never changed after
+    * {@link #fromXml(Element, IPSDocument, List)}, never changed after
     * that.
     */
    private boolean m_debug = false;

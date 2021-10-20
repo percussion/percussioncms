@@ -39,6 +39,8 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 
 /**
  * The PSBackEndTable class is used to define a back-end table. Back-end
@@ -109,7 +111,7 @@ public class PSLegacyBackEndTable extends PSComponent
        * Gets the server name
        * @return the server from the backend table {@link #m_server}, never
        * <code>null</code> or empty for a validly created {@link PSLegacyBackEndTable}
-       * created and populated with {@link PSLegacyBackEndTable#fromXml()}. For any
+       * created and populated with {@link PSLegacyBackEndTable#fromXml(Element, IPSDocument, List)}. For any
        * other case there are no guarantees.
        */
       public String getServer()
@@ -121,7 +123,7 @@ public class PSLegacyBackEndTable extends PSComponent
        * Gets the driver name
        * @return the driver from the backend table {@link #m_driver}, never
        * <code>null</code> or empty for a validly created {@link PSLegacyBackEndTable}
-       * created and populated with {@link PSLegacyBackEndTable#fromXml()}. For any
+       * created and populated with {@link PSLegacyBackEndTable#fromXml(Element, IPSDocument, List)}. For any
        * other case there are no guarantees.
        */
       public String getDriver()
@@ -133,7 +135,7 @@ public class PSLegacyBackEndTable extends PSComponent
        * Gets the database name
        * @return the database from the backend table {@link #m_database}, never
        * <code>null</code> or empty for a validly created {@link PSLegacyBackEndTable}
-       * created and populated with {@link PSLegacyBackEndTable#fromXml()}. For any
+       * created and populated with {@link PSLegacyBackEndTable#fromXml(Element, IPSDocument, List)}. For any
        * other case there are no guarantees.
        */
       public String getDatabase()
@@ -175,7 +177,7 @@ public class PSLegacyBackEndTable extends PSComponent
     *                              appropriate type
     */
    public PSLegacyBackEndTable(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -531,14 +533,14 @@ public class PSLegacyBackEndTable extends PSComponent
     *                                        of type PSXBackEndTable
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

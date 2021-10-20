@@ -29,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,7 +57,7 @@ public class PSSortedColumn extends PSBackEndColumn
     * </code> or not of the appropriate type.
     */
    public PSSortedColumn(Element sourceNode, IPSDocument parentDoc,
-                         ArrayList parentComponents)
+                         List parentComponents)
       throws PSUnknownNodeTypeException
    {
       /*
@@ -168,7 +169,7 @@ public class PSSortedColumn extends PSBackEndColumn
     *                                        of type PSXSortedColumn
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
@@ -179,7 +180,7 @@ public class PSSortedColumn extends PSBackEndColumn
             throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-         if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+         if (!ms_NodeType.equals(sourceNode.getNodeName()))
          {
             Object[] args = { ms_NodeType, sourceNode.getNodeName() };
             throw new PSUnknownNodeTypeException(
@@ -199,10 +200,8 @@ public class PSSortedColumn extends PSBackEndColumn
 
          //private         boolean            m_isAscending = true;
          sTemp = tree.getElementData("isAscending");
-         if ((sTemp != null) && sTemp.equalsIgnoreCase("no"))
-            m_isAscending = false;
-         else
-            m_isAscending = true;   /* this is the default */
+         /* this is the default */
+         m_isAscending = (sTemp == null) || !sTemp.equalsIgnoreCase("no");
 
          // get the back-end column info (it's our superclass)
          int firstFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN;
@@ -291,7 +290,7 @@ public class PSSortedColumn extends PSBackEndColumn
     */
    public void copyFrom( PSSortedColumn col )
    {
-      super.copyFrom((PSBackEndColumn) col );
+      super.copyFrom( col );
       // assume object is valid
       m_isAscending = col.m_isAscending;
    }

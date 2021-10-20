@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.StringTokenizer;
 
@@ -65,7 +66,7 @@ public class PSBackEndColumn
    public PSBackEndColumn(
       Element sourceNode,
       IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       // allow subclasses to override (don't use "this")
@@ -181,7 +182,7 @@ public class PSBackEndColumn
     *
     * @version 1.18 1999/06/18
     *
-    * @param   fileName The column name
+    * @param   name The column name
     */
    private static IllegalArgumentException validateColumn(String name)
    {
@@ -431,7 +432,7 @@ public class PSBackEndColumn
          throw new IllegalArgumentException("The passed table collection must not be null");
       }
 
-      String arr[] = parseValueText(display);
+      String[] arr = parseValueText(display);
       String strAlias = arr[0];
       String strColumn = arr[1];
 
@@ -439,18 +440,12 @@ public class PSBackEndColumn
          return null;
 
       PSBackEndTable beTable = null;
-      Iterator iter = tables.iterator();
 
-      while (iter.hasNext())
-      {
-         Object t = iter.next();
-
-         if (t instanceof PSBackEndTable)
-         {
+      for (Object t : tables) {
+         if (t instanceof PSBackEndTable) {
             beTable = (PSBackEndTable) t;
             String testAlias = beTable.getAlias();
-            if (testAlias != null)
-            {
+            if (testAlias != null) {
                if (strAlias.equals(testAlias)) break; // Done
             }
          }
@@ -554,7 +549,7 @@ public class PSBackEndColumn
    public void fromXml(
       Element sourceNode,
       IPSDocument parentDoc,
-      java.util.ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -563,7 +558,7 @@ public class PSBackEndColumn
             ms_NodeType);
 
       // make sure we got the ACL type node
-      if (false == ms_NodeType.equals(sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName()};
          throw new PSUnknownNodeTypeException(

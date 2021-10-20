@@ -51,5 +51,6 @@ public interface IPSParameter extends Cloneable
     * Creates a new instance of this object, deep copying all member variables.
     * @return a clone of this instance.
     */
+   @Deprecated
    public Object clone();
 }

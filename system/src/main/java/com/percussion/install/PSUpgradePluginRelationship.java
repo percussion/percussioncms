@@ -136,7 +136,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
        * @throws PSUnknownNodeTypeException if malformed XML in 'src'.
        */
       RelationshipConfig(Element src, IPSDocument parentDoc,
-            ArrayList parentComponents) throws PSUnknownNodeTypeException {
+            List parentComponents) throws PSUnknownNodeTypeException {
          super(src, parentDoc, parentComponents);
       }
 
@@ -182,7 +182,7 @@ public class PSUpgradePluginRelationship implements IPSUpgradePlugin
 
       // Override super.createMemberObject(...)
       protected PSRelationshipConfig createMemberObject(Element sourceNode,
-            IPSDocument parentDoc, ArrayList parentComponents)
+            IPSDocument parentDoc, List parentComponents)
             throws PSUnknownNodeTypeException
       {
          return new RelationshipConfig(sourceNode, parentDoc, parentComponents);

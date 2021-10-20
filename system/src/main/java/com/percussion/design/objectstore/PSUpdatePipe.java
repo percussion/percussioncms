@@ -31,6 +31,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.util.List;
+
 
 /**
  * The PSUpdatePipe class extends the PSPipe class providing support for
@@ -63,7 +65,7 @@ public class PSUpdatePipe extends PSPipe
     *                              appropriate type
     */
    public PSUpdatePipe(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -253,7 +255,7 @@ public class PSUpdatePipe extends PSPipe
     *                                        of type PSXUpdatePipe
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

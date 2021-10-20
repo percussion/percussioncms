@@ -35,7 +35,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSRole class provides a way to group users within E2. Roles can be
@@ -98,7 +98,7 @@ public class PSRole extends PSDatabaseComponent implements Comparable,
     *                              appropriate type
     */
    public PSRole(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -439,14 +439,14 @@ public class PSRole extends PSDatabaseComponent implements Comparable,
     *                                        of type PSXRole
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

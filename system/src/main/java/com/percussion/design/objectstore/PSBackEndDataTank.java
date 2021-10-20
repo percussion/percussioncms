@@ -29,6 +29,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -65,7 +66,7 @@ public class PSBackEndDataTank extends PSComponent
     *                              appropriate type
     */
    public PSBackEndDataTank(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -419,7 +420,7 @@ public class PSBackEndDataTank extends PSComponent
    *                                        of type PSXBackEndDataTank
    */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      java.util.ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

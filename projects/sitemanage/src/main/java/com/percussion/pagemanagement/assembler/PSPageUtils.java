@@ -32,6 +32,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.designmanagement.service.IPSFileSystemService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSJexlMethod;
@@ -320,8 +321,8 @@ public class PSPageUtils extends PSJexlUtilBase
             Set<String> widgetDefIds = getWidgetDefIds(item);
             return renderLinkService.renderCssLinks(linkContext, widgetDefIds);
         } catch (PSDataServiceException | RepositoryException e) {
-            log.error(LOG_ERROR_DEFAULT,"cssLinks", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"cssLinks", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new ArrayList<>();
         }
     }

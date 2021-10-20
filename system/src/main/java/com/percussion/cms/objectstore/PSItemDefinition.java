@@ -679,7 +679,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
    /** @see IPSComponent */
    @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents, false);   
@@ -706,7 +706,7 @@ public class PSItemDefinition extends PSItemDefSummary implements IPSComponent,
     * represent a type supported by the class.
     */
    private void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents, boolean isCopy)
+      List parentComponents, boolean isCopy)
       throws PSUnknownNodeTypeException
    {
       // validate the root element

@@ -32,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -71,7 +72,7 @@ public class PSCustomError extends PSComponent
     *                              appropriate type
     */
    public PSCustomError(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -107,7 +108,7 @@ public class PSCustomError extends PSComponent
     * component. Derived classes should implement this method for their data,
     * calling the base class method first.
     *
-    * @param req a valid PSCustomError. If null, a PSIllegalArgumentException is
+    * @param error a valid PSCustomError. If null, a PSIllegalArgumentException is
     * thrown.
     *
     * @throws PSIllegalArgumentException if req is null
@@ -231,14 +232,14 @@ public class PSCustomError extends PSComponent
     *                                        of type PSXCustomError
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
          IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
       
-      if (false == ms_NodeType.equals (sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args = { ms_NodeType, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

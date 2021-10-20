@@ -33,6 +33,8 @@ import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 
 /**
  * The PSBackEndTable class is used to define a back-end table. Back-end
@@ -100,7 +102,7 @@ public class PSBackEndTable extends PSComponent
     *                              appropriate type
     */
    public PSBackEndTable(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -359,13 +361,13 @@ public class PSBackEndTable extends PSComponent
     * type PSXBackEndTable
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      java.util.ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, ms_NodeType);
 
-      if (false == ms_NodeType.equals(sourceNode.getNodeName()))
+      if (!ms_NodeType.equals(sourceNode.getNodeName()))
       {
          Object[] args =
          {ms_NodeType, sourceNode.getNodeName()};

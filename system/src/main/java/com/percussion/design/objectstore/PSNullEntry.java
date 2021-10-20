@@ -28,6 +28,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for the PSXNullEntry DTD in BasicObjects.dtd.
@@ -59,7 +60,7 @@ public class PSNullEntry  extends PSEntry
     *    the appropriate type
     */
    public PSNullEntry(Element sourceNode, IPSDocument parentDoc, 
-                      ArrayList parentComponents)
+                      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -141,6 +142,7 @@ public class PSNullEntry  extends PSEntry
     * @return <code>true</code> if this and o are equal, 
     *    <code>false</code> otherwise.
     */
+   @Override
    public boolean equals(Object o)
    {
       if (!(o instanceof PSNullEntry))
@@ -173,7 +175,7 @@ public class PSNullEntry  extends PSEntry
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

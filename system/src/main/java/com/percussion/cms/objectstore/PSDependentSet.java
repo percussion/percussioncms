@@ -32,7 +32,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class encapsulates a collection of <code>PSDependent</code> objects as
@@ -61,7 +61,7 @@ public class PSDependentSet extends PSCollectionComponent
     *    the appropriate type
     */
    public PSDependentSet(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       super(PSDependent.class);
 
@@ -70,7 +70,7 @@ public class PSDependentSet extends PSCollectionComponent
 
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

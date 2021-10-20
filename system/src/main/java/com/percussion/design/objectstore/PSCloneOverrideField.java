@@ -32,8 +32,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * This class represents a field that is overridden by clone handler during 
@@ -76,7 +76,7 @@ public class PSCloneOverrideField extends PSComponent
     *    appropriate type.
     */
    public PSCloneOverrideField(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
@@ -113,7 +113,7 @@ public class PSCloneOverrideField extends PSComponent
     * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList)
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode may not be null.");
@@ -188,7 +188,7 @@ public class PSCloneOverrideField extends PSComponent
    /**
     * Set name of the field.
     * 
-    * @param string name of the field must not be <code>null</code> or empty.
+    * @param name name of the field must not be <code>null</code> or empty.
     */
    public void setName(String name)
    {
@@ -213,7 +213,7 @@ public class PSCloneOverrideField extends PSComponent
    /**
     * Sets a list of rules.
     * 
-    * @param list of rules. Each entry in the collection must be of type 
+    * @param rules list of rules. Each entry in the collection must be of type
     *    {@link PSRule rule object}, not <code>null</code>, may be empty.
     */
    public void setRules(PSCollection rules)
@@ -310,7 +310,7 @@ public class PSCloneOverrideField extends PSComponent
    /**
     * Name of the field whose value needs to be overridden. Initialized via 
     * one of the constructors or in {@link #fromXml(Element, IPSDocument, 
-    * ArrayList)} or using {@link PSCloneOverrideField#setName(String)} methods.
+    * List)} or using {@link PSCloneOverrideField#setName(String)} methods.
     * Never <code>null</code> or empty after initialization.
     */
    private String m_name = null;

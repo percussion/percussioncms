@@ -458,7 +458,7 @@ $.Autocompleter.Cache = function(options) {
 			rawValue = (typeof rawValue == "string") ? [rawValue] : rawValue;
 			
 			var value = options.formatMatch(rawValue, i+1, options.data.length);
-			if ( value === false )
+			if ( value === false || typeof value === 'undefined' )
 				continue;
 				
 			var firstChar = value.charAt(0).toLowerCase();

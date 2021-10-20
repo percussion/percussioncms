@@ -38,7 +38,7 @@ import org.w3c.dom.Node;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -63,7 +63,7 @@ public class PSAuthentication extends PSComponent
     *    the appropriate type
     */
    public PSAuthentication(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
@@ -411,8 +411,9 @@ public class PSAuthentication extends PSComponent
    }
 
    /** @see IPSComponent */
+   @Override
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(

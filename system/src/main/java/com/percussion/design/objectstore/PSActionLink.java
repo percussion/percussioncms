@@ -30,6 +30,7 @@ import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -60,7 +61,7 @@ public class PSActionLink extends PSComponent
     *    the appropriate type
     */
    public PSActionLink(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -68,6 +69,7 @@ public class PSActionLink extends PSComponent
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSActionLink copy = (PSActionLink) super.clone();
@@ -222,7 +224,7 @@ public class PSActionLink extends PSComponent
 
    // see IPSComponent
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -313,6 +315,7 @@ public class PSActionLink extends PSComponent
    }
 
    // see IPSComponent
+   @Override
    public void validate(IPSValidationContext context)
       throws PSSystemValidationException
    {

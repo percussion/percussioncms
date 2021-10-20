@@ -29,7 +29,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for all group provider instances.  Provides
@@ -115,14 +115,14 @@ public abstract class PSGroupProviderInstance extends PSComponent
     * Restores this class's state from its Xml representation.  Restores base
     * class state and then calls {@link #fromXmlEx(Element) fromXmlEx} to
     * delegate the restoration of the derived class state.
-    * See {@link IPSComponent#fromXml(Element, IPSDocument, ArrayList)
+    * See {@link IPSComponent#fromXml(Element, IPSDocument, List)
     * IPSComponent.fromXml} and {@link #fromXml(Element) fromXml}for more info.
     *
     * @throws PSUnknownNodeTypeException if the XML element node does not
     * represent a type supported or does not contain valid attribute values.
     */
    public final void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       validateElementName(sourceNode, XML_NODE_NAME);
 

@@ -290,7 +290,7 @@ public class PSRevisionHistory extends PSComponent
     *              of type PSXRevisionHistory
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                       java.util.ArrayList parentComponents)
+                       List parentComponents)
          throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

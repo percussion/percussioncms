@@ -27,7 +27,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -48,7 +48,7 @@ public class PSProvider extends PSComponent
     *    the appropriate type
     */
    public PSProvider(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
    }
@@ -164,13 +164,13 @@ public class PSProvider extends PSComponent
 
    /** @see IPSComponent */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new PSUnknownNodeTypeException(
             IPSObjectStoreErrors.XML_ELEMENT_NULL, XML_NODE_NAME);
 
-      if (!XML_NODE_NAME.equals(XML_NODE_NAME))
+      if (!XML_NODE_NAME.equals(sourceNode.getNodeName()))
       {
          Object[] args = { XML_NODE_NAME, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(

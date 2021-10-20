@@ -43,7 +43,7 @@ import javax.persistence.Version;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -69,7 +69,7 @@ public class PSConfig extends PSComponent
     *    the appropriate type
     */
    public PSConfig(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(source, parent, parentComponents);
    }
@@ -243,7 +243,7 @@ public class PSConfig extends PSComponent
     *    the appropriate type
     */
    public void fromXml(Element source, IPSDocument parent, 
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);
       int parentSize = parentComponents.size() - 1;

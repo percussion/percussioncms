@@ -28,7 +28,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a content editor control dependency.  Dependencies
@@ -120,7 +120,7 @@ public class PSDependency extends PSComponent
    
    // see interface for method description; see toXml for XML format
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
          throws PSUnknownNodeTypeException
    {
       validateElementName( sourceNode, XML_NODE_NAME );

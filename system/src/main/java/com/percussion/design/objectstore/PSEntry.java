@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation for the PSXEntry DTD in BasicObjects.dtd.
@@ -74,7 +75,7 @@ public class PSEntry extends PSComponent
     *    the appropriate type
     */
    public PSEntry(Element sourceNode, IPSDocument parentDoc,
-                  ArrayList parentComponents)
+                  List parentComponents)
       throws PSUnknownNodeTypeException
    {
       // allow subclasses to override (don't use "this")
@@ -89,6 +90,7 @@ public class PSEntry extends PSComponent
    }
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSEntry copy = (PSEntry) super.clone();
@@ -307,7 +309,7 @@ public class PSEntry extends PSComponent
     * @see IPSComponent
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

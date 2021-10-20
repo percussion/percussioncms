@@ -162,7 +162,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
     *
     * @return      the new parent list (in case parentComponents was null)
     */
-   protected ArrayList<PSComponent> updateParentList(ArrayList<PSComponent> parentComponents)
+   protected List<PSComponent> updateParentList(List<PSComponent> parentComponents)
    {
       if (parentComponents == null)
          parentComponents = new ArrayList<>();
@@ -180,7 +180,7 @@ public abstract class PSComponent implements IPSComponent, Serializable
     *
     * @param      size                  the size to set the list to
     */
-   protected void resetParentList(ArrayList<?> parentComponents, int size)
+   protected void resetParentList(List<?> parentComponents, int size)
    {
       if (parentComponents == null)
          return;

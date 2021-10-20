@@ -29,7 +29,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -61,7 +61,7 @@ public abstract class PSAbstractParamValue
     * <code>null</code> or the XML element node is not of the appropriate type
     */
    public PSAbstractParamValue(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -245,7 +245,7 @@ public abstract class PSAbstractParamValue
     * {@link #toXml(Document) toXml()}
     */
    public void fromXml(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

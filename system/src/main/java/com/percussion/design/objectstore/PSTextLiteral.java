@@ -29,7 +29,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -67,7 +67,7 @@ public class PSTextLiteral extends PSLiteral
     *                              appropriate type
     */
    public PSTextLiteral(Element sourceNode, IPSDocument parentDoc, 
-                        ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       fromXml(sourceNode, parentDoc, parentComponents);
@@ -194,7 +194,7 @@ public class PSTextLiteral extends PSLiteral
     *                                        of type PSXTextLiteral
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc, 
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)

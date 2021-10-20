@@ -96,7 +96,7 @@ public class PSFeatureSet
             IPSObjectStoreErrors.XML_ELEMENT_NULL,  ms_nodeName);
 
       //make sure we got the correct root node tag
-      if (false == ms_nodeName.equals(root.getNodeName()))
+      if (!ms_nodeName.equals(root.getNodeName()))
       {
          Object[] args = {  ms_nodeName, root.getNodeName() };
          throw new PSUnknownDocTypeException(
@@ -114,7 +114,7 @@ public class PSFeatureSet
       if(m_featureList != null)
          m_featureList.clear();
       else
-         m_featureList = new ArrayList();
+         m_featureList = new ArrayList<>();
 
       String curNodeType = PSFeature.ms_nodeName;
       if (tree.getNextElement(curNodeType, firstFlags) != null){

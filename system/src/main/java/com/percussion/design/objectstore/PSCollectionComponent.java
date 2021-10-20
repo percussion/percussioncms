@@ -28,6 +28,9 @@ import com.percussion.util.PSCollection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The PSCollectionComponent class implements some of the IPSComponent
  * interface as a convenience to objects extending this class which are
@@ -167,7 +170,7 @@ public abstract class PSCollectionComponent
     *                                         by the class.
     */
    public abstract void fromXml(Element sourceNode, IPSDocument parentDoc,
-                        java.util.ArrayList parentComponents)
+                        List parentComponents)
       throws PSUnknownNodeTypeException;
 
    /**
@@ -208,11 +211,11 @@ public abstract class PSCollectionComponent
     *
     * @return      the new parent list (in case parentComponents was null)
     */
-   protected java.util.ArrayList updateParentList(
-      java.util.ArrayList parentComponents)
+   protected List updateParentList(
+      List parentComponents)
    {
       if (parentComponents == null)
-         parentComponents = new java.util.ArrayList();
+         parentComponents = new ArrayList<>();
 
       parentComponents.add(this);
 
@@ -228,7 +231,7 @@ public abstract class PSCollectionComponent
     * @param      size                  the size to set the list to
     */
    protected void resetParentList(
-      java.util.ArrayList parentComponents, int size)
+      List parentComponents, int size)
    {
       if (parentComponents == null)
          return;

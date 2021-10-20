@@ -70,7 +70,7 @@ public class PSControlMeta extends PSComponent
     *    or <code>null</code>
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-                       ArrayList parentComponents)
+                       List parentComponents)
          throws PSUnknownNodeTypeException
    {
       validateElementName(sourceNode, XML_NODE_NAME);

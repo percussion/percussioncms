@@ -32,9 +32,9 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,7 +47,7 @@ public class PSCloningOptions extends PSComponent
     * Convenience constructor for copy site subfolders where no site name is
     * required.
     * 
-    * @see #PSCloningOptions(int, String, String, int, int, Map) for 
+    * @see #PSCloningOptions(int, String, String, String, int, int, Map)  for 
     *    documentation
     */
    public PSCloningOptions(int type, String folderName, int copyOption, 
@@ -112,11 +112,11 @@ public class PSCloningOptions extends PSComponent
    /**
     * Constructs the cloning options from its XML representation.
     * 
-    * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList) for parameter 
+    * @see IPSComponent#fromXml(Element, IPSDocument, List) for parameter 
     *    descriptions.
     */
    public PSCloningOptions(Element source, IPSDocument parent,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       fromXml(source, parent, parentComponents);
    }
@@ -437,7 +437,7 @@ public class PSCloningOptions extends PSComponent
     * @see IPSComponent#fromXml(Element, IPSDocument, ArrayList)
     */
    public void fromXml(Element source, IPSDocument parent,
-      ArrayList parentComponents) throws PSUnknownNodeTypeException
+      List parentComponents) throws PSUnknownNodeTypeException
    {
       if (source == null)
          throw new PSUnknownNodeTypeException(

@@ -31,6 +31,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import java.util.List;
+
 
 /**
  * The PSConditional class is used to define conditionals. Conditionals
@@ -197,7 +199,7 @@ public class PSConditional extends PSComponent
     *                                    appropriate type
     */
    public PSConditional(org.w3c.dom.Element sourceNode,
-      IPSDocument parentDoc, java.util.ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       this();
@@ -214,6 +216,7 @@ public class PSConditional extends PSComponent
 
 
    // see interface for description
+   @Override
    public Object clone()
    {
       PSConditional copy = (PSConditional) super.clone();
@@ -230,7 +233,7 @@ public class PSConditional extends PSComponent
     *
     * @param    name       the name of the variable to check
     * @param    op        the relational operator to use when comparing
-    * @param    val    the value the variable must match
+    * @param    value    the value the variable must match
     * @param    bool       the boolean operator when chaining conditionals
     *
     *        @see          #setVariable
@@ -250,7 +253,7 @@ public class PSConditional extends PSComponent
     *
     * @param name    the name of the variable to check
     * @param op    the relational operator to use when comparing
-    * @param val       the value the variable must match
+    * @param value       the value the variable must match
     *
     *        @see          #setVariable
     */
@@ -530,7 +533,7 @@ public class PSConditional extends PSComponent
     *                                            of type PSXConditional
     */
    public void fromXml(Element sourceNode, IPSDocument parentDoc,
-      java.util.ArrayList parentComponents)
+      List parentComponents)
       throws PSUnknownNodeTypeException
    {
       parentComponents = updateParentList(parentComponents);

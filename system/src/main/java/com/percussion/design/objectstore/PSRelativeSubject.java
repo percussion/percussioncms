@@ -27,7 +27,7 @@ package com.percussion.design.objectstore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The PSRelativeSubject class defines a subject (group or user) to be stored
@@ -61,7 +61,7 @@ public class PSRelativeSubject extends PSSubject
     *                             appropriate type
     */
    public PSRelativeSubject(Element sourceNode,
-      IPSDocument parentDoc, ArrayList parentComponents)
+      IPSDocument parentDoc, List parentComponents)
       throws PSUnknownNodeTypeException
    {
       super(sourceNode, parentDoc, parentComponents);
