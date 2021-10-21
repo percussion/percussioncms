@@ -201,7 +201,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			date = format.parse(query.getStartDate());
 		} catch (ParseException e) {
-			log.error(String.format("Error processing start date: {}, Error: {}",query.getStartDate()), e.getMessage());
+			log.error("Error processing start date: {}, Error: {}",query.getStartDate(), e.getMessage());
 			log.debug(e.getMessage(), e);
 		}
 
@@ -212,7 +212,7 @@ public class EMSSOAPEventService implements IPSEMSEventService {
 		try {
 			startDate =  DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
 		} catch (DatatypeConfigurationException e1) {
-			log.error(String.format("Error processing gregorian start date: {}, Error: {}",query.getStartDate()), e1.getMessage());
+			log.error("Error processing gregorian start date: {}, Error: {}",query.getStartDate(), e1.getMessage());
 			log.debug(e1.getMessage(), e1);
 		}
 

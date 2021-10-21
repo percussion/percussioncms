@@ -98,7 +98,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			try {
 				date = (Date) format.parseObject(query.getStartDate());
 			} catch (ParseException e) {
-				log.error(String.format("Error processing start date: {}, Error: {}",query.getStartDate()), e.getMessage());
+				log.error("Error processing start date: {}, Error: {}",query.getStartDate(), e.getMessage());
 				log.debug(e.getMessage(), e);
 			}
 			Calendar startDate = Calendar.getInstance();
@@ -107,7 +107,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			try {
 				date = (Date)format.parseObject(query.getEndDate());
 			} catch (ParseException e) {
-				log.error(String.format("Error processing end date: {}, Error: {}",query.getEndDate()), e.getMessage());
+				log.error("Error processing end date: {}, Error: {}",query.getEndDate(), e.getMessage());
 				log.debug(e.getMessage(), e);
 			}
 			Calendar endDate = Calendar.getInstance();
