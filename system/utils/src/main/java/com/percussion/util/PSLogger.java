@@ -23,6 +23,8 @@
  */
 package com.percussion.util;
 
+import com.percussion.error.PSExceptionUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -244,8 +246,14 @@ public class PSLogger implements IPSLogSink, IPSLogger
 
       if ( null == args )
          finalMsg = msg;
-      else
-         finalMsg = MessageFormat.format( msg, args );
+      else {
+       try {
+          finalMsg = MessageFormat.format(msg, args);
+       }catch(IllegalArgumentException e){
+          //If the message can't be formatted just return the msg.
+         finalMsg = msg;
+       }
+      }
 
       m_stdOut.println( finalMsg );
       try
@@ -259,7 +267,7 @@ public class PSLogger implements IPSLogSink, IPSLogger
       catch ( IOException e )
       {
          System.out.println( "[Logger] Logging to file failed: " +
-            e.getLocalizedMessage());
+                 PSExceptionUtils.getMessageForLog(e));
       }
    }
 
