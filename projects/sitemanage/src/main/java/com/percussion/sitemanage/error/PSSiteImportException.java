@@ -31,18 +31,20 @@ import com.percussion.error.PSException;
  */
 public class PSSiteImportException extends PSException
 {
-    @Deprecated
+
     public PSSiteImportException(String message)
     {
 
         super(-1, message);
     }
 
-    @Deprecated
     public PSSiteImportException(String message, Throwable cause)
     {
 
         super(-1, new Object[]{message}, cause);
     }
-    
+
+    public PSSiteImportException(Throwable t){
+        super(t);
+    }
 }
