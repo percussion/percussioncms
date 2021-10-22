@@ -34,6 +34,7 @@ import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -93,10 +94,11 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		int[] calendars = null;
 		
 		try {
-			FastDateFormat format = FastDateFormat.getInstance("yyyy-MM-dd hh:mm:ss");
+			//FastDateFormat to convert string date (query.getStartDate() & query.getEndDate()) to java.util date was giving parse exception.
+			String[] dateFormatArray = { "yyyy-MM-dd HH:mm:ss"};
 			Date date = null;
 			try {
-				date = (Date) format.parseObject(query.getStartDate());
+				date = DateUtils.parseDate(query.getStartDate(), dateFormatArray);
 			} catch (ParseException e) {
 				log.error("Error processing start date: {}, Error: {}",query.getStartDate(), e.getMessage());
 				log.debug(e.getMessage(), e);
@@ -105,7 +107,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			startDate.setTime(date);
 			
 			try {
-				date = (Date)format.parseObject(query.getEndDate());
+				date = DateUtils.parseDate(query.getEndDate(), dateFormatArray);
 			} catch (ParseException e) {
 				log.error("Error processing end date: {}, Error: {}",query.getEndDate(), e.getMessage());
 				log.debug(e.getMessage(), e);
