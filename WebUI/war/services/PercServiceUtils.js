@@ -91,8 +91,6 @@
             path = CSRF_FORMS_PATH;
         else if(path.includes("/perc-polls-services"))
             path = CSRF_POLLS_PATH;
-        else if(path.includes("/perc-integrations/"))
-            path = CSRF_INTEGRATION_PATH;
         else if(path.includes("/perc-comments-services/"))
             path = CSRF_COMMENTS_PATH;
         else if(path.includes("/perc-membership-services/"))

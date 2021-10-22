@@ -259,7 +259,7 @@
 	  $startDate = $tools.date.format('yyyy-MM-dd hh:mm:ss',$startDate);
 	  $endDate = $tools.date.format('yyyy-MM-dd hh:mm:ss',$endDate);
 
-	  $dataQuery = "{&quot;eventName&quot;:&quot;"+ $eventNameFilter +"&quot;,&quot;location&quot;:&quot;" + $locationFilter + "&quot;,&quot;calendars&quot;:[" + $calendarIds + "],&quot;eventTypes&quot;:[" + $eventTypeIds + "],&quot;startDate&quot;:&quot;" + $startDate + "&quot;,&quot;endDate&quot;:&quot;" + $endDate + "&quot;}";
+	  $dataQuery = "{&quot;psEventQuery&quot;:{&quot;eventName&quot;:&quot;"+ $eventNameFilter +"&quot;,&quot;location&quot;:&quot;" + $locationFilter + "&quot;,&quot;calendars&quot;:[" + $calendarIds + "],&quot;eventTypes&quot;:[" + $eventTypeIds + "],&quot;startDate&quot;:&quot;" + $startDate + "&quot;,&quot;endDate&quot;:&quot;" + $endDate + "&quot;}}";
 
 	  if($listTitle==null){
 		$listTitle = "";
@@ -275,6 +275,10 @@
 		$isPublish = true;
 	  }else{
 		$isPublish = false;
+	  }
+
+	  if($isPublish){
+		$dataQuery = "{&quot;eventName&quot;:&quot;"+ $eventNameFilter +"&quot;,&quot;location&quot;:&quot;" + $locationFilter + "&quot;,&quot;calendars&quot;:[" + $calendarIds + "],&quot;eventTypes&quot;:[" + $eventTypeIds + "],&quot;startDate&quot;:&quot;" + $startDate + "&quot;,&quot;endDate&quot;:&quot;" + $endDate + "&quot;}";
 	  }
 
 
