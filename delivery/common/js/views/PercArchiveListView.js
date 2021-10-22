@@ -281,7 +281,7 @@
                                     query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
                                     let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
-                                     href = baseURL + pageResult + "?filter="+ encodeURIComponent(row2.month +" "+ row.year) + encodedQuery;
+                                    let href = baseURL + pageResult + "?filter="+ encodeURIComponent(row2.month +" "+ row.year) + encodedQuery;
                                     a = $("<a>")
                                         .attr("href", href)
                                         .text(linkText);
