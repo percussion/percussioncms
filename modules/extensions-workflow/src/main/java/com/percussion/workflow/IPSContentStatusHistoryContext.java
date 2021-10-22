@@ -34,8 +34,9 @@ import java.sql.SQLException;
  * @author Rammohan Vangapalli
  * @version 1.0
  * @since 2.0
- *
+ * @deprecated
  */
+@Deprecated
 public interface IPSContentStatusHistoryContext
 {   
    /**

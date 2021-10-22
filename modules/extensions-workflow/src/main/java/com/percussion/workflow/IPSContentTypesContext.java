@@ -31,10 +31,12 @@ package com.percussion.workflow;
  * @version 1.0
  * @since 2.0
  *
+ * @deprecated
  */
 
 import java.sql.SQLException;
 
+@Deprecated
 public interface IPSContentTypesContext
 {
 /**

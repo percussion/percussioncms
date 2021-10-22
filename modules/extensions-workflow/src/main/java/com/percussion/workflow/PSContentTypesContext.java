@@ -31,6 +31,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Deprecated
 public class PSContentTypesContext implements IPSContentTypesContext
 {
   private boolean invokedStandalone = false;
@@ -128,16 +129,16 @@ public class PSContentTypesContext implements IPSContentTypesContext
     {
     }
   }
-  
+
   /**
    * static constant string that represents the qualified table name.
    */
   static private String TABLE_CTC =
      PSConnectionMgr.getQualifiedIdentifier("CONTENTTYPES");
 
-  private static final String QRYSTRING = 
-   "SELECT " + 
-   TABLE_CTC + ".CONTENTTYPENAME," + 
+  private static final String QRYSTRING =
+   "SELECT " +
+   TABLE_CTC + ".CONTENTTYPENAME," +
    TABLE_CTC + ".CONTENTTYPEDESC," +
    TABLE_CTC + ".CONTENTTYPENEWREQUEST," +
    TABLE_CTC + ".CONTENTTYPEQUERYREQUEST," +

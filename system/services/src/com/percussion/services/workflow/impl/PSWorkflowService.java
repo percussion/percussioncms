@@ -23,6 +23,7 @@
  */
 package com.percussion.services.workflow.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cx.objectstore.PSMenuAction;
 import com.percussion.data.PSTableChangeEvent;
@@ -35,9 +36,26 @@ import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.memory.IPSCacheAccess;
-import com.percussion.services.security.impl.PSAclService;
-import com.percussion.services.workflow.*;
-import com.percussion.services.workflow.data.*;
+import com.percussion.services.workflow.IPSWorkflowErrors;
+import com.percussion.services.workflow.IPSWorkflowService;
+import com.percussion.services.workflow.PSWorkflowActionsHelper;
+import com.percussion.services.workflow.PSWorkflowException;
+import com.percussion.services.workflow.PSWorkflowServiceLocator;
+import com.percussion.services.workflow.data.PSAdhocTypeEnum;
+import com.percussion.services.workflow.data.PSAgingTransition;
+import com.percussion.services.workflow.data.PSAssignedRole;
+import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
+import com.percussion.services.workflow.data.PSContentAdhocUser;
+import com.percussion.services.workflow.data.PSContentApproval;
+import com.percussion.services.workflow.data.PSContentWorkflowState;
+import com.percussion.services.workflow.data.PSNotification;
+import com.percussion.services.workflow.data.PSNotificationDef;
+import com.percussion.services.workflow.data.PSState;
+import com.percussion.services.workflow.data.PSTransition;
+import com.percussion.services.workflow.data.PSTransitionBase;
+import com.percussion.services.workflow.data.PSTransitionRole;
+import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.services.workflow.data.PSWorkflowRole;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.workflow.PSWorkFlowUtils;
@@ -56,8 +74,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Table;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
@@ -89,7 +110,7 @@ public class PSWorkflowService
    /**
     * Commons logger
     */
-    private static final Logger ms_log = LogManager.getLogger(PSWorkflowService.class);
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 
    /**
     * This listener responds to table change notices by removing the cached

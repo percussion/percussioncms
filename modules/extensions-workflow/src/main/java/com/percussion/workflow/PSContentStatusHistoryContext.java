@@ -42,6 +42,7 @@ import java.sql.Timestamp;
  * @since 2.0
  *
  */
+@Deprecated
 public class PSContentStatusHistoryContext
    implements IPSContentStatusHistoryContext
 {

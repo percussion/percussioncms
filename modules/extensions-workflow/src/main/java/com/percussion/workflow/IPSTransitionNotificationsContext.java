@@ -33,7 +33,7 @@ package com.percussion.workflow;
  * the context is created, the current notification is the first one. The
  * current notification can be advanced via calls to  {@link #moveNext} 
  */
-
+@Deprecated
 public interface IPSTransitionNotificationsContext
 { 
    /**

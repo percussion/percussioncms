@@ -34,6 +34,7 @@ import com.percussion.design.objectstore.PSRequestor;
 import com.percussion.error.PSApplicationAuthorizationError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSRequestPreProcessingError;
 import com.percussion.error.PSValidationError;
 import com.percussion.extension.IPSExtension;
@@ -56,7 +57,6 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
-import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -158,19 +158,7 @@ public abstract class PSDataHandler implements IPSRequestHandler,
 
    public static String getExceptionText(Throwable t)
    {
-      String errorText  = "";
-
-      if (t instanceof SQLException) {
-         errorText = PSSqlException.getFormattedExceptionText((SQLException)t);
-      }
-      else if (t instanceof PSUnsupportedConversionException) {
-         errorText = t.getMessage();
-      }
-      else {
-         errorText = t.toString();
-      }
-
-      return errorText;
+      return PSExceptionUtils.getMessageForLog((Exception)t);
    }
 
    /**

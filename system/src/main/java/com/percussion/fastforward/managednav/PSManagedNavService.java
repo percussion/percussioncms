@@ -23,6 +23,7 @@
  */
 package com.percussion.fastforward.managednav;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -36,6 +37,7 @@ import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
@@ -258,7 +260,7 @@ public class PSManagedNavService implements IPSManagedNavService
          PSNavException ne = new PSNavException(
                  IPSNavigationErrors.NAVIGATION_SERVICE_FAILED_TO_MOVE_SOURCE_NAVON_TO_TARGET,
                  new Object[]{srcId,targetId},e);
-         log.error(ne.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(e);
          throw(ne);
       }
@@ -338,9 +340,9 @@ public class PSManagedNavService implements IPSManagedNavService
          if(ex instanceof PSNavException) {
               ne = (PSNavException)ex;
           }else if(ex instanceof PSErrorException){
-            ne = new PSNavException(ex.getMessage());
+            ne = new PSNavException(ex);
          }
-         log.error(ne.getLocalizedMessage(), ex);
+         log.error(PSExceptionUtils.getMessageForLog(ne));
          log.debug(ex);
          throw ne;
       }
@@ -393,7 +395,7 @@ public class PSManagedNavService implements IPSManagedNavService
          PSNavException e =  new PSNavException(
                  IPSNavigationErrors.NAVIGATION_SERVICE_FAILED_TO_MOVE_SECTION_BECAUSE_TARGET_ALREADY_HAS_ITEM,
                  new Object[]{targetFolder.getName(),srcFolder.getName()});
-               log.warn(e.getLocalizedMessage());
+               log.warn(PSExceptionUtils.getMessageForLog(e));
          throw e;
       }
    }
@@ -460,11 +462,11 @@ public class PSManagedNavService implements IPSManagedNavService
          PSNavException ne = new PSNavException(
                  IPSNavigationErrors.NAVIGATION_SERVICE_ERROR_ADDING_NAVTREE_TO_FOLDER,ex);
          if(ex instanceof PSErrorException){
-            ne = new PSNavException(ex.getMessage());
+            ne = new PSNavException(ex);
          }
 
-         log.error(ne.getLocalizedMessage(), ex);
-         log.debug(ex);
+         log.error(PSExceptionUtils.getMessageForLog(ex));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(ex));
          throw ne;
       }
    }
@@ -755,8 +757,8 @@ public class PSManagedNavService implements IPSManagedNavService
          {
             PSNavException e = new PSNavException(IPSNavigationErrors.NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH,
                     folderPath);
-            log.error(e.getLocalizedMessage());
-            log.debug(e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
          }
 
@@ -766,8 +768,8 @@ public class PSManagedNavService implements IPSManagedNavService
       {
          PSNavException ne = new PSNavException(IPSNavigationErrors.NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH,
                  new Object[]{folderPath}, e);
-         log.error(ne.getLocalizedMessage());
-         log.debug(e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw(ne);
       }
    }
@@ -1217,7 +1219,7 @@ public class PSManagedNavService implements IPSManagedNavService
    /**
     * Logger for this service.
     */
-   private static final Logger log = LogManager.getLogger(PSManagedNavService.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.NAVIGATION_LOG);
    
    /**
     * The dummy template ID, used for create AA relationship between navigation nodes

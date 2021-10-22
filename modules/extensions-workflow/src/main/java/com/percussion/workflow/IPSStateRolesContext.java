@@ -36,6 +36,7 @@ package com.percussion.workflow;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public interface IPSStateRolesContext
 {
    /**

@@ -33,7 +33,7 @@ package com.percussion.workflow;
  * @since 2.0
  *
  */
-
+@Deprecated
 public interface IPSNotificationsContext
 {
 /**

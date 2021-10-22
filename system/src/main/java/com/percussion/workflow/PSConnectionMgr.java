@@ -23,6 +23,7 @@
  */
 package com.percussion.workflow;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
@@ -38,8 +39,7 @@ import java.sql.SQLException;
  * Simple utility class that gets and releases a JDBC connection from the
  * server's Database pool.
  */
-
-
+@Deprecated()//Use spring and hibernate instead
 public class PSConnectionMgr
 {
    /**
@@ -302,8 +302,7 @@ public class PSConnectionMgr
          }
          catch (Exception e)
          {
-            throw new RuntimeException("Failed to obtain connection detail: " 
-               + e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed to obtain connection detail:", e);
          }
       }
       
@@ -418,6 +417,6 @@ public class PSConnectionMgr
    /**
     * Logger
     */
-   private static final Logger log = LogManager.getLogger(PSConnectionMgr.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
 }

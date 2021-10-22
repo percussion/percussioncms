@@ -24,6 +24,7 @@
 
 package com.percussion.workflow;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSIdGenerator;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
@@ -34,6 +35,8 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -48,7 +51,9 @@ public class PSExitNextNumber implements IPSRequestPreProcessor
    private static final String GLOBAL_KEY = "RXKEYGLOBAL";
 
    /* Set the parameter count to not initialized */
-   static private int ms_correctParamCount = NOT_INITIALIZED;
+   private  int ms_correctParamCount = NOT_INITIALIZED;
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 
    /**************  IPSExtension Interface Implementation ************* */
    public void init(IPSExtensionDef extensionDef, File file)
@@ -76,14 +81,15 @@ public class PSExitNextNumber implements IPSRequestPreProcessor
          Object args[] = {
             ms_exitName,
             "The request must not be null" };
-
+         log.error("Exit: {} Error: {}", args[0],args[1]);
          throw new PSExtensionProcessingException(
             IPSExtension.ERROR_INVALID_PARAMETER, args);
       }
 
-      if(null == params)
+      if(null == params) {
+         log.debug("No parameters specified so skipping exit: {}", ms_exitName);
          return; //no parameters - exit with peace!
-
+      }
       String lang = (String)request.getSessionPrivateObject(
        PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
       if (lang == null)
@@ -151,14 +157,16 @@ public class PSExitNextNumber implements IPSRequestPreProcessor
 
       try
       {
-         return new Integer(PSIdGenerator.getNextId(key));
+         //This is using hibernate
+         return PSIdGenerator.getNextId(key);
       }
       catch (SQLException e)
       {
+
          throw new PSExtensionProcessingException(ms_exitName, e);
       }
    }
 
-   private static String ms_exitName = "PSExitNextNumber";
+   private static final String ms_exitName = "PSExitNextNumber";
 }
 

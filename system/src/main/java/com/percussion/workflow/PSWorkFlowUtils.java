@@ -2577,6 +2577,6 @@ public class PSWorkFlowUtils
    /**
     * The logger
     */
-   private static final Logger ms_log = LogManager.getLogger(PSWorkFlowUtils.class.getName());
+   private static final Logger ms_log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 }
 

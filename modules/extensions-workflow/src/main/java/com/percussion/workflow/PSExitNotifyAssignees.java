@@ -25,11 +25,27 @@ package com.percussion.workflow;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSConversionException;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSAttribute;
+import com.percussion.design.objectstore.PSContentEditorSystemDef;
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldSet;
+import com.percussion.design.objectstore.PSSubject;
 import com.percussion.error.PSException;
-import com.percussion.extension.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSExtension;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSExtensionErrors;
+import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.IPSWorkFlowContext;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.i18n.PSI18nUtils;
-import com.percussion.search.*;
+import com.percussion.search.IPSExecutableSearch;
+import com.percussion.search.IPSSearchResultRow;
+import com.percussion.search.PSExecutableSearchFactory;
+import com.percussion.search.PSSearchException;
+import com.percussion.search.PSWSSearchResponse;
 import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
@@ -79,7 +95,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * This exit sends mail notifications to the assigned roles for the new state
@@ -87,17 +111,17 @@ import java.util.*;
  */
 public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 {
-   private static final Logger m_log = LogManager.getLogger(PSExitNotifyAssignees.class.getName());
+   private static final Logger m_log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 
    /**
     * The fully qualified name of this extension.
     */
-   static private String m_fullExtensionName = "";
+   private static  String m_fullExtensionName = "";
 
    /**
     *  Set the parameter count to not initialized
     */
-   static private int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
+   private static  int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
 
    /**************  IPSExtension Interface Implementation ************* */
    public void init(IPSExtensionDef extensionDef, File file)
@@ -209,7 +233,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                return resDoc; //no content id means no notifications!
             }
 
-            contentID = new Integer(params[0].toString()).intValue();
+            contentID =  Integer.parseInt(params[0].toString());
             if(0 == contentID)
             {
                return resDoc; //no content id means no notifications!
@@ -223,7 +247,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                shouldSkipForNavons = true;
             }
             if (PSWorkFlowUtils.PERCNAVON.equals(request.getRequestPage()) && shouldSkipForNavons) {
-               m_log.debug("Detected navon page.  Skipping notification for item with content id: " + contentID);
+               m_log.debug("Detected navon page.  Skipping notification for item with content id: {}", contentID);
                return resDoc; // no need to send notification for navOn item.
             }
 
@@ -238,8 +262,8 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          }
          catch (PSInvalidNumberOfParametersException ne)
          {
-            l.warn("Error while sending notification with user " +
-                    userName + " and contentid " + contentID, ne);
+            l.warn("Error while sending notification to the user {} and contentid {}. Error: {}" , userName, contentID,
+                    PSExceptionUtils.getMessageForLog(ne));
             String language = ne.getLanguageString();
             if (language == null)
                language = PSI18nUtils.DEFAULT_LANG;
@@ -248,8 +272,10 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          }
          catch (PSInvalidParameterTypeException te)
          {
-            l.warn("Error while sending notification with user " +
-                    userName + " and contentid " + contentID, te);
+            l.warn("Error while sending notification to the user {} and contentid {}. Error: {}" ,
+                    userName,
+                    contentID,
+                    PSExceptionUtils.getMessageForLog(te));
             String language = te.getLanguageString();
             if (language == null)
                language = PSI18nUtils.DEFAULT_LANG;
@@ -266,9 +292,10 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          }
          catch(Exception e)
          {
-            l.warn("SQL Exception while sending notification " +
-                    "Error while sending notification with user " +
-                    userName + " and contentid " + contentID, e);
+            l.warn("Error while sending notification to user {} and contentid {}. Error: {}" ,
+                    userName,
+                    contentID,
+                    PSExceptionUtils.getMessageForLog(e));
             throw new PSExtensionProcessingException(
                     m_fullExtensionName, e);
          }
@@ -284,8 +311,11 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
          catch(PSEntryNotFoundException e)
          {
-            l.warn("Error while sending notification with user " +
-                    userName + " and contentid " + contentID, e);
+            l.warn("Error while sending notification to user {} for contentid {}. Error: {}",
+                    userName,
+                    contentID,
+                    PSExceptionUtils.getMessageForLog(e));
+
             // error message should be improved
             String language = e.getLanguageString();
             if (language == null)
@@ -295,8 +325,10 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          }
          catch(SQLException e)
          {
-            l.warn("SQL Exception while sending notification with user " +
-                    userName + " and contentid " + contentID, e);
+            l.warn("SQL Exception while sending notification to user {} for contentid {}. Error: {}",
+                    userName,
+                    contentID,
+                    PSExceptionUtils.getMessageForLog(e));
             // error message should be improved
             throw new PSExtensionProcessingException(m_fullExtensionName, e);
          }
@@ -324,8 +356,8 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                PSExtensionWrapper ext = new PSExtensionWrapper(context, name);
                 URL url = null;
                 String isBehindProxy = PSServer.getProperty("requestBehindProxy") == null ? "" : PSServer.getProperty("requestBehindProxy");
-                if(isBehindProxy.equalsIgnoreCase("true")){
-                    int port = Integer.valueOf(PSServer.getProperty("proxyPort"));
+                if("true".equalsIgnoreCase(isBehindProxy)){
+                    int port = Integer.parseInt(Objects.requireNonNull(PSServer.getProperty("proxyPort")));
                     String scheme = PSServer.getProperty("proxyScheme");
                     String domainName = PSServer.getProperty("publicCmsHostname");
                     url = (URL) ext.call(contentID, revisionID, domainName, port,
@@ -344,23 +376,10 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
                contentURL = PSWorkFlowUtils.getContentItemURL(contentID, revisionID, request, true);
             }
          }
-         catch (PSConversionException e)
+         catch (PSConversionException | PSAuthorizationException | PSAuthenticationFailedException | MalformedURLException e)
          {
             except = e;
-         }
-         catch (MalformedURLException e)
-         {
-            except = e;
-         }
-         catch (PSAuthenticationFailedException e)
-         {
-            except = e;
-         }
-         catch (PSAuthorizationException e)
-         {
-            except = e;
-         }
-         finally
+         } finally
          {
             if (null != except)
             {
@@ -817,12 +836,12 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
           */
          if (CCList != null) {
             emailAndCcList.addAll(CCList);
-            m_log.debug("Adding Ccs to entire mail list: " + CCList);
+            m_log.debug("Adding Ccs to entire mail list: {}" , CCList);
          }
 
          if (!emailToList.isEmpty()) {
             emailAndCcList.addAll(emailToList);
-            m_log.debug("Adding all 'to' recipients to list: " + emailToList);
+            m_log.debug("Adding all 'to' recipients to list: {}" , emailToList);
          }
 
          subject = nc.getSubject();
@@ -1140,9 +1159,11 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
          if (jexlTools != null) {
             evaluator.bind("$tools", jexlTools);
          }
-         m_log.debug("The bindings on the e-mail template are: " + evaluator.bindingsToString());
+         if(evaluator!=null)
+            m_log.debug("The bindings on the e-mail template are: {}" , evaluator.bindingsToString());
+
       } catch (IllegalStateException e) {
-         m_log.error("There was an error adding e-mail bindings to the template: ", e);
+         m_log.error("There was an error adding e-mail bindings to the template: {}", PSExceptionUtils.getMessageForLog(e));
       }
 
       return evaluator;
@@ -1191,7 +1212,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
          if (subjects.get(0) != null) {
             PSSubject subject = subjects.get(0);
-            m_log.debug("Adding the current user to psSubjects map: " + subjects.get(0).getName());
+            m_log.debug("Adding the current user to psSubjects map: {}" , subjects.get(0).getName());
             PSAttribute emailAttr = subject.getAttributes().getAttribute(PSWorkFlowUtils.USER_EMAIL_ATTRIBUTE);
             if (emailAttr != null) {
                String email = (String) emailAttr.getValues().get(0);
