@@ -24,12 +24,13 @@
 
 package com.percussion.utils.service.impl;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
-import com.percussion.security.ToDoVulnerability;
 import com.percussion.share.service.IPSSystemProperties;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.service.IPSUtilityService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -37,11 +38,8 @@ import org.apache.logging.log4j.Logger;
 
 public class PSUtilityService implements IPSUtilityService
 {
-    @Deprecated
-    @ToDoVulnerability
 
-
-    private static final Logger log = LogManager.getLogger(PSUtilityService.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
     private IPSSystemProperties systemProps = null;
     public PSUtilityService()
     {
@@ -58,7 +56,7 @@ public class PSUtilityService implements IPSUtilityService
         try {
             return PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),str);
         } catch (PSEncryptionException e) {
-            log.error("Error encrypting text: {}", e.getMessage());
+            log.error("Error encrypting text: {}", PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
             return "";
         }
@@ -143,7 +141,7 @@ public class PSUtilityService implements IPSUtilityService
     public boolean isSaaSEnvironment()
     {
         boolean isSaaS = false;
-        String saasProp = systemProps.getProperty(SAAS_FLAG_SERVER_PROP);
+        String saasProp = systemProps.getProperty(IPSConstants.SAAS_FLAG);
         if(StringUtils.isNotBlank(saasProp) && (saasProp.equalsIgnoreCase("true") || saasProp.equalsIgnoreCase("yes")))
             isSaaS = true;
         return isSaaS;

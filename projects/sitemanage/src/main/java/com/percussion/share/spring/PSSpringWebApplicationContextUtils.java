@@ -23,6 +23,7 @@
  */
 package com.percussion.share.spring;
 
+import com.percussion.cms.IPSConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -54,17 +55,6 @@ public class PSSpringWebApplicationContextUtils
         webApplicationContext = context;
     }
 
-    // This does not work in JBoss 5 because JBoss sucks and because of
-    // component scanning bug.
-    // public static void injectDependenciesByAnnotations(Object bean) throws
-    // Exception {
-    // logAutoWire(bean);
-    // AutowireCapableBeanFactory beanFactory =
-    // getWebApplicationContext().getAutowireCapableBeanFactory();
-    // beanFactory.autowireBeanProperties(bean,
-    // AutowireCapableBeanFactory.AUTOWIRE_NO, false);
-    // beanFactory.initializeBean(bean, bean.getClass().getName());
-    // }
 
     /**
      * This will autowire objects using the objects getters and setters. It will
@@ -97,6 +87,6 @@ public class PSSpringWebApplicationContextUtils
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(PSSpringWebApplicationContextUtils.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 
 }

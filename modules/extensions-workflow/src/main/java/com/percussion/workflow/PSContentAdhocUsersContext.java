@@ -43,7 +43,7 @@ import java.util.Map;
  * PSContentAdhocUsersContext class is a wrapper class providing access to the
  * records and fields of the backend table 'CONTENTADHOCUSERS'.
  */
-@SuppressWarnings("unchecked")
+@Deprecated
 public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
 {
 
@@ -83,6 +83,7 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
     *         CONTENTADHOCUSERS for this content item
     * @throws IllegalArgumentException if the connection is <CODE>null</CODE>
     */
+   @Deprecated // TODO: This class needs refactored to use spring  hibernate
    public PSContentAdhocUsersContext(int contentID,
                                      Connection connection)
       throws  PSRoleException, SQLException

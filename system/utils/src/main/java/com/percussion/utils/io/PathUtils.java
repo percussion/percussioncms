@@ -24,6 +24,7 @@
 
 package com.percussion.utils.io;
 
+import com.percussion.utils.tools.IPSUtilsConstants;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +50,7 @@ public class PathUtils {
     /**
      * Logger
      */
-    private static final Logger log = LogManager.getLogger(PathUtils.class);
+    private static final Logger log = LogManager.getLogger(IPSUtilsConstants.SERVER_LOG);
 
     private static volatile File RX_DIR = null;
 

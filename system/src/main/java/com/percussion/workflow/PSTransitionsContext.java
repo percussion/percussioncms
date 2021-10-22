@@ -23,12 +23,8 @@
  */
 package com.percussion.workflow;
 
-import com.percussion.cms.IPSConstants;
-import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.util.PSPreparedStatement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,37 +45,35 @@ import java.util.Map;
  * @since 2.0
  *
  */
-public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseable
+public class PSTransitionsContext implements IPSTransitionsContext
 {
-   private static final Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
-
    private int workflowID = 0;
-   private PreparedStatement statement;
-   private Connection connection;
-   private ResultSet resultSet = null;
-   private int count = 0;
+   private PreparedStatement statement = null;
+   private Connection connection = null;
+   private ResultSet m_Rs = null;
+   private int m_nCount = 0;
 
-   private int transitionID = 0;
-   private String transitionLabel = "";
-   private String transitionPrompt = "";
-   private String transitionDesc = "";
-   private int transitionFromStateID = 0;
-   private int transitionToStateID = 0;
-   private String transitionTrigger = "";
-   private int transitionApprovalsRequired = 0;
-   private String transitionComment = "";
-   private String transitionActions = "";
-   private String transitionRoles = "";
-   private List<String> transitionRoleNamesList = null;
-   private List<Integer> transitionRoleIdsList = null;
-   private final Map<Integer,String> transitionRoleNamesIdMap = new HashMap<>();
+   private int m_nTransitionID = 0;
+   private String m_sTransitionLabel = "";
+   private String m_sTransitionPrompt = "";
+   private String m_sTransitionDesc = "";
+   private int m_nTransitionFromStateID = 0;
+   private int m_nTransitionToStateID = 0;
+   private String m_sTransitionTrigger = "";
+   private int m_nTransitionApprovalsRequired = 0;
+   private String m_sTransitionComment = "";
+   private String m_sTransitionActions = "";
+   private String m_sTransitionRoles = "";
+   private List m_TransitionRoleNames_List = null;
+   private List m_TransitionRoleIds_List = null;
+   private Map m_transitionRoleNamesIdMap = new HashMap();
 
-   private List<String> transitionActionsList = null;
-   private int transitionType = 0;
-   private int agingType = 0;
-   private int agingInterval = 0;
-   private String systemField = "";
-   private boolean isAgingTransition = false;
+   private List  m_TransitionActions_List = null;
+   private int m_nTransitionType = 0;
+   private int m_nAgingType = 0;
+   private int m_nAgingInterval = 0;
+   private String m_sSystemField = "";
+   private boolean m_bIsAgingTransition = false;
    
    /**
     * Constructor specifying the transition ID.
@@ -105,13 +99,13 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
          statement.clearParameters();
          statement.setInt(1, transitionID);
          statement.setInt(2, workflowid);
-         resultSet = statement.executeQuery();
-         if(!moveNext())
+         m_Rs = statement.executeQuery();
+         if(false == moveNext())
          {
             close();
             throw new PSEntryNotFoundException(IPSExtensionErrors.NO_RECORDS);
          }
-         count = 1;
+         m_nCount = 1;
       }
       catch(SQLException e)
       {
@@ -153,14 +147,19 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
          statement.setInt(1, workflowID);
          statement.setString(2, transitionTrigger);
          statement.setInt(3, transitionFromStateID);
-         resultSet = statement.executeQuery();
-         if(!moveNext())
+         m_Rs = statement.executeQuery();
+         if(false == moveNext())
          {
             close();
             throw new PSEntryNotFoundException(IPSExtensionErrors.NO_RECORDS);
          }
-         count = 1;
-      }finally
+         m_nCount = 1;
+      }
+      catch(SQLException e)
+      {
+         throw e;
+      }
+      finally
       {
          close();
       }
@@ -194,14 +193,14 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
          statement.clearParameters();
          statement.setInt(1, workflowID);
          statement.setInt(2, transitionFromStateID);
-         resultSet = statement.executeQuery();
+         m_Rs = statement.executeQuery();
 
-         while(resultSet.next())
+         while(m_Rs.next())
          {
-            count++;
+            m_nCount++;
          }
 
-         if(0 == count)
+         if(0 == m_nCount)
          {
             close();
             throw new PSEntryNotFoundException(IPSExtensionErrors.NO_RECORDS);
@@ -209,12 +208,11 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
 
          try
          {
-            resultSet.close();
+            m_Rs.close();
             statement.close();
          }
          catch(Exception e)
          {
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          //redo the whole thing!!!
@@ -225,7 +223,7 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
          statement.clearParameters();
          statement.setInt(1, workflowID);
          statement.setInt(2, transitionFromStateID);
-         resultSet = statement.executeQuery();
+         m_Rs = statement.executeQuery();
 
          moveNext();
       }
@@ -245,7 +243,7 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
    private void buildRolesList(int transitionID, int workflowid)
       throws SQLException
    {
-      PreparedStatement stmt;
+      PreparedStatement stmt = null;
       String queryString = "SELECT ROLES.ROLENAME, " +
       "TRANSITIONROLES.TRANSITIONROLEID " +
       "FROM ROLES, TRANSITIONROLES WHERE ROLES.WORKFLOWAPPID = " +
@@ -265,27 +263,26 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
          stmt.setInt(2, workflowid);
          resSet = stmt.executeQuery();
 
-         transitionRoleNamesList = new ArrayList<>();
-         transitionRoleIdsList = new ArrayList<>();
+         m_TransitionRoleNames_List = new ArrayList();
+         m_TransitionRoleIds_List = new ArrayList();
          while(resSet.next())
          {  /** @todo refactor to remove these lists and get from Map */
-            transitionRoleNamesList.add(resSet.getString("ROLENAME"));
-            transitionRoleIdsList.add(
-                    resSet.getInt("TRANSITIONROLEID"));
+            m_TransitionRoleNames_List.add(resSet.getString("ROLENAME"));
+            m_TransitionRoleIds_List.add(
+               new Integer(resSet.getInt("TRANSITIONROLEID")));
 
-            transitionRoleNamesIdMap.put(
-                    resSet.getInt("TRANSITIONROLEID"),
+            m_transitionRoleNamesIdMap.put(
+               new Integer(resSet.getInt("TRANSITIONROLEID")),
                resSet.getString("ROLENAME"));
          }
          try
          {
-
             resSet.close();
             stmt.close();
          }
          catch(Exception e)
          {
-            log.error(PSExceptionUtils.getMessageForLog(e));
+            e.printStackTrace(System.out);
          }
       }
       catch(SQLException e)
@@ -298,93 +295,93 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
 
    public int getTransitionID()
    {
-      return this.transitionID;
+      return this.m_nTransitionID;
    }
 
    public String getTransitionLabel()
    {
-      return this.transitionLabel;
+      return this.m_sTransitionLabel;
    }
 
    public String getTransitionPrompt()
    {
-      return this.transitionPrompt;
+      return this.m_sTransitionPrompt;
    }
 
    public String getTransitionDescription()
    {
-      return this.transitionDesc;
+      return this.m_sTransitionDesc;
    }
 
    public int getTransitionFromStateID()
    {
-      return this.transitionFromStateID;
+      return this.m_nTransitionFromStateID;
    }
 
    public int getTransitionToStateID()
    {
-      return this.transitionToStateID;
+      return this.m_nTransitionToStateID;
    }
 
    public String getTransitionActionTrigger()
    {
-      return this.transitionTrigger;
+      return this.m_sTransitionTrigger;
    }
 
    public int getTransitionApprovalsRequired()
    {
-      return this.transitionApprovalsRequired;
+      return this.m_nTransitionApprovalsRequired;
    }
 
    public boolean isTransitionToInitialState()
    {
-      return (0 == transitionFromStateID);
+      return (0 == m_nTransitionFromStateID);
    }
 
    public boolean isTransitionToDifferentState()
    {
-      return (transitionToStateID != transitionFromStateID);
+      return (m_nTransitionToStateID != m_nTransitionFromStateID);
    }
 
    public boolean isSelfTransition()
    {
-      return (transitionToStateID == transitionFromStateID);
+      return (m_nTransitionToStateID == m_nTransitionFromStateID);
    }
 
    public boolean isAgingTransition()
    {
-      return isAgingTransition;
+      return m_bIsAgingTransition;
    }
 
    public int getAgingType()
    {
-      return agingType;
+      return m_nAgingType;
    }
 
    public int getAgingInterval()
    {
-      return agingInterval;
+      return m_nAgingInterval;
    }
 
    public String getSystemField()
    {
-      return systemField;
+      return m_sSystemField;
    }
 
    public int getTransitionCount()
    {
-      return count;
+      return m_nCount;
    }
 
    public boolean isTransitionCommentRequired()
    {
-      return !isAgingTransition && transitionComment !=null &&
-          transitionComment.trim().equalsIgnoreCase("y");
+      return !m_bIsAgingTransition && m_sTransitionComment!=null &&
+          m_sTransitionComment.trim().equalsIgnoreCase("y");
    }
 
    public List getTransitionActions()
    {
-      return transitionActionsList;
+      return  m_TransitionActions_List;
    }
 
    /**
@@ -393,7 +390,7 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
     */
    public List getTransitionRoles()
    {
-      return transitionRoleNamesList;
+      return m_TransitionRoleNames_List;
    }
 
    /**
@@ -403,16 +400,16 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
     */
    public String getTransitionRoleColumnValue()
    {
-      return transitionRoles;
+      return m_sTransitionRoles;
    }
 
    /**
     * Returns a list of role id for this transition
     * @return may be <code>null</code>
     */
-   public List<Integer> getTransitionRolesIds()
+   public List getTransitionRolesIds()
    {
-      return transitionRoleIdsList;
+      return m_TransitionRoleIds_List;
    }
 
    /**
@@ -421,72 +418,72 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
     *
     * @return the map, may be <code>null</code>.
     */
-   public Map<Integer, String> getTransitionRoleNameIdMap()
+   public Map getTransitionRoleNameIdMap()
    {
-      return transitionRoleNamesIdMap;
+      return m_transitionRoleNamesIdMap;
    }
 
    public String getTransitionComment()
    {
-       return transitionComment;
+       return m_sTransitionComment;
    }
 
    public boolean moveNext() throws SQLException
    {
-      boolean bSuccess = resultSet.next();
-      if(!bSuccess)
+      boolean bSuccess = m_Rs.next();
+      if(false == bSuccess)
       {
          return bSuccess;
       }
 
-      transitionID = resultSet.getInt("TRANSITIONID");
-      transitionLabel = resultSet.getString("TRANSITIONLABEL");
-      transitionPrompt = resultSet.getString("TRANSITIONPROMPT");
-      transitionDesc = resultSet.getString("TRANSITIONDESC");
-      transitionFromStateID = resultSet.getInt("TRANSITIONFROMSTATEID");
-      transitionToStateID = resultSet.getInt("TRANSITIONTOSTATEID");
-      transitionTrigger = resultSet.getString("TRANSITIONACTIONTRIGGER");
-      transitionType = resultSet.getInt("TRANSITIONTYPE");
-      agingType = resultSet.getInt("AGINGTYPE");
-      agingInterval = resultSet.getInt("AGINGINTERVAL");
-      systemField =  PSWorkFlowUtils.trimmedOrEmptyString(
-         resultSet.getString("SYSTEMFIELD"));
-      isAgingTransition =
-            (IPSTransitionsContext.AGING_TRANSITION == transitionType);
-      transitionApprovalsRequired =
-            resultSet.getInt("TRANSITIONAPPROVALSREQUIRED");
-      transitionComment = resultSet.getString("TRANSITIONCOMMENTREQUIRED");
-      if(transitionComment ==null)
+      m_nTransitionID = m_Rs.getInt("TRANSITIONID");
+      m_sTransitionLabel = m_Rs.getString("TRANSITIONLABEL");
+      m_sTransitionPrompt = m_Rs.getString("TRANSITIONPROMPT");
+      m_sTransitionDesc = m_Rs.getString("TRANSITIONDESC");
+      m_nTransitionFromStateID = m_Rs.getInt("TRANSITIONFROMSTATEID");
+      m_nTransitionToStateID = m_Rs.getInt("TRANSITIONTOSTATEID");
+      m_sTransitionTrigger = m_Rs.getString("TRANSITIONACTIONTRIGGER");
+      m_nTransitionType = m_Rs.getInt("TRANSITIONTYPE");
+      m_nAgingType = m_Rs.getInt("AGINGTYPE");
+      m_nAgingInterval = m_Rs.getInt("AGINGINTERVAL");
+      m_sSystemField =  PSWorkFlowUtils.trimmedOrEmptyString(
+         m_Rs.getString("SYSTEMFIELD"));
+      m_bIsAgingTransition =
+            (IPSTransitionsContext.AGING_TRANSITION == m_nTransitionType);
+      m_nTransitionApprovalsRequired =
+            m_Rs.getInt("TRANSITIONAPPROVALSREQUIRED");
+      m_sTransitionComment = m_Rs.getString("TRANSITIONCOMMENTREQUIRED");
+      if(m_sTransitionComment==null)
       {
-         transitionComment = "n";
+         m_sTransitionComment = "n";
       }
-      transitionActions = resultSet.getString("TRANSITIONACTIONS");
-      transitionRoles = resultSet.getString("TRANSITIONROLES");
+      m_sTransitionActions = m_Rs.getString("TRANSITIONACTIONS");
+      m_sTransitionRoles = m_Rs.getString("TRANSITIONROLES");
 
-      if ( null == transitionActions ||
+      if ( null == m_sTransitionActions ||
 
-           transitionActions.trim().length() == 0 )
+           m_sTransitionActions.trim().length() == 0 )
       {
-         transitionActionsList = null;
+         m_TransitionActions_List = null;
       }
       else
       {
-         transitionActionsList =
-               PSWorkFlowUtils.tokenizeString(transitionActions,
+         m_TransitionActions_List =
+               PSWorkFlowUtils.tokenizeString(m_sTransitionActions,
                                               PSWorkFlowUtils.ROLE_DELIMITER);
       }
 
       // Transition roles do not make sense for aging transitions
-      if (isAgingTransition || null == transitionRoles ||
+      if (m_bIsAgingTransition || null == m_sTransitionRoles ||
           IPSTransitionsContext.NO_TRANSITION_ROLE_RESTRICTION.
-          equals(transitionRoles) ||
-          transitionRoles.trim().length() == 0 )
+          equals(m_sTransitionRoles) ||
+          m_sTransitionRoles.trim().length() == 0 )
       {
-         transitionRoleNamesList = null;
+         m_TransitionRoleNames_List = null;
       }
       else
       {
-         buildRolesList(transitionID, workflowID);
+         buildRolesList(m_nTransitionID, workflowID);
       }
 
       return bSuccess;
@@ -494,27 +491,42 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
 
    public boolean isEmpty()
    {
-      return (0 == count);
+      return (0 == m_nCount);
    }
 
    public void close()
    {
-      //release resources
-      try {
-         if (null != connection && !connection.getAutoCommit())
+      //release resouces
+      try
+      {
+         if(null != connection && false == connection.getAutoCommit())
             connection.setAutoCommit(true);
+      }
+      catch(SQLException e)
+      {
+      }
 
-         if (null != resultSet && !resultSet.isClosed())
-            resultSet.close();
+      try
+      {
+         if(null!=m_Rs)
+            m_Rs.close();
+         m_Rs = null;
+      }
+      catch(SQLException e)
+      {
+         // quiet close
+      }
+      
+      try
+      {
 
-         if (null != statement && !statement.isClosed())
+         if(null!=statement)
             statement.close();
-
-         if(null != connection && !connection.isClosed())
-            connection.close();
-      } catch (SQLException throwables) {
-         //Ignore errors
-         log.debug(PSExceptionUtils.getDebugMessageForLog(throwables));
+         statement = null;
+      }
+      catch (SQLException e)
+      {
+         // quiet close
       }
    }
 
@@ -533,40 +545,40 @@ public class PSTransitionsContext implements IPSTransitionsContext, AutoCloseabl
       }
 
       return "PSTransitionsContext: " +  "\n" +
-       "Transition   ID = " + transitionID + "\n" +
-       "Transition   Label = " + transitionLabel + "\n" +
-       "Transition   Type  = " + transitionType + "\n" +
-       "Transition   Aging Type  = " + agingType + "\n" +
-       "Transition   Aging Interval  = " + agingInterval + "\n" +
-       "Transition   Aging System Field  = " + systemField + "\n";
+       "Transition   ID = " + m_nTransitionID + "\n" +
+       "Transition   Label = " + m_sTransitionLabel + "\n" +
+       "Transition   Type  = " +  m_nTransitionType  + "\n" +
+       "Transition   Aging Type  = " +  m_nAgingType  + "\n" +
+       "Transition   Aging Interval  = " +  m_nAgingInterval  + "\n" +
+       "Transition   Aging System Field  = " +  m_sSystemField  + "\n";
    }
 
    public String toString()
    {
       return "PSTransitionsContext: " +  "\n" +
-       "Transition   ID = " + transitionID + "\n" +
-       "Transition   Label = " + transitionLabel + "\n" +
-       "Transition   Prompt = " + transitionPrompt + "\n" +
-       "Transition   Desc = " + transitionDesc + "\n" +
-       "Transition   FromStateID = " + transitionFromStateID + "\n" +
-       "Transition   ToStateID = " + transitionToStateID + "\n" +
-       "Transition   Trigger = " + transitionTrigger + "\n" +
-       "Transition   Type  = " + transitionType + "\n" +
-       "Transition   Aging Type  = " + agingType + "\n" +
-       "Transition   Aging Interval  = " + agingInterval + "\n" +
-       "Transition   Aging System Field  = " + systemField + "\n" +
-       "Transition   ApprovalsRequired = " + transitionApprovalsRequired
+       "Transition   ID = " + m_nTransitionID + "\n" +
+       "Transition   Label = " + m_sTransitionLabel + "\n" +
+       "Transition   Prompt = " + m_sTransitionPrompt + "\n" +
+       "Transition   Desc = " + m_sTransitionDesc + "\n" +
+       "Transition   FromStateID = " + m_nTransitionFromStateID + "\n" +
+       "Transition   ToStateID = " + m_nTransitionToStateID + "\n" +
+       "Transition   Trigger = " + m_sTransitionTrigger + "\n" +
+       "Transition   Type  = " +  m_nTransitionType  + "\n" +
+       "Transition   Aging Type  = " +  m_nAgingType  + "\n" +
+       "Transition   Aging Interval  = " +  m_nAgingInterval  + "\n" +
+       "Transition   Aging System Field  = " +  m_sSystemField  + "\n" +
+       "Transition   ApprovalsRequired = " + m_nTransitionApprovalsRequired
        + "\n" +
-       "Transition   CommentRequired = " + transitionComment
+       "Transition   CommentRequired = " + m_sTransitionComment
        + "\n" +
-       "Transition   Actions = " + transitionActions + "\n" +
-       "Transition   Roles = " + transitionRoles + "\n";
+       "Transition   Actions = " + m_sTransitionActions + "\n" +
+       "Transition   Roles = " + m_sTransitionRoles + "\n";
    }
 
    /**
     * static constant string that represents the qualified table name.
     */
-    private static final String TABLE_TC =
+   static private String TABLE_TC =
       PSConnectionMgr.getQualifiedIdentifier("TRANSITIONS");
       
    private static final String TRANSITIONS_SELECT =

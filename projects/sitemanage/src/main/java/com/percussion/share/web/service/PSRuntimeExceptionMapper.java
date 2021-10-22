@@ -23,6 +23,7 @@
  */
 package com.percussion.share.web.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.IPSValidationException;
 import com.percussion.share.service.exception.PSErrorUtils;
@@ -75,12 +76,11 @@ public class PSRuntimeExceptionMapper extends PSAbstractExceptionMapper<RuntimeE
 
             log.error("{} {}",ERROR_MESSAGE,PSExceptionUtils.getMessageForLog( exception));
 
-            log.debug(PSExceptionUtils.getMessageForLog(exception),exception);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(exception));
         }
         
-        PSErrors errors = PSErrorUtils.createErrorsFromException(exception);
-        
-        return errors;
+        return PSErrorUtils.createErrorsFromException(exception);
+
     }
     
     
@@ -99,5 +99,5 @@ public class PSRuntimeExceptionMapper extends PSAbstractExceptionMapper<RuntimeE
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Logger log = LogManager.getLogger(PSRuntimeExceptionMapper.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 }

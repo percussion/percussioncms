@@ -27,18 +27,18 @@ import com.percussion.tablefactory.PSJdbcTableFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import javax.naming.NamingException;
 
 /**
  * Implementation of the <CODE>IPSNotificationsContext</CODE> which
  * provides methods for accessing the subject and content of notifications
  * associated with a particular workflow and transition.
+ * @deprecated
  */
-
+@Deprecated
 public class PSNotificationsContext extends PSAbstractWorkflowContext
 implements IPSNotificationsContext
 {

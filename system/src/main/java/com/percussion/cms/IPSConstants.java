@@ -589,6 +589,7 @@ public interface IPSConstants
    /**
     * Logger Categories
     */
+   public static final String NAVIGATION_LOG="Managed Navigation";
    public static final String TEST_LOG="Testing";
    public static final String ASSEMBLY_LOG="Assembly";
    public static final String PUBLISHING_LOG="Publishing";
@@ -601,6 +602,10 @@ public interface IPSConstants
    public static final String CONTENTREPOSITORY_LOG="Content Repository";
    public static final String DASHBOARD_LOG = "Dashboard";
    public static final String WEBSERVICES_LOG = "Web Services";
+   public static final String WIDGET_BUILDER_LOG = "Widget Builder";
+
+   public static final String SAAS_FLAG = "doSAAS";
+
 
 }
 

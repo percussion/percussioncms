@@ -27,7 +27,6 @@ package com.percussion.data;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 
@@ -63,9 +62,7 @@ public class PSIdGenerator
    }
 
    /**
-    * Convenience version of {@link #getNextIdBlock(Connection, String, String,
-    * String, String, String, String, String, String, String, String, int) getNextId} 
-    * that uses the database defined in the server.properties, and a default 
+    * That uses the database defined in the server.properties, and a default
     * nextnumber table.
     */
    public static synchronized int[] getNextIdBlock(String keyId, int blockSize)
@@ -74,5 +71,5 @@ public class PSIdGenerator
       return mgr.createIdBlock(keyId, blockSize);
    }
    
-   private static IPSGuidManager mgr = PSGuidManagerLocator.getGuidMgr();
+   private static final IPSGuidManager mgr = PSGuidManagerLocator.getGuidMgr();
 }

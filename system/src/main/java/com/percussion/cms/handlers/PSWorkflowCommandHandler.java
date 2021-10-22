@@ -57,6 +57,7 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSBackEndQueryProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.IPSWorkFlowContext;
 import com.percussion.extension.PSExtensionException;
@@ -119,7 +120,7 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
     * Logger
     */
    private static final Logger ms_logger = 
-      LogManager.getLogger(PSWorkflowCommandHandler.class);
+      LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
    
    /**
     * Looks in the system def for pre/post exits assigned to this handler and
@@ -456,6 +457,7 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
       }
       catch (Exception e)
       {
+         ms_logger.error(PSExceptionUtils.getMessageForLog(e));
          throw new PSInternalRequestCallException(
             IPSDataErrors.INTERNAL_REQUEST_CALL_EXCEPTION, getExceptionText(e),e);
       }
@@ -935,13 +937,8 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
        *
        * @param data the execution data to construct the validator for, not
        *    <code>null</code>.
-       * @param fieldEvaluatorMap a map of field evaluators to be validated
-       *    in this validator, not <code>null</code>.
        * @param itemEvaluator the item evaluator which performs the actual
        *    item validation, not <code>null</code>.
-       * @param lang language/locale string in XML language attribute sytax
-       * (en-us, fr-ca)used to produce localized error message. If <code>null</code>
-       * or <code>empty</code>, default language string is used.
        * @throws IllegalArgumentException if any parameter except lang is
        *    <code>null</code>.
        * @throws PSRequestValidationException if the data does not contain the

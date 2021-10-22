@@ -34,6 +34,10 @@ import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.sql.Connection;
@@ -41,11 +45,6 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 
 public class PSExitAddPossibleTransitions implements IPSResultDocumentProcessor
 {
@@ -143,21 +142,13 @@ public class PSExitAddPossibleTransitions implements IPSResultDocumentProcessor
             }
             localParams.m_contentIDNodeName = params[2].toString();
          }
-         catch(PSInvalidNumberOfParametersException ne)
+         catch(PSInvalidNumberOfParametersException | PSInvalidParameterTypeException ne)
          {
             String language = ne.getLanguageString();
             if (language == null)
                language = PSI18nUtils.DEFAULT_LANG;
             throw new PSExtensionProcessingException(language,
              m_fullExtensionName, ne);
-         }
-         catch(PSInvalidParameterTypeException te)
-         {
-            String language = te.getLanguageString();
-            if (language == null)
-               language = PSI18nUtils.DEFAULT_LANG;
-            throw new PSExtensionProcessingException(language,
-             m_fullExtensionName, te);
          }
 
          try

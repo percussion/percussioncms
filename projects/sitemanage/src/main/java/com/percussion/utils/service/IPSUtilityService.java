@@ -68,11 +68,7 @@ public interface IPSUtilityService
      * @return <code>true</code> if it is a SaaS environment.
      */
     public boolean isSaaSEnvironment();
-    
-    /**
-     * Server property constant for SaaS flag.
-     */
-    public static final String SAAS_FLAG_SERVER_PROP = "doSAAS";
+
     
     public enum LogTypeEnum{
         info,debug,error

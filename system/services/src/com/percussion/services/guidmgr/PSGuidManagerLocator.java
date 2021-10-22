@@ -26,31 +26,29 @@ package com.percussion.services.guidmgr;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.PSMissingBeanConfigurationException;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Find the guid manager service
  * 
  * @author dougrand
  */
+@ThreadSafe
 public class PSGuidManagerLocator extends PSBaseServiceLocator
 {
-   private static volatile IPSGuidManager gmgr=null;
+   private static  IPSGuidManager gmgr=null;
    /**
     * Locator for guid manager
     * @return instance of guid manager
     * @throws PSMissingBeanConfigurationException
     */
-   public static IPSGuidManager getGuidMgr() throws PSMissingBeanConfigurationException
+   public static synchronized IPSGuidManager getGuidMgr() throws PSMissingBeanConfigurationException
    {
-      if (gmgr==null)
-      {
-         synchronized (PSGuidManagerLocator.class)
-         {
              if (gmgr==null)
              {
                  gmgr = (IPSGuidManager) getBean("sys_guidmanager");
              }
-         }
-      }
+
       return gmgr;
    }
 }

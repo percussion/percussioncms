@@ -26,7 +26,14 @@ package com.percussion.workflow;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.error.PSException;
-import com.percussion.extension.*;
+import com.percussion.extension.IPSExtension;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSExtensionErrors;
+import com.percussion.extension.IPSRequestPreProcessor;
+import com.percussion.extension.IPSWorkFlowContext;
+import com.percussion.extension.IPSWorkflowAction;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -38,7 +45,13 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Performs the requested workflow transition (such as approval, check-in or
@@ -215,10 +228,10 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
    /**
     * The fully qualified name of this extension.
     */
-   static private String m_fullExtensionName = "";
+   private  String m_fullExtensionName = "";
 
    /* Set the parameter count to not initialized */
-   static private int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
+   private  int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
 
 
    /**************  IPSExtension Interface Implementation ************* */
@@ -238,6 +251,8 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
 
          m_fullExtensionName = extensionDef.getRef().toString();
       }
+
+
    }
 
    /* *******  IPSRequestPreProcessor Interface Implementation ******* */
@@ -401,7 +416,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
                return; //no contentid means do nothing
             }
             localParams.m_contentID =
-                  new Integer(params[0].toString()).intValue();
+                   Integer.parseInt(params[0].toString());
             if(null == params[1] || 0 ==
                params[1].toString().trim().length())
             {
@@ -857,10 +872,10 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
       {
          Object[] args =
             {
-               new Integer(localParams.m_contentID),
-               new Integer(localParams.m_workflowAppID),
-               new Integer(localParams.m_transitionFromStateID),
-               localParams.m_actionTrigger
+                    localParams.m_contentID,
+                    localParams.m_workflowAppID,
+                    localParams.m_transitionFromStateID,
+                    localParams.m_actionTrigger
             };
          throw new PSTransitionException(lang,
             IPSExtensionErrors.MISSING_TRANSITION, args);
@@ -871,10 +886,10 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
       {
          Object[] args =
             {
-               new Integer(localParams.m_contentID),
-               new Integer(localParams.m_workflowAppID),
-               new Integer(localParams.m_transitionFromStateID),
-               new Integer(tc.getTransitionFromStateID()),
+                    localParams.m_contentID,
+                    localParams.m_workflowAppID,
+                    localParams.m_transitionFromStateID,
+                    tc.getTransitionFromStateID(),
                localParams.m_actionTrigger
             };
          throw new PSTransitionException(lang,
@@ -916,7 +931,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
       {
          transitionRequiredRoles = tc.getTransitionRoles();
          if (null != transitionRequiredRoles &&
-             transitionRequiredRoles.size() > 0)
+             !transitionRequiredRoles.isEmpty())
          {
             if (!PSWorkFlowUtils.compareRoleList(transitionRequiredRoles,
                                                  userRoleList))

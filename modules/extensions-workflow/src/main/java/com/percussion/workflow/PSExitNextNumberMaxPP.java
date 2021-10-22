@@ -23,227 +23,46 @@
  */
 package com.percussion.workflow;
 
-import com.percussion.extension.*;
-import com.percussion.i18n.PSI18nUtils;
+import com.percussion.cms.IPSConstants;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSRequestPreProcessor;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
-import com.percussion.util.PSPreparedStatement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * This extension returns the value of a counter obtained using
  * max(primarykeycolumn) + 1 with matching workflowid
+ * @deprecated Use PSExitNextNumber
  */
+@Deprecated
 public class PSExitNextNumberMaxPP implements IPSRequestPreProcessor
 {
 
-   private static final Logger log = LogManager.getLogger(PSExitNextNumberMaxPP.class);
+   private static PSExitNextNumber newNextNumberExt = new PSExitNextNumber();
+   private static final Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 
-   /* Set the parameter count to not initialized */
-   static private int ms_correctParamCount = NOT_INITIALIZED;
 
    /**************  IPSExtension Interface Implementation ************* */
    public void init(IPSExtensionDef extensionDef, File file)
       throws PSExtensionException
    {
-      if (ms_correctParamCount == NOT_INITIALIZED)
-      {
-         ms_correctParamCount = 0;
-
-         Iterator iter = extensionDef.getRuntimeParameterNames();
-         while(iter.hasNext())
-         {
-            iter.next();
-            ms_correctParamCount++;
-         }
-      }
+      newNextNumberExt.init(extensionDef, file);
    }
 
    // This is the main request processing handler (see IPSRequestPreProcessor)
    public void preProcessRequest(Object[] params, IPSRequestContext request)
       throws PSExtensionProcessingException, PSParameterMismatchException
    {
-      if(null == request)
-      {
-         Object args[] = {
-            ms_exitName,
-            "The request must not be null" };
-         throw new PSExtensionProcessingException(
-            IPSExtension.ERROR_INVALID_PARAMETER,
-            args);
-      }
+      log.warn("Extension {} is deprecated and may produce false results, please update references to use PSExitNextNumber.",ms_exitName);
+      log.warn("Invoking PSExitNextNumber instead...");
 
-      Map<String,Object> htmlParams = request.getParameters();
-
-      if(null == params)
-         return; //no parameters - exit with peace!
-
-      if(null == htmlParams)
-      {
-         htmlParams = new HashMap<>();
-         request.setParameters(htmlParams);
-      }
-
-      String lang = (String)request.getSessionPrivateObject(
-       PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
-      if (lang == null)
-         lang =   PSI18nUtils.DEFAULT_LANG;
-      int nParamCount = params.length;
-      String htmlParamName, htmlParamValue, htmlParamKeyName;
-
-      if(ms_correctParamCount != nParamCount)
-      {
-         throw new PSParameterMismatchException(lang, ms_correctParamCount,
-            nParamCount);
-      }
-
-      try
-      {
-         if(null == params[0] || 0 == params[0].toString().trim().length())
-         {
-            throw new PSInvalidParameterTypeException(lang,
-             IPSExtensionErrors.HTML_PARAM_NULL2);
-         }
-
-         String sHtmlParamName = params[0].toString();
-
-         String sWorkflowID = "0";
-         if(null != params[1] && 0 != params[1].toString().trim().length())
-         {
-            sWorkflowID = params[1].toString();
-         }
-
-         int nWorkflowid = 0;
-         try
-         {
-            nWorkflowid = Integer.parseInt(sWorkflowID);
-         }
-         catch(Exception e){}
-
-         String sTableName = "";
-         if(null == params[2] || 0 == params[2].toString().trim().length())
-         {
-            throw new PSInvalidParameterTypeException(lang,
-             IPSExtensionErrors.TABLE_NAME_NULL);
-         }
-         else
-            sTableName = params[2].toString();
-
-         if(null == params[3] || 0 == params[3].toString().trim().length())
-         {
-            throw new PSInvalidParameterTypeException(lang,
-             IPSExtensionErrors.PRIMARY_KEY_NULL);
-         }
-
-         String sPrimaryKeyColumn = params[3].toString();
-
-         String sPrimaryKeyValue = (String)htmlParams.get(sHtmlParamName);
-
-         if((null == sPrimaryKeyValue)||(sPrimaryKeyValue.equalsIgnoreCase("0"))||
-            (0 == sPrimaryKeyValue.length()))
-         {
-            htmlParams.put(sHtmlParamName, getNextNumber(sTableName,
-               sPrimaryKeyColumn, nWorkflowid));
-         }
-      }
-      catch(PSInvalidParameterTypeException te)
-      {
-         Object args[] = {
-            ms_exitName,
-            te.toString() };
-         String language = te.getLanguageString();
-         if (language == null)
-            language = PSI18nUtils.DEFAULT_LANG;
-         throw new PSExtensionProcessingException(language,
-          IPSExtension.ERROR_INVALID_PARAMETER, args);
-      }
-   }
-
-   /**
-    * getNextNumber executes the stored procedure and returns the number.
-    *
-    */
-   public static synchronized Integer getNextNumber(String sTable,
-         String sPrimaryCol, int workflowid)
-      throws PSExtensionProcessingException
-   {
-      PSConnectionMgr connectionMgr = null;
-      Connection conn = null;
-      try
-      {
-         connectionMgr = new PSConnectionMgr();
-         conn = connectionMgr.getConnection();
-      }
-      catch(Exception e)
-      {
-         if(null != connectionMgr)
-         {
-            try{ connectionMgr.releaseConnection();}
-               catch(Exception ee){}
-         }
-         throw new PSExtensionProcessingException(ms_exitName, e);
-      }
-      Integer iResult;
-      PreparedStatement stmt = null;
-      ResultSet rs = null;
-      int rowcount = 0;
-
-      try
-      {
-         sTable = PSConnectionMgr.getQualifiedIdentifier(sTable);
-         sPrimaryCol = sTable + "." + sPrimaryCol;
-         String query = "SELECT MAX(" + sPrimaryCol + ") FROM " + sTable;
-
-         if(!sPrimaryCol.toUpperCase().endsWith(".WORKFLOWAPPID"))
-            query += " WHERE " + sTable + ".WORKFLOWAPPID = ?";
-
-         stmt = PSPreparedStatement.getPreparedStatement(conn, query);
-
-         if(!sPrimaryCol.toUpperCase().endsWith(".WORKFLOWAPPID"))
-            stmt.setInt(1, workflowid);
-
-         rs = stmt.executeQuery();
-         if(false == rs.next())
-            iResult = new Integer(1);
-         else
-            iResult = new Integer(rs.getInt(1)+1);
-      }
-      catch (SQLException e)
-      {
-         throw new PSExtensionProcessingException(ms_exitName,e);
-      }
-      finally
-      {
-         if(null != rs)
-            try {rs.close();} catch (Throwable T) {
-               log.error(T.getMessage());
-               log.debug(T.getMessage(), T);
-            };
-         if(null != stmt)
-            try {stmt.close();} catch (Throwable T) {
-               log.error(T.getMessage());
-               log.debug(T.getMessage());
-            };
-
-         try
-         {
-            if(null!=connectionMgr)
-               connectionMgr.releaseConnection();
-         }
-         catch(SQLException sqe)
-         {
-         }
-      }
-      return iResult;
+      newNextNumberExt.preProcessRequest(params, request);
    }
 
    private static String ms_exitName = "PSExitNextNumberMaxPP";

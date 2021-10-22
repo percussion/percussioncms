@@ -35,11 +35,9 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.workflow.PSWorkFlowUtils;
+import org.hibernate.SessionFactory;
 
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * The workflow service. At this point this provides methods to load the
@@ -85,6 +83,19 @@ import org.apache.commons.lang.StringUtils;
  */
 public interface IPSWorkflowService
 {
+
+   /**
+    * Gets the underlying session factory
+    * @return
+    */
+   SessionFactory getSessionFactory();
+
+   /**
+    * Sets the session factory. Handled via spring auto wiring.
+    * @param sessionFactory
+    */
+   void setSessionFactory(SessionFactory sessionFactory);
+
    /**
     * Find all workflows for the specified name.
     * 
