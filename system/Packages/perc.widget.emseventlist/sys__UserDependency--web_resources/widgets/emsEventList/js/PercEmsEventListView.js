@@ -80,6 +80,11 @@
 			
 			$.PercEmsEventListService.getPageEntries(this.settings, function(status, result, settings )
             {
+
+				if('object' !== typeof(result)){
+					result = JSON.parse(result);
+				}
+
                 if (result && result.length)
                 {
 					var titleElem = createTitleHtml(settings);
