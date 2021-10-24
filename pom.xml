@@ -79,7 +79,7 @@
         <module>modules/perc-jetty-logging</module>
         <module>deliverytiersuite/delivery-tier-suite</module>
         <module>modules/perc-packages</module>
-        <module>system/Tools/Ant</module>
+        <module>modules/perc-ant</module>
         <module>modules/perc-thumbnail</module>
         <module>modules/perc-distribution-tree</module>
         <module>modules/CMLight-Main-cactus-tests</module>
