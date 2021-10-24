@@ -164,4 +164,23 @@ public class TestSecureStringUtils {
     public void testSanitizeStringForSQLStatementSqlServer(){
         assertEquals("http://somesite.edu/noparams",SecureStringUtils.sanitizeStringForSQLStatement("http://somesite.edu/noparams", SecureStringUtils.DatabaseType.MSSQL));
     }
+
+    @Test
+    public void testContainsXSSChars(){
+
+        //naked
+        assertTrue(SecureStringUtils.containsXSSChars("/Sites/mysite/<script>alert('test');</script>/file"));
+
+        //url encoded
+        assertTrue(SecureStringUtils.containsXSSChars("%2FSites%2Fmysite%2F%3Cscript%3Ealert(%27test%27)%3B%3C%2Fscript%3E%2Ffile"));
+        
+        //html encoded
+        assertTrue(SecureStringUtils.containsXSSChars("/Sites/mysite/&lt;script&gt;alert(&#39;test&#39;);&lt;/script&gt;/file"));
+
+        //xml numeric
+        assertTrue(SecureStringUtils.containsXSSChars("/Sites/mysite/&#60;script&#62;alert('test');&#60;/script&#62;/file"));
+
+
+    }
+
 }

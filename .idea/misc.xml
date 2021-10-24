@@ -31,6 +31,7 @@
         <option value="$PROJECT_DIR$/modules/perc-exceptions-spring/pom.xml" />
         <option value="$PROJECT_DIR$/modules/perc-toolkit/pom.xml" />
         <option value="$PROJECT_DIR$/modules/perc-taxonomy/pom.xml" />
+        <option value="$PROJECT_DIR$/modules/perc-ant/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

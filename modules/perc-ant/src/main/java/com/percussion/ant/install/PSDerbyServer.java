@@ -21,30 +21,19 @@
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
-package com.percussion.sitemanage.error;
 
-import com.percussion.error.PSException;
+package com.percussion.ant.install;
 
-/**
- * @author LucasPiccoli
- *
- */
-public class PSSiteImportException extends PSException
+import com.percussion.install.InstallUtil;
+
+public class PSDerbyServer extends PSAction
 {
-
-    public PSSiteImportException(String message)
+    /**
+     * This will handle Shutting down the Derby Server after all DB tasks are done.
+     * CMS-5932.
+     */
+    public void execute()
     {
-
-        super(-1, message);
-    }
-
-    public PSSiteImportException(String message, Throwable cause)
-    {
-
-        super(-1, new Object[]{message}, cause);
-    }
-
-    public PSSiteImportException(Throwable t){
-        super(t);
+        InstallUtil.shutDownDerby();
     }
 }

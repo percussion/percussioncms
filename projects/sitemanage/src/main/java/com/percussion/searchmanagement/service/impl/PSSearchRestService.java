@@ -23,14 +23,12 @@
  */
 package com.percussion.searchmanagement.service.impl;
 
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
 import com.percussion.searchmanagement.service.IPSSearchService;
+import com.percussion.security.PSOperationContext;
 import com.percussion.security.SecureStringUtils;
-import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.system.IPSSystemService;
 import com.percussion.services.useritems.data.PSUserItem;
@@ -38,11 +36,8 @@ import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedItemPropertiesList;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSValidationException;
-import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.PSWebserviceUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.queryparser.flexible.standard.QueryParserUtil;
@@ -88,7 +83,7 @@ public class PSSearchRestService
             String q = criteria.getQuery();
 
             if (q != null) {
-                q = PSSecurityUtility.sanitizeStringForHTML(q);
+                q = SecureStringUtils.sanitizeStringForHTML(q);
                 q = QueryParserUtil.escape(q);
 
                 criteria.setQuery(q);
@@ -96,19 +91,17 @@ public class PSSearchRestService
 
 
             criteria.setSortColumn(
-                    PSSecurityUtility.removeInvalidSQLObjectNameCharacters(criteria.getSortColumn()));
+                    SecureStringUtils.removeInvalidSQLObjectNameCharacters(criteria.getSortColumn()));
 
             criteria.setSearchType(
-                    PSSecurityUtility.removeInvalidSQLObjectNameCharacters(criteria.getSearchType()));
+                    SecureStringUtils.removeInvalidSQLObjectNameCharacters(criteria.getSearchType()));
 
             Map<String,String> fields = criteria.getSearchFields();
             if(fields != null) {
-                for (String key : fields.keySet()) {
-                    fields.put(key,
-                            PSSecurityUtility.sanitizeStringForHTML(fields.get(key)));
-                }
+                fields.replaceAll(
+                        (k, v) -> SecureStringUtils.sanitizeStringForHTML(fields.get(k)));
             }
-            if(criteria.getFolderPath() != null && !PSSecurityUtility.isValidCMSPathString(criteria.getFolderPath())){
+            if(criteria.getFolderPath() != null && !SecureStringUtils.isValidCMSPathString(criteria.getFolderPath(), PSOperationContext.SEARCH)){
                 criteria.setFolderPath(null);
             }
         }

@@ -21,30 +21,49 @@
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
-package com.percussion.sitemanage.error;
 
-import com.percussion.error.PSException;
+package com.percussion.ant.install;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * @author LucasPiccoli
- *
+ * See super class
  */
-public class PSSiteImportException extends PSException
+public class PSUpdateTomcatPortInTables extends PSExecSQLStmt
 {
-
-    public PSSiteImportException(String message)
-    {
-
-        super(-1, message);
-    }
-
-    public PSSiteImportException(String message, Throwable cause)
-    {
-
-        super(-1, new Object[]{message}, cause);
-    }
-
-    public PSSiteImportException(Throwable t){
-        super(t);
-    }
+   // see base class
+   @Override
+   public void execute()
+   {
+      String sqlStr = getSql();
+      String patternStr = "CATALINA_PORT";
+      Pattern pattern = Pattern.compile(patternStr);
+      Matcher matcher = pattern.matcher(sqlStr);
+      sqlStr = matcher.replaceAll(tomcatPort);
+      setSql(sqlStr);
+      super.execute();   
+   }
+   
+   /**
+    * @return Returns the tomcatPort.
+    */
+   public String getTomcatPort()
+   {
+      return tomcatPort;
+   }
+   /**
+    * @param tokens The tomcatPort to set.
+    */
+   public void setTomcatPort(String token)
+   {
+      this.tomcatPort = token;
+   }
+   
+   /**
+    * Tomcat port from the tomcat panel
+    */
+   protected String tomcatPort = "9992";
 }
+
+

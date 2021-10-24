@@ -71,7 +71,7 @@ public class PSScreenCapture {
         //Hide public constructor
     }
 
-    protected static final Logger log = LogManager.getLogger(IPSUtilsConstants.RX_JAVA_ENC);
+    protected static final Logger log = LogManager.getLogger(IPSUtilsConstants.SERVER_LOG);
 
     public static final String EMPTY_THUMB_RESOURCE = "META-INF/resources/sys_resources/images/thumbnail/empty-thumb.jpg";
     public static final String WEB_CAP_JS_RESOURCE = "META-INF/resources/sys_resources/js/webcap.js";
