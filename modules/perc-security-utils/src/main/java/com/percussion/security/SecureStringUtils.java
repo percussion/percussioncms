@@ -74,7 +74,9 @@ public class SecureStringUtils {
             "%3E",
             "%3C",
             "&#62;",
-            "&#60;"
+            "&#60;",
+            "&lt;",
+            "&gt;"
     };
 
 
