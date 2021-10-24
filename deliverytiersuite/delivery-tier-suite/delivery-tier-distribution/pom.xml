@@ -982,7 +982,7 @@
                                 </copy>
                              <!-- Perc-Ant -->
                                 <copy todir="${ant-installer}">
-                                    <fileset dir="{basedir}/../../../../system/Tools/Ant/target/">
+                                    <fileset dir="{basedir}/../../../../modules/perc-ant/target/">
                                         <include name="perc-ant*.jar" />
                                     </fileset>
                                 </copy>

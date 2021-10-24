@@ -505,7 +505,7 @@
         </copy>
 
         <copy todir="${assembly-directory}/sys_resources/ant/lib" overwrite="true">
-            <fileset file="${rxbase}/../system/Tools/Ant/lib/**">
+            <fileset file="${rxbase}/../modules/perc-ant/lib/**">
             </fileset>
         </copy>
 

@@ -52,7 +52,7 @@
         <db.backend>DERBY</db.backend>
         <db.server>CMDB;create=true</db.server>
         <ds.name>PercussionData</ds.name>
-        <ant.contrib.resource>${basedir}/../../system/Tools/Ant/lib/ant-contrib-0.6.jar</ant.contrib.resource>
+        <ant.contrib.resource>${basedir}/../../modules/perc-ant/lib/ant-contrib-0.6.jar</ant.contrib.resource>
         <exts.store>${assembly-directory}/Extensions</exts.store>
         <REFRESH_PROP_NAME>REFRESH</REFRESH_PROP_NAME>
         <extensions-directory>${basedir}/target/extensions</extensions-directory>
