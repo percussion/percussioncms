@@ -118,7 +118,7 @@
     ]]>
     </Code>
     <Content type="velocity">
-        <![CDATA[<div role="navigation" aria-label="$!{ariaLabel}" class="$!{rootclass} perc-navbar"$!{sampleTooltip}>
+        <![CDATA[<div aria-label="$!{ariaLabel}" class="$!{rootclass} perc-navbar"$!{sampleTooltip}>
 #if("$generateSkipLink"=="true" && ! $perc.isEditMode())##
 <script >
 window.addEventListener('DOMContentLoaded', function() {
@@ -139,22 +139,23 @@ $(this).removeAttr('tabindex');
 </script>
 <a href="#$!{skipLinkRegionId}" class="perc-navigation-skiplink" tabindex="$!{tabindexValue}">$!{skipLinkText}</a>
 #end##
-<ul role="menubar" class="$!{layout}">
+<nav>
+<ul class="$!{layout}">
 #if($!{nav})##
 #perc_processNavigationNode($nav.getRoot(), 1, 1, $addTitleAttrs, $titleNavigateToText, $maxRootItems, $maxSubItems)##
 #elseif ($perc.isEditMode())##
-<li role="presentation" class="perc-navbar-current">
+<li class="perc-navbar-current">
 <a href="#a">Section 1</a>
 #if($maxlevels > 1)##
 <ul>
-<li role="presentation">
+<li>
 <a href="#">Section 2</a>
 #if($maxlevels > 2)##
 <ul>
-<li role="presentation">
+<li>
 <a href="#aa">menu item that is quite long</a>
 </li>
-<li class="perc-navbar-current" role="presentation">
+<li class="perc-navbar-current">
 <a href="#ab">menu item</a>
 #if($maxlevels > 3)##
 <ul>
@@ -269,6 +270,7 @@ $(this).removeAttr('tabindex');
 </li>
 #end##
 </ul>
+</nav>
 <div style="clear:both"></div>
 </div>]]>
     </Content>
