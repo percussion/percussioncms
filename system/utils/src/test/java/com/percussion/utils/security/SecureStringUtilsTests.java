@@ -32,7 +32,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SecureStringUtilsTests {
 
@@ -152,4 +154,49 @@ public class SecureStringUtilsTests {
         assertEquals("https://www.nasa.gov/rss/dyn/breaking_news.rss",t1);
 
     }
+
+    @Test
+    public void testValidSQLObjectName(){
+        assertNotEquals("<script>alert('');</script>",
+                SecureStringUtils.removeInvalidSQLObjectNameCharacters("<script>alert('');</script>"));
+
+        assertNotEquals("IN VALID;",
+                SecureStringUtils.removeInvalidSQLObjectNameCharacters("IN VALID;"));
+
+        assertEquals("VALID",
+                SecureStringUtils.removeInvalidSQLObjectNameCharacters("VALID"));
+
+        assertEquals("VAL_ID",
+                SecureStringUtils.removeInvalidSQLObjectNameCharacters("VAL_ID"));
+
+
+        assertEquals("VAL1_ID",
+                SecureStringUtils.removeInvalidSQLObjectNameCharacters("VAL1_ID"));
+
+        //TODO:  Fix the regex to work with unicode characters
+        //assertEquals("Њuni",
+        //PSSecurityUtility.removeInvalidSQLObjectNameCharacters("Њuni"));
+
+    }
+
+    @Test
+    public void testValidNumericId(){
+        assertTrue(SecureStringUtils.isValidNumericId("1234"));
+        assertFalse(SecureStringUtils.isValidNumericId("<script>alert('12345');</script>"));
+    }
+
+    @Test
+    public void testValidGuidId(){
+        assertTrue(SecureStringUtils.isValidGuidId("1234-99-89894"));
+        assertFalse(SecureStringUtils.isValidGuidId("<script>alert('123-4444-45');</script>"));
+    }
+
+    @Test
+    public void testValidCMSPath(){
+        assertTrue(SecureStringUtils.isValidCMSPathString("/Sites/HWMB/%22%3e%3cscript%3ealert%28595%29%3c%2fscript%3e"));
+        assertTrue(SecureStringUtils.isValidCMSPathString("/Sites/www.mysite.com/mypage.html"));
+        assertFalse(SecureStringUtils.isValidCMSPathString(
+                "/Sites/HWMB/<script>alert(595);</script>"));
+    }
+
 }
