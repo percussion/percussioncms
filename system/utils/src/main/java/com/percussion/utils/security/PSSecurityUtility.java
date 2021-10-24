@@ -26,7 +26,6 @@ package com.percussion.utils.security;
 
 import com.percussion.util.PSProperties;
 import com.percussion.utils.io.PathUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -35,11 +34,18 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Properties;
 
-public class PSSecurityUtility {
+/**
+ * This class currently exposes utility functions for server security options.
+ *
+ * @see com.percussion.security.SecureStringUtils in the perc-security-utils module to find, add, or update string
+ * functions for validation / security.
+ *
+ * Please add any new general security / validation routines there instead of this class.
+ */
+public final class PSSecurityUtility {
     
     
     public static final String REQUIRE_HTTPS="requireHTTPS";
@@ -94,7 +100,7 @@ public class PSSecurityUtility {
     private String xContentTypeOptions = null; 
     private String cacheControl = null; 
     
-    private static final Logger log = LogManager.getLogger(PSSecurityUtility.class);
+    private static final Logger log = LogManager.getLogger("Securityy");
     
     public PSSecurityUtility(){}
     
@@ -390,141 +396,4 @@ public class PSSecurityUtility {
        
        private static PSProperties ms_serverProps = new PSProperties();
 
-    /**
-     * Utility to remove parameters from header.
-     * @param str
-     * @return
-     */
-    public static String removeSpecialCharactersFromHeader(String str) {
-           return str.replaceAll("[^a-zA-Z ]", "");
-    }
-
-    /**
-     * Utility to sanitize a string for use in a file system path under a specified path.
-     *
-     * @param str
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForFileUnderPath(String containingPath, String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Utility to sanitize a string for use in a file system path
-     *
-     * @param str
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForFileSystem(String str){
-        if(str == null)
-            return str;
-
-        //TODO: Implement me
-
-        return str;
-    }
-
-    public static boolean isValidCMSPathString(String path){
-      //API seems coded such that an empty path is root.
-      if(StringUtils.isEmpty(path))
-          return true;
-
-      if(StringUtils.containsAny(path, "[\"\\<>{}^()|[]"))
-          return false;
-      else
-          return true;
-    }
-
-    /**
-     * Utility to sanitize a string for use in a SQL statement
-     * @param str User provided string
-     * @return The sanitized string
-     */
-    public static String sanitizeStringForSQLStatement(String str){
-        //TODO: Implement me!
-        throw new RuntimeException("Not Implemented!");
-    }
-
-    /**
-     * Escapes a user provided string for use in HTML
-     * @param str a user provided string
-     * @return The escaped string
-     */
-    public static String sanitizeStringForHTML(String str){
-
-       return  StringEscapeUtils.escapeHtml(str);
-    }
-
-    /***
-     * Removes any characters from a given string that are not a valid SQL Object Name.
-     * Supports unicode strings.
-     *
-     * @param str
-     * @return A version of the string with any special characters removed.
-     */
-    public static String removeInvalidSQLObjectNameCharacters(String str){
-        if(str == null)
-            return null;
-
-        return str.replaceAll("[\\W]+", "");
-    }
-
-    public static boolean isValidGuidId(String id){
-        return id.matches("^[0-9-]*$");
-    }
-
-    public static boolean isValidNumericId(String id){
-        return StringUtils.isNumeric(id);
-    }
-
-    public static String escapeLDAPQueryString(final String in){
-        StringBuilder s = new StringBuilder();
-
-        for (int i=0; i< in.length(); i++) {
-
-            char c = in.charAt(i);
-
-            if (c == '*') {
-                // escape asterisk
-                s.append("\\2a");
-            }
-            else if (c == '(') {
-                // escape left parenthesis
-                s.append("\\28");
-            }
-            else if (c == ')') {
-                // escape right parenthesis
-                s.append("\\29");
-            }
-            else if (c == '\\') {
-                // escape backslash
-                s.append("\\5c");
-            }
-            else if (c == '\u0000') {
-                // escape NULL char
-                s.append("\\00");
-            }
-            else if (c <= 0x7f) {
-                // regular 1-byte UTF-8 char
-                s.append(String.valueOf(c));
-            }
-            else if (c >= 0x080) {
-
-                // higher-order 2, 3 and 4-byte UTF-8 chars
-
-                byte[] utf8bytes = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
-
-                for (byte b: utf8bytes)
-                    s.append(String.format("\\%02x", b));
-
-            }
-        }
-
-        return s.toString();
-    }
-
-    public static String escapeLDAPConnectionString(String str){
-        return str;
-    }
 }

@@ -23,6 +23,8 @@
  */
 package com.percussion.pagemanagement.service.impl;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.dao.IPSPageDao;
@@ -92,25 +94,25 @@ import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SE
 @Transactional(noRollbackFor = {Exception.class,PSPageException.class})
 public class PSPageCatalogService implements IPSPageCatalogService
 {
-    private IPSFolderHelper folderHelper;
-    private IPSPageDao pageDao;
-    private IPSiteDao siteDao;
-    private IPSTemplateService templateService;
-    private IPSSiteTemplateService siteTemplateService;
-    private IPSItemWorkflowService itemWorkflowService;
-    private IPSTemplateDao templateDao;
-    private IPSIdMapper idMapper;
+    private final IPSFolderHelper folderHelper;
+    private final IPSPageDao pageDao;
+    private final IPSiteDao siteDao;
+    private final IPSTemplateService templateService;
+    private final IPSSiteTemplateService siteTemplateService;
+    private final IPSItemWorkflowService itemWorkflowService;
+    private final IPSTemplateDao templateDao;
+    private final IPSIdMapper idMapper;
     private IPSSystemProperties systemProps;
-    private IPSPageDaoHelper pageDaoHelper;
-    private IPSManagedNavService navService;
-    private IPSCmsObjectMgr cmsMgr;
+    private final IPSPageDaoHelper pageDaoHelper;
+    private final IPSManagedNavService navService;
+    private final IPSCmsObjectMgr cmsMgr;
     
-    private PSSiteCache siteCache = new PSSiteCache();
+    private final PSSiteCache siteCache = new PSSiteCache();
     
     private Integer defaultWorkflowId = null;
     
-    private static String CATALOG_FOLDERS = pathSeparator() + concatPath(SECTION_SYSTEM_FOLDER_NAME, PAGE_CATALOG);
-    private static final Logger log = LogManager.getLogger(PSPageCatalogService.class);
+    private static final String CATALOG_FOLDERS = pathSeparator() + concatPath(SECTION_SYSTEM_FOLDER_NAME, PAGE_CATALOG);
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
     
     @Autowired
     public PSPageCatalogService(IPSFolderHelper folderHelper, IPSPageDao pageDao, IPSiteDao siteDao,
@@ -179,7 +181,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
         Validate.notEmpty(href);
         
         
-        log.debug("Catalog page: \"" + pageName + "\", path: \"" + folderPath + "\"");
+        log.debug("Catalog page: {}, path: {}", pageName, folderPath);
         
         // find the site
         PSSiteSummary site = siteDao.findSummary(siteName);
@@ -215,7 +217,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
         
         if (pageWithFolderPathExists(fullFolderPath))
         {
-            log.warn("Skip catalog page: \"" + catItemPath + "\". Because a page has been created at: \"" + fullFolderPath + "\"\n");
+            log.warn("Skip catalog page: {}. Because a page has been created at: {}",catItemPath, fullFolderPath);
             return null;
         }
         
@@ -289,7 +291,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
         if (site == null)
         {
             //This happens if a site was never imported or if the site has been deleted.
-            log.warn("Unable to find cataloged pages, the specified site was not found: " + siteName);
+            log.warn("Unable to find cataloged pages, the specified site was not found: {}" , siteName);
             return new ArrayList<>();
         }
 
@@ -298,7 +300,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
         
         try
         {
-            List<String> importedPageIds = new ArrayList<>();
+            List<String> importedPageIds;
             
             String templateId = getCatalogTemplateIdBySite(siteName);
 
@@ -479,9 +481,10 @@ public class PSPageCatalogService implements IPSPageCatalogService
         {
             // we could not set the right theme, so leave the default theme in
             // the template
-            String msg = "Failed to get template from the home page for site name = '" + siteSummary.getName() + "'.";
-            log.error(msg, e);
-            throw new PSSiteImportException(msg, e);
+
+            log.error("Failed to get template from the home page for site name = '{}'.  Error: {}", siteSummary.getName(),
+                    PSExceptionUtils.getMessageForLog(e));
+            throw new PSSiteImportException(e);
         }
     }
 
@@ -572,8 +575,7 @@ public class PSPageCatalogService implements IPSPageCatalogService
     public String getFullFolderPath(String folderPath, PSSiteSummary site)
     {
     	String catalogRoot = getCatalogFolderPath(site);
-        String fullFolderPath = concatPath(catalogRoot, folderPath);
-        return fullFolderPath;
+        return  concatPath(catalogRoot, folderPath);
     }
     
     /**

@@ -23,18 +23,16 @@
  */
 package com.percussion.share.validation;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.percussion.security.SecureStringUtils;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import com.percussion.utils.security.PSSecurityUtility;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A JAXB serializable Exception wrapper.
@@ -46,7 +44,7 @@ import org.apache.logging.log4j.Logger;
 public class PSErrorCause
 {
 	
-	private static final Logger log = LogManager.getLogger(PSErrorCause.class);
+	private static final Logger log = LogManager.getLogger("Server");
     private PSErrorCause errorCause;
     private List<PSErrorCauseElement> errorCauseStackTrace;
     private StackTraceElement[] stackTrace;
@@ -167,7 +165,7 @@ public class PSErrorCause
 
     public void setMessage(String message)
     {
-        this.message = PSSecurityUtility.sanitizeStringForHTML(message);
+        this.message = SecureStringUtils.sanitizeStringForHTML(message);
     }
 
 
@@ -181,7 +179,7 @@ public class PSErrorCause
 
     public void setLocalizedMessage(String localizedMessage)
     {
-        this.localizedMessage = PSSecurityUtility.sanitizeStringForHTML(localizedMessage);
+        this.localizedMessage = SecureStringUtils.sanitizeStringForHTML(localizedMessage);
     }
 
 
