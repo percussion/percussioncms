@@ -51,9 +51,58 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A centralized utility class with static methods for performing a variety of secure
+ * string validation and prevention of common vulnerabilities.
+ */
 public class SecureStringUtils {
 
-    private static final Logger log = LogManager.getLogger(SecureStringUtils.class);
+    private static final Logger log = LogManager.getLogger("Security");
+
+    private SecureStringUtils(){
+        //Provate constructor to prevent direct instantiation.
+    }
+
+    /**
+     * Array of string patterns that are always rejected to prevent xss
+     */
+    private static final String[] INVALID_XSS_CHARS ={
+            ">",
+            "<",
+            "0x003C",
+            "0x003E",
+            "%3E",
+            "%3C",
+            "&#62;",
+            "&#60;"
+    };
+
+
+    /**
+     * Method checks against banned characters for xss and returns true if the string
+     * contains any such characters, encoded or otherwise.
+     *
+     * Caller should reject any input that matches.  NOTE: This method is intended for
+     * situations where simply encoding the string to escape XSS chars is not wanted for
+     * other uses check one of the encoding / sanitize methods on this class.
+     *
+     * Example use case are CMS file names.  We never want to allow XSS characters, encoded or
+     * not in those strings.
+     *
+     * @param str The string to check.
+     * @return true if the string contains banned xss chars.
+     */
+    public static boolean containsXSSChars(String str){
+       boolean ret = false;
+
+        for(String s: INVALID_XSS_CHARS){
+           if(str.contains(s)){
+               ret = true;
+               break; // no need to continue
+           }
+       }
+        return ret;
+    }
 
     public static List<String> getTypicalAllowedHosts(HttpServletRequest request){
         List<String> ret = new ArrayList<>();
@@ -650,6 +699,123 @@ public class SecureStringUtils {
     }
 
 
+    /**
+     * Utility to remove parameters from header.
+     * @param str
+     * @return
+     */
+    public static String removeSpecialCharactersFromHeader(String str) {
+        return str.replaceAll("[^a-zA-Z ]", "");
+    }
+
+    /**
+     * Validates an un-encoded CMS path for valid characters based on the operation context.
+     * @param path
+     * @param context The operation context.  There are some legacy path characters that must be allowed, like [ or ]
+     * @return
+     */
+    public static boolean isValidCMSPathString(String path, PSOperationContext context){
+        switch(context){
+            case CREATE: {
+               return (!containsXSSChars(path) && isValidCMSPathString(path));
+            }
+            default:{
+               //Always validate for XSS
+                return !containsXSSChars(path);
+            }
+        }
+    }
+
+    /**
+     * To support legacy filenames post upgrade, use the method below instead.
+     *
+     * @see #isValidCMSPathString(String, PSOperationContext)
+     * @param path
+     * @return
+     */
+    public static boolean isValidCMSPathString(String path){
+        //API seems coded such that an empty path is root.
+        if(StringUtils.isEmpty(path))
+            return true;
+
+        if(StringUtils.containsAny(path, "[\"\\<>{}^()|[]"))
+            return false;
+        else
+            return true;
+    }
+
+
+    /***
+     * Removes any characters from a given string that are not a valid SQL Object Name.
+     * Supports unicode strings.
+     *
+     * @param str
+     * @return A version of the string with any special characters removed.
+     */
+    public static String removeInvalidSQLObjectNameCharacters(String str){
+        if(str == null)
+            return null;
+
+        return str.replaceAll("[\\W]+", "");
+    }
+
+    public static boolean isValidGuidId(String id){
+        return id.matches("^[0-9-]*$");
+    }
+
+    public static boolean isValidNumericId(String id){
+        return StringUtils.isNumeric(id);
+    }
+
+    public static String escapeLDAPQueryString(final String in){
+        StringBuilder s = new StringBuilder();
+
+        for (int i=0; i< in.length(); i++) {
+
+            char c = in.charAt(i);
+
+            if (c == '*') {
+                // escape asterisk
+                s.append("\\2a");
+            }
+            else if (c == '(') {
+                // escape left parenthesis
+                s.append("\\28");
+            }
+            else if (c == ')') {
+                // escape right parenthesis
+                s.append("\\29");
+            }
+            else if (c == '\\') {
+                // escape backslash
+                s.append("\\5c");
+            }
+            else if (c == '\u0000') {
+                // escape NULL char
+                s.append("\\00");
+            }
+            else if (c <= 0x7f) {
+                // regular 1-byte UTF-8 char
+                s.append(String.valueOf(c));
+            }
+            else if (c >= 0x080) {
+
+                // higher-order 2, 3 and 4-byte UTF-8 chars
+
+                byte[] utf8bytes = String.valueOf(c).getBytes(StandardCharsets.UTF_8);
+
+                for (byte b: utf8bytes)
+                    s.append(String.format("\\%02x", b));
+
+            }
+        }
+
+        return s.toString();
+    }
+
+    public static String escapeLDAPConnectionString(String str){
+        return str;
+    }
 
 
 }

@@ -26,6 +26,7 @@ package com.percussion.pathmanagement.service.impl;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSContentEvent;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.ui.PSI18NTranslationKeyValues;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
@@ -37,6 +38,8 @@ import com.percussion.pathmanagement.data.PSPathItemList;
 import com.percussion.pathmanagement.data.PSRenameFolderItem;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.recycle.service.IPSRecycleService;
+import com.percussion.security.PSOperationContext;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
@@ -58,7 +61,6 @@ import com.percussion.ui.service.IPSUiService;
 import com.percussion.ui.service.impl.PSCm1ListViewHelper;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -130,7 +132,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPathItem find(@PathParam("path") String path) throws PSPathServiceException {
         try {
-            if(!PSSecurityUtility.isValidCMSPathString(path))
+            if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH))
                 throw new PSPathServiceException("Invalid path.");
 
             log.debug("Attempting to find item for path: {}", path);
@@ -148,7 +150,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPathItem findById(@PathParam("id") String id) throws PSPathServiceException, PSParametersValidationException {
         try {
-            if(!PSSecurityUtility.isValidGuidId(id))
+            if(!SecureStringUtils.isValidGuidId(id))
                 throw new PSPathServiceException("Invalid id.");
 
             return folderHelper.findItemById(id);
@@ -169,7 +171,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSItemProperties findItemProperties(@PathParam("path") String path) throws PSPathServiceException {
         try {
-            if(!PSSecurityUtility.isValidCMSPathString(path))
+            if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH))
                 throw new PSPathServiceException("Invalid path.");
 
             log.debug("Attempting to find item properties for path: {}", path);
@@ -189,13 +191,13 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSFolderProperties findFolderProperties(@PathParam("id") String id) throws PSPathServiceException {
         try {
-            if(!PSSecurityUtility.isValidGuidId(id)){
+            if(!SecureStringUtils.isValidGuidId(id)){
                 throw new PSPathServiceException("Invalid id.");
             }
             return folderHelper.findFolderProperties(id);
         } catch (PSValidationException e) {
-            log.error("Error: {} Id: {}",e.getMessage(),id);
-            log.debug(e.getMessage(),e);
+            log.error("Error: {} Id: {}", PSExceptionUtils.getMessageForLog(e),id);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPathServiceException(e);
         }
     }
@@ -283,7 +285,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             PSPathServiceException {
 
         try {
-            if(!PSSecurityUtility.isValidCMSPathString(path)){
+            if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH)){
                 log.warn("Invalid path provided: {}",path);
                 throw new PSPathServiceException("Invalid path provided");
             }
@@ -337,7 +339,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     public List<PSPathItem> findChildren(@PathParam("path") String path) throws PSPathServiceException {
         try
         {
-            if(!PSSecurityUtility.isValidCMSPathString(path))
+            if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH))
                 throw new PSPathServiceException("Invalid path.");
 
             // check child types
@@ -360,7 +362,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     public List<PSPathItem> findChildFolders(@PathParam("path") String path) throws PSPathServiceException {
         try
         {
-            if(!PSSecurityUtility.isValidCMSPathString(path))
+            if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH))
                 throw new PSPathServiceException("Invalid path.");
 
             // get folders only
@@ -380,7 +382,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPathItem addFolder(@PathParam("path") String path) throws PSValidationException, WebApplicationException, PSPathServiceException {
        try {
-           if(!PSSecurityUtility.isValidCMSPathString(path))
+           if(!SecureStringUtils.isValidCMSPathString(path,PSOperationContext.EDIT))
                throw new PSPathServiceException("Invalid path.");
 
            log.debug("Attempting to add folder: {}", path);
@@ -399,7 +401,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSPathItem addNewFolder(@PathParam("path") String path) throws PSPathServiceException {
         try {
-            if(!PSSecurityUtility.isValidCMSPathString(path)){
+            if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.CREATE)){
                 throw new PSPathServiceException("Invalid path");
             }
 
@@ -463,7 +465,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public String findLastExistingPath(@PathParam("path") String path) throws PSPathServiceException {
 
-        if(!PSSecurityUtility.isValidCMSPathString(path))
+        if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH))
             throw new PSPathServiceException("Invalid path.");
 
         log.debug("Attempting to find last existing path: {}", path);
@@ -475,7 +477,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML,MediaType.TEXT_PLAIN})
     public String validateEnteredPath(@PathParam("path") String path) throws PSPathServiceException {
 
-        if(!PSSecurityUtility.isValidCMSPathString(path))
+        if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.SEARCH))
             throw new PSPathServiceException("Invalid path.");
 
         log.debug("Attempting to find existing path: {}",  path);
@@ -541,7 +543,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent restoreFolder(@PathParam("id") String id) throws PSPathServiceException {
 
-        if(!PSSecurityUtility.isValidGuidId(id))
+        if(!SecureStringUtils.isValidGuidId(id))
             throw new PSPathServiceException("Invalid id.");
 
         return super.restoreFolder(id);
@@ -555,7 +557,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
     public String validateFolderDelete(@PathParam("path") String path) throws PSValidationException, PSPathNotFoundServiceException,
             PSPathServiceException {
        try {
-           if(!PSSecurityUtility.isValidCMSPathString(path))
+           if(!SecureStringUtils.isValidCMSPathString(path, PSOperationContext.DELETE))
                throw new PSPathServiceException("Invalid path.");
 
            log.debug("Attempting to validate folder: {} for delete", path);
