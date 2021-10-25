@@ -26,7 +26,6 @@
  */
 package com.percussion.share.dao.impl;
 
-import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSObjectAclEntry;
@@ -47,6 +46,7 @@ import com.percussion.pathmanagement.service.impl.PSRecyclePathItemService;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.security.PSSecurityProvider;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSItemSummary;
 import com.percussion.services.error.PSNotFoundException;
@@ -1335,12 +1335,12 @@ public class PSFolderHelper implements IPSFolderHelper
         notEmpty(baseName);
         
         String folderBase = baseName;
-        if (StringUtils.containsAny(folderBase, IPSConstants.INVALID_ITEM_NAME_CHARACTERS))
+        if (StringUtils.containsAny(folderBase, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS))
         {
             // remove invalid characters
-            for (int i = 0; i < IPSConstants.INVALID_ITEM_NAME_CHARACTERS.length(); i++)
+            for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++)
             {
-                folderBase = StringUtils.remove(folderBase, IPSConstants.INVALID_ITEM_NAME_CHARACTERS.charAt(i));                
+                folderBase = StringUtils.remove(folderBase, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i));
             }
         }
         

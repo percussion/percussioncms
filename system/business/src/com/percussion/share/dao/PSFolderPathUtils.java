@@ -23,7 +23,7 @@
  */
 package com.percussion.share.dao;
 
-import com.percussion.cms.IPSConstants;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
 import org.apache.commons.lang.StringUtils;
@@ -77,7 +77,7 @@ public class PSFolderPathUtils
      * It is the combination of "invalid characters for the file name in 
      * Windows" and "unsafe URL characters".
      */
-    public static String INVALID_ITEM_NAME_CHARACTERS = IPSConstants.INVALID_ITEM_NAME_CHARACTERS;
+    public static String INVALID_ITEM_NAME_CHARACTERS = SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS;
     
     /**
      * Concats paths by putting the proper path separators
@@ -409,13 +409,13 @@ public class PSFolderPathUtils
     }
     
     /**
-     * Checks if the supplied string contains any characters that are invalid for sys title specified in {@link IPSConstants#INVALID_ITEM_NAME_CHARACTERS}
+     * Checks if the supplied string contains any characters that are invalid for sys title specified in {@link SecureStringUtils#INVALID_ITEM_NAME_CHARACTERS}
      * @param testString  The string to check
      * @return true if invalid characters found
      */
     public static boolean testHasInvalidChars(String testString)
     {  
-        return StringUtils.containsAny(testString, IPSConstants.INVALID_ITEM_NAME_CHARACTERS);                
+        return StringUtils.containsAny(testString, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS);
     }
     
 

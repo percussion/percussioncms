@@ -438,35 +438,6 @@ public interface IPSConstants
     * behavior in downstream processing.
     */
    public static final Object LOAD_FOR_SEARCH_INDEX = "sys_loadForSearchIndex";
-   
-   /**
-    * Characters that are invalid for the file name in Windows, which is more
-    * restrictive than UNIX.
-    * <p>
-    * The invalid characters for the file name in Windows are:
-    * <pre>
-    * \ / | < > ? " : *
-    * </pre> 
-    */
-   public static String INVALID_WINDOWS_FILE_CHARACTERS = "\\/|<>()?\":*";
-   
-   /**
-    * Characters that should not be used as part of URL; otherwise it may cause
-    * error in REST layer when the item name contain any of the characters.
-    * <p>
-    * '#' - used by anchors in HTML<br>
-    * ';' - used to append "jsessionid=..." to URL<br>
-    * '%' - used to URL encode/escape other characters.
-    * </p>
-    */
-   public static String UNSAFE_URL_CHARACTERS = "#;%[]<>{}|\\^~`/?:@=&";
-   
-   /**
-    * Characters that are invalid for item names (sys_title).
-    * It is the combination of "invalid characters for the file name in 
-    * Windows" and "unsafe URL characters".
-    */
-   public static String INVALID_ITEM_NAME_CHARACTERS = INVALID_WINDOWS_FILE_CHARACTERS + UNSAFE_URL_CHARACTERS;
 
    /**
     * The default mime type to use if a mime type is undefined.
@@ -607,5 +578,6 @@ public interface IPSConstants
    public static final String SAAS_FLAG = "doSAAS";
 
 
+   public static final String SERVER_PROP_MANAGELINKS = "AUTO_MANAGE_LOCAL_PATHS";
 }
 
