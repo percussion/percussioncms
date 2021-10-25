@@ -78,7 +78,8 @@ public class PSAddResponseHeaderFilter implements Filter {
 
             }
 
-            httpResp.setHeader("Cache-Control", CacheControl.maxAge(cachingAgeTimeValue, cachingAgeTimeUnit).getHeaderValue());
+            httpResp.setHeader("Cache-Control", CacheControl.maxAge(cachingAgeTimeValue, cachingAgeTimeUnit).getHeaderValue()+", "+CacheControl.noStore().getHeaderValue()+", "+CacheControl.noCache().getHeaderValue());
+            httpResp.setHeader("Pragma", "no-cache");
             chain.doFilter(request, response);
         }else{
             chain.doFilter(request,response);
