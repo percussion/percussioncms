@@ -23,7 +23,6 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import com.percussion.cms.IPSConstants;
 import com.percussion.pagemanagement.dao.IPSTemplateDao;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSMetadataDocType;
@@ -34,6 +33,7 @@ import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSTemplateService.PSTemplateException;
 import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -1034,10 +1034,10 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
             }
         }
 
-        if (StringUtils.containsAny(templateName, IPSConstants.INVALID_ITEM_NAME_CHARACTERS)){
-            for (int i = 0; i < IPSConstants.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
+        if (StringUtils.containsAny(templateName, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS)){
+            for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
                 // Replace any invalid characters present.
-                templateName = StringUtils.replace(templateName, String.valueOf(IPSConstants.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
+                templateName = StringUtils.replace(templateName, String.valueOf(SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
             }
             if(templateName.substring(templateName.length()-1).equalsIgnoreCase("-")){
                 //the base name for copied template

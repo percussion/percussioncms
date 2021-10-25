@@ -83,9 +83,7 @@ public class PSInlineLinkProcessor
    }
       
    /**
-    * Convenience method that calls {@link #processInlineLinkItem(PSRequest, 
-    * PSLocator, Map, int, boolean) processInlineLinkItem(request, item, 
-    * relationships, communityId, <code>true</code>)}.
+    * Convenience method that calls {@link #processInlineLinkItem(PSRequest, PSLocator, Map, int)}
     */
    public static void processInlineLinkItem(PSRequest request,
       PSLocator item, Map relationships, int communityId) throws PSException
@@ -134,7 +132,7 @@ public class PSInlineLinkProcessor
 
       // do nothing if there is no inline link fields
       List inlinelinkFields = getInlineLinkFields(itemDef);
-      if (inlinelinkFields.size() == 0)
+      if (inlinelinkFields.isEmpty())
          return;
       logger.debug("Processing inline Link for : {} ", item.getId() );
       processInlineLinkItem(request, item, itemDef, relationships,

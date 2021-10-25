@@ -60,6 +60,7 @@ import com.percussion.search.PSWSSearchResponse;
 import com.percussion.search.objectstore.PSWSSearchRequest;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
@@ -4075,7 +4076,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
       for (String invalidPathItemToTest : names)
       {
          if (PSFolderPathUtils.testHasInvalidChars(invalidPathItemToTest))
-            throw new IllegalArgumentException("Cannot create a folder containing the following characters" + IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+            throw new IllegalArgumentException("Cannot create a folder containing the following characters" + SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS);
       }
 
       while (!names.empty())
