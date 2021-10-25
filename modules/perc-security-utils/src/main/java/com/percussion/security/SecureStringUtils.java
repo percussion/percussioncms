@@ -202,7 +202,7 @@ public class SecureStringUtils {
 
 
     /**
-     * Checks if the supplied time is a valie time.
+     * Checks if the supplied string doesn't have an invalid character.
      * @param string the stringto test
      * @return true if the string is valid, false if not
      */
@@ -211,7 +211,7 @@ public class SecureStringUtils {
             return true;
         }
 
-         return string.matches("[a-zA-Z0-9,.;/=?@&:_'\\s-]*");
+         return string.matches("[a-zA-Z0-9,.;/=?@*%\\[\\]()&:_'\\s-]*");
     }
 
     /**
