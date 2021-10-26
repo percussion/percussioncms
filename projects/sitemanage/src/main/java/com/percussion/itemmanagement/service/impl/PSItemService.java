@@ -825,6 +825,8 @@ public class PSItemService implements IPSItemService
         rejectIfBlank("validateItemPromotable", "id", id);
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         String type = workflowHelper.isPage(id)?PAGE:ASSET;
+		String opName = "Restore Revision";
+        PSNoContent validationResponse = new PSNoContent("Success");
 
         //throw exception if the user is not an assignee
         PSAssignmentTypeEnum asmtType = null;
@@ -836,13 +838,20 @@ public class PSItemService implements IPSItemService
         catch(Exception e)
         {
         	Object[] args = {type};
-        	throw new PSItemServiceException(MessageFormat.format("An unexpected error occurred while promoting this {0}" +
-        			", see log for details.",args),e);
+			
+			String invalidMessage = new String(MessageFormat.format("An unexpected error occurred while promoting this {0}" +
+        			", see log for details.",args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
+
         }
         if(asmtType == PSAssignmentTypeEnum.READER || asmtType == PSAssignmentTypeEnum.NONE)
         {
         	Object[] args = {type};
-        	throw new PSItemServiceException(MessageFormat.format("You are not authorized to restore this {0}.",args));
+			
+			String invalidMessage = new String(MessageFormat.format("You are not authorized to restore this {0}.",args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
         }
 
     	//throw exception if the user does not have folder permission
@@ -850,16 +859,23 @@ public class PSItemService implements IPSItemService
         PSFolderPermission.Access access = folderHelper.getFolderAccessLevel(pfGuid.toString());
         if(access == PSFolderPermission.Access.READ)
         {
+			
         	Object[] args = {type};
-        	throw new PSItemServiceException(MessageFormat.format("You do not have permission to restore this {0}.",args));
+			String invalidMessage = new String(MessageFormat.format("You do not have permission to restore this {0}.",args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
         }
 
         //if item is checked out to some one else throws exception.
         if(StringUtils.isNotBlank(sum.getCheckoutUserName()) && !workflowHelper.isCheckedOutToCurrentUser(id))
         {
+						
         	Object[] args = {type,sum.getCheckoutUserName()};
-        	throw new PSItemServiceException(MessageFormat.format("User {1} is editing this {0}. You cannot restore " +
-        			"earlier revisions.", args));
+			String invalidMessage = new String(MessageFormat.format("User {1} is editing this {0}. You cannot restore " +
+        			"earlier revisions.", args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
+        	
         }
 
     }
