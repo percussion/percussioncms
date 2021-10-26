@@ -216,7 +216,7 @@ public class PSTemplateService implements IPSTemplateService
             String errorMsg = "Template '" +  template.getName() + "' cannot be deleted because it is being used by ";
             if (isAssociatedToPages(id)) {
                 errorMsg += "one or more pages.";
-                log.debug(errorMsg + " Template id: " + id);
+                log.debug( "{} Template id: {}" ,errorMsg, id);
                 if (isValidatingDeleteTemplate()) {
                     builder.reject("template.inUse", errorMsg);
                     builder.throwIfInvalid();
@@ -225,7 +225,7 @@ public class PSTemplateService implements IPSTemplateService
             else if(isAssociatedToBlogs(id))
             {
                 errorMsg += "a blog.";
-                log.debug( errorMsg + " Template id: " + id);
+                log.debug( "{} Template id: {}" ,errorMsg, id);
                 if (isValidatingDeleteTemplate()) {
                     builder.reject("template.inUse", errorMsg);
                     builder.throwIfInvalid();
@@ -565,6 +565,7 @@ public class PSTemplateService implements IPSTemplateService
         rejectIfBlank("isAssociatedToPages", "templateId", templateId);
 
         return !pageDaoHelper.findPageIdsByTemplateInRecentRevision(templateId).isEmpty();
+
     }
 
     public Collection<Integer> getPageIdsForTemplate(String templateId){
