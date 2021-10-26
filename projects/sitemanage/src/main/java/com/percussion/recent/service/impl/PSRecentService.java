@@ -25,6 +25,7 @@
 package com.percussion.recent.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
@@ -82,7 +83,7 @@ public class PSRecentService implements IPSRecentService
     @Autowired
     private IPSSiteTemplateService siteTemplateService;
 
-    private static final Logger log = LogManager.getLogger(PSRecentService.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
     /*
     @Autowired
