@@ -56,7 +56,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * is null or empty, then all exported forms are deleted. Form name
 	 * comparison is case-insensitive
 	 * 
-	 * @url /perc-form-processor/form/{formName}
+	 * @url /perc-form-processor/form/cms/{formName}
 	 * @httpverb DELETE
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -65,7 +65,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@DELETE
-	@Path("/form/{formName}")
+	@Path("/form/cms/{formName}")
 	public abstract void delete(@PathParam("formName") String formName);
 
 	/**
@@ -83,7 +83,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@POST
-	@Path("/collect")
+	@Path("/form/collect")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public abstract void create(@Context ContainerRequest containerRequest,
 			@FormParam("action") String action, @Context HttpHeaders header,@Context HttpServletRequest request,
@@ -93,7 +93,7 @@ public interface IPSFormRestService extends IPSRestService{
 	/**
 	 * Retrieves the form given the name.
 	 * 
-	 * @url /perc-form-processor/form/{formName}
+	 * @url /perc-form-processor/form/cms/{formName}
 	 * @httpverb GET
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -104,7 +104,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/form/{formName}")
+	@Path("/form/cms/{formName}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public abstract PSFormSummaries get(@PathParam("formName") String formName);
 
@@ -112,7 +112,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * Retrieves list of form summaries. Form summaries include the name, total
 	 * forms count, and total exported forms count.
 	 * 
-	 * @url /perc-form-processor/form/
+	 * @url /perc-form-processor/form/cms/
 	 * @httpverb GET
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -122,14 +122,14 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/form/list")
+	@Path("/form/cms/list")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public abstract PSFormSummaries get();
 
 	/**
 	 * Export the form given the name.
 	 * 
-	 * @url /perc-form-processor/form/{formName}/{csvFile}
+	 * @url /perc-form-processor/form/cms/{formName}/{csvFile}
 	 * @httpverb GET
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -142,7 +142,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/form/{formName}/{csvFile}")
+	@Path("/form/cms/{formName}/{csvFile}")
 	@Produces({ "text/csv" })
 	public abstract Response export(@PathParam("formName") String formName,
 			@PathParam("csvFile") String csvFile);

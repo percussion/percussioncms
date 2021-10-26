@@ -164,7 +164,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @DELETE
-    @Path("/form/{formName}")
+    @Path("/form/cms/{formName}")
     public void delete(@PathParam("formName") String formName)
     {
         try
@@ -540,7 +540,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
-    @Path("/form/{formName}")
+    @Path("/form/cms/{formName}")
     @Produces(
             {MediaType.APPLICATION_JSON})
     public PSFormSummaries get(@PathParam("formName") String formName)
@@ -589,7 +589,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
-    @Path("/form/list")
+    @Path("/form/cms/list")
     @Produces(
             {MediaType.APPLICATION_JSON})
     public PSFormSummaries get()
@@ -626,7 +626,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      */
     @Override
     @GET
-    @Path("/form/{formName}/{csvFile}")
+    @Path("/form/cms/{formName}/{csvFile}")
     @Produces(
             {"text/csv"})
     public Response export(@PathParam("formName") String formName, @PathParam("csvFile") String csvFile)

@@ -33,7 +33,7 @@
 
     <beans:bean id="requestMatcher" class="com.percussion.delivery.spring.PSCsrfSecurityRequestMatcher">
         <beans:constructor-arg value="^(GET|HEAD)$" />
-        <beans:constructor-arg value="/comment/list,/comment/pageswithcomments,/comment/jsonp,/comment/addcomment,/comment/list,/comment/moderation/,/moderation/asmoderator,/comment/updateOldSiteEntries/,/likes/"/>
+        <beans:constructor-arg value="/comment/list,/comment/moderation/delete,/comment/moderation/defaultModerationState,/comment/moderation/reject,/comment/moderation/approve,/comment/pageswithcomments/,/comment/defaultModerationState,/comment/list,/comment/moderation/,/moderation/asmoderator,/comment/updateOldSiteEntries/,/likes/"/>
         <beans:constructor-arg value="true"/>
     </beans:bean>
 
