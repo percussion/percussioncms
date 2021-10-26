@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.PSInlineLinkField;
 import com.percussion.cms.PSRelationshipData;
@@ -30,6 +31,7 @@ import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSConversionException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -122,7 +124,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    /**
     * Logger for this class
     */
-   private static final Logger log = LogManager.getLogger(PSInlineLinkContentHandler.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
 
    
    
@@ -453,7 +455,9 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
                }
                catch(Exception e)
                {
-                  log.error("Error occurred generating the inline link attributes for path {}", path);
+                  log.error("Error occurred generating the inline link attributes for path {}. Error: {}",
+                          path,
+                          PSExceptionUtils.getMessageForLog(e));
                }
             }
          }
@@ -737,8 +741,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
 
    }
 
-   protected State doRxHyperLink(InlineLink link, IPSAssemblyItem target, String jrcPath)
-      throws Exception {
+   protected State doRxHyperLink(InlineLink link, IPSAssemblyItem target, String jrcPath) {
          if (target != null){
             String newHref = link.getLink(target);
             if (StringUtils.isNotBlank(newHref)) {
@@ -746,7 +749,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
                   int anchorindex = link.href.lastIndexOf("#");
                   if(anchorindex != -1) {
                      String anchor = link.href.substring(anchorindex+1);
-                     if (anchor != null && !StringUtils.isEmpty(anchor.trim())) {
+                     if (!StringUtils.isEmpty(anchor.trim())) {
                         newHref = newHref + "#" + anchor;
                      }
                   }
@@ -905,15 +908,15 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          }
          
          if (!StringUtils.isBlank(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE))) {
-            dataAltOverride = Boolean.valueOf(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE));
-            dataTitleOverride = Boolean.valueOf(attrs.getValue(PSSingleValueBuilder.DATA_TITLE_OVERRIDE));
+            dataAltOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_DESCRIPTION_OVERRIDE));
+            dataTitleOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_TITLE_OVERRIDE));
             isUpgradeScenario = false;
          }
          else if(inlineType.equals("rximage"))
             isUpgradeScenario = true;
          
          if(!StringUtils.isBlank(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE)))
-            dataDecorativeOverride = Boolean.valueOf(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE));
+            dataDecorativeOverride = Boolean.parseBoolean(attrs.getValue(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE));
 
          href = attrs.getValue(PSSingleValueBuilder.HREF);
          resourceDefinitionId = attrs.getValue(PSSingleValueBuilder.RESOURCE_DEFINITION_ID);
@@ -941,7 +944,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          dependentId = props.get(IPSHtmlParameters.SYS_DEPENDENTID);
          PSRequest req = PSRequest.getContextForRequest();
          m_context = new PSRequestContext(req);
-         //FB: UR_UNINIT_READ NC 1-17-16
+
          siteId = m_processor.getWorkItem().getParameterValue(IPSHtmlParameters.SYS_SITEID, "");
 
          href = props.get("path");
@@ -1018,14 +1021,14 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          Exception e) throws SAXException
    {
       log.error("Problem processing inline link for item {} Error: {}", m_processor.getWorkItem().getId(), e.getMessage());
-      log.debug(e.getMessage(), e);
+      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       PSTrackAssemblyError
          .addProblem("Problem processing inline links", e);
       StringBuilder message = new StringBuilder();
       message.append("Problem while processing inline link for item ");
       message.append(m_processor.getWorkItem().getId());
       message.append(": ");
-      message.append(e.getLocalizedMessage());
+      message.append(PSExceptionUtils.getMessageForLog(e));
       message.append(" See the replacement body in the console log. ");
       message.append("The attributes on the affected link were: ");
       int len = attrs != null ? attrs.getLength() : 0;
@@ -1043,7 +1046,6 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          message.append("\"");
       }
 
-      log.error(message.toString());
       log.error("Actual replacement body for error was: {}", replacementbody);
       throw new SAXException(message.toString(), e);
    }
@@ -1263,7 +1265,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
       String autoProp = "true";
       if(PSServer.getServerProps()!=null)
       {
-          autoProp = StringUtils.defaultString(PSServer.getServerProps().getProperty("AUTO_MANAGE_LOCAL_PATHS"));
+          autoProp = StringUtils.defaultString(PSServer.getServerProps().getProperty(IPSConstants.SERVER_PROP_MANAGELINKS));
       }
       return "true".equalsIgnoreCase(autoProp)?true:false;
   }  
@@ -1280,13 +1282,10 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          m_managedLinkUdf =
             (IPSUdfProcessor) extMgr.prepareExtension(extRef, null);
       }
-      catch (PSNotFoundException e)
+      catch (PSNotFoundException | PSExtensionException e)
       {
-         log.error(this.getClass().getName(), e);
-      }
-      catch (PSExtensionException e)
-      {
-         log.error(this.getClass().getName(), e);
+         log.error("Error initializing sys_manageLinksConverter. Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
       }
 
    }

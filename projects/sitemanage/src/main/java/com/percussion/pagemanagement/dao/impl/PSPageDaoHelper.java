@@ -23,15 +23,8 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
-import static com.percussion.util.PSSqlHelper.qualifyTableName;
-
-import static org.apache.commons.lang.StringUtils.join;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
 import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pathmanagement.data.PSFolderProperties;
@@ -44,14 +37,6 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
@@ -62,6 +47,20 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
+import static com.percussion.util.PSSqlHelper.qualifyTableName;
+import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
  * @author miltonpividori
@@ -170,9 +169,13 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         }
         catch (SQLException e)
         {
-            log.error("Failed to get the fully qualified table name for {}", PAGE_TABLE);
+            log.error("Failed to get the fully qualified table name for {}. Error: {}",
+                    PAGE_TABLE,
+                    PSExceptionUtils.getMessageForLog(e));
             log.debug(e);
-            throw new PSRuntimeException(e);
+
+            //This method should not be failing upstream transactions with a runtime exception.
+            return new ArrayList<>();
         }
         
     }

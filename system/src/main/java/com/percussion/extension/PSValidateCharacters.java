@@ -23,8 +23,8 @@
  */
 package com.percussion.extension;
 
-import com.percussion.cms.IPSConstants;
 import com.percussion.data.PSConversionException;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.IPSRequestContext;
 import org.apache.commons.collections.IteratorUtils;
 
@@ -40,7 +40,7 @@ import static org.apache.commons.lang.Validate.notEmpty;
  * <table border="1">
  * <tr><th>Param</th><th>Name</th><th>Description</th></tr>
  * <tr><td>0</td><td>fieldName</td><td>(String) If null <code>{@link #DEFAULT_FIELD_NAME}</code> is used.</td></tr>
- * <tr><td>1</td><td>invalidChars</td><td>(String) If null {@link IPSConstants#INVALID_ITEM_NAME_CHARACTERS} is used.</td></tr>
+ * <tr><td>1</td><td>invalidChars</td><td>(String) If null {@link SecureStringUtils#INVALID_ITEM_NAME_CHARACTERS} is used.</td></tr>
  * </table>
  * @author adamgent
  *
@@ -88,7 +88,7 @@ public class PSValidateCharacters implements IPSFieldValidator
     */
    protected String getInvalidCharacters(Object[] params, IPSRequestContext request) 
    {
-      return getParameter(params, 1, IPSConstants.INVALID_ITEM_NAME_CHARACTERS, false);
+      return getParameter(params, 1, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS, false);
    }
    
    /**

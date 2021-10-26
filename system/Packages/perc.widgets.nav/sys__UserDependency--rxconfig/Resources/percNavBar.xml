@@ -58,15 +58,5 @@
 	<file id="navbar_js" path="/web_resources/widgets/navBar/js/navbar.min.js" type="javascript" context="PUBLISH">
 		<dependency refid="percNavBar.superfish_js"/>
 	</file>
-<!-- 	Unused - Can potentially be removed.
-	<file id="navbar_megafish_css" path="/web_resources/widgets/navBar/css/megafish.css" type="css"/>
-	
-	<file id="navbar_superfish_css" path="/web_resources/widgets/navBar/css/superfish.css" type="css"/>
-	
-	<file id="navbar_superfish_navbar_css" path="/web_resources/widgets/navBar/css/ssuperfish-navbar.css" type="css"/>
-	
-	<file id="navbar_superfish_navbar_css" path="/web_resources/widgets/navBar/css/superfish-vertical.css" type="css"/>
-	
-	<file id="navbar_superfish_style_css" path="/web_resources/widgets/navBar/css/style.css" type="css"/>
--->
+
 </Resources>

@@ -31,6 +31,7 @@ import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.rxfix.IPSFix;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.server.cache.PSCacheException;
 import com.percussion.server.cache.PSCacheManager;
@@ -574,10 +575,10 @@ public class PSFixInvalidSysTitle extends PSFixDBBase implements IPSFix
          // Find candidate records and fix them for items that should be
          // in public state
 
-         for (int i = 0; i < IPSConstants.INVALID_ITEM_NAME_CHARACTERS.length(); i++)
+         for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++)
          {
 
-            char testChar = IPSConstants.INVALID_ITEM_NAME_CHARACTERS.charAt(i);
+            char testChar = SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i);
             PreparedStatement st = null;
             ResultSet rs = null;
             try

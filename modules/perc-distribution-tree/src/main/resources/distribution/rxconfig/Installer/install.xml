@@ -152,18 +152,12 @@
 
     <echo>Checking jetty directory exists...</echo>
 
-    <if>
-        <available file="${install.dir}/jetty" type="dir"  property="jetty.present"/>
-        <then>
-            <echo>Pages and Assets for startup processing not required</echo>
-        </then>
-        <else>
-            <!-- Flagging Pages & Assets for startup processing -->
-            <echo>Flagging Assets and Pages for startup processing...</echo>
-            <delete file="${install.dir}/upgrade/processedlinks/Assets.json" failonerror="false"/>
-            <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
-        </else>
-    </if>
+    <!-- Flagging Pages & Assets for startup processing -->
+    <!-- This always needs run on upgrade to 8.0.3 -->
+    <echo>Flagging Assets and Pages for startup processing...</echo>
+    <delete file="${install.dir}/upgrade/processedlinks/Assets.json" failonerror="false"/>
+    <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
+
 
     <!-- Delete json files here end-->
 

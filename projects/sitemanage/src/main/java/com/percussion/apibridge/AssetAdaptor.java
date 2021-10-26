@@ -35,7 +35,6 @@ import com.percussion.assetmanagement.data.PSFileAssetReportLine;
 import com.percussion.assetmanagement.data.PSImageAssetReportLine;
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
 import com.percussion.assetmanagement.service.IPSAssetService;
-import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.itemmanagement.data.PSItemUserInfo;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
@@ -57,6 +56,7 @@ import com.percussion.rest.errors.FolderNotFoundException;
 import com.percussion.rest.errors.RestErrorCode;
 import com.percussion.rest.errors.RestExceptionBase;
 import com.percussion.rest.pages.WorkflowInfo;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -542,7 +542,7 @@ public class AssetAdaptor extends SiteManageAdaptorBase implements IAssetAdaptor
         String folder = StringUtils.substringBeforeLast(path, "/");
         String filename = StringUtils.substringAfterLast(path, "/");
         if (PSFolderPathUtils.testHasInvalidChars(filename))
-            throw new IllegalArgumentException("cannot upload binary the following chars " + IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+            throw new IllegalArgumentException("cannot upload binary the following chars " + SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS);
 
         if (StringUtils.isEmpty(assetTypeStr)) {
             if (fileMimeType.startsWith("image"))

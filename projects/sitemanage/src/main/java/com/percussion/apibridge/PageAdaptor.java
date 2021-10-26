@@ -32,7 +32,6 @@ import com.percussion.assetmanagement.data.PSReportFailedToRunException;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSPreviewPageUtils;
-import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.contentmigration.service.IPSContentMigrationService;
 import com.percussion.contentmigration.service.PSContentMigrationException;
@@ -84,6 +83,7 @@ import com.percussion.rest.pages.Region;
 import com.percussion.rest.pages.SeoInfo;
 import com.percussion.rest.pages.Widget;
 import com.percussion.rest.pages.WorkflowInfo;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.share.dao.IPSContentItemDao;
@@ -810,7 +810,7 @@ public class PageAdaptor extends SiteManageAdaptorBase implements IPageAdaptor
         if (psPage == null)
         { 
             if (PSFolderPathUtils.testHasInvalidChars(toPage.getName())) {
-                throw new IllegalArgumentException("Cannot create a page with following chars in the name" + IPSConstants.INVALID_ITEM_NAME_CHARACTERS);
+                throw new IllegalArgumentException("Cannot create a page with following chars in the name" + SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS);
             }
             
             

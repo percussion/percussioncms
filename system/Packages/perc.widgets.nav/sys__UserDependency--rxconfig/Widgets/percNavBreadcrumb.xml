@@ -53,7 +53,7 @@
     </Code>
     <Content type="velocity">
         <![CDATA[
-<div role="navigation" class="$!{rootclass}perc-breadcrumb" aria-label="$!{ariaLabel}">
+<div class="$!{rootclass}perc-breadcrumb" aria-label="$!{ariaLabel}">
 #if ($navSelf)##
 #set($ancestors = $navSelf.getAncestors())##
 #if($ancestors.size()>0 && !$showHome)##
@@ -63,7 +63,8 @@
 #set($d=$ancestors.add($navSelf))##
 #end##
 #if ($ancestors.size() > 0)##
-<ul class="perc-breadcrumb-main" role="menubar">
+<nav>
+<ul class="perc-breadcrumb-main">
 #foreach($node in $ancestors)##
 #set($liclass="perc-list-element")##
 #if ($velocityCount==1)##
@@ -79,18 +80,20 @@
 #end##
 #set($landing_page = $tools.esc.html($rx.pageutils.navLink($linkContext, $node)))##
 #set($title = $rx.pageutils.html($node,"displaytitle"))##
-<li class="$liclass" role="presentation">##
+<li class="$liclass">##
 #if ($velocityCount > 1 )$separator#end##
 #if($velocityCount == $ancestors.size() && $showCurrentPage)##
-<a href="$landing_page" role="menuitem">$!{title}</a>##
+<a href="$landing_page">$!{title}</a>##
 #else##
-<a href="$landing_page" role="menuitem">$!{title}</a>##
+<a href="$landing_page">$!{title}</a>##
 #end##
 </li>
 #end##
 </ul>
+</nav>
 #end##
 #elseif ($perc.isEditMode())##
+<nav>
 <ul class="perc-breadcrumb-main" $sampleTooltip>
 #set ($sampleContent = ["Section 1", "Section 2"])##
 #foreach($node in $sampleContent)##
@@ -116,6 +119,7 @@ $!{title}
 #end</li>##
 #end##
 </ul>
+</nav>
 #end##
 </div>]]>
     </Content>

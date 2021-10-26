@@ -25,6 +25,7 @@ package com.percussion.sitemanage.dao.impl;
 
 
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSNavigationErrors;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.pagemanagement.data.PSPage;
@@ -79,8 +80,21 @@ public class PSSiteDao implements IPSiteDao
         this.sitePublishDao = sitePublishDao;
     }
 
-    public PSSite find(String id) throws LoadException, DeleteException {
-        return loadSite(id);
+    /**
+     * Finds the Site by the specified id and returns the result or null if not found.
+     *
+     * @param id the identifier (primary key) of the object to get
+     * @return The site if it loaded without error, null if the site could not be loaded.
+     */
+    public PSSite find(String id) {
+        try {
+            return loadSite(id);
+        } catch (LoadException | PSNavException | DeleteException e) {
+            log.warn("Error loading site with id: {} Error: {}.  Skipping loading site definition.",
+                    id,
+                    PSExceptionUtils.getMessageForLog(e));
+            return null;
+        }
     }
     
     @Override
@@ -119,15 +133,11 @@ public class PSSiteDao implements IPSiteDao
         {
             
             String name = pubSite.getName();
-            try
-            {
+
                 PSSite site = find(name);
-                sites.add(site);
-            } catch (DeleteException | LoadException e) {
-                log.error("#findAll: Failed to load site: {}... skipping it.  Error: {}",
-                        name , e.getMessage());
-                log.debug(e.getMessage(),e);
-            }
+                if(site!=null) {
+                    sites.add(site);
+                }
 
 
         }
@@ -176,7 +186,7 @@ public class PSSiteDao implements IPSiteDao
             if(e.getErrorCode() == IPSNavigationErrors.NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH){
                 // Try to self heal - Delete the site
                 PSException ex = new PSException(IPSSiteManageErrors.SITEMANAGE_SERVICE_DELETING_BAD_SITE_RECORD,name);
-                log.warn(ex.getLocalizedMessage());
+                log.warn(PSExceptionUtils.getMessageForLog(ex));
                 log.debug(ex);
                 this.delete(sum.getId());
             }else {
@@ -276,24 +286,26 @@ public class PSSiteDao implements IPSiteDao
         notEmpty(newName, "newName may not be blank");
         
         PSSite orig = find(origId);
-        if (orig==null) {
-            throw new PSDataServiceException();
+        if (orig!=null) {
+
+
+            PSSite copy = new PSSite();
+            copy.setBaseTemplateName(orig.getBaseTemplateName());
+            copy.setDescription(orig.getDescription());
+            copy.setHomePageTitle(orig.getHomePageTitle());
+            copy.setName(newName);
+            copy.setNavigationTitle(orig.getNavigationTitle());
+            copy.setLabel(newName);
+            copy.setTemplateName(orig.getTemplateName());
+
+
+            saveSite(copy, orig);
+
+
+            return copy;
+        }else{
+            return null;
         }
-        
-        PSSite copy = new PSSite();
-        copy.setBaseTemplateName(orig.getBaseTemplateName());
-        copy.setDescription(orig.getDescription());
-        copy.setHomePageTitle(orig.getHomePageTitle());
-        copy.setName(newName);
-        copy.setNavigationTitle(orig.getNavigationTitle());
-        copy.setLabel(newName);
-        copy.setTemplateName(orig.getTemplateName());
-        
- 
-        saveSite(copy, orig);
-  
-        
-        return copy;
     }
 
     public PSSiteSummary findByName(String name){
