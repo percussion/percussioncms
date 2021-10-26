@@ -23,12 +23,12 @@
  */
 package com.percussion.share.dao;
 
-import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.pathmanagement.data.PSFolderPermission;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -248,7 +248,7 @@ public interface IPSFolderHelper {
     
     /**
      * Provides a unique folder name for the given folder path and given base name.  The name is also valid for a
-     * folder, meaning any characters specified in {@link IPSConstants#INVALID_ITEM_NAME_CHARACTERS} will be removed.
+     * folder, meaning any characters specified in {@link SecureStringUtils#INVALID_ITEM_NAME_CHARACTERS} will be removed.
      * If any folder/item exists with the same base name under the supplied parent folder, returns supplied baseName-n
      * with n starting at 2.  The first name 'baseName-n' will be used with the first available n value >= 2. 
      * @param parentPath the full internal folder path, must not be blank, throws exception if it is not a valid folder 

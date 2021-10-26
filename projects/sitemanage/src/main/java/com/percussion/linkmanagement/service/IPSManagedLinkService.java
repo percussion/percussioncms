@@ -23,6 +23,7 @@
  */
 package com.percussion.linkmanagement.service;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.pagemanagement.data.PSRenderLinkContext;
 import com.percussion.services.linkmanagement.data.PSManagedLink;
 import org.jsoup.nodes.Element;
@@ -63,7 +64,7 @@ public interface IPSManagedLinkService
 	public static final String  PERC_PAGEPATH = "percPagePath";
 	public static final String  PERC_PAGEPATH_LINKID = "percPagePathLinkId";
 
-    public static final String SERVER_PROPERTY_AUTO_MANAGE_LOCAL_PATHS = "AUTO_MANAGE_LOCAL_PATHS";
+    public static final String SERVER_PROPERTY_AUTO_MANAGE_LOCAL_PATHS = IPSConstants.SERVER_PROP_MANAGELINKS;
     
     public static final String A_HREF = "a[href]";
     

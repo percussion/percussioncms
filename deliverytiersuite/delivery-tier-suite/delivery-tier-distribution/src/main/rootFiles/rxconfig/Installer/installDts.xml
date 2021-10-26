@@ -779,6 +779,13 @@
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
             </replace>
 
+            <echo>Registering current TLS ciphers...</echo>
+            <echo>NOTE: Ciphers supported will depend on the JRE version and make (OpenJRE-8 vs OracleJRE-8) for the JRE registered in ${install.dir}/JRE...</echo>
+
+            <propertyfile file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-catalina.properties">
+                <entry key="https.ciphers" value="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_CHACHA20_POLY1305_SHA256,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384"/>
+            </propertyfile>
+
             <if>
                 <and>
                     <equals arg1="@{type}" arg2="Production"/>

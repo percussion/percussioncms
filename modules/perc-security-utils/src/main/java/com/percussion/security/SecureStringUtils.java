@@ -57,6 +57,32 @@ import java.util.List;
  */
 public class SecureStringUtils {
 
+    /**
+     * Characters that are invalid for the file name in Windows, which is more
+     * restrictive than UNIX.
+     * <p>
+     * The invalid characters for the file name in Windows are:
+     * <pre>
+     * \ / | < > ? " : *
+     * </pre>
+     */
+    public static final String INVALID_WINDOWS_FILE_CHARACTERS = "\\/|<>()?\":*";
+    /**
+     * Characters that should not be used as part of URL; otherwise it may cause
+     * error in REST layer when the item name contain any of the characters.
+     * <p>
+     * '#' - used by anchors in HTML<br>
+     * ';' - used to append "jsessionid=..." to URL<br>
+     * '%' - used to URL encode/escape other characters.
+     * </p>
+     */
+    public static final String UNSAFE_URL_CHARACTERS = "#;%[]<>{}|\\^~`/?:@=&";
+    /**
+     * Characters that are invalid for item names (sys_title).
+     * It is the combination of "invalid characters for the file name in
+     * Windows" and "unsafe URL characters".
+     */
+    public static final String INVALID_ITEM_NAME_CHARACTERS = INVALID_WINDOWS_FILE_CHARACTERS + UNSAFE_URL_CHARACTERS;
     private static final Logger log = LogManager.getLogger("Security");
 
     private SecureStringUtils(){
@@ -66,7 +92,7 @@ public class SecureStringUtils {
     /**
      * Array of string patterns that are always rejected to prevent xss
      */
-    private static final String[] INVALID_XSS_CHARS ={
+    protected static final String[] INVALID_XSS_CHARS ={
             ">",
             "<",
             "0x003C",
@@ -234,8 +260,7 @@ public class SecureStringUtils {
      * @return
      */
     public static SecureRandom getSecureRandom(){
-        SecureRandom ret = new SecureRandom();
-        return ret;
+        return new SecureRandom();
     }
 
     /**

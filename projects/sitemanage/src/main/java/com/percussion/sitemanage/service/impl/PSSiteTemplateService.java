@@ -25,7 +25,6 @@ package com.percussion.sitemanage.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
-import com.percussion.cms.IPSConstants;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPage;
@@ -41,6 +40,7 @@ import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
 import com.percussion.pagemanagement.service.impl.PSPageToTemplateException;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.queue.IPSPageImportQueue;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.async.IPSAsyncJob;
@@ -69,7 +69,6 @@ import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.sitemanage.service.PSPageToTemplatePair;
 import com.percussion.sitemanage.service.PSSiteTemplates;
 import com.percussion.sitemanage.service.PSSiteTemplates.CreateTemplate;
-import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -358,11 +357,11 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
             validate(siteTemplates);
             for(CreateTemplate createTemplate : siteTemplates.getCreateTemplates()){
                 String createTemplateName = createTemplate.getName();
-                if (StringUtils.containsAny(createTemplateName, IPSConstants.INVALID_ITEM_NAME_CHARACTERS)){
+                if (StringUtils.containsAny(createTemplateName, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS)){
 
-                    for (int i = 0; i < IPSConstants.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
+                    for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
                         // Replace any invalid characters present. output eg. createTemplateName = Box-Copy-2-
-                        createTemplateName = StringUtils.replace(createTemplateName, String.valueOf(IPSConstants.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
+                        createTemplateName = StringUtils.replace(createTemplateName, String.valueOf(SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
                     }
 
                     if(createTemplateName.substring(createTemplateName.length()-1).equalsIgnoreCase("-")){

@@ -506,8 +506,9 @@ import static org.apache.commons.lang.Validate.notNull;
                 Collection<PSAsset> collAssets = assetDao.findByType(contentTypeName);
                 assets.addAll(collAssets);
             } catch (Exception e) {
-                log.error("Unable to find assets with type: {} Error: {}",  contentTypeName, e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error("Unable to find assets with type: {} Error: {}",  contentTypeName,
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
 
@@ -547,8 +548,9 @@ import static org.apache.commons.lang.Validate.notNull;
                 IPSPubServerDao pubServerDao = PSPubServerDaoLocator.getPubServerManager();
                 pubServerDao.savePubServer(pubServer);
             } catch (Exception e) {
-                log.error("Error updating PSPubServer flag setSiteRenamed while renaming site: {}",
-                        site.getName());
+                log.error("Error updating PSPubServer flag setSiteRenamed while renaming site: {}. Error: {}",
+                        site.getName(),
+                        PSExceptionUtils.getMessageForLog(e));
             }
         }
     }
@@ -772,7 +774,9 @@ import static org.apache.commons.lang.Validate.notNull;
                 }
             }catch (Exception e) {
                 String msg = "Failed to Move Site Items to Recycle Folder";
-                log.error(msg, e);
+                log.error("{} Error: {}",
+                        msg,
+                        PSExceptionUtils.getMessageForLog(e));
                 throw new PSDataServiceException("Unable to delete site as Failed to Move Site Items to Recycle Folder: " + siteName);
             }
 
@@ -812,7 +816,9 @@ import static org.apache.commons.lang.Validate.notNull;
         catch (Exception e)
         {
             String msg = "The folderPath comes from a constant so there's no way the method throws the exception";
-            log.error(msg, e);
+            log.error("{} Error: {}",
+                    msg,
+                    PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -838,13 +844,13 @@ import static org.apache.commons.lang.Validate.notNull;
             // The folderPath comes from a constant so there's no way the method
             // throws the exception
             String msg = "The folderPath comes from a constant so there's no way the method throws the exception";
-            log.error(msg, e);
+            log.error("{} Error: {}",
+                    msg,
+                    PSExceptionUtils.getMessageForLog(e));
         }
 
-        Iterator<IPSItemSummary> iterator = rootAssetChildren.iterator();
-        while (iterator.hasNext())
-        {
-            updateAllowedSitesProperty(iterator.next(), siteId);
+        for (IPSItemSummary rootAssetChild : rootAssetChildren) {
+            updateAllowedSitesProperty(rootAssetChild, siteId);
         }
     }
 
@@ -982,6 +988,9 @@ import static org.apache.commons.lang.Validate.notNull;
             log.debug("Create Site With Content origId: {} newName: {}",origId ,newName);
 
             copy = siteDao.createSiteWithContent(origId, newName);
+            if(copy==null){
+                return null;
+            }
             copiedFolderPath = copy.getFolderPath();
             // copy the templates
             try{
@@ -989,7 +998,9 @@ import static org.apache.commons.lang.Validate.notNull;
 	            PSSiteCopyProcessMonitor.copyingTemplates();
 	            tempMap = siteTemplateService.copyTemplates(origId, copy.getId());
             }catch(Exception e){
-            	log.error("An error occurred while Copying Site Templates for Site " + origId,e);
+            	log.error("An error occurred while Copying Site Templates for Site id: {} Error: {}" ,
+                        origId,
+                        PSExceptionUtils.getMessageForLog(e));
             	throw(e);
             }
 
@@ -1007,7 +1018,9 @@ import static org.apache.commons.lang.Validate.notNull;
 	                updateLinkedAssets(assetId, assetMap, checkoutIn);
 	            }
             }catch(Exception e){
-            	log.error("An exception occurred while Updating Copied Site Assets for Site " + newName,e);
+            	log.error("An exception occurred while Updating Copied Site Assets for Site: {} Error: {}",
+                        newName,
+                        PSExceptionUtils.getMessageForLog(e));
             	throw(e);
             }
 
@@ -1053,7 +1066,9 @@ import static org.apache.commons.lang.Validate.notNull;
 	            sectionService.updateSectionBlogTemplates(newName, tempMap);
 	            
             }catch(Exception e){
-            	log.error("Error updating Copied Site Templates for Site " + newName, e);
+            	log.error("Error updating Copied Site Templates for Site {}. Error: {}" ,
+                        newName,
+                        PSExceptionUtils.getMessageForLog(e));
             	throw(e);
             }
 
@@ -1068,22 +1083,25 @@ import static org.apache.commons.lang.Validate.notNull;
                 handleCopySiteConfiguration(orig.getName(), copySite.getName());
             }
             }catch(Exception e){
-            	log.error("Error occurred while Copying Site Confiuration for " + newName,e);
+            	log.error("Error occurred while Copying Site Confiuration for {}. Error: {}" ,
+                        newName,
+                        PSExceptionUtils.getMessageForLog(e));
             	throw (e);
             }
             
             // If option "Copy assets from the selected folder." was selected,
             // then add copy site to the allowed sites list of the copied root
             // level asset folder.
-            if (assetFolder != null && copySite != null)
+            if (assetFolder != null)
             {
             	try{
             		log.info("Updating Allowed Sites...");            		
             		String copySiteId = String.valueOf(copySite.getSiteId());
             		addNewSiteToAssetFolderAllowedSites(newName, copySiteId);
             	}catch(Exception e){
-            		log.error("An error occurred in Copy Site Updating Allowed Sites for {} Error: {}" ,newName,e.getMessage());
-            		log.debug(e.getMessage(),e);
+            		log.error("An error occurred in Copy Site Updating Allowed Sites for {} Error: {}" ,newName,
+                            PSExceptionUtils.getMessageForLog(e));
+            		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             		throw (e);
             	}
             }
@@ -1092,18 +1110,16 @@ import static org.apache.commons.lang.Validate.notNull;
         catch (Exception e)
         {
 
-            log.error("Error Copying site, attempting to roll back",e);
+            log.error("Error Copying site, attempting to roll back. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
             if (assetMap != null)
             {
-                if (createdLocalAssets!=null)
+                for (String asset : createdLocalAssets)
                 {
-                    for (String asset : createdLocalAssets)
-                    {
-                        // add to map to help cleanup.
-                        assetMap.put(asset, asset);
-                    }
+                    // add to map to help cleanup.
+                    assetMap.put(asset, asset);
                 }
-                
+
                 log.info("Rolling back copied assets");
                 itemService.rollBackCopiedFolder(assetMap,
                         PSFolderPathUtils.concatPath(PSAssetPathItemService.ASSET_ROOT, newName));
@@ -1121,12 +1137,15 @@ import static org.apache.commons.lang.Validate.notNull;
                     }
                     catch (DeleteException | IPSGenericDao.LoadException e1)
                     {
-                        log.error("Cannot delete all site resources for site {} Error:  {}" , siteName, e1.getMessage());
+                        log.error("Cannot delete all site resources for site {} Error:  {}" , siteName,
+                                PSExceptionUtils.getMessageForLog(e1));
                     }
                 }
             }
 
-            log.error("An error occurred copying site " + siteName,e);
+            log.error("An error occurred copying site {}. Error: {}",
+                    siteName,
+                    PSExceptionUtils.getMessageForLog(e));
             throw new PSDataServiceException("There was an error copying the site " + siteName
                     + ", review the logs for details", e);
         }
@@ -1275,14 +1294,19 @@ import static org.apache.commons.lang.Validate.notNull;
             saasSiteConfig = mapper.readValue(file, PSSaasSiteConfig.class);
         }
         catch(JsonGenerationException  e){
-            log.error("The site config file " + file.getName() + " is not a valid json file.", e);
+            log.error("The site config file {} is not a valid json file. Error: {}",
+                    file.getName() ,
+                    PSExceptionUtils.getMessageForLog(e));
         }
         catch(JsonMappingException  e){
-            log.error("The site config file " + file.getName() + " does not map to the java class.", e);
+            log.error("The site config file {} does not map to the java class. Error: {}",
+                    file.getName() , PSExceptionUtils.getMessageForLog(e));
         }
         catch (IOException e)
         {
-            log.error("Exception occurred while reading saas site configuration file " + file.getName() + ".", e);
+            log.error("Exception occurred while reading saas site configuration file {}. Error: {}",
+                    file.getName(),
+                    PSExceptionUtils.getMessageForLog(e));
         }
         return saasSiteConfig;
     }
@@ -1585,8 +1609,8 @@ import static org.apache.commons.lang.Validate.notNull;
                 builder.throwIfInvalid();
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
     }
@@ -1631,8 +1655,8 @@ import static org.apache.commons.lang.Validate.notNull;
         try {
             currentRoles = userService.getCurrentUser().getRoles();
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return false;
         }
         for (String role : currentRoles)
@@ -1668,7 +1692,8 @@ import static org.apache.commons.lang.Validate.notNull;
                 updateListAsset(contentId, originalFolderPath, copiedFolderPath, assetFolder, newName, tempMap);
             } catch (PSDataServiceException e) {
                 //log the error and continue to that 1 bad asset doesn't prevent all assets from getting updated.
-                log.error("Error updating list asset with ID: {} Error: {}",contentId,e.getMessage());
+                log.warn("Error updating list asset with ID: {} Error: {}",contentId,
+                        PSExceptionUtils.getMessageForLog(e));
             }
         }
     }
@@ -1696,8 +1721,8 @@ import static org.apache.commons.lang.Validate.notNull;
             try {
                 updateListAsset(asset, replaceMappings, siteListAssetMap.get(type));
             } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.warn(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }
@@ -1721,9 +1746,9 @@ import static org.apache.commons.lang.Validate.notNull;
             try {
                 updateListAsset(asset, replaceMappings, assetListAssetMap.get(type));
             } catch (IPSItemWorkflowService.PSItemWorkflowServiceException | PSDataServiceException e) {
-                log.error("Error updating Asset: {} at Path: {} with New Path: {} Error: {}",
-                asset.getId(),originalPath,replacementPath,e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.warn("Error updating Asset: {} at Path: {} with New Path: {} Error: {}",
+                asset.getId(),originalPath,replacementPath,PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }
@@ -1856,8 +1881,8 @@ import static org.apache.commons.lang.Validate.notNull;
             }
             return assetIds;
         } catch (IPSPageService.PSPageException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSValidationException | PSNotFoundException e) {
-            log.error("Error updating Page. Error: {}",e.getMessage() );
-            log.debug(e.getMessage(),e);
+            log.error("Error updating Page. Error: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new DataServiceSaveException(e.getMessage(),e);
         }
     }
@@ -1964,8 +1989,9 @@ import static org.apache.commons.lang.Validate.notNull;
                     }
                 }
             } catch (PSDataServiceException e) {
-                log.error("Error while processing linked pages. Linked Page ID: {} Error: {}",linkedPageId,e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.warn("Error while processing linked pages. Linked Page ID: {} Error: {}",linkedPageId,
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }
@@ -2063,7 +2089,8 @@ import static org.apache.commons.lang.Validate.notNull;
         catch (IOException e)
         {
             String errorMsg = "Failed to remove the site configuration folder/files for site: " + sitename;
-            log.error(errorMsg, e);
+            log.error("{} Error: {}", errorMsg,
+                    PSExceptionUtils.getMessageForLog(e));
             throw new DataServiceSaveException(errorMsg, e);
         }
     }
@@ -2085,7 +2112,8 @@ import static org.apache.commons.lang.Validate.notNull;
         {
             String errorMsg = "Failed copying the secure configuration from '" + sourceName + "' to '"
                     + destinationName + "'";
-            log.error(errorMsg, e);
+            log.error("{} Error: {}",errorMsg,
+                    PSExceptionUtils.getMessageForLog(e));
             throw new DataServiceSaveException(errorMsg, e);
         }
     }
@@ -2105,8 +2133,8 @@ import static org.apache.commons.lang.Validate.notNull;
         catch (IOException e)
         {
             String errorMsg = "Failed removing the tch file for site '" + sitename + "'";
-            log.error(errorMsg);
-            log.debug(e.getMessage(),e);
+            log.error("{} Error: {}", errorMsg, PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new DataServiceSaveException(errorMsg, e);
         }
     }
@@ -2128,8 +2156,10 @@ import static org.apache.commons.lang.Validate.notNull;
         catch (IOException e)
         {
             String errorMsg = "Failed updating the configuration for site '" + site.getName() + "'";
-            log.error(errorMsg);
-            log.debug(e.getMessage(),e);
+            log.error("{} Error: {}",
+                    errorMsg,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new DataServiceSaveException(errorMsg, e);
         }
     }
@@ -2215,7 +2245,8 @@ import static org.apache.commons.lang.Validate.notNull;
           }
           catch (Exception e)
           {
-              log.error("Error getting S3 Publishing Server information for Site:" + siteId, e);
+              log.error("Error getting S3 Publishing Server information for Site: {}. Error: {}",
+                      siteId, PSExceptionUtils.getMessageForLog(e));
           }
 		return ret;
 	}
