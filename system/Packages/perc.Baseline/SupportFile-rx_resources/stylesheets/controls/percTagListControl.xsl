@@ -9,7 +9,7 @@
         ]>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:psxctl="urn:percussion.com/control"
-                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                xmlns="http://www.w3.org/1999/xhtml"
                 extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
     <xsl:template match="/" />
     <!--
@@ -81,7 +81,6 @@
                     <xsl:if test="not(position()=last())">,</xsl:if>
                 </input>
             </xsl:for-each>
-            <xsl:attribute name="value"><xsl:for-each select="DisplayChoices/DisplayEntry[@selected='yes']"><xsl:value-of select="Value"/><xsl:if test="not(position()=last())">, </xsl:if></xsl:for-each></xsl:attribute>
             <xsl:if test="@accessKey!=''">
                 <xsl:attribute name="accesskey"><xsl:call-template name="getaccesskey"><xsl:with-param name="label" select="preceding-sibling::DisplayLabel"/><xsl:with-param name="sourceType" select="preceding-sibling::DisplayLabel/@sourceType"/><xsl:with-param name="paramName" select="@paramName"/><xsl:with-param name="accessKey" select="@accessKey"/></xsl:call-template></xsl:attribute>
             </xsl:if>
