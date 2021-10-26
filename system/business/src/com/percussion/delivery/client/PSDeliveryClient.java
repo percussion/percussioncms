@@ -92,10 +92,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
    public static final String TOMCAT_USER="tomcat-user";
    public static final String TOMCAT_PASSWORD="tomcat-password";
 
-   private static final String CSRF_HEADER_NAME="X-CSRF-HEADER";
-    private static final String CSRF_TOKEN_NAME="X-XSRF-TOKEN";
-
-
    /**
     * License Override
     */
@@ -192,10 +188,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     private String password ;
 
     private Object requestMessageBody;
-
-
-
-    private Header[] csrfHeader;
 
     private String requestUrl;
 
@@ -373,10 +365,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         return response;
     }
 
-
-    public void setCsrfHeader(Header[] csrfHeader) {
-        this.csrfHeader = csrfHeader;
-    }
     /**
      * Requests a JSON Object from a delivery server. Requires that
      * <code>this.url</code> is already set.
@@ -822,7 +810,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     private String executePutMethod(String requestMessageBodyContentType)
     {
         PutMethod putMethod = new PutMethod(this.requestUrl);
-
         return this.executeEntityEnclosingMethod(putMethod, requestMessageBodyContentType);
     }
     
@@ -847,24 +834,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                 @SuppressWarnings("rawtypes")
                NameValuePair[] parts = (NameValuePair[]) ((Collection) this.requestMessageBody).toArray(
                         new NameValuePair[0]);
-
-                if(csrfHeader != null) {
-                    String headerName = null;
-                    String token = null;
-                    for(Header header: csrfHeader){
-                        if(header.getName().equals(CSRF_HEADER_NAME)){
-                             headerName = header.getValue();
-
-                        }else if(header.getName().equals(CSRF_TOKEN_NAME)){
-                            token = header.getValue();
-                        }
-                    }
-                    if(headerName != null && token != null) {
-                        postMethod.addRequestHeader(headerName, token);
-                    }
-                    //reset is after use
-                    csrfHeader = null;
-                }
                 postMethod.setRequestBody(parts);
             }
             catch (Exception ex)
