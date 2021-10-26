@@ -359,7 +359,7 @@ public class PSFormDataService implements IPSFormDataService
      * Url to get form information. Contains leading forward slash, but no
      * trailing forward slash.
      */
-    private static final String FORM_INFO_URL = "/perc-form-processor/forms/form/";
+    private static final String FORM_INFO_URL = "/perc-form-processor/forms/form/cms/";
 
     /**
      * Logger for this service.
