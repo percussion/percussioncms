@@ -610,12 +610,18 @@ public class PSSiteSectionService implements IPSSiteSectionService
        if(StringUtils.isNotBlank(siteName))
        {
            //load the site
-           IPSSite site = siteMgr.findSite(siteName);
-           if(site == null)
-           {
-               throw new PSSiteSectionException("Cannot load the site with name " + siteName);
+           try {
+               IPSSite site = siteMgr.findSite(siteName);
+               if (site == null) {
+                   log.warn("Cannot load the site with name {}, skipping it.", siteName);
+                   //return an empty list instead of a runtime exception.
+                   return new ArrayList<>();
+               } else {
+                   sites.add((PSSite) site);
+               }
+           }catch(Exception e){
+               log.debug(e);
            }
-           sites.add((PSSite)site);
        }
        else
        {

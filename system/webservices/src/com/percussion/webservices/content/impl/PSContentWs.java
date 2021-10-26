@@ -4586,7 +4586,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
    // @see IPSContentWs#loadFolders(String[])
    @SuppressWarnings("unchecked")
    public List<PSFolder> loadFolders(String[] paths)
-      throws PSErrorResultsException
+      throws PSErrorResultsException,IllegalArgumentException
    {
       if (paths == null || paths.length == 0)
          throw new IllegalArgumentException("paths may not be null or empty.");
