@@ -24,11 +24,13 @@
 
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSNoContent;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSParameterValidationUtils;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSCreateExternalLinkSection;
 import com.percussion.sitemanage.data.PSCreateSectionFromFolderRequest;
@@ -59,6 +61,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.List;
 
 import static com.percussion.share.web.service.PSRestServicePathConstants.DELETE_PATH;
@@ -288,13 +292,23 @@ public class PSSiteSectionRestService
     @GET
     @Path("/root/{siteName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection loadRoot(@PathParam("siteName") String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSNotFoundException {
+    public PSSiteSection loadRoot(@PathParam("siteName") String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSNotFoundException, PSValidationException {
         try {
             return siteSectionService.loadRoot(siteName);
-        } catch (IPSSiteSectionService.PSSiteSectionException | PSNotFoundException e) {
+        } catch (PSNotFoundException pne){
+            Object[] args = {siteName};
+            String invalidMessage = new String(MessageFormat.format("The site with name: {0} does not exist", args).getBytes(StandardCharsets.UTF_8));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(pne));
+            log.error(PSExceptionUtils.getMessageForLog(pne) + " : " + invalidMessage);
+            PSNoContent validationResponse = new PSNoContent("Success");
+            validationResponse.setOperation("loadSite");
+            PSParameterValidationUtils.validateParameters("loadSite").reject(siteName,invalidMessage).throwIfInvalid();
+        }
+        catch (IPSSiteSectionService.PSSiteSectionException e) {
             log.debug(e.getMessage(),e);
             throw (e);
         }
+        return null;
     }
     
     

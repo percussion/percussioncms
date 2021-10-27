@@ -203,6 +203,15 @@
             extLinkObj);        
 
      }
+
+    $.perc_errors = function(options)
+    {
+        var ERRORS ={
+            NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH: "18001",
+            NAVIGATION_SERVICE_CANNOT_FIND_NAVTREE_FOR_SITE: "18009"
+        };
+    };
+
      /**
       * Get the root section for the site specified as a passed option for
       * this widget.
@@ -228,7 +237,7 @@
                   var defaultErrorCode  =
                       $.PercServiceUtils.extractGlobalErrorCode(result.request);
 
-                  if(defaultErrorCode === $.perc_errors.NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH || 
+                  if(defaultErrorCode === $.perc_errors.NAVIGATION_SERVICE_FOLDER_ID_NOT_FOUND_FOR_PATH ||
                       defaultErrorCode === $.perc_errors.NAVIGATION_SERVICE_CANNOT_FIND_NAVTREE_FOR_SITE){
                       // this is a bad site record.
                       console.warn("Bad site record for site was deleted");
