@@ -25,7 +25,9 @@
 package com.percussion.recent.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
+import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
@@ -81,7 +83,7 @@ public class PSRecentService implements IPSRecentService
     @Autowired
     private IPSSiteTemplateService siteTemplateService;
 
-    private static final Logger log = LogManager.getLogger(PSRecentService.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
 
     /*
     @Autowired
@@ -124,8 +126,8 @@ public class PSRecentService implements IPSRecentService
             }
             catch (Exception e)
             {
-                log.error("removing error entry from recent item list {}, Error: {}", entry, e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.debug("removing error entry from recent item list {}, Error: {}", entry,
+                        PSExceptionUtils.getMessageForLog(e));
             }
             if (itemProps == null) {
                 toDelete.add(entry);
@@ -200,8 +202,8 @@ public class PSRecentService implements IPSRecentService
             }
             catch (Exception e)
             {
-                log.error("removing error entry from recent siteFolder list {}, Error: {}", entry, e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.debug("removing error entry from recent siteFolder list {}, Error: {}", entry,
+                        PSExceptionUtils.getMessageForLog(e));
             }
             if (pathItem == null)
                 toDelete.add(entry);
@@ -230,13 +232,11 @@ public class PSRecentService implements IPSRecentService
                     pathItems.add(pathItem);
                 else
                     log.debug("Removing recent assetFolder entry find returned null :{}" , entry);
-
-                // FB:NP_NULL_ON_SOME_PATH, UNUSED - NC 1-16-16 -  pathItem.getType();
             }
             catch (Exception e)
             {
-                log.error("removing error entry from recent assetFolder list {}, Error: {}", entry, e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.debug("removing error entry from recent assetFolder list {}, Error: {}", entry,
+                        PSExceptionUtils.getMessageForLog(e));
             }
             if (pathItem == null)
                 toDelete.add(entry);
@@ -281,11 +281,13 @@ public class PSRecentService implements IPSRecentService
     {
         String user = PSWebserviceUtils.getUserName();
         if(StringUtils.isBlank(value) || !(StringUtils.startsWith(value, "//") || StringUtils.startsWith(value, "/")))
-            throw new IllegalArgumentException("Not a Site Folder Path");
+            return;
+
         String folderPath = StringUtils.startsWith(value, "//")?value.substring(1):value;
         String siteName = PSPathUtils.getSiteFromPath(folderPath);
+
         if(siteName == null)
-            throw new IllegalArgumentException("Not a Site Folder Path");
+            return;
         // Not checking database for folder to improve performance, check done
         // on way out.
         
@@ -300,7 +302,7 @@ public class PSRecentService implements IPSRecentService
         if (pos >= 0 && pos <= 2)
             value = "/" + value.substring(pos);
         else
-            throw new IllegalArgumentException("Not a Asset Folder Path");
+            return;
 
         // Not checking database for folder to improve performance, check done
         // on way out.
@@ -367,8 +369,8 @@ public class PSRecentService implements IPSRecentService
         try {
             recentService.renameSiteRecent(oldSiteName, newSiteName);
         } catch (Exception e) {
-            log.error("Error updating PSX_RECENT table to rename site from:{}, to {}, Error: {} ",oldSiteName, newSiteName, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.debug("Error updating PSX_RECENT table to rename site from:{}, to {}, Error: {} ",oldSiteName, newSiteName,
+                    PSExceptionUtils.getMessageForLog(e));
         }
     }
 

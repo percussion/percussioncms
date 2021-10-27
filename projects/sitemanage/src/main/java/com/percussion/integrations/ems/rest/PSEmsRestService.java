@@ -24,9 +24,21 @@
 
 package com.percussion.integrations.ems.rest;
 
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.nio.charset.Charset;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.percussion.delivery.client.PSDeliveryClient;
+import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.util.PSSiteManageBean;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -37,24 +49,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.percussion.category.dao.impl.PSCategoryDao;
-import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.percussion.delivery.client.PSDeliveryClient;
-import com.percussion.delivery.data.PSDeliveryInfo;
-import com.percussion.delivery.service.IPSDeliveryInfoService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.apache.commons.lang.Validate.notNull;
 
 /***
  * Functions as a proxy on the CMS side for calling the remote DTS EMS Api client. 
@@ -137,7 +132,8 @@ public class PSEmsRestService {
 	            }
 	            
 	        }catch(Exception e){
-	        	log.error("Error pulling buildings from DTS", e);
+	        	log.error("Error pulling buildings from DTS. Error: {}",
+						PSExceptionUtils.getMessageForLog(e));
 	        	return Response.serverError().entity(e.getMessage()).build();
 	        }
 		 return Response.status(Status.OK).entity(ret).build();
@@ -177,7 +173,8 @@ public class PSEmsRestService {
 			
 		}
 		catch(Exception e){
-			log.error("Error pulling Event Types from DTS", e);
+			log.error("Error pulling Event Types from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();
 		}
 		
@@ -215,7 +212,8 @@ public class PSEmsRestService {
 	            }
 		}
 		catch(Exception e){
-			log.error("Error pulling Groups from DTS", e);
+			log.error("Error pulling Groups from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 		
@@ -260,7 +258,8 @@ public class PSEmsRestService {
 	         }
 		}
 		catch(Exception e){
-			log.error("Error pulling Groups from DTS", e);
+			log.error("Error pulling Groups from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 	
@@ -299,7 +298,8 @@ public class PSEmsRestService {
 	            }
 		}
 		catch(Exception e){
-			log.error("Error pulling Groups from DTS", e);
+			log.error("Error pulling Groups from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 		
@@ -338,7 +338,8 @@ public class PSEmsRestService {
 	            }
 		}
 		catch(Exception e){
-			log.error("Error pulling MC Locations from DTS", e);
+			log.error("Error pulling MC Locations from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 		
@@ -376,7 +377,8 @@ public class PSEmsRestService {
 	            }
 		}
 		catch(Exception e){
-			log.error("Error pulling Event Types from DTS", e);
+			log.error("Error pulling Event Types from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 		
@@ -414,7 +416,8 @@ public class PSEmsRestService {
 	            }
 		}
 		catch(Exception e){
-			log.error("Error pulling MC Calendars from DTS", e);
+			log.error("Error pulling MC Calendars from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 		
@@ -459,7 +462,8 @@ public class PSEmsRestService {
 	         }
 		}
 		catch(Exception e){
-			log.error("Error pulling MC Events from DTS", e);
+			log.error("Error pulling MC Events from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 	
@@ -505,7 +509,8 @@ public class PSEmsRestService {
 	         }
 		}
 		catch(Exception e){
-			log.error("Error pulling MC Featured Events from DTS", e);
+			log.error("Error pulling MC Featured Events from DTS. Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
 			return Response.serverError().entity(e.getMessage()).build();	
 		}
 	
