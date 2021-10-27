@@ -41,7 +41,7 @@
 #set($_listPos = "list-position-" + $pos)##
 #set($cssClassNames = " " + $node.getProperty('rx:cssClassNames').String)##
 #set($class = $class +  $_navLevel + " " + $_navEntry + " " +$_listPos + $cssClassNames)##
-<li role="presentation" class="$!{class}">##
+<li class="$!{class}">##
 #set($navType = $node.getProperty("rx:no_type").String)##
 #if($navType == "externallink")##
 #set($landing_page = $node.getProperty("rx:no_externalurl").String)##
@@ -62,14 +62,14 @@
 #if ("$!landing_page" != "" && "$!landing_page" != "#")##
 #set($menuNavWidgetId = $perc.widget.getItem().getId())##
 #set($menuItemId="perc-navigation-menuitem-$!{_navLevel}-$!{_navEntry}-$!{_listPos}-$!{menuNavWidgetId}")##
-<a id="$!{menuItemId}" href="$!{landing_page}" role="menuitem"$!{targetAttr}$!{titleAttr}>$tools.esc.html($node.getProperty('rx:displaytitle').String)</a>##
+<a id="$!{menuItemId}" href="$!{landing_page}" $!{targetAttr}$!{titleAttr}>$tools.esc.html($node.getProperty('rx:displaytitle').String)</a>##
 #foreach($submenuitem in $node.getNodes("nav:submenu"))##
 #set($dummy=$submenu.add($submenuitem))##
 #end##
 #end##
 #if ($submenu.size() > 0 && ($tools.math.add($tools.math.add($maxlevels, -1),$rootlevel)  > $node.Depth))##             
 #if($node.Depth > 0)##
-<ul role="menu" aria-labelledby="$!{menuItemId}">
+<ul aria-labelledby="$!{menuItemId}">
 #else##
 ##if we dont need to open a new list element we can close the <li>
 </li>                    

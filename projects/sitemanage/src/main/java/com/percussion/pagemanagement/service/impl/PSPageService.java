@@ -34,6 +34,7 @@ import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService.PSItemWorkflowServiceException;
 import com.percussion.pagemanagement.dao.IPSPageDao;
@@ -147,50 +148,50 @@ import static org.apache.commons.lang.Validate.notNull;
 public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String> implements IPSPageService
 {
     
-    private IPSPageDao pageDao;
+    private final IPSPageDao pageDao;
     
     /**
      * The page dao helper. Initialized by constructor, never
      * <code>null</code> after that.
      */
-    private IPSPageDaoHelper pageDaoHelper;
+    private final IPSPageDaoHelper pageDaoHelper;
     
     /**
      * The content web-service. Initialized by constructor, never
      * <code>null</code> after that.
      */
-    private IPSContentWs contentWs;
+    private final IPSContentWs contentWs;
 
     /**
      * Used for folder item operations. Initialized in ctor, never
      * <code>null</code> after that.
      */
-    private IPSFolderHelper folderHelperWs;
+    private final IPSFolderHelper folderHelperWs;
 
     /**
      * The content design web-service. Initialized by constructor, never
      * <code>null</code> after that.
      */
-    private IPSContentDesignWs contentDesignWs;
+    private final IPSContentDesignWs contentDesignWs;
 
     /**
      * The id mapper, initialized by constructor, never <code>null</code> after
      * that.
      */
-    private IPSIdMapper idMapper;
+    private final IPSIdMapper idMapper;
     
     /**
      * The publishing webservice, initialized by constructor, never <code>null</code> after
      * that.
      */
     
-    private IPSPublishingWs publishingWs;
+    private final IPSPublishingWs publishingWs;
     
     private List<IPSPageChangeListener> pageChangeListeners = new ArrayList<>();
     /**
      * The widget asset relationship service. Initialized by constructor, never <code>null</code> after that.
      */
-    private IPSWidgetAssetRelationshipService widgetAssetRelationshipService;
+    private final IPSWidgetAssetRelationshipService widgetAssetRelationshipService;
     
     /**
      * The IPSItemWorkflowService. Initialized by constructor, never <code>null</code> after that.
@@ -304,13 +305,13 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         List<PSCoreItem> items;
         try
         {
-            // TODO: Change NewCopy to its constant
-            items = contentWs.newCopies(guids, paths, "NewCopy",false, true);
+            items = contentWs.newCopies(guids, paths, PSRelationshipConfig.TYPE_NEW_COPY,false, true);
         }
         catch (Exception ae)
         {
             String msg = "Failed to copy page  \"" + base + "\".";
-            log.error(msg, ae);
+            log.error("{} Error: {}", msg,
+                    PSExceptionUtils.getMessageForLog(ae));
             return null;
         }
 
@@ -335,10 +336,9 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         try {
             itemWorkflowService.checkIn(newPageId);
         } catch (PSItemWorkflowServiceException e) {
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
         }
-        log.info("newPageId: {}",newPageId);
+        log.debug("newPageId: {}",newPageId);
         
         String pagePath = newPage.getFolderPath();
         pagePath += "/" + newName;
@@ -782,7 +782,9 @@ try {
         }
         catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException | PSItemWorkflowServiceException | PSNotFoundException e)
         {
-            log.debug("Page: " + id + " not found for delete validation.", e);
+            log.debug("Page: {} not found for delete validation. Error: {}",
+                     id,
+                    PSExceptionUtils.getMessageForLog(e));
         }
         
         return new PSNoContent(opName);
@@ -846,7 +848,7 @@ try {
      */
     private String trimKeyword(String keyword)
     {
-        String trimmedKeyword = "";
+        StringBuilder trimmedKeyword = new StringBuilder();
         String[] split = keyword.trim().split(" ");
         for (String key : split)
         {
@@ -857,13 +859,13 @@ try {
             
             if (trimmedKeyword.length() > 0)
             {
-                trimmedKeyword += " ";
+                trimmedKeyword.append(" ");
             }
             
-            trimmedKeyword += key;
+            trimmedKeyword.append(key);
         }
         
-        return trimmedKeyword;
+        return trimmedKeyword.toString();
     }
    
     
@@ -1009,7 +1011,7 @@ try {
     /**
      * Logger for this service.
      */
-    public static final Logger log = LogManager.getLogger(PSPageService.class);
+    public static final Logger log = LogManager.getLogger(IPSConstants.CONTENTREPOSITORY_LOG);
     
     
     /**
