@@ -82,7 +82,9 @@ public class PSMaintenanceManager implements IPSMaintenanceManager
     {
         hasErrors.set(true);
         removeRunningProcess(process);
-        log.warn("Process completed work with failures: {}" , process.getProcessId());
+        log.error("==============================================================================");
+        log.error("Process completed work with failures: {}. Putting server in maintenance mode. Users will not be able to login until this startup issue is resolved." , process.getProcessId());
+        log.error("==============================================================================");
     }
     
     
