@@ -720,15 +720,32 @@
                         <replacetoken><![CDATA[<Listener className="org.apache.catalina.core.JasperListener"/>]]></replacetoken>
                         <replacevalue><![CDATA[]]></replacevalue>
                     </replace>
+
+
                     <if>
-                        <not>
-                            <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/web.xml" substring="CorsFilter" />
-                        </not>
+                        <and>
+                            <equals arg1="@{type}" arg2="Staging"/>
+                            <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" type="file"/>
+                            <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-catalina.properties" type="file"/>
+                            <istrue value="@{upgrade}"/>
+                        </and>
                         <then>
-                            <echo>Removing OPTIONS method...</echo>
-                            <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/web.xml" summary="yes">
-                                <replacetoken><![CDATA[</web-app>]]></replacetoken>
-                                <replacevalue><![CDATA[<security-constraint>
+                            <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-catalina.properties" token="shutdown.port=8005" value="shutdown.port=9971" />
+                        </then>
+                    </if>
+
+                </else>
+            </if>
+
+            <if>
+                <not>
+                    <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/web.xml" substring="CorsFilter" />
+                </not>
+                <then>
+                    <echo>Removing OPTIONS method...</echo>
+                    <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/web.xml" summary="yes">
+                        <replacetoken><![CDATA[</web-app>]]></replacetoken>
+                        <replacevalue><![CDATA[<security-constraint>
         <web-resource-collection>
             <web-resource-name>restricted methods</web-resource-name>
             <url-pattern>/*</url-pattern>
@@ -751,26 +768,10 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
  </web-app>]]>
-                                </replacevalue>
-                            </replace>
-                        </then>
-                    </if>
-
-                    <if>
-                        <and>
-                            <equals arg1="@{type}" arg2="Staging"/>
-                            <available file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" type="file"/>
-                            <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-catalina.properties" type="file"/>
-                            <istrue value="@{upgrade}"/>
-                        </and>
-                        <then>
-                            <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-catalina.properties" token="shutdown.port=8005" value="shutdown.port=9971" />
-                        </then>
-                    </if>
-
-                </else>
+                        </replacevalue>
+                    </replace>
+                </then>
             </if>
-
             <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.sh" summary="yes"
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
             </replace>
