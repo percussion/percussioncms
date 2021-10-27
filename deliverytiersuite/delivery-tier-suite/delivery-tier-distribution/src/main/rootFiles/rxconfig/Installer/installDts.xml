@@ -737,41 +737,6 @@
                 </else>
             </if>
 
-            <if>
-                <not>
-                    <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/web.xml" substring="CorsFilter" />
-                </not>
-                <then>
-                    <echo>Removing OPTIONS method...</echo>
-                    <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/web.xml" summary="yes">
-                        <replacetoken><![CDATA[</web-app>]]></replacetoken>
-                        <replacevalue><![CDATA[<security-constraint>
-        <web-resource-collection>
-            <web-resource-name>restricted methods</web-resource-name>
-            <url-pattern>/*</url-pattern>
-            <http-method>TRACE</http-method>
-            <http-method>OPTIONS</http-method>
-        </web-resource-collection>
-        <auth-constraint />
-    </security-constraint>
-
-    <filter>
-        <filter-name>CorsFilter</filter-name>
-        <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
-        <init-param>
-            <param-name>cors.allowed.methods</param-name>
-            <param-value>GET,POST,HEAD,PUT,DELETE</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>CorsFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
- </web-app>]]>
-                        </replacevalue>
-                    </replace>
-                </then>
-            </if>
             <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.sh" summary="yes"
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
             </replace>
