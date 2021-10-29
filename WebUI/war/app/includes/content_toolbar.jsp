@@ -53,9 +53,6 @@
         </span>
     </div>
 
-    <div class="percussion-service" data-control="page-edit-action-bar" style="float: left">
-    </div>
-
     <div id="perc-dropdown-page-workflow" style="float : right" role="presentation">
     </div>
 
