@@ -78,8 +78,8 @@ public class Main {
 
     public static String developmentFlag = "false";
     public static String percVersion;
-    public static AtomicInteger currentLineNo;
-    public static AtomicInteger currentErrLineNo;
+    public static AtomicInteger currentLineNo = new AtomicInteger(0);
+    public static AtomicInteger currentErrLineNo = new AtomicInteger(0);
     public static volatile String debug="false";
     public static Integer processCode=0;
     public static Boolean error=false;
