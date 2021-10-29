@@ -27,6 +27,7 @@
 
 package com.percussion.tomcat.filters;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -80,8 +81,8 @@ public class PSSecurityFilter extends GenericFilterBean {
                                 tomcatBase + PERC_SECURITY_PROPS_ROOT)) {
                     props.load(in);
                 } catch (IOException e) {
-                    log.error(e.getMessage());
-                    log.debug(e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
 
@@ -98,8 +99,8 @@ public class PSSecurityFilter extends GenericFilterBean {
             prop = new Properties();
             prop.load(fis);
         } catch(IOException e) {
-            log.error(e.getMessage());
-            log.debug(e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return prop;

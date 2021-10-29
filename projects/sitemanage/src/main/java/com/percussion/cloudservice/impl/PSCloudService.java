@@ -171,8 +171,8 @@ public class PSCloudService implements IPSCloudService {
             PSCloudServiceInfo info = getInfo();
             return getPageData(info, pageId);
         } catch (PSCloudServiceException e) {
-	        log.error(e.getMessage());
-	        log.debug(e.getMessage(),e);
+	        log.error(PSExceptionUtils.getMessageForLog(e));
+	        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -188,7 +188,7 @@ public class PSCloudService implements IPSCloudService {
             PSCloudServiceInfo info = getInfo(licenseType);
             return getPageData(info, pageId);
         } catch (PSCloudServiceException e) {
-            log.error(e.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(e.getMessage() ,e);
 	    	throw new WebApplicationException(e);
         }

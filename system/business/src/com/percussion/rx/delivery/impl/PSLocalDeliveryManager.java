@@ -220,7 +220,7 @@ public class PSLocalDeliveryManager implements IPSDeliveryManager
          log.error(
                "Failed to clean temporary directory: {} Error: {}"
                      , tempDir.getAbsolutePath(), PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    

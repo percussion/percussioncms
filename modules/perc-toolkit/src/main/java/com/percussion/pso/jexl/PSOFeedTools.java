@@ -1,5 +1,6 @@
 package com.percussion.pso.jexl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
@@ -56,7 +57,7 @@ public class PSOFeedTools extends PSJexlUtilBase implements IPSJexlExpression {
 				map.put(decode.decode(param[0].trim()), decode.decode(param[1].trim()));
 			} catch (DecoderException e) {
 				log.debug(params,e);
-				log.error(e.getMessage());
+				log.error(PSExceptionUtils.getMessageForLog(e));
 			}
 		 }
 		 

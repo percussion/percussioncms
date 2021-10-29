@@ -30,6 +30,7 @@ package service.web.api.ems.dea;
  * This class is not complete
  */
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,8 +64,8 @@ public final class ServiceSoap_ServiceSoap_Client {
                     wsdlURL = new URL(args[0]);
                 }
             } catch (MalformedURLException e) {
-                log.error(e.getMessage());
-                log.debug(e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
 

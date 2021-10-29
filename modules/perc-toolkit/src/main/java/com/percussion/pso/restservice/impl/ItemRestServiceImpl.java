@@ -32,6 +32,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pso.restservice.IItemRestService;
 import com.percussion.pso.restservice.exception.ItemRestException;
 import com.percussion.pso.restservice.exception.ItemRestNotModifiedException;
@@ -433,9 +434,9 @@ public class ItemRestServiceImpl implements IItemRestService {
 
 			}
 		} catch (Exception e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			item.addError(ErrorCode.UNKNOWN_ERROR,PSExceptionUtils.getMessageForLog(e));
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		return item;
@@ -698,8 +699,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 								log.debug("Draft Transition failed. {} Trying edit transition {}", item.getTransition(), item.getEditTransition() );
 								system.transitionItems(Collections.singletonList(guids.get(0)), item.getEditTransition());
 							}catch(Exception e){
-								log.error(e.getMessage());
-								log.debug(e.getMessage(), e);
+								log.error(PSExceptionUtils.getMessageForLog(e));
+								log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 								log.warn("Unable to transition item using Transition Trigger {}", item.getTransition());
 								item.addError(ErrorCode.UNKNOWN_ERROR, "Unable to transition item to " + item.getState());
 							}
@@ -712,7 +713,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 							system.transitionItems(Collections.singletonList(guids.get(0)), item.getEditTransition());
 						}catch(Exception e){
 							try{
-								log.error(e.getMessage());
+								log.error(PSExceptionUtils.getMessageForLog(e));
 								log.debug("Edit Transition failed. {} Trying new item transition {}", item.getEditTransition(), item.getTransition());
 								system.transitionItems(Collections.singletonList(guids.get(0)), item.getTransition());
 							}catch(Exception ex){
@@ -747,15 +748,15 @@ public class ItemRestServiceImpl implements IItemRestService {
 			}
 
 		} catch (PSUserNotMemberOfCommunityException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
+			item.addError(ErrorCode.UNKNOWN_ERROR,PSExceptionUtils.getMessageForLog(e));
 			log.error("Error", e);
 		} catch (PSErrorsException e) {
 			for (Entry<IPSGuid, Object> error : e.getErrors().entrySet()) {
-				log.error(e.getMessage());
+				log.error(PSExceptionUtils.getMessageForLog(e));
 				log.debug("Error class is {}", error.getClass().getName());
 				if (error instanceof PSInternalRequestCallException) {
 					PSInternalRequestCallException irce = (PSInternalRequestCallException)error;
-					log.error(e.getMessage());
+					log.error(PSExceptionUtils.getMessageForLog(e));
 					log.debug("Cause is {}", irce.getCause().getMessage());
 				}
 				PSErrorException errorEx = (PSErrorException) error.getValue();
@@ -771,9 +772,9 @@ public class ItemRestServiceImpl implements IItemRestService {
 			}
 
 		} catch (PSErrorException | IOException | PSDataExtractionException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
+			item.addError(ErrorCode.UNKNOWN_ERROR,PSExceptionUtils.getMessageForLog(e));
+			log.error("Error {}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		} catch (PSErrorResultsException e) {
 			for (Entry<IPSGuid, Object> error : e.getErrors().entrySet()) {
 				PSErrorException errorEx = (PSErrorException) error.getValue();
@@ -783,23 +784,23 @@ public class ItemRestServiceImpl implements IItemRestService {
 						"Item " + errorid + " failed with error "
 						+ errorEx.getErrorMessage());
 				log.error("id={} message = {} stack={}", errorid, errorEx.getMessage(), errorEx.getStack());
-				log.error("Error {}", e.getMessage());
-				log.debug(e.getMessage(), e);
+				log.error("Error {}",PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 		} catch (ItemRestException e) {
 			log.error("Unexpected exception",e);
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
-			item.addError(e.getErrorCode(), e.getMessage());
+			log.error("Error {}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+			item.addError(e.getErrorCode(),PSExceptionUtils.getMessageForLog(e));
 		}catch(ItemRestNotModifiedException e){
 			log.info("Skipping updates to item...");
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error("Error {}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}  catch (Exception e) {
 			log.error("Unexpected Exception",e);
-			log.error("Error {}", e.getMessage());
-			log.debug(e.getMessage(), e);
-		item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
+			log.error("Error {}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+		item.addError(ErrorCode.UNKNOWN_ERROR,PSExceptionUtils.getMessageForLog(e));
 		} 
 
 		return item;
@@ -899,7 +900,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				return Base64Utility.encode(prop.getString().getBytes());
 			}
 		} catch (RepositoryException e) {
-			log.debug(e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		return "";
 	}
@@ -998,7 +999,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				}
 
 			} catch (RepositoryException e) {
-				log.debug(e);
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 		}
 		return children;
@@ -1563,8 +1564,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 			m.marshal(item, sw);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		sw.flush();
 		return sw.toString();
@@ -1603,8 +1604,8 @@ public class ItemRestServiceImpl implements IItemRestService {
 			m.marshal(item, dr);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		return dr.getDocument();
@@ -2049,12 +2050,12 @@ public class ItemRestServiceImpl implements IItemRestService {
 			}
 		} catch (PSDataExtractionException e) {
 			log.error("Cannot Purge item", e);
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
+			item.addError(ErrorCode.UNKNOWN_ERROR, PSExceptionUtils.getMessageForLog(e));
 		} catch (PSUserNotMemberOfCommunityException e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
+			item.addError(ErrorCode.UNKNOWN_ERROR,PSExceptionUtils.getMessageForLog(e));
 			log.debug("Current user is not in community of item, ", e);
 		} catch (Exception e) {
-			item.addError(ErrorCode.UNKNOWN_ERROR, e.getMessage());
+			item.addError(ErrorCode.UNKNOWN_ERROR,PSExceptionUtils.getMessageForLog(e));
 			log.error(e,e);
 		}
 		return item;
@@ -2337,7 +2338,7 @@ public class ItemRestServiceImpl implements IItemRestService {
 				is = prop.getStream();
 			}
 		} catch (RepositoryException e) {
-			log.debug(e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		ResponseBuilder rb;
 		if (is!=null) {

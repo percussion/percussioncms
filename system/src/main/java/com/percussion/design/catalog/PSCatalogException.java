@@ -75,5 +75,9 @@ public class PSCatalogException extends PSException {
    {
       super(msgCode);
    }
+
+   public PSCatalogException(int msgCode, Throwable t){
+      super(msgCode,t);
+   }
 }
 

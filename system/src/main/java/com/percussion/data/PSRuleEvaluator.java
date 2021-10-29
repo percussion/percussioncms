@@ -175,7 +175,7 @@ public class PSRuleEvaluator extends PSConditionalEvaluator
       catch (ClassNotFoundException e)
       {
          //This should not happen as these are predefined Interfaces.
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       return false;
    }

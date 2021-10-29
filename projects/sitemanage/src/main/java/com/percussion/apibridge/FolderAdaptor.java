@@ -29,6 +29,7 @@ import com.percussion.cms.objectstore.PSCloningOptions;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.itemmanagement.service.IPSItemService;
@@ -235,13 +236,11 @@ public class FolderAdaptor implements IFolderAdaptor {
 				PSLocator loc = idMapper.getLocator(folderGuid);
 				loc.setRevision(-1);
 				pathItem = folderHelper.findItemById(idMapper.getString(loc));
-			} catch (PSParametersValidationException e) {
-				throw new FolderNotFoundException();
-			} catch (PSNotFoundException e) {
+			} catch (PSParametersValidationException | PSNotFoundException e) {
 				throw new FolderNotFoundException();
 			} catch (PSValidationException | IPSDataService.DataServiceLoadException e) {
-				log.error(e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				throw new BackendException(e);
 			}
 

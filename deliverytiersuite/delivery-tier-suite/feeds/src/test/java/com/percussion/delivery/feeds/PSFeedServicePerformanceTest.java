@@ -194,7 +194,7 @@ public class PSFeedServicePerformanceTest
         }catch (Exception e)
             {
                 log.error(PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 throw new FeedException(e.getLocalizedMessage(), e);
             }
 

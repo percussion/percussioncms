@@ -23,6 +23,7 @@
  */
 package com.percussion.share.dao;
 
+import com.percussion.error.PSExceptionUtils;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONNull;
@@ -87,8 +88,8 @@ public class PSSerializerUtils
         }
         catch (JAXBException e)
         {
-           log.error("Unable to marshall JAXB object: {} Error: {}", object, e.getMessage());
-           log.debug(e);
+           log.error("Unable to marshall JAXB object: {} Error: {}", object, PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            return null;
         }
     }

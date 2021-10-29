@@ -23,13 +23,13 @@
  */
 package com.percussion.share.service;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.IPSGenericDao.DeleteException;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
 import org.apache.logging.log4j.LogManager;
@@ -69,7 +69,7 @@ public abstract class PSAbstractDataService <FULL, SUM, PK extends Serializable>
         } catch (DeleteException e) {
             String error = format("Error deleting object: {}", id);
             log.error("Error: {}",  e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new DataServiceDeleteException(error,e);
         }
     }

@@ -24,9 +24,11 @@
 
 package com.percussion.taxonomy.web.xmlGeneration;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
+
 import java.io.ByteArrayOutputStream;
 
 public class Test {
@@ -87,8 +89,8 @@ public class Test {
         try {
             serializer.write(r, baos);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         //System.out.println(baos);
     }

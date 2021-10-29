@@ -23,6 +23,7 @@
  */
 package com.percussion.services.sitemgr;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -57,7 +58,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -129,8 +129,8 @@ public class PSSiteManagerTest
       {
          System.out.println("Deserialization exception: "
                + e.getLocalizedMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       ((PSSite) dup).setVersion(null);
       ((PSSite) dup).setVersion(ver);

@@ -23,6 +23,7 @@
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
@@ -287,8 +288,8 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
       catch (NullPointerException  e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
 
@@ -413,8 +414,8 @@ public class PSContentAdhocUsersContext implements IPSContentAdhocUsersContext
       }
       catch (NullPointerException  e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
       finally

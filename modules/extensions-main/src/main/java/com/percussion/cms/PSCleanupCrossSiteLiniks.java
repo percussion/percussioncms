@@ -25,8 +25,6 @@ package com.percussion.cms;
 
 import com.percussion.cms.objectstore.IPSFolderProcessor;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSFolderProcessorProxy;
-import com.percussion.cms.objectstore.PSProcessorProxy;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSSite;
@@ -35,6 +33,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -42,16 +41,15 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
 
 /**
  * The cleanup program is used to reset, log and optionally remove the incorrect
@@ -133,8 +131,8 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
       } 
       catch (Exception e) 
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       } 
       finally 
       {
@@ -211,8 +209,8 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
          } 
          catch (Exception e) 
          {
-            log.error("failed to process link: {}, Error: {}", rel.toString(), e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("failed to process link: {}, Error: {}", rel.toString(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

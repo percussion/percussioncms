@@ -23,6 +23,7 @@
  */
 package com.percussion.servlets;
 
+import com.percussion.error.PSExceptionUtils;
 import nl.bitwalker.useragentutils.Browser;
 import nl.bitwalker.useragentutils.UserAgent;
 import org.apache.logging.log4j.LogManager;
@@ -164,8 +165,8 @@ public class PSBrowserDetect implements Filter
       }
       catch (Exception e)
       {
-         log.error("Failure parsing browser User-Agent {}, Error: {}", ((HttpServletRequest) request).getHeader("User-Agent"), e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error("Failure parsing browser User-Agent {}, Error: {}", ((HttpServletRequest) request).getHeader("User-Agent"),PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       chain.doFilter(request, response);
       return;

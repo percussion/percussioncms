@@ -287,16 +287,16 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		try {
 			itemWorkflowService.checkOut(targetPage.getId());
 		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-			log.warn(e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		addContentToWidgetOnPage(targetPage, widgetAssetPair, assetService);
 
 		try {
 			itemWorkflowService.checkIn(targetPage.getId());
 		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-			log.warn(e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		importPageIfNecessary(context, pageCatalogService, pageImport);
@@ -549,15 +549,15 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		try {
 			itemWorkflowService.checkOut(page.getId());
 		} catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-			log.warn(e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		pageService.save(page);
 		try {
 			itemWorkflowService.checkIn(page.getId());
 		}catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-			log.warn(e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.warn(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		PSHelperPerformanceMonitor.updateStats(

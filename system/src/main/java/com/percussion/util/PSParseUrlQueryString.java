@@ -22,6 +22,8 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util;
+
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequestParsingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -264,8 +266,8 @@ public class PSParseUrlQueryString
       }
       catch (PSRequestParsingException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       log.info(params);
    }

@@ -10,6 +10,7 @@ package com.percussion.pso.demandpreview.servlet;
 
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pso.demandpreview.service.DemandPublisherService;
 import com.percussion.pso.demandpreview.service.ItemTemplateService;
 import com.percussion.pso.demandpreview.service.LinkBuilderService;
@@ -84,8 +85,8 @@ public class DemandPreviewController extends ParameterizableViewController
 		   	
 		} catch (Exception e){
 			emsg = e.getMessage(); 
-			log.error("Exception {}", e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.error("Exception {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
 			mav.addObject("errorMessage", emsg); 
 			mav.setViewName(errorViewName); 

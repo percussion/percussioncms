@@ -28,6 +28,7 @@ import com.percussion.content.PSMimeContentAdapter;
 import com.percussion.design.objectstore.PSExtensionParamDef;
 import com.percussion.design.objectstore.PSNonUniqueException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.extension.IPSExtensionHandler;
@@ -107,8 +108,8 @@ public class PSExtensionInstallTool
          doc = PSXmlDocumentBuilder.createXmlDocument(fIn, false);
       } catch (Exception e)
       {
-         log.error("Exception creating extension doc: {} ", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Exception creating extension doc: {} ",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.exit(1);
       } finally
       {
@@ -127,8 +128,8 @@ public class PSExtensionInstallTool
       } 
       catch (Exception e)
       {
-         log.error("Exception installing extensions: {} ", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Exception installing extensions: {} ", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.exit(1);
       }
 
@@ -451,8 +452,8 @@ public class PSExtensionInstallTool
       }
       catch (PSExtensionException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

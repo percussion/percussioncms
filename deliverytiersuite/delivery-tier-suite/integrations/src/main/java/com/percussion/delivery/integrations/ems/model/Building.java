@@ -25,6 +25,7 @@
 package com.percussion.delivery.integrations.ems.model;
 
 import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -111,7 +112,7 @@ public class Building {
 			this.currentLocalTime = FastDateFormat.getInstance(IPSEMSEventService.DATETIME_FORMAT_STRING).parse(currentLocalTime.replace("T", " "));
 		} catch (ParseException e) {
 			log.error("Error setting CurrentLocalTime with value {} and format: {}, Error: {}",currentLocalTime, IPSEMSEventService.DATETIME_FORMAT_STRING,e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		};
 	}
 	

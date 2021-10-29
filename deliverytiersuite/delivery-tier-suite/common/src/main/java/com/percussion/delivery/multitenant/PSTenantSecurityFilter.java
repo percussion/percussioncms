@@ -23,8 +23,11 @@
  */
 package com.percussion.delivery.multitenant;
 
-import java.io.IOException;
-import java.util.Date;
+import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -34,12 +37,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.Validate;
-
-import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.io.IOException;
+import java.util.Date;
 
 
 /**
@@ -287,7 +286,7 @@ public class PSTenantSecurityFilter implements Filter
 	    	
 	    	}
     	}catch(Exception e){
-    		log.debug("Error logging metrics: {}",e.getMessage());
+    		log.debug("Error logging metrics: {}", PSExceptionUtils.getMessageForLog(e));
     	}
     }
 

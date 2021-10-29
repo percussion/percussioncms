@@ -249,7 +249,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
            String msg = "The metadata delivery handler cannot be run in non-transactional mode.";
            IllegalStateException e = new IllegalStateException(msg);
            ms_log.error("{} Error: {}",msg, PSExceptionUtils.getMessageForLog(e));
-           ms_log.debug(e);
+           ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
            throw e;
        }
@@ -682,7 +682,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
          catch (PSDeliveryException e)
          {
             log.error("Failed to commit solr transaction: {}",PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

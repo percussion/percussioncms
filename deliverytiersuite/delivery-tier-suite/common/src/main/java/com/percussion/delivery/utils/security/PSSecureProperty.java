@@ -23,6 +23,7 @@
  */
 package com.percussion.delivery.utils.security;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
@@ -93,8 +94,8 @@ public class PSSecureProperty
            try (FileInputStream is = new FileInputStream(filepath)) {
                props.load(is);
            } catch (IOException e) {
-               log.error("{}" , e.getMessage());
-               log.debug(e);
+               log.error("{}" ,PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            }
            for (String regex : propnames) {
                String[] expandedKeys = expandMatchingKeys(regex, props);
@@ -110,8 +111,8 @@ public class PSSecureProperty
                                props.put(key,encVal);
                                modified = true;
                            } catch (PSEncryptionException e) {
-                               log.error("ERROR: {}" , e.getMessage());
-                               log.debug(e);
+                               log.error("ERROR: {}" ,PSExceptionUtils.getMessageForLog(e));
+                               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                            }
                        }
 
@@ -122,8 +123,8 @@ public class PSSecureProperty
                try (FileOutputStream os = new FileOutputStream(filepath)) {
                    props.store(os, "");
                } catch (IOException e) {
-                   log.error("ERROR: {}" , e.getMessage());
-                   log.debug(e);
+                   log.error("ERROR: {}" ,PSExceptionUtils.getMessageForLog(e));
+                   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                }
            }
        }
@@ -153,8 +154,8 @@ public class PSSecureProperty
                 try(FileInputStream is = new FileInputStream(filepath)) {
                     props.load(is);
                 } catch (IOException e) {
-                    log.error("ERROR : {}",e.getMessage());
-                    log.debug(e);
+                    log.error("ERROR : {}",PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
 
             for (Map.Entry entry : props.entrySet()) {
@@ -170,8 +171,8 @@ public class PSSecureProperty
                 try(FileOutputStream os = new FileOutputStream(filepath)) {
                     props.store(os, "");
                 } catch (IOException e) {
-                    log.error("ERROR: {}" , e.getMessage());
-                    log.debug(e);
+                    log.error("ERROR: {}" ,PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         }

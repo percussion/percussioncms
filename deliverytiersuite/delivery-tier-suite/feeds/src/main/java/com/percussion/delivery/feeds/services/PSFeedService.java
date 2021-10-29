@@ -231,7 +231,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
                 {
                 	log.error("Unexpected exception generating RSS feed: {}",
                             PSExceptionUtils.getMessageForLog(e));
-                	log.debug(e);
+                	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     return Response.status(Status.INTERNAL_SERVER_ERROR).build();
                 }
                 if (StringUtils.isNotBlank(feed))
@@ -311,13 +311,13 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             }
         }catch(PSEncryptionException e){
             //Means EncryptionKey Not generated yet
-            log.error(e.getMessage());
-            log.debug(e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
 
         }catch(Exception e){
-        	log.error(e.getMessage());
-        	log.debug(e);
+        	log.error(PSExceptionUtils.getMessageForLog(e));
+        	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         	throw new WebApplicationException(404);
         }
         
@@ -349,8 +349,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         }
         catch (Exception e)
         {
-       		log.error("Exception during reading external feed : {}", e.getMessage());
-       		log.debug(e);
+       		log.error("Exception during reading external feed : {}",PSExceptionUtils.getMessageForLog(e));
+       		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         finally
         {
@@ -484,7 +484,7 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             client = ClientBuilder.newClient();
             log.error("Exception occurred in creating the SSL Client : {} " ,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         WebTarget webTarget = client.target(url + "/perc-metadata-services/metadata/get");
@@ -542,8 +542,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
         }
         catch (Exception e)
         {
-       		log.error("Exception during feed generation : {}" , e.getMessage());
-       		log.debug(e);
+       		log.error("Exception during feed generation : {}" ,PSExceptionUtils.getMessageForLog(e));
+       		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new FeedException(e.getMessage(), e);
         }
 
@@ -671,8 +671,8 @@ public class PSFeedService extends PSAbstractRestService implements IPSFeedsRest
             List<IPSFeedDescriptor> feeds = feedDao.findBySite(prevSiteName);
             feedDao.deleteDescriptors(feeds);
         } catch (Exception e) {
-            log.error("Error updating feed entries for old site: {}, Error: {}",prevSiteName, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error updating feed entries for old site: {}, Error: {}",prevSiteName,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 

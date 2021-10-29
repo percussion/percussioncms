@@ -25,6 +25,7 @@ package com.percussion.deployer.install;
 
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.IPSUpgradeModule;
 import com.percussion.install.IPSUpgradePlugin;
 import com.percussion.install.PSPluginResponse;
@@ -122,8 +123,8 @@ public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
       {
          respType = PSPluginResponse.EXCEPTION;
          respMsg = e.getMessage();
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          log.debug(logger);
          log.error(logger);
       }
@@ -137,8 +138,8 @@ public class PSUpgradePluginRelationshipVersions implements IPSUpgradePlugin
             }
             catch (SQLException e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                log.debug(logger);
                log.error(logger);
             }

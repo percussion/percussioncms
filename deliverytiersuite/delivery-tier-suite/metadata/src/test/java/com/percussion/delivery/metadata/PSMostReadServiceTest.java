@@ -27,6 +27,7 @@ package com.percussion.delivery.metadata;
 import com.percussion.delivery.metadata.data.PSVisitQuery;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbBlogPostVisit;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataEntry;
+import com.percussion.error.PSExceptionUtils;
 import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -100,8 +101,8 @@ public class PSMostReadServiceTest extends TestCase {
 		indexer.deleteAllMetadataEntries();
 		addEntries();
 		} catch (Exception e) {
-			log.error(e.getMessage());
-			log.debug(e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
     }

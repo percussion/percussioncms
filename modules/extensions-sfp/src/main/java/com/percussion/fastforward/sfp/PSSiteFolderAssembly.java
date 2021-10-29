@@ -28,6 +28,7 @@ import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.data.PSConversionException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -204,7 +205,7 @@ public class PSSiteFolderAssembly extends PSDefaultExtension
       catch (Exception e)
       {
          // the relationship API failed
-         log.error(e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new PSExtensionException(this.getClass().getName(), e
                .getLocalizedMessage());
       }

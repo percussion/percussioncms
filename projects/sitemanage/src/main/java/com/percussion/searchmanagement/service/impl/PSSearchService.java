@@ -25,6 +25,7 @@ package com.percussion.searchmanagement.service.impl;
 
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
@@ -193,8 +194,8 @@ public class PSSearchService implements IPSSearchService
         }
         catch (Exception e)
         {
-            log.error("Error occurred while trying to perform a full text search: {}", e.getMessage());
-            log.debug(e);
+            log.error("Error occurred while trying to perform a full text search: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSSearchServiceException(e);
         }
     }
@@ -237,8 +238,8 @@ public class PSSearchService implements IPSSearchService
             }
             catch (Exception e)
             {
-                log.warn(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.warn(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         
@@ -329,7 +330,7 @@ public class PSSearchService implements IPSSearchService
         }
         catch (Exception e)
         {
-            log.error("Error occurred while trying to perform a full text search: {}", e.getMessage());
+            log.error("Error occurred while trying to perform a full text search: {}",PSExceptionUtils.getMessageForLog(e));
             throw new PSSearchServiceException( e);
         }
         

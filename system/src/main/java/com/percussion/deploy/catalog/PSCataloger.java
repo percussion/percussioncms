@@ -29,6 +29,7 @@ import com.percussion.deploy.client.PSDeploymentServerConnection;
 import com.percussion.deploy.error.IPSDeploymentErrors;
 import com.percussion.deploy.error.PSDeployException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSServerLockException;
@@ -193,10 +194,10 @@ public class PSCataloger
       {
          //we should not get here as this document is constructed by server
          //from catalog result set object.
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          Object[] args = {reqDoc.getDocumentElement().getTagName(), 
-            respDoc.getDocumentElement().getTagName(), e.getLocalizedMessage()};
+            respDoc.getDocumentElement().getTagName(), PSExceptionUtils.getMessageForLog(e)};
          throw new PSDeployException(
             IPSDeploymentErrors.SERVER_RESPONSE_ELEMENT_INVALID, args);
       }

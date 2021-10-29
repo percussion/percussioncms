@@ -577,8 +577,8 @@ public class PSManagedLinkService implements IPSManagedLinkService
             try {
                 updateCopyAssetLink(link, origSiteRoot, copySiteRoot, assetIdMap);
             } catch (IPSGenericDao.SaveException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //Continue processing
             }
         }
@@ -1800,7 +1800,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
             log.error("Unable to get node for alt and title text with ID: {} and error message: {}",
                     childId,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return null;
     }

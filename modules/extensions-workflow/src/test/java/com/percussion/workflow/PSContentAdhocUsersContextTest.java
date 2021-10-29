@@ -23,6 +23,7 @@
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -126,15 +127,15 @@ public class PSContentAdhocUsersContextTest extends PSAbstractWorkflowTest
       }
       catch (SQLException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "SQL exception: ";
          except = e;
       }
       catch (PSRoleException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "Role exception ";
          except = e;
       }

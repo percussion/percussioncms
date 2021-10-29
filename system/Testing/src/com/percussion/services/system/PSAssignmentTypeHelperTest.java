@@ -23,13 +23,10 @@
  */
 package com.percussion.services.system;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSServerConfiguration;
-import com.percussion.security.PSSecurityProviderPool;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -53,15 +50,6 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.timing.PSStopwatchStack;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import junit.framework.JUnit4TestAdapter;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,6 +57,15 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test the adhoc user test
@@ -500,8 +497,8 @@ public class PSAssignmentTypeHelperTest
          }
          catch (Exception e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 

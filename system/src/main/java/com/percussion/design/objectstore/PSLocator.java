@@ -217,7 +217,7 @@ public class PSLocator extends PSKey implements Serializable
       catch (Exception e)
       { /* not possible */
          log.error("PSLocator.clone() caught exception: {}", PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       return copy;

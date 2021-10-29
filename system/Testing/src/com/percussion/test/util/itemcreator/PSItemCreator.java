@@ -31,6 +31,7 @@ import com.percussion.cms.objectstore.ws.PSClientItem;
 import com.percussion.cms.objectstore.ws.PSRemoteFolderProcessor;
 import com.percussion.design.objectstore.PSEntry;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSRemoteRequester;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -312,8 +313,8 @@ public class PSItemCreator
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.out.println("\nFinished with errors!!");
       }      
     }

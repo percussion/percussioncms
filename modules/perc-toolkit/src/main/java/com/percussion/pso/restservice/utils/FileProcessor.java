@@ -13,6 +13,7 @@ import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSTextValue;
 import com.percussion.cms.objectstore.server.PSBinaryFileValue;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSPurgableTempFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,8 +78,8 @@ public class FileProcessor {
 
 							  }
 						  } catch (IOException e) {
-							  log.error(e.getMessage());
-							  log.debug(e.getMessage(),e);
+							  log.error(PSExceptionUtils.getMessageForLog(e));
+							  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 						  }
 	               } //end if mimetype.indexOf...
 	              

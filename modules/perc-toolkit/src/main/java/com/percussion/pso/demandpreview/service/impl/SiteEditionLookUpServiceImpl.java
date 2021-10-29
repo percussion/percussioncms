@@ -3,6 +3,7 @@
  */
 package com.percussion.pso.demandpreview.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pso.demandpreview.exception.SiteLookUpException;
 import com.percussion.pso.demandpreview.service.SiteEditionConfig;
 import com.percussion.pso.demandpreview.service.SiteEditionHolder;
@@ -146,7 +147,7 @@ public class SiteEditionLookUpServiceImpl implements SiteEditionLookUpService
 			  pSite = siteManager.loadSite(pSiteName);
 		 } catch (PSNotFoundException e) {
 			 log.error("Unable to load Site: {}", pSiteName);
-			 log.debug(e.getMessage(),e);
+			 log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			 throw new SiteLookUpException(e);
 		 }
 		 siteEditionHolder.setSite(pSite);
@@ -163,8 +164,8 @@ public class SiteEditionLookUpServiceImpl implements SiteEditionLookUpService
 		 try {
 			  ctx = siteManager.loadContext(siteConfig.getAssemblyContext());
 		 } catch (PSNotFoundException e) {
-		 	 log.error(e.getMessage());
-			 log.debug(e.getMessage(),e);
+		 	 log.error(PSExceptionUtils.getMessageForLog(e));
+			 log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		 }
 		 if(ctx==null){
      		 emsg = "Context " + siteConfig.getAssemblyContext() +" not configured for " + siteName;

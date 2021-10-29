@@ -451,7 +451,7 @@ public class PSWidgetBuilderService implements IPSWidgetBuilderService
 				} catch (Exception e) {
 					log.error("Unable to create mutable widget directory: {}, Error: {} ", mutableWidgetDir.getAbsolutePath(),
                             PSExceptionUtils.getMessageForLog(e));
-                    log.debug(e.getMessage(),e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 					throw new RuntimeException("Unable to create mutable widget directory: " + mutableWidgetDir.getAbsoluteFile(),e);
 				}
 	        }

@@ -138,7 +138,7 @@ public class PSCheckVersion extends Task
       catch (Exception e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new BuildException(e);
       }
       finally
@@ -153,7 +153,7 @@ public class PSCheckVersion extends Task
             catch (IOException e)
             {
                log.error(PSExceptionUtils.getMessageForLog(e));
-               log.debug(e);
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                log.info("An unexpected error occurred: " + e.getMessage());
             }
          }
@@ -231,7 +231,7 @@ public class PSCheckVersion extends Task
       catch (IOException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new BuildException("Error loading " + VERSION_FILE);
       }
       finally
@@ -246,7 +246,7 @@ public class PSCheckVersion extends Task
             catch (IOException e)
             {
                log.error(PSExceptionUtils.getMessageForLog(e));
-               log.debug(e);
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }

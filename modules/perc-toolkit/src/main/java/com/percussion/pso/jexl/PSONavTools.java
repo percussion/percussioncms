@@ -16,24 +16,13 @@
  */
 package com.percussion.pso.jexl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.Node;
-import javax.jcr.Value;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummaries;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
@@ -48,6 +37,16 @@ import com.percussion.services.contentmgr.IPSNode;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.Value;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Binding functions usefule for Navigation.
@@ -173,8 +172,8 @@ public class PSONavTools extends PSJexlUtilBase implements IPSJexlExpression
       } catch (Exception e)
       {
         String emsg = "Unexpected Exception" + e.getMessage();
-        log.error("Unexpected Exception Error: {}", e.getMessage());
-        log.debug(e.getMessage(),e);
+        log.error("Unexpected Exception Error: {}", PSExceptionUtils.getMessageForLog(e));
+        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         throw new PSExtensionProcessingException("PSONavTools", e); 
       }
       

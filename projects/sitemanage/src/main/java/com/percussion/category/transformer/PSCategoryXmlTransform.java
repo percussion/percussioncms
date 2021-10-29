@@ -28,12 +28,20 @@ import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.data.PSTransformCategory;
 import com.percussion.category.data.PSTransformCategoryNode;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactory;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSSqlHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,15 +56,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.UUID;
-
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 
 
@@ -114,8 +113,8 @@ public class PSCategoryXmlTransform
        }
        catch(Exception e)
        {
-           log.error("Error updating DB Categories to new format: {}",e.getMessage());
-           log.debug(e);
+           log.error("Error updating DB Categories to new format: {}",PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        log.info("Finished updating categories in db to new structure");
        
@@ -169,7 +168,7 @@ public class PSCategoryXmlTransform
 
           } catch (JAXBException e) {
               log.error("Error XML Parsing old categories file {} : {}",oldFile.getAbsolutePath(),e.getMessage() );
-              log.debug(e);
+              log.debug(PSExceptionUtils.getDebugMessageForLog(e));
           }
          
       }
@@ -241,8 +240,8 @@ public class PSCategoryXmlTransform
          jaxbMarshaller.marshal(category, toFile);
 
      } catch (JAXBException e) {
-        log.error(e.getMessage());
-        log.debug(e);
+        log.error(PSExceptionUtils.getMessageForLog(e));
+        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
      }
       
    }
@@ -264,8 +263,8 @@ public class PSCategoryXmlTransform
        try {
            result = stat.executeQuery(sqlStat);
        } catch (Exception e) {
-           log.error("executeSqlStatement : {}", e.getMessage());
-           log.debug(e);
+           log.error("executeSqlStatement : {}",PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        } 
        return result;
    }
@@ -293,8 +292,8 @@ public class PSCategoryXmlTransform
        }
        catch(Exception e)
        {
-           log.warn(e.getMessage());
-           log.debug(e);
+           log.warn(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        return connection;
    }
@@ -313,8 +312,8 @@ public class PSCategoryXmlTransform
            }
            catch(SQLException e)
            {
-               log.warn(e.getMessage());
-               log.debug(e);
+               log.warn(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                return false;
            }
            conn = null; 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package com.percussion.pso.utils;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -73,8 +74,8 @@ public class HTTPProxyClientConfig {
 		} catch (FileNotFoundException e) {
 				log.debug(PSServer.BASE_CONFIG_DIR + "/Server/clientproxy.properties Configuration file not found.");
 			} catch (Exception e) {
-				log.error(e.getMessage());
-				log.debug(e.getMessage(), e);
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 	}
 	

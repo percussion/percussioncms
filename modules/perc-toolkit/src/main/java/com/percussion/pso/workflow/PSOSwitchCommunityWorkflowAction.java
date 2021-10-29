@@ -3,7 +3,12 @@ package com.percussion.pso.workflow;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSFolderProperty;
-import com.percussion.extension.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSWorkFlowContext;
+import com.percussion.extension.IPSWorkflowAction;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.pso.utils.PSOItemFolderUtilities;
 import com.percussion.server.IPSRequestContext;
@@ -33,7 +38,11 @@ import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /***
  * Workflow Action that will switch the item to the community specified by the 
@@ -343,8 +352,8 @@ public class PSOSwitchCommunityWorkflowAction implements IPSWorkflowAction{
 	             props.put(prop.getName(), prop.getValue());
 	         }
 			} catch (PSErrorResultsException | PSCmsException | PSNotFoundException e) {
-				log.error("Error looking up path for folder: {} Error: {}" , id , e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error("Error looking up path for folder: {} Error: {}" , id ,PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 
 		return props;

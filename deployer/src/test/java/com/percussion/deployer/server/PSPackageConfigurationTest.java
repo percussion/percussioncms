@@ -25,6 +25,7 @@ package com.percussion.deployer.server;
 
 import com.percussion.deployer.error.IPSDeploymentErrors;
 import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.testing.UnitTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -159,8 +160,8 @@ public class PSPackageConfigurationTest
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
       finally

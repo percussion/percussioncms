@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.dao.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSTemplateDao;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSMetadataDocType;
@@ -705,8 +706,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                     results.add(item);
                 }
             } catch (PSDataServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //Allow loop to continue so that one bad item doesn't prevent all from being processed.
             }
         }
@@ -730,8 +731,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                     results.add(item);
                 }
             } catch (PSDataServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //Allow processing to continue.
             }
         }
@@ -762,8 +763,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                     results.add(template);
                 }
             } catch (PSDataServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //Continue
             }
         }
@@ -941,8 +942,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         try {
             template = find(id);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSTemplateException(e.getMessage(),e);
         }
         template.setId(null);
@@ -987,8 +988,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         try {
             return save(template, site.getName());
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSTemplateException(e.getMessage(),e);
         }
     }

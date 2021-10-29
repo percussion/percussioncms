@@ -23,6 +23,7 @@
  */
 package com.percussion.data;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
@@ -70,7 +71,7 @@ public class PSStylesheetCleanupFilter
    private static final Logger log = LogManager.getLogger(PSStylesheetCleanupFilter.class);
 
    /**
-    * Private ctor. This class is a singleton. Use {@link #getInstance(Element)}
+    * Private ctor. This class is a singleton. Use {@link #getInstance()}
     * to get an object instance.
     */
    private PSStylesheetCleanupFilter() {
@@ -139,8 +140,8 @@ public class PSStylesheetCleanupFilter
          }
          catch (Exception e)
          {
-            log.error("Problem loading namespace configuration from file {}, error {} ", location, e.getMessage());
-            log.debug(e);
+            log.error("Problem loading namespace configuration from file {}, error {} ", location,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          ms_instance.fromXml(doc.getDocumentElement());
       }
@@ -355,8 +356,8 @@ public class PSStylesheetCleanupFilter
          }
          catch (MalformedPatternException e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       return false;
@@ -459,7 +460,7 @@ public class PSStylesheetCleanupFilter
 
    /**
     * The singleton instance of this class, initialized in
-    * {@link #getInstance(Element)}, never <code>null</code> after that.
+    * {@link #getInstance()}, never <code>null</code> after that.
     */
    private static PSStylesheetCleanupFilter ms_instance;
 

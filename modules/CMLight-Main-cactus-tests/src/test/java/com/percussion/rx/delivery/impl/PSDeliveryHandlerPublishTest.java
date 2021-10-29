@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.delivery.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryHandler;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
@@ -40,11 +41,6 @@ import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.net.ftp.FTPClient;
@@ -52,6 +48,10 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * 
@@ -462,8 +462,8 @@ public class PSDeliveryHandlerPublishTest extends ServletTestCase
             }
             catch (InterruptedException e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
             status = PSRxPublisherServiceLocator.getRxPublisherService()

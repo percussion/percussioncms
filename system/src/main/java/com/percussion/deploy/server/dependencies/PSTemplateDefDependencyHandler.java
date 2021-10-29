@@ -44,6 +44,7 @@ import com.percussion.deploy.server.PSJexlHelper;
 import com.percussion.deploy.services.IPSDeployService;
 import com.percussion.deploy.services.PSDeployServiceException;
 import com.percussion.deploy.services.PSDeployServiceLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.security.PSSecurityToken;
@@ -136,8 +137,8 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
         }
         catch (PSAssemblyException e)
         {
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return tmp;
@@ -236,8 +237,8 @@ public class PSTemplateDefDependencyHandler extends PSDependencyHandler
             try {
                  childDep = handler.getDependency(tok, id);
             } catch (PSNotFoundException e) {
-                log.warn(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.warn(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             if (childDep != null)
                 depList.add(childDep);

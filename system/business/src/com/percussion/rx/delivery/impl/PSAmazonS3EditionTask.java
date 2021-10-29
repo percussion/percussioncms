@@ -129,7 +129,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
                "Error occurred while copying the web_resources files to amazon s3 bucket for Site: {} Error: {}" ,
                  site.getLabel(),
                  PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
       finally
@@ -319,14 +319,14 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
 
             return PSEncryptor.decryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
         } catch (PSEncryptionException e) {
-            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
+            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",PSExceptionUtils.getMessageForLog(e));
             try {
                 PSAesCBC aes = new PSAesCBC();
                 return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
             } catch (PSEncryptionException psEncryptionException) {
                 log.error("Unable to decrypt string. Error: {}",
                         PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 return dstr;
             }
         }

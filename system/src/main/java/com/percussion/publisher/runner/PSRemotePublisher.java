@@ -10,6 +10,7 @@
 
 package com.percussion.publisher.runner;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +24,9 @@ import javax.ws.rs.core.Response;
  * This class provides a means of initiating publication of a specified
  * edition. This is basically done by sending an HTTP request with all
  * parameters required to start publishing an edition.
+ * @deprecated Use REST api's instead.
  */
+@Deprecated
 public class PSRemotePublisher
 {
 
@@ -110,8 +113,8 @@ public class PSRemotePublisher
         }
         catch(Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
     }

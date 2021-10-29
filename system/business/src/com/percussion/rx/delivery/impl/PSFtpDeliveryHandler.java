@@ -338,7 +338,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
       catch (Exception e)
       {
          ms_log.error("FTP Connection Check Failed to connect. Error: {}", PSExceptionUtils.getMessageForLog(e));
-         ms_log.debug(e);
+         ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          connected = false;
       }
       finally
@@ -493,7 +493,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          ms_log.error("Error removing {} : {} Error: {}",(isFile ? "file" : "directory"),
                  location,
                   PSExceptionUtils.getMessageForLog(e));
-         ms_log.debug(e);
+         ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return isFile ? getItemResult(Outcome.FAILED, item, jobId, e.getLocalizedMessage()) : null;
       }
       finally
@@ -522,7 +522,7 @@ public class PSFtpDeliveryHandler extends PSBaseFtpDeliveryHandler
          {
             ms_log.error("Could not restore working directory: {} Error: {}"
                   , currentWorkingDirectory, PSExceptionUtils.getMessageForLog(e));
-            ms_log.debug(e);
+            ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

@@ -24,6 +24,7 @@
 
 package com.percussion.preinstall;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,8 +64,8 @@ public class InputStreamLineBuffer{
                         else sb.append((char)b); // append char to stringbuilder
                     }
                 } catch (IOException e){
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 } finally {
                     isAlive = false;
                 }

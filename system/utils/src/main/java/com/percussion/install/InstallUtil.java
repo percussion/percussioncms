@@ -24,6 +24,7 @@
 
 package com.percussion.install;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSOsTool;
 import com.percussion.util.PSProperties;
@@ -1353,8 +1354,8 @@ public class InstallUtil
                   log.error(err.getMessage());
                   log.debug(err.getMessage(), err);
                } catch (IOException e) {
-                  log.error(e.getMessage());
-                  log.debug(e.getMessage(), e);
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   logError(e.getMessage());
                }
             }
@@ -1378,8 +1379,8 @@ public class InstallUtil
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          logError("Exception : " + e.getMessage());
          throw new SQLException("Exception. " + e.toString());
       }

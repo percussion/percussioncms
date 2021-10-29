@@ -23,10 +23,15 @@
  */
 package com.percussion.fastforward.sfp;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,11 +41,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Represents a publishing content list.
@@ -212,8 +212,8 @@ public class PSContentList
          catch (MalformedURLException e)
          {
             // this exception should never be thrown
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             log.error(getClass().getName(), e);
          }
       }
@@ -236,8 +236,8 @@ public class PSContentList
          {
             // this exception should never be thrown
             log.error(getClass().getName(), e);
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       // todo: generate index page links

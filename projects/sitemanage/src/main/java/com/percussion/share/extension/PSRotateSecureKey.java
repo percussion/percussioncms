@@ -79,8 +79,8 @@ import java.util.concurrent.TimeUnit;
             try {
                 run.doStartupWork(props);
             } catch (Exception e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
 
@@ -94,7 +94,7 @@ import java.util.concurrent.TimeUnit;
                 PSDeliveryInfoService.copySecureKeyToDeliveryServer(null);
              }catch (Exception e){
                 log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e));
-                log.debug("PSRotateKey Failed ERROR: {}",e.getMessage());
+                log.debug("PSRotateKey Failed ERROR: {}",PSExceptionUtils.getMessageForLog(e));
             }
         }
 
@@ -136,7 +136,7 @@ import java.util.concurrent.TimeUnit;
                 }
             }catch (Exception e){
                 log.error("Key rotation failed with error: {}", PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
 

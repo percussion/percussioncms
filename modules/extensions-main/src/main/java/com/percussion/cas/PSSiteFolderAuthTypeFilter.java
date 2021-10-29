@@ -22,12 +22,12 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.cas;
+
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSContentTypeVariantSet;
 import com.percussion.cms.objectstore.PSDbComponent;
 import com.percussion.cms.objectstore.PSFolder;
-import com.percussion.cms.objectstore.PSProcessorProxy;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
@@ -35,6 +35,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -43,7 +44,6 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestParsingException;
-import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -53,6 +53,11 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSParseUrlQueryString;
 import com.percussion.util.PSXMLDomUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.HashMap;
@@ -60,12 +65,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 /**
  * Site Folder Publishing facilitates publishing of Content Items in a Content 
  * Explorer Site Folder tree to an identical folder tree on a delivery site or 
@@ -300,7 +299,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + IPSHtmlParameters.SYS_REVISION + "\nlinkurl: "
                + PSXMLDomUtil.toString(linkurl) + "\nError:" + e.getMessage();
          log.error(msg);
-         log.debug(e.getMessage(),e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(msg);
          return params;
       }
@@ -393,7 +392,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + " error: "
                + e.getMessage();
          log.error(msg);
-         log.debug(e.getMessage(),e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -576,7 +575,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + "): \nError : "
                + e.getMessage();
          log.error(msg);
-         log.debug(e.getMessage(),e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -687,7 +686,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + " between folder id (" + folderId + ") and content id ("
                + contentId + ") \nError : " + e.getMessage();
          log.error(msg);
-         log.debug(e.getMessage(),e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }
@@ -829,7 +828,7 @@ public class PSSiteFolderAuthTypeFilter implements IPSResultDocumentProcessor
                + " \nError: "
                + e.getMessage();
          log.error(msg);
-         log.debug(e.getMessage(),e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(msg);
          throw new PSExtensionProcessingException(0, msg);
       }

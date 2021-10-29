@@ -166,7 +166,7 @@ public class GadgetRepositoryListingServlet extends HttpServlet
             }
         } catch (IOException | SAXException e) {
            log.error(PSExceptionUtils.getMessageForLog(e));
-           log.debug(e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
 
@@ -246,7 +246,7 @@ public class GadgetRepositoryListingServlet extends HttpServlet
             // map.
             log.error("Failed to load gadget registry file : {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return gadTypeMap;
     }

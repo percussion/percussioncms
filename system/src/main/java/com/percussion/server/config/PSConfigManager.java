@@ -28,6 +28,7 @@ import com.percussion.design.objectstore.PSConfig;
 import com.percussion.design.objectstore.PSConfigurationFactory;
 import com.percussion.design.objectstore.PSLockedException;
 import com.percussion.design.objectstore.PSNotLockedException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -595,8 +596,8 @@ public class PSConfigManager
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          String[] args = {name, e.getLocalizedMessage()};
          throw new PSServerConfigException(
                IPSServerErrors.ERROR_LOAD_CONFIGS, args);

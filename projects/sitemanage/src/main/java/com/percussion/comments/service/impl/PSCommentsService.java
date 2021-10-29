@@ -37,6 +37,7 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSPageSummary;
 import com.percussion.pagemanagement.service.IPSPageService;
@@ -373,8 +374,8 @@ public class PSCommentsService implements IPSCommentsService
         // TODO: add more specific exception handlers. Can't right now because delivery tier hides them
         catch (Exception e)
         {
-            log.error("An unknown error occurred while retrieving the default moderation setting. Error: {}",e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An unknown error occurred while retrieving the default moderation setting. Error: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException("An unknown error occurred while retrieving the default moderation setting");
         }
     }
@@ -411,8 +412,8 @@ public class PSCommentsService implements IPSCommentsService
             String msg = "An error occurred while retrieving the default moderation setting.  "
                     + e.getLocalizedMessage();
 
-            log.error("{}, Error: {}", msg, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", msg,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
             throw new RuntimeException(msg);
         }

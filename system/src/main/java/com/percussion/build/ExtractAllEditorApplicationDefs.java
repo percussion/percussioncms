@@ -26,6 +26,7 @@ package com.percussion.build;
 
 //java
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tools.simple.PSXmlExtractor;
 import com.percussion.utils.xml.PSEntityResolver;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -209,28 +210,12 @@ public class ExtractAllEditorApplicationDefs
                              element, dtdUrl, null, null, strDocTypeFile);
 
                            if(strError != null && strError.length() > 0)
-                           System.out.println("Error extracting " + strAppName +
+                              System.out.println("Error extracting " + strAppName +
                               " - " + strError);
-                        }
-                        catch(SAXException e)
+                        } catch(SAXException | IOException | IllegalArgumentException e)
                         {
-                           log.error(e.getMessage());
-                           log.debug(e.getMessage(), e);
-                        }
-                        catch(FileNotFoundException e)
-                        {
-                           log.error(e.getMessage());
-                           log.debug(e.getMessage(), e);
-                        }
-                        catch(IOException e)
-                        {
-                           log.error(e.getMessage());
-                           log.debug(e.getMessage(), e);
-                        }
-                        catch(IllegalArgumentException e)
-                        {
-                           log.error(e.getMessage());
-                           log.debug(e.getMessage(), e);
+                           log.error(PSExceptionUtils.getMessageForLog(e));
+                           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                         }
                      }
 
@@ -239,18 +224,18 @@ public class ExtractAllEditorApplicationDefs
                   }
                   catch(SAXException e)
                   {
-                     log.error(e.getMessage());
-                     log.debug(e.getMessage(), e);
+                     log.error(PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                   catch(FileNotFoundException e)
                   {
-                     log.error(e.getMessage());
-                     log.debug(e.getMessage(), e);
+                     log.error(PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                   catch(IOException e)
                   {
-                     log.error(e.getMessage());
-                     log.debug(e.getMessage(), e);
+                     log.error(PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                   finally
                   {

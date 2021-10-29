@@ -347,7 +347,7 @@ public class PSUserService implements IPSUserService
         }
     } catch (IOException e) {
         log.error("{}", PSExceptionUtils.getMessageForLog(e));
-        log.debug(e);
+        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
     }
     }
 
@@ -393,7 +393,7 @@ public class PSUserService implements IPSUserService
                     } catch (PSDataServiceException e) {
                         log.error("An unexpected error resetting legacy passwords: {}",
                                 PSExceptionUtils.getMessageForLog(e));
-                        log.debug(e);
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
                 }
             } catch (PSEncryptionException e) {
@@ -453,8 +453,8 @@ public class PSUserService implements IPSUserService
             updateRoles(user.getName(), user.getRoles());
             backEndRoleMgr.setSubjectEmail(user.getName(), user.getEmail());
         } catch (IPSGenericDao.SaveException e) {
-            log.error("Failed to create user {} because could not add roles to user: {}",user.getName() , e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Failed to create user {} because could not add roles to user: {}",user.getName() ,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         PSUser rvalue = user.clone();
@@ -683,8 +683,8 @@ public class PSUserService implements IPSUserService
                     PSActionOutcome.SUCCESS);
             psAuditLogService.logUserManagementEvent(psUserManagementEvent);
         }catch (Exception e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return rvalue;
     }
@@ -811,7 +811,7 @@ public class PSUserService implements IPSUserService
             return accessLevel;
         } catch (PSValidationException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -1118,7 +1118,7 @@ public class PSUserService implements IPSUserService
         catch (PSSecurityCatalogException e)
         {
             log.error("General directory service failure: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             if(e.getMessage().contains("LDAP: error code 4 - Sizelimit Exceeded")){
                 throw new PSDirectoryServiceException("The returned results exceeded LDAP server limit, please refine your search to get the results.");
             }
@@ -1127,7 +1127,7 @@ public class PSUserService implements IPSUserService
         catch (PSSecurityException e)
         {
             log.error("Failed to connect to Directory Server: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSDirectoryServiceConnectionException(e);
         }
         catch (IllegalArgumentException ae)
@@ -1180,7 +1180,7 @@ public class PSUserService implements IPSUserService
             return new PSImportedUserList(importedUsers);
         } catch (PSValidationException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -1206,8 +1206,8 @@ public class PSUserService implements IPSUserService
         }
         catch (Exception e)
         {
-            log.error("While importing invalid  user name: {}. Error: {}", name, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("While importing invalid  user name: {}. Error: {}", name,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             status = ImportStatus.INVALID;
         }
 
@@ -1224,8 +1224,8 @@ public class PSUserService implements IPSUserService
             }
             catch (Exception e)
             {
-                log.error("Error importing user: {} {}", name, e.getMessage());
-                log.debug(e);
+                log.error("Error importing user: {} {}", name,PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 status = ImportStatus.ERROR;
             }
         }
@@ -1270,8 +1270,8 @@ public class PSUserService implements IPSUserService
             }
             catch (Exception e)
             {
-                log.error("While importing invalid  user name: {} Error: {}",name, e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error("While importing invalid  user name: {} Error: {}",name,PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 status = ImportStatus.INVALID;
             }
             

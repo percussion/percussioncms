@@ -27,19 +27,27 @@ import com.percussion.analytics.data.PSAnalyticsProviderConfig;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.data.PSGAEntries;
 import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.apache.cxf.jaxrs.ext.multipart.Multipart;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
@@ -78,8 +86,8 @@ public class PSAnalyticsProviderRestService
             result.setEntries(providerService.getProfiles(null, null));
             return result;
         } catch (IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -108,8 +116,8 @@ public class PSAnalyticsProviderRestService
 
             providerService.testConnection(StringUtils.trimToEmpty(uid), creds);
         } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
 
@@ -130,8 +138,8 @@ public class PSAnalyticsProviderRestService
         try {
             providerService.saveConfig(config);
         } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -144,8 +152,8 @@ public class PSAnalyticsProviderRestService
         try {
             return providerService.loadConfig(true);
         } catch (IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -157,8 +165,8 @@ public class PSAnalyticsProviderRestService
         try {
             providerService.deleteConfig();
         } catch (IPSGenericDao.DeleteException | IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -178,8 +186,8 @@ public class PSAnalyticsProviderRestService
         try {
             return ((Boolean) providerService.isProfileConfigured(sitename)).toString();
         } catch (IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

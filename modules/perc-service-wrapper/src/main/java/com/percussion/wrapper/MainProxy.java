@@ -25,14 +25,28 @@
 package com.percussion.wrapper;
 
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.UnknownHostException;
 
 import static com.percussion.wrapper.JettyStartUtils.debug;
 import static com.percussion.wrapper.JettyStartUtils.info;
@@ -56,8 +70,8 @@ public class MainProxy {
             Constructor<?> constructor = cls.getConstructor();
             main = constructor.newInstance();
         } catch (MalformedURLException | ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -68,14 +82,14 @@ public class MainProxy {
             Method proceesCommand = main.getClass().getMethod("processCommandLine",args.getClass());
             return new StartArgsProxy(proceesCommand.invoke(main,new Object[]{args}));
         } catch (IllegalAccessException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (InvocationTargetException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (NoSuchMethodException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return null;
     }
@@ -86,8 +100,8 @@ public class MainProxy {
             Method startCommand = main.getClass().getMethod("start",startArgs.getInstance().getClass());
             startCommand.invoke(main,new Object[]{startArgs.getInstance()});
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
 

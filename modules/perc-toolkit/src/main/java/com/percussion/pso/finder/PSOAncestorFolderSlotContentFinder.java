@@ -10,6 +10,7 @@
 package com.percussion.pso.finder;
 
 import com.percussion.cms.PSCmsException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -29,7 +30,6 @@ import com.percussion.webservices.content.PSContentWsLocator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import javax.jcr.RepositoryException;
 import java.io.File;
 import java.util.HashSet;
@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static java.text.MessageFormat.format;
 import static java.util.Collections.reverse;
 
 /**
@@ -102,14 +101,14 @@ public class PSOAncestorFolderSlotContentFinder extends PSBaseSlotContentFinder 
             sum = findAncestorItem(assemblyItem, contentType);
 
         } catch (Exception e) {
-            log.error("Error finding ancestor item. Error: {} ", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error finding ancestor item. Error: {} ",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException("Error finding ancestor item: ", e);
         }
         if (sum == null) {
             log.warn("Did not find an ancestor item of type: {}  for item: {}",
                     contentType, assemblyItem.getId());
-            return new HashSet<SlotItem>();
+            return new HashSet<>();
         }
         else if (log.isDebugEnabled()) {
             log.debug("Found ancestor item of type: {} with id: {} for item: {}",

@@ -30,6 +30,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.fastforward.utils.PSRelationshipHelper;
 import com.percussion.server.IPSInternalRequest;
@@ -289,8 +290,8 @@ public abstract class PSSiteFolderCListBase
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          m_helper = null;
       }
    }
@@ -747,7 +748,7 @@ public abstract class PSSiteFolderCListBase
          {
             log.error("ERROR: while making internal request to {}", LOOKUP_FOLDER_PUBLISH_FLAGS);
             log.error(getClass().getName(), e);
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       return flags;

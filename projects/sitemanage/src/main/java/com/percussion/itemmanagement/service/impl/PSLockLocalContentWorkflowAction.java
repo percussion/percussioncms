@@ -24,6 +24,7 @@
 package com.percussion.itemmanagement.service.impl;
 
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSWorkFlowContext;
 import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.server.IPSRequestContext;
@@ -65,8 +66,8 @@ public class PSLockLocalContentWorkflowAction extends PSAbstractWorkflowExtensio
 
             log.debug("Finished workflowing assets");
         } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
-            log.error("Error workflowing local assets Error: {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error workflowing local assets Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } finally
         {
             setSecurity(currentUser);

@@ -29,6 +29,7 @@ import com.percussion.dashboardmanagement.data.PSGadgetList;
 import com.percussion.dashboardmanagement.service.IPSGadgetUserService;
 import com.percussion.dashboardmanagement.service.IPSGadgetUserService.PSGadgetNotFoundException;
 import com.percussion.dashboardmanagement.service.IPSGadgetUserService.PSGadgetServiceException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.logging.log4j.LogManager;
@@ -65,8 +66,8 @@ public class PSGadgetUserRestService {
                 try {
                         return gadgetUserService.load(id);
                 } catch (PSDataServiceException e) {
-                        log.error(e.getMessage());
-                        log.debug(e.getMessage(),e);
+                        log.error(PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                         throw new WebApplicationException(e);
                 }
         }
@@ -85,8 +86,8 @@ public class PSGadgetUserRestService {
                 try {
                         return new PSGadgetList(gadgetUserService.findAll());
                 } catch (PSDataServiceException e) {
-                        log.error(e.getMessage());
-                        log.debug(e.getMessage(),e);
+                        log.error(PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                         throw new WebApplicationException(e);
                 }
         }
@@ -115,8 +116,8 @@ public class PSGadgetUserRestService {
         try {
                 gadgetUserService.delete(id);
         } catch (PSDataServiceException | PSNotFoundException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 throw new WebApplicationException(e);
         }
         }

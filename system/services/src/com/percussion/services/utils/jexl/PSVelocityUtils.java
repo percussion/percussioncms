@@ -137,7 +137,7 @@ private static void initProperties() {
                     } catch (IOException e) {
                         log.error("IOException writing processed velocity macro to {} Error: {}", f.getAbsolutePath(), 
                                 PSExceptionUtils.getMessageForLog(e));
-                        log.debug(e);
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                         return;
                     }
 
@@ -145,7 +145,7 @@ private static void initProperties() {
                 } catch (Exception e)
                 {
                     log.error("Cannot backup or write fixed up velocity template Error: {}", PSExceptionUtils.getMessageForLog(e));
-					log.debug(e);
+					log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     return;
                 }
    

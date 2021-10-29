@@ -29,8 +29,13 @@ import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.IPSRemoteRequester;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,11 +43,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 public class PSInlineLinkClearAttribs extends PSInlineLinkConverter
 {
@@ -90,8 +90,8 @@ public class PSInlineLinkClearAttribs extends PSInlineLinkConverter
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return resultList;
    }

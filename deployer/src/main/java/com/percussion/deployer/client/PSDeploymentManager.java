@@ -52,6 +52,7 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSFeatureSet;
 import com.percussion.design.objectstore.PSUnknownDocTypeException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServerLockException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.codec.PSXmlEncoder;
@@ -263,8 +264,8 @@ public class PSDeploymentManager
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(
             IPSDeploymentErrors.UNEXPECTED_ERROR, e.toString());
       }
@@ -1424,8 +1425,8 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
@@ -1491,8 +1492,8 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
@@ -1557,8 +1558,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
-                  log.error(e.getMessage());
-                  log.debug(e.getMessage(), e);
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1631,8 +1632,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
-                  log.error(e.getMessage());
-                  log.debug(e.getMessage(), e);
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1675,8 +1676,8 @@ public class PSDeploymentManager
       }
       catch (IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -1686,8 +1687,8 @@ public class PSDeploymentManager
          }
          catch (IOException e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 
@@ -1821,8 +1822,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
-                  log.error(e.getMessage());
-                  log.debug(e.getMessage(), e);
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1985,8 +1986,8 @@ public class PSDeploymentManager
       catch (PSServerLockException e) 
       {
          // this is not expected, but helper method throws it
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }

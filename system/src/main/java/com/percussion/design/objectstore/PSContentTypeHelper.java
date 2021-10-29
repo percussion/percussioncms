@@ -32,6 +32,7 @@ import com.percussion.conn.PSServerException;
 import com.percussion.design.objectstore.server.IPSLockerId;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSRequest;
@@ -396,7 +397,7 @@ public class PSContentTypeHelper
                {
                   // log it, but throw original problem
                   log.error(
-                     "Failed delete new ce app after it failed to start. Error: {}", e.getMessage());
+                     "Failed delete new ce app after it failed to start. Error: {}", PSExceptionUtils.getMessageForLog(e));
                }
                
                try
@@ -414,7 +415,7 @@ public class PSContentTypeHelper
                {
                   // log it, but throw original problem
                   log.error(
-                     "Failed delete new nodedef after app save failed. Error: {}", e.getMessage());
+                     "Failed delete new nodedef after app save failed. Error: {}", PSExceptionUtils.getMessageForLog(e));
                }
             }
          }

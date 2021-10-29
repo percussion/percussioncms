@@ -30,6 +30,7 @@ import com.percussion.HTTPClient.HTTPResponse;
 import com.percussion.HTTPClient.ModuleException;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
@@ -145,7 +146,7 @@ public class XmlUploader
       if (args.containsKey(Utils.TIMEOUT_OPTION))
       {
          Integer timeout = new Integer((String) args.get(Utils.TIMEOUT_OPTION));
-         m_timeout = timeout.intValue() * 1000; // Convert to millis
+         m_timeout = timeout * 1000; // Convert to millis
       }
       
       // get the log file
@@ -169,7 +170,7 @@ public class XmlUploader
          catch (IOException e)
          {
             log.info( "Failed to open log file \"{}\". Messages will not be logged.", logFile.getAbsolutePath());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 
@@ -408,31 +409,31 @@ public class XmlUploader
       catch ( FileNotFoundException e )
       {
          log.info("[Main] {}", e.getLocalizedMessage());
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_CLASS_NOT_FOUND;
       }
       catch ( MalformedURLException e )
       {
          log.info( "[Main] Improperly formed URL: {}", e.getLocalizedMessage());
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_IO;
       }
       catch ( IOException e )
       {
          log.info( "[Main] An IO error occurred: {}", e.getLocalizedMessage());
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_IO;
       }
       catch ( IllegalArgumentException e )
       {
          log.info( "[Main] An Illegal argument exception was thrown: {}", e.getLocalizedMessage());
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_UNKNOWN; // a design flaw exists, so it's not really important to the batch program
       }
       catch ( Exception e )
       {
-         log.info( "[Main] Unexpected exception: {}", e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.info( "[Main] Unexpected exception: {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
          status = Utils.ERROR_UNKNOWN;
       }
@@ -599,7 +600,7 @@ public class XmlUploader
       catch (Exception e)
       {
          log.info("Exception : {}", e.getLocalizedMessage());
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          communityId = -1;
       }
       if (communityId == 0)
@@ -746,7 +747,7 @@ public class XmlUploader
                   sources[i].close(!m_debug && rowsInserted > 0);
                } catch (Exception e) {
                   log.info("An error occurred while trying to close the stream: {}", e.getLocalizedMessage());
-                  log.debug(e.getMessage(), e);
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                }
 
 
@@ -779,8 +780,8 @@ public class XmlUploader
                   } catch (IOException e) {
                      userMsg = "Failed to read response document from Rhythmyx server.\r\n" +
                              e.getLocalizedMessage();
-                     log.error("userMsg, Error: {}", e.getMessage());
-                     log.debug(e.getMessage(), e);
+                     log.error("userMsg, Error: {}", PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                   IOUtils.closeQuietly(errResponse);
                   pattern = DEFAULT_ERROR;

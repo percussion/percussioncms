@@ -42,6 +42,7 @@ import com.percussion.design.objectstore.legacy.PSInstConfigFileLocator;
 import com.percussion.design.objectstore.legacy.PSInstRepositoryInfo;
 import com.percussion.design.objectstore.legacy.PSSecurityProviderConverter;
 import com.percussion.design.objectstore.legacy.PSTableLocatorConverter;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.PSLogger;
 import com.percussion.install.PSUpgradeDbAndHtmlAndXslFilesForSlotNames;
 import com.percussion.server.PSServer;
@@ -118,8 +119,8 @@ public class PSModifyProviders extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -190,8 +191,8 @@ public class PSModifyProviders extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -312,8 +313,8 @@ public class PSModifyProviders extends PSAction
       catch (Exception e)
       {
          PSLogger.logError(e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -373,8 +374,8 @@ public class PSModifyProviders extends PSAction
       catch (Exception e)
       {
          PSLogger.logError(e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

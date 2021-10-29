@@ -23,7 +23,7 @@
  */
 package com.percussion.util;
 
-import com.percussion.utils.jdbc.IPSDatasourceManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
@@ -786,8 +786,8 @@ public class PSSqlHelper
          }
         catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException e)
       {
-            log.error("reflection to call {}.getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment, Error: {}", JBOSS_WRAPPED_CLASS, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("reflection to call {}.getUnderlyingStatement() failed assuming not an Jboss wrapped oracle prepared statment, Error: {}", JBOSS_WRAPPED_CLASS,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
    }
@@ -2138,10 +2138,7 @@ public class PSSqlHelper
     * @return <code>true</code> if it is a Oracle database; otherwise return
     * <code>false</code>. 
     * 
-    * @throws RuntimeException if 
-    * {@link #createInstance(IPSDatasourceManager)} has not been called.
-    * {@link #createInstance(IPSDatasourceManager)} method is called by 
-    * spring wiring process.
+    * @throws RuntimeException if
     */
    public static boolean isOracle()
    {
@@ -2162,13 +2159,14 @@ public class PSSqlHelper
       }
       catch (Exception e)
       {
-         log.error("Failed to determine database type, Errror: {}", e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error("Failed to determine database type, Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException("Failed to determine database type", e);
       }
    }
 
-   private static ArrayList<String> existingCMStables = new ArrayList<String>();
+   private static ArrayList<String> existingCMStables = new ArrayList<>();
 
    /**
     * Utility method that can be used go validate if a table name exists on the database.  Intended
@@ -2193,8 +2191,8 @@ public class PSSqlHelper
                }
             }
          } catch (SQLException e) {
-            log.warn("Error listing database tables: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.warn("Error listing database tables: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 

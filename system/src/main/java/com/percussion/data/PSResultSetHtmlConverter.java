@@ -255,7 +255,7 @@ public class PSResultSetHtmlConverter extends PSResultSetXmlConverter {
       catch(UnsupportedEncodingException e)
       {         
          PSConsole.printMsg(this.getClass().getName(), e);
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       finally
       {

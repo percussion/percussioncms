@@ -24,6 +24,7 @@
 
 package com.percussion.util.servlet;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSStringOperation;
 import org.apache.logging.log4j.LogManager;
@@ -127,8 +128,8 @@ class PSInternalRequestMultiPart
       }
       catch (UnsupportedEncodingException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (IOException ioe)
       {

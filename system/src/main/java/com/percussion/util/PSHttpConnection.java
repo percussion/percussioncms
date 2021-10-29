@@ -24,6 +24,7 @@
 package com.percussion.util;
 
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -417,7 +418,7 @@ public class PSHttpConnection
             return msg;
          }
       } catch (IOException |NumberFormatException | PSException e) {
-         throw new PSException(IPSUtilErrors.POST_DATA_ERROR, e.getMessage());
+         throw new PSException(IPSUtilErrors.POST_DATA_ERROR, PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -561,8 +562,8 @@ public class PSHttpConnection
       }
       catch (MalformedURLException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException(e);
       }
    }

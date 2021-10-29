@@ -23,6 +23,7 @@
  */
 package com.percussion.foldermanagement.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.data.PSFolderItem;
 import com.percussion.foldermanagement.data.PSGetAssignedFoldersJobStatus;
 import com.percussion.foldermanagement.data.PSWorkflowAssignment;
@@ -149,27 +150,27 @@ public class PSFolderRestService
         }
         catch(PSWorkflowNotFoundException e)
         {
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.NOT_FOUND).entity(message + e.getMessage()).build();
         }
         catch(IllegalArgumentException e)
         {   
             // This means that either the workflow name or the path are empty.
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.BAD_REQUEST).entity(message + e.getLocalizedMessage()).build();
         }
         catch(PSPathNotFoundServiceException | LoadException e)
         {
             // This means that the required path could not be found.
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.NOT_FOUND).entity(message + e.getLocalizedMessage()).build();
         } catch (Exception e)
         {
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.serverError().entity(message + e.getLocalizedMessage()).build();
         }
     }
@@ -196,27 +197,27 @@ public class PSFolderRestService
         }
         catch(PSWorkflowNotFoundException e)
         {
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.NOT_FOUND).entity(message + e.getMessage()).build();
         }
         catch (PSWorkflowAssignmentInProgressException e)
         {
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.CONFLICT).entity(e.getLocalizedMessage()).build();
         }
         catch(IllegalArgumentException e)
         {   
             // This means that is empty or does not exists.
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.BAD_REQUEST).entity(message + e.getLocalizedMessage()).build();
         }
         catch (Exception e)
         {
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.serverError().entity(message + e.getLocalizedMessage()).build();
         }
     }
@@ -228,8 +229,8 @@ public class PSFolderRestService
         try {
             return new PSLightWeightObjectList(folderService.getPagesFromFolder(id));
         } catch (IPSFolderService.PSFolderNotFoundException | IPSFolderService.PSPagesNotFoundException | PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }

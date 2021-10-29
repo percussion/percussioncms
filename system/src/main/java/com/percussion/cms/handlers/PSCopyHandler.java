@@ -64,6 +64,7 @@ import com.percussion.design.objectstore.PSTableLocator;
 import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.design.objectstore.PSWorkflowInfo;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationFailedException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSServerErrors;
@@ -498,8 +499,8 @@ class PSCopyHandler implements IPSCopyHandler
       }
       catch (PSInvalidContentTypeException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e); // this is not possible
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e)); // this is not possible
          throw new RuntimeException(e);
       }
    }
@@ -2096,7 +2097,7 @@ class PSCopyHandler implements IPSCopyHandler
                catch(MalformedURLException e)
                {
                   // shouldn't happen!
-                  throw new RuntimeException(e.getLocalizedMessage());
+                  throw new RuntimeException(e);
                }
 
                Element fileEl = PSXmlDocumentBuilder.addEmptyElement(doc, row,

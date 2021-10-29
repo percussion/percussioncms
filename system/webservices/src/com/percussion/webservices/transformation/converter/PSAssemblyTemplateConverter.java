@@ -23,6 +23,7 @@
  */
 package com.percussion.webservices.transformation.converter;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -112,8 +113,8 @@ public class PSAssemblyTemplateConverter extends PSConverter
             try {
                dest.setSlots(new HashSet<>(loadSlots(slotIds)));
             } catch (PSAssemblyException e) {
-               log.warn(e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.warn(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
 

@@ -23,8 +23,6 @@
  */
 package com.percussion.cas;
 
-import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
-
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSConversionException;
 import com.percussion.data.PSDatabaseMetaData;
@@ -32,6 +30,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSAssemblyLocation;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
@@ -70,12 +69,14 @@ import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.utils.security.PSSecurityUtility;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.naming.NamingException;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -87,11 +88,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
 
 /**
  * This generic UDF generates public locations for all contexts. The preview
@@ -343,10 +340,10 @@ public class PSGeneratePubLocation extends PSSimpleJavaUdfExtension
       }
       catch (PSExtensionException e)
       {
-         log.error("Problem while generating a publishing, location for template {} and contentid {} Error: {}",variantid, contentid, e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Problem while generating a publishing, location for template {} and contentid {} Error: {}",variantid, contentid,PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          log.error("Problem while generating a publishing "
                + "location for template " + variantid + " and contentid "

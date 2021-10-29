@@ -23,23 +23,26 @@
  */
 package com.percussion.services.content;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.content.data.PSAutoTranslation;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Unit test for the {@link IPSContentService} 
@@ -190,8 +193,8 @@ public class PSContentServiceTest
          {
             System.out.println("error deleteing auto translations: " + 
                e.getLocalizedMessage());
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

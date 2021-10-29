@@ -24,6 +24,7 @@
 
 package com.percussion.util;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -232,8 +233,8 @@ public class PSPurgableTempFile extends File implements AutoCloseable
                
             } catch (Exception e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                log.debug("Could not release temp file {} ", this.getAbsolutePath(),e);
             }
       }
@@ -293,15 +294,14 @@ public class PSPurgableTempFile extends File implements AutoCloseable
          
          // Clear all files in temp directory
          File tempfiles[] = ms_psxTempDirectory.listFiles();
-         for(int i = 0; i < tempfiles.length; i++)
-         {
-            tempfiles[i].delete();
+         for (File tempfile : tempfiles) {
+            tempfile.delete();
          }
       }
       catch (IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }      
    }
    

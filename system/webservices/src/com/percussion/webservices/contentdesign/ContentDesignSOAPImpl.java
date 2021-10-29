@@ -91,7 +91,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (PSErrorException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -169,7 +169,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (PSErrorException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -679,7 +679,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (PSErrorException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -734,7 +734,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (PSErrorException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -782,7 +782,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (PSErrorException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -827,7 +827,7 @@ public class ContentDesignSOAPImpl extends PSBaseSOAPImpl
       catch (PSErrorException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {

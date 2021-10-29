@@ -24,6 +24,7 @@
 
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSCollection;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
@@ -826,8 +827,8 @@ public class PSJdbcStatementFactory
                }
                catch (Exception e) {
 
-                  log.error(e.getMessage());
-                  log.debug(e.getMessage(), e);
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   System.out.println("Failed to get the binary value for hash " + value + " for table " + fullName);
                }
             }

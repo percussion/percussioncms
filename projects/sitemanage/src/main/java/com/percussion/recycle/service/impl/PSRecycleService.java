@@ -29,12 +29,18 @@ import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSContentEvent;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
-import com.percussion.cms.objectstore.*;
+import com.percussion.cms.objectstore.IPSFieldValue;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSCoreItem;
+import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.cms.objectstore.PSRelationshipFilter;
+import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
@@ -61,13 +67,21 @@ import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.system.IPSSystemWs;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 
@@ -301,8 +315,8 @@ public class PSRecycleService implements IPSRecycleService {
             psContentEvent=new PSContentEvent(itemGuid.toString(),String.valueOf(dependentId),path, PSContentEvent.ContentEventActions.recycle,PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
             psAuditLogService.logContentEvent(psContentEvent);
             log.error("Unable to recycle item with dependent id: {} Error: {}",
-                    dependentId, e.getMessage());
-            log.debug(e.getMessage(),e);
+                    dependentId,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -360,8 +374,8 @@ public class PSRecycleService implements IPSRecycleService {
 
             }
         } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException | IPSDataService.DataServiceLoadException e) {
-            log.error("Error recycling folder with guid: {} Error:" ,guid, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error recycling folder with guid: {} Error:" ,guid,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -387,8 +401,8 @@ public class PSRecycleService implements IPSRecycleService {
             updateParentFolders(parentLocators, RECYCLED_TYPE,FOLDER_TYPE,cache );
 
         } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException e) {
-            log.error("Error restoring item with guid: {} Error: {}" , guid, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error restoring item with guid: {} Error: {}" , guid,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -451,8 +465,8 @@ public class PSRecycleService implements IPSRecycleService {
 
 
         } catch (PSErrorsException | PSErrorException | PSErrorResultsException | PSCmsException e) {
-            log.error("Error restoring folder with guid: {} Error: {}", guid, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error restoring folder with guid: {} Error: {}", guid,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -555,8 +569,8 @@ public class PSRecycleService implements IPSRecycleService {
                     IPSItemSummary itemSummary = itemSummaryService.find(depId, RECYCLED_TYPE);
                     summs.add(itemSummary);
                 } catch (IPSDataService.DataServiceLoadException e) {
-                    log.warn(e.getMessage());
-                    log.debug(e.getMessage(),e);
+                    log.warn(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     //continue loop.
                 }
             }
@@ -612,7 +626,7 @@ public class PSRecycleService implements IPSRecycleService {
             }
         } catch (PSCmsException e) {
             //NOTE: We may want to flip this logic and return true on error depending on behavior we see - NC
-            log.warn("Unable to confirm if item: {} is in Recycler, assuming not. {}", guid, e.getMessage());
+            log.warn("Unable to confirm if item: {} is in Recycler, assuming not. {}", guid,PSExceptionUtils.getMessageForLog(e));
             log.debug("Recycler check failed with:",e);
         }
 
@@ -666,8 +680,8 @@ public class PSRecycleService implements IPSRecycleService {
             itemId = processor.getIdByPath(PSRelationshipProcessorProxy.RELATIONSHIP_COMPTYPE, path,
                     relationshipTypeName);
         } catch (PSCmsException e) {
-            log.error("Error finding properties for item with path: {} Error: {}" , path, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error finding properties for item with path: {} Error: {}" , path,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return itemId;
     }
@@ -735,8 +749,8 @@ public class PSRecycleService implements IPSRecycleService {
                             "Recycle", null);
                     contentWs.releaseFromEdit(status, true);
                 } catch (PSErrorException e) {
-                    log.error("Error transitioning item to archive with id: {}, Error: {} ", dependentId, e.getMessage());
-                    log.debug(e.getMessage(),e);
+                    log.error("Error transitioning item to archive with id: {}, Error: {} ", dependentId,PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
                 }
             }

@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.publisher.jsf.nodes;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionManager;
 import com.percussion.extension.PSExtensionRef;
@@ -37,23 +38,21 @@ import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.utils.jsf.validators.PSBaseValidator;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.myfaces.trinidad.component.core.input.CoreSelectOneChoice;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.myfaces.trinidad.component.core.input.CoreSelectOneChoice;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The backing bean for Location Scheme Editor.
@@ -162,10 +161,9 @@ public class PSLocationSchemeEditor extends PSBaseValidator
       }
       catch (CloneNotSupportedException e)
       {
-         // should never happen here.
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failed to clone IPSLocationScheme {}", e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to clone IPSLocationScheme {}",PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to clone IPSLocationScheme"
                + e.getLocalizedMessage());
       }

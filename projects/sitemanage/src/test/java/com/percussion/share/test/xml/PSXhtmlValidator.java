@@ -23,6 +23,7 @@
  */
 package com.percussion.share.test.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.share.test.PSMatchers;
@@ -113,8 +114,8 @@ public class PSXhtmlValidator {
             parser.setEntityResolver(new PSXhtmlEntityResolver());
             parser.setErrorHandler(handler);
         } catch (ParserConfigurationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

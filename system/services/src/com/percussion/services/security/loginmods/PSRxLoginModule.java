@@ -24,11 +24,10 @@
 
 package com.percussion.services.security.loginmods;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.security.PSJaasUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Map;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -37,6 +36,7 @@ import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
+import java.util.Map;
 
 /**
  * A login module that delegates authentication to Rhythmyx security 
@@ -75,8 +75,8 @@ public class PSRxLoginModule implements LoginModule
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return;
       }
 

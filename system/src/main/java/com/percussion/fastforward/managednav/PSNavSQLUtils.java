@@ -23,6 +23,7 @@
  */
 package com.percussion.fastforward.managednav;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.util.PSSqlHelper;
 import org.apache.logging.log4j.LogManager;
@@ -65,8 +66,8 @@ public class PSNavSQLUtils
       }
       catch (Exception e)
       {
-         log.error("SQL Error {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSNavException(e);
       }
       return conn;
@@ -86,8 +87,8 @@ public class PSNavSQLUtils
       }
       catch (Exception e)
       {
-         log.error("SQL Error {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSNavException(e);
       }
    }
@@ -112,8 +113,9 @@ public class PSNavSQLUtils
          }
          catch (SQLException e)
          {
-            log.error("Closing result set {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error closing result set {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       if (stmt != null)

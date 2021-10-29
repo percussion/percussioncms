@@ -32,6 +32,7 @@ import com.percussion.delivery.metadata.impl.PSMetadataQueryServiceHelper;
 import com.percussion.delivery.metadata.impl.PSPropertyDatatypeMappings;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -276,7 +277,7 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
 
         } catch (Exception e) {
             log.error("Query Failed : {}, Error: {}", query.toString(),e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return cats;
     }
@@ -720,8 +721,8 @@ public class PSMetadataQueryService implements IPSMetadataQueryService
         }
         catch (SQLException | RuntimeException e)
         {
-            log.error("There was an error getting jdbc driver name Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("There was an error getting jdbc driver name Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return jdbcConnectionUrl;

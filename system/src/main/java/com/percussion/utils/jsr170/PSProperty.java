@@ -925,8 +925,8 @@ public class PSProperty extends PSPropertyWrapper
       }
       catch (SQLException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RepositoryException(e);
       }
    }

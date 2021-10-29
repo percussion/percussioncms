@@ -23,18 +23,18 @@
  */
 package com.percussion.i18n.rxlt;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSTmxResourceBundle;
 import com.percussion.i18n.tmxdom.IPSTmxDocument;
 import com.percussion.i18n.tmxdom.IPSTmxHeader;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.io.InputStream;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * This class generates a single TMX document out of the TMX documents for all
@@ -186,7 +186,7 @@ public class PSGenerateTMXResourcesActionHandler
       }
       catch(Exception e) //catch any Exception
       {
-         PSCommandLineProcessor.logMessage("processFailedError", e.getMessage());
+         PSCommandLineProcessor.logMessage("processFailedError", PSExceptionUtils.getMessageForLog(e));
          throw new PSActionProcessingException(e.getMessage(),e);
       }
       PSCommandLineProcessor.logMessage("processFinished", "");

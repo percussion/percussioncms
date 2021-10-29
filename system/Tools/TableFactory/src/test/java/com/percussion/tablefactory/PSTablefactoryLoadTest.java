@@ -23,6 +23,7 @@
  */
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.UnitTest;
 import org.apache.commons.io.FileUtils;
 import org.apache.derby.drda.NetworkServerControl;
@@ -106,8 +107,8 @@ public class PSTablefactoryLoadTest
 
          server.start(null);
       } catch (Exception e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -120,8 +121,8 @@ public class PSTablefactoryLoadTest
 
          server.shutdown();
       } catch (Exception e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    @Test

@@ -191,8 +191,8 @@ public class PSLoginServlet extends HttpServlet
            psAuthenticationEvent = new PSAuthenticationEvent(PSActionOutcome.SUCCESS.name(), PSAuthenticationEvent.AuthenticationEventActions.logout, request, request.getRemoteUser());
            psAuditLogService.logAuthenticationEvent(psAuthenticationEvent);
        }catch (Exception e){
-          log.error(e.getMessage());
-          log.debug(e.getMessage(), e);
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
       HttpSession session = request.getSession();
       if (session != null)
@@ -324,7 +324,7 @@ public class PSLoginServlet extends HttpServlet
       }
       catch (URISyntaxException e)
       {
-         log.error("Bad redirect uri: {} , Error : {} ",  uri, e.getMessage());
+         log.error("Bad redirect uri: {} , Error : {} ",  uri,PSExceptionUtils.getMessageForLog(e));
          log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }

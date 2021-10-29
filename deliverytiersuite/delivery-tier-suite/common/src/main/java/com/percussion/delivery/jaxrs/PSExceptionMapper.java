@@ -26,6 +26,7 @@ package com.percussion.delivery.jaxrs;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -73,8 +74,8 @@ public class PSExceptionMapper implements ExceptionMapper<Exception>{
             
         }
 
-        log.error(e.getMessage());
-        log.debug(e.getMessage(),e);
+        log.error(PSExceptionUtils.getMessageForLog(e));
+        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         
         return Response
                 .status(status)

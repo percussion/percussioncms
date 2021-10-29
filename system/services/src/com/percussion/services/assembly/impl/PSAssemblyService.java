@@ -29,6 +29,7 @@ import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.deploy.server.PSJexlHelper;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
@@ -463,13 +464,13 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       catch (PSExtensionException e)
       {
-         log.error("Serious problem, cannot instantiate {} Error: {}", name, e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Serious problem, cannot instantiate {} Error: {}", name, PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
       }
       catch (com.percussion.design.objectstore.PSNotFoundException e)
       {
-         log.error("Serious problem, cannot find {} Error: {}" ,name, e.getMessage());
+         log.error("Serious problem, cannot find {} Error: {}" ,name,PSExceptionUtils.getMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.ASSEMBLER_INST, name, e);
       }
    }
@@ -922,8 +923,8 @@ public class PSAssemblyService implements IPSAssemblyService
                   m_cache.evict(n.getGuid(), CONTENT_REGION);
                }
             } catch (RepositoryException e) {
-               log.warn(e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.warn(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }
@@ -1063,12 +1064,12 @@ public class PSAssemblyService implements IPSAssemblyService
                String debugMessage = MessageFormat.format("Problem when evaluating expression \"{1}\" "
                      + "for variable \"{0}\": {2}", var != null ? var : "<no variable>", exp != null
                      ? exp.getSourceText()
-                     : "<null>", e.getMessage());
+                     : "<null>",PSExceptionUtils.getMessageForLog(e));
 
                 String message = "Problem when evaluating expression : " + exp.getOwnerType() + " : " + exp.getOwnerName();
 
                log.debug("ERROR ProcessBinding: {} Error: {}", debugMessage, e.getMessage(), e);
-               log.error("ERROR ProcessBinding: {} Error: {}", message, e.getMessage());
+               log.error("ERROR ProcessBinding: {} Error: {}", message,PSExceptionUtils.getMessageForLog(e));
 
                throw new RuntimeException(message, e);
             }
@@ -1184,7 +1185,7 @@ public class PSAssemblyService implements IPSAssemblyService
          }
          catch (NumberFormatException | PSNotFoundException e)
          {
-            log.warn(e.getMessage());
+            log.warn(PSExceptionUtils.getMessageForLog(e));
             // This should not happen at this level...
             log.debug("Skipping site information setting as the supplied siteid is not an integer.", e);
          }

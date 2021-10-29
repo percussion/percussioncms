@@ -50,7 +50,7 @@ public class ThreadLocalTenantContextTest extends TestCase
 			} 
 			catch (InterruptedException e) {
 				log.error(PSExceptionUtils.getMessageForLog(e));
-				log.debug(e);
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 		}
 		
@@ -60,7 +60,7 @@ public class ThreadLocalTenantContextTest extends TestCase
 		} 
 		catch (InterruptedException e) {
 			log.error(PSExceptionUtils.getMessageForLog(e));
-			log.debug(e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		for(ThreadLocalRunner r : runners)
 			r.deactivate();

@@ -468,7 +468,7 @@ public class PSMetadataDao implements IPSMetadataDao
                 tx.rollback();
             }
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return updatedRows;
     }

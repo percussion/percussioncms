@@ -99,7 +99,7 @@ public class PSOEmailUtils {
 	  catch(Exception e)
 	  {
 			log.error(PSExceptionUtils.getMessageForLog(e));
-			log.debug(e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	  }
 	}
 	

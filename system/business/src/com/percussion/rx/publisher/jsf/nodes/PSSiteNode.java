@@ -23,10 +23,9 @@
  */
 package com.percussion.rx.publisher.jsf.nodes;
 
-import static org.apache.commons.lang.StringUtils.isBlank;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.jsf.PSCategoryNodeBase;
 import com.percussion.rx.jsf.PSEditableNodeContainer;
 import com.percussion.rx.jsf.PSNavigation;
@@ -58,7 +57,15 @@ import com.percussion.services.sitemgr.data.PSSite;
 import com.percussion.services.sitemgr.data.PSSiteProperty;
 import com.percussion.services.utils.jsf.validators.PSPathExists;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.EditableValueHolder;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -71,15 +78,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.component.EditableValueHolder;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 /**
  * Implements the needed facade for editing a site design element. Note that
@@ -319,8 +318,8 @@ public class PSSiteNode extends PSDesignNode
             IPSPublishingContext cxt = smgr.loadContext(contextName);
             mi_contextId = cxt.getGUID();
          } catch (PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       
@@ -416,9 +415,9 @@ public class PSSiteNode extends PSDesignNode
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failed to get folder id from path: {} , due to error: {}", path, e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to get folder id from path: {} , due to error: {}", path,PSExceptionUtils.getMessageForLog(e));
          return -1;
       }
    }
@@ -518,8 +517,8 @@ public class PSSiteNode extends PSDesignNode
          try {
             m_site = smgr.loadSiteModifiable(getGUID());
          } catch (PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }
@@ -1065,8 +1064,8 @@ public class PSSiteNode extends PSDesignNode
       try {
         contexts = smgr.findAllContexts();
       } catch (PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       final Map<IPSGuid, IPSPublishingContext> cmap =
             new HashMap<>();
@@ -1118,8 +1117,8 @@ public class PSSiteNode extends PSDesignNode
       try {
          contexts = smgr.findAllContexts();
       } catch (PSNotFoundException e) {
-       log.error(e.getMessage());
-       log.debug(e.getMessage(),e);
+       log.error(PSExceptionUtils.getMessageForLog(e));
+       log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       final Map<IPSGuid, IPSPublishingContext> idToContext =
             new HashMap<>();
@@ -1144,8 +1143,8 @@ public class PSSiteNode extends PSDesignNode
          // Make sure cancel gets the current object
          m_site = smgr.loadSiteModifiable(m_site.getGUID());
       } catch (PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return cancel();
    }

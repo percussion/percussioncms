@@ -246,7 +246,7 @@ public class PSLikesService implements IPSLikesService
                     + "An administrator should atttempt to update the likes table "
                     + "in the DTS database. Error: {}",prevSiteName,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return;
         }
 

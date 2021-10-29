@@ -24,6 +24,7 @@
 
 package com.percussion.security.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.xml.resolver.Catalog;
@@ -191,7 +192,7 @@ public class PSCatalogResolver extends CatalogResolver{
             s = super.resolve(href, null);
         }catch(Exception e){
             log.warn("Error resolving external resource from local XML Catalog.  href: {} base: {} Error:{}",
-                    href,base, e.getMessage());
+                    href,base, PSExceptionUtils.getMessageForLog(e));
             throw new TransformerException(e);
         }
         if(s == null){

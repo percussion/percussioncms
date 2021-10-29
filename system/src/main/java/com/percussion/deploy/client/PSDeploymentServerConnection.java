@@ -38,6 +38,7 @@ import com.percussion.deploy.error.PSLockedException;
 import com.percussion.deploy.objectstore.PSDbmsInfo;
 import com.percussion.deploy.objectstore.PSDeploymentServerConnectionInfo;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSAuthenticationFailedException;
@@ -528,8 +529,8 @@ public class PSDeploymentServerConnection
          }
          catch (Exception e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             if (data != null && log.isDebugEnabled())
             {
                // log the request data to make debugging easier
@@ -543,8 +544,8 @@ public class PSDeploymentServerConnection
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          if (data != null && log.isDebugEnabled())
          {
             // log the request data to make debugging easier
@@ -730,8 +731,8 @@ public class PSDeploymentServerConnection
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
@@ -896,8 +897,8 @@ public class PSDeploymentServerConnection
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getMessage());
       }
@@ -1068,9 +1069,9 @@ public class PSDeploymentServerConnection
          //This code is executed client side so the key will be unique per client.
          return PSEncryptor.encryptString(SECURE_DIR,pwd);
       } catch (PSEncryptionException e) {
-         log.error("Error encrypting password: {}", e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error("Error encrypting password: {}",PSExceptionUtils.getMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return "";
       }
    }

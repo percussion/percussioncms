@@ -24,6 +24,7 @@
 
 package com.percussion.tls;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -235,11 +236,11 @@ public class TLSTester {
            //print_content(con);
 
         } catch (MalformedURLException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (IOException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -264,17 +265,17 @@ public class TLSTester {
             myTrustStore.store(fo, KEYSTORE_PASS.toCharArray());
         }
         } catch (NoSuchAlgorithmException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (IOException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (KeyStoreException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (CertificateException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return;
     }
@@ -296,8 +297,8 @@ public class TLSTester {
                 }
 
             } catch (IOException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
         }
@@ -326,11 +327,11 @@ public class TLSTester {
                 }
 
             } catch (SSLPeerUnverifiedException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             } catch (IOException e){
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
         }

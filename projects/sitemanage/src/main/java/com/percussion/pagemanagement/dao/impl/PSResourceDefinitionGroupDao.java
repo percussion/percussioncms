@@ -80,7 +80,7 @@ public class PSResourceDefinitionGroupDao
                 log.error("Failed to parse resource definition: {} Error: {}" ,
                         fe.getFileName(),
                         PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         

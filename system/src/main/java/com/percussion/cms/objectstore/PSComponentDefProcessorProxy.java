@@ -24,6 +24,7 @@
 package com.percussion.cms.objectstore;
 
 import com.percussion.cms.PSCmsException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSRemoteRequester;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -223,8 +224,8 @@ public class PSComponentDefProcessorProxy extends PSProcessorProxy
       }
       catch (PSCmsException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
           
       return proxy;

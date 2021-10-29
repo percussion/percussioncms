@@ -24,6 +24,7 @@
 package com.percussion.workflow;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.testing.IntegrationTest;
@@ -117,8 +118,8 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
             }
             catch(PSEntryNotFoundException e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                log.info("Transition context not found.");
                throw  e;
             }
@@ -150,8 +151,8 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
             log.info("cshc = {}", cshc.toString());
          } catch (IllegalArgumentException e) 
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             log.info("error creating PSContentStatusHistoryContext");
             throw  e;
          }      
@@ -167,8 +168,8 @@ public class PSContentStatusHistoryContextTest extends PSAbstractWorkflowTest
         
       } catch (SQLException e) 
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "SQL exception: ";
          except = e;
       }

@@ -553,7 +553,7 @@ public class PSPublisherService
          try {
             loadItemFilterIfNeeded(clist);
          } catch (PSNotFoundException e) {
-            log.warn("Skipping item filter: {}",e.getMessage());
+            log.warn("Skipping item filter: {}",PSExceptionUtils.getMessageForLog(e));
          }
       }
       return results;
@@ -2508,7 +2508,7 @@ public class PSPublisherService
       catch(Exception e)
       {
          log.error("Problem updating publishing info", PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       }
@@ -3584,8 +3584,8 @@ public class PSPublisherService
                catch(Exception e){
                   //This should not happen, in case happens log the details and send the operation as error
                   log.error("Error occurred converting the operation for publishing entry for content id: {} and publishing date {}. Error: {}" ,
-                          lguid , date, e.getMessage());
-                  log.debug(e.getMessage(),e);
+                          lguid , date,PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                }
                String status = "Error";
                try{
@@ -3595,8 +3595,8 @@ public class PSPublisherService
                catch(Exception e){
                   //This should not happen, in case happens log the details and send the operation as error
                   log.error("Error occurred converting the status for publishing entry for content id: {} and publishing date {}. Error: {}",
-                          lguid, date, e.getMessage());
-                  log.debug(e.getMessage(),e);
+                          lguid, date,PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                }
                Integer contentId = Integer.valueOf(StringUtils.EMPTY + row[6]);
                Integer revisionId = Integer.valueOf(StringUtils.EMPTY + row[7]);

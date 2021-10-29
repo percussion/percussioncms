@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.jexl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.contentmgr.data.PSContentNode;
 import com.percussion.utils.jsr170.PSProperty;
@@ -73,8 +74,8 @@ public class PSJexlExtensionsTest
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

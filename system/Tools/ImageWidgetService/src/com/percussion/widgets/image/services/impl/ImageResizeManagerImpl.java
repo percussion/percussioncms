@@ -104,8 +104,8 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             result = postProcessImage(result, outImage);
 
         } catch (IOException e) {
-            log.error("Unable to read image data. Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Unable to read image data. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return result;
 
@@ -150,7 +150,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         catch (IOException e) {
             log.error("Error was encountered while trying to create output stream. Error: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return result;
     }
@@ -470,7 +470,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             log.debug(out);
         } catch (TransformerException e) {
             log.error("Transformer Exception: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 

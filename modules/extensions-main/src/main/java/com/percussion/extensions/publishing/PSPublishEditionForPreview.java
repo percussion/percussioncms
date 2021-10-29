@@ -24,6 +24,7 @@
 package com.percussion.extensions.publishing;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -451,8 +452,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
          }
          catch (Exception e) //exception
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          finally
          {
@@ -502,8 +503,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

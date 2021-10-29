@@ -24,6 +24,7 @@
 
 package com.percussion.install;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -115,8 +116,8 @@ public class PSUpgradePluginWidgetBuilderWidgetTransform implements IPSUpgradePl
       catch(Exception e)
       {
          logMessage(e.getLocalizedMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return null; 
    }

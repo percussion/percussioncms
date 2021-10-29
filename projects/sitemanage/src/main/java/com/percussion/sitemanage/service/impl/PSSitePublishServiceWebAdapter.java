@@ -29,6 +29,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.PSPageLinkedToItem;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
@@ -136,8 +137,8 @@ public class PSSitePublishServiceWebAdapter
 
          return sitePublishService.publish(name, PubType.FULL, null, false, server);
       } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -161,8 +162,8 @@ public class PSSitePublishServiceWebAdapter
 
          return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, false, null);
       } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -185,8 +186,8 @@ public class PSSitePublishServiceWebAdapter
 
          return sitePublishService.publish(null, PubType.PUBLISH_NOW, id, true, null);
       } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -209,8 +210,8 @@ public class PSSitePublishServiceWebAdapter
 
          return sitePublishService.publish(null, PubType.STAGE_NOW, id, false, null);
       } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -313,7 +314,7 @@ public class PSSitePublishServiceWebAdapter
                    changeEvent.setSiteId(siteIds.get(0).getSiteId());
                    changeSvc.contentChanged(changeEvent);
                 } catch (IPSGenericDao.SaveException e) {
-                   log.warn("Error creating change event for takedown change. Error: {}", e.getMessage());
+                   log.warn("Error creating change event for takedown change. Error: {}", PSExceptionUtils.getMessageForLog(e));
                 }
              }
          }
@@ -452,8 +453,8 @@ public class PSSitePublishServiceWebAdapter
       try {
          return sitePublishService.getQueuedIncrementalRelatedContent(siteName, serverName, startIndex, pageSize);
       } catch (IPSSitePublishService.PSSitePublishException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -477,8 +478,8 @@ public class PSSitePublishServiceWebAdapter
 
          return sitePublishService.publishIncremental(name, null, false, server);
       } catch (PSDataServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e.getMessage());
       }
    }
@@ -501,8 +502,8 @@ public class PSSitePublishServiceWebAdapter
 
          return sitePublishService.publishIncrementalWithApproval(name, null, false, server, itemsToApprove);
       } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSPubServerService.PSPubServerServiceException | IPSItemService.PSItemServiceException | PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e.getMessage());
       }
    }

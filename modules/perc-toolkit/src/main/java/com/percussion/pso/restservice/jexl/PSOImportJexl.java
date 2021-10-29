@@ -10,6 +10,7 @@
 package com.percussion.pso.restservice.jexl;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSJexlExpression;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
@@ -303,8 +304,8 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 		}
 		catch (DocumentException e)
 		{
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		return document;
@@ -330,8 +331,8 @@ public class PSOImportJexl  extends PSJexlUtilBase implements IPSJexlExpression 
 		}
 		catch (DocumentException e)
 		{
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		return document;

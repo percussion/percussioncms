@@ -27,13 +27,11 @@
  */
 package com.percussion.widgets.image.services.impl;
 
-import com.percussion.content.PSContentFactory;
-import com.percussion.design.catalog.system.PSMimeTypeCatalogHandler;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.widgets.image.data.ImageData;
 import com.percussion.widgets.image.data.MimeUtils;
 import com.percussion.widgets.image.web.impl.ImageReader;
 import com.percussion.widgets.image.web.impl.ImageReader.ImageReaderException;
-import com.twelvemonkeys.net.MIMEUtil;
 import org.apache.commons.imaging.ImageInfo;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
@@ -187,8 +185,8 @@ public class ImageReaderTest
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
          Assert.fail("Caught exception on resize");
 
@@ -248,15 +246,15 @@ public class ImageReaderTest
       {
          Assert.fail("Caught image read exception getting image information:"
                + e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (IOException e)
       {
          Assert.fail("Caught IO exception getting image information:"
                + e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return imageInfo;
    }

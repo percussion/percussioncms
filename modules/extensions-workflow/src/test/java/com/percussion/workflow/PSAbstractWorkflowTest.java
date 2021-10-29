@@ -24,6 +24,7 @@
 package com.percussion.workflow;
 
 import com.percussion.data.PSSqlException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSPreparedStatement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -88,8 +89,8 @@ public abstract class PSAbstractWorkflowTest
       catch (PSWorkflowTestException e)
       {
 
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          log.error("Exception while testing ");
          Throwable throwable =  e.getThrowable();
          log.info("throwable class = {}", throwable.getClass());
@@ -117,7 +118,7 @@ public abstract class PSAbstractWorkflowTest
             log.debug(throwable.getMessage(), throwable);
          }
          log.info("Stack Trace for testing code:");
-         log.error(e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(e.getMessage(), throwable);
       }
       finally

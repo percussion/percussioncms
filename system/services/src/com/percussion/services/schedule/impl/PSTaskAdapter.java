@@ -27,6 +27,7 @@ import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
@@ -176,9 +177,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failed notification for task: {} {}", job.getName(), e.getMessage());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed notification for task: {} {}", job.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -585,9 +586,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failed to format Notification Template id= {} : {}", nt.getId(), e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to format Notification Template id= {} : {}", nt.getId(),PSExceptionUtils.getMessageForLog(e));
          return null;
       }
    }
@@ -876,9 +877,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failed to log task execution", e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to log task execution",PSExceptionUtils.getMessageForLog(e));
       }
    }
    

@@ -27,6 +27,7 @@ import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSContentTypeVariant;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
@@ -255,7 +256,7 @@ public class PSNavLink
       }
       catch (MalformedURLException e)
       {
-         log.error("Malformed URL {} ", e.getMessage());
+         log.error("Malformed URL {} ", PSExceptionUtils.getMessageForLog(e));
          throw new PSNavException(e);
       }
 

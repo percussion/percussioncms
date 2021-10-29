@@ -24,6 +24,7 @@
 
 package com.percussion.services.assembly.jexl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -127,8 +128,8 @@ public class PSJexlDbExtensionsTest {
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 }

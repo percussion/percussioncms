@@ -347,7 +347,7 @@ public class PSErrorCollector
       catch (MalformedURLException e)
       {
          // should never happen
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
    }
 

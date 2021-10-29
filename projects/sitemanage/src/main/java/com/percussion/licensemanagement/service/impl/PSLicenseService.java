@@ -26,6 +26,7 @@ package com.percussion.licensemanagement.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.licensemanagement.data.PSLicenseStatus;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.data.PSModuleLicenses;
@@ -257,8 +258,8 @@ public class PSLicenseService {
          mls.setLicenseServiceUrl(systemProps.getProperty(CLOUD_LICENSES_URL_PROPNAME));
          return mls;
      } catch (IPSGenericDao.LoadException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new WebApplicationException(e);
      }
     }

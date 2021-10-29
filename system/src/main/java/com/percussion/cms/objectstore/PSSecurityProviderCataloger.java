@@ -25,6 +25,7 @@ package com.percussion.cms.objectstore;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -62,7 +63,7 @@ public class PSSecurityProviderCataloger
       }
       catch(Exception e)
       {
-         throw new PSCmsException(1000, e.getMessage());
+         throw new PSCmsException(1000, PSExceptionUtils.getMessageForLog(e));
       }
    }
 

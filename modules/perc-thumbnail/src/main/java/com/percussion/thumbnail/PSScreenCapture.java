@@ -134,7 +134,7 @@ public class PSScreenCapture {
             }
         } catch (Exception e) {
             log.error("Error taking screen capture using phantomjs with error: {}" ,PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
         }
     }
@@ -239,7 +239,7 @@ public class PSScreenCapture {
         } catch (IOException e) {
             log.error("IO Exception while extracting bz2 archive:{}" ,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         extractTar(targetDir, tarFile);
@@ -273,10 +273,10 @@ public class PSScreenCapture {
             }
         } catch (FileNotFoundException e) {
             log.error("Cannot find file extracting tar for phantomjs install: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (IOException e) {
             log.error("Error reading extracting tar file for phantomjs install: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -313,7 +313,7 @@ public class PSScreenCapture {
             }
         } catch (ArchiveException | IOException e) {
             log.error("Unexpected Archive error while installing phantomjs for the thumbnail service: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -334,7 +334,7 @@ public class PSScreenCapture {
             }
         } catch (IOException e) {
             log.warn("Unable to copy thumbnail resource: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 

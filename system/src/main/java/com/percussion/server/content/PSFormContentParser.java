@@ -25,6 +25,7 @@
 package com.percussion.server.content;
 
 import com.percussion.content.IPSMimeContentTypes;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
 import com.percussion.server.IPSServerErrors;
@@ -178,10 +179,9 @@ public class PSFormContentParser extends PSContentParser
       {
          // This should never happen as we are supplying the proper
          //character encoding.
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-      }// This should never happen as we are supplying the non-null
-//String. There is no real IO.
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+      }
 
 
       String curTok;

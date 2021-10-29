@@ -31,6 +31,7 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.data.PSApprovableItems;
 import com.percussion.itemmanagement.data.PSBulkApprovalJobStatus;
@@ -185,8 +186,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
             return checkIn(id, false);
         } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -218,8 +219,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             } catch (PSErrorsException e) {
                 PSErrorException ex = (PSErrorException) e.getErrors().get(
                         ids.get(0));
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 throw new PSItemWorkflowServiceException("Failed to check-in item: " + sum != null ? sum.getName() : "no summary " + "id= " + id + " , Error: " + ex.getErrorMessage(), ex);
             }
 
@@ -315,8 +316,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
 
             return trans;
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -381,8 +382,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             }
             return results;
         } catch (PSItemWorkflowServiceException | PSDataServiceException | PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -543,8 +544,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             return new PSItemUserInfo(summary.getName(), summary.getCheckoutUserName(), currentUser,
                     getAssignmentType(id).getLabel());
         } catch (PSItemWorkflowServiceException | PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -614,8 +615,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
                                 pages.add(owner);
                             }
                         } catch (PSDataServiceException e) {
-                            log.error(e.getMessage());
-                            log.debug(e.getMessage(),e);
+                            log.error(PSExceptionUtils.getMessageForLog(e));
+                            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                             //continue loop so one bad entry doesn't stop all processing
                         }
 
@@ -666,8 +667,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
                     String folderPath = folderHelper.getFolderPath(path);
                     workflowId = folderHelper.getValidWorkflowId(folderHelper.findFolderProperties(folderHelper.findFolder(folderPath).getId()));
                 } catch (Exception e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     throw new PSItemWorkflowServiceException("Cannot determine workflow for folder: " + path, e);
                 }
             }
@@ -800,8 +801,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         catch (PSSystemException e)
         {
             String msg = "Failed to get assignment type for item id = " + id;
-            log.error("{}, Error: {}", msg, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", msg,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSItemWorkflowServiceException(msg, e);
         }
         return psAssignmentTypeEnum;
@@ -826,8 +827,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
         catch (PSErrorException e) {
             // if there is an error determining if content is local, we return false
             // and fall back to previous behavior prior to force checking in local content.
-            log.error("Error checking if content with id: {} is local content. Error: {}",id, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error checking if content with id: {} is local content. Error: {}",id,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return false;
         }
     }
@@ -989,8 +990,8 @@ public class PSItemWorkflowService implements IPSItemWorkflowService
             long jobId = asyncJobService.startJob(BULK_APPROVAL_JOB_BEAN, items);
             return "" + jobId;
         } catch (IPSFolderService.PSWorkflowNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }

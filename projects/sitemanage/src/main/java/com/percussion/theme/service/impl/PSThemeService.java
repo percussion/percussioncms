@@ -24,13 +24,22 @@
 
 package com.percussion.theme.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.server.PSRequest;
-import com.percussion.share.service.IPSDataService.*;
+import com.percussion.share.service.IPSDataService.DataServiceDeleteException;
+import com.percussion.share.service.IPSDataService.DataServiceLoadException;
+import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
+import com.percussion.share.service.IPSDataService.DataServiceSaveException;
+import com.percussion.share.service.IPSDataService.PSThemeNotFoundException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
-import com.percussion.theme.data.*;
+import com.percussion.theme.data.PSRegionCSS;
+import com.percussion.theme.data.PSRegionCssList;
+import com.percussion.theme.data.PSRichTextCustomStyle;
+import com.percussion.theme.data.PSTheme;
+import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.IPSThemeService;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.io.FileUtils;
@@ -41,10 +50,20 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Properties;
 
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfNull;
 import static org.apache.commons.lang.Validate.notEmpty;
@@ -85,7 +104,7 @@ public class PSThemeService implements IPSThemeService
                     themes.add(find(thFile.getName()));
                 } catch (DataServiceLoadException | DataServiceNotFoundException | PSValidationException e) {
                     log.error("Failed to load theme: {}" ,thFile.getName());
-                    log.debug(e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         }

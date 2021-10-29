@@ -25,6 +25,7 @@ package com.percussion.webservices.system;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -47,15 +48,14 @@ import com.percussion.webservices.faults.PSNotAuthorizedFault;
 import com.percussion.webservices.faults.PSUnknownRelationshipTypeFault;
 import com.percussion.webservices.faults.PSUseSpecificMethodsFault;
 import com.percussion.webservices.faults.PSUserNotMemberOfCommunityFault;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * Server side implementations for web services defined in
@@ -101,7 +101,7 @@ public class SystemSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;   
@@ -135,7 +135,7 @@ public class SystemSOAPImpl extends PSBaseSOAPImpl
       }      
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -182,7 +182,7 @@ public class SystemSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       return null;
    }
@@ -216,7 +216,7 @@ public class SystemSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       return null;
    }
@@ -248,7 +248,7 @@ public class SystemSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       return null;
    }
@@ -368,7 +368,7 @@ public class SystemSOAPImpl extends PSBaseSOAPImpl
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
 
       return null;
@@ -405,7 +405,7 @@ public class SystemSOAPImpl extends PSBaseSOAPImpl
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return result;

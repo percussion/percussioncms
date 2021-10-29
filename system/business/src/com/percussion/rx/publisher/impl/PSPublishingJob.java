@@ -1628,8 +1628,8 @@ public class PSPublishingJob implements Runnable
                   try {
                      changeLocationItems = handler.getUnpublishingItemsByServer(ed.getPubServerOrSiteId(), deliveryContext, contentlist, unpublishKeys, assemblyItems);
                   } catch (com.percussion.services.error.PSNotFoundException e) {
-                     log.warn(e.getMessage());
-                     log.debug(e.getMessage(),e);
+                     log.warn(PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                   Iterator<IPSAssemblyItem> moreUnPubs = Iterators.filter(assemblyItems.iterator(), new Predicate<IPSAssemblyItem>()
                   {

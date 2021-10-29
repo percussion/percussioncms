@@ -15,8 +15,13 @@ import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pso.restservice.support.IImportItemSystemInfo;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSContentTypeSummary;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -176,9 +181,8 @@ public class ImportItemSystemInfoImpl implements IImportItemSystemInfo {
 				siteName=site.getName();
 				siteNameMap.put(id, siteName);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				log.error("Cannot load site Error: {}", e.getMessage());
-				log.debug(e.getMessage(), e);
+				log.error("Cannot load site Error: {}", PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
 			}
 //		}
@@ -222,8 +226,8 @@ public class ImportItemSystemInfoImpl implements IImportItemSystemInfo {
 				slot = aService.loadSlot(new PSGuid(PSTypeEnum.SLOT, id));
 				slotname=slot.getName();
 			} catch (Exception e) {
-				log.error("Cannot load slot {}, Error: {}", id, e.getMessage());
-				log.debug(e.getMessage(), e);
+				log.error("Cannot load slot {}, Error: {}", id,PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				slotname=String.valueOf(id);
 			}
 

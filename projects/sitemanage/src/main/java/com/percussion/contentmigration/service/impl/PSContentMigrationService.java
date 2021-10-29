@@ -34,6 +34,7 @@ import com.percussion.contentmigration.converters.IPSContentMigrationConverter;
 import com.percussion.contentmigration.rules.IPSContentMigrationRule;
 import com.percussion.contentmigration.service.IPSContentMigrationService;
 import com.percussion.contentmigration.service.PSContentMigrationException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.assembler.IPSRenderAssemblyBridge;
 import com.percussion.pagemanagement.data.PSPage;
@@ -136,7 +137,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
                     itemWorkflowService.checkOut(pageId);
                     checkedout = true;
                 } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                    log.warn(e.getMessage());
+                    log.warn(PSExceptionUtils.getMessageForLog(e));
                 }
             }
             pageTemplateService.changeTemplate(pageId, templateId);
@@ -160,7 +161,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
                 try {
                     itemWorkflowService.checkIn(pageId);
                 } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                    log.warn(e.getMessage());
+                    log.warn(PSExceptionUtils.getMessageForLog(e));
                 }
             }
         }
@@ -204,7 +205,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
                     itemWorkflowService.checkOut(pageId);
                     checkedout = true;
                 } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                    log.warn(e.getMessage());
+                    log.warn(PSExceptionUtils.getMessageForLog(e));
                 }
             }
             //Find applicable widgets
@@ -226,7 +227,7 @@ public class PSContentMigrationService implements IPSContentMigrationService
                 try {
                     itemWorkflowService.checkIn(pageId);
                 } catch (IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                    log.warn(e.getMessage());
+                    log.warn(PSExceptionUtils.getMessageForLog(e));
                 }
             }
         }
@@ -286,8 +287,8 @@ public class PSContentMigrationService implements IPSContentMigrationService
             try {
                 content = getUnUsedContent(unusedAsset);
             } catch (PSDataServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             if(StringUtils.isNotBlank(content))
             {

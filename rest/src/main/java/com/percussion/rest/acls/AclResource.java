@@ -25,6 +25,7 @@
 package com.percussion.rest.acls;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Guid;
 import com.percussion.rest.GuidList;
 import com.percussion.rest.Status;
@@ -77,7 +78,7 @@ public class AclResource {
             return adaptor.getUserAccessLevel(objectGuid);
         }catch(Exception e){
             log.error("An exception occurred getting User Access Level for Object: {}, Error: {}", objectGuid.getStringValue(),e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -96,8 +97,8 @@ public class AclResource {
         try {
             return adaptor.calculateUserAccessLevel(aclGuid);
         }catch(Exception e){
-            log.error("An error occurred checking the access level for Acl: {}, Error: {}", aclGuid, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An error occurred checking the access level for Acl: {}, Error: {}", aclGuid,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -113,8 +114,8 @@ public class AclResource {
         try {
             return adaptor.createAcl(request.getObjectGuid(), request.getOwner());
         }catch(Exception e){
-            log.error("An error occurred creating an Acl for Owner: {} and object: {}, Error: {}", request.getOwner().getName(), request.getObjectGuid().getStringValue(), e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An error occurred creating an Acl for Owner: {} and object: {}, Error: {}", request.getOwner().getName(), request.getObjectGuid().getStringValue(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -131,8 +132,8 @@ public class AclResource {
         try {
             return adaptor.loadAcls(aclGuids);
         }catch(Exception e){
-            log.error("An error occurred loading acls for guid list: {}, Error: {}", aclGuids.toString(), e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An error occurred loading acls for guid list: {}, Error: {}", aclGuids.toString(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -147,8 +148,8 @@ public class AclResource {
         try {
             return adaptor.loadAcl(new Guid(guid));
         }catch(Exception e){
-            log.error("An error occurred loading acl for guid : {} {}", guid, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An error occurred loading acl for guid : {} {}", guid,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -163,8 +164,8 @@ public class AclResource {
         try {
             return adaptor.loadAclsForObjects(objectGuids);
         }catch(Exception e){
-            log.error("An error occurred loading acl for guids : {} {}", objectGuids.toString(), e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An error occurred loading acl for guids : {} {}", objectGuids.toString(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -184,7 +185,7 @@ public class AclResource {
         }
         catch(Exception e){
             log.error("An error occurred loading acl for Object guid : {}, {}", objectGuid,e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -199,8 +200,8 @@ public class AclResource {
         try {
              adaptor.saveAcls(aclList);
         }catch(Exception e){
-            log.error("An error occurred saving acl list {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An error occurred saving acl list {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),
                     Response.serverError().build());
         }
@@ -216,8 +217,8 @@ public class AclResource {
         try {
             adaptor.deleteAcl(aclGuid);
         } catch(Exception e){
-        log.error("An error occurred deleting acl:{}, Error: {}",aclGuid.getStringValue(), e.getMessage());
-        log.debug(e.getMessage(), e);
+        log.error("An error occurred deleting acl:{}, Error: {}",aclGuid.getStringValue(),PSExceptionUtils.getMessageForLog(e));
+        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         throw new WebApplicationException(e.getMessage(),
                 Response.serverError().build());
     }

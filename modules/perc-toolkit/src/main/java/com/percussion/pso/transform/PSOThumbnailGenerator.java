@@ -9,25 +9,26 @@
  ******************************************************************************/
 package com.percussion.pso.transform;
 
-import java.awt.AlphaComposite;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
+import com.percussion.design.objectstore.PSField;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSItemInputTransformer;
+import com.percussion.extension.IPSRequestPreProcessor;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extensions.general.PSFileInfo;
+import com.percussion.security.PSAuthorizationException;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSRequestValidationException;
+import com.percussion.util.PSPurgableTempFile;
+import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Node;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -41,27 +42,19 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
-
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Node;
-
-import com.percussion.design.objectstore.PSField;
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.extension.IPSItemInputTransformer;
-import com.percussion.extension.IPSRequestPreProcessor;
-import com.percussion.extension.PSExtensionException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.extensions.general.PSFileInfo;
-import com.percussion.security.PSAuthorizationException;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.PSRequestValidationException;
-import com.percussion.util.PSPurgableTempFile;
-import com.percussion.xml.PSXmlDocumentBuilder;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -388,8 +381,8 @@ public class PSOThumbnailGenerator extends PSFileInfo
     
       }
       catch (Exception e) {
-         log.error("Could not create thumbnail, Error: {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Could not create thumbnail, Error: {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

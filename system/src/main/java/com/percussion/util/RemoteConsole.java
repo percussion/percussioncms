@@ -25,6 +25,7 @@
 package com.percussion.util;
 
 import com.percussion.conn.PSDesignerConnection;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRemoteConsole;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -260,8 +261,8 @@ public class RemoteConsole
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       System.exit(result);
    }

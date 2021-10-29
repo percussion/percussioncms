@@ -24,6 +24,7 @@
 
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pathmanagement.service.IPSPathService;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSNoContent;
@@ -106,7 +107,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.create(req);
         } catch (PSDataServiceException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
 
@@ -123,7 +124,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.createExternalLinkSection(req);
         } catch (IPSSiteSectionService.PSSiteSectionException | PSValidationException | IPSPathService.PSPathNotFoundServiceException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -139,7 +140,7 @@ public class PSSiteSectionRestService
        try {
            return siteSectionService.createSectionLink(targetSectionGuid, parentSectionGuid);
        } catch (IPSSiteSectionService.PSSiteSectionException e) {
-           log.debug(e.getMessage(),e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw (e);
        }
     }
@@ -153,7 +154,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.createSectionFromFolder(req);
         } catch (PSDataServiceException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -182,7 +183,7 @@ public class PSSiteSectionRestService
        try {
            return siteSectionService.updateExternalLink(sectionGuid, req);
        } catch (IPSSiteSectionService.PSSiteSectionException | PSValidationException e) {
-           log.debug(e.getMessage(),e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw (e);
        }
     }
@@ -196,7 +197,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.updateSectionLink(req);
         } catch (IPSSiteSectionService.PSSiteSectionException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -211,7 +212,7 @@ public class PSSiteSectionRestService
         try {
             return new PSSiteBlogPropertiesList(siteSectionService.getBlogsForSite(siteName));
         } catch (PSValidationException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -224,7 +225,7 @@ public class PSSiteSectionRestService
         try {
             return new PSSiteBlogPropertiesList(siteSectionService.getAllBlogs());
         } catch (PSDataServiceException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -236,7 +237,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.getBlogPosts(id);
         } catch (PSValidationException | IPSSiteSectionService.PSSiteSectionException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -248,7 +249,7 @@ public class PSSiteSectionRestService
        try {
            return siteSectionService.getSectionProperties(id);
        } catch (IPSSiteSectionService.PSSiteSectionException e) {
-           log.debug(e.getMessage(),e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw (e);
        }
     }
@@ -264,7 +265,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.update(req);
         } catch (PSDataServiceException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -280,7 +281,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.loadTree(siteName);
         } catch (IPSSiteSectionService.PSSiteSectionException | PSNotFoundException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -292,7 +293,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.loadRoot(siteName);
         } catch (IPSSiteSectionService.PSSiteSectionException | PSNotFoundException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -306,7 +307,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.load(id);
         } catch (IPSSiteSectionService.PSSiteSectionException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -320,7 +321,7 @@ public class PSSiteSectionRestService
         try {
             siteSectionService.delete(id);
         } catch (PSValidationException | IPSDataService.DataServiceSaveException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -331,7 +332,7 @@ public class PSSiteSectionRestService
         try {
             siteSectionService.convertToFolder(id);
         } catch (PSValidationException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -353,7 +354,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.replaceLandingPage(request);
         } catch (PSDataServiceException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }
@@ -366,7 +367,7 @@ public class PSSiteSectionRestService
         try {
             return siteSectionService.move(req);
         } catch (PSValidationException | IPSSiteSectionService.PSSiteSectionException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         }
     }

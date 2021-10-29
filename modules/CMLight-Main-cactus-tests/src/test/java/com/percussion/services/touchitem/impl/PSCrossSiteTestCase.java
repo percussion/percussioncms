@@ -24,16 +24,13 @@
 
 package com.percussion.services.touchitem.impl;
 
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.server.PSServer;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -45,19 +42,20 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
-import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.cactus.ServletTestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.Validate.notNull;
 
 @Category(IntegrationTest.class)
 public abstract class PSCrossSiteTestCase extends ServletTestCase
@@ -159,8 +157,8 @@ public abstract class PSCrossSiteTestCase extends ServletTestCase
       }
       catch (InterruptedException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -323,8 +321,8 @@ public abstract class PSCrossSiteTestCase extends ServletTestCase
          }
          catch (Exception e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       

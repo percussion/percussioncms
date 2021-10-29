@@ -23,19 +23,17 @@
  */
 package com.percussion.rx.jsf;
 
-import com.percussion.rx.jsf.PSCategoryNodeBase;
-import com.percussion.rx.jsf.PSNodeBase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.error.PSNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.myfaces.trinidad.model.MenuModel;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The tree model provides a lazy loaded tree that is primarily managed by the
@@ -220,11 +218,11 @@ public class PSTreeModel extends MenuModel
             return -1;
          } else {
             int count = container.getChildren().size();
-            ms_log.debug("Get row count: " + count);
+            ms_log.debug("Get row count: {}" , count);
             return count;
          }
       } catch (PSNotFoundException e) {
-         ms_log.error(e.getMessage());
+         ms_log.error(PSExceptionUtils.getMessageForLog(e));
          return -1;
       }
    }

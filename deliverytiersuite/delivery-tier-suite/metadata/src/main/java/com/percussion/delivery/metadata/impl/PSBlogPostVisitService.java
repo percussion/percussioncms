@@ -24,27 +24,6 @@
 
 package com.percussion.delivery.metadata.impl;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PreDestroy;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.percussion.delivery.metadata.IPSBlogPostVisit;
 import com.percussion.delivery.metadata.IPSBlogPostVisitDao;
 import com.percussion.delivery.metadata.IPSBlogPostVisitService;
@@ -52,7 +31,25 @@ import com.percussion.delivery.metadata.IPSCookieConsentService;
 import com.percussion.delivery.metadata.data.PSBlogPostVisit;
 import com.percussion.delivery.metadata.data.PSCookieConsentQuery;
 import com.percussion.delivery.metadata.data.PSVisitQuery;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PreDestroy;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class PSBlogPostVisitService implements IPSBlogPostVisitService, InitializingBean {
@@ -110,8 +107,8 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
 			log.debug("Visits size: " + inMemoryVisitMap.size());
 			visitDao.save(visits);
 		} catch (Exception e) {
-			log.error("Failed save to hit counts, Error: {}", e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error("Failed save to hit counts, Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 	}
 	
@@ -125,8 +122,8 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
             inMemoryCookieConsentMap.clear();
         }
         catch (Exception e) {
-            log.error("Error saving cookie consent entries. Error:{}", e.getMessage());
-			log.debug(e.getMessage(), e);
+            log.error("Error saving cookie consent entries. Error:{}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 	
@@ -210,8 +207,8 @@ public class PSBlogPostVisitService implements IPSBlogPostVisitService, Initiali
         try {
             visitDao.updatePostsAfterSiteRename(prevSiteName, newSiteName);
         } catch (Exception e) {
-            log.error("Error updating blog post visit updates after site rename. Error: {}", e.getMessage());
-			log.debug(e.getMessage(), e);
+            log.error("Error updating blog post visit updates after site rename. Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

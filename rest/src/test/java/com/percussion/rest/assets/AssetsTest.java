@@ -24,16 +24,16 @@
 
 package com.percussion.rest.assets;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.MainTest;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -54,8 +54,8 @@ public class AssetsTest extends MainTest
             assertTrue("New Name Should Match", response.getName().equals("newname.png"));
         } catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw e;
         }
 

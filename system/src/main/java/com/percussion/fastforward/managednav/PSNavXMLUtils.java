@@ -24,6 +24,7 @@
 package com.percussion.fastforward.managednav;
 
 import com.percussion.cms.objectstore.PSContentTypeVariant;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestParsingException;
@@ -341,8 +342,8 @@ public class PSNavXMLUtils
          }
          catch (MalformedURLException e)
          {
-            log.error("Cannot build Landing Page URL {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Cannot build Landing Page URL {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSNavException(e);
          }
          log.debug("Build URL {}", intURL.toString());
@@ -386,8 +387,8 @@ public class PSNavXMLUtils
          }
          catch (Exception e)
          {
-            log.error("unexpected exception {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Unexpected exception: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSNavException(e);
          }
 
@@ -438,8 +439,8 @@ public class PSNavXMLUtils
             }
             catch (PSRequestParsingException e)
             {
-               log.error("unexpected exception {}", e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.error("Unexpected exception: {}", PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                throw new PSNavException(e);
             }
             imageElement = imageWalker.getNextElement(

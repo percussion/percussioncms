@@ -24,11 +24,11 @@
 
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -264,16 +264,10 @@ public class RxTableInstallLogic
       try
       {
          properties.load(new FileInputStream(FILE_PROPERTIES));
-      }
-      catch(FileNotFoundException e)
+      } catch(IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-      }
-      catch(IOException e)
-      {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       String temp = properties.getProperty("DEBUG", "false");

@@ -23,6 +23,7 @@
  */
 package com.percussion.services.filter;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.filter.data.PSFilterItem;
 import com.percussion.services.filter.data.PSItemFilter;
@@ -37,6 +38,12 @@ import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.xml.PSInvalidXmlException;
+import org.apache.cactus.ServletTestCase;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,13 +52,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.cactus.ServletTestCase;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.experimental.categories.Category;
-import org.xml.sax.SAXException;
 
 /**
  * @author dougrand
@@ -189,8 +189,8 @@ public class PSFilterServiceTest extends ServletTestCase
          }
          catch (Exception e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             assert (false);
          }
       }

@@ -626,14 +626,14 @@ public class PSCommentsService implements IPSCommentsService
                     log.error("Error updating comment with id: {} An administrator should attempt to update the comment manually. Error: {}",
                             comment.getId(),
                             PSExceptionUtils.getMessageForLog(e));
-                    log.debug(e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         } catch (Exception e) {
             log.error("Error finding comments for site: {} Error: {}",
                     prevSiteName,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return false;
         }
         return true;

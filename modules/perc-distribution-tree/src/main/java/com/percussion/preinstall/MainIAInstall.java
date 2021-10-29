@@ -24,7 +24,12 @@
 
 package com.percussion.preinstall;
 
-import com.zerog.ia.api.pub.*;
+import com.percussion.error.PSExceptionUtils;
+import com.zerog.ia.api.pub.CustomCodeAction;
+import com.zerog.ia.api.pub.InstallException;
+import com.zerog.ia.api.pub.InstallerProxy;
+import com.zerog.ia.api.pub.ProgressAccess;
+import com.zerog.ia.api.pub.UninstallerProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,8 +55,8 @@ public class MainIAInstall extends CustomCodeAction {
              PercussionCustomRuleSuccess.rulePass=true;
          }
       }catch(Exception e){
-          log.error(e.getMessage());
-          log.debug(e.getMessage(), e);
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
     }
 
@@ -85,8 +90,8 @@ public class MainIAInstall extends CustomCodeAction {
             progressAccess.setProgressStatusText(lineText);
             progressAccess.setProgressPercentage(calculatePercentage(lineNo));
         }catch (Exception e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 

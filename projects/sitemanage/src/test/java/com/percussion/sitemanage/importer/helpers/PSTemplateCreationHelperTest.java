@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.importer.helpers;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
@@ -39,7 +40,6 @@ import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
-import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.error.PSTemplateImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.PSSiteImportLogger;
@@ -47,15 +47,14 @@ import com.percussion.sitemanage.importer.helpers.impl.PSTemplateCreationHelper;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LucasPiccoli
@@ -297,14 +296,14 @@ public class PSTemplateCreationHelperTest extends ServletTestCase
         {
             fail();
         } catch (IPSPageService.PSPageException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (PSTemplateImportException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

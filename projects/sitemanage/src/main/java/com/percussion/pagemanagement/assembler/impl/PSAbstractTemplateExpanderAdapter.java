@@ -24,6 +24,7 @@
 package com.percussion.pagemanagement.assembler.impl;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
@@ -125,8 +126,8 @@ public abstract class PSAbstractTemplateExpanderAdapter<CACHE> implements IPSTem
                 try {
                     templateId = getTemplateId(parameters, cache);
                 } catch (PSDataServiceException | PSAssemblyException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(),e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     //Continue processing
                 }
                 if (templateId != null) {

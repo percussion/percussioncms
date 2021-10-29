@@ -23,6 +23,7 @@
  */
 package com.percussion.ant;
 
+import com.percussion.error.PSExceptionUtils;
 import com.perforce.api.Change;
 import com.perforce.api.CommitException;
 import com.perforce.api.Env;
@@ -77,8 +78,8 @@ public class PSPerforceHelper
         }
         catch (CommitException e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -118,8 +119,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -157,8 +158,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -196,8 +197,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -232,8 +233,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -267,8 +268,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -318,8 +319,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -375,8 +376,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally
@@ -410,8 +411,8 @@ public class PSPerforceHelper
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PerforceException(e.getMessage());
         }
         finally

@@ -24,6 +24,7 @@
 
 package com.percussion.taxonomy.web;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.taxonomy.domain.Language;
 import com.percussion.taxonomy.domain.Node;
 import com.percussion.taxonomy.domain.Node_status;
@@ -197,8 +198,8 @@ public class AbstractXMLProviderController extends AbstractControllerWithSecurit
 		try {
 			serializer.write(root, baos);
 		} catch (Exception e) {
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		HashMap<String, Object> myModel = new HashMap<String, Object>();

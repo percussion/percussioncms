@@ -28,6 +28,7 @@ import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSFolderAcl;
 import com.percussion.cms.objectstore.PSFolderProperty;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.legacy.data.PSItemEntry;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -202,8 +203,8 @@ public class PSFolderEntry extends PSItemEntry
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       m_folderAcl = acl;

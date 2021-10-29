@@ -24,6 +24,7 @@
 
 package com.percussion.widgetbuilder.service;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.utils.request.PSRequestInfo;
@@ -35,17 +36,16 @@ import com.percussion.widgetbuilder.data.PSWidgetBuilderResourceListData;
 import com.percussion.widgetbuilder.data.PSWidgetBuilderSummaryData;
 import com.percussion.widgetbuilder.data.PSWidgetBuilderValidationResults;
 import com.percussion.widgetbuilder.utils.xform.PSContentTypeFileTransformerTest;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.cactus.ServletTestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Category(IntegrationTest.class)
 public class TestWidgetBuilderService extends ServletTestCase
@@ -206,8 +206,8 @@ public class TestWidgetBuilderService extends ServletTestCase
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail("Exception: " + e.getLocalizedMessage());
         }
         finally

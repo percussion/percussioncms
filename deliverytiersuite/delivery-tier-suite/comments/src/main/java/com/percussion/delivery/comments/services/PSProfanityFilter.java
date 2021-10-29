@@ -126,7 +126,7 @@ public class PSProfanityFilter
         {
             log.error("Error initializing the Comment Profanity Filter. Error: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         PSProfanityFilter.profanity = Arrays.asList(StringUtils.split(profanityWords, ","));

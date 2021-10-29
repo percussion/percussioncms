@@ -47,6 +47,7 @@ import com.percussion.delivery.metadata.data.PSVisitQuery;
 import com.percussion.delivery.metadata.data.PSVisitRestEntry;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.services.PSAbstractRestService;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,8 +55,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
@@ -185,7 +184,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during searching metadata : {}" , e.getMessage());
+            log.error("Exception during searching metadata : {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -222,7 +221,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting tag list : {}" , e.getMessage());
+            log.error("Exception during getting tag list : {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -288,7 +287,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting current blog : {}", e.getMessage());
+            log.error("Exception during getting current blog : {}",PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -353,7 +352,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting blogs: {}" , e.getMessage());
+            log.error("Exception during getting blogs: {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -386,7 +385,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting dated entries : {}" , e.getMessage());
+            log.error("Exception during getting dated entries : {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -410,7 +409,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during delete : {}", e.getMessage());
+            log.error("Exception during delete : {}",PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -432,7 +431,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting all indexed directories: {}" , e.getMessage());
+            log.error("Exception during getting all indexed directories: {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -536,7 +535,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         } catch (JSONException e) {
 
             log.error("JSON Exception during updating the categories : {}" ,e.getMessage());
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return  returnJson.toString();
@@ -591,7 +590,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             }
 
         } catch (Exception e) {
-            log.error("Exception during getting top read blog posts: {}" , e.getMessage());
+            log.error("Exception during getting top read blog posts: {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -646,8 +645,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error getting cookie consent entries. Error: {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error getting cookie consent entries. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -727,8 +726,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error getting total cookie consents per site with name: {} Error: {}" , siteName, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error getting total cookie consents per site with name: {} Error: {}" , siteName,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
 
@@ -749,7 +748,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error deleting all cookie consent entries. Error: {}", e.getMessage());
+            log.error("Error deleting all cookie consent entries. Error: {}", PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -775,8 +774,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error deleting all cookie consent entries. Error: {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error deleting all cookie consent entries. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }

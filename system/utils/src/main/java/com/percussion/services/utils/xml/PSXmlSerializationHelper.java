@@ -23,6 +23,7 @@
  */
 package com.percussion.services.utils.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -382,8 +383,11 @@ public class PSXmlSerializationHelper
                   }
                   catch (Exception e)
                   {
-                     log.error("Could not instantiate, Error: {}", e.getMessage());
-                     log.debug(e.getMessage(), e);
+                     log.error("Could not instantiate, Error: {}",
+                             PSExceptionUtils.getMessageForLog(e));
+
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
                      throw new RuntimeException(e);
                   }
                }
@@ -595,9 +599,9 @@ public class PSXmlSerializationHelper
       {
          // Find underlying cause Exception.
          if (e.getCause() != null) {
-            log.error("Cause= {}, Error: {}",e.getCause(), e.getMessage());
+            log.error("Cause= {}, Error: {}",e.getCause(),PSExceptionUtils.getMessageForLog(e));
          }
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException("Error copying bean properties",e);
       }
    }

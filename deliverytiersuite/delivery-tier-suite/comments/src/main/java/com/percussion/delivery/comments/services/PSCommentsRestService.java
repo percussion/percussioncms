@@ -142,7 +142,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         {
             log.error("Exception occurred while getting comments!, Error: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -171,8 +171,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting comments as moderator!, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Exception occurred while getting comments as moderator!, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -214,8 +214,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (IllegalArgumentException e)
         {
-            log.error("Illegal Argument Exception!, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Illegal Argument Exception!, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSBadRequestException(e.getLocalizedMessage());
         }
     }
@@ -256,8 +256,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (NumberFormatException e)
         {
-            log.error("Number Format Exception! - Invalid {} parameter supplied, Error: {}", paramName, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Number Format Exception! - Invalid {} parameter supplied, Error: {}", paramName,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new IllegalArgumentException("Invalid " + paramName + " parameter supplied");
         }
 
@@ -327,8 +327,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting pages with comments, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Exception occurred while getting pages with comments, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -373,8 +373,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             try {
                 loc = new URI(referer);
             } catch (URISyntaxException e) {
-                log.error("Error creating redirect in Honeypot detection with message, Error: {}", e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error("Error creating redirect in Honeypot detection with message, Error: {}", PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 throw new WebApplicationException(e, Response.serverError().build());
             }
             return Response.seeOther(loc).build();
@@ -408,8 +408,8 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while adding comment, Error: {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Exception occurred while adding comment, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
 

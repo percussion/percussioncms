@@ -24,16 +24,16 @@
 package com.percussion.cms;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionParams;
 import com.percussion.server.IPSRequestContext;
-
-import java.io.File;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 /**
  * The compare panel defaults to using the previous revision if the second
@@ -121,8 +121,8 @@ public class PSCalculateCompareRevision implements IPSRequestPreProcessor
       }
       catch(PSConversionException e)
       {
-         log.error("Problem calculating revision for compare, Error: {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Problem calculating revision for compare, Error: {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

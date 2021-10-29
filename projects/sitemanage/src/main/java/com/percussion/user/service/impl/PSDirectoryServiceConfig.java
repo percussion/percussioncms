@@ -23,6 +23,7 @@
  */
 package com.percussion.user.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.dao.PSFileDataRepository;
 import com.percussion.share.dao.PSXmlFileDataRepository;
 import com.percussion.share.service.exception.PSBeanValidationUtils;
@@ -218,7 +219,7 @@ public class PSDirectoryServiceConfig
             e.setText("");
             notNull(doc, "Error parsing configuration file.");
         } catch (SAXException e) {
-            log.error("Error processing LDAP configuration file: {}", e.getMessage());
+            log.error("Error processing LDAP configuration file: {}", PSExceptionUtils.getMessageForLog(e));
         }
 
 

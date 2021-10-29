@@ -24,6 +24,7 @@
 
 package com.percussion.security.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.xerces.xni.XMLResourceIdentifier;
@@ -68,7 +69,7 @@ public class PSXMLEntityResolverWrapper implements XMLEntityResolver{
             }
         }catch(Exception e){
             log.warn("Error resolving external resource from local XML Catalog.  PUBLIC: {} SYSTEM_ID: {} Error:{}",
-                    resourceIdentifier.getPublicId(),resourceIdentifier.getLiteralSystemId(), e.getMessage());
+                    resourceIdentifier.getPublicId(),resourceIdentifier.getLiteralSystemId(), PSExceptionUtils.getMessageForLog(e));
             return getXmlInput(getNoOpSource());
         }
 

@@ -25,6 +25,7 @@
 package com.percussion.share.dao;
 
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -71,8 +72,9 @@ public class PSJaxbContext
          return m;
       }catch (JAXBException e)
          {
-            log.error("FATAL... Unable to create JAXB Marshaller: {}",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("FATAL... Unable to create JAXB Marshaller: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return null;
          }
    }
@@ -82,8 +84,9 @@ public class PSJaxbContext
          return get(aClass).createUnmarshaller();
       }catch (JAXBException e)
       {
-         log.error("FATAL... Unable to create JAXB Unmarshaller: {}",e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("FATAL... Unable to create JAXB Unmarshaller: {}",
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return null;
       }
    }

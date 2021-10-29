@@ -77,7 +77,7 @@ public class PSAddJavaDocErrorSupression extends Task
       catch (IOException e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new BuildException(e);         
       }
    }

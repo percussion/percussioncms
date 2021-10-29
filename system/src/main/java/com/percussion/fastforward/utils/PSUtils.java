@@ -26,6 +26,7 @@ package com.percussion.fastforward.utils;
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
@@ -238,8 +239,8 @@ public class PSUtils
          }
          catch (PSInternalRequestCallException e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             request.printTraceMessage("error making internal request to "
                     + requestName);
          }

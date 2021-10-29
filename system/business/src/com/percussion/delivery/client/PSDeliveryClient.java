@@ -24,6 +24,7 @@
 package com.percussion.delivery.client;
 
 import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.proxyconfig.service.IPSProxyConfigService;
 import com.percussion.proxyconfig.service.PSProxyConfigServiceLocator;
@@ -586,8 +587,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             try {
                 authScope = new AuthScope(uri.getHost(), uri.getPort(),server.getRealm());
             } catch (URIException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             this.getState().setCredentials(authScope, new UsernamePasswordCredentials(userName, password));
         }
@@ -683,8 +684,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             try {
                 authScope = new AuthScope(uri.getHost(), uri.getPort(),server.getRealm());
             } catch (URIException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             this.getState().setCredentials(authScope, new UsernamePasswordCredentials(userName, password));
         }

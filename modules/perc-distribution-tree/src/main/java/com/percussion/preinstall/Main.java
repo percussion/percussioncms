@@ -24,6 +24,7 @@
 
 package com.percussion.preinstall;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.io.PathUtils;
@@ -50,6 +51,7 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -76,8 +78,8 @@ public class Main {
 
     public static String developmentFlag = "false";
     public static String percVersion;
-    public static volatile int currentLineNo;
-    public static volatile int currentErrLineNo;
+    public static AtomicInteger currentLineNo;
+    public static AtomicInteger currentErrLineNo;
     public static volatile String debug="false";
     public static Integer processCode=0;
     public static Boolean error=false;
@@ -200,7 +202,7 @@ public class Main {
 
             // copy each entry in the dest path
             for (ZipEntry entry : entries) {
-                currentLineNo++;
+                currentLineNo.getAndIncrement();
                 String entryName = entry.getName();
                 if (!entryName.startsWith(folderPrefix))
                     continue;
@@ -220,7 +222,7 @@ public class Main {
                     continue;
                 }
                 if(MainIAInstall.installerProxy!=null){
-                    MainIAInstall.showProgress(MainIAInstall.installerProxy,currentLineNo,"Extracting temporary files...",entryDest.toString());
+                    MainIAInstall.showProgress(MainIAInstall.installerProxy,currentLineNo.get(),"Extracting temporary files...",entryDest.toString());
                 }else {
                     System.out.println("Creating file " + entryDest);
                 }
@@ -281,9 +283,9 @@ public class Main {
                                 // get the normal output if at least 50 millis have passed
                                 if (outBuff.timeElapsed() > 50)
                                     while (outBuff.hasNext()) {
-                                        currentLineNo++;
+                                        currentLineNo.getAndIncrement();
                                         if (MainIAInstall.installerProxy != null) {
-                                            MainIAInstall.showProgress(MainIAInstall.installerProxy, currentLineNo, "Installing files...", outBuff.getNext());
+                                            MainIAInstall.showProgress(MainIAInstall.installerProxy, currentLineNo.get(), "Installing files...", outBuff.getNext());
                                         } else {
                                             System.out.println(errBuff.getNext());
                                         }
@@ -291,10 +293,10 @@ public class Main {
                                 // get the error output if at least 50 millis have passed
                                 if (errBuff.timeElapsed() > 50)
                                     while (errBuff.hasNext())
-                                        currentErrLineNo++;
+                                        currentErrLineNo.getAndIncrement();
 
                                 if (MainIAInstall.installerProxy != null) {
-                                    MainIAInstall.showProgress(MainIAInstall.installerProxy, currentErrLineNo, "Installing files...", errBuff.getNext());
+                                    MainIAInstall.showProgress(MainIAInstall.installerProxy, currentErrLineNo.get(), "Installing files...", errBuff.getNext());
                                 } else {
                                     System.err.println(errBuff.getNext());
                                 }
@@ -354,7 +356,7 @@ public class Main {
                 rawVersionProperties.load(versionfileStream);
                 return rawVersionProperties;
             } catch (IOException e) {
-                log.info("Loading Version.properties file failed",e.getMessage());
+                log.info("Loading Version.properties file failed",PSExceptionUtils.getMessageForLog(e));
             }
         }
         return rawVersionProperties;
@@ -387,7 +389,7 @@ public class Main {
                     }
                 }
             } catch (IOException e) {
-                log.info("Loading Installation.properties file failed",e.getMessage());
+                log.info("Loading Installation.properties file failed",PSExceptionUtils.getMessageForLog(e));
             }
         }
     }
@@ -440,8 +442,8 @@ public class Main {
                     }
                 });
             }catch (Exception e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
             if(!topLevelNodeStringPresent.get()){
@@ -575,7 +577,7 @@ public class Main {
                     }
                 }
             } catch (IOException e) {
-                log.info("Loading Server.properties file failed",e.getMessage());
+                log.error("Loading Server.properties file failed. Error: {}", PSExceptionUtils.getMessageForLog(e));
             }
         }
     }

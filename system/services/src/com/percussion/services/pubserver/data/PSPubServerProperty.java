@@ -196,7 +196,7 @@ public class PSPubServerProperty extends PSAbstractDataObject
          } catch (PSEncryptionException e) {
             log.error("Unable to encrypt encoded property: {} Error: {}", this.name,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             this.value= value;
          }
       }

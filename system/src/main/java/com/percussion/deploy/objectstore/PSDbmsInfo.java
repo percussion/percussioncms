@@ -28,6 +28,7 @@ import com.percussion.deploy.error.PSDeployException;
 import com.percussion.deploy.server.PSDbmsHelper;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
@@ -235,7 +236,7 @@ public class PSDbmsInfo implements IPSDeployComponent
          try {
             pwd = PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_pw);
          } catch (PSEncryptionException e) {
-            logger.warn("Error encrypting datasource password: {}", e.getMessage());
+            logger.warn("Error encrypting datasource password: {}", PSExceptionUtils.getMessageForLog(e));
             logger.debug(e.getMessage(),e);
          }
       }
@@ -571,7 +572,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       try {
          return PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
       } catch (PSEncryptionException e) {
-         logger.error("Error encrypting password: {}", e.getMessage());
+         logger.error("Error encrypting password: {}",PSExceptionUtils.getMessageForLog(e));
          logger.debug(e);
          return "";
       }

@@ -25,6 +25,7 @@
 package com.percussion.ant.packagetool;
 
 import com.percussion.ant.PSPerforceHelper;
+import com.percussion.error.PSExceptionUtils;
 import com.perforce.api.Env;
 import com.perforce.api.PerforceException;
 import org.apache.logging.log4j.LogManager;
@@ -170,8 +171,8 @@ public class PSP4PackageAdd extends P4Add
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

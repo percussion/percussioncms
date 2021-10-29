@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.servlet;
 
+import com.percussion.error.PSExceptionUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -174,7 +175,7 @@ public class PSInputValidatorFilter implements Filter
           // We're already stopping the request, the error response is just a formality.
           // It doesn't matter if we can't print to a client.
           log.error("Bad Parameter: {} Error: {}",badParam,e.getMessage());
-          log.debug(e.getMessage(),e);
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
     }
 
@@ -532,7 +533,7 @@ public class PSInputValidatorFilter implements Filter
             doLoadProperties(is);
             doLoadCustomProps(propsFilePath);
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(e));
         }
 
         if (isEnabled)

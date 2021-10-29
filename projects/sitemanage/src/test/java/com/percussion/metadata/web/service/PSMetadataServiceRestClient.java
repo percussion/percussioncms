@@ -26,18 +26,17 @@ package com.percussion.metadata.web.service;
 
 import com.percussion.dashboardmanagement.data.PSDashboardConfiguration;
 import com.percussion.dashboardmanagement.data.PSGadget;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.test.PSDataServiceRestClient;
+import net.sf.json.JSONObject;
 
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.core.MediaType;
-
-import net.sf.json.JSONObject;
 
 public class PSMetadataServiceRestClient extends PSDataServiceRestClient<PSMetadata>
 {
@@ -81,8 +80,8 @@ public class PSMetadataServiceRestClient extends PSDataServiceRestClient<PSMetad
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException(e);
         }
         

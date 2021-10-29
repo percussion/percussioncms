@@ -31,6 +31,7 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;
@@ -222,10 +223,10 @@ public class PSContentItemDependencyTree
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         String msg = e.toString();
-         throw new RuntimeException(msg);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
+         throw new RuntimeException(e);
       }
       finally
       {

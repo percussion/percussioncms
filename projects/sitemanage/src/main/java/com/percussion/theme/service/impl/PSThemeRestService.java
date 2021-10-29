@@ -24,6 +24,7 @@
 
 package com.percussion.theme.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceDeleteException;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
@@ -95,8 +96,8 @@ public class PSThemeRestService
         try {
             return themeService.load(name);
         } catch (DataServiceLoadException | PSValidationException | DataServiceNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -110,8 +111,8 @@ public class PSThemeRestService
         try {
             return themeService.create(newTheme, existingTheme);
         } catch (DataServiceSaveException | DataServiceNotFoundException | DataServiceLoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -145,8 +146,8 @@ public class PSThemeRestService
         try {
             return themeService.getRegionCSS(theme, templatename, outerregion, region);
         } catch (IPSDataService.PSThemeNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -160,8 +161,8 @@ public class PSThemeRestService
         try {
             themeService.saveRegionCSS(theme, templatename, regionCSS);
         } catch (IPSDataService.PSThemeNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -173,8 +174,8 @@ public class PSThemeRestService
         try {
             themeService.deleteRegionCSS(theme, templatename, outerregion, region);
         } catch (IPSDataService.PSThemeNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -186,8 +187,8 @@ public class PSThemeRestService
         try {
             themeService.mergeRegionCSS(theme, templateId, deletedRegions);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new WebApplicationException(e.getMessage());
         }
     }
@@ -198,8 +199,8 @@ public class PSThemeRestService
         try {
             themeService.prepareForEditRegionCSS(theme, templatename);
         } catch (IPSDataService.PSThemeNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }

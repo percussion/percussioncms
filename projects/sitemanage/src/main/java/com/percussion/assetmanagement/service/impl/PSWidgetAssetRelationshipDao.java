@@ -25,6 +25,7 @@
 package com.percussion.assetmanagement.service.impl;
 
 import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.service.IPSWidgetAssetRelationshipDao;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSRuntimeException;
@@ -88,7 +89,7 @@ public class PSWidgetAssetRelationshipDao implements IPSWidgetAssetRelationshipD
         }
         catch (SQLException e)
         {
-            logger.error("Failed to update relationship table: {}", e.getMessage());
+            logger.error("Failed to update relationship table: {}", PSExceptionUtils.getMessageForLog(e));
             logger.debug(e);
             throw new PSRuntimeException(e);
         }

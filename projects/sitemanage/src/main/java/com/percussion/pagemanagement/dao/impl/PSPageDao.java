@@ -25,6 +25,7 @@ package com.percussion.pagemanagement.dao.impl;
 
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSPage;
@@ -351,8 +352,8 @@ public class PSPageDao extends PSAbstractContentItemDao<PSPage> implements
 				pageContentTypeId = defMgr
 						.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE);
 			} catch (PSInvalidContentTypeException e) {
-				log.error(e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				throw new PSPageException(e.getMessage());
 			}
 		}

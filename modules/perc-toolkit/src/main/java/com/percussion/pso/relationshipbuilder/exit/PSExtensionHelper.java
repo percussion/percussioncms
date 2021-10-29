@@ -6,6 +6,7 @@ import com.percussion.cms.handlers.PSModifyCommandHandler;
 import com.percussion.cms.handlers.PSQueryCommandHandler;
 import com.percussion.data.PSConversionException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.pso.relationshipbuilder.IPSRelationshipBuilder;
@@ -297,16 +298,16 @@ public class PSExtensionHelper
             catch (PSAssemblyException e)
             {
 
-               log.error("Failure in assembly API, Error:{}", e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error("Failure in assembly API, Error:{}",PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
                throw new PSExtensionProcessingException(0, e);
             }
             catch (PSException e)
             {
 
-               log.error("Failure in relationship API Error:{}", e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error("Failure in relationship API Error:{}",PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
                throw new PSExtensionProcessingException(0, e);
             }

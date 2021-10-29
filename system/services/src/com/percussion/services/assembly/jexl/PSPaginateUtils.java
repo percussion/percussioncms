@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.jexl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
@@ -90,8 +91,8 @@ public class PSPaginateUtils extends PSJexlUtilBase
       }
       catch (IOException | RepositoryException | SAXException e)
       {
-         log.error(LOG_ERROR_DEFAULT,"isLinkGood", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(LOG_ERROR_DEFAULT,"isLinkGood",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return 0;
       }
    }

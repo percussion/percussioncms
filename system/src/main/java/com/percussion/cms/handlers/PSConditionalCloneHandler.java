@@ -43,6 +43,7 @@ import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.relationship.PSCloneAlreadyExistsException;
@@ -692,8 +693,8 @@ public class PSConditionalCloneHandler extends PSCloneHandler
       catch (Exception e)
       {
 
-         log.error("Failed to get site and folder IDs for item: {}, Error: {}", loc.toString(), e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Failed to get site and folder IDs for item: {}, Error: {}", loc.toString(),PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
          throw new RuntimeException(e);
       }

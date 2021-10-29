@@ -100,7 +100,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
                 log.error("Invalid tmx file detected. will backup and regenerate {} Error: {}",
                         masterFile.getAbsolutePath() ,
                         PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 backup = true;
                 success = false;
             }
@@ -130,7 +130,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
         } catch (Exception e) {
             log.error("Error reloading 18n resources: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         finally {
             if ( needToRun && !success)
@@ -211,7 +211,7 @@ public class PSI18nStartupManager implements IPSNotificationListener {
             log.warn("Unable to write to file {}. Error: {}",
                     propFile,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 }

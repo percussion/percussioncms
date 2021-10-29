@@ -23,20 +23,20 @@
  */
 package com.percussion.sitemanage.importer.dao;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author JaySeletz
@@ -137,8 +137,8 @@ public class PSImportLogDaoTest extends ServletTestCase
             assertNotNull(found);
             assertEquals(entry1.getLogEntryId(), found.getLogEntryId());
         } catch (IPSGenericDao.SaveException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } finally
         {
             // clean up

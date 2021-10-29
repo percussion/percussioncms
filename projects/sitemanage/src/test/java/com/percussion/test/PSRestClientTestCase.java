@@ -24,21 +24,19 @@
 
 package com.percussion.test;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.test.PSRestTestCase;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.io.InputStream;
-import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-
-import junit.framework.TestCase;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class PSRestClientTestCase
 {
@@ -73,8 +71,8 @@ public class PSRestClientTestCase
             }
             } catch (Exception e)
             {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
        
         

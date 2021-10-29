@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.publisher.jsf.nodes;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.jsf.PSCategoryNodeBase;
 import com.percussion.rx.jsf.PSNavigation;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -43,7 +44,12 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.services.sitemgr.data.PSLocationScheme;
 import com.percussion.services.sitemgr.data.PSPublishingContext;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.faces.model.SelectItem;
+import javax.jcr.RepositoryException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,13 +59,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.faces.model.SelectItem;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * This node represents a single context design object.
@@ -165,8 +164,8 @@ public class PSContextNode extends PSDesignNode
          try {
             m_context = smgr.loadContextModifiable(getGUID());
          } catch (PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             m_context = new PSPublishingContext();
          }
       }
@@ -415,9 +414,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (RepositoryException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failed while cataloging content types for context node. {}", e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed while cataloging content types for context node. {}",PSExceptionUtils.getMessageForLog(e));
       }
       return results;
    }
@@ -448,9 +447,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (PSAssemblyException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failed while cataloging templates for context node. {}", e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed while cataloging templates for context node. {}",PSExceptionUtils.getMessageForLog(e));
       }
       return results;
    }
@@ -652,8 +651,8 @@ public class PSContextNode extends PSDesignNode
       }
       catch (RepositoryException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return null;
       }
       if (cts.size() == 0)
@@ -695,9 +694,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failure saving context or location scheme: {} ", e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failure saving context or location scheme: {} ",PSExceptionUtils.getMessageForLog(e));
          return false;
       }
 
@@ -820,9 +819,9 @@ public class PSContextNode extends PSDesignNode
       }
       catch (PSNotFoundException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         log.error("Failure loading Location Scheme: {}", e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failure loading Location Scheme: {}",PSExceptionUtils.getMessageForLog(e));
          return false;
       }
       return true;

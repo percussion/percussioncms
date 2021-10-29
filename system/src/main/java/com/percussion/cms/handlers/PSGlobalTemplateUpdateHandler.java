@@ -24,6 +24,7 @@
 package com.percussion.cms.handlers;
 
 import com.percussion.cms.PSCmsException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.globaltemplate.PSGlobalTemplate;
 import com.percussion.fastforward.globaltemplate.PSGlobalTemplateException;
 import com.percussion.fastforward.globaltemplate.PSRxGlobals;
@@ -253,7 +254,7 @@ public class PSGlobalTemplateUpdateHandler
       catch (FileNotFoundException e)
       {
          resp.setIsErrorResponse(true);
-         resp.setStatus(IPSHttpErrors.HTTP_NOT_FOUND, e.getMessage());
+         resp.setStatus(IPSHttpErrors.HTTP_NOT_FOUND, PSExceptionUtils.getMessageForLog(e));
       }
    }
 

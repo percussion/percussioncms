@@ -87,7 +87,7 @@ public class PSRestApiAuthFilter implements ContainerRequestFilter {
             } catch (URISyntaxException e) {
                 log.error("Unable to set the default error URI: {}",
                         PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             log.debug("Not allowing API access for user with Roles: {}", fullrolestr);
             Response.ResponseBuilder st= Response.status(Response.Status.NOT_FOUND);

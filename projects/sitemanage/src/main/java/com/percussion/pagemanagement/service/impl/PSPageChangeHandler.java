@@ -26,6 +26,7 @@ package com.percussion.pagemanagement.service.impl;
 
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPageChangeEvent;
@@ -120,7 +121,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                }
 	       }catch(Exception e){
 	    	   log.error("Error while finding the Asset with the itemId {} in pageChanged Event Handler.  Error: {}",itemId,e.getMessage());
-	    	   log.debug(e.getMessage(),e);
+	    	   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	       }
        }
        
@@ -178,14 +179,14 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                             break;
                         }
                     } catch (PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-                        log.warn("Error updating Linked Title. Error:{}", e.getMessage());
-                        log.debug(e.getMessage(), e);
+                        log.warn("Error updating Linked Title. Error:{}",PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
                 }
             }
         } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
-            log.warn("Error updating Linked Title. Error:{}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.warn("Error updating Linked Title. Error:{}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -234,8 +235,8 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                return;
            }
        } catch (PSDataServiceException e) {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(), e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
    }
   
@@ -264,7 +265,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
            }
        } catch (PSDataServiceException e) {
            log.warn("Error update Page summary for Page: {} Error: {}",page.getId(),e.getMessage() );
-           log.debug(e.getMessage(),e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
    }
    
@@ -289,7 +290,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
            }
        } catch (PSDataServiceException e) {
            log.warn("Error update Author for Page: {} Error: {}",page.getId(),e.getMessage());
-           log.debug(e.getMessage(),e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
    }
    /**
@@ -319,13 +320,13 @@ public class PSPageChangeHandler implements IPSPageChangeListener
                        }
                    }
                } catch (PSDataServiceException e) {
-                   log.warn(e.getMessage());
-                   log.debug(e.getMessage(),e);
+                   log.warn(PSExceptionUtils.getMessageForLog(e));
+                   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                }
            }
        } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
           log.warn("Error generating Page summary for Page: {} Error: {}",pageId,e.getMessage());
-          log.debug(e.getMessage(),e);
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        return summary;
 

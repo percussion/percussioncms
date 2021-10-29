@@ -27,6 +27,7 @@ package com.percussion.cms.objectstore;
 
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
@@ -634,9 +635,9 @@ public class PSKey implements IPSCmsComponent, Serializable
       }
       catch (Exception e)
       { /* not possible */
-         log.error("Error : {} ", e.getMessage());
+         log.error("Error : {} ", PSExceptionUtils.getMessageForLog(e));
          log.error("PSKey.clone() caught exception: \n {}", e.toString());
-         log.debug(e.getMessage(),e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       return copy;

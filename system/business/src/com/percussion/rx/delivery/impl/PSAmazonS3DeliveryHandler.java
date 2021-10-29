@@ -279,8 +279,8 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 
             result = DigestUtils.sha256Hex(byteArray);
         }catch(Exception e){
-            log.error("Exception occurred while calculateChecksum -- > {}", e.getMessage());
-            log.debug(e);
+            log.error("Exception occurred while calculateChecksum -- > {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return result;
     }
@@ -301,7 +301,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
                 try{
                     is.close();
                 } catch (IOException e) {
-                    log.debug(e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         }
@@ -361,7 +361,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
                     selectedRegionName = Regions.getCurrentRegion().getName();
                 }
             }catch(Exception e){
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             //Fallback to publisher-beans.xml
             if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
@@ -469,14 +469,14 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
 
             return PSEncryptor.decryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
         } catch (PSEncryptionException e) {
-            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",e.getMessage());
+            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",PSExceptionUtils.getMessageForLog(e));
             try {
                 PSAesCBC aes = new PSAesCBC();
                 return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
             } catch (PSEncryptionException psEncryptionException) {
                 log.error("Unable to decrypt string. Error: {}",
                         PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 return dstr;
             }
         }
@@ -507,7 +507,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         {
             log.error(CREDS_WRONG_MSG, bucketName,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             result = false;
         }
         return result;
@@ -537,7 +537,7 @@ public class PSAmazonS3DeliveryHandler extends PSBaseDeliveryHandler
         catch (Exception e)
         {
             log.error("Error copying image to amazon s3 bucket. {}",PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             result = new PSPair<>(Boolean.FALSE, e.getLocalizedMessage());
         }
         finally

@@ -30,16 +30,17 @@ import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.analytics.service.impl.google.PSGoogleAnalyticsErrorMessageHandler;
 import com.percussion.analytics.service.impl.google.PSGoogleAnalyticsProviderHandler;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.util.PSSiteManageBean;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,8 +107,8 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
        try {
            objectToJson = objectMapper.writeValueAsString(config);
        } catch (JsonProcessingException e) {
-           log.error("Exception occurred while parsing - > {}" , e.getMessage());
-           log.debug(e);
+           log.error("Exception occurred while parsing - > {}" ,PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
 
       PSMetadata metadata = new PSMetadata(METADATA_KEY, objectToJson);
@@ -158,7 +159,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
 
        } catch (JsonProcessingException e) {
            log.error("Error parsing Analytics configuration: {}" ,e.getMessage());
-           log.debug(e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
 
        return config;

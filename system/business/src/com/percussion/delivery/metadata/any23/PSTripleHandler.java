@@ -26,6 +26,16 @@ package com.percussion.delivery.metadata.any23;
 
 import com.percussion.delivery.metadata.PSMetadataExtractorService;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.any23.extractor.ExtractionContext;
+import org.apache.any23.writer.TripleHandler;
+import org.apache.any23.writer.TripleHandlerException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.eclipse.rdf4j.model.IRI;
+import org.eclipse.rdf4j.model.Resource;
+import org.eclipse.rdf4j.model.Value;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,18 +43,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.any23.extractor.ExtractionContext;
-import org.apache.any23.writer.TripleHandler;
-import org.apache.any23.writer.TripleHandlerException;
-
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.Resource;
-import org.eclipse.rdf4j.model.Value;
 
 
 /**
@@ -304,8 +302,8 @@ public class PSTripleHandler implements TripleHandler
 
             return new PropertyURLProcessingResult(plainPropertyName, propertyName);
         }catch(IllegalStateException e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return new PropertyURLProcessingResult(completePropertyUrl, completePropertyUrl);
     }

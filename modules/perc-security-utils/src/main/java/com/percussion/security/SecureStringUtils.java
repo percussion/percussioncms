@@ -26,6 +26,7 @@ package com.percussion.security;
 
 import com.github.javafaker.Faker;
 import com.ibm.icu.text.Normalizer2;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -630,8 +631,8 @@ public class SecureStringUtils {
 
 
         } catch (EncodingException e) {
-            log.warn("Error decoding wild path {}. Error: {}", path, e.getMessage());
-            log.debug(e);
+            log.warn("Error decoding wild path {}. Error: {}", path,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return ret;

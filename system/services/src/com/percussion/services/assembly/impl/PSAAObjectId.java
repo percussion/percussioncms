@@ -27,6 +27,7 @@ package com.percussion.services.assembly.impl;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -276,8 +277,8 @@ public class PSAAObjectId
             }
             catch (RepositoryException e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             break;
          case AA_NODE_TYPE_PAGE :
@@ -896,8 +897,8 @@ public class PSAAObjectId
       }
       catch (JSONException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
    }

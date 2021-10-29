@@ -24,6 +24,7 @@
 
 package com.percussion.rx.delivery.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
@@ -145,8 +146,8 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
             try {
                 rval = new PSFtpsClient();
             } catch (NoSuchAlgorithmException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             ms_ftps.set(rval);
         }
@@ -333,9 +334,9 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
         catch (IOException e)
         {
-            log.error("Problem closing ftp connection {}", e.getMessage());
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Problem closing ftp connection.");
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         finally
         {
@@ -458,8 +459,8 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return handleLoginError(jobId, "Problem connecting to ftps server: "
                     + e.getLocalizedMessage(), failAll);
         }
@@ -507,9 +508,9 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
         catch (Exception e)
         {
-            log.error("FTP Connection Check Failed to connect {}", e.getMessage());
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("FTP Connection Check Failed to connect {}",PSExceptionUtils.getMessageForLog(e));
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             connected = false;
         }
         finally
@@ -661,8 +662,8 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
             }
             catch (Exception e)
             {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 log.error("Could not restore working directory: {}", currentWorkingDirectory, e);
             }
         }
@@ -747,8 +748,8 @@ public class PSFtpsDeliveryHandler extends PSBaseFtpDeliveryHandler{
         }
         catch (IOException e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             log.error("Error remove " + (isFile ? "file" : "directory") + ": \"" + location + "\"", e);
             return isFile ? getItemResult(Outcome.FAILED, item, jobId, e.getLocalizedMessage()) : null;
         }

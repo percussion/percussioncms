@@ -26,6 +26,7 @@ package com.percussion.fastforward.managednav;
 import com.percussion.cms.objectstore.PSContentTypeVariant;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -33,13 +34,12 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class copies the Navon Tree variant into another assembler request. This
@@ -93,10 +93,10 @@ public class PSNavTreeLinkExtension extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         log.error("PSNavException found: {}", e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error("PSNavException found: {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
-         throw new PSExtensionProcessingException(0, e.getMessage());
+         throw new PSExtensionProcessingException(0,PSExceptionUtils.getMessageForLog(e));
 
       }
       catch (Exception ex)

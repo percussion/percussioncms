@@ -33,6 +33,7 @@ import com.percussion.deployer.objectstore.PSArchiveManifest;
 import com.percussion.deployer.objectstore.PSDependencyFile;
 import com.percussion.deployer.objectstore.PSDescriptor;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.IOTools;
 import com.percussion.util.PSArchiveFiles;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -113,8 +114,8 @@ public class PSPackageLockManager
       catch (Exception e)
       {
          System.err.println("Error encountered during conversion");
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          log.debug(System.err);
       }
    }

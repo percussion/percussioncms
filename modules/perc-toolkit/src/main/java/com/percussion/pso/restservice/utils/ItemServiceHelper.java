@@ -9,6 +9,7 @@
  ******************************************************************************/
 package com.percussion.pso.restservice.utils;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pso.restservice.model.Item;
 import com.percussion.pso.restservice.model.Items;
 import org.apache.logging.log4j.LogManager;
@@ -45,9 +46,8 @@ public class ItemServiceHelper {
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			m.marshal( item, sw );
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		sw.flush();
 		return sw.toString();
@@ -121,9 +121,8 @@ public class ItemServiceHelper {
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			m.marshal( item, dr );
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			log.error(e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 
 		return dr.getDocument();

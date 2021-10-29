@@ -1,5 +1,6 @@
 package com.percussion;
 
+import com.percussion.error.PSExceptionUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -210,8 +211,8 @@ public class SSLCertificateChecker {
                 try {
                     httpClient.close();
                 } catch (IOException e) {
-                    log.error(e.getMessage());
-                    log.debug(e.getMessage(), e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
                 messagePostedFlag = true;
                 messageBuffer = null;

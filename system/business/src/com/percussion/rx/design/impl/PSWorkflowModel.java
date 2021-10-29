@@ -23,18 +23,18 @@
  */
 package com.percussion.rx.design.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.text.MessageFormat;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 public class PSWorkflowModel extends PSLimitedDesignModel
 {
@@ -125,8 +125,8 @@ public class PSWorkflowModel extends PSLimitedDesignModel
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

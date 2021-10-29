@@ -56,6 +56,7 @@ import com.percussion.design.objectstore.server.IPSObjectStoreHandler;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.error.PSErrorManager;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.error.PSLargeApplicationRequestQueueError;
 import com.percussion.error.PSResponseSendError;
@@ -1771,7 +1772,7 @@ public class PSApplicationHandler implements IPSRootedHandler
       catch (ClassNotFoundException e)
       {
          //This should not happen as these are predefined Interfaces.
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       return false;
    }
@@ -1823,7 +1824,7 @@ public class PSApplicationHandler implements IPSRootedHandler
       if (m_loginPage == null)
       {
          PSServerLogHandler.handleAccessError(
-            request, m_id, null, null, 0, e.getMessage());
+            request, m_id, null, null, 0, PSExceptionUtils.getMessageForLog(e));
       }
       else
       {
@@ -1904,7 +1905,7 @@ public class PSApplicationHandler implements IPSRootedHandler
                // use the default mechanism for the user, the BASIC
                // authentication dialog box
                PSServerLogHandler.handleAccessError(
-                  request, m_id, null, null, 0, e.getMessage());
+                  request, m_id, null, null, 0,PSExceptionUtils.getMessageForLog(e));
             } finally {
                if (fileContent != null)
                {

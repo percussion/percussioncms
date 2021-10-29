@@ -275,8 +275,8 @@ public class PSPageUtils extends PSJexlUtilBase
                 return (Boolean)cachedLink.getObjectValue();
             }
         }catch(Exception e){
-            log.error("Error checking link: {} Error: {}", link, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error checking link: {} Error: {}", link,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return false;
         }
 
@@ -291,8 +291,8 @@ public class PSPageUtils extends PSJexlUtilBase
         try{
             return renderLinkService.renderLink(linkContext, linkableItem);
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"itemLink",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new PSRenderLink("#",null);
         }
     }
@@ -306,8 +306,8 @@ public class PSPageUtils extends PSJexlUtilBase
             Set<String> widgetDefIds = getWidgetDefIds(item);
             return renderLinkService.renderJavascriptLinks(linkContext, widgetDefIds);
         } catch (PSDataServiceException | RepositoryException e) {
-            log.error(LOG_ERROR_DEFAULT,"javascriptLinks", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"javascriptLinks",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new ArrayList<>();
         }
     }
@@ -335,8 +335,8 @@ public class PSPageUtils extends PSJexlUtilBase
             IPSSite site = siteMgr.loadSite(sitename);
             return site.getLoginPage();
         } catch (com.percussion.services.error.PSNotFoundException e) {
-            log.error(LOG_ERROR_DEFAULT,"getSiteLoginPage",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getSiteLoginPage",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
     }
@@ -349,8 +349,8 @@ public class PSPageUtils extends PSJexlUtilBase
             IPSSite site = siteMgr.loadSite(sitename);
             return site.getRegistrationPage();
         } catch (com.percussion.services.error.PSNotFoundException e) {
-            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationPage",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationPage",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
     }
@@ -363,8 +363,8 @@ public class PSPageUtils extends PSJexlUtilBase
             IPSSite site = siteMgr.loadSite(sitename);
             return site.getRegistrationConfirmationPage();
         } catch (com.percussion.services.error.PSNotFoundException e) {
-            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationConfirmationPage",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getSiteRegistrationConfirmationPage",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
     }
@@ -377,8 +377,8 @@ public class PSPageUtils extends PSJexlUtilBase
             IPSSite site = siteMgr.loadSite(sitename);
             return site.getResetPage();
         } catch (com.percussion.services.error.PSNotFoundException e) {
-            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
     }
@@ -391,8 +391,8 @@ public class PSPageUtils extends PSJexlUtilBase
             IPSSite site = siteMgr.loadSite(sitename);
             return site.getResetRequestPasswordPage();
         } catch (com.percussion.services.error.PSNotFoundException e) {
-            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getSiteResetPage",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
     }
@@ -621,8 +621,8 @@ public class PSPageUtils extends PSJexlUtilBase
         {
             IPSGuid navId = ((IPSNode) navNode).getGuid();
 
-            log.error(LOG_ERROR_DEFAULT, "navLink",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT, "navLink",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return renderLink;
     }
@@ -638,8 +638,8 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             return renderLinkService.renderLink(linkContext, linkableItem, resourceDefinitionId);
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"itemLink", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"itemLink",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new PSRenderLink("#",null);
         }
     }
@@ -652,8 +652,8 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             return renderLinkService.renderLink(linkContext, resourceDefinitionId);
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"folderLink", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"folderLink",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new PSRenderLink("#",null);
         }
     }
@@ -666,8 +666,8 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             return renderLinkService.renderLink(linkContext, resourceDefinitionId);
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"fileLink", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"fileLink",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new PSRenderLink("#",null);
         }
     }
@@ -681,8 +681,8 @@ public class PSPageUtils extends PSJexlUtilBase
             theme = isNotBlank(theme) ? theme : "percussion";
             return renderLinkService.renderLink(linkContext, "theme." + theme);
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"themeLink", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"themeLink",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new PSRenderLink("#",null);
         }
     }
@@ -699,8 +699,8 @@ public class PSPageUtils extends PSJexlUtilBase
             theme = isNotBlank(theme) ? theme : "percussion";
             return renderLinkService.renderLinkThemeRegionCSS(linkContext, theme, isEdit, editType);
         } catch (IPSDataService.PSThemeNotFoundException | PSValidationException | IPSResourceDefinitionService.PSResourceDefinitionInvalidIdException e) {
-            log.error(LOG_ERROR_DEFAULT,"themeRegionCssLink", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"themeRegionCssLink",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new PSRenderLink("#",null);
         }
     }
@@ -1244,8 +1244,8 @@ public class PSPageUtils extends PSJexlUtilBase
             alphaOrderCategories(categoryTree);
 
         } catch (RepositoryException e) {
-            log.error(LOG_ERROR_DEFAULT,"getProcessedCategories", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getProcessedCategories",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return categoryTree.getChildren();
     }
@@ -1569,8 +1569,8 @@ public class PSPageUtils extends PSJexlUtilBase
 
                 blogs.getYears().add(selectedYear);
             } catch (RepositoryException e) {
-                log.error(LOG_ERROR_DEFAULT,"getProcessedBlogs", e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(LOG_ERROR_DEFAULT,"getProcessedBlogs",PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
 
@@ -1657,8 +1657,8 @@ public class PSPageUtils extends PSJexlUtilBase
 
             return pagesForCal;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            return new JSONArray();
         }
     }
@@ -1797,8 +1797,8 @@ public class PSPageUtils extends PSJexlUtilBase
             }
             return templateNames;
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"templateNames",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"templateNames",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new ArrayList<>();
         }
     }
@@ -1897,8 +1897,8 @@ public class PSPageUtils extends PSJexlUtilBase
             PSCategory category = PSCategoryControlUtils.getCategories(site, rootPath, false, true);
             return category.getTopLevelNodes();
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"getCategoryNodes",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getCategoryNodes",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new ArrayList<>();
         }
     }
@@ -1957,8 +1957,8 @@ public class PSPageUtils extends PSJexlUtilBase
             }
             return new TreeMap<>(templateMap);
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"getCategoryDropDownValues",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"getCategoryDropDownValues",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new TreeMap<>();
         }
     }
@@ -2131,8 +2131,8 @@ public class PSPageUtils extends PSJexlUtilBase
         try {
             return assemblyItemBridge.createRenderAsset(assemblyItem);
         } catch (PSDataServiceException e) {
-            log.error(LOG_ERROR_DEFAULT,"toAsset", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"toAsset",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new PSRenderAsset();
         }
     }
@@ -2158,8 +2158,8 @@ public class PSPageUtils extends PSJexlUtilBase
             PSExtensionRef ref = new PSExtensionRef(finder);
             return (IPSWidgetContentFinder) emgr.prepareExtension(ref, null);
         } catch (PSExtensionException | PSNotFoundException e) {
-                log.error(LOG_ERROR_DEFAULT,"getWidgetContentFinder", e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(LOG_ERROR_DEFAULT,"getWidgetContentFinder",PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return null;
         }
@@ -2266,8 +2266,8 @@ public class PSPageUtils extends PSJexlUtilBase
         }
         catch (RepositoryException e)
         {
-            log.error(LOG_ERROR_DEFAULT,"html", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(LOG_ERROR_DEFAULT,"html",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
 
@@ -2308,7 +2308,7 @@ public class PSPageUtils extends PSJexlUtilBase
         catch (Exception e)
         {
             log.error("Error processing json string: {}" ,jsonString);
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
         }
         return jsonObj;
@@ -2336,8 +2336,8 @@ public class PSPageUtils extends PSJexlUtilBase
             try {
                 ret = jsonObj.getJSONArray(name);
             } catch (Exception e) {
-                log.error("Error processing json string: {}",e.getMessage());
-                log.debug(e);
+                log.error("Error processing json string: {}",PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         return ret;
@@ -2349,8 +2349,8 @@ public class PSPageUtils extends PSJexlUtilBase
             return PSEncryptor.encryptString(PathUtils.getRxPath().toAbsolutePath().toString().concat(
                     PSEncryptor.SECURE_DIR),str);
         } catch (PSEncryptionException e) {
-            log.error("Error encrypting string: {}",e.getMessage());
-            log.debug(e);
+            log.error("Error encrypting string: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
     }
@@ -2401,13 +2401,13 @@ public class PSPageUtils extends PSJexlUtilBase
                     resultsTree.put(temp,element);
                 }
                 catch (ValueFormatException e) {
-                    log.error("Error retrieving name property as string {}",e.getMessage());
+                    log.error("Error retrieving name property as string {}",PSExceptionUtils.getMessageForLog(e));
                 }
                 catch (PathNotFoundException e) {
-                    log.error("Error finding path  to retrieve name property as string {}",e.getMessage());
+                    log.error("Error finding path  to retrieve name property as string {}",PSExceptionUtils.getMessageForLog(e));
                 }
                 catch (RepositoryException e) {
-                    log.error("Error querying form repository {}",e.getMessage());
+                    log.error("Error querying form repository {}",PSExceptionUtils.getMessageForLog(e));
                 }
             }
             for(Entry<String, PSRenderAsset> entry : resultsTree.entrySet()){
@@ -2423,7 +2423,7 @@ public class PSPageUtils extends PSJexlUtilBase
                         encryptEmail = PSEncryptor.encryptString(PathUtils.getRxPath().toAbsolutePath().toString().concat(
                                 PSEncryptor.SECURE_DIR),email);
                     } catch (PSEncryptionException e) {
-                       log.error("Error encrypting email address: {}", e.getMessage());
+                       log.error("Error encrypting email address: {}",PSExceptionUtils.getMessageForLog(e));
                     }
 
                     dddString.append("<option data-personName=\"").append(
@@ -2932,8 +2932,8 @@ public class PSPageUtils extends PSJexlUtilBase
             try {
                 pubServer = pubServerService.findPubServer(serverId);
             } catch (IPSPubServerService.PSPubServerServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         if (serverId != null && pubServer != null && pubServer.getServerType().equals(PSPubServer.STAGING))

@@ -48,6 +48,7 @@ import com.percussion.deploy.objectstore.PSUserDependency;
 import com.percussion.deploy.objectstore.PSValidationResult;
 import com.percussion.deploy.objectstore.PSValidationResults;
 import com.percussion.deploy.server.dependencies.PSDependencyHandler;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -877,13 +878,13 @@ public class PSDependencyManager
             catch (PSDeployException e)
             {
                // log the specific dependency that failed, to aid debugging
-               log.error("failure while processing: {}, Error: {}", formatDependencyString(dependency), e.getMessage());
+               log.error("failure while processing: {}, Error: {}", formatDependencyString(dependency),PSExceptionUtils.getMessageForLog(e));
                throw e;
             }
             catch (RuntimeException | PSNotFoundException | PSAssemblyException e)
             {
                // log the specific dependency that failed, to aid debugging
-               log.error("failure while processing: {}, , Error: {}", formatDependencyString(dependency), e.getMessage());
+               log.error("failure while processing: {}, , Error: {}", formatDependencyString(dependency),PSExceptionUtils.getMessageForLog(e));
                throw new PSRuntimeException(e);
             }
          }
@@ -1195,8 +1196,8 @@ public class PSDependencyManager
          if (! modPkgNames.isEmpty())
             exportDesc.setModifiedPackages(modPkgNames.iterator());
       } catch (PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       } finally
       {
          setIsDependencyCacheEnabled(false);

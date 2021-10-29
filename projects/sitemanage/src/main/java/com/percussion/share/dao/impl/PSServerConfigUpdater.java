@@ -152,7 +152,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         {
             log.error("The LDAP configuration is invalid: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             
             return;
         }
@@ -160,7 +160,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         {
             log.error("The LDAP configuration contains illegal values: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return;
         }
         
@@ -244,8 +244,8 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
                 );
             }catch(Exception e){
                 //this is debug info we are logging so just log this exception and continue
-                log.debug("{}",e.getMessage());
-                log.debug(e);
+                log.debug("{}",PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
 
@@ -332,7 +332,7 @@ public class PSServerConfigUpdater implements IPSServerConfigUpdater, IPSNotific
         {
             log.error("Failed to update server configuration: {}",
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

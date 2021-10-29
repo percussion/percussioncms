@@ -23,6 +23,7 @@
  */
 package com.percussion.share.dao;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.FileUtils;
@@ -195,8 +196,8 @@ public abstract class PSFileDataRepository<T>
         }
         catch (IOException | PSValidationException | PSXmlFileDataRepository.PSXmlFileDataRepositoryException e)
         {
-            log.error("{}", e.getMessage());
-            log.debug(e);
+            log.error("{}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSDataServiceException(e);
 
         }

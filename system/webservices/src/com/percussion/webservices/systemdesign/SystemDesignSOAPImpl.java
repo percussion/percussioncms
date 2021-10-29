@@ -154,7 +154,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -263,7 +263,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -451,7 +451,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       return result;
    }
@@ -581,7 +581,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       catch (FileNotFoundException e)
       {
          logger.error(PSExceptionUtils.getMessageForLog(e));
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -759,7 +759,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       catch (PSErrorResultsException e)
       {
          // this should never happen
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -846,7 +846,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       catch (PSErrorResultsException e)
       {
          // this should never happen
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -996,7 +996,7 @@ public class SystemDesignSOAPImpl extends PSBaseSOAPImpl implements SystemDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {

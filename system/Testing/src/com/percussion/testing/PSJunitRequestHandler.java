@@ -24,6 +24,7 @@
 package com.percussion.testing;
 
 import com.percussion.conn.PSServerException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSLoadableRequestHandler;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSRequest;
@@ -240,7 +241,7 @@ public class PSJunitRequestHandler implements IPSLoadableRequestHandler
       }
       catch (Exception e)
       {
-         PSConsole.printMsg(HANDLER, e.getMessage());
+         PSConsole.printMsg(HANDLER, PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -507,7 +508,7 @@ public class PSJunitRequestHandler implements IPSLoadableRequestHandler
             strMsg = bStream.toString();                        
             aLogEl = PSXmlDocumentBuilder.addElement(m_responseDoc, parent, 
                "LogMessageException", strMsg);                
-            aLogEl.setAttribute("message", e.getMessage());
+            aLogEl.setAttribute("message",PSExceptionUtils.getMessageForLog(e));
          }
          else
          {
