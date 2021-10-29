@@ -24,6 +24,7 @@
 package com.percussion.fastforward.sfp;
 
 import com.percussion.design.objectstore.PSServerConfiguration;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.extension.IPSResultDocumentProcessor;
@@ -195,8 +196,8 @@ public abstract class PSSiteFolderContentListBaseExit implements
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSExtensionProcessingException(
             "PSSiteFolderContentListExit",
             e);

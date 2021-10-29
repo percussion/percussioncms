@@ -26,6 +26,7 @@ package com.percussion.cms.objectstore;
 import com.percussion.cms.PSCmsException;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
@@ -105,9 +106,9 @@ public class PSUserInfo implements IPSCmsComponent
       }
       catch(Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         throw new PSCmsException(1000, e.getMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new PSCmsException(1000,PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -162,7 +163,7 @@ public class PSUserInfo implements IPSCmsComponent
       }
       catch(Exception e)
       {
-         throw new PSCmsException(1000, e.getMessage());
+         throw new PSCmsException(1000,PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -386,8 +387,8 @@ public class PSUserInfo implements IPSCmsComponent
       }
       catch(Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

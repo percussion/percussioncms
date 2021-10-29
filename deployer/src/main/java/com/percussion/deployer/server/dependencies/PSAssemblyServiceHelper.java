@@ -25,6 +25,7 @@ package com.percussion.deployer.server.dependencies;
 
 import com.percussion.deployer.error.IPSDeploymentErrors;
 import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -46,7 +47,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.jcr.RepositoryException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -212,8 +212,8 @@ public class PSAssemblyServiceHelper
       }
       catch (RepositoryException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return cTypes;
    }
@@ -375,11 +375,11 @@ public class PSAssemblyServiceHelper
       }
       catch (PSCatalogException | PSNotFoundException | PSAssemblyException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       // sort the collection
-      Collections.sort(m_slots, new SlotsComparer());
+      m_slots.sort(new SlotsComparer());
    }
    
    /**

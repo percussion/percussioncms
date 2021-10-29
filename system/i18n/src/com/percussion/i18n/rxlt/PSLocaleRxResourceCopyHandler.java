@@ -23,6 +23,7 @@
  */
 package com.percussion.i18n.rxlt;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.tools.PSCopyStream;
 import com.percussion.util.PSFileFilter;
@@ -556,8 +557,8 @@ public class PSLocaleRxResourceCopyHandler
       }
       catch(IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

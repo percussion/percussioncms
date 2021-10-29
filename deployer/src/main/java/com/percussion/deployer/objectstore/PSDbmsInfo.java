@@ -27,19 +27,20 @@ package com.percussion.deployer.objectstore;
 import com.percussion.deployer.server.PSDbmsHelper;
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
-import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.Objects;
 
@@ -232,7 +233,7 @@ public class PSDbmsInfo implements IPSDeployComponent
          try {
             pwd = PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_pw);
          } catch (PSEncryptionException e) {
-            logger.warn("Error encrypting datasource password: {}", e.getMessage());
+            logger.warn("Error encrypting datasource password: {}",PSExceptionUtils.getMessageForLog(e));
             logger.debug(e);
          }
       }
@@ -577,7 +578,7 @@ public class PSDbmsInfo implements IPSDeployComponent
       try {
          return PSEncryptor.encryptString(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pwd);
       } catch (PSEncryptionException e) {
-         logger.error("Error encrypting string: {}",e.getMessage());
+         logger.error("Error encrypting string: {}", PSExceptionUtils.getMessageForLog(e));
          logger.debug(e);
          return "";
       }

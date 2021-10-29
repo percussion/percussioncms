@@ -26,6 +26,7 @@
 package com.percussion.xml;
 
 import com.percussion.design.catalog.PSCatalogException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSServer;
@@ -273,7 +274,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
       }
       catch (IOException e)
       {
-         throw new PSCatalogException(IPSXmlErrors.DTD_IO_ERROR, e.getMessage());
+         throw new PSCatalogException(IPSXmlErrors.DTD_IO_ERROR,PSExceptionUtils.getMessageForLog(e));
       }
       finally
       {
@@ -403,11 +404,11 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
       }
       catch (Exception e)
       {
-          log.error(e.getMessage());
-          log.debug(e.getMessage(), e);
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSCatalogException(
             IPSServerErrors.XML_PARSER_SAX_ERROR,
-            e.toString());
+            e);
       }
       parseDtd(p);
    }
@@ -468,7 +469,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
 
    /**
     * Internal utility method to construct a DTD tree from a document.
-    * @param p   A document that contains the DTD. Assumed not <code>null</code>
+    * @param myDTD   A document that contains the DTD. Assumed not <code>null</code>
     * @throws PSCatalogException if any error occurs parsing the DTD.
     */
    private void parseDtd(PSDtd myDTD)
@@ -1300,8 +1301,8 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
    /**
    *sets the tree dirty flag ( attributes were modified )
    *
-   *@param <code> true </code> if tree (attributes) were modified.
-   *<code> false </code> if not
+   *@param bDirty <code>true</code> if tree (attributes) were modified.
+   *<code>false</code> if not
    */
    public void setTreeDirty(boolean bDirty)
    {
@@ -1316,7 +1317,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
            /**
    *returns the attribute char on an string format
    *
-   *@param the type: PSDtdNode.OCCURS_ANY ("*")
+   *@param type the type: PSDtdNode.OCCURS_ANY ("*")
    *                 PSDtdNode.OCCURS_ATLEASTONCE ("+")
    *                   PSDtdNode.OCCURS_OPTIONAL ("?")
    *                 any other return " "
@@ -1954,7 +1955,7 @@ public class PSDtdTree implements Serializable, PSDtdTreeVisitor, Cloneable
    *
    *@param name the list owner name
    *
-   *@param subname the content model name
+   *@param subName the content model name
    *
    *@return the content model
    *

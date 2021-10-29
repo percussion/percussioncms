@@ -756,7 +756,7 @@ public class PSApplicationBuilder
       catch (MalformedURLException e)
       {
          // todo: figure out what to do
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       catch (IOException e)
       {

@@ -255,7 +255,7 @@ public class PSXmlDocumentBuilder {
                         ));
             } catch (Exception e) {
                 dbf = null;
-                throw new RuntimeException(e.getLocalizedMessage());
+                throw new RuntimeException(e);
             }
         }
 
@@ -1353,9 +1353,9 @@ public class PSXmlDocumentBuilder {
         try {
             PSXmlDocumentBuilder.write(doc, xmlDumpWriter);
         } catch (java.io.IOException e) {
-            log.error("Error converting DOM Document to string {}", e.getMessage());
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error converting DOM Document to string {}",PSExceptionUtils.getMessageForLog(e));
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return xmlDumpWriter.toString();
@@ -1376,9 +1376,9 @@ public class PSXmlDocumentBuilder {
         try {
             PSXmlDocumentBuilder.write(node, xmlDumpWriter);
         } catch (java.io.IOException e) {
-            log.error("Error converting DOM Document to string {} ", e.getMessage());
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error converting DOM Document to string {} ",PSExceptionUtils.getMessageForLog(e));
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return xmlDumpWriter.toString();

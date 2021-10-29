@@ -23,6 +23,7 @@
  */
 package com.percussion.extensions.cms;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -33,19 +34,18 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSSlotContentFinder;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Filter the set of slots returned by contentvariantslotlist
@@ -102,8 +102,9 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
                   }
                   catch (PSAssemblyException e)
                   {
-                     log.error("Problem loading finder, Error: {}", e);
-                     log.debug(e.getMessage(), e);
+                     log.error("Problem loading finder, Error: {}",
+                             PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                }
                if (!good)
@@ -129,7 +130,7 @@ public class PSSelectAASlots implements IPSResultDocumentProcessor
       catch (Exception e)
       {
          log.error("Problem while filtering slots, Error: {}", e);
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
       }
 

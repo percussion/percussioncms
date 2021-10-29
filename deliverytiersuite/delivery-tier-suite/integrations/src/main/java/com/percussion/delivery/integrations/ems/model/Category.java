@@ -25,6 +25,7 @@
 package com.percussion.delivery.integrations.ems.model;
 
 import com.percussion.delivery.integrations.ems.IPSEMSEventService;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -94,7 +95,7 @@ public class Category {
 			this.custoffTime = FastDateFormat.getInstance(IPSEMSEventService.TIME_FORMAT_STRING).parse(custoffTime.replace("T", " " ));
 		} catch (ParseException e) {
 			log.error("Error setting CustoffTime with value {} and format: {}, Error: {}",custoffTime, IPSEMSEventService.TIME_FORMAT_STRING,e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 	}
 	public Integer getCutOffDays() {

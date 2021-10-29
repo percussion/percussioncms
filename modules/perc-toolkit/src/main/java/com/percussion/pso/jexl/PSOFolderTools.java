@@ -14,7 +14,14 @@ package com.percussion.pso.jexl;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSFolderProperty;
-import com.percussion.extension.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSJexlExpression;
+import com.percussion.extension.IPSJexlMethod;
+import com.percussion.extension.IPSJexlParam;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSJexlUtilBase;
 import com.percussion.pso.utils.PSOItemFolderUtilities;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -37,7 +44,11 @@ import org.apache.logging.log4j.Logger;
 
 import javax.jcr.RepositoryException;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * JEXL functions for folder manipulation. 
@@ -132,12 +143,12 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
            }
         	   
        } catch (PSErrorResultsException e) {
-           log.error("Could not locate Folder for: {} Error: {}", path, e.getMessage());
-           log.debug(e.getMessage(),e);
+           log.error("Could not locate Folder for: {} Error: {}", path,PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new RuntimeException(e);
        }catch (Exception e){
     	   log.error("An unexpected exception occurred while retrieving Folder for: {} Error: {}", path,e.getMessage());
-    	   log.debug(e.getMessage(),e);
+    	   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
 	return folder;
    }
@@ -254,8 +265,8 @@ public class PSOFolderTools extends PSJexlUtilBase implements IPSJexlExpression
        try {
            return PSOItemFolderUtilities.getFolderPath(id);
        } catch (PSNotFoundException e) {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(),e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new PSCmsException(e);
        }
    }

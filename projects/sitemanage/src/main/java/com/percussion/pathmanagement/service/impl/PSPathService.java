@@ -139,8 +139,8 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             PSPathItem item = super.find(path);
             return folderHelper.setFolderAccessLevel(item);
         } catch (PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPathServiceException(e);
         }
     }
@@ -160,7 +160,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
         }
         catch (IPSDataService.DataServiceLoadException | PSValidationException | PSNotFoundException e) {
             log.error("Error: {} Id: {}",e.getMessage(), id);
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPathServiceException(e);
         }
     }
@@ -181,7 +181,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             throw pse;
         }catch (PSDataServiceException e){
             log.error("Error: {} Path: {}",e.getMessage(),path);
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPathServiceException(e);
         }
     }
@@ -327,8 +327,8 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
 
             return extendedPathItem;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPathServiceException(e);
         }
     }
@@ -346,8 +346,8 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             PSPathOptions.setShouldCheckChildTypes(true);
             return new PSPathItemList(findChildren(path, null, null, null, null, null, null, null, null, false).getChildrenInPage());
         } catch (PSPathServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw (e);
         } finally
         {
@@ -390,7 +390,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
            return folderHelper.setFolderAccessLevel(folder);
        } catch (PSPathServiceException  | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException | PSNotFoundException e) {
            log.error("Path: {} Error: {}",path,e.getMessage());
-           log.debug(e.getMessage(),e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
           throw new PSPathServiceException(e);
        }
     }
@@ -410,7 +410,7 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             return folderHelper.setFolderAccessLevel(folder);
         } catch (PSPathServiceException | PSDataServiceException | PSNotFoundException e) {
             log.error("Path: {} Error: {}",path,e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPathServiceException(e);
         }
     }
@@ -435,8 +435,8 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
         }catch (PSBeanValidationException bve){
             throw bve;
         }catch (PSDataServiceException | PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -454,8 +454,8 @@ public class PSPathService extends PSDispatchingPathService implements IPSPathSe
             stripLeadingSlashForPaths(request);
             return super.moveItem(request);
         } catch (PSPathServiceException | PSDataServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }

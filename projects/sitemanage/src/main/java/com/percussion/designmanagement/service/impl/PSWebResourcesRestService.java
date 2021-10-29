@@ -28,17 +28,20 @@ import com.percussion.designmanagement.service.IPSFileSystemService.PSFileAlread
 import com.percussion.designmanagement.service.IPSFileSystemService.PSFileNameInUseByFolderException;
 import com.percussion.designmanagement.service.IPSFileSystemService.PSFileOperationException;
 import com.percussion.designmanagement.service.IPSFileSystemService.PSReservedFileNameException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.user.data.PSCurrentUser;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.util.PSCharSets;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.List;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
+import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -51,16 +54,12 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.cxf.jaxrs.ext.multipart.Attachment;
-import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * This REST Service handles the requests under "Design/webresources". Here we
@@ -121,8 +120,8 @@ public class PSWebResourcesRestService
                     .header("Content-Length", itemContent.length())
                     .build();
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -153,8 +152,8 @@ public class PSWebResourcesRestService
                 return Response.serverError().entity(e.getMessage()).build();
             }
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -245,8 +244,8 @@ public class PSWebResourcesRestService
 
             return Response.ok().entity(response).build();
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -297,8 +296,8 @@ public class PSWebResourcesRestService
 
             return Response.ok().entity(VALIDATE_SUCCESS).build();
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

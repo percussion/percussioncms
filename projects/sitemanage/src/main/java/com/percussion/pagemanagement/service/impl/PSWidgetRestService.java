@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.data.PSWidgetPackageInfoRequest;
@@ -76,8 +77,8 @@ public class PSWidgetRestService {
         try {
             return widgetService.validateWidgetItem(widgetItem);
         } catch (PSPropertiesValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -92,8 +93,8 @@ public class PSWidgetRestService {
         try {
             return widgetService.find(id);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -106,8 +107,8 @@ public class PSWidgetRestService {
         try {
             return new PSWidgetSummaryList(widgetService.findAll());
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -120,8 +121,8 @@ public class PSWidgetRestService {
         try {
             return new PSWidgetSummaryList(widgetService.findByType(type, filterDisabledWidgets));
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -135,8 +136,8 @@ public class PSWidgetRestService {
         try {
             return widgetService.load(id);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -150,8 +151,8 @@ public class PSWidgetRestService {
         try {
             return widgetService.findWidgetPackageInfo(request);
         }catch(Exception e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

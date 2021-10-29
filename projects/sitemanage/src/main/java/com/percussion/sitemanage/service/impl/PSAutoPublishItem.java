@@ -24,6 +24,7 @@
 package com.percussion.sitemanage.service.impl;
 
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSWorkFlowContext;
 import com.percussion.extension.IPSWorkflowAction;
@@ -90,8 +91,8 @@ public class PSAutoPublishItem extends PSDefaultExtension implements
                log.warn(response.getWarningMessage());
            }
        } catch (IPSPubServerService.PSPubServerServiceException | IPSItemWorkflowService.PSItemWorkflowServiceException | IPSItemService.PSItemServiceException e) {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(),e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new PSExtensionProcessingException(e.getMessage(),e);
        }
     }

@@ -24,10 +24,13 @@
 
 package com.percussion.activity.service;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.injectDependencies;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,10 +39,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cactus.ServletTestCase;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.experimental.categories.Category;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.injectDependencies;
 
 @Category(IntegrationTest.class)
 public class PSActivityServiceTest extends ServletTestCase
@@ -150,8 +150,8 @@ public class PSActivityServiceTest extends ServletTestCase
        }
        catch (Exception e)
        {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(), e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
     }
     

@@ -27,24 +27,20 @@ package com.percussion.extensions.cx;
 import com.percussion.cms.handlers.PSConditionalCloneHandler;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.HashMap;
 
 /**
  * This extension translates given array of items into supplied locale. It
@@ -202,10 +198,9 @@ public class PSCreateTranslations extends PSDefaultExtension
          }
          catch(Exception e)
          {
-            if(request.isTraceEnabled())
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
-            statusElem.setAttribute("status", e.getLocalizedMessage());
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            statusElem.setAttribute("status", PSExceptionUtils.getMessageForLog(e));
             continue;
          }
          finally

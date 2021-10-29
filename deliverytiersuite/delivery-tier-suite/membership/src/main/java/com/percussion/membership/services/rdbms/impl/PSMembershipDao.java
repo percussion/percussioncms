@@ -23,6 +23,7 @@
  */
 package com.percussion.membership.services.rdbms.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.membership.data.IPSMembership;
 import com.percussion.membership.data.IPSMembership.PSMemberStatus;
 import com.percussion.membership.data.PSAccountSummary;
@@ -187,8 +188,8 @@ public class PSMembershipDao extends HibernateDaoSupport implements IPSMembershi
             return  session.createQuery(criteriaQuery).getResultList();
 
         }catch (Exception e){
-            log.error(e.getMessage());
-            log.debug(e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return new ArrayList<>();
         }
 

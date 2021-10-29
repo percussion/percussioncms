@@ -24,6 +24,7 @@
 
 package com.percussion.tools.simple;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -86,8 +87,8 @@ public class PSRgs2Xml
        }
        catch(IOException e)
        {
-          log.error(e.getMessage());
-          log.debug(e.getMessage(), e);
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        finally
        {

@@ -24,6 +24,7 @@
 
 package com.percussion.ant.packagetool;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.logging.log4j.LogManager;
@@ -482,8 +483,8 @@ public class PSPackageBuildToolHelper
         }
         catch (IOException e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         finally
         {

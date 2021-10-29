@@ -26,6 +26,7 @@ package com.percussion.sitemanage.dao.impl;
 import com.percussion.cms.objectstore.PSCloningOptions;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.pagemanagement.assembler.IPSRenderAssemblyBridge;
@@ -345,8 +346,8 @@ public class PSSiteContentDao
         }
         catch (Exception e)
         {
-            log.error("Error deleting site related items from folder: {}, Error: {}", site.getFolderPath(), e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error deleting site related items from folder: {}, Error: {}", site.getFolderPath(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new DeleteException("Failed to delete site folder: " + site.getFolderPath() + " while deleting site", e);
         }
         finally {
@@ -481,7 +482,7 @@ public class PSSiteContentDao
 //        } catch (Exception e)
 //        {
 //            log.warn("Cannot find folder: " + folderPath + " to delete, may already be deleted.");
-//            log.debug(e);
+//            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 //        }
 
     }

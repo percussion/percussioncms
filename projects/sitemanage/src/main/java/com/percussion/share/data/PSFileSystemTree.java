@@ -24,12 +24,13 @@
 
 package com.percussion.share.data;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.share.data.PSFileSystemItem.PSFileSystemItemType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
-import com.percussion.share.data.PSFileSystemItem.PSFileSystemItemType;
 
 /**
  * @deprecated Seems unused as of 8.0.2
@@ -47,8 +48,8 @@ public class PSFileSystemTree implements IPSTree {
 		try {
 			rt.setValue(new PSFileSystemItem(f.getCanonicalPath(), PSFileSystemItemType.DIRECTORY));
 		} catch (IOException e) {
-			log.error(e.getMessage());
-			log.debug(e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		this.root = rt;
 		initTree();
@@ -74,8 +75,8 @@ public class PSFileSystemTree implements IPSTree {
 					else
 						fi = new PSFileSystemItem(files[i].getCanonicalPath(), PSFileSystemItem.PSFileSystemItemType.FILE);
 				} catch (IOException e) {
-					log.error(e.getMessage());
-					log.debug(e);
+					log.error(PSExceptionUtils.getMessageForLog(e));
+					log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				}
 			}
 		}

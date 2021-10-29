@@ -28,6 +28,7 @@ import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
 import com.percussion.delivery.service.impl.PSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.pubserver.data.PSPublishServerInfo;
 import com.percussion.pubserver.data.PSPublishServerInfoList;
@@ -96,8 +97,8 @@ public class PSPubServerRestService
         try {
             return service.getPubServer(siteId, serverId);
         } catch (IPSPubServerService.PSPubServerServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -111,8 +112,8 @@ public class PSPubServerRestService
         try {
             return new PSPublishServerInfoList(service.getPubServerList(siteId));
         } catch (IPSPubServerService.PSPubServerServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -145,8 +146,8 @@ public class PSPubServerRestService
             log.debug(ps.getMessage(),ps);
             throw ps;
         } catch (PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -177,8 +178,8 @@ public class PSPubServerRestService
             log.debug(ps.getMessage(),ps);
             throw ps;
         } catch (PSDataServiceException | PSNotFoundException | IPSPubServerService.PSPubServerServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -203,8 +204,8 @@ public class PSPubServerRestService
 
             return new PSPublishServerInfoList(service.deleteServer(siteId, serverId));
         } catch (IPSPubServerService.PSPubServerServiceException | PSDataServiceException | PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -220,8 +221,8 @@ public class PSPubServerRestService
 
             service.stopPublishing(jobId);
         } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -332,8 +333,8 @@ public class PSPubServerRestService
 
             return service.getDefaultFolderLocation(siteId, publishType, driver, serverType);
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

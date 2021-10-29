@@ -10,6 +10,7 @@
 package com.percussion.pso.workflow;
 
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
@@ -110,8 +111,8 @@ public class PSOWFActionDispatcher extends PSDefaultExtension
         }
         catch(Exception e)
         {            
-            log.error("WFActionDispatcher::performAction. Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("WFActionDispatcher::performAction. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         try
         {

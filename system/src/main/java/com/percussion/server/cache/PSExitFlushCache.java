@@ -67,7 +67,7 @@ public class PSExitFlushCache extends PSDefaultExtension
          }
          catch (PSCacheException e)
          {
-            throw new RuntimeException(e.getLocalizedMessage());
+            throw new RuntimeException(e);
          }
       }
    }

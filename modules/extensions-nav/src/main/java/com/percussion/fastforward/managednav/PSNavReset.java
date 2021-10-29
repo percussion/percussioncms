@@ -23,6 +23,7 @@
  */
 package com.percussion.fastforward.managednav;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -31,7 +32,6 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -64,11 +64,11 @@ public class PSNavReset extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         log.error("PSNavException found: {}", e.getMessage());
+         log.error("PSNavException found: {}",PSExceptionUtils.getMessageForLog(e));
          log.error(PSNavAutoSlotExtension.class, e);
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
-         throw new PSExtensionProcessingException(0, e.getMessage());
+         throw new PSExtensionProcessingException(0,PSExceptionUtils.getMessageForLog(e));
 
       }
       catch (Exception ex)
@@ -109,10 +109,10 @@ public class PSNavReset extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         log.error("PSNavException found: {}", e.getMessage());
+         log.error("PSNavException found: {}",PSExceptionUtils.getMessageForLog(e));
          log.error(PSNavAutoSlotExtension.class, e);
-         log.debug(e.getMessage(), e);
-         throw new PSExtensionProcessingException(0, e.getMessage());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new PSExtensionProcessingException(0, PSExceptionUtils.getMessageForLog(e));
 
       }
       catch (Exception ex)

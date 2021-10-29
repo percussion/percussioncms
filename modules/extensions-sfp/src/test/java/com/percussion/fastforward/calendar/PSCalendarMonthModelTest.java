@@ -23,6 +23,7 @@
  */
 package com.percussion.fastforward.calendar;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
@@ -460,8 +461,8 @@ public class PSCalendarMonthModelTest
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

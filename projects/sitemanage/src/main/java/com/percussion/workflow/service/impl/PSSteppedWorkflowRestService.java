@@ -23,6 +23,7 @@
  */
 package com.percussion.workflow.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.share.data.PSEnumVals;
@@ -161,8 +162,8 @@ public class PSSteppedWorkflowRestService
         try {
             return service.createWorkflow(getReadableName(workflowName), uiWorkflow);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -186,8 +187,8 @@ public class PSSteppedWorkflowRestService
         try {
             return service.updateWorkflow(getReadableName(workflowName), uiWorkflow);
         } catch (PSDataServiceException | PSNotFoundException  e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -227,8 +228,8 @@ public class PSSteppedWorkflowRestService
         try {
             return service.createStep(getReadableName(workflowName), getReadableName(stepName), uiWorkflow);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -253,8 +254,8 @@ public class PSSteppedWorkflowRestService
         try {
             return service.updateStep(getReadableName(workflowName), getReadableName(stepName), uiWorkflow);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -314,8 +315,8 @@ public class PSSteppedWorkflowRestService
 
             return choices;
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

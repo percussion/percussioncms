@@ -24,20 +24,7 @@
 
 package com.percussion.taxonomy.web;
 
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.taxonomy.domain.Attribute;
 import com.percussion.taxonomy.domain.Node;
 import com.percussion.taxonomy.domain.Node_editor;
@@ -54,7 +41,15 @@ import com.percussion.taxonomy.service.TaxonomyService;
 import com.percussion.taxonomy.service.ValueService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Controller;
+
+import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public abstract class AbstractTaxonEditorController extends AbstractControllerWithSecurityChecks {
 
@@ -186,8 +181,8 @@ public abstract class AbstractTaxonEditorController extends AbstractControllerWi
         try {
             return URLDecoder.decode(in, "UTF-8");
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return null;
         }
     }

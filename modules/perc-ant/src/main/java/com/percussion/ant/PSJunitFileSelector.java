@@ -23,6 +23,7 @@
  */
 package com.percussion.ant;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.types.Parameter;
@@ -109,15 +110,13 @@ public class PSJunitFileSelector extends BaseExtendSelector
       }
       catch (NoClassDefFoundError e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
          setError("Failed to load test class: " + className + ", filename: " + 
             filename + ", error: " + e.getLocalizedMessage());         
       }
       catch (ClassNotFoundException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          setError("Failed to load test class: " + className + ", filename: " + 
             filename + ", error: " + e.getLocalizedMessage());
       }
@@ -453,8 +452,8 @@ public class PSJunitFileSelector extends BaseExtendSelector
             catch (MalformedURLException e)
             {
                // ignore bad entries (that's what Java does)
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }

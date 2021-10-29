@@ -9,11 +9,11 @@
  ******************************************************************************/
 package test.percussion.pso.preview;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.pso.preview.ConfigurableSiteLoaderImpl;
+import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.services.sitemgr.IPSSiteManager;
+import com.percussion.services.sitemgr.PSSiteManagerException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
@@ -21,10 +21,12 @@ import org.jmock.Mockery;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.percussion.pso.preview.ConfigurableSiteLoaderImpl;
-import com.percussion.services.sitemgr.IPSSite;
-import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteManagerException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 public class ConfigurableSiteLoaderImplTest {
 
@@ -77,8 +79,8 @@ public class ConfigurableSiteLoaderImplTest {
 			context.assertIsSatisfied(); 
 			
 		} catch (PSSiteManagerException e) {
-			log.error("Exception caught {}", e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error("Exception caught {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			fail("Exception"); 
 		} 
 	    

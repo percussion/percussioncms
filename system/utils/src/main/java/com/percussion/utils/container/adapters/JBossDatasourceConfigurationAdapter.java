@@ -25,6 +25,9 @@
 package com.percussion.utils.container.adapters;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConfigurationAdapter;
 import com.percussion.utils.container.IPSJndiDatasource;
@@ -34,9 +37,6 @@ import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -337,7 +337,7 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 } catch (PSEncryptionException e) {
                     log.error("Error encrypting password: " + PSExceptionUtils.getMessageForLog(e),e);
                     log.error(PSExceptionUtils.getMessageForLog(e));
-                    log.debug(e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
 
                 PSSecureCredentials cred = new PSSecureCredentials(
@@ -466,7 +466,7 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         {
             // TODO Auto-generated catch block
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return dsResolver;
@@ -487,7 +487,7 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
     }

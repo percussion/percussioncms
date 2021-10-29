@@ -23,6 +23,7 @@
  */
 package com.percussion.install;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.util.PSProperties;
@@ -559,8 +560,8 @@ public class PSOraConvertLONG2LOBTool
       catch(SQLException e)
       {
          String msg = PSJdbcTableFactoryException.formatSqlException(e);
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          logIt(msg);
       }
       catch(PSJdbcTableFactoryException jdbcEx)

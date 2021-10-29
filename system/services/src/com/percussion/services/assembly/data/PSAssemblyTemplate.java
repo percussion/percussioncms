@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.data;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -385,8 +386,8 @@ public class PSAssemblyTemplate
          cloneTemplate.fromXML(xml);
          return cloneTemplate;
       } catch (SAXException | IOException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSRuntimeException(e);
       }
 

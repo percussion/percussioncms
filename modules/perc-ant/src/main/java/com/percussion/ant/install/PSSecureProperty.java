@@ -94,8 +94,8 @@ public class PSSecureProperty
             try (FileInputStream is = new FileInputStream(filepath)) {
                 props.load(is);
             } catch (IOException e) {
-                log.error("{}" , e.getMessage());
-                log.debug(e);
+                log.error("{}" ,PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             for (String regex : propnames) {
                 String[] expandedKeys = expandMatchingKeys(regex, props);
@@ -110,7 +110,7 @@ public class PSSecureProperty
                                 encVal = getClouded(encVal);
                             } catch (PSEncryptionException e) {
                                 log.error(PSExceptionUtils.getMessageForLog(e));
-                                log.debug(e);
+                                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                             }
                         }
                         props.put(key,encVal);
@@ -122,8 +122,8 @@ public class PSSecureProperty
                 try (FileOutputStream os = new FileOutputStream(filepath)) {
                     props.store(os, "");
                 } catch (IOException e) {
-                    log.error("ERROR: {}" , e.getMessage());
-                    log.debug(e);
+                    log.error("ERROR: {}" ,PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         }
@@ -153,8 +153,8 @@ public class PSSecureProperty
             try(FileInputStream is = new FileInputStream(filepath)) {
                 props.load(is);
             } catch (IOException e) {
-                log.error("ERROR : {}",e.getMessage());
-                log.debug(e);
+                log.error("ERROR : {}",PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
             for (Map.Entry entry : props.entrySet()) {
@@ -170,8 +170,8 @@ public class PSSecureProperty
                 try(FileOutputStream os = new FileOutputStream(filepath)) {
                     props.store(os, "");
                 } catch (IOException e) {
-                    log.error("ERROR: {}" , e.getMessage());
-                    log.debug(e);
+                    log.error("ERROR: {}" ,PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         }

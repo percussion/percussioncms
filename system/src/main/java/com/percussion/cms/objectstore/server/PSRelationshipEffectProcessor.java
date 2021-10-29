@@ -38,6 +38,7 @@ import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionManager;
@@ -770,8 +771,8 @@ public class PSRelationshipEffectProcessor
             catch (PSException e)
             {
                 log.error("Cannot get relationship with id= {} ", currentRel.getId());
-                log.error("Error : {} ",e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error("Error : {} ", PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             m_execData.setSourceRelationship(sourceRel);
         }

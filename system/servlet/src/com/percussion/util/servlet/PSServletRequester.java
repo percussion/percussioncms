@@ -24,6 +24,25 @@
 
 package com.percussion.util.servlet;
 
+import com.percussion.HTTPClient.PSBinaryFileData;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.IPSRemoteRequesterEx;
+import com.percussion.util.PSCharSets;
+import com.percussion.util.PSXMLDomUtil;
+import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,26 +52,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
-import com.percussion.HTTPClient.PSBinaryFileData;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.IPSRemoteRequesterEx;
-import com.percussion.util.PSCharSets;
-import com.percussion.util.PSXMLDomUtil;
-import com.percussion.xml.PSXmlDocumentBuilder;
 
 /**
  * This class handles the communication between a servlet and the
@@ -151,9 +150,9 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         throw new RuntimeException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 
@@ -217,9 +216,9 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         throw new RuntimeException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 

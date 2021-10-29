@@ -1,23 +1,41 @@
 package com.percussion.pso.effects;
 
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.*;
+import com.percussion.cms.objectstore.IPSFieldValue;
+import com.percussion.cms.objectstore.PSAaRelationship;
+import com.percussion.cms.objectstore.PSAaRelationshipList;
+import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSDateValue;
+import com.percussion.cms.objectstore.PSItemDefinition;
+import com.percussion.cms.objectstore.PSItemField;
+import com.percussion.cms.objectstore.PSTextValue;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.cms.objectstore.server.PSServerItem;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.fastforward.managednav.*;
+import com.percussion.fastforward.managednav.PSNavAbstractEffect;
+import com.percussion.fastforward.managednav.PSNavConfig;
+import com.percussion.fastforward.managednav.PSNavException;
+import com.percussion.fastforward.managednav.PSNavProxyFactory;
+import com.percussion.fastforward.managednav.PSNavRelationshipInfo;
+import com.percussion.fastforward.managednav.PSNavUtil;
 import com.percussion.relationship.IPSExecutionContext;
 import com.percussion.relationship.PSEffectResult;
 import com.percussion.relationship.annotation.PSEffectContext;
 import com.percussion.relationship.annotation.PSHandlesEffectContext;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
-import com.percussion.services.assembly.*;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
@@ -25,7 +43,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /***
@@ -316,7 +338,7 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
 			
 		} catch (PSNavException e) {
 			log.error("Unable to process NavOn slots for NavOn: {}", dep.getContentId(),e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			result.setSuccess();
 		}
 
@@ -423,8 +445,8 @@ public class PSNavLandingPageGeneratorEffect extends  PSNavAbstractEffect{
          }
          
 		} catch (Exception e) {
-			log.error("Error generating Landing Page Error: {}", e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.error("Error generating Landing Page Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
 			throw e;
 		}

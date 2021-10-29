@@ -24,6 +24,7 @@
 
 package com.percussion.queue.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.queue.IPSPageImportQueue;
 import com.percussion.queue.PSAbstractEventQueue;
@@ -423,8 +424,8 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		} catch (Exception e) {
 			log.error(
 					"An error occurred when getting the imported and cataloged pages for site name: {}, Error: {}"
-							, siteName, e.getMessage());
-			log.debug(e.getMessage(),e);
+							, siteName,PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return new PSSiteQueue();
 		}
 	}

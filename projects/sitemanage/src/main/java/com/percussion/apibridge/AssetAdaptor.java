@@ -36,6 +36,7 @@ import com.percussion.assetmanagement.data.PSImageAssetReportLine;
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.PSItemUserInfo;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
@@ -630,9 +631,8 @@ try{
         }
         catch (Exception e)
         {
-            // TODO Auto-generated catch block
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return out;

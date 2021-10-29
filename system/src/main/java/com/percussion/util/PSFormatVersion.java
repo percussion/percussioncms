@@ -25,6 +25,7 @@ package com.percussion.util;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSConsole;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang3.time.FastDateFormat;
@@ -90,8 +91,8 @@ public class PSFormatVersion
        try {
            props.load(clazz.getResourceAsStream(path));
        } catch (IOException e) {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(), e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
 
        m_buildNumber = props.getProperty(KEY_BUILD_NUMBER);

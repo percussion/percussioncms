@@ -237,7 +237,7 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
                 keyStr = Base64.getEncoder().encodeToString(key);
             } catch (IOException e) {
                 log.error("Error reading instance secure key file: {}", PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         return keyStr;

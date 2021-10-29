@@ -24,13 +24,14 @@
 package com.percussion.services.security;
 
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.security.data.PSAccessLevelImpl;
 import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +39,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -501,8 +505,8 @@ public class PSAclServiceTest
         catch (Exception e)
         {
             System.out.println("Failed while cleaning up test acls.");
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 }

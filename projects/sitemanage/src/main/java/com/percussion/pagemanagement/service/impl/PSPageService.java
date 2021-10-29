@@ -323,8 +323,8 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         try {
             itemWorkflowService.checkOut(newPageId);
         } catch (PSItemWorkflowServiceException e) {
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         PSPage newPage = load(newPageId);
         newPage.setName(newName);
@@ -414,7 +414,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         catch (PSItemWorkflowServiceException | PSNotFoundException | PSDataServiceException e)
         {
             log.error("Page: {} not found for delete. Error: {}",id,e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     
@@ -586,7 +586,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         {
             String errMsg = "Failed to get the import status for cataloged pages.";
             log.error(errMsg);
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSPageException(errMsg, e); 
         }
     }

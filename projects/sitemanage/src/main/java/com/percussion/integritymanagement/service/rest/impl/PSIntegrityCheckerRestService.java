@@ -24,13 +24,18 @@
 
 package com.percussion.integritymanagement.service.rest.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
 import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
 import com.percussion.integritymanagement.data.PSIntegrityStatusList;
 import com.percussion.integritymanagement.service.IPSIntegrityCheckerService.IntegrityTaskType;
 import com.percussion.integritymanagement.service.impl.PSIntegrityCheckerService;
-
-import java.util.List;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -41,13 +46,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-
-import com.percussion.share.service.exception.PSDataServiceException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service("pSIntegrityCheckerRestService")
 @Path("/integritycheck")
@@ -76,8 +75,8 @@ public class PSIntegrityCheckerRestService
             }
             return integrityCheckerService.start(tasktype);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -89,8 +88,8 @@ public class PSIntegrityCheckerRestService
         try {
             integrityCheckerService.stop();
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -104,8 +103,8 @@ public class PSIntegrityCheckerRestService
         try {
             return integrityCheckerService.getStatus(id);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -122,8 +121,8 @@ public class PSIntegrityCheckerRestService
                 st = Status.valueOf(StringUtils.defaultString(type));
             return new PSIntegrityStatusList(integrityCheckerService.getHistory(st));
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -135,8 +134,8 @@ public class PSIntegrityCheckerRestService
         try {
             integrityCheckerService.delete(id);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

@@ -23,6 +23,7 @@
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -41,17 +42,15 @@ import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.RepositoryException;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Pre exit to delete the workflow associations with the content types when a
@@ -95,8 +94,8 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
                + "association with the content types.";
          Object[] args = { wfGuid.toString() };
          log.warn(MessageFormat.format(msg, args), e);
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
    }
@@ -130,8 +129,8 @@ public class PSExitDeleteWfCtypeAssociations implements IPSRequestPreProcessor
          }
          catch (Exception e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             String msg = "Failed to delete the workflow({0}) "
                   + "association with the content type ({1}).";
             Object[] args = { wfGuid.toString(), ctGuid.toString() };

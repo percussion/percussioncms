@@ -23,6 +23,7 @@
  */
 package com.percussion.content;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.general.IPSRhythmyxInfo;
 import com.percussion.services.general.PSRhythmyxInfoLocator;
@@ -1438,8 +1439,8 @@ public abstract class PSContentFactory
          }
          catch (Exception e)
          {
-            log.info("Was not able to get server directory from locator (normal for client) Error {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.info("Was not able to get server directory from locator (normal for client) Error {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       if (canBeRead(f))
@@ -1451,7 +1452,7 @@ public abstract class PSContentFactory
             mimesObtainedFromFile = true;
          } catch (IOException e)
          {
-            log.warn("Could not load mime props from {}, . Using hardcoded defaults. Error: {} " + f, e.getMessage());
+            log.warn("Could not load mime props from {}, . Using hardcoded defaults. Error: {} " , f,PSExceptionUtils.getMessageForLog(e));
          } finally {
             if (fInput!=null) 
                try { fInput.close();} catch (Exception e) {/*ignore*/ }

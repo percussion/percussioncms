@@ -23,6 +23,7 @@
  */
 package com.percussion.workflow.web.service;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.data.PSEnumVals;
 import com.percussion.share.test.PSObjectRestClient;
 import com.percussion.share.test.PSObjectRestClient.DataRestClientException;
@@ -154,7 +155,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException,PSExceptionUtils.getMessageForLog(e));
         }
     }
     
@@ -176,7 +177,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException,PSExceptionUtils.getMessageForLog(e));
         }
     }
     
@@ -224,7 +225,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException,PSExceptionUtils.getMessageForLog(e));
         }
     }
     
@@ -247,7 +248,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException, PSExceptionUtils.getMessageForLog(e));
         }
     }
 

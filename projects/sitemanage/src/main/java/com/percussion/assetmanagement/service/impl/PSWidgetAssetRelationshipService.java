@@ -39,6 +39,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
 import com.percussion.pagemanagement.assembler.IPSRenderAssemblyBridge;
@@ -387,7 +388,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                 log.debug("Deleted asset with id: {}", assetId);
             } catch (PSDataServiceException e) {
                 log.error("Error deleting Asset with id: {} Error: {}",assetId,e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }
@@ -485,7 +486,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
                     log.debug("Deleted local asset with id: {}", assetId);
                 } catch (PSDataServiceException e) {
                     log.error("Error deleting local asset with id: {} Error: {}",assetId,e.getMessage());
-                    log.debug(e.getMessage(),e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     //Continue processing so one bad asset doesn't prevent the reset from being processing.
                 }
             }
@@ -1210,7 +1211,7 @@ public class PSWidgetAssetRelationshipService implements IPSWidgetAssetRelations
             log.error("Error loading Widget definition for id: {} Error: {}",
                     widgetDefId,
                     e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

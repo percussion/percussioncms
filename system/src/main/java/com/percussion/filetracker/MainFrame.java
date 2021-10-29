@@ -24,6 +24,8 @@
 
 package com.percussion.filetracker;
 
+import com.percussion.error.PSExceptionUtils;
+
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import java.awt.*;
@@ -415,7 +417,7 @@ public class MainFrame extends JFrame
       }
       catch(PSFUDInvalidConfigFileException e)
       {
-         JOptionPane.showMessageDialog(this, e.getMessage());
+         JOptionPane.showMessageDialog(this, PSExceptionUtils.getMessageForLog(e));
          System.exit(1);
       }
 
@@ -456,17 +458,17 @@ public class MainFrame extends JFrame
             }
             catch(PSFUDNullElementException e)
             {
-               JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+               JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
                bRepeat = true;
             }
             catch(PSFUDEmptyServerAliasException e)
             {
-               JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+               JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
                bRepeat = true;
             }
             catch(PSFUDInvalidConfigFileException e)
             {
-               JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+               JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
                bRepeat = true;
             }
             catch(PSFUDAuthenticationFailureException e)
@@ -477,17 +479,17 @@ public class MainFrame extends JFrame
             }
             catch(PSFUDServerException e)
             {
-               JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+               JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
                bRepeat = true;
             }
             catch(PSFUDNullDocumentsException e)
             {
-               JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+               JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
                bRepeat = true;
             }
             catch(PSFUDMergeDocumentsException e)
             {
-               JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+               JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
                bRepeat = true;
             }
          }
@@ -508,7 +510,7 @@ public class MainFrame extends JFrame
             }
             catch(PSFUDNullElementException e)
             {
-               JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+               JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
                System.exit(1);
             }
          }
@@ -576,19 +578,19 @@ public class MainFrame extends JFrame
       }
       catch(PSFUDServerException e)
       {
-         JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+         JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
       }
       catch(PSFUDNullDocumentsException e)
       {
-         JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+         JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
       }
       catch(PSFUDNullElementException e)
       {
-         JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+         JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
       }
       catch(PSFUDMergeDocumentsException e)
       {
-         JOptionPane.showMessageDialog(MainFrame.this, e.getMessage());
+         JOptionPane.showMessageDialog(MainFrame.this,PSExceptionUtils.getMessageForLog(e));
       }
       setCursor(null);
    }

@@ -26,6 +26,7 @@ package com.percussion.category.extension;
 
 import com.percussion.category.data.PSCategory;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -33,16 +34,15 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 
 
 public class PSCategoryPostExit implements IPSResultDocumentProcessor {
@@ -87,8 +87,8 @@ public class PSCategoryPostExit implements IPSResultDocumentProcessor {
 		
 			doc = PSXmlDocumentBuilder.createXmlDocument(new StringReader(returnString.trim()), false);
 		} catch (PSDataServiceException | IOException | SAXException e) {
-			log.error(e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		    throw new PSExtensionProcessingException
               ("Error converting categories to xml", e);
 		}

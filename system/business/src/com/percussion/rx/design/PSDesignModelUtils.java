@@ -29,6 +29,7 @@ import com.percussion.cms.objectstore.PSComponentProcessorProxy;
 import com.percussion.cms.objectstore.PSDisplayFormat;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSSearch;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -44,6 +45,9 @@ import com.percussion.services.system.data.PSDependent;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,11 +56,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Util class for design models. Consists of static methods.
@@ -151,8 +150,8 @@ public class PSDesignModelUtils
       catch (PSCmsException e)
       {
          // this is not possible
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException(
                "Failed to create PSComponentProcessorProxy.", e);
       }

@@ -39,6 +39,7 @@ import com.percussion.deployer.objectstore.PSImportDescriptor;
 import com.percussion.deployer.objectstore.PSImportPackage;
 import com.percussion.deployer.objectstore.PSTransactionSummary;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.config.IPSConfigRegistrationMgr;
 import com.percussion.rx.config.IPSConfigService;
 import com.percussion.rx.config.PSConfigServiceLocator;
@@ -717,7 +718,7 @@ public class PSImportJob extends PSDeployJob
       }
       catch (PSDeployException e)
       {
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

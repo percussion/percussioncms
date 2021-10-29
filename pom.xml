@@ -2110,35 +2110,11 @@
                 <groupId>org.apache.xmlgraphics</groupId>
                 <artifactId>batik-all</artifactId>
                 <version>${batik.version}</version>
-               <!-- TODO: Remove me
-                <exclusions>
-                    <exclusion>
-                        <groupId>xerces</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>xalan</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                </exclusions>
-                -->
             </dependency>
             <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>
                 <artifactId>xmlgraphics-commons</artifactId>
                 <version>${xmlgraphics.common.version}</version>
-                <!-- TODO: Remove me
-                <exclusions>
-                    <exclusion>
-                        <groupId>xerces</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>xalan</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                </exclusions>
-                -->
             </dependency>
             <dependency>
                     <groupId>org.xerial</groupId>

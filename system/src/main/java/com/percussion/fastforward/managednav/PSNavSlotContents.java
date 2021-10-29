@@ -36,6 +36,7 @@ import com.percussion.data.macro.PSMacroUtils;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPreparedStatement;
@@ -415,14 +416,13 @@ public class PSNavSlotContents
             }
             results.add(resArray);
             valid = rs.next();
-            //log.debug("next row");
          }
          log.debug("finished loading rows");
       }
       catch (SQLException e)
       {
-         log.error("SQL Error {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSNavException(e);
       }
       finally
@@ -469,8 +469,8 @@ public class PSNavSlotContents
       }
       catch (SQLException e)
       {
-         log.error("SQL Error {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSNavException(e);
       }
       finally
@@ -528,7 +528,7 @@ public class PSNavSlotContents
       }
       catch (SQLException e)
       {
-         log.error("SQL Error {}", e.getMessage());
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
          throw new PSNavException(e);
       }
       finally

@@ -459,8 +459,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
 
@@ -614,8 +614,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error("Failed to filter by community : {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Failed to filter by community : {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return results;
@@ -1069,8 +1069,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return results;
@@ -1175,8 +1175,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error("Failed to get role email addresses {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Failed to get role email addresses {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return emailAddrs;
@@ -1272,8 +1272,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error("Failed to lookup email addresses : {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Failed to lookup email addresses : {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return addrs;
@@ -1376,8 +1376,8 @@ public class PSRoleManager
       }
       catch (PSSecurityCatalogException e)
       {
-         log.error("Failed to lookup subject email addresses : {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Failed to lookup subject email addresses : {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return addrs;

@@ -24,6 +24,7 @@
 package com.percussion.extension;
 
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
@@ -83,8 +84,8 @@ public class PSJavaExtensionHandler extends PSExtensionHandler implements IPSNot
          }
          catch (Exception e)
          {
-            log.error("Failed to register jar file, {} , Error : {} ", tgtFile.getAbsolutePath(), e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Failed to register jar file, {} , Error : {} ", tgtFile.getAbsolutePath(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

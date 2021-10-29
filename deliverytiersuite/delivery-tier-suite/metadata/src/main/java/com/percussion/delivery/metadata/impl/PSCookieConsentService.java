@@ -123,7 +123,7 @@ public class PSCookieConsentService implements IPSCookieConsentService {
         } catch (Exception e) {
             log.error("Error updating site name in cookie consent service for old site: {} Error: {}" ,
                     oldSiteName, PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 }

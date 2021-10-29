@@ -47,6 +47,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSUIDefinition;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSRuntimeException;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.IPSInternalRequest;
@@ -279,8 +280,8 @@ public class PSItemDefManager
         } 
         catch (PSInvalidContentTypeException e) 
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     return dmapping;
 }
@@ -913,7 +914,7 @@ public class PSItemDefManager
            nodeDef = cml.loadNodeDefinitions(Collections.singletonList(new PSGuid(PSTypeEnum.NODEDEF, typeId))).stream().findFirst().orElse(null);
        } catch (RepositoryException e) {
            log.error("Unable to locate content type with id {}, Error : {} ", typeId,e.getMessage());
-           log.debug(e.getMessage(), e);
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new PSInvalidContentTypeException(Long.toString(typeId));
        }
 
@@ -1148,7 +1149,7 @@ public class PSItemDefManager
       }
       catch (PSUnknownNodeTypeException e)
       {
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       catch (PSCmsException e1)
       {
@@ -1591,7 +1592,7 @@ public class PSItemDefManager
             catch (PSInvalidContentTypeException e)
             {
                log.warn("Failed to get the item def for contenttype id {} . Setting the icon path to null for locator {}", ctypeid, locator.toString());
-               log.debug(e.getMessage(), e);
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                iconMap.put(locator, null);
                continue;
             }
@@ -1710,7 +1711,7 @@ public class PSItemDefManager
             // If we can't load the item better to set the icon path to null
             // rather than throwing an exception here.
             log.warn("Failed to load item for locator {}  Setting the icon path to null. Error : {}",loc.toString(), e);
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             icPaths.put(loc, null);
          }
       }
@@ -1782,12 +1783,12 @@ public class PSItemDefManager
          catch (FileNotFoundException e)
          {
             log.warn("Error getting the rx resources file icon details.", e);
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          catch (IOException e)
          {
             log.warn("Error getting the rx resources file icon details.", e);
-             log.debug(e.getMessage(),e);
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          ms_rxFileIconProperties = new HashMap<>();
          ms_rxFileIconProperties.put(new Long(file.lastModified()), rxProps);
@@ -1814,15 +1815,11 @@ public class PSItemDefManager
          {
             ms_sysFileIconProperties.load(new FileInputStream(sfile));
          }
-         catch (FileNotFoundException e)
-         {
-            log.warn("Error getting the sys resources file icon details.", e);
-             log.debug(e.getMessage(),e);
-         }
          catch (IOException e)
          {
-            log.warn("Error getting the sys resources file icon details.", e);
-             log.debug(e.getMessage(),e);
+            log.warn("Error getting the sys resources file icon details. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       return ms_sysFileIconProperties;

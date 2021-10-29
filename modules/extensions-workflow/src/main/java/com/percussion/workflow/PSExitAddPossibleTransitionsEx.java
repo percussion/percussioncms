@@ -26,6 +26,7 @@ package com.percussion.workflow;
 
 import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.data.PSDataExtractionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionErrors;
@@ -463,8 +464,8 @@ public class PSExitAddPossibleTransitionsEx
          }
          catch (Exception e)
          {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(), e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSExtensionProcessingException(m_fullExtensionName, e);
          }
       }

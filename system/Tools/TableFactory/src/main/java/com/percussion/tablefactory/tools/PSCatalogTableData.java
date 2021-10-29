@@ -23,6 +23,7 @@
  */
 package com.percussion.tablefactory.tools;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tablefactory.PSJdbcColumnDef;
 import com.percussion.tablefactory.PSJdbcDataTypeMap;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
@@ -274,8 +275,8 @@ public class PSCatalogTableData
       } catch (Exception e)
       {
          System.out.println( "Unexpected error: " );
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.exit( 1 );
       } finally
       {
@@ -476,8 +477,8 @@ public class PSCatalogTableData
          System.exit(0);
       }
       catch (Exception e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

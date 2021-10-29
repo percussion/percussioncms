@@ -191,7 +191,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
       {
          log.error("Exception occurred : {}",
                  PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       String contentTypeId = Integer.toString(itemDefSummary.getGUID().getUUID());
       List<String> list = Arrays.asList("psx.contenttype", contentTypeId, itemDefSummary.getLabel());

@@ -247,7 +247,7 @@ public class PSUserPrefFormContent {
 	   catch(IOException e)
 	   {
 	   	log.error(PSExceptionUtils.getMessageForLog(e));
-		log.debug(e);
+		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	      throw new RuntimeException(e);
 	   }
 	   return buff.toString();
@@ -538,7 +538,7 @@ public class PSUserPrefFormContent {
 				  }
 			  } catch (ParseException e) {
 			  log.error(PSExceptionUtils.getMessageForLog(e));
-			  log.debug(e);
+			  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		  }
 	  }
 	}

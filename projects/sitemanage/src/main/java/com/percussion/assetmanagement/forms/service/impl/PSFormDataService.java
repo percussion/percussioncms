@@ -32,6 +32,7 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.service.exception.PSValidationException;
@@ -172,7 +173,7 @@ public class PSFormDataService implements IPSFormDataService
         catch (Exception e)
         {
             log.warn("Error getting all form data from processor at : {} Error: {}",
-                    procUrl, e.getMessage());
+                    procUrl,PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
 
@@ -235,8 +236,8 @@ public class PSFormDataService implements IPSFormDataService
 
             return sum;
         } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -260,8 +261,8 @@ public class PSFormDataService implements IPSFormDataService
             deliveryClient.push(new PSDeliveryActionOptions(deliveryServer, FORM_INFO_URL + name, HttpMethodType.DELETE,
                     true), null);
         } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new WebApplicationException(e.getMessage());
         }
     }

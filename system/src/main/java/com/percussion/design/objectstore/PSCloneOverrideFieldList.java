@@ -23,6 +23,7 @@
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.logging.log4j.LogManager;
@@ -183,8 +184,8 @@ public class PSCloneOverrideFieldList extends PSCollectionComponent
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

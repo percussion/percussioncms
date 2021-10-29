@@ -24,16 +24,16 @@
 
 package com.percussion.server.agent;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSConsole;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * This class implements the interface <code>IPSAgentManager</code> and does the
@@ -94,7 +94,7 @@ public class PSAgentManager implements IPSAgentManager
          }
          catch(Exception e) //for any exception
          {
-            PSConsole.printMsg(PSAgentRequestHandler.HANDLER, e.getMessage());
+            PSConsole.printMsg(PSAgentRequestHandler.HANDLER, PSExceptionUtils.getMessageForLog(e));
          }
       }
    }

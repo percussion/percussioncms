@@ -24,24 +24,22 @@
 
 package com.percussion.extensions.general;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
-
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.guidmgr.impl.PSGuidManager;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PSPageLinkText extends PSSimpleJavaUdfExtension
 implements IPSUdfProcessor
@@ -84,16 +82,10 @@ implements IPSUdfProcessor
       try
       {
          pageLinkText = node.getProperty("rx:resource_link_title").getString();
-      }
-      catch (PathNotFoundException e)
+      } catch (RepositoryException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-      }
-      catch (RepositoryException e)
-      {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return pageLinkText;
    }

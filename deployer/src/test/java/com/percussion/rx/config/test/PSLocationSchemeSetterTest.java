@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.config.test;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionManager;
 import com.percussion.extension.PSExtensionRef;
@@ -81,8 +82,8 @@ public class PSLocationSchemeSetterTest extends PSConfigurationTest
       }
       catch (PSExtensionException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return null;
    }

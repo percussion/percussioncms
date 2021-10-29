@@ -38,6 +38,7 @@ import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataEntry;
 import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataProperty;
 import com.percussion.delivery.metadata.rdbms.impl.PSMetadataQueryService;
+import com.percussion.error.PSExceptionUtils;
 import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -650,8 +651,8 @@ public class PSMetadataQueryServiceTest extends TestCase
                 }
             });
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail(e.getMessage());
         }
     }
@@ -1579,8 +1580,8 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail(e.getMessage());
         }
     }
@@ -1616,8 +1617,8 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail(e.getMessage());
         }
 
@@ -1661,12 +1662,12 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail(e.getMessage());
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail(e.getMessage());
         }
     }
@@ -1704,8 +1705,8 @@ public class PSMetadataQueryServiceTest extends TestCase
             }
 
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail(e.getMessage());
         }
     }

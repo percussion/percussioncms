@@ -23,6 +23,7 @@
  */
 package com.percussion.controls.contenteditor.checkboxtree;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -146,8 +147,8 @@ public class PSCheckboxTreeModel extends DefaultTreeModel implements TreeModel
       }
       catch (MalformedURLException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException(e);
       }
    }

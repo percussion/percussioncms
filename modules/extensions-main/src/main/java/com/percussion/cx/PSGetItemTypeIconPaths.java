@@ -26,6 +26,7 @@ package com.percussion.cx;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -33,6 +34,13 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,14 +49,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 /**
  * Exit to get the icon paths for the supplied locators. Gets the input from the
@@ -101,13 +101,13 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
       }
       catch (IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (SAXException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return resultDoc;
    }
@@ -137,8 +137,8 @@ public class PSGetItemTypeIconPaths implements IPSResultDocumentProcessor
          }
          catch (PSUnknownNodeTypeException e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       return locs;

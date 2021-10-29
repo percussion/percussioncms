@@ -241,7 +241,7 @@ public class PSException extends java.lang.Exception
     */
    public PSException(int msgCode)
    {
-      this(msgCode, null);
+      this(msgCode, (Object) null);
    }
 
    /**
@@ -374,6 +374,11 @@ public class PSException extends java.lang.Exception
    public java.lang.String getMessage()
    {
       return getLocalizedMessage();
+   }
+
+   public PSException(int code, Throwable t){
+      super(t);
+      this.m_code = code;
    }
 
    /**

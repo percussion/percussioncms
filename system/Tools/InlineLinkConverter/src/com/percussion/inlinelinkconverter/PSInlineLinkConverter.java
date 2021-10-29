@@ -23,34 +23,6 @@
  */
 package com.percussion.inlinelinkconverter;
 
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSItemChild;
@@ -66,10 +38,37 @@ import com.percussion.design.objectstore.PSContentEditorPipe;
 import com.percussion.design.objectstore.PSEntry;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSRemoteRequester;
 import com.percussion.util.PSStringOperation;
 import com.percussion.util.PSXMLDomUtil;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This is the class for the Rhythmyx Inline Link Conversion Tool. Runs the 
@@ -358,8 +357,8 @@ public class PSInlineLinkConverter
          writeToLog("");
          writeToLog(contentType  + " - Not converting");
          writeToLog("Failed to get the content type definition. The registration may be wrong or the content type may not be running.");
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -1135,13 +1134,13 @@ public class PSInlineLinkConverter
       }
       catch (TransformerConfigurationException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (TransformerException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return outNode;
    }
@@ -1181,7 +1180,7 @@ public class PSInlineLinkConverter
    }
 
    /**
-    * Format the specified item, then call {@link logFailureItem(String)}
+    * Format the specified item, then call {@link #logFailureItem(ContentKey)}
     * 
     * @param ck The to be logged item, assume not <code>null</code>.
     */    
@@ -1610,9 +1609,9 @@ public class PSInlineLinkConverter
    /**
     * It maps workflow id to workflow name. The map key is the id as 
     * <code>String</code>. The map value is workflow name, which is normalized
-    * by {@link normalizeWorkflowName(String)}.
+    * by {@link #normalizeWorkflowName(String)}.
     */
-   private Map m_wfIdNameMap = new HashMap();
+   private Map m_wfIdNameMap = new HashMap<>();
       
    private static final String DEFAULT_PROPERTIES_FILE =
       "inlinelinkconverter.properties";

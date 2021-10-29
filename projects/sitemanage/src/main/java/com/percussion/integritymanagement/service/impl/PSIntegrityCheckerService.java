@@ -24,13 +24,12 @@
 
 package com.percussion.integritymanagement.service.impl;
 
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest;
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSBinaryAssetRequest;
 import com.percussion.assetmanagement.service.impl.PSAssetService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
 import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
 import com.percussion.integritymanagement.data.PSIntegrityTask;
@@ -55,6 +54,10 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.service.impl.PSUtilityService;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -68,11 +71,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 
 @Service("integrityCheckerService")
 public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
@@ -291,7 +290,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
             PSPair<TaskStatus, String> imgCreate = new PSPair<>(TaskStatus.SUCCESS,"");
             result.put(IMAGE_CREATE_TASK, imgCreate);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgCreate = new PSPair<>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgCreate = new PSPair<>(TaskStatus.FAILED,PSExceptionUtils.getMessageForLog(e));
             result.put(IMAGE_CREATE_TASK, imgCreate);
             //Return the result here
             return result;
@@ -304,7 +303,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
             PSPair<TaskStatus, String> imgApprove = new PSPair<>(TaskStatus.SUCCESS,"");
             result.put(IMAGE_APPROVE_TASK, imgApprove);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgApprove = new PSPair<>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgApprove = new PSPair<>(TaskStatus.FAILED, PSExceptionUtils.getMessageForLog(e));
             result.put(IMAGE_APPROVE_TASK, imgApprove);
         }
         
@@ -315,7 +314,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
             PSPair<TaskStatus, String> imgDelete = new PSPair<>(TaskStatus.SUCCESS, "");
             result.put(IMAGE_DELETE_TASK, imgDelete);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgDelete = new PSPair<>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgDelete = new PSPair<>(TaskStatus.FAILED,PSExceptionUtils.getMessageForLog(e));
             result.put(IMAGE_DELETE_TASK, imgDelete);
         }
 

@@ -30,6 +30,7 @@ import com.percussion.data.PSConversionException;
 import com.percussion.deploy.server.PSJexlHelper;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSJexlMethod;
 import com.percussion.extension.IPSJexlParam;
 import com.percussion.extension.PSJexlUtilBase;
@@ -324,8 +325,8 @@ public class PSLocationUtils extends PSJexlUtilBase
             try{
             paths = fproc.getItemPaths(lg_id.getLocator());
             } catch (PSNotFoundException e) {
-               ms_log.warn(e.getMessage());
-               ms_log.debug(e.getMessage(),e);
+               ms_log.warn(PSExceptionUtils.getMessageForLog(e));
+               ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
 
@@ -649,8 +650,8 @@ public class PSLocationUtils extends PSJexlUtilBase
          try {
             site_templates = sitem.loadUnmodifiableSite(siteid).getAssociatedTemplates();
          } catch (PSNotFoundException e) {
-            ms_log.error(e.getMessage());
-            ms_log.debug(e.getMessage(),e);
+            ms_log.error(PSExceptionUtils.getMessageForLog(e));
+            ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          if (site_templates != null && !site_templates.isEmpty())
@@ -658,8 +659,7 @@ public class PSLocationUtils extends PSJexlUtilBase
             ms_log.debug("No Templates Associated with the site.");
          }
          // Copy collection to avoid modifying the underlying set
-         Set<IPSAssemblyTemplate> copySet = new HashSet<>();
-         copySet.addAll(site_templates);
+         Set<IPSAssemblyTemplate> copySet = new HashSet<>(site_templates);
          site_templates = copySet; // Decouple
       }
 

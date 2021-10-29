@@ -24,6 +24,7 @@
 package com.percussion.util;
 
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -136,10 +137,9 @@ public class PSRemoteAppletRequester implements IPSRemoteRequester
       catch (PSException e)
       {
          
-         // throw new PSCmsException(IPSCmsErrors.ERROR_SEND_DATA, e.toString());
-            log.error("RemoteAppletRequester error {}",e.getMessage());
-            log.debug(e.getMessage(),e);
-            throw new IOException(e.toString());
+            log.error("RemoteAppletRequester error {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new IOException(e);
          
       }
       
@@ -167,8 +167,8 @@ public class PSRemoteAppletRequester implements IPSRemoteRequester
       }
       catch (PSException e)
       {
-         log.error("RemoteAppletRequester error {} ",e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("RemoteAppletRequester error {} ",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          //throw new PSCmsException(IPSCmsErrors.ERROR_SEND_DATA, e.toString());
          throw new IOException(e.toString());
       }

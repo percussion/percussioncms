@@ -23,25 +23,9 @@
  */
 package com.percussion.pagemanagement.service;
 
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.startsWith;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.percussion.share.service.exception.PSDataServiceException;
-
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.impl.PSTemplateDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
@@ -50,6 +34,7 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestDataCleaner;
 import com.percussion.sitemanage.data.PSSite;
@@ -65,6 +50,19 @@ import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.startsWith;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 public class PSSiteDataServletTestCaseFixture
 {
@@ -169,8 +167,8 @@ public class PSSiteDataServletTestCaseFixture
 	        
 	        return siteSummary;
     	} catch(Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
     	}
     	
     	return null;

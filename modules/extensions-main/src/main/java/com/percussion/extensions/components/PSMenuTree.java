@@ -24,12 +24,21 @@
 
 package com.percussion.extensions.components;
 
-import com.percussion.extension.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -183,7 +192,7 @@ public class PSMenuTree implements IPSResultDocumentProcessor
       {
          PSConsole.printMsg("Exit:" + ms_fullExtensionName, e);
          PSXmlDocumentBuilder.addElement(
-               parent.getOwnerDocument(), parent, "ExitError", e.getMessage());
+               parent.getOwnerDocument(), parent, "ExitError", PSExceptionUtils.getMessageForLog(e));
       }
    }
 

@@ -24,6 +24,7 @@
 
 package com.percussion.rest.users;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.util.PSSiteManageBean;
@@ -165,8 +166,8 @@ public class UsersResource {
 
 				return ret;
 			} catch (BackendException | UnsupportedEncodingException e) {
-	    		log.error(e.getMessage());
-	    		log.debug(e.getMessage(),e);
+	    		log.error(PSExceptionUtils.getMessageForLog(e));
+	    		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				throw new WebApplicationException(e);
 			}
 		}
@@ -196,8 +197,8 @@ public class UsersResource {
 
 				return ret;
 			} catch (BackendException | UnsupportedEncodingException e) {
-				log.error(e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				throw new WebApplicationException(e);
 			}
 

@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -504,16 +505,12 @@ public class PSProcessServerPageTags extends Object
          log.error("Error: Could not find the JSP / ASP tags file: {}" ,
                             xmlFile.getAbsolutePath());
       }
-      catch (IOException e)
+      catch (IOException | SAXException e)
       {
          log.error("Error: Could not initialize JSP / ASP tags: {}",
-                            e.getMessage());
-         log.debug(e.getMessage(),e);
-      }
-      catch (SAXException e)
-      {
-         log.error("Error: Could not initialize JSP / ASP tags: {}",
-                            e.getMessage());
+                            PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
       }
 
       return null;

@@ -64,6 +64,7 @@ import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
@@ -925,8 +926,8 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       }
       catch (PSCmsException e)
       {
-         log.error("Couldn't load folder information: {}", e.getMessage());
-         log.debug(e);
+         log.error("Couldn't load folder information: {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       // Get permissions and set
@@ -1047,18 +1048,18 @@ public class PSSearchHandler extends PSWebServicesBaseHandler
       catch (NumberFormatException e)
       {
          log.error("One or more bad state or workflow ids " +
-                "were found - this should be impossible: {}", e.getMessage());
-         log.debug(e);
+                "were found - this should be impossible: {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (PSSystemException e)
       {
-         log.error("Problem while computing assignment type: {}", e.getMessage());
-         log.debug(e);
+         log.error("Problem while computing assignment type: {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (PSInternalRequestCallException e)
       {
-         log.error("Problem retrieving community info: {}", e.getMessage());
-         log.debug(e);
+         log.error("Problem retrieving community info: {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

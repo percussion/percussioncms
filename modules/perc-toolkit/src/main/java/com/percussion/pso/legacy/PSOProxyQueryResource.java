@@ -9,9 +9,22 @@
  ******************************************************************************/
 package com.percussion.pso.legacy;
 
-import static com.percussion.xml.PSXmlDocumentBuilder.createXmlDocument;
-import static java.util.Arrays.asList;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.PSDefaultExtension;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.pso.utils.PSOExtensionParamsHelper;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.services.assembly.jexl.PSDocumentUtils;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -20,22 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.servlet.ServletException;
-
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
-import com.percussion.extension.IPSResultDocumentProcessor;
-import com.percussion.extension.PSDefaultExtension;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.pso.utils.PSOExtensionParamsHelper;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.services.assembly.jexl.PSDocumentUtils;
+import static com.percussion.xml.PSXmlDocumentBuilder.createXmlDocument;
+import static java.util.Arrays.asList;
 
 /**
  * This exit allows you to make an internal request to an external resource.
@@ -108,24 +107,24 @@ public class PSOProxyQueryResource extends PSDefaultExtension
                 return createXmlDocument(new StringReader(results), false);
             } catch (SAXException e) {
                 String message = "XML Error with " + repr;
-                log.error("{}, Error: {}", message, e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 throw new RuntimeException(message,e);
             }
         } catch (HttpException e) {
             String message = "Http Error with " + repr;
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException(message, e);
         } catch (IOException e) {
             String message = "IO Error with " + repr;
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException(message, e);
         } catch (ServletException e) {
             String message = "Servlet error with " + repr;
-            log.error("{}, Error: {}", message, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("{}, Error: {}", message, PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException(message, e);
         }
     }

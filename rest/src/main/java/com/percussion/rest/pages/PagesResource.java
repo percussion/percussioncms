@@ -25,6 +25,7 @@
 package com.percussion.rest.pages;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
 import com.percussion.rest.assets.PSCSVStreamingOutput;
 import com.percussion.rest.errors.BackendException;
@@ -426,8 +427,8 @@ public class PagesResource
 		     out = new PSCSVStreamingOutput(rows);
 		
 		} catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return Response.serverError().build();
 		}
 		

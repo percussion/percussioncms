@@ -24,6 +24,7 @@
 
 package com.percussion.testing;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSResourceUtils;
 import com.percussion.util.PSTidyUtils;
 import com.percussion.utils.testing.IntegrationTest;
@@ -68,8 +69,8 @@ public class PSTidyUtilsTest
        }
        catch (Exception e)
        {
-           log.error(e.getMessage());
-           log.debug(e.getMessage(), e);
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        finally
        {

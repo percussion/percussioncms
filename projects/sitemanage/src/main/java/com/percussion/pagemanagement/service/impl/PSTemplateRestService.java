@@ -23,6 +23,7 @@
  */
 package com.percussion.pagemanagement.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSHtmlMetadata;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
@@ -76,8 +77,8 @@ public class PSTemplateRestService {
         try {
             return templateService.createTemplate(name, srcId);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -92,7 +93,7 @@ public class PSTemplateRestService {
             log.debug(pve.getMessage(),pve);
             throw pve;
         } catch (PSNotFoundException | PSDataServiceException e) {
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -104,8 +105,8 @@ public class PSTemplateRestService {
         try {
             return new PSTemplateSummaryList(templateService.findAll());
         } catch (IPSTemplateService.PSTemplateException | IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -117,8 +118,8 @@ public class PSTemplateRestService {
         try {
             return new PSTemplateSummaryList(templateService.findAll(siteName));
         } catch (IPSTemplateService.PSTemplateException | IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -130,8 +131,8 @@ public class PSTemplateRestService {
         try {
             return new PSTemplateSummaryList(templateService.findAllUserTemplates());
         } catch (IPSTemplateService.PSTemplateException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -155,8 +156,8 @@ public class PSTemplateRestService {
         try {
             return templateService.find(id);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -168,8 +169,8 @@ public class PSTemplateRestService {
         try {
             return templateService.loadHtmlMetadata(id);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -181,8 +182,8 @@ public class PSTemplateRestService {
         try {
             templateService.saveHtmlMetadata(object);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -218,8 +219,8 @@ public class PSTemplateRestService {
 
             return template;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -233,8 +234,8 @@ public class PSTemplateRestService {
         try {
             return templateService.save(object);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -248,8 +249,8 @@ public class PSTemplateRestService {
         try {
             return templateService.save(object, null, pageId);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -263,8 +264,8 @@ public class PSTemplateRestService {
         try {
             return templateService.validate(object);
         } catch (PSValidationException | DataServiceSaveException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }

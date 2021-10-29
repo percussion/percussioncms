@@ -566,7 +566,7 @@ public class PSPubServerService implements IPSPubServerService
         catch (Exception e)
         {
             log.error("Failed to clear the incremental queue for site: {}, Error: {}" , site.getName(), PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -650,7 +650,7 @@ public class PSPubServerService implements IPSPubServerService
             } catch (PSPubServerServiceException | PSNotFoundException e) {
                 log.error("Error deleting publishing server: {} Error:{}",
                         pubServer.getName(),PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }
@@ -705,7 +705,7 @@ public class PSPubServerService implements IPSPubServerService
         catch(Exception e)
         {
             log.error("The site {} does not exist. Error: {}" , siteId, PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         if (publishType.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_LOCAL))
@@ -2068,7 +2068,7 @@ public class PSPubServerService implements IPSPubServerService
             } catch (PSEncryptionException psEncryptionException) {
                 log.error("Unable to decrypt string. Error: {}",
                         PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 return dstr;
             }
         }
@@ -2212,7 +2212,7 @@ public class PSPubServerService implements IPSPubServerService
         catch(Exception e)
         {
             log.error("Error finding the pub server for the supplied id: {}, Error: {}" , serverId, PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
         }
         return server;

@@ -24,6 +24,7 @@
 
 package com.percussion.ant.install;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.PSLogger;
 import com.percussion.install.PSPreUpgradePluginDeprecatedSysApps;
 import com.percussion.util.PSProperties;
@@ -78,8 +79,8 @@ public class PSRenameDeprecatedApps extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

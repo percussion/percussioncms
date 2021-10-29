@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import junit.framework.TestCase;
 import org.apache.logging.log4j.LogManager;
@@ -32,6 +33,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Test tracker.
@@ -131,8 +133,8 @@ public class PSTrackAssemblyErrorsTest extends TestCase
       }
       catch (UnsupportedEncodingException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -143,16 +145,8 @@ public class PSTrackAssemblyErrorsTest extends TestCase
    private PSAssemblyWorkItem createItem()
    {
       PSAssemblyWorkItem work = new PSAssemblyWorkItem();
-      try
-      {
-         work.setResultData(RESULT.getBytes(UTF8));
-         work.setMimeType("text/xhtml;charset=utf8");
-      }
-      catch (UnsupportedEncodingException e)
-      {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-      }
+      work.setResultData(RESULT.getBytes(StandardCharsets.UTF_8));
+      work.setMimeType("text/xhtml;charset=utf8");
       return work;
    }
 }

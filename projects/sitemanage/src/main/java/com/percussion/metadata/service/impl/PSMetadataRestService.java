@@ -23,6 +23,7 @@
  */
 package com.percussion.metadata.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.data.PSMetadataList;
 import com.percussion.metadata.service.IPSMetadataService;
@@ -142,8 +143,8 @@ public class PSMetadataRestService
         catch (IOException | IPSGenericDao.LoadException | IPSGenericDao.SaveException e)
         {
             log.warn("Error saving the global variables: {} Error: {}",
-                    data.getData(), e.getMessage());
-            log.debug(e.getMessage(),e);
+                    data.getData(), PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

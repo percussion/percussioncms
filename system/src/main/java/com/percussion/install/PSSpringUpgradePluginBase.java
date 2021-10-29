@@ -23,6 +23,7 @@
  */
 package com.percussion.install;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSDataSourceFactory;
@@ -197,16 +198,13 @@ public abstract class PSSpringUpgradePluginBase implements IPSUpgradePlugin
       }
       catch (FileNotFoundException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         System.err.println("PSSpringUpgradePluginBase: could not find " +
-               "install-beans.xml");
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         System.err.println("PSSpringUpgradePluginBase: error encountered");
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

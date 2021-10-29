@@ -23,6 +23,7 @@
  */
 package com.percussion.services.notification.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
@@ -67,8 +68,9 @@ public class PSNotificationService implements IPSNotificationService
          }
          catch (Exception e)
          {
-            log.error("Problem in notification: {}", e.getMessage());
-            log.debug(e);
+            log.error("Problem in notification: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
  

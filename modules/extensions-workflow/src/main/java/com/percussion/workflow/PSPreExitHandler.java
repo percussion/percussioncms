@@ -24,6 +24,7 @@
 
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -93,8 +94,8 @@ public class PSPreExitHandler implements IPSRequestPreProcessor
       }
       catch (Exception e)
       {
-          log.error(e.getMessage());
-          log.debug(e.getMessage(), e);
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       log.info("*** Ends Here ***");
     }

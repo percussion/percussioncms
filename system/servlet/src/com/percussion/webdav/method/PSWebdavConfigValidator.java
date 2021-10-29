@@ -24,6 +24,32 @@
 
 package com.percussion.webdav.method;
 
+import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.cms.objectstore.PSItemDefinition;
+import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
+import com.percussion.cms.objectstore.client.PSRemoteAgent;
+import com.percussion.cms.objectstore.client.PSRemoteException;
+import com.percussion.cms.objectstore.ws.PSClientItem;
+import com.percussion.design.objectstore.PSEntry;
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldValidationRules;
+import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.util.IPSRemoteRequester;
+import com.percussion.util.PSIteratorUtils;
+import com.percussion.webdav.IPSWebdavConstants;
+import com.percussion.webdav.error.PSWebdavException;
+import com.percussion.webdav.objectstore.IPSRxWebDavDTD;
+import com.percussion.webdav.objectstore.PSPropertyFieldNameMapping;
+import com.percussion.webdav.objectstore.PSWebdavConfigDef;
+import com.percussion.webdav.objectstore.PSWebdavContentType;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -35,32 +61,6 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-
-import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSItemDefinition;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
-import com.percussion.cms.objectstore.client.PSRemoteAgent;
-import com.percussion.cms.objectstore.client.PSRemoteException;
-import com.percussion.cms.objectstore.ws.PSClientItem;
-import com.percussion.design.objectstore.PSEntry;
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSFieldValidationRules;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.util.IPSRemoteRequester;
-import com.percussion.util.PSIteratorUtils;
-import com.percussion.webdav.IPSWebdavConstants;
-import com.percussion.webdav.error.PSWebdavException;
-import com.percussion.webdav.objectstore.IPSRxWebDavDTD;
-import com.percussion.webdav.objectstore.PSPropertyFieldNameMapping;
-import com.percussion.webdav.objectstore.PSWebdavConfigDef;
-import com.percussion.webdav.objectstore.PSWebdavContentType;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * This class validates a WebDav configuration file, returning a report of all
@@ -233,15 +233,15 @@ public class PSWebdavConfigValidator
       }
       catch (PSWebdavException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          m_out.write("<h4>" + getResourceString("msg.errors.found") + "</h4>");
          writeError(e.getMessage(), ERROR);
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new ServletException(e.getMessage());
       }
 

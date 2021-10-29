@@ -24,6 +24,7 @@
 
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
 import com.percussion.share.dao.IPSGenericDao;
@@ -113,8 +114,8 @@ public class PSPublishStagingService {
             }
             return stagingServerEnabled;
         } catch (IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -125,8 +126,8 @@ public class PSPublishStagingService {
         try {
             setStagingServerEnabledMetadataState(true);
         } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -137,8 +138,8 @@ public class PSPublishStagingService {
         try {
             setStagingServerEnabledMetadataState(false);
         } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

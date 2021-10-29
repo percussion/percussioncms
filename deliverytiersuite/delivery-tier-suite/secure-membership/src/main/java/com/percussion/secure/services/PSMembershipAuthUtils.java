@@ -24,6 +24,7 @@
 
 package com.percussion.secure.services;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.logging.log4j.LogManager;
@@ -90,23 +91,23 @@ public class PSMembershipAuthUtils {
 	   }
 	   catch (FileNotFoundException e)
 	   {
-	       log.error("FileNotFoundException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-	       log.debug(e);
+	       log.error("FileNotFoundException in PSLdapUserDetailsMapper..... {}" ,PSExceptionUtils.getMessageForLog(e));
+	       log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	   }
 	   catch (ParserConfigurationException e)
 	   {
-	      log.error("ParserConfigurationException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-	      log.debug(e);
+	      log.error("ParserConfigurationException in PSLdapUserDetailsMapper..... {}" ,PSExceptionUtils.getMessageForLog(e));
+	      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 	   }
        catch (IOException e)
        {
-           log.error("IOException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-           log.debug(e);
+           log.error("IOException in PSLdapUserDetailsMapper..... {}" ,PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        catch (SAXException e)
        {
-       	log.error("SAXException in PSLdapUserDetailsMapper..... {}" , e.getMessage());
-       	log.debug(e);
+       	log.error("SAXException in PSLdapUserDetailsMapper..... {}" ,PSExceptionUtils.getMessageForLog(e));
+       	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        
        return groups;

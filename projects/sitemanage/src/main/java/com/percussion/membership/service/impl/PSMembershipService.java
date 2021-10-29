@@ -33,6 +33,7 @@ import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.membership.data.PSAccountSummary;
 import com.percussion.membership.data.PSUserGroup;
 import com.percussion.membership.data.PSUserSummaries;
@@ -144,7 +145,7 @@ public class PSMembershipService implements IPSMembershipService
         }
         catch (Exception e)
         {
-            log.warn("Error changing membership account type: {}" , e.getMessage());
+            log.warn("Error changing membership account type: {}" ,PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -173,7 +174,7 @@ public class PSMembershipService implements IPSMembershipService
             return getUsers(site);
         } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             log.warn("Error deleting user(s) from the membership service.  Error: {}",  e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
 
@@ -207,7 +208,7 @@ public class PSMembershipService implements IPSMembershipService
             return getUsers(site);
         } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
             log.warn("Error updating group account.  Error: {}",  e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }

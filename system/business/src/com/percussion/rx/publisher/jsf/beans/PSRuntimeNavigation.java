@@ -23,6 +23,7 @@
  */
 package com.percussion.rx.publisher.jsf.beans;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.jsf.PSCategoryNodeBase;
 import com.percussion.rx.jsf.PSNavigation;
 import com.percussion.rx.jsf.PSNodeBase;
@@ -46,19 +47,17 @@ import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.myfaces.trinidad.event.RangeChangeEvent;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.myfaces.trinidad.event.RangeChangeEvent;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 /**
  * The runtime execution tree for publishing.
@@ -216,8 +215,8 @@ public class PSRuntimeNavigation extends PSNavigation
                task = pubsvc
                        .findEditionTaskById(entry.getTaskId());
             } catch (PSNotFoundException e) {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
             if (task != null)
@@ -333,8 +332,8 @@ public class PSRuntimeNavigation extends PSNavigation
             IPSEdition edition = pubsvc.loadEdition(edid);
             rval.put("name", edition.getDisplayTitle());
          } catch (PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       IPSPubStatus stat = pubsvc.findPubStatusForJob(getJobId());

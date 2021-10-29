@@ -827,15 +827,15 @@ public class PSWorkflowCommandHandler extends PSCommandHandler
       }
       catch (PSExtensionProcessingException e)
       {
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       catch (PSDataExtractionException e)
       {
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       catch (PSParameterMismatchException e)
       {
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
    }
 

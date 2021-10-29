@@ -32,6 +32,7 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
 import com.percussion.utils.types.PSPair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +143,7 @@ public class PSDTSStatusProvider
         }
         catch (RuntimeException e)
         {
-            return new PSPair<>(TaskStatus.FAILED, e.getMessage());
+            return new PSPair<>(TaskStatus.FAILED, PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -183,11 +184,11 @@ public class PSDTSStatusProvider
         }
         catch (ConnectException e)
         {
-            return new PSPair<>(false, e.getMessage());
+            return new PSPair<>(false,PSExceptionUtils.getMessageForLog(e));
         }
         catch (IOException e)
         {
-            return new PSPair<>(false, e.getMessage());
+            return new PSPair<>(false,PSExceptionUtils.getMessageForLog(e));
         }
     }
 }

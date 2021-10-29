@@ -25,6 +25,7 @@ package com.percussion.sitemanage.service.impl;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPage;
@@ -187,8 +188,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
 
             return new PSTemplateSummaryList(rvalue);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
 
@@ -223,8 +224,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
 
             return new PSSiteSummaryList(rvalue);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -305,7 +306,7 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
         }
         catch (Exception e)
         {
-            log.error("Failed to load site: {} Error: {}" , siteId, e.getMessage());
+            log.error("Failed to load site: {} Error: {}" , siteId, PSExceptionUtils.getMessageForLog(e));
         }
         if (site==null)
         {
@@ -547,8 +548,8 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
             return asyncJobService.startJob(IMPORT_TEMPLATE_JOB_BEAN, importContext);
 
         } catch (IPSFolderService.PSWorkflowNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }

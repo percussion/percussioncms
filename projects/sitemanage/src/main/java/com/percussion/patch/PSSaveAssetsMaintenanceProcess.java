@@ -42,6 +42,7 @@ import com.percussion.design.objectstore.PSExtensionCallSet;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldTranslation;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
@@ -73,12 +74,12 @@ import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -233,9 +234,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             }
             catch(SQLException e)
             {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
-                log.warn(e.getMessage());
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                log.warn(PSExceptionUtils.getMessageForLog(e));
                 return false;
             }
             conn = null; 
@@ -264,8 +265,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             result = stat.executeQuery(sqlStat);
         } catch (Exception e) {
 
-            log.error("executeSqlStatement : {}" , e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("executeSqlStatement : {}" ,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } 
         return result;
     }
@@ -367,19 +368,12 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         try {
             addAssets((Set<ItemWrapper>) objectMapper.readValue(f, 
                     objectMapper.getTypeFactory().constructCollectionType(Set.class, ItemWrapper.class)));
-            
-            Iterator<ItemWrapper> it = assetListSet.iterator();
-            while(it.hasNext())
-            {
-                ItemWrapper asset = it.next();
-                if(asset.getStatus() == ItemWrapper.STATUS.SUCCESS ||
-                        asset.getStatus() == ItemWrapper.STATUS.NOTQUALIFIED) {
-                    it.remove();
-                }
-            }
+
+            assetListSet.removeIf(asset -> asset.getStatus() == ItemWrapper.STATUS.SUCCESS ||
+                    asset.getStatus() == ItemWrapper.STATUS.NOTQUALIFIED);
         } catch (Exception e) {
-            log.error("Error Reading Log File : {}" , e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error Reading Log File : {}" , PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     
@@ -453,8 +447,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch(Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return list;
     }
@@ -704,8 +698,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch(Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return list;
     }
@@ -800,8 +794,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 }
                 catch(Exception e)
                 {
-                    log.error("Failed to process asset with id: {}  due to : {}" , assetW.getId(), e.getMessage());
-                    log.debug(e.getMessage(),e);
+                    log.error("Failed to process asset with id: {}  due to : {}" , assetW.getId(),PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     assetW.setProcess(ItemWrapper.STATUS.FAIL);
                 }
                 assetCount += 1;
@@ -814,8 +808,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch(Exception e)
         {
-            log.error("Could not run asset fix: {}" , e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Could not run asset fix: {}" ,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         
         //log state after having run through all ids if anything in the assetList 
@@ -971,8 +965,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         } 
         catch (Exception e) 
         {
-            log.error("Error Reading Pages Log File : {}" , e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error Reading Pages Log File : {}" ,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -997,7 +991,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 failed = true;
                 qpage.setProcess(ItemWrapper.STATUS.FAIL);
                 log.error("Failed to load and save the page with ID {}" , guid);
-                log.debug(e.getMessage(),e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             
             //Lets try to check in the page here.
@@ -1011,7 +1005,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             catch(Exception e)
             {
                 log.error("Failed to check in the page after processing with ID:{}" , guid);
-                log.debug(e.getMessage(),e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }

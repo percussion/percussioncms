@@ -750,7 +750,7 @@ public class PSContentEditorHandler implements IPSRequestHandler,
       }
       catch (Exception e)
       {
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
    }
 

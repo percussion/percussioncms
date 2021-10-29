@@ -24,6 +24,7 @@
 package com.percussion.services.filter.impl;
 
 import com.percussion.cms.PSCmsException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.error.PSNotFoundException;
@@ -32,15 +33,14 @@ import com.percussion.services.filter.IPSItemFilterRule;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.utils.string.PSFolderStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * This filter removes items that are not present in the given site folder or
@@ -106,8 +106,8 @@ public class PSFolderPathFilter extends PSBaseFilter
          }
          catch (PSCmsException | PSNotFoundException e)
          {
-            log.error("Problem getting folder paths. Error: {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Problem getting folder paths. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 

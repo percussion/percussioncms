@@ -998,8 +998,8 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
          catch (RepositoryException e)
          {
             log.error("Unable to get node for alt and title text with ID: {} and error message: {}",
-                    assemblyItem.getId(), e.getMessage());
-            log.debug(e.getMessage(), e);
+                    assemblyItem.getId(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          
          return items;
@@ -1020,7 +1020,7 @@ public class PSInlineLinkContentHandler extends PSSaxCopier
    private void handleError(Attributes attrs, String replacementbody,
          Exception e) throws SAXException
    {
-      log.error("Problem processing inline link for item {} Error: {}", m_processor.getWorkItem().getId(), e.getMessage());
+      log.error("Problem processing inline link for item {} Error: {}", m_processor.getWorkItem().getId(),PSExceptionUtils.getMessageForLog(e));
       log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       PSTrackAssemblyError
          .addProblem("Problem processing inline links", e);

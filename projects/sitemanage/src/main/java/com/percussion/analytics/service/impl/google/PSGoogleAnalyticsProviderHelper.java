@@ -38,6 +38,7 @@ import com.google.api.services.analyticsreporting.v4.model.DateRange;
 import com.google.api.services.analyticsreporting.v4.model.ReportRequest;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.utils.date.PSDateRange;
@@ -122,7 +123,7 @@ public class PSGoogleAnalyticsProviderHelper
 
         }
         catch (GeneralSecurityException e) {
-            log.error("Google Auth error: {}",e.getMessage());
+            log.error("Google Auth error: {}",PSExceptionUtils.getMessageForLog(e));
             throw new PSAnalyticsProviderException(e.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
 
         }
@@ -166,8 +167,8 @@ public class PSGoogleAnalyticsProviderHelper
         } catch (PSAnalyticsProviderException e) {
             throw e;
         } catch (GeneralSecurityException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             log.error("Google Auth error:",e);
             throw new PSAnalyticsProviderException(e.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
         } catch (IOException e) {

@@ -23,6 +23,7 @@
  */
 package com.percussion.webdav;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.hooks.PSServletBase;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.webdav.error.IPSWebdavErrors;
@@ -34,6 +35,10 @@ import com.percussion.webdav.objectstore.PSWebdavConfigDef;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -44,11 +49,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * This is the WebDAV servlet class, which provides WebDAV services
@@ -189,8 +189,8 @@ public class PSWebdavServlet extends PSServletBase
          }
          catch (Exception e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new ServletException(e);
          }
       }

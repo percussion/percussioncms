@@ -24,6 +24,7 @@
 
 package com.percussion.util;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -180,16 +181,11 @@ public class PSProperties extends java.util.Properties {
                 file = new File(dir, property);
             }
 
-        }
-        catch(FileNotFoundException e)
+        } catch(IOException e)
         {
-            log.error("Util, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
-        }
-        catch(IOException e)
-        {
-            log.error("Util, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Util, Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return file;
     }

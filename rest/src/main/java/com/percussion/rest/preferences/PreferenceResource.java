@@ -25,6 +25,7 @@
 package com.percussion.rest.preferences;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
 import com.percussion.util.PSSiteManageBean;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,8 +85,8 @@ public class PreferenceResource {
             log.debug("Didn't find any preferences");
             throw new WebApplicationException("No preferences found.",404);
         }catch(Exception e){
-            log.error("An unexpected error occurred getting preferences. {}",e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An unexpected error occurred getting preferences. {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),e,500);
         }
    }
@@ -110,8 +111,8 @@ public class PreferenceResource {
             log.debug("Didn't find any preferences");
             throw new WebApplicationException("No preferences found.",404);
         }catch(Exception e){
-            log.error("An unexpected error occurred saving preferences. {}",e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("An unexpected error occurred saving preferences. {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),e,500);
         }
     }
@@ -135,7 +136,7 @@ public class PreferenceResource {
         throw new WebApplicationException("No preference found.",404);
     }catch(Exception e){
         log.error("An unexpected error occurred getting preference: {}, Error: {}",preference ,e.getMessage());
-        log.debug(e.getMessage(), e);
+        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         throw new WebApplicationException(e.getMessage(),e,500);
     }
     }
@@ -166,7 +167,7 @@ public class PreferenceResource {
             throw new WebApplicationException("No preference found.",404);
         }catch(Exception e){
             log.error("An unexpected error occurred saving preference: {} for userName: {}, Error: {}",pref.getName(), pref.getUserName(),e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),e,500);
         }
     }
@@ -191,7 +192,7 @@ public class PreferenceResource {
             throw new WebApplicationException("No preference found.",404);
         }catch(Exception e){
             log.error("An unexpected error occurred saving preference: {} for userName: {}, Error: {}",pref.getName(), pref.getUserName(),e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage(),e,500);
         }
 

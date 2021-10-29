@@ -24,15 +24,6 @@
 
 package com.percussion.webdav.method;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSBinaryValue;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -41,6 +32,7 @@ import com.percussion.cms.objectstore.client.PSRemoteAgent;
 import com.percussion.cms.objectstore.ws.PSClientItem;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSCharSets;
 import com.percussion.webdav.PSWebdavServlet;
 import com.percussion.webdav.PSWebdavStatus;
@@ -48,6 +40,14 @@ import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.webdav.objectstore.PSWebdavContentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -149,10 +149,10 @@ public class PSGetMethod
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          
-         getResponse().getWriter().print(e.getLocalizedMessage());
+         getResponse().getWriter().print(PSWebdavStatus.getStatusText(PSWebdavStatus.SC_INTERNAL_SERVER_ERROR));
          getResponse().setStatus(PSWebdavStatus.SC_OK);
       }  
 

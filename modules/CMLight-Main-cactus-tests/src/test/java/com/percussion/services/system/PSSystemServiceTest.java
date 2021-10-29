@@ -24,11 +24,19 @@
 package com.percussion.services.system;
 
 import com.percussion.data.PSIdGenerator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.system.data.PSConfigurationTypes;
 import com.percussion.services.system.data.PSContentStatusHistory;
 import com.percussion.services.system.data.PSMimeContentAdapter;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -41,14 +49,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.experimental.categories.Category;
 
 /**
  * Test case for the {@link IPSSystemService}
@@ -136,8 +136,8 @@ public class PSSystemServiceTest extends ServletTestCase
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    
@@ -209,8 +209,8 @@ public class PSSystemServiceTest extends ServletTestCase
             }
             catch (Exception e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
          super.tearDown();
@@ -218,9 +218,8 @@ public class PSSystemServiceTest extends ServletTestCase
       }
       catch (Exception e)
       {
-         // TODO Auto-generated catch block
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    

@@ -24,6 +24,7 @@
 
 package com.percussion.ant.gui;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -162,8 +163,8 @@ public class PSRxBuildInput
       }
       catch (IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.exit(1);
       }
 
@@ -190,8 +191,8 @@ public class PSRxBuildInput
          }
          catch (IOException e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       patchDir.mkdir();
@@ -203,8 +204,8 @@ public class PSRxBuildInput
       }
       catch (IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -274,8 +275,8 @@ public class PSRxBuildInput
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -1222,8 +1223,8 @@ public class PSRxBuildInput
             }
             catch (IOException e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }
@@ -1352,8 +1353,8 @@ public class PSRxBuildInput
          }
          catch (Exception e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

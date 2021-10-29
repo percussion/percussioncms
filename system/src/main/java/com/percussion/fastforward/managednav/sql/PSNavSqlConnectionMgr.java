@@ -25,6 +25,7 @@ package com.percussion.fastforward.managednav.sql;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.services.PSDatabasePool;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.util.PSPreparedStatement;
@@ -80,7 +81,7 @@ public class PSNavSqlConnectionMgr
       }
       catch (Exception e)
       {
-         log.error("SQL Error {}", e.getMessage());
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
          throw new PSNavException(e);
       }
    }
@@ -98,8 +99,8 @@ public class PSNavSqlConnectionMgr
       }
       catch (Exception e)
       {
-         log.error("SQL Error {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSNavException(e);
       }
    }
@@ -139,8 +140,8 @@ public class PSNavSqlConnectionMgr
       }
       catch (Exception e)
       {
-         log.error("SQL ERROR {}", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("SQL Error {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSNavException(e);
       }
       finally

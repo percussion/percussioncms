@@ -24,27 +24,18 @@
 
 package com.percussion.security;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * Class responsible for handling password related functions,
@@ -84,20 +75,16 @@ public class PSPasswordHandler {
              skf = SecretKeyFactory.getInstance(ALGORITHM);
          } catch (NoSuchAlgorithmException e) {
              log.error(e.getMessage());
-             log.debug(e.getMessage(),e);
-             throw new PSEncryptionException(e.getMessage());
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+             throw new PSEncryptionException(e);
          }
 
         try {
-            if(skf != null) {
-                encoded = skf.generateSecret(spec).getEncoded();
-            }else{
-                throw new PSEncryptionException("Unable to initialize SecretKeyFactory!");
-            }
-         } catch (InvalidKeySpecException | PSEncryptionException e) {
+            encoded = skf.generateSecret(spec).getEncoded();
+        } catch (InvalidKeySpecException e) {
             log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
-            throw new PSEncryptionException(e.getMessage());
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSEncryptionException(e);
         }
 
         return ArrayUtils.addAll(encoded

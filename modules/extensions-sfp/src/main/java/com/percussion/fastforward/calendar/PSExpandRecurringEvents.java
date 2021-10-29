@@ -23,6 +23,7 @@
  */
 package com.percussion.fastforward.calendar;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -261,8 +262,8 @@ public class PSExpandRecurringEvents extends PSDefaultExtension
                 * we shouldn't have problems with our XML, but if we do, print
                 * the error and skip to the next event
                 */
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                request.printTraceMessage("error parsing recurring event: " + e);
             }
          }

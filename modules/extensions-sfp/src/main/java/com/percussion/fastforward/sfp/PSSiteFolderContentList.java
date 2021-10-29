@@ -28,6 +28,7 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSInternalRequest;
@@ -315,7 +316,7 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
          // the check failed; assume item is not publishable
          log.error("ERROR: while checking contentvalid status");
          log.error(getClass().getName(), e);
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       if (isPublishable)
@@ -547,7 +548,7 @@ public class PSSiteFolderContentList extends PSSiteFolderCListBase
          {
             log.error("ERROR: while making internal request to {}", m_contentResourceName);
             log.error(getClass().getName(), e);
-            log.debug(e.getMessage(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             variants = new HashSet(); // never return a null
          }
       }

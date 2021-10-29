@@ -57,7 +57,7 @@ public class PSUtilityService implements IPSUtilityService
             return PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),str);
         } catch (PSEncryptionException e) {
             log.error("Error encrypting text: {}", PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
 

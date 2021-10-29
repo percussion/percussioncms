@@ -26,11 +26,11 @@ package com.percussion.cas;
 import com.percussion.data.PSConversionException;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.fastforward.utils.PSUtils;
 import com.percussion.server.IPSRequestContext;
-import com.percussion.uicontext.PSContextMenu;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -116,16 +116,16 @@ public class PSGetSiteBaseUrl implements IPSUdfProcessor
       }
       catch (PSInternalRequestCallException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(e.getMessage());
          throw new PSConversionException(e.getErrorCode(), e
                .getErrorArguments());
       }
       catch (PSNotFoundException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          request.printTraceMessage(e.getMessage());
          throw new PSConversionException(e.getErrorCode(), e
                .getErrorArguments());

@@ -33,6 +33,7 @@ import com.percussion.cms.objectstore.PSVariantSlotType;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -41,7 +42,6 @@ import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -147,11 +147,11 @@ public class PSNavAutoSlotExtension extends PSDefaultExtension
       catch (PSNavException e)
       {
          req.printTraceMessage(e.getMessage());
-         log.error("PSNavException found: {}", e.getMessage());
+         log.error("PSNavException found: {}",PSExceptionUtils.getMessageForLog(e));
          log.error(PSNavAutoSlotExtension.class, e);
-         log.debug(e.getMessage(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
-         throw new PSExtensionProcessingException(0, e.getMessage());
+         throw new PSExtensionProcessingException(0, PSExceptionUtils.getMessageForLog(e));
 
       }
       catch (Exception ex)

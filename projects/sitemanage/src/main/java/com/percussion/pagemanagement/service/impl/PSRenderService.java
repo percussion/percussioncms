@@ -299,8 +299,8 @@ public class PSRenderService implements IPSRenderService
             log.debug("renderTemplate, templateId: {}", id);
             return renderAssemblyBridge.renderTemplate(id, true);
         } catch (PSValidationException | IPSPageService.PSPageException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

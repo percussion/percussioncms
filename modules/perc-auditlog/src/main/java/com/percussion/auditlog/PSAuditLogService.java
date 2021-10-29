@@ -30,6 +30,7 @@ import com.ibm.cadf.model.Event;
 import com.ibm.cadf.util.Constants;
 import com.percussion.auditlog.util.AuditPropertyLoader;
 import com.percussion.auditlog.util.FileCreator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -122,8 +123,8 @@ public class PSAuditLogService  implements IPSAuditLogService {
             }
         }
         catch(Exception e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
 
@@ -139,8 +140,8 @@ public class PSAuditLogService  implements IPSAuditLogService {
             properties = AuditPropertyLoader.loadProperties(PathUtils.getRxDir(null)+ File.separator+CONFIG_FILE_BASE);
             middleware.setProperties(properties);
         }catch (Exception e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
     }

@@ -27,6 +27,7 @@ import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.assembler.IPSRenderLinkContextFactory;
 import com.percussion.pagemanagement.assembler.PSAbstractAssemblyContext.EditType;
 import com.percussion.pagemanagement.assembler.impl.PSLegacyLinkGenerator;
@@ -301,8 +302,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         try {
             return renderPreviewPageLink(pageId, "html");
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -316,8 +317,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         }
         catch (DataServiceNotFoundException | DataServiceLoadException | PSValidationException e)
         {
-            log.error("page target {} does not exist. Error: {}",pageId, e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("page target {} does not exist. Error: {}",pageId,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             try
             {
                 managedLinkDao.cleanupOrphanedLinks();
@@ -358,8 +359,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         try {
             return renderPreviewLink(targetId, null, null);
         } catch (DataServiceLoadException | DataServiceNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -375,8 +376,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
             return renderPreviewLink(targetId, resourceDefinitionId, null);
         }
         catch (DataServiceLoadException | DataServiceNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -403,8 +404,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
 
             return renderPreviewResourceLink(lr);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
     }
@@ -421,16 +422,16 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
         try {
             PSBeanValidationUtils.validate(request).throwIfInvalid();
         } catch (PSSpringValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
         PSAsset asset;
         try {
              asset = resourceInstanceHelper.loadPartialAsset(request.getTargetId());
         } catch (IPSAssetService.PSAssetServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
 
@@ -443,8 +444,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
             }
             catch (Exception e)
             {
-                log.error("Cannot cleanup orphaned links. Error: {}", e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error("Cannot cleanup orphaned links. Error: {}", PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             return null;
         }
@@ -485,8 +486,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
 
             renderLinkHelper(renLink, context, rd, linkAsset);
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e.getMessage());
         }
 
@@ -506,8 +507,8 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
                    renLink.setThumbResourceDefinition(thumbLink.getResourceDefinition());
                }
            } catch (PSDataServiceException e) {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                //It is just the thumbnail so don't completely fail out
            }
         }
@@ -819,11 +820,11 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
             // issue CM-276 - If the user deletes the percussion theme folder,
             // we should allow the rendering anyway (in that case, this type of
             // exception will be thrown
-            log.warn("Theme folder may have been deleted. Error:{}",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn("Theme folder may have been deleted. Error:{}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return rd;
     }

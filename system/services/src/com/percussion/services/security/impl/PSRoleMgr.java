@@ -221,7 +221,7 @@ public class PSRoleMgr implements IPSRoleMgr
          catch (Exception e)
          {
             log.error("Error finding users: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             if(throwCatalogerExceptions)
                throw new PSSecurityCatalogException(e);
          }         

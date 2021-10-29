@@ -29,16 +29,15 @@ import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetContentFinder;
 import com.percussion.pagemanagement.assembler.impl.finder.PSRelationshipWidgetContentFinder.WidgetCriteria;
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.services.error.PSNotFoundException;
-import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -205,7 +204,7 @@ public class PSWidgetContentFinderUtils
             return rels.first();
         } catch (PSDataServiceException | PSNotFoundException e) {
             log.error("Error getting Widget Definition for: {} Error: {}",widget.getDefinitionId(),e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return null;

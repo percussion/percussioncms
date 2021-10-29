@@ -42,6 +42,7 @@ import com.percussion.deploy.server.PSImportCtx;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.IPSHtmlParameters;
@@ -115,8 +116,8 @@ public class PSFolderContentsDependencyHandler
                 itemDep = handler.getDependency(tok, String.valueOf(
                        itemSum.getCurrentLocator().getId()));
             } catch (PSNotFoundException e) {
-               log.warn(e.getMessage());
-               log.debug(e.getMessage(),e);
+               log.warn(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
             if (itemDep != null)

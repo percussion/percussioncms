@@ -25,6 +25,7 @@ package com.percussion.delivery.utils.spring;
 
 
 import com.percussion.delivery.utils.security.PSSecureProperty;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -202,8 +203,8 @@ public class PSPropertiesFactoryBean extends PropertiesFactoryBean
             }
             catch (IOException e)
             {
-               log.error(e.getMessage());
-               log.debug(e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }

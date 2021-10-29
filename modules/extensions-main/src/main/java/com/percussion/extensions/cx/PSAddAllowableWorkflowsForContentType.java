@@ -27,6 +27,7 @@ import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSContentEditor;
 import com.percussion.design.objectstore.PSWorkflowInfo;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -34,13 +35,6 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -48,6 +42,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This extension adds the allowable workflows for the content type.
@@ -210,8 +210,8 @@ public class PSAddAllowableWorkflowsForContentType extends PSDefaultExtension
          catch(Exception e)
          {
             if(request.isTraceEnabled()){
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             continue;
          }

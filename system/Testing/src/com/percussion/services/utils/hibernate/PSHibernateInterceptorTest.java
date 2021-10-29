@@ -23,6 +23,7 @@
  */
 package com.percussion.services.utils.hibernate;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
@@ -44,7 +45,6 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -110,8 +110,8 @@ public class PSHibernateInterceptorTest
       }
       catch (PSFilterException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

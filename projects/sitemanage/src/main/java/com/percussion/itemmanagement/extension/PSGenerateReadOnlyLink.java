@@ -25,6 +25,7 @@
 package com.percussion.itemmanagement.extension;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -154,8 +155,8 @@ public class PSGenerateReadOnlyLink extends com.percussion.extension.PSSimpleJav
 
             return url;
         } catch (PSNotFoundException | PSValidationException | MalformedURLException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSConversionException(e);
         }
     }

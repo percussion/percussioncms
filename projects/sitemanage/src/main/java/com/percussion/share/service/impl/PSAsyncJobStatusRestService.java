@@ -24,6 +24,7 @@
 
 package com.percussion.share.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
@@ -95,8 +96,8 @@ public class PSAsyncJobStatusRestService implements IPSAsyncJobStatusRestService
             log.info("Created dummy async job with id: " + jobId);
             return jobId;
         } catch (IPSFolderService.PSWorkflowNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
            throw new WebApplicationException(e);
         }
     }

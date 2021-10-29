@@ -49,6 +49,7 @@ import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.IPSEditableItem;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
@@ -265,8 +266,8 @@ public class PSAssetRestService
             try {
                 assetService.clearAssetWidgetRelationship(awRel);
             } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException | PSAssetServiceException | PSValidationException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
     }
@@ -690,8 +691,8 @@ public class PSAssetRestService
                 PSDataItemSummary summary = assetService.load(orphanedAsset.getId(), true);
                 unusedAssets.add(getUnusedAssetSummary(summary, assetOcurrences, orphanedAsset));
             } catch (PSDataServiceException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
         Collections.sort(unusedAssets);

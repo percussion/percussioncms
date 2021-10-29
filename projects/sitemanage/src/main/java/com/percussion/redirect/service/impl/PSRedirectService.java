@@ -25,6 +25,7 @@
 package com.percussion.redirect.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.licensemanagement.data.PSModuleLicense;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
 import com.percussion.redirect.data.PSCreateRedirectRequest;
@@ -45,19 +46,18 @@ import com.percussion.sitemanage.service.impl.PSSiteDataService;
 import com.percussion.sitemanage.service.impl.PSSitePublishStatusService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.service.impl.PSUtilityService;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 @Service("pSRedirectService")
 public class PSRedirectService implements IPSRedirectService
@@ -115,8 +115,8 @@ public class PSRedirectService implements IPSRedirectService
         catch (Exception e)
         {
             status =RedirectValidationStatus.Error;
-            log.error("Error occurred validating the redirect object, data: {}, Error: {}", getDataAsString(data), e.getMessage());
-			log.debug(e.getMessage(),e);
+            log.error("Error occurred validating the redirect object, data: {}, Error: {}", getDataAsString(data),PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
             response.setErrorMessage("A redirect rule cannot be created at this time, Please note the time and date and submit this problem to Percussion support.");
         }
@@ -182,8 +182,8 @@ public class PSRedirectService implements IPSRedirectService
             // If there is no redirect license, we don't have to log it for on
             // prem customers.
             if (utilityService.isSaaSEnvironment()) {
-				log.error("Error: {}", e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error("Error: {}", PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
         }
         return licInfo;
@@ -250,8 +250,8 @@ public class PSRedirectService implements IPSRedirectService
 			    
 		
 			}catch(Exception e){
-				log.error("Error creating redirect from {}, to {}, Error: {}", request.getCondition(), request.getRedirectTo(), e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error("Error creating redirect from {}, to {}, Error: {}", request.getCondition(), request.getRedirectTo(),PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 			if(response != null && response.getStatus() == 200){
 				ret.setStatusCode(PSRedirectStatus.SERVICE_OK);

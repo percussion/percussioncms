@@ -213,8 +213,8 @@ public class PSJdbcTableFactory
       {
          Object[] args = {tableName,
             PSJdbcTableFactoryException.formatSqlException(e)};
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
          throw new PSJdbcTableFactoryException(
             IPSTableFactoryErrors.SQL_CATALOG_TABLE_FAILED, args, e);
@@ -1123,15 +1123,15 @@ public class PSJdbcTableFactory
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
          if (out != null)
             try {out.close();} catch (Exception e){
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);}
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));}
       }
    }
 
@@ -1196,7 +1196,7 @@ public class PSJdbcTableFactory
                    log.error("Error occurred while importing table data : {} Error: {}",
                            tableName,
                            PSExceptionUtils.getMessageForLog(e));
-                   log.debug(e);
+                   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }finally{
                    if(inputXml!=null)
                       inputXml.close();
@@ -1216,8 +1216,8 @@ public class PSJdbcTableFactory
          System.exit(0);
       }
       catch (Exception e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }finally{
          if(in != null)
             try
@@ -1484,15 +1484,15 @@ public class PSJdbcTableFactory
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
          if (out != null)
             try {out.close();} catch (Exception e){
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);}
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));}
       }
    }
 
@@ -1799,7 +1799,7 @@ public class PSJdbcTableFactory
             }
             catch(IOException e)
             {
-               throw new RuntimeException(e.getLocalizedMessage());
+               throw new RuntimeException(e);
             }
             finally
             {
@@ -1869,8 +1869,8 @@ public class PSJdbcTableFactory
          }
          catch (NoSuchAlgorithmException e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          try(FileOutputStream outputStream = new FileOutputStream(temp))

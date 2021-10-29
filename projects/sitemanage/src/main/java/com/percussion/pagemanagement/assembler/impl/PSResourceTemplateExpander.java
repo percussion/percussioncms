@@ -26,6 +26,7 @@ package com.percussion.pagemanagement.assembler.impl;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
@@ -43,7 +44,6 @@ import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 
 import java.io.File;
 import java.util.ArrayList;
@@ -135,8 +135,8 @@ public class PSResourceTemplateExpander extends PSAbstractTemplateExpanderAdapte
             PSResourceLocation loc = assemblyItemBridge.getResourceLocation(contentListItem, getResourceId(parameters));
             contentListItem.setLocation(loc.getFilePath());
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

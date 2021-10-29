@@ -172,7 +172,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
             log.error("Failed to get the fully qualified table name for {}. Error: {}",
                     PAGE_TABLE,
                     PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
             //This method should not be failing upstream transactions with a runtime exception.
             return new ArrayList<>();
@@ -232,7 +232,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         catch (SQLException e)
         {
             log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSRuntimeException(e);
         }    
     }
@@ -332,7 +332,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         {
 
             log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSRuntimeException(e);
         }
     }
@@ -363,7 +363,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         catch (SQLException e)
         {
             log.error("Failed to get the fully qualified table name for '{}'", PAGE_TABLE);
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSRuntimeException(e);
         }
      

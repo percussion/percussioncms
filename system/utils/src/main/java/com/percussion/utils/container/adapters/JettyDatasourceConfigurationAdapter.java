@@ -25,6 +25,9 @@
 package com.percussion.utils.container.adapters;
 
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.util.PSProperties;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConfigurationAdapter;
@@ -37,9 +40,6 @@ import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
 import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
-import com.percussion.security.PSEncryptionException;
-import com.percussion.security.PSEncryptor;
-import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -352,7 +352,7 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
             } catch (IOException e) {
                 ms_log.error("error saving properties file propertyFile {}",
                         PSExceptionUtils.getMessageForLog(e));
-            ms_log.debug(e);
+            ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         if (success) {
@@ -503,8 +503,8 @@ public class JettyDatasourceConfigurationAdapter implements IPSConfigurationAdap
                 }
                 updated = updateJettyDatasourceXml(datasources, doc);
             } catch (IOException | SAXException e) {
-                ms_log.warn("Could not parse or update jetty datasource configuration, so recreating {} Error: {}", file.getAbsolutePath(), e.getMessage());
-                ms_log.debug(e.getMessage(),e);
+                ms_log.warn("Could not parse or update jetty datasource configuration, so recreating {} Error: {}", file.getAbsolutePath(),PSExceptionUtils.getMessageForLog(e));
+                ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //In case File is corrupted, create a new file.
                 doc = createNewDatasourceXml();
                 updated = updateJettyDatasourceXml(datasources, doc);

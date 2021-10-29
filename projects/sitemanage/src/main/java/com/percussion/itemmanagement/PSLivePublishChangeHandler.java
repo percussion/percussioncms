@@ -32,6 +32,7 @@ import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper.PSItemTypeEnum;
 import com.percussion.pagemanagement.service.IPSPageService;
@@ -55,10 +56,10 @@ import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.impl.PSSitePublishDaoHelper;
 import com.percussion.sitemanage.service.IPSSiteDataService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -293,8 +294,8 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
                     templateOwners.add(owner);
                 }
             } catch (PSNotFoundException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //continue
             }
         }
@@ -305,7 +306,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
             try {
                 doAdd(owner, getPageSiteId(owner));
             } catch (IPSGenericDao.SaveException e) {
-                log.error(e.getMessage());
+                log.error(PSExceptionUtils.getMessageForLog(e));
                 log.debug(e.getMessage());
                 //continue loop
             }
@@ -315,7 +316,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
             try {
                 doAdd(owner, PSContentChangeType.PENDING_STAGED, getPageSiteId(owner));
             } catch (IPSGenericDao.SaveException e) {
-                log.error(e.getMessage());
+                log.error(PSExceptionUtils.getMessageForLog(e));
                 log.debug(e.getMessage());
                 //continue loop
             }
@@ -343,7 +344,7 @@ public class PSLivePublishChangeHandler implements IPSContentChangeHandler
                     doAdd(pageId, PSContentChangeType.PENDING_STAGED, getPageSiteId(pageId));
             }
             } catch (IPSGenericDao.SaveException | PSValidationException | PSNotFoundException e) {
-                log.error(e.getMessage());
+                log.error(PSExceptionUtils.getMessageForLog(e));
                 log.debug(e.getMessage());
                 //continue loop
             }

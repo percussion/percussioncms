@@ -34,6 +34,7 @@ import com.percussion.analytics.error.IPSAnalyticsErrorMessageHandler;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.service.IPSAnalyticsProviderQueryService;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.data.PSPathItem;
@@ -241,8 +242,8 @@ public class PSTrafficService implements IPSTrafficService
 
             itemPropList.add(createTrafficDetail(itemProp));
         } catch (PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         }
         

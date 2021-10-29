@@ -24,17 +24,17 @@
 package com.percussion.cas;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.text.MessageFormat;
-import java.util.StringTokenizer;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.text.MessageFormat;
+import java.util.StringTokenizer;
 
 /**
  * Creates a properties element as used in portal publisher assemblers.
@@ -253,10 +253,10 @@ public class PSAddPortalProperties extends PSSimpleJavaUdfExtension
          Element properties = (Element) test.processUdf(params, null);
          log.info(PSXmlDocumentBuilder.toString(properties));
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

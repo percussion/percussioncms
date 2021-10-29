@@ -23,6 +23,7 @@
  */
 package com.percussion.workflow.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.maintenance.service.IPSMaintenanceManager;
 import com.percussion.metadata.data.PSMetadata;
@@ -473,7 +474,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         }
         catch (PSWorkflowEditorServiceException e)
         {
-            log.error(e.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(e));
             throw e;
         }
         
@@ -608,7 +609,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         }
         catch (PSWorkflowEditorServiceException e)
         {
-            log.error(e.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(e));
             throw e;
         }
 
@@ -776,7 +777,7 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
         }
         catch (PSWorkflowEditorServiceException e)
         {
-            log.error(e.getMessage());
+            log.error(PSExceptionUtils.getMessageForLog(e));
             throw e;
         }
         
@@ -911,8 +912,8 @@ public class PSSteppedWorkflowService implements IPSSteppedWorkflowService, IPSN
             }
             catch (Exception e) 
             {
-                log.error("Failed to find the items by workflow and state while deleteing the step, Error: {}", e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error("Failed to find the items by workflow and state while deleteing the step, Error: {}", PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             	throw new PSWorkflowEditorServiceException("Unexpected error occurred while deleting the step. " +
             			"Please see the log for more details.");
             }

@@ -81,8 +81,8 @@ public class DemandPublisherBean implements DemandPublisherService
       try {
           requestId = rxPubSvc.queueDemandWork(editionId, work);
       } catch (PSNotFoundException e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       log.debug("Started demand job. Request id = {}",  requestId);
       long timeLimit = System.currentTimeMillis() + timeout * 1000; 

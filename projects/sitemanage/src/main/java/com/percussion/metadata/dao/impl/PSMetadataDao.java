@@ -23,9 +23,12 @@
  */
 package com.percussion.metadata.dao.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,8 +36,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,7 +84,7 @@ public class PSMetadataDao
           }
           catch (Exception e) 
           {
-        	  log.error("Error releasing session in create: {}", e.getMessage());
+        	  log.error("Error releasing session in create: {}", PSExceptionUtils.getMessageForLog(e));
           }
       }
       return data;      
@@ -122,7 +123,7 @@ public class PSMetadataDao
          }
          catch (Exception e) 
          {
-        	 log.error("Error releasing session in delete: {} " , e.getMessage());
+        	 log.error("Error releasing session in delete: {} " ,PSExceptionUtils.getMessageForLog(e));
          }
          
       }      
@@ -161,7 +162,7 @@ public class PSMetadataDao
     	  }
     	  catch(Exception e) 
     	  {
-    		  log.error("Error releasing session in save: {}", e.getMessage());
+    		  log.error("Error releasing session in save: {}",PSExceptionUtils.getMessageForLog(e));
     	  } 
       }
       return data;

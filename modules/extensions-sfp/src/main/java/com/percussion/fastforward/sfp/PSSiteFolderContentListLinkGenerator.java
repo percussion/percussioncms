@@ -25,6 +25,7 @@ package com.percussion.fastforward.sfp;
 
 import com.percussion.data.PSConversionException;
 import com.percussion.design.objectstore.PSNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -156,9 +157,9 @@ public class PSSiteFolderContentListLinkGenerator
       catch (MalformedURLException e)
       {
          // this exception should never occur
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         throw new RuntimeException(e.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 
@@ -239,8 +240,8 @@ public class PSSiteFolderContentListLinkGenerator
       catch (PSConversionException e)
       {
          log.error(this.getClass().getName(), e);
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -273,9 +274,9 @@ public class PSSiteFolderContentListLinkGenerator
       {
          // this exception should never occur
          log.error(this.getClass().getName(), e);
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-         throw new RuntimeException(e.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 

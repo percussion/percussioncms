@@ -25,6 +25,7 @@ package com.percussion.webservices.uidesign;
 
 import com.percussion.cms.objectstore.PSAction;
 import com.percussion.cms.objectstore.PSSearch;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidUtils;
@@ -118,7 +119,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -160,7 +161,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -215,7 +216,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -259,7 +260,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       catch (RuntimeException e)
       {
@@ -452,7 +453,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -477,7 +478,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -501,7 +502,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -525,7 +526,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -892,7 +893,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       catch (PSUiException e)
       {
          // this should never happen
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       // will never get here
@@ -1146,7 +1147,7 @@ public class UiDesignSOAPImpl extends PSBaseSOAPImpl implements UiDesign
       }
       catch (PSErrorException e)
       {
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return null; // never here, used to turn off compiling error

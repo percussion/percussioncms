@@ -24,11 +24,17 @@
 
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteArchitecture;
 import com.percussion.sitemanage.service.IPSSiteArchitectureDataService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -36,12 +42,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
 @Path("/siteArchitecture")
 @Component("siteArchitectureDataRestService")
@@ -65,8 +65,8 @@ public class PSSiteArchitectureDataRestService
         try {
             return ds.find(id);
         } catch (DataServiceLoadException | IPSDataService.DataServiceNotFoundException | PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException();
         }
     }

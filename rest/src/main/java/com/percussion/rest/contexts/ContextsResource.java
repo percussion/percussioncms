@@ -24,6 +24,7 @@
 
 package com.percussion.rest.contexts;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.locationscheme.ILocationSchemeAdaptor;
@@ -83,7 +84,7 @@ public class ContextsResource {
             adaptor.deleteContext(uriInfo.getBaseUri(), id);
             response = new Status(200,"OK");
         }catch(Exception e){
-            response =  new Status(500, e.getMessage());
+            response =  new Status(500,PSExceptionUtils.getMessageForLog(e));
         }
         return response;
     }
@@ -105,8 +106,8 @@ public class ContextsResource {
         try {
             return adaptor.getContextById(uriInfo.getBaseUri(), id);
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -127,8 +128,8 @@ public class ContextsResource {
         try {
             return new ContextList(adaptor.listContexts(uriInfo.getBaseUri()));
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -150,8 +151,8 @@ public class ContextsResource {
         try {
             return adaptor.createOrUpdateContext(uriInfo.getBaseUri(), context);
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

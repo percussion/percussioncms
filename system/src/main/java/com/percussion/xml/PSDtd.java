@@ -24,6 +24,7 @@
 
 package com.percussion.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.xerces.impl.dtd.DTDGrammar;
@@ -105,8 +106,8 @@ public class PSDtd extends DTDGrammar
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.exit(1);
       }
 
@@ -126,8 +127,8 @@ public class PSDtd extends DTDGrammar
       }
       catch (Exception e)
       {
-         log.error("Error : {} ", e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Error : {} ",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -584,7 +585,7 @@ public class PSDtd extends DTDGrammar
    /**
     * Returns an PSXMLElementDecl instance that is at the element index of
     * element declarations array
-    * @param elementIndex the element index of element declarations array
+    * @param elementDeclIndex the element index of element declarations array
     * @return The matching element definition, or <code>null</code> if
     * elementIndex is equal to -1 or exceeds the size of element declarations
     * array.

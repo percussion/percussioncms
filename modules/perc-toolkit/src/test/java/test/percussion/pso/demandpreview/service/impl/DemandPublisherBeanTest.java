@@ -8,11 +8,14 @@
  */
 package test.percussion.pso.demandpreview.service.impl;
 
-import static org.junit.Assert.*;
-
-import java.util.concurrent.TimeoutException;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.pso.demandpreview.service.impl.DemandPublisherBean;
+import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
+import com.percussion.rx.publisher.IPSRxPublisherService;
+import com.percussion.rx.publisher.data.PSDemandWork;
 import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.publisher.IPSEdition;
+import com.percussion.utils.guid.IPSGuid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
@@ -21,12 +24,11 @@ import org.jmock.Sequence;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.percussion.pso.demandpreview.service.impl.DemandPublisherBean;
-import com.percussion.rx.publisher.IPSRxPublisherService;
-import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
-import com.percussion.rx.publisher.data.PSDemandWork;
-import com.percussion.services.publisher.IPSEdition;
-import com.percussion.utils.guid.IPSGuid;
+import java.util.concurrent.TimeoutException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class DemandPublisherBeanTest
 {
@@ -74,8 +76,8 @@ public class DemandPublisherBeanTest
          log.error("Timeout Exception " + ex,ex);
          fail("Exception"); 
       } catch (PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             fail(e.getMessage());
         }
    }

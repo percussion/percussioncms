@@ -70,7 +70,7 @@ public class TestMultiConcurrentCallsToServer {
                     log.info("{} :: {}", new Date(), fut.get());
                 } catch (InterruptedException | ExecutionException e) {
                     log.error(PSExceptionUtils.getMessageForLog(e));
-                    log.debug(e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     Assert.assertFalse(true);
                     Thread.currentThread().interrupt();
                 }
@@ -105,7 +105,7 @@ public class TestMultiConcurrentCallsToServer {
             catch (Exception e)
             {
                 log.error(PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 Assert.assertFalse(true);
             }
             return "ERROR";

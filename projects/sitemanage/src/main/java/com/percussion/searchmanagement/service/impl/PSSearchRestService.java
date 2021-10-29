@@ -23,6 +23,7 @@
  */
 package com.percussion.searchmanagement.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemService;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
@@ -139,8 +140,8 @@ public class PSSearchRestService
             }
             return itemList;
         } catch (PSNotFoundException | IPSDataService.DataServiceLoadException | PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

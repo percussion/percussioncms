@@ -23,6 +23,7 @@
  */
 package com.percussion.role.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
@@ -457,8 +458,8 @@ public class PSRoleService implements IPSRoleService
                 // make sure all users exist in the system.
                 allUsers = userService.getUsers().getUsers();
             } catch (PSDataServiceException psDataServiceException) {
-                log.error("Error listing system users. Error: {}",e.getMessage());
-                log.debug(e.getMessage(),e);
+                log.error("Error listing system users. Error: {}",PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 e.addSuppressed(e);
             }
             if (PSCollectionUtils.containsIgnoringCase(SYSTEM_ROLES, role.getName()))
@@ -508,7 +509,7 @@ public class PSRoleService implements IPSRoleService
                     cannotRemoveYourselfFromAdminRole(role, e);
                 } catch (PSDataServiceException psDataServiceException) {
                     e.addSuppressed(psDataServiceException);
-                    log.debug(e.getMessage(),e);
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
             }
         }
@@ -722,11 +723,11 @@ public class PSRoleService implements IPSRoleService
         try {
             userRoles = userService.getCurrentUser().getRoles();
         } catch (IPSUserService.PSNoCurrentUserException e) {
-            log.error("Error getting roles, No Current User! Error:", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error getting roles, No Current User! Error:",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (PSDataServiceException e) {
-            log.error("Error getting roles for current user: {} Error:", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error getting roles for current user: {} Error:",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         Set<String> userHomePages = new HashSet<>();

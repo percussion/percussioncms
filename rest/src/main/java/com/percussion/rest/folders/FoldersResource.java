@@ -24,6 +24,7 @@
 
 package com.percussion.rest.folders;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.MoveFolderItem;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
@@ -96,8 +97,8 @@ public class FoldersResource
         try {
             return folderAdaptor.getFolder(uriInfo.getBaseUri(), guid);
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -137,8 +138,8 @@ public class FoldersResource
 
             return folderAdaptor.getFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName);
         } catch (BackendException | UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -204,8 +205,8 @@ public class FoldersResource
 
             return folder;
         } catch (BackendException | UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -238,8 +239,8 @@ public class FoldersResource
 
             return ret;
         } catch (BackendException | UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -280,8 +281,8 @@ public class FoldersResource
             folderAdaptor.deleteFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, includeSubFolders);
             return new Status("Deleted");
         } catch (BackendException | UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -301,8 +302,8 @@ public class FoldersResource
             folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
             return new Status("Moved OK");
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -324,8 +325,8 @@ public class FoldersResource
             folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
             return new Status("Moved OK");
         } catch (BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -348,8 +349,8 @@ public class FoldersResource
             folderAdaptor.copyFolderItem(uriInfo.getBaseUri(), request.getItemPath(), request.getTargetFolderPath());
             return new Status(200,"Copied OK");
         }catch(Exception e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -374,8 +375,8 @@ public class FoldersResource
         }catch(NotFoundException nfe){
             return new Status(404, "Not Found");
         }catch(Exception e){
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -411,8 +412,8 @@ public class FoldersResource
 
             return folderAdaptor.renameFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, newName);
         } catch (UnsupportedEncodingException | BackendException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

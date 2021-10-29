@@ -43,6 +43,7 @@ import com.percussion.design.objectstore.PSPipe;
 import com.percussion.design.objectstore.PSUpdateColumn;
 import com.percussion.design.objectstore.PSUpdatePipe;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestHandler;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSInternalRequest;
@@ -636,8 +637,8 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       }
       catch (NumberFormatException e)
       {
-         log.error("Failed to convert String to Integer for \"{}\", default to -1, Error : {}",s, e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Failed to convert String to Integer for \"{}\", default to -1, Error : {}",s,PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return -1;
       }
    }
@@ -746,8 +747,8 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       }
       catch (PSInvalidContentTypeException e)
       {
-         log.error("Invalid content type id ( {} ) for contentId = {} , Error {} ", item.getContentTypeId(), item.getContentId(), e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error("Invalid content type id ( {} ) for contentId = {} , Error {} ", item.getContentTypeId(), item.getContentId(),PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
    }

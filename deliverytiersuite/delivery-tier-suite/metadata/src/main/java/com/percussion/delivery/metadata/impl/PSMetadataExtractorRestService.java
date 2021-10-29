@@ -28,11 +28,10 @@ import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataEntry;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
@@ -127,7 +126,7 @@ public class PSMetadataExtractorRestService
         }
         catch (Exception e)
         {
-            log.error("An error when saving index {}", e.getMessage());
+            log.error("An error when saving index {}",PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
        
@@ -147,7 +146,7 @@ public class PSMetadataExtractorRestService
         }
         catch (Exception e)
         {
-            log.error("An error when deleting the file {}", e.getMessage());
+            log.error("An error when deleting the file {}", PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }

@@ -23,6 +23,7 @@
  */
 package com.percussion.services.schedule.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.services.publisher.IPSPublisherService;
@@ -89,9 +90,9 @@ public class PSPurgePublishingLog extends PSPurgeExpiredLog
             }
             catch (Exception e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
-               log.error("Failed to archive publishing log for job ID: {} : {}", jobId, e.getMessage());
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+               log.error("Failed to archive publishing log for job ID: {} : {}", jobId,PSExceptionUtils.getMessageForLog(e));
             }
          }
          

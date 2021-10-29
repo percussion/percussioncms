@@ -24,6 +24,7 @@
 
 package com.percussion.recent.service.rest.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.data.PSTemplateSummaryList;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
@@ -124,8 +125,8 @@ public class PSRecentRestService implements IPSRecentRestService
         try {
             return new PSWidgetContentTypeList(recentService.findRecentAssetType());
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

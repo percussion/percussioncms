@@ -24,11 +24,7 @@
 
 package com.percussion.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.tools.PSPatternMatcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +32,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 import static org.junit.Assert.assertEquals;
 
@@ -146,8 +146,8 @@ public class PSFileFilterTest
       }
       catch (IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

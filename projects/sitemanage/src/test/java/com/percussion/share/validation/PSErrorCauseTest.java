@@ -23,15 +23,14 @@
  */
 package com.percussion.share.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.percussion.share.dao.PSSerializerUtils;
+import com.percussion.share.validation.PSErrors.PSObjectError;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
-import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.share.validation.PSErrors.PSObjectError;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PSErrorCauseTest
 {
@@ -63,7 +62,6 @@ public class PSErrorCauseTest
         System.out.println(xml);
         PSErrors e = PSSerializerUtils.unmarshal(xml, PSErrors.class);
         log.debug(e.getGlobalError().getCause());
-        log.debug(e);
         
     }
 

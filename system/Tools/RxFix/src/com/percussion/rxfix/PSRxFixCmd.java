@@ -23,11 +23,16 @@
  */
 package com.percussion.rxfix;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.tools.PSParseArguments;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
+import javax.naming.spi.NamingManager;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
@@ -35,12 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.spi.NamingManager;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 /**
  * Command for running rxfix from the command line (or from ant using the java
@@ -402,10 +401,10 @@ public class PSRxFixCmd
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          logAndSaveError("Problem creating install beans: "
-               + e.getLocalizedMessage());
+               + PSExceptionUtils.getMessageForLog(e) );
       }
 
       if (installbeans != null)

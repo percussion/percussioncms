@@ -24,6 +24,7 @@
 package com.percussion.server.command;
 
 import com.percussion.error.PSErrorManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
 import com.percussion.server.cache.PSCacheException;
@@ -103,7 +104,7 @@ public class PSConsoleCommandFlushFolderCache extends PSConsoleCommandCache
       catch (PSCacheException e)
       {
          throw new PSConsoleCommandException(
-               IPSServerErrors.UNEXPECTED_EXCEPTION_CONSOLE, e.getMessage());
+               IPSServerErrors.UNEXPECTED_EXCEPTION_CONSOLE, PSExceptionUtils.getMessageForLog(e));
       }
 
       PSXmlDocumentBuilder.addElement(respDoc, root, "resultCode",

@@ -9,11 +9,9 @@
  ******************************************************************************/
 package com.percussion.pso.effects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -32,6 +30,8 @@ import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
@@ -108,8 +108,9 @@ public class PSOPreventOnTranslatedItem implements IPSEffect
 
 		} catch (Exception e)
 		{
-			log.error("unexpected exception, Error: {}", e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.error("unexpected exception, Error: {}",
+					PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			throw new PSExtensionProcessingException(this.getClass().getName(), e); 
 		} 
 

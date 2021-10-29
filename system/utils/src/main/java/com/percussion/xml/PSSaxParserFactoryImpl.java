@@ -23,6 +23,7 @@
  */
 package com.percussion.xml;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.logging.log4j.LogManager;
@@ -67,8 +68,8 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
 
             return factory;
         } catch (Exception e) {
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return null;
         }
     });
@@ -97,8 +98,8 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
         try {
             return factoryThreadLocal.get().getFeature(name);
         } catch (SAXException e) {
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new SAXNotSupportedException(e.getMessage());
         }
     }
@@ -108,8 +109,8 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
         try {
             factoryThreadLocal.get().setNamespaceAware(awareness);
         }catch(java.lang.UnsupportedOperationException e){
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -119,8 +120,8 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
         try {
             factoryThreadLocal.get().setValidating(validating);
         }catch(java.lang.UnsupportedOperationException e){
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -129,8 +130,8 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
         try {
             factoryThreadLocal.get().setXIncludeAware(state);
         }catch(java.lang.UnsupportedOperationException e){
-            log.warn(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 }

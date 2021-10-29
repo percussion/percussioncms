@@ -28,24 +28,24 @@ import com.percussion.dashboardmanagement.data.PSDashboardConfiguration;
 import com.percussion.dashboardmanagement.data.PSGadget;
 import com.percussion.dashboardmanagement.service.IPSDashboardDataService;
 import com.percussion.dashboardmanagement.service.IPSDashboardService;
-import com.percussion.share.dao.IPSGenericDao;
-import com.percussion.share.service.IPSDataService;
-import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.service.exception.PSDataServiceException;
-import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.webservices.PSWebserviceUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Path("/dashboard")
 @Component("dashboardService")
@@ -97,8 +97,8 @@ public class PSDashboardService implements IPSDashboardService {
 			dashboard.setId(user);
 			return dashboardDataService.save(dashboard);
 		} catch (PSDataServiceException e) {
-			log.error(e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			throw new WebApplicationException(e.getMessage());
 		}
 	}

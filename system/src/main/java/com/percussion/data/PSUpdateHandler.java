@@ -37,6 +37,7 @@ import com.percussion.design.objectstore.PSSystemValidationException;
 import com.percussion.error.PSBackEndUpdateProcessingError;
 import com.percussion.error.PSErrorException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSIllegalArgumentException;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -590,9 +591,8 @@ public class PSUpdateHandler extends PSDataHandler
          }
          catch (IOException ioe)
          {
-            // should never happen, ignore
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }         
          throw new PSInternalRequestCallException(
                   IPSDataErrors.INTERNAL_REQUEST_CALL_EXCEPTION, bout.toString());

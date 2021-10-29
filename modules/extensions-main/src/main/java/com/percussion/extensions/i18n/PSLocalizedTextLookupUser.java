@@ -24,6 +24,7 @@
 package com.percussion.extensions.i18n;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
@@ -95,8 +96,8 @@ public class PSLocalizedTextLookupUser
       }
       catch(Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

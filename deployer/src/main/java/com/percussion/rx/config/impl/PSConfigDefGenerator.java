@@ -27,6 +27,7 @@ import com.percussion.deployer.objectstore.PSDependency;
 import com.percussion.deployer.objectstore.PSExportDescriptor;
 import com.percussion.deployer.server.PSDependencyManager;
 import com.percussion.deployer.server.PSDeploymentHandler;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.utils.tools.PSParseFragments;
 import org.apache.commons.lang.StringUtils;
@@ -139,9 +140,8 @@ public class PSConfigDefGenerator
       }
       catch (IOException e)
       {
-         // FIXME Auto-generated catch block
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    

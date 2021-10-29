@@ -23,11 +23,6 @@
  */
 package com.percussion.services.assembly.impl.finder;
 
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getLocale;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.reorderItems;
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.setSiteFolderId;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
@@ -35,7 +30,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
-import com.percussion.server.PSRequest;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyErrors;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSTemplateSlot;
@@ -46,14 +41,18 @@ import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getLocale;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.reorderItems;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.setSiteFolderId;
 
 /**
  * Find the items related to the source by a translation relationship
@@ -203,7 +202,7 @@ public class PSTranslationSlotFinder extends PSSlotContentFinderBase
             try {
                setSiteFolderId(slotItem, false);
             } catch (PSNotFoundException e) {
-               ms_log.warn(e.getMessage());
+               ms_log.warn(PSExceptionUtils.getMessageForLog(e));
                //continue processing
             }
             rval.add(slotItem);

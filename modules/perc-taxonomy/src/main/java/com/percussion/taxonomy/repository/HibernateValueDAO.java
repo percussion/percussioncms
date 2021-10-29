@@ -23,13 +23,12 @@
  */
 package com.percussion.taxonomy.repository;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.taxonomy.domain.Attribute;
+import com.percussion.taxonomy.domain.Language;
+import com.percussion.taxonomy.domain.Node;
+import com.percussion.taxonomy.domain.Value;
+import com.percussion.taxonomy.validation.UrlValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,11 +37,12 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.percussion.taxonomy.domain.Attribute;
-import com.percussion.taxonomy.domain.Language;
-import com.percussion.taxonomy.domain.Node;
-import com.percussion.taxonomy.domain.Value;
-import com.percussion.taxonomy.validation.UrlValidator;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This DAO is used only to saving/updating the Node.java Domain Object
@@ -107,8 +107,8 @@ public class HibernateValueDAO extends HibernateDaoSupport implements ValueDAO {
          values = (Map<String, String>) this.getHibernateTemplate().execute(valueSetter);
          
       } catch (Exception e) {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return values;
    }

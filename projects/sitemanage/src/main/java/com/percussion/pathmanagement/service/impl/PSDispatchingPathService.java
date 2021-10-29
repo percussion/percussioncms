@@ -24,6 +24,7 @@
 package com.percussion.pathmanagement.service.impl;
 
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
@@ -514,8 +515,8 @@ public class PSDispatchingPathService implements IPSPathService, IPSPathRecycleS
             String pathToCheck = PSFolderHelper.getOppositePath(folderPath);
             isValidForRecycle = folderHelper.isFolderValidForRecycleOrRestore(pathToCheck, folderPath, FOLDER_TYPE, RECYCLED_TYPE);
         } catch (Exception e) {
-            log.error("Error finding item properties by id when restoring folder: {}, Error: {}", guid, e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Error finding item properties by id when restoring folder: {}, Error: {}", guid,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             hasErrors = true;
         }
         if (hasErrors) {

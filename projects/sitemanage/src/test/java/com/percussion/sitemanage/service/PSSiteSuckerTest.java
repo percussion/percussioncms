@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.service;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.PSServer;
@@ -198,8 +199,8 @@ public class PSSiteSuckerTest extends PSServletTestCase
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -381,8 +382,8 @@ public class PSSiteSuckerTest extends PSServletTestCase
             }
             catch (FileNotFoundException e)
             {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             return sb.toString();
         }

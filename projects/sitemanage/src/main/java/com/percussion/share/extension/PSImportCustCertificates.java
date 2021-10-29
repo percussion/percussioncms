@@ -24,13 +24,20 @@
 
 package com.percussion.share.extension;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
 import com.percussion.server.PSServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
@@ -64,8 +71,8 @@ public class PSImportCustCertificates implements IPSStartupProcess {
         try {
             run.doStartupWork(props);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     @Override

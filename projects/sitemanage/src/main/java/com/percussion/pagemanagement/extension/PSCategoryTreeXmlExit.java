@@ -25,6 +25,7 @@
 package com.percussion.pagemanagement.extension;
 
 import com.percussion.category.extension.PSCategoryControlUtils;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -80,8 +81,8 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
         }
         catch (Exception e)
         {
-            log.error("Failed to retrieve category xml: {}",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Failed to retrieve category xml: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSExtensionProcessingException("Failed to retrieve category xml: ", e);
         }
         
@@ -91,8 +92,8 @@ public class PSCategoryTreeXmlExit implements IPSResultDocumentProcessor
         }
         catch (DocumentException e)
         {
-            log.error("Failed to retrieve category xml: {}",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Failed to retrieve category xml: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new PSExtensionProcessingException("Failed to write category xml: ", e);
         }   
     }  

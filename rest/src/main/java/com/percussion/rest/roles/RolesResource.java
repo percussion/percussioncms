@@ -24,6 +24,7 @@
 
 package com.percussion.rest.roles;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.BackendException;
 import com.percussion.util.PSSiteManageBean;
@@ -96,8 +97,8 @@ public class RolesResource {
 				r = roleAdaptor.getRole(uriInfo.getBaseUri(), roleName);
 				return r;
 			} catch (BackendException | UnsupportedEncodingException e) {
-				log.error(e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				throw new WebApplicationException(e);
 			}
 		}
@@ -190,8 +191,8 @@ public class RolesResource {
 
 				return new RoleList(ret);
 			} catch (BackendException e) {
-				log.error(e.getMessage());
-				log.debug(e.getMessage(),e);
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				throw new WebApplicationException(e);
 			}
 

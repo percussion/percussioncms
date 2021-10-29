@@ -24,11 +24,18 @@
 
 package com.percussion.tomcat.filters;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.CacheControl;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -97,13 +104,13 @@ public class PSAddResponseHeaderFilter implements Filter {
                             tomcatBase + PERC_SECURITY_PROPS_ROOT)) {
                 props.load(in);
             } catch (IOException e) {
-                log.error(e.getMessage());
-                log.debug(e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
         }
 
         String cachingAgeTimeVal = props.getProperty(CACHING_MAX_AGE_VALUE_PROPERTY_KEY);
-        if (cachingAgeTimeVal != null && cachingAgeTimeVal.trim() != "") {
+        if (cachingAgeTimeVal != null && !"".equals(cachingAgeTimeVal.trim())) {
             cachingAgeTimeValue = Long.parseLong(cachingAgeTimeVal);
         }
 

@@ -24,6 +24,7 @@
 
 package com.percussion.share.service;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.test.PSRestTestCase;
 import org.apache.logging.log4j.LogManager;
@@ -70,8 +71,8 @@ public class PSAsyncJobStatusRestServiceTest extends PSRestTestCase<PSAsyncJobSt
           }
           catch (InterruptedException e)
           {
-              log.error(e.getMessage());
-              log.debug(e);
+              log.error(PSExceptionUtils.getMessageForLog(e));
+              log.debug(PSExceptionUtils.getDebugMessageForLog(e));
               Thread.currentThread().interrupt();
           }
       }

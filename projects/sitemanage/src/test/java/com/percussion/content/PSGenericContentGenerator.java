@@ -24,20 +24,19 @@
 
 package com.percussion.content;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.dao.PSSerializerUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.xml.bind.UnmarshalException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
-import javax.xml.bind.UnmarshalException;
-
-import org.apache.commons.lang.Validate;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Abstract root class for all generators. It provides methods to validate input
@@ -234,8 +233,8 @@ public abstract class PSGenericContentGenerator<T>
             }
 
         } catch (IOException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     
@@ -287,8 +286,8 @@ public abstract class PSGenericContentGenerator<T>
         }
         catch (Exception e)
         {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException(e);
         }
     }    

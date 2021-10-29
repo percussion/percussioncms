@@ -1,26 +1,5 @@
 package com.percussion.pso.relationshipbuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import static java.util.Collections.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.query.InvalidQueryException;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryResult;
-import javax.jcr.query.Row;
-import javax.jcr.query.RowIterator;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -29,6 +8,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
@@ -48,6 +28,26 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.query.InvalidQueryException;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singleton;
 
 public class PSRelationshipHelperService implements IPSRelationshipHelperService {
     
@@ -114,12 +114,12 @@ public class PSRelationshipHelperService implements IPSRelationshipHelperService
             }
             return returnIds;
         } catch (InvalidQueryException e) {
-            log.warn("getFolders: Query is invalid Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.warn("getFolders: Query is invalid Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new IllegalArgumentException("Query is invalid: ",e);
         } catch (RepositoryException e) {
-            log.error("getFolders: Query is probably wrong Error: {}",e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("getFolders: Query is probably wrong Error: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new RuntimeException("Something wrong with the repository: ", e);
         }
     }

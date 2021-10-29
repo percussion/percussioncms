@@ -24,7 +24,12 @@
 
 package com.percussion.workflow;
 
-import com.percussion.extension.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.tools.PrintNode;
 import org.apache.logging.log4j.LogManager;
@@ -99,8 +104,8 @@ public class PSPostExitHandler implements IPSResultDocumentProcessor
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       log.info("*** Ends Here ***");
     }
@@ -119,8 +124,8 @@ public class PSPostExitHandler implements IPSResultDocumentProcessor
       }
       catch (Exception e)
       {
-          log.error(e.getMessage());
-          log.debug(e.getMessage(), e);
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       log.info("*** Ends Here ***");
     }

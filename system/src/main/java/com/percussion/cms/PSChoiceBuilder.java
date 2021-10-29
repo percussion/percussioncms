@@ -46,6 +46,7 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.PSWorkflowInfo;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSServerErrors;
@@ -832,8 +833,8 @@ public class PSChoiceBuilder
       catch (PSUnknownNodeTypeException e)
       {
          // Should never get here
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       String lang =

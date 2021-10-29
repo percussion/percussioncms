@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.importer.helpers.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
@@ -181,8 +182,8 @@ public class PSTemplateCreationHelper extends PSImportHelper
                     try {
                         templateService.delete(template.getId());
                     } catch (PSNotFoundException e) {
-                        log.warn(e.getMessage());
-                        log.debug(e.getMessage(),e);
+                        log.warn(PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
                     break;
                 }

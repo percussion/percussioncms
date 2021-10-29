@@ -261,7 +261,7 @@ public class PSManagedNavService implements IPSManagedNavService
                  IPSNavigationErrors.NAVIGATION_SERVICE_FAILED_TO_MOVE_SOURCE_NAVON_TO_TARGET,
                  new Object[]{srcId,targetId},e);
          log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw(ne);
       }
       finally

@@ -24,29 +24,6 @@
 
 package com.percussion.webdav.method;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Enumeration;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
@@ -54,6 +31,7 @@ import com.percussion.cms.objectstore.client.IPSRemoteErrors;
 import com.percussion.cms.objectstore.client.PSRemoteAgent;
 import com.percussion.cms.objectstore.client.PSRemoteException;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tools.PSCopyStream;
 import com.percussion.util.IPSRemoteRequester;
 import com.percussion.util.PSCharSets;
@@ -67,6 +45,26 @@ import com.percussion.webdav.error.IPSWebdavErrors;
 import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.webdav.objectstore.PSWebdavConfig;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 /**
  * This is the base class for all WebDAV methods. It provides convenient methods
@@ -375,10 +373,10 @@ public abstract class PSWebdavMethod
                   }
 
             }
-            catch (Throwable e)
+            catch (Exception e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                
                throw new PSWebdavException(
                   IPSWebdavErrors.XML_FAILED_CREATE_DOC_FROM_CONTENT,

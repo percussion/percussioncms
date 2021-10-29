@@ -24,10 +24,18 @@
 
 package com.percussion.wrapper;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.util.Properties;
 
@@ -103,8 +111,8 @@ public class JettyStartUtils {
                     }
                 }
             } catch (IOException e) {
-                log.error(e.getMessage());
-                log.debug(e.getMessage(), e);
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
         return pid;
@@ -175,8 +183,8 @@ public class JettyStartUtils {
             final File f = new File(PSServiceWrapper.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             return locateRxDir(f);
         } catch (URISyntaxException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             System.exit(1);
         }
         return null;

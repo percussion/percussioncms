@@ -201,7 +201,7 @@ public class PSAssetDao implements IPSAssetDao
                 assets.add(find(idMapper.getString(node.getGuid())));
             } catch (PSDataServiceException e) {
                 log.error(PSExceptionUtils.getMessageForLog(e));
-                log.debug(e);
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 //continue processing
             }
         }        
@@ -278,7 +278,7 @@ public class PSAssetDao implements IPSAssetDao
 		} catch (RepositoryException e) {
 			log.error("An error occurred retrieving the {} report from the Content Repository. Error: {}",  reportName,
                     PSExceptionUtils.getMessageForLog(e));
-			log.debug(e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return ret;
 		}
 		
@@ -292,7 +292,7 @@ public class PSAssetDao implements IPSAssetDao
 			} catch (PSDataServiceException e) {
 				log.error("An error occurred retrieving an Image Asset for the  {} report from the Content Repository. Error: {}",reportName,
                         PSExceptionUtils.getMessageForLog(e));
-				log.debug(e);
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
             
 			if(null != contentItem ){

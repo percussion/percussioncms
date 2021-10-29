@@ -23,7 +23,9 @@
  */
 package com.percussion.testing;
 
-import com.percussion.util.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.util.PSSqlHelper;
+import com.percussion.util.PSStopwatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -227,8 +229,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -305,8 +307,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -396,8 +398,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          
          if (e instanceof SQLException)
          {
@@ -426,8 +428,8 @@ public class PSSqlTest
             }
             catch (SQLException e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             
             try { conn.close(); } catch (SQLException e) { /* noop */ }

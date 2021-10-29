@@ -25,6 +25,7 @@
 package com.percussion.pagemanagement.service.impl;
 
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSNonSEOPagesRequest;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSPageChangeEvent;
@@ -137,8 +138,8 @@ public class PSPageRestService
         try {
             pageService.delete(id);
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw e;
         }
     }
@@ -154,8 +155,8 @@ public class PSPageRestService
         try {
             pageService.delete(id, true);
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw e;
         }
     }
@@ -166,8 +167,8 @@ public class PSPageRestService
         try {
             pageService.delete(id, false, true);
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw e;
         }
     }
@@ -178,8 +179,8 @@ public class PSPageRestService
         try {
             pageService.delete(id, true, true);
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw e;
         }
     }
@@ -199,8 +200,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (IPSPathService.PSPathNotFoundServiceException | PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -221,8 +222,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (IPSDataService.DataServiceLoadException | IPSDataService.DataServiceNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -239,8 +240,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch ( PSPageException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -272,8 +273,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -301,8 +302,8 @@ public class PSPageRestService
         try {
             return pageService.getUnassignedPagesBySite(sitename, startIndex, maxResults);
         } catch (PSPageException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -319,8 +320,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -337,8 +338,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (IPSDataService.DataServiceLoadException| IPSDataService.DataServiceNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -354,8 +355,8 @@ public class PSPageRestService
         }catch (PSBeanValidationException bve){
             throw  bve;
         }catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -392,8 +393,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -470,8 +471,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (DataServiceSaveException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }
@@ -486,8 +487,8 @@ public class PSPageRestService
 
             return new PSNoContent("validateDelete");
         } catch (PSValidationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw e;
         }
     }
@@ -505,8 +506,8 @@ public class PSPageRestService
             log.debug(ex.getMessage(),ex);
             throw ex;
         } catch (PSDataServiceException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

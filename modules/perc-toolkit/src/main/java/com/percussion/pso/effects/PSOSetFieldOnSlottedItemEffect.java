@@ -13,6 +13,7 @@ import com.percussion.cms.objectstore.server.PSServerItem;
 import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -329,8 +330,8 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 										}
 									} catch (PSErrorException e) {
 										log.debug("Error processing slot relationships for item " + "" );
-										log.error(e.getMessage());
-										log.debug(e.getMessage(), e);
+										log.error(PSExceptionUtils.getMessageForLog(e));
+										log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 									}finally{} 
 								}
 								
@@ -343,18 +344,18 @@ public class PSOSetFieldOnSlottedItemEffect implements IPSEffect{
 								log.error("Unable to locate owner for relationship. Content ID: {} not found!", rel.getOwner().getId());
 							}
 						} catch (PSErrorResultsException e) {
-							log.error(e.getMessage());
-							log.debug(e.getMessage(), e);
+							log.error(PSExceptionUtils.getMessageForLog(e));
+							log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 						} catch (FileNotFoundException e) {
-							log.error(e.getMessage());
-							log.debug(e.getMessage(), e);
+							log.error(PSExceptionUtils.getMessageForLog(e));
+							log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 						} catch (IOException e) {
-							log.error(e.getMessage());
-							log.debug(e.getMessage(), e);
+							log.error(PSExceptionUtils.getMessageForLog(e));
+							log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 						} catch (PSCmsException | PSInvalidContentTypeException e) {
 							// TODO Auto-generated catch block
-							log.error(e.getMessage());
-							log.debug(e.getMessage(),e);
+							log.error(PSExceptionUtils.getMessageForLog(e));
+							log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 						} finally{}
 				}
 			

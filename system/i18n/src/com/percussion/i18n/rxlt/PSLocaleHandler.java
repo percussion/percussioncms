@@ -319,7 +319,7 @@ public class PSLocaleHandler
       }
       catch(Exception e)
       {
-         PSCommandLineProcessor.logMessage("processFailedError", e.getMessage());
+         PSCommandLineProcessor.logMessage("processFailedError",PSExceptionUtils.getMessageForLog(e));
          throw new PSActionProcessingException(e.getMessage());
       }
 
@@ -375,7 +375,7 @@ public class PSLocaleHandler
       }
       catch(Exception e)
       {
-         PSCommandLineProcessor.logMessage("processFailedError", e.getMessage());
+         PSCommandLineProcessor.logMessage("processFailedError",PSExceptionUtils.getMessageForLog(e));
          throw new PSActionProcessingException(e.getMessage());
       }
 
@@ -436,7 +436,7 @@ public class PSLocaleHandler
       }
       catch(Exception e)
       {
-         PSCommandLineProcessor.logMessage("processFailedError", e.getMessage());
+         PSCommandLineProcessor.logMessage("processFailedError",PSExceptionUtils.getMessageForLog(e));
          throw new PSActionProcessingException(e.getMessage());
       }
 
@@ -900,7 +900,7 @@ public class PSLocaleHandler
       catch(Exception e)
       {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

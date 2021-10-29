@@ -26,6 +26,7 @@ package com.percussion.deploy.objectstore;
 
 import com.percussion.deploy.error.IPSDeploymentErrors;
 import com.percussion.deploy.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSArchiveFiles;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -188,8 +189,8 @@ public class PSArchive
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_READ_ERROR,
             args);

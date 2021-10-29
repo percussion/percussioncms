@@ -23,6 +23,7 @@
  */
 package com.percussion.install;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -64,21 +65,10 @@ public class RxUpgradeLog
          {
             getPrintStream().println(time + " " + o.toString());
          }
-      }
-      catch (FileNotFoundException e)
+      } catch (SAXException | IOException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-      }
-      catch (IOException e)
-      {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
-      }
-      catch (SAXException e)
-      {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    

@@ -115,7 +115,7 @@ public class GadgetSettingsFormServlet extends HttpServlet
          }
       } catch (IOException | URISyntaxException e) {
          log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          try{
             resp.sendError(404);
          } catch (IOException ioException) {
@@ -283,7 +283,7 @@ public class GadgetSettingsFormServlet extends HttpServlet
             return meta;
          } catch (Exception e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new IOException("Problem retrieving metadata.");
          }
       }else{

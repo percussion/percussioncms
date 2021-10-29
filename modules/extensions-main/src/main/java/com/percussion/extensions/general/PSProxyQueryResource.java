@@ -24,6 +24,7 @@
 
 package com.percussion.extensions.general;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -151,7 +152,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
             }
             catch (URIException e)
             {
-               log.error("Error parsing supplied url: {} Error: {}" ,url, e.getMessage());
+               log.error("Error parsing supplied url: {} Error: {}" ,url,PSExceptionUtils.getMessageForLog(e));
                throw new RuntimeException("Error parsing supplied url:" + url,e);
             }
        }else
@@ -164,7 +165,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
           }
           catch (URIException e)
           {
-             log.error("Error parsing supplied url: {} Error: {}" , url, e.getMessage());
+             log.error("Error parsing supplied url: {} Error: {}" , url,PSExceptionUtils.getMessageForLog(e));
              throw new RuntimeException("Error parsing supplied url:" + url,e);
           }
        }
@@ -223,13 +224,13 @@ public class PSProxyQueryResource extends PSDefaultExtension
           }
         }catch (HttpException e)
         {
-           log.error("Fatal protocol violation: {}" , e.getMessage());
-           throw new Exception("Fatal protocol violation: " + e.getMessage(),e);
+           log.error("Fatal protocol violation: {}" ,PSExceptionUtils.getMessageForLog(e));
+           throw new Exception(e);
         }
         catch (IOException e)
         {
-          log.error("Fatal transport error: {}" , e.getMessage());
-          throw new Exception("Fatal transport error: " + e.getMessage(),e);
+          log.error("Fatal transport error: {}" , PSExceptionUtils.getMessageForLog(e));
+          throw new Exception(e);
         }
         finally
         {

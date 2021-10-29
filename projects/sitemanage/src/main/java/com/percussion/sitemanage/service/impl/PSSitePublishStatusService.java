@@ -23,6 +23,7 @@
  */
 package com.percussion.sitemanage.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
@@ -304,11 +305,11 @@ public class PSSitePublishStatusService implements IPSSitePublishStatusService
                 jobs = buildLogs(request.getSiteId(), request.getPubServerId(), request.getDays(), request.getMaxcount(), request.getSkipCount(), !request.isShowOnlyFailures());
             }
 
-            log.debug("Returning " + jobs.size() + " jobs");
+            log.debug("Returning {} jobs", jobs.size());
             return new PSSitePublishJobList(jobs);
         } catch (PSNotFoundException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e);
         }
     }

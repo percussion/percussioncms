@@ -24,6 +24,7 @@
 
 package com.percussion.share.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.monitor.process.PSThumbnailProcessMonitor;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
@@ -233,8 +234,8 @@ public class PSThumbnailRunner implements Runnable {
 					break;
 			}
 		} catch (PSDataServiceException e) {
-			log.error(e.getMessage());
-			log.debug(e.getMessage(),e);
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 	}
 
@@ -335,8 +336,8 @@ public class PSThumbnailRunner implements Runnable {
 					
 
 			} catch (Exception e) {
-				log.error("Thumbnail Exception: {}" , e.getMessage());
-				log.debug(e);
+				log.error("Thumbnail Exception: {}" ,PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 			File thumbNail = new File(thumbnailFilePath);
 			if (!thumbNail.exists()) {
@@ -359,7 +360,7 @@ public class PSThumbnailRunner implements Runnable {
 		}
 
 		catch (Exception e) {
-			log.debug(e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		return valid;
 	}
@@ -419,7 +420,7 @@ public class PSThumbnailRunner implements Runnable {
 			initSessionVariablesForUrlAssembly();
 		} catch (Exception e) {
 			log.debug("Thumbnail Service Runner initalization failure for ID: successful thumbnail generation unlikely");
-			log.debug(e);
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 	}
 

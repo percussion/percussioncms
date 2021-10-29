@@ -24,6 +24,7 @@
 
 package com.percussion.util;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -147,8 +148,8 @@ public class PSConcurrentListIterator<T>  implements ListIterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentListIterator does not support remove");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.remove().  Please correct the implementation to remove from the source collection itself. Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.remove().  Please correct the implementation to remove from the source collection itself. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
         }
     }
@@ -198,8 +199,8 @@ public class PSConcurrentListIterator<T>  implements ListIterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentListIterator does not support set");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.set().  Please correct the implementation to update the source collection itself. Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.set().  Please correct the implementation to update the source collection itself. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
         }
     }
@@ -229,8 +230,9 @@ public class PSConcurrentListIterator<T>  implements ListIterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentListIterator does not support add");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.add().  Please correct the implementation to add to the source collection itself. Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.add().  Please correct the implementation to add to the source collection itself. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
         }
     }

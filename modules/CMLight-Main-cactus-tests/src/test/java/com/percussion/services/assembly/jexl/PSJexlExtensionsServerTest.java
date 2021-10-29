@@ -23,6 +23,7 @@
  */
 package com.percussion.services.assembly.jexl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
@@ -32,16 +33,6 @@ import com.percussion.services.general.IPSRhythmyxInfo;
 import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.jcr.Node;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.logging.log4j.LogManager;
@@ -52,6 +43,14 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.junit.experimental.categories.Category;
+
+import javax.jcr.Node;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Test jexl extensions that require the server
@@ -78,8 +77,8 @@ public class PSJexlExtensionsServerTest extends ServletTestCase
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

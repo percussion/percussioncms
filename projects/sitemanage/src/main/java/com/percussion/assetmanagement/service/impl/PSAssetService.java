@@ -363,7 +363,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 				i++;
 			}catch(Exception e){
 				log.warn("Skipping asset due to error: " + PSExceptionUtils.getMessageForLog(e));
-				log.debug(e);
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 
 		}
@@ -817,7 +817,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 					fields.put(SYS_WORKFLOWID, "" + itemWorkflowService.getLocalContentWorkflowId());
 				} catch (PSItemWorkflowServiceException e) {
 					log.error(PSExceptionUtils.getMessageForLog(e));
-					log.debug(e);
+					log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 				}
 				fields.put(IPSHtmlParameters.SYS_TITLE, newName);
                 PSAsset newAsset = save(asset);
@@ -1747,7 +1747,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             return richTextAsset;
         } catch (PSDataServiceException e) {
         	log.error(CREATE_ASSET_ERROR_MESSAGE);
-        	log.debug(e);
+        	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			throw new PSAssetServiceException(CREATE_ASSET_ERROR_MESSAGE,e);
 		}
     }

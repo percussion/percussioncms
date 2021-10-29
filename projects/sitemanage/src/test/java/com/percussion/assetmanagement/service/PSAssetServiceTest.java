@@ -24,19 +24,16 @@
 
 package com.percussion.assetmanagement.service;
 
-import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
-import static java.util.Arrays.asList;
-
 import com.percussion.assetmanagement.dao.IPSAssetDao;
+import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetFolderRelationship;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
+import com.percussion.assetmanagement.data.PSAssetWidgetRelationship.PSAssetResourceType;
 import com.percussion.assetmanagement.data.PSBinaryAssetRequest;
 import com.percussion.assetmanagement.data.PSExtractedAssetRequest;
 import com.percussion.assetmanagement.data.PSImageAssetReportLine;
 import com.percussion.assetmanagement.data.PSReportFailedToRunException;
-import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
-import com.percussion.assetmanagement.data.PSAssetWidgetRelationship.PSAssetResourceType;
 import com.percussion.assetmanagement.service.impl.PSWidgetAssetRelationshipService;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
@@ -44,13 +41,13 @@ import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.pagemanagement.data.PSRegionBranches;
-import com.percussion.pagemanagement.data.PSRegionWidgets;
-import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.data.PSRegionNode.PSRegionOwnerType;
+import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSWidgetService;
@@ -63,8 +60,8 @@ import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
-import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSDataService.DataServiceNotFoundException;
+import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.guid.IPSGuid;
@@ -74,21 +71,21 @@ import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Ignore;
-import org.junit.experimental.categories.Category;
+import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
+import static java.util.Arrays.asList;
 
 @Category(IntegrationTest.class)
 public class PSAssetServiceTest extends PSServletTestCase
@@ -126,8 +123,8 @@ public class PSAssetServiceTest extends PSServletTestCase
 			
 		} catch (PSReportFailedToRunException e) {
 			// TODO Auto-generated catch block
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
     }
     

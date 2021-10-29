@@ -717,7 +717,7 @@ public class PSVelocityAssembler extends PSAssemblerBase
       catch (Exception e)
       {
          logger.error(PSExceptionUtils.getMessageForLog(e));
-         throw new PSExtensionException("Java", e.getMessage());
+         throw new PSExtensionException("Java",PSExceptionUtils.getMessageForLog(e));
       }
    }
 

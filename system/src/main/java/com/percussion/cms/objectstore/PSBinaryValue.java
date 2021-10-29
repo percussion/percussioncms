@@ -219,7 +219,7 @@ public class PSBinaryValue extends PSFieldValue
       }
       catch(IOException e)
       {
-         throw new RuntimeException(e.getLocalizedMessage());
+         throw new RuntimeException(e);
       }
       finally
       {
@@ -233,7 +233,7 @@ public class PSBinaryValue extends PSFieldValue
          }
          catch(IOException e)
          {
-            throw new RuntimeException(e.getLocalizedMessage());
+            throw new RuntimeException(e);
          }
       }
    }

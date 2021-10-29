@@ -24,6 +24,7 @@
 
 package com.percussion.security;
 
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -145,7 +146,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
         } catch (IOException e) {
             log.error("Error writing instance secure key file: (" + secureKeyFile.toAbsolutePath().toString() + ")" + ") :" + e.getMessage());
-            log.debug(e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return secureKey;
     }
@@ -174,8 +175,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
             try {
                 secureKey = Files.readAllBytes(secureKeyFile);
             } catch (IOException e) {
-                log.error("Error reading instance secure key file ({}): {}",secureKeyFile.toAbsolutePath().toString(), e.getMessage());
-                log.debug(e);
+                log.error("Error reading instance secure key file ({}): {}",secureKeyFile.toAbsolutePath().toString(),PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             Path oldSecureKeyFile = Paths.get(keyLocation + OLD_SECURE_KEY_FILE);
             if(Files.exists(oldSecureKeyFile)){
@@ -187,8 +188,8 @@ public class PSEncryptor extends PSAbstractEncryptor {
                     }
                     oldSecretKey.setSecret(oldSecureKeyByte);
                 } catch (IOException e) {
-                    log.error("Error reading instance Oldsecure key file ({}): {}",oldSecureKeyFile.toAbsolutePath().toString(), e.getMessage());
-                    log.debug(e);
+                    log.error("Error reading instance Oldsecure key file ({}): {}",oldSecureKeyFile.toAbsolutePath().toString(),PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
 
             }
@@ -198,7 +199,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
             try {
                 Files.deleteIfExists(rotateFlag);
             } catch (IOException e) {
-                log.warn("Unable to remove the encryption key rotation flag file: {} .  They key will be rotated on restart unless this file is removed. Error was: {} ",rotateFlag.toAbsolutePath(), e.getMessage());
+                log.warn("Unable to remove the encryption key rotation flag file: {} .  They key will be rotated on restart unless this file is removed. Error was: {} ",rotateFlag.toAbsolutePath(),PSExceptionUtils.getMessageForLog(e));
             }
         }
         key.setSecret(secureKey);
@@ -320,7 +321,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
                 }
                 props.store(new FileOutputStream(propFile), null);
             } catch (IOException | PSEncryptionException e) {
-                log.error("Rotation of decrypted property Values Failed. ERROR: {} ", e.getMessage());
+                log.error("Rotation of decrypted property Values Failed. ERROR: {} ",PSExceptionUtils.getMessageForLog(e));
             }
 
         }
@@ -424,7 +425,7 @@ public class PSEncryptor extends PSAbstractEncryptor {
                 }
             }
         } catch (IOException e) {
-            log.warn("Unable to rotate Key ERROR: {} .",e.getMessage());
+            log.warn("Unable to rotate Key ERROR: {} .",PSExceptionUtils.getMessageForLog(e));
             log.debug("Unable to rotate Key ERROR: {} .",e.getMessage(),e);
         }
 

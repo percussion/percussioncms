@@ -37,6 +37,7 @@ import com.percussion.deployer.server.dependencies.PSDependencyUtils;
 import com.percussion.design.objectstore.PSLockedException;
 import com.percussion.design.objectstore.PSNotLockedException;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSAuthenticationRequiredException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.security.PSSecurityToken;
@@ -248,8 +249,8 @@ public class PSDbmsHelper
       }
       catch (PSDeployException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       return new DataSourceInfo(dsSource, dsConfig);

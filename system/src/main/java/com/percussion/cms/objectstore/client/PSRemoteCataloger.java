@@ -29,6 +29,7 @@ import com.percussion.cms.objectstore.IPSCataloger;
 import com.percussion.cms.objectstore.PSRelationshipInfoSet;
 import com.percussion.design.objectstore.PSSearchConfig;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.IPSRemoteRequester;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -178,13 +179,13 @@ public class PSRemoteCataloger implements IPSCataloger
       try
       {
          if (null == params)
-            params = new HashMap();
+            params = new HashMap<>();
          doc = m_requester.getDocument(path, params);
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          String[] args = {path, e.toString()};
          throw new PSCmsException(IPSCmsErrors.UNEXPECTED_CATALOG_ERROR, args);
       }

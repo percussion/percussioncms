@@ -24,7 +24,13 @@
 package com.percussion.services.assembly.data;
 
 import com.percussion.cms.objectstore.server.PSContentTypeVariantsMgr;
-import com.percussion.services.assembly.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateBinding;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
+import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
@@ -40,7 +46,14 @@ import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -173,8 +186,8 @@ public class PSAssemblyTemplateTest extends ServletTestCase
             }
             catch (Exception e)
             {
-               log.error(e.getMessage());
-               log.debug(e.getMessage(), e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }

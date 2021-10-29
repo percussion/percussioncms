@@ -23,6 +23,7 @@
  */
 package com.percussion.design.objectstore;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSCryptographer;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
@@ -541,7 +542,7 @@ public class PSAuthentication extends PSComponent
       try {
          pw = PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),getPassword());
       } catch (PSEncryptionException e) {
-         logger.error("Error encrypting password: {}" , e.getMessage());
+         logger.error("Error encrypting password: {}" , PSExceptionUtils.getMessageForLog(e));
          logger.debug(e);
          pw = "";
       }

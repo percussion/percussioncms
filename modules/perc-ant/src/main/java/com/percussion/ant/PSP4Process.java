@@ -23,6 +23,7 @@
  */
 package com.percussion.ant;
 
+import com.percussion.error.PSExceptionUtils;
 import com.perforce.api.Debug;
 import com.perforce.api.Env;
 import com.perforce.api.EventLog;
@@ -380,8 +381,8 @@ public class PSP4Process
       }
       catch (InterruptedException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

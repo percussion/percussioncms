@@ -109,7 +109,7 @@
                   return new CachedImageMetaData(imageReturnData, key);
               } catch(IllegalArgumentException e) {
                   log.error("Can not resize image with this format. Error: {}", PSExceptionUtils.getMessageForLog(e));
-                  log.debug(e);
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
               }
 
               String key = this.imageCacheManager.addImage(imageData);

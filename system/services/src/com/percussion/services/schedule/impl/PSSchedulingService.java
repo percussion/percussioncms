@@ -23,6 +23,7 @@
  */
 package com.percussion.services.schedule.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -234,8 +235,10 @@ public class PSSchedulingService
          PSTaskAdapter.runJob(schedule,m_scheduler,true);
 
       } catch (SchedulerException e) {
-         ms_log.error("An unexpected error occurred while running job: " + schedule.getName() + " Error:" + e.getLocalizedMessage());
-         ms_log.debug(e);
+         ms_log.error("An unexpected error occurred while running job: {} Error: {}",
+                 schedule.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
+         ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
    }

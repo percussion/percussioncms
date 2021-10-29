@@ -23,6 +23,7 @@
  */
 package com.percussion.utils.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
@@ -990,16 +991,10 @@ public class PSSiteConfigUtils
             appendLogoutElement(securityData, document, http);
 
             writeToXmlFile(securityData, document);
-        } catch (ParserConfigurationException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
-        } catch (SAXException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
         }
 
     }

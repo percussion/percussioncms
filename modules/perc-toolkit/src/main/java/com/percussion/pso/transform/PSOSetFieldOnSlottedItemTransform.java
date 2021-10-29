@@ -1,30 +1,11 @@
 package com.percussion.pso.transform;
 
-import java.io.File;
-
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSItemInputTransformer;
-import com.percussion.extension.IPSItemValidator;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -34,10 +15,7 @@ import com.percussion.pso.utils.PSOSlotContents;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
-import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSTemplateSlot;
-import com.percussion.services.assembly.PSAssemblyException;
-import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -46,6 +24,11 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+
+import java.io.File;
 
 /***
  * Extension for setting the field on an item when it is saved and has an item in the specified slot. 
@@ -198,8 +181,8 @@ public class PSOSetFieldOnSlottedItemTransform  implements IPSItemInputTransform
 				log.debug("No item found in slot, setting {} to {}",configParams.fieldName, (configParams.valueIfEmpty));
 			}
 		} catch (PSErrorException e) {
-			log.error("Error processing slot relationships for item, Error: {}", e.getMessage());
-			log.debug(e.getMessage(), e);
+			log.error("Error processing slot relationships for item, Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}finally{} 
 	         
 	}

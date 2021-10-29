@@ -29,6 +29,7 @@ import com.percussion.auditlog.PSContentEvent;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -892,8 +893,8 @@ public class PSSiteManager
          }
          catch (PSCmsException e)
          {
-            log.error(e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             // this should never happen in a properly configured environment
             throw new PSSiteManagerException(
                   IPSSiteManagerErrors.UNEXPECTED_ERROR, e
@@ -931,8 +932,8 @@ public class PSSiteManager
       }
       catch (PSCmsException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSSiteManagerException(
                IPSSiteManagerErrors.FAILED_FIND_ROOT_FOLDER_ID, site.getGUID(),
                site.getFolderRoot(), e.getLocalizedMessage());
@@ -968,8 +969,8 @@ public class PSSiteManager
       }
       catch (PSCmsException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSSiteManagerException(
                IPSSiteManagerErrors.FAILED_GET_FOLDER_PATH, folderId, e
                      .getLocalizedMessage());
@@ -1099,8 +1100,8 @@ public class PSSiteManager
       {
          String errMsg = "Failed to get sites for item id=" + contentId.toString();
          log.error(errMsg);
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException(errMsg, e);
       }
       

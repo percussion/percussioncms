@@ -23,6 +23,7 @@
  */
 package com.percussion.share.async.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.server.PSRequest;
 import com.percussion.share.async.IPSAsyncJob;
@@ -222,8 +223,8 @@ public abstract class PSAsyncJob implements IPSAsyncJob
         }
         catch (Exception e) 
         {
-            log.error("Error running async job, Error: {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Error running async job, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         finally
         {
@@ -285,8 +286,8 @@ public abstract class PSAsyncJob implements IPSAsyncJob
         }
         catch (Exception e)
         {
-            log.error("Unable to interrupt async job, Error: {}", e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.error("Unable to interrupt async job, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

@@ -23,9 +23,20 @@
  */
 package com.percussion.testing;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServer;
 import com.percussion.util.PSRemoteRequester;
 import com.percussion.xml.PSXmlTreeWalker;
+import junit.framework.AssertionFailedError;
+import junit.framework.Test;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,18 +44,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.Test;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Run the given test on the server using an HttpRequest. The server must be
@@ -102,8 +101,8 @@ public class PSRequestHandlerTestSuite extends TestSuite
       } 
       catch (ClassNotFoundException e) 
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    

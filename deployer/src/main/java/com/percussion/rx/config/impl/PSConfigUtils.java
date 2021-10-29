@@ -31,6 +31,7 @@ import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSReplacementValueFactory;
 import com.percussion.design.objectstore.PSRule;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
@@ -61,8 +62,6 @@ import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -643,8 +642,8 @@ public class PSConfigUtils
       }
       catch (PSExtensionException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       if (extRef == null)
       {

@@ -23,20 +23,7 @@
  */
 package com.percussion.sitemanage.task.impl;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.configFilesExist;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.filesModifiedAfterPublished;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getNonSecureConfigurationFolder;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getSecureFilesPath;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.updatePublishedDate;
-import static org.apache.commons.lang.StringUtils.EMPTY;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.startsWithIgnoreCase;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.rx.delivery.IPSDeliveryManager;
 import com.percussion.rx.delivery.PSLocalDeliveryManagerLocator;
@@ -59,6 +46,12 @@ import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.sitemanage.task.IPSAntService;
 import com.percussion.sitemanage.task.IPSAntService.AntScript;
 import com.percussion.util.IOTools;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.tools.ant.BuildEvent;
+import org.apache.tools.ant.BuildListener;
+import org.apache.tools.ant.Project;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,14 +61,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.tools.ant.BuildEvent;
-import org.apache.tools.ant.BuildListener;
-import org.apache.tools.ant.Project;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.configFilesExist;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.filesModifiedAfterPublished;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getNonSecureConfigurationFolder;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getSecureFilesPath;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.updatePublishedDate;
+import static org.apache.commons.lang.StringUtils.EMPTY;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.startsWithIgnoreCase;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -184,7 +182,7 @@ public class PSAntEditionTask implements IPSEditionTask
             log.error("Failed to get the publishing server properties for server id '{}'.  Error: {}",
                     edition.getPubServerId().getUUID(),
                     e.getMessage());
-            log.debug(e.getMessage(),e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         if(pubServer != null) {

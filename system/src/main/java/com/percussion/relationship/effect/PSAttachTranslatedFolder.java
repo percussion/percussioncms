@@ -33,6 +33,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.relationship.IPSExecutionContext;
@@ -177,8 +178,8 @@ public class PSAttachTranslatedFolder extends PSEffect
       }
       catch (PSCmsException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          result.setError(e);
       }
       
@@ -301,8 +302,8 @@ public class PSAttachTranslatedFolder extends PSEffect
       }
       catch (PSException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          result.setError(e);
       }
    }

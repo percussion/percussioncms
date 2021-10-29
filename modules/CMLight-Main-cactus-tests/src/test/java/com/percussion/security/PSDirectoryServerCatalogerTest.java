@@ -33,10 +33,26 @@ import com.percussion.design.objectstore.PSRoleProvider;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
 
+import javax.naming.Binding;
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.SearchControls;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,24 +62,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-
-import javax.naming.Binding;
-import javax.naming.Context;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.directory.SearchControls;
-
-import org.apache.cactus.ServletTestCase;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Directory object store class testing, including constructors,
@@ -356,8 +354,8 @@ public class PSDirectoryServerCatalogerTest extends ServletTestCase
       }
       catch (NamingException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -401,8 +399,8 @@ public class PSDirectoryServerCatalogerTest extends ServletTestCase
       }
       catch (NamingException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(),e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

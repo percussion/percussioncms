@@ -31,6 +31,7 @@ import com.percussion.delivery.forms.data.PSFormSummaries;
 import com.percussion.delivery.forms.data.PSFormSummary;
 import com.percussion.delivery.services.PSAbstractRestService;
 import com.percussion.delivery.utils.security.PSTlsSocketFactory;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
@@ -173,8 +174,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while deleting form, Error: {}", e.getMessage());
-            log.debug(e);
+            log.error("Exception occurred while deleting form, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -441,7 +442,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                         sendFormDataEmail(emailNotifTo, emailNotifSubject, form);
                     }catch(Exception e){
                         log.error("Error sending form email for form: {}, Error: {}", formName,e.getMessage());
-                        log.debug(e.getMessage(), e);
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
 
                     handleRedirect(successRedirect, encryptExist, hostRedirect, resp);
@@ -451,8 +452,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 try {
                     formService.save(form);
                 } catch (IllegalArgumentException e) {
-                    log.error("Exception occurred while saving a form, Error: {}", e.getMessage());
-                    log.debug(e.getMessage(), e);
+                    log.error("Exception occurred while saving a form, Error: {}", PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
                     WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                             "Invalid form submitted"), Response.serverError().build());
@@ -465,7 +466,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                         sendFormDataEmail(emailNotifTo, emailNotifSubject, form);
                     }catch(Exception e){
                         log.error("An error occurred sending the form notification email to: {} for form {}, Error: {}",emailNotifTo, formName,e.getMessage() );
-                        log.debug(e.getMessage(), e);
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                     }
                 }
 
@@ -530,8 +531,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Cannot email form data, unexpected error, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Cannot email form data, unexpected error, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -578,8 +579,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting form summaries, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Exception occurred while getting form summaries, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -615,8 +616,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while getting all form summaries, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Exception occurred while getting all form summaries, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -654,8 +655,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         catch (Exception e)
         {
-            log.error("Exception occurred while exporting the form, Error: {}", e.getMessage());
-            log.debug(e.getMessage(), e);
+            log.error("Exception occurred while exporting the form, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }

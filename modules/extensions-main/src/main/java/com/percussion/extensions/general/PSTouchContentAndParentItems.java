@@ -23,10 +23,7 @@
  */
 package com.percussion.extensions.general;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -39,6 +36,10 @@ import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This pre-exit recursively looks up 0 or more (active assembly) parent items
@@ -121,8 +122,8 @@ public class PSTouchContentAndParentItems
       }
       catch (Exception e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSExtensionProcessingException(this.getClass().getName(), e);
       }
    }

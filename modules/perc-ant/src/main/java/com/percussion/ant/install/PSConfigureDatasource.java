@@ -25,6 +25,7 @@
 package com.percussion.ant.install;
 
 import com.percussion.design.objectstore.PSJdbcDriverConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.PSLogger;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
 import com.percussion.util.PSProperties;
@@ -177,8 +178,8 @@ public class PSConfigureDatasource extends PSAction
       catch(Exception e)
       {
          PSLogger.logError(e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
          throw new BuildException(e.getLocalizedMessage());
       }

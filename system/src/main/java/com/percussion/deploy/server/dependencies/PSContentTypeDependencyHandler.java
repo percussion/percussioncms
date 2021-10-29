@@ -61,6 +61,7 @@ import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.design.objectstore.PSUrlRequest;
 import com.percussion.design.objectstore.PSWorkflowInfo;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -170,8 +171,8 @@ public class PSContentTypeDependencyHandler
                          childDep = wfHandler.getDependency(tok, ids
                                 .next().toString());
                      } catch (PSNotFoundException e) {
-                        log.warn(e.getMessage());
-                        log.debug(e.getMessage(),e);
+                        log.warn(PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                      }
                      if (childDep != null)
                         childDeps.add(childDep);

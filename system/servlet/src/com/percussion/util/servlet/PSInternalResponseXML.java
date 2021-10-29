@@ -23,6 +23,7 @@
  */
 package com.percussion.util.servlet;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.xml.PSSecureXMLUtils;
 import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.apache.logging.log4j.LogManager;
@@ -133,9 +134,9 @@ class PSInternalResponseXML
       }
       catch (ParserConfigurationException e)
       {
-         myLogger.error("Invalid XML Parser {}", e.getMessage());
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         myLogger.error("Invalid XML Parser {}", PSExceptionUtils.getMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw (ParserConfigurationException) e.fillInStackTrace();
       }
    }

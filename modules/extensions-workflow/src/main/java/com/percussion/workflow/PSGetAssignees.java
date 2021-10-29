@@ -27,11 +27,11 @@ package com.percussion.workflow;
 
 import com.percussion.data.PSConversionException;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
@@ -102,8 +102,8 @@ public class PSGetAssignees extends PSSimpleJavaUdfExtension
       }
       catch (PSException e)
       {
-         log.error(e.getMessage());
-         log.debug(e.getMessage(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSConversionException(e.getErrorCode(),
             e.getErrorArguments());
       }
