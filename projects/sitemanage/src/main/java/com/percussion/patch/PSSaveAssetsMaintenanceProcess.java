@@ -358,7 +358,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     /**
      * Read the assets from the asset log and remove the success assets
      * so that we are left with only unprocessed and failed assets to try them again
-     * @param File f may not be null
+     * @param  f File may not be null
      */
     @SuppressWarnings("unchecked")
     public void loadFailedAssetsFromFile(File f)
@@ -583,7 +583,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         else
         {
-            hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs) || targetAnchors.isEmpty();
+            hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs) || !targetAnchors.isEmpty();
         }
         
         return  new PSPair<>(hasUnmanagedLinks, doc.html());
