@@ -25,7 +25,6 @@
 package com.percussion.patch.test;
 
 import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.maintenance.service.IPSMaintenanceManager;
 import com.percussion.maintenance.service.IPSMaintenanceProcess;
@@ -201,7 +200,8 @@ public class PSSaveAssetsMaintenanceProcessTest extends PSServletTestCase {
         assets = proc.getAssetListSet();
         assertTrue(assets!=null);
     }
-    
+
+
     /**
      * Test the qualify process to see if the expected links
      * come back as qualified to be managed or not.
@@ -218,7 +218,13 @@ public class PSSaveAssetsMaintenanceProcessTest extends PSServletTestCase {
         assertFalse(proc.qualifyAsset(htmlAsset));
         htmlAsset.getFields().put("html", "<p>This is <a href=\"//Sites/page1\" perc-managed=\"true\"/>");
         assertTrue(proc.qualifyAsset(htmlAsset));
-        
+
+        htmlAsset.getFields().put("html", "<p>This is <a href=\"#\" target=\"_blank\"/>");
+        assertTrue(proc.qualifyAsset(htmlAsset));
+
+        htmlAsset.getFields().put("html", "<p>This is <a href=\"#\" target=\"_blank\" rel=\"noopener noreferrer\" />");
+        assertFalse(proc.qualifyAsset(htmlAsset));
+
         //rich text
         PSAsset richTextAsset = new PSAsset();
         

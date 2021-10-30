@@ -572,16 +572,21 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         Elements anchors = doc.select(IPSManagedLinkService.A_HREF + ":not(a["+IPSManagedLinkService.PERC_LINKID_ATTR+"])");
         //get all img links with an src attr but that does not have a perc-linkid attr
         Elements imgs = doc.select(IPSManagedLinkService.IMG_SRC + ":not(img["+IPSManagedLinkService.PERC_LINKID_ATTR+"])");
-        if(anchors.isEmpty() && imgs.isEmpty()) {
+
+        //get all anchor links with an href attr but that does not have a perc-linkid attr
+        Elements targetAnchors = doc.select(IPSManagedLinkService.A_HREF + "a[target=\"_blank\"]"
+                + ":not(a[rel=\"noopener noreferrer\"])");
+
+
+        if(anchors.isEmpty() && imgs.isEmpty() && targetAnchors.isEmpty()) {
             hasUnmanagedLinks = false;
         }
         else
         {
-            hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs);
+            hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs) || targetAnchors.isEmpty();
         }
         
-        PSPair<Boolean, String> result = new PSPair<>(hasUnmanagedLinks, doc.html());
-        return result;
+        return  new PSPair<>(hasUnmanagedLinks, doc.html());
     }
     
     /**
