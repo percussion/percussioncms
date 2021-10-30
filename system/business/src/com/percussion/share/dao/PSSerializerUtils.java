@@ -114,7 +114,9 @@ public class PSSerializerUtils
       }
       catch (JAXBException e)
       {
-         log.error("Unable to unmarshall JAXB object:{}" , dataField);
+         log.error("Unable to load XML file.  Check for syntax problems. Error: {}, Data: {}" ,
+                 PSExceptionUtils.getMessageForLog(e),
+                 dataField);
          return null;
       }
         
