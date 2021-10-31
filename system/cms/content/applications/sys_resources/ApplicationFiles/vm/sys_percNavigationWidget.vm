@@ -69,7 +69,7 @@
 #end##
 #if ($submenu.size() > 0 && ($tools.math.add($tools.math.add($maxlevels, -1),$rootlevel)  > $node.Depth))##             
 #if($node.Depth > 0)##
-<ul aria-labelledby="$!{menuItemId}">
+<ul>
 #else##
 ##if we dont need to open a new list element we can close the <li>
 </li>                    
