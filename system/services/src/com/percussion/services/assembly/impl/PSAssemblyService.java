@@ -990,6 +990,7 @@ public class PSAssemblyService implements IPSAssemblyService
             IPSAssemblyTemplate template = null;
             if (templatename == null && variantid == null)
             {
+               //TODO: Replace with AssemblyException or Illegal Argument
                throw new RuntimeException("No template name or id present");
             }
             else if (StringUtils.isNumeric(templatename) || StringUtils.isNumeric(variantid))
@@ -1196,6 +1197,7 @@ public class PSAssemblyService implements IPSAssemblyService
          if (!isLegacy || !templ.getBindings().isEmpty())
          {
             rval.bind("$sys.item", work.getNode());
+            //TODO: Should this be a new instance or just passing static reference to the class?
             rval.bind("$sys.aautils", new PSAAUtils());
          }
          rval.bind("$sys.template", templ.getTemplate());
@@ -1772,9 +1774,7 @@ public class PSAssemblyService implements IPSAssemblyService
             for (IPSNodeDefinition def : defs)
                cttemplates.addAll(findTemplatesByContentType(def.getGUID()));
 
-            Set<IPSAssemblyTemplate> results = templates.stream().filter(cttemplates::contains).collect(Collectors.toSet());
-
-            templates = results;
+            templates = templates.stream().filter(cttemplates::contains).collect(Collectors.toSet());
          }
 
          List<IPSAssemblyTemplate> resultList = new ArrayList<>(templates);
@@ -1784,7 +1784,7 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       catch (RepositoryException e)
       {
-         throw new PSAssemblyException(IPSAssemblyErrors.UNKNOWN_ERROR, e, e.getLocalizedMessage());
+         throw new PSAssemblyException(IPSAssemblyErrors.UNKNOWN_ERROR, e, e.getMessage());
       }
 
    }
@@ -2037,7 +2037,6 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public IPSTemplateSlot findSlotByName(String name) throws PSAssemblyException
    {
       PSTemplateSlot slot = sessionFactory.getCurrentSession().bySimpleNaturalId(PSTemplateSlot.class).load(name);
@@ -2051,7 +2050,6 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSTemplateSlot> findSlotsByName(String name)
    {
       Session session = sessionFactory.getCurrentSession();
@@ -2075,7 +2073,6 @@ public class PSAssemblyService implements IPSAssemblyService
    }
 
    @Transactional
-   @SuppressWarnings("unchecked")
    public List<IPSTemplateSlot> findSlotsByNames(List<String> names)
    {
       if (names == null)
@@ -2103,7 +2100,6 @@ public class PSAssemblyService implements IPSAssemblyService
       }
    }
 
-   @SuppressWarnings("unchecked")
    public IPSSlotContentFinder loadFinder(String finder) throws PSAssemblyException
    {
       if (StringUtils.isBlank(finder))
