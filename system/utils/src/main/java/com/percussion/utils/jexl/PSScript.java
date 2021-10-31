@@ -259,5 +259,13 @@ public class PSScript implements IPSScript
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "PSScript{" + "scriptText='" + scriptText + '\'' +
+                ", compilable=" + compilable +
+                ", compiledScript=" + compiledScript +
+                ", ownerType='" + ownerType + '\'' +
+                ", ownerName='" + ownerName + '\'' +
+                '}';
+    }
 }
