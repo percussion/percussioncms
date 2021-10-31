@@ -23,10 +23,10 @@
  */
 package com.percussion.services.assembly.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
-import com.percussion.deploy.server.PSJexlHelper;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSExceptionUtils;
@@ -47,7 +47,6 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSAssemblyTemplate.AAType;
 import com.percussion.services.assembly.IPSAssemblyTemplate.OutputFormat;
 import com.percussion.services.assembly.IPSSlotContentFinder;
-import com.percussion.services.assembly.IPSTemplateBinding;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSTemplateNotImplementedException;
@@ -99,6 +98,7 @@ import com.percussion.utils.collections.PSFacadeMap;
 import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.IPSScript;
+import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.timing.PSStopwatchStack;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
@@ -385,7 +385,7 @@ public class PSAssemblyService implements IPSAssemblyService
    /**
     * Logger for the assembler.
     */
-   private static final Logger log = LogManager.getLogger(PSAssemblyService.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.ASSEMBLY_LOG);
 
    /**
     * Counter used to generate job ids for items that have none specified.
@@ -395,7 +395,7 @@ public class PSAssemblyService implements IPSAssemblyService
    /**
     * Pagelink preparsed expression.
     */
-   private static IPSScript ms_pagelink = PSJexlHelper.createStaticExpression("$pagelink");
+   private static IPSScript ms_pagelink = PSJexlEvaluator.createStaticExpression("$pagelink");
 
    /**
     * Store the current assembly item in thread local storage for access where
@@ -427,12 +427,12 @@ public class PSAssemblyService implements IPSAssemblyService
    /**
     * Static expression for page count.
     */
-   private static final IPSScript PAGE_COUNT = PSJexlHelper.createStaticExpression("$sys.pagecount");
+   private static final IPSScript PAGE_COUNT = PSJexlEvaluator.createStaticExpression("$sys.pagecount");
 
    /**
     * Static expression for page.
     */
-   private static final IPSScript PAGE = PSJexlHelper.createStaticExpression("$sys.page");
+   private static final IPSScript PAGE = PSJexlEvaluator.createStaticExpression("$sys.page");
 
    /**
     * Load specific assembler. This static method is available to the assembly
@@ -519,7 +519,7 @@ public class PSAssemblyService implements IPSAssemblyService
          }
          List<IPSAssemblyItem> assemblyitems = Collections.singletonList(work);
          List<IPSAssemblyResult> results = assemble(assemblyitems);
-         if (results.size() == 0)
+         if (results.isEmpty())
          {
             return null;
          }
@@ -564,9 +564,9 @@ public class PSAssemblyService implements IPSAssemblyService
       String isEditRevisions = request.getParameter("useEditRevisions");
       if (isEditRevisions == null)
          isEditRevisions = "";
-      boolean isEdit = editrc.equalsIgnoreCase(IPSHtmlParameters.SYS_ACTIVE_ASSEMBLY)
+     return editrc.equalsIgnoreCase(IPSHtmlParameters.SYS_ACTIVE_ASSEMBLY)
             || isEditRevisions.equalsIgnoreCase("yes");
-      return isEdit;
+
    }
 
    public IPSAssemblyItem createAssemblyItem(String path, long jobid, int refid, IPSAssemblyTemplate template,
@@ -633,7 +633,10 @@ public class PSAssemblyService implements IPSAssemblyService
          }
          catch (Exception e)
          {
-            log.error("Problem while processing " + PAGE_COUNT + "binding for item: " + item, e);
+            log.error("Problem while processing {} binding for item: {}. Error: {}",
+                    PAGE_COUNT,
+                    item,
+                    PSExceptionUtils.getMessageForLog(e));
          }
          int context = item.getContext();
          if (item.getParentPageReferenceId() == null && count != null && count.intValue() > 1)
@@ -710,20 +713,19 @@ public class PSAssemblyService implements IPSAssemblyService
          }
          catch (PSAssemblyException e)
          {
-            log.error("Error while assembling items for assembler " + assemblerName
-                  + " no items processed for that assembler", e);
+            log.error("Error while assembling items for assembler {} no items processed for that assembler. Error: {}", assemblerName, PSExceptionUtils.getMessageForLog(e));
          }
          catch (PSCmsException e)
          {
-            log.error("Error during assembly", e);
+            log.error("Error during assembly. Error: {}", PSExceptionUtils.getMessageForLog(e));
          }
          catch (PathNotFoundException e)
          {
-            log.error("Missing content during assembly", e);
+            log.error("Missing content during assembly. Error: {}", PSExceptionUtils.getMessageForLog(e));
          }
          catch (RepositoryException e)
          {
-            log.error("Illegal repository operation during assembly", e);
+            log.error("Illegal repository operation during assembly. Error: {}", PSExceptionUtils.getMessageForLog(e));
          }
       }
 
@@ -753,16 +755,11 @@ public class PSAssemblyService implements IPSAssemblyService
          IPSAssemblyTemplate template = item.getTemplate();
          if (template == null)
          {
-            log.error("Skipping item " + item.getId() + " due to missing template");
+            log.error("Skipping item id {} due to missing template.", item.getId());
             continue;
          }
          String assemblername = template.getAssembler();
-         List<IPSAssemblyItem> list = byAssembler.get(assemblername);
-         if (list == null)
-         {
-            list = new ArrayList<>();
-            byAssembler.put(assemblername, list);
-         }
+         List<IPSAssemblyItem> list = byAssembler.computeIfAbsent(assemblername, k -> new ArrayList<>());
          list.add(item);
       }
 
@@ -796,7 +793,7 @@ public class PSAssemblyService implements IPSAssemblyService
          throws PSAssemblyException, ItemNotFoundException, PSFilterException, RepositoryException,
          PSTemplateNotImplementedException
    {
-      if (perAssemblerItems.size() > 0)
+      if (!perAssemblerItems.isEmpty())
       {
          try
          {
@@ -815,7 +812,7 @@ public class PSAssemblyService implements IPSAssemblyService
          }
       }
 
-      if (debugItems.size() > 0)
+      if (!debugItems.isEmpty())
       {
          IPSAssembler debugAssembler = getAssembler(DEBUG_ASSEMBLER);
          List<IPSAssemblyResult> res = debugAssembler.assemble(debugItems);
@@ -859,7 +856,7 @@ public class PSAssemblyService implements IPSAssemblyService
          perAssemblerItems.removeAll(paginatedItems);
       }
 
-      if (debugItems.size() > 0)
+      if (!debugItems.isEmpty())
       {
          perAssemblerItems.removeAll(debugItems);
       }
@@ -918,8 +915,10 @@ public class PSAssemblyService implements IPSAssemblyService
                IPSNode n = (IPSNode) i.getNode();
                long size = n.getSizeInBytes();
                if (size > maxSize) {
-                  log.debug("Not caching " + n.getGuid() + " which is approx. " + size
-                          + " bytes, maximum size allowed is: " + maxSize + " bytes");
+                  log.warn("Not caching assembly item: {} which is approx: {} bytes, maximum size allowed is: {} bytes. Forcing eviction from cache if present.",
+                          n.getGuid(),
+                          size,
+                          maxSize);
                   m_cache.evict(n.getGuid(), CONTENT_REGION);
                }
             } catch (RepositoryException e) {
@@ -971,7 +970,7 @@ public class PSAssemblyService implements IPSAssemblyService
          }
       }
 
-      if (idsToLoad.size() == 0)
+      if (idsToLoad.isEmpty())
          return;
 
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
@@ -1031,18 +1030,18 @@ public class PSAssemblyService implements IPSAssemblyService
    {
       IPSAssemblyTemplate t = item.getTemplate();
       List<PSTemplateBinding> bindings = t.getBindings();
-      for (IPSTemplateBinding binding : bindings)
+      for (PSTemplateBinding binding : bindings)
       {
          if (binding == null)
             continue;
-         String var = binding.getVariable();
+         String var1 = binding.getVariable();
          IPSScript exp = null;
          try
          {
-            exp = ((PSTemplateBinding) binding).getJexlScript();
+            exp = (binding).getJexlScript();
             exp.setOwnerType(t.getTemplateType().name());
             exp.setOwnerName(t.getName());
-            eval.evaluate(var, exp);
+            eval.evaluate(var1, exp);
          }
          catch (Exception e)
          {
@@ -1056,22 +1055,25 @@ public class PSAssemblyService implements IPSAssemblyService
                      emap = new HashMap<>();
                      eval.getVars().put(ERROR_VAR, emap);
                   }
-                  emap.put(var, e);
+                  emap.put(var1, e);
                }
             }
             else
             {
                String debugMessage = MessageFormat.format("Problem when evaluating expression \"{1}\" "
-                     + "for variable \"{0}\": {2}", var != null ? var : "<no variable>", exp != null
+                     + "for variable \"{0}\": {2}", var1 != null ? var1 : "<no variable>", exp != null
                      ? exp.getSourceText()
                      : "<null>",PSExceptionUtils.getMessageForLog(e));
 
-                String message = "Problem when evaluating expression : " + exp.getOwnerType() + " : " + exp.getOwnerName();
+               log.debug("{} Error: {}", debugMessage, PSExceptionUtils.getDebugMessageForLog(e));
+               log.error("Problem when evaluating JEXL binding expression. One or more bindings not evaluated for Template: {} and Content Id: {}.  Expression: {}. Error: {}",
+                       item.getTemplate().getName(),
+                       item.getId(),
+                       exp,
+                       PSExceptionUtils.getMessageForLog(e));
 
-               log.debug("ERROR ProcessBinding: {} Error: {}", debugMessage, e.getMessage(), e);
-               log.error("ERROR ProcessBinding: {} Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+               //Removed the Runtime exception here as that would seem to fail all bindings and any assembly transactions if one binding is bad.
 
-               throw new RuntimeException(message, e);
             }
          }
       }
@@ -1191,7 +1193,7 @@ public class PSAssemblyService implements IPSAssemblyService
          }
 
          IPSAssemblyTemplate templ = work.getTemplate();
-         if (!isLegacy || templ.getBindings().size() > 0)
+         if (!isLegacy || !templ.getBindings().isEmpty())
          {
             rval.bind("$sys.item", work.getNode());
             rval.bind("$sys.aautils", new PSAAUtils());
@@ -1267,6 +1269,7 @@ public class PSAssemblyService implements IPSAssemblyService
             config.addOption(PSContentMgrOption.LOAD_MINIMAL);
             config.setBodyAccess(new PSInlineLinkProcessor(work.getFilter(), work));
             config.setNamespaceCleanup(new PSNamespaceCleanup(stid));
+            //TODO: Isn't the div cleanup needed?
             // Fix for CMS-3796 <div class="rxbodyfield"> being removed.
             //config.setDivTagCleanup(new PSDivTagCleanup());
             items = contentmgr.findItemsByGUID(guids, config);
@@ -1276,12 +1279,13 @@ public class PSAssemblyService implements IPSAssemblyService
             throw new PSAssemblyException(IPSAssemblyErrors.PARAMS_AUTHTYPE_OR_FILTER, e);
          }
 
-         if (items.size()==0)
+         if (items.isEmpty())
             throw new ItemNotFoundException("Can't find item for guid: " + work.getId());
          
          item = items.iterator().next();
 
          PSContentNode node = (PSContentNode) item;
+         //TODO: It seems like this caching code does nothing and is not used.  Either need to remove it or make it work.
          if (maxSize > 0 && node.getSizeInBytes() < maxSize)
          {
             cache.save(key, node, CONTENT_REGION);
@@ -1306,10 +1310,9 @@ public class PSAssemblyService implements IPSAssemblyService
 
    public PSTypeEnum[] getTypes()
    {
-      PSTypeEnum rval[] = new PSTypeEnum[]
-      {PSTypeEnum.TEMPLATE, PSTypeEnum.SLOT};
 
-      return rval;
+      return new PSTypeEnum[]
+      {PSTypeEnum.TEMPLATE, PSTypeEnum.SLOT};
    }
 
    public List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
@@ -1347,9 +1350,9 @@ public class PSAssemblyService implements IPSAssemblyService
                // they can be restored
                tversion = temp.getVersion();
                bversions = new HashMap<>();
-               for (IPSTemplateBinding b : temp.getBindings())
+               for (PSTemplateBinding b : temp.getBindings())
                {
-                  PSTemplateBinding binding = (PSTemplateBinding) b;
+                  PSTemplateBinding binding = b;
                   bversions.put(binding.getId(), binding.getVersion());
                }
                temp.setVersion(null);
@@ -1365,9 +1368,9 @@ public class PSAssemblyService implements IPSAssemblyService
             {
                temp.setVersion(null);
                temp.setVersion(tversion);
-               for (IPSTemplateBinding b : temp.getBindings())
+               for (PSTemplateBinding b : temp.getBindings())
                {
-                  PSTemplateBinding binding = (PSTemplateBinding) b;
+                  PSTemplateBinding binding = b;
                   Integer bversion = bversions.get(binding.getId());
                   if (bversion != null)
                   {
@@ -1409,11 +1412,7 @@ public class PSAssemblyService implements IPSAssemblyService
       {
          throw new PSCatalogException(IPSCatalogErrors.IO, e, type);
       }
-      catch (SAXException e)
-      {
-         throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
-      }
-      catch (PSInvalidXmlException e)
+      catch (SAXException | PSInvalidXmlException e)
       {
          throw new PSCatalogException(IPSCatalogErrors.XML, e, item);
       }
@@ -1610,7 +1609,10 @@ public class PSAssemblyService implements IPSAssemblyService
 
       catch (Exception e)
       {
-         log.error("Failed to save template id=" + var.getGUID().toString() + ", name=" + var.getName(), e);
+         log.error("Failed to save template id={}, name={}. Error: {}",
+                 var.getGUID(),
+                 var.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.UNKNOWN_CRUD_ERROR, e);
       }
 
@@ -1705,7 +1707,7 @@ public class PSAssemblyService implements IPSAssemblyService
       return sess.get(PSNodeDefinition.class, contenttype.longValue())
               .getCvDescriptors()
               .stream()
-              .map(t -> sess.load(PSAssemblyTemplate.class,Long.valueOf(t.getTemplateId().getUUID())))
+              .map(t -> sess.load(PSAssemblyTemplate.class, (long) t.getTemplateId().getUUID()))
               .map(t -> {
                  Hibernate.initialize(t); return t;})
               .collect(Collectors.toList());
@@ -2021,7 +2023,10 @@ public class PSAssemblyService implements IPSAssemblyService
       }
       catch (Exception e)
       {
-         log.error("Failed to save slot id=" + slot.getGUID().toString() + ", name=" + slot.getName(), e);
+         log.error("Failed to save slot id={}, name={}. Error: {}",
+                 slot.getGUID(),
+                 slot.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
          throw new PSAssemblyException(IPSAssemblyErrors.UNKNOWN_CRUD_ERROR, e);
       }
       finally
@@ -2174,7 +2179,7 @@ public class PSAssemblyService implements IPSAssemblyService
 
          List<PSLocator> folders = processor.getParents(PSRelationshipConfig.TYPE_FOLDER_CONTENT, lg.getLocator());
 
-         if (folders == null || folders.size() == 0)
+         if (folders == null || folders.isEmpty())
          {
             throw new IllegalStateException("Navon must be contained in a folder: " + lg);
          }
@@ -2207,7 +2212,7 @@ public class PSAssemblyService implements IPSAssemblyService
             List<IPSAssemblyItem> items = new ArrayList<>();
             items.add(clone);
             List<IPSAssemblyResult> results = assemble(items);
-            if (results == null || results.size() == 0)
+            if (results == null || results.isEmpty())
             {
                throw new PSAssemblyException(IPSAssemblyErrors.LANDING_PAGE_URL_1, lg);
             }
@@ -2215,37 +2220,32 @@ public class PSAssemblyService implements IPSAssemblyService
             {
                IPSAssemblyResult result = results.get(0);
                String doc = result.toResultString();
-               Reader r = new StringReader(doc);
+               try(Reader r = new StringReader(doc)) {
+                  XMLInputFactory fact = PSSecureXMLUtils.getSecuredXMLInputFactory(
+                          new PSXmlSecurityOptions(
+                                  true,
+                                  true,
+                                  true,
+                                  false,
+                                  true,
+                                  false
+                          )
+                  );
 
-
-               XMLInputFactory fact = PSSecureXMLUtils.getSecuredXMLInputFactory(
-                       new PSXmlSecurityOptions(
-                       true,
-                       true,
-                       true,
-                       false,
-                       true,
-                       false
-                       )
-               );
-
-               XMLEventReader reader = fact.createXMLEventReader(r);
-               while (reader.hasNext())
-               {
-                  XMLEvent event = reader.nextEvent();
-                  if (event.isStartElement())
-                  {
-                     StartElement e = event.asStartElement();
-                     if (e.getName().getLocalPart().equalsIgnoreCase("a"))
-                     {
-                        // Get href, and we're done
-                        PSXmlEncoder enc = new PSXmlEncoder();
-                        Attribute a = e.getAttributeByName(new QName("href"));
-                        return (String) enc.encode(a.getValue());
+                  XMLEventReader reader = fact.createXMLEventReader(r);
+                  while (reader.hasNext()) {
+                     XMLEvent event = reader.nextEvent();
+                     if (event.isStartElement()) {
+                        StartElement e = event.asStartElement();
+                        if (e.getName().getLocalPart().equalsIgnoreCase("a")) {
+                           // Get href, and we're done
+                           PSXmlEncoder enc = new PSXmlEncoder();
+                           Attribute a = e.getAttributeByName(new QName("href"));
+                           return (String) enc.encode(a.getValue());
+                        }
                      }
                   }
                }
-
             }
          }
          else
