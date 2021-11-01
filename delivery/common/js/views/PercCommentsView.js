@@ -210,8 +210,9 @@
         var fullLink =  getUrl();
         var splittedLink = fullLink.split("?");
         var href = splittedLink[0];
-        var qs = splittedLink[0] + "/list"
-        var splittedQs = qs.split('&');
+        var qs = splittedLink[0] + "/list";
+        var commentsQueryString = splittedLink[1];
+        var splittedQs = commentsQueryString.split('&');
         var body = {};
 
         for(var key in splittedQs) {
@@ -233,7 +234,7 @@
             {
                 callback(false);
             }
-        }
+        };
 
         $.PercServiceUtils.csrfGetToken(href,function (response) {
             if (typeof response !== 'undefined' && response != null) {
