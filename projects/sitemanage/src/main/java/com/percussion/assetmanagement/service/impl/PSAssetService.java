@@ -130,8 +130,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -143,7 +143,6 @@ import java.util.stream.Collectors;
 import static com.percussion.pathmanagement.service.impl.PSPathUtils.getFinderPath;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.rejectIfNull;
 import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
-import static java.util.Arrays.asList;
 import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -268,10 +267,10 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 			try {
 				PSAssetSiteImpact si = impact.get(i);
 				PSImageAssetReportLine row = new PSImageAssetReportLine();
-				String sites = "";
-				String pages = "";
-				String pagePaths = "";
-				String templateNames = "";
+				StringBuilder sites = new StringBuilder();
+				StringBuilder pages = new StringBuilder();
+				StringBuilder pagePaths = new StringBuilder();
+				StringBuilder templateNames = new StringBuilder();
 
 				row.setId(Integer.parseInt((String) a.getFields().get(IPSHtmlParameters.SYS_CONTENTID)));
 				row.setGuid(a.getId());
@@ -306,63 +305,63 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 					//most likely just one path.
 					row.setFolderPath(a.getFolderPaths().get(0));
 				} else {
-					log.warn("Asset has more than one Folder Path:" + a.getId());
+					log.warn("Asset has more than one Folder Path: {}" , a.getId());
 					// Do not include the record if folder is blank/ asset moved to Recycle bin | CMS-3216
 					continue;
 				}
 
 				if (si != null) {
 					for (PSItemProperties p : si.getOwnerPages()) {
-						if (pages.equals(""))
-							pages = p.getName();
+						if (pages.length()==0)
+							pages.append(p.getName());
 						else
-							pages = pages + "\r\n" + p.getName();
+							pages.append("\r\n").append(p.getName());
 
-						if (pagePaths.equals(""))
-							pagePaths = p.getPath();
+						if (pagePaths.length()==0)
+							pagePaths.append(p.getPath());
 						else
-							pagePaths = pagePaths + "\r\n" + p.getPath();
+							 pagePaths.append("\r\n").append(p.getPath());
 
 						if (pages.length() > MAX_MULTINE_CHARACTERS || pagePaths.length() > MAX_MULTINE_CHARACTERS) {
 							break;
 						}
 					}
-					row.setPageNames(pages);
-					row.setPagePaths(pagePaths);
+					row.setPageNames(pages.toString());
+					row.setPagePaths(pagePaths.toString());
 
 					for (IPSSite s : si.getOwnerSites()) {
 
-						if (sites.equals(""))
-							sites = s.getName();
+						if (sites.length()==0)
+							sites.append(s.getName());
 						else
-							sites = sites + "\r\n" + s.getName();
+							sites.append("\r\n").append(s.getName());
 
 						if (sites.length() < MAX_MULTINE_CHARACTERS) {
 							break;
 						}
 					}
 
-					row.setSiteNames(sites);
+					row.setSiteNames(sites.toString());
 
 					for (PSTemplateSummary t : si.getOwnerTemplates()) {
-						if (templateNames.equals(""))
-							templateNames = t.getName();
+						if (templateNames.length()==0)
+							templateNames.append(t.getName());
 						else
-							templateNames = templateNames + "\r\n" + t.getName();
+							templateNames.append("\r\n").append(t.getName());
 
 						if (templateNames.length() < MAX_MULTINE_CHARACTERS) {
 							break;
 						}
 
 					}
-					row.setTemplateNames(templateNames);
+					row.setTemplateNames(templateNames.toString());
 				}
 
 
 				ret.add(row);
 				i++;
 			}catch(Exception e){
-				log.warn("Skipping asset due to error: " + PSExceptionUtils.getMessageForLog(e));
+				log.warn("Skipping asset due to error: {}" , PSExceptionUtils.getMessageForLog(e));
 				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 
@@ -395,10 +394,10 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 		for(PSAsset a : assets){
 			PSAssetSiteImpact si = impact.get(i);
 			PSImageAssetReportLine row = new PSImageAssetReportLine();
-			String sites = "";
-			String pages = "";
-			String pagePaths = "";
-			String templateNames = "";
+			StringBuilder sites = new StringBuilder();
+			StringBuilder pages = new StringBuilder();
+			StringBuilder pagePaths = new StringBuilder();
+			StringBuilder templateNames = new StringBuilder();
 
 			row.setId(Integer.parseInt((String)a.getFields().get(IPSHtmlParameters.SYS_CONTENTID)));
 			row.setGuid(a.getId());
@@ -433,37 +432,37 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 					//most likely just one path.
 					row.setFolderPath(a.getFolderPaths().get(0));
 				}else{
-					log.warn("Asset has more than one Folder Path:" + a.getId());
+					log.warn("Asset has more than one Folder Path: {}", a.getId());
 					// Do not include the record if folder is blank/ asset moved to Recycle bin | CMS-3216
 					continue;
 				}
 
 				if(si != null){
 					for(PSItemProperties p : si.getOwnerPages()){
-						if(pages.equals(""))
-							pages = p.getName();
+						if(pages.length()==0)
+							pages.append(p.getName());
 						else
-							pages = pages + "\r\n" + p.getName();
+							pages.append("\r\n").append(p.getName());
 
-						if(pagePaths.equals(""))
-							pagePaths = p.getPath();
+						if(pagePaths.length()==0)
+							pagePaths.append(p.getPath());
 						else
-							pagePaths = pagePaths + "\r\n" + p.getPath();
+							pagePaths.append("\r\n").append(p.getPath());
 
 
 						if(pages.length()>MAX_MULTINE_CHARACTERS || pagePaths.length()>MAX_MULTINE_CHARACTERS){
 							break;
 						}
 					}
-					row.setPageNames(pages);
-					row.setPagePaths(pagePaths);
+					row.setPageNames(pages.toString());
+					row.setPagePaths(pagePaths.toString());
 
 					for(IPSSite s : si.getOwnerSites()){
 
-						if(sites.equals(""))
-							sites = s.getName();
+						if(sites.length()==0)
+							sites.append(s.getName());
 						else
-							sites = sites + "\r\n" + s.getName();
+							sites.append("\r\n").append(s.getName());
 
 
 						if(sites.length()<MAX_MULTINE_CHARACTERS){
@@ -471,23 +470,20 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 						}
 					}
 
-					row.setSiteNames(sites);
+					row.setSiteNames(sites.toString());
 
 					for(PSTemplateSummary t: si.getOwnerTemplates()){
-						if(templateNames.equals(""))
-							templateNames = t.getName();
+						if(templateNames.length()==0)
+							templateNames.append(t.getName());
 						else
-							templateNames = templateNames + "\r\n" + t.getName();
+							templateNames.append("\r\n").append(t.getName());
 
 						if(templateNames.length()<MAX_MULTINE_CHARACTERS){
 							break;
 						}
 					}
-					row.setTemplateNames(templateNames);
+					row.setTemplateNames(templateNames.toString());
 				}
-
-
-
 			ret.add(row);
 			i++;
 		}
@@ -550,7 +546,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 					//most likely just one path.
 					row.setFolderPath(a.getFolderPaths().get(0));
 				}else{
-					log.warn("Asset has more than one Folder Path:" + a.getId());
+					log.warn("Asset has more than one Folder Path: {}", a.getId());
 					// Do not include the record if folder is blank/ asset moved to Recycle bin | CMS-3216
 					continue;
 				}
@@ -671,7 +667,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 					//most likely just one path.
 					row.setFolderPath(a.getFolderPaths().get(0));
 				}else{
-					log.warn("Asset has more than one Folder Path:" + a.getId());
+					log.warn("Asset has more than one Folder Path: {}" , a.getId());
 					// Do not include the record if folder is blank/ asset moved to Recycle bin | CMS-3216
 					continue;
 				}
@@ -733,7 +729,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 		return ret;
 	}
 
-    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws PSAssetServiceException, IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
+    public String updateAssetWidgetRelationship(PSAssetWidgetRelationship awRel) throws IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException, PSValidationException {
         rejectIfNull("updateAssetWidgetRelationship", "awRel", awRel);
         return widgetAssetRelationshipService.updateAssetWidgetRelationship(awRel);
     }
@@ -1101,8 +1097,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         rejectIfNull("getAssetEditor", "widgetId", widgetId);
         PSWidgetSummary widget = widgetService.find(widgetId);
         String parentFolderPath = assetUploadFolderPathMap.getFolderPathForType(widget.getType());
-        PSAssetEditor assetEditor = getAssetEditor(parentFolderPath, widget);
-        return assetEditor;
+        return getAssetEditor(parentFolderPath, widget);
     }
 
     /*
@@ -1149,7 +1144,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         {
             PSWidgetDefinition widgetDef = widgetService.load(widget.getId());
             String ctName = widgetDef.getWidgetPrefs().getContenttypeName();
-            if (isNotEmpty(ctName) && widgetDef.getWidgetPrefs().getCreateSharedAsset())
+            if (isNotEmpty(ctName) && Boolean.TRUE.equals(widgetDef.getWidgetPrefs().getCreateSharedAsset()))
             {
                 try
                 {
@@ -1166,7 +1161,10 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
                 }
                 catch (PSInvalidContentTypeException e)
                 {
-                    log.error("Error getting the details for the Content type (" + ctName +") of widget (" + widgetDef.getId() + ")", e);
+                    log.warn("Error getting the details for the Content type {} of widget ({}).  This Widget will not be loaded until this problem is resolved.  Re-deploy the widget or add the missing content type to correct the problem.  Error: {}",
+							ctName,
+							widgetDef.getId(),
+							PSExceptionUtils.getMessageForLog(e));
                 }
             }
         }
@@ -1341,7 +1339,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             buffer.append(field);
         }
 
-        return IPSConstants.SYS_HIDDEN_FIELDS_VIEW_NAME + buffer.toString();
+        return IPSConstants.SYS_HIDDEN_FIELDS_VIEW_NAME + buffer;
     }
 
     /**
@@ -1489,16 +1487,17 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 
     public void addAssetToFolder(String folderPath, String assetId) throws PSDataServiceException {
         IPSItemSummary item = itemSummaryService.find(assetId);
-        try
+		final String substring = assetId.substring(assetId.lastIndexOf("-") + 1, assetId.length());
+		try
         {
             assetDao.addItemToPath(item, folderPath);
 
-            psContentEvent=new PSContentEvent(assetId,assetId.substring(assetId.lastIndexOf("-")+1,assetId.length()),folderPath, PSContentEvent.ContentEventActions.create,PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
+            psContentEvent=new PSContentEvent(assetId, substring,folderPath, PSContentEvent.ContentEventActions.create,PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
             psAuditLogService.logContentEvent(psContentEvent);
         }
         catch (Exception e)
         {
-			psContentEvent=new PSContentEvent(assetId,assetId.substring(assetId.lastIndexOf("-")+1,assetId.length()),folderPath, PSContentEvent.ContentEventActions.create,PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
+			psContentEvent=new PSContentEvent(assetId, substring,folderPath, PSContentEvent.ContentEventActions.create,PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
 			psAuditLogService.logContentEvent(psContentEvent);
             throw new PSAssetServiceException("Failed to add asset to folder", e);
         }
@@ -1568,8 +1567,6 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             throws com.percussion.share.service.IPSDataService.DataServiceLoadException,
             com.percussion.share.service.IPSDataService.DataServiceNotFoundException
     {
-        // TODO Auto-generated method stub
-        //return null;
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
 
@@ -1589,7 +1586,9 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         catch (Exception e)
         {
-            log.error("Could not create folder : " + request, e);
+            log.error("Could not create folder : {} Error: {}",
+					 request, 
+					PSExceptionUtils.getMessageForLog(e));
             throw new PSAssetServiceException(e);
         }
 
@@ -1691,7 +1690,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             .throwIfInvalid();
 
             if (log.isDebugEnabled())
-                log.debug("shareLocalContent: " + awRel);
+                log.debug("shareLocalContent: {}" , awRel);
 
             String relId = null;
             String assetId = awRel.getAssetId();
@@ -1863,8 +1862,8 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @throws PSAssetServiceException
      */
     private PSAsset copyAsset(String id, String name, String path) throws PSAssetServiceException, DataServiceLoadException, DataServiceNotFoundException, PSValidationException, PSItemWorkflowServiceException {
-        List<IPSGuid> guids = Arrays.asList(idMapper.getGuid(id));
-        List<String> paths = Arrays.asList(PSPathUtils.getFolderPath("/" + path));
+        List<IPSGuid> guids = Collections.singletonList(idMapper.getGuid(id));
+        List<String> paths = Collections.singletonList(PSPathUtils.getFolderPath("/" + path));
 
         List<PSCoreItem> items;
         try
@@ -1926,7 +1925,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         asset.setType(type);
         String internalFolderPath = PSPathUtils.getFolderPath(request.getFolderPath());
-        asset.setFolderPaths(asList(internalFolderPath));
+        asset.setFolderPaths(Collections.singletonList(internalFolderPath));
         Map<String, Object> fieldsMap = asset.getFields();
         String fileName = request.getFileName();
         fieldsMap.put("sys_workflowid", String.valueOf(getWorkflowIdFromFolder(internalFolderPath)));
@@ -1951,7 +1950,9 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         catch(Exception e)
         {
-            log.error("Could not create asset : " + fileName, e);
+            log.error("Could not create asset : {} Error: {}",
+					fileName,
+					PSExceptionUtils.getMessageForLog(e));
             throw new PSAssetServiceException(e);
         }
     }
@@ -1974,7 +1975,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         asset.setType(type);
         String internalFolderPath = PSPathUtils.getFolderPath(request.getFolderPath());
-        asset.setFolderPaths(asList(internalFolderPath));
+        asset.setFolderPaths(Collections.singletonList(internalFolderPath));
         asset.setId(itemId);
         Map<String, Object> fieldsMap = asset.getFields();
         String fileName = request.getFileName();
@@ -2003,7 +2004,9 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         catch(Exception e)
         {
-            log.error("Could not create asset : " + fileName, e);
+            log.error("Could not create asset : {} Error: {}" ,
+					fileName, 
+					PSExceptionUtils.getMessageForLog(e));
             throw new PSAssetServiceException(e);
         }
     }
@@ -2034,7 +2037,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         asset.setType(type);
         String internalFolderPath = PSPathUtils.getFolderPath(request.getFolderPath());
-        asset.setFolderPaths(asList(internalFolderPath));
+        asset.setFolderPaths(Collections.singletonList(internalFolderPath));
         Map<String, Object> fieldsMap = asset.getFields();
         String name = getUniqueName(internalFolderPath, request.getFileName());
         fieldsMap.put(IPSHtmlParameters.SYS_TITLE, name);
@@ -2048,7 +2051,9 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         catch (IOException | PSDataServiceException e)
         {
-            log.error("Could not create asset : \"" + name + "\"", e);
+            log.error("Could not create asset : {} Error: {}", 
+					name,
+					PSExceptionUtils.getMessageForLog(e));
             throw new PSAssetServiceException(e);
         }
 	}
@@ -2065,7 +2070,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      */
     private String extractContent(PSExtractedAssetRequest request) throws IOException
     {
-        String content = IOUtils.toString(request.getFileContents());
+        String content = IOUtils.toString(request.getFileContents(), StandardCharsets.UTF_8);
         String selector = request.getSelector();
         String extractedContent = null;
 
@@ -2098,7 +2103,9 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         }
         catch (PSInvalidContentTypeException e)
         {
-            log.warn("Invalid content type: " + ctName);
+            log.warn("Invalid content type: {}. Error: {}" , 
+					ctName,
+					PSExceptionUtils.getMessageForLog(e));
         }
 
         return false;
