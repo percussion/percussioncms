@@ -23,14 +23,6 @@
  */
 package com.percussion.webservices.sample;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.rpc.ServiceException;
-
-import org.apache.axis.client.Call;
-import org.apache.axis.client.Stub;
-
 import com.percussion.webservices.content.AddFolderChildrenRequest;
 import com.percussion.webservices.content.AddFolderTreeRequest;
 import com.percussion.webservices.content.CheckinItemsRequest;
@@ -57,6 +49,12 @@ import com.percussion.webservices.security.SecuritySOAPStub;
 import com.percussion.webservices.security.data.PSLogin;
 import com.percussion.webservices.system.SystemSOAPStub;
 import com.percussion.webservices.system.TransitionItemsRequest;
+import org.apache.axis.client.Call;
+import org.apache.axis.client.Stub;
+
+import javax.xml.rpc.ServiceException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * This is a utility class to demonstrate how to use the Rhythmyx
@@ -514,12 +512,17 @@ public class PSWsUtils
       try
       {
          URL url = new URL(srcAddress);
-         return ms_protocol + "://" + ms_host + ":" + ms_port + "/"
+         String urlPart =  ms_protocol + "://" + ms_host + ":" + ms_port;
+         if(!url.getPath().startsWith("/"))
+         urlPart = urlPart + "/"
                + url.getPath();
+         else
+            urlPart = urlPart + url.getPath();
+
+         return urlPart;
       }
       catch (MalformedURLException e)
       {
-         // this is not possible
          e.printStackTrace();
          throw new RuntimeException(e);
       }
