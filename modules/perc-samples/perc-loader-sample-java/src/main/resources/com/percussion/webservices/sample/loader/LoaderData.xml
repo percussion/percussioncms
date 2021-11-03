@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Items>
+   <Item>
+      <Field name="sys_title">GenericItem_1</Field>
+      <Field name="categories">692</Field>
+      <Field name="sys_workflowid">5</Field>
+      <Field name="displaytitle">generic item 100</Field>
+   </Item>
+   <Item>
+      <Field name="sys_title">GenericItem_2</Field>
+      <Field name="categories">692;669</Field>
+      <Field name="sys_workflowid">5</Field>
+      <Field name="displaytitle">generic item 200</Field>
+   </Item>
+</Items>

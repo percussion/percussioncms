@@ -37,6 +37,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,7 +74,14 @@ public class PSFileUtils
    public static List<Map<String,String>> loadDataFile(String dataFile)
       throws Exception
    {
-      Element root = loadXmlResource(dataFile);
+      Element root;
+
+      if(Files.exists(Paths.get("./LoaderData.xml"))){
+         root = loadLocalXMLFile("./LoaderData.xml");
+      }else{
+         root = loadXmlResource(dataFile);
+      }
+
       List<Map<String,String>> items = new ArrayList<Map<String,String>>();
 
       NodeList nodes = root.getElementsByTagName("Item");
@@ -159,7 +168,14 @@ public class PSFileUtils
     */
    public static Properties getLoaderProperties() throws Exception
    {
-      Element root = loadXmlResource("Loader.xml");
+      Element root;
+      if(Files.exists(Paths.get("./Loader.xml"))){
+          root = loadLocalXMLFile("./Loader.xml");
+    }else{
+          root = loadXmlResource("Loader.xml");
+      }
+
+
       Properties props = new Properties();
       for (String name : LOADER_PROP_NAMES)
       {
@@ -187,6 +203,15 @@ public class PSFileUtils
       return getElementData(nodes.item(0));
    }
 
+
+   private static Element loadLocalXMLFile(String name) throws IOException, SAXException {
+      try (InputStream in = Files.newInputStream(Paths.get(name))) {
+         Document doc = createXmlDocument(in, false);
+         return doc.getDocumentElement();
+      }
+   }
+
+
    /**
     * Loads the xml file into an xml document and returns the
     * root element.
@@ -200,11 +225,10 @@ public class PSFileUtils
     */
    private static Element loadXmlResource(String name) throws Exception
    {
-      try(InputStream in = PSFileUtils.class.getResourceAsStream(name)) {
-         //Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
-         Document doc = createXmlDocument(in, false);
-         return doc.getDocumentElement();
-      }
+         try (InputStream in = PSFileUtils.class.getResourceAsStream(name)) {
+            Document doc = createXmlDocument(in, false);
+            return doc.getDocumentElement();
+         }
    }
    
    /**
