@@ -30,6 +30,7 @@ import java.util.Date;
  * is used as a structure, not an object. It is up to the user to decide how
  * to use the fields.
  */
+@Deprecated
 public class Stats
 {
    public int rowsUpdated = 0;
