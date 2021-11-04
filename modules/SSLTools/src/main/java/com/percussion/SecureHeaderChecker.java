@@ -10,7 +10,8 @@ public class SecureHeaderChecker {
             "X-Content-Type-Options",
             "Strict-Transport-Security",
             "X-XSS-Protection",
-            "Cache-Control"
+            "Cache-Control",
+             "Referrer-Policy"
     };
 
 
