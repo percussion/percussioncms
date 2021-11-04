@@ -23,6 +23,7 @@ import java.net.URL;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -111,6 +112,16 @@ public class SSLCertificateChecker {
         try {
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.connect();
+            SecureHeaderCheckResponse headerCheck = SecureHeaderChecker.check(conn);
+            if(headerCheck.isFailedCheck()){
+                StringBuilder msg = new StringBuilder();
+                msg.append(url).append(" is missing the following secure headers:\r\n");
+                        for(Map.Entry<String, Boolean> e : headerCheck.getChecks().entrySet()){
+                           if(Boolean.FALSE.equals(e.getValue()))
+                                msg.append(e.getKey());
+                        }
+                sendSlackMessage(msg.toString());
+            }
             Certificate[] certs = conn.getServerCertificates();
             for (Certificate c : certs) {
                 if (c instanceof X509Certificate) {
