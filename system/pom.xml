@@ -82,12 +82,6 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>webservices/sample/loader/java/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
                 <directory>webservices/src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
