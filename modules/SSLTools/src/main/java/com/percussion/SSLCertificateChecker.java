@@ -118,23 +118,28 @@ public class SSLCertificateChecker {
                 msg.append(url).append(" is missing the following secure headers:\r\n");
                         for(Map.Entry<String, Boolean> e : headerCheck.getChecks().entrySet()){
                            if(Boolean.FALSE.equals(e.getValue()))
-                                msg.append(e.getKey());
+                                msg.append(e.getKey()).append("\r\n");
                         }
                 sendSlackMessage(msg.toString());
             }
-            Certificate[] certs = conn.getServerCertificates();
-            for (Certificate c : certs) {
-                if (c instanceof X509Certificate) {
-                    X509Certificate xc = (X509Certificate) c;
-                    Date expiresOn = xc.getNotAfter();
-                    Date now = new Date();
-                    long daysLeft = (expiresOn.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
-                    if (daysLeft < warningDays) {
-                        String msg = url + " : " + " Certificate Will expire on : " + expiresOn + " So, only " +
-                                daysLeft + " days to go";
-                        sendSlackMessage(msg);
+
+            try {
+                Certificate[] certs = conn.getServerCertificates();
+                for (Certificate c : certs) {
+                    if (c instanceof X509Certificate) {
+                        X509Certificate xc = (X509Certificate) c;
+                        Date expiresOn = xc.getNotAfter();
+                        Date now = new Date();
+                        long daysLeft = (expiresOn.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+                        if (daysLeft < warningDays) {
+                            String msg = url + " : " + " Certificate Will expire on : " + expiresOn + " So, only " +
+                                    daysLeft + " days to go";
+                            sendSlackMessage(msg);
+                        }
                     }
                 }
+            }catch(IllegalStateException e){
+                log.error("Error: {} connecting to host: {}", url, PSExceptionUtils.getMessageForLog(e));
             }
 
         }catch (IOException io){
