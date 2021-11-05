@@ -555,9 +555,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         if (sslEnabled)
         {
            port = (uri.getPort() <= 0) ? "443" : Integer.toString(uri.getPort());
+           if("-1".equalsIgnoreCase(port))
+               port = "443";
            Protocol.registerProtocol(protocol, new Protocol(protocol, socketFactory, Integer.parseInt(port)));
-        }else{
-           port = (uri.getPort() <= 0) ? "80" : Integer.toString(uri.getPort());
         }
 
         this.requestType = actionOptions.getHttpMethod();
@@ -703,6 +703,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
         HeadMethod headMethod = new HeadMethod(this.requestUrl);
         headMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, this.responseMessageBodyContentType);
+
+
         this.executeMethod(headMethod);
        return headMethod.getResponseHeaders();
 
@@ -745,9 +747,11 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             deliveryHost = uri.getHost();
             protocol = uri.getScheme();
             port = uri.getPort() <= 0 ? "" : Integer.toString(uri.getPort());
-                      
+            if("-1".equalsIgnoreCase(port))
+                port = "";
+
             //Add the slash for the port
-            port = (port == null || port.length() == 0) ? "" : ":" + port;
+            port = port.length() == 0 ? "" : ":" + port;
             
             // Make final URL
             finalUrl =
