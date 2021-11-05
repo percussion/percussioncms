@@ -73,9 +73,9 @@
             // When we got all the sites data, update the Sites Filter and unblock UI
             //self.controller.load(function()
             //{
-                self.controller.getSites(false, function(sites)
+                self.controller.getSites(false, function(percSiteTemplatesController, sites)
                 {
-                    self._updateTemplatesFilter(sites);
+                    self._updateTemplatesFilter(percSiteTemplatesController, sites);
                     self._loadTemplates();
                     $.unblockUI();
                 });
@@ -200,7 +200,7 @@
          * Updates the combo box listing all the sites
          * @param Array(String) sites contains all the sites created in the system
          */
-        _updateTemplatesFilter: function(sites)
+        _updateTemplatesFilter: function(percSiteTemplatesController, sites)
         {
             $('#perc-templates-filter').html('<option value="base">Base</option><option value="resp">Responsive</option>');
             if (sites)
