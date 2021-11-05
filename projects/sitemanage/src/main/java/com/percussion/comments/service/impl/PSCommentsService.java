@@ -291,7 +291,9 @@ public class PSCommentsService implements IPSCommentsService
                 }
             } catch (Exception e) {
                 String serviceUrl = server.getUrl() + COMMENT_GET_COMMENTS_ON_PAGE;
-                log.warn("Error getting all comments data from processor at : {}", serviceUrl, e);
+                log.warn("Error getting all comments data from processor at : {}. Error: {}",
+                        serviceUrl,
+                        PSExceptionUtils.getMessageForLog(e));
                 throw new WebApplicationException(e, Response.serverError().build());
             }
 
