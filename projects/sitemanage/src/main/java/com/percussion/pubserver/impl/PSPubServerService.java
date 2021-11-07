@@ -1576,7 +1576,11 @@ public class PSPubServerService implements IPSPubServerService
         // Check for file type and FTPS driver
         if (type.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_FTPS))
         {
-            server.setPublishType(PublishType.ftps_only.toString());
+            if(isDefaultServer && !format.equalsIgnoreCase(XML_FLAG)) {
+                server.setPublishType(PublishType.ftps.toString());
+            }else{
+                server.setPublishType(PublishType.ftps_only.toString());
+            }
             return;
         }
         if(type.equalsIgnoreCase(PUBLISH_FILE_TYPE) && driver.equalsIgnoreCase(DRIVER_AMAZONS3)){

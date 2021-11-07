@@ -31,12 +31,15 @@ import com.percussion.webservices.content.PSItem;
 import com.percussion.webservices.content.PSItemStatus;
 import com.percussion.webservices.content.PSItemSummary;
 import com.percussion.webservices.faults.PSContractViolationFault;
-import com.percussion.webservices.faults.PSErrorsFault;
 import com.percussion.webservices.faults.PSNotAuthenticatedFault;
 import com.percussion.webservices.sample.PSWsUtils;
 import com.percussion.webservices.security.SecuritySOAPStub;
 import com.percussion.webservices.system.SystemSOAPStub;
+import org.apache.axis.attachments.AttachmentPart;
 
+import javax.activation.DataHandler;
+import javax.activation.URLDataSource;
+import javax.xml.rpc.ServiceException;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -44,12 +47,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.activation.DataHandler;
-import javax.activation.URLDataSource;
-import javax.xml.rpc.ServiceException;
-
-import org.apache.axis.attachments.AttachmentPart;
 
 /**
  * This class loads all Content Items defined in a specified data file

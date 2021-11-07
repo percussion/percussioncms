@@ -78,6 +78,7 @@ import java.util.Properties;
  *
  * <p>Note: currently, all updates are assumed to be inserts.
  */
+@Deprecated
 public class XmlUploader
 {
    /**

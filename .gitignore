@@ -120,3 +120,5 @@ fabric.properties
 /deliverytiersuite/delivery-tier-suite/DTS-shared-dependencies/depends.txt
 /deliverytiersuite/delivery-tier-suite/tomcat-common/depends.txt
 /modules/CMLight-Main-cactus-tests/depends.txt
+/modules/perc-samples/perc-loader-sample-java/Loader.xml
+/modules/perc-samples/perc-loader-sample-java/LoaderData.xml

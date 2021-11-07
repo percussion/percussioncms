@@ -84,7 +84,7 @@
         <module>modules/perc-distribution-tree</module>
         <module>modules/CMLight-Main-cactus-tests</module>
         <module>modules/ant-install</module>
-        <module>system/Tools/SSLTools</module>
+        <module>modules/SSLTools</module>
         <module>modules/tlsutils</module>
         <module>modules/perc-toolkit</module>
         <module>modules/perc-taxonomy</module>
