@@ -33,6 +33,7 @@ import java.util.Map;
  * consistent interface. All property file keys are here. If a program uses a
  * constant, it should use them as documented.
  */
+@Deprecated
 public class Utils
 {
 

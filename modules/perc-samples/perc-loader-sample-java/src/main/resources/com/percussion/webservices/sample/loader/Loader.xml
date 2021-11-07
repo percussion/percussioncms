@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Loader>
+   <ConnectionInfo>
+      <Protocol>http</Protocol>
+      <Host>localhost</Host>
+      <Port>9992</Port>
+   </ConnectionInfo>
+   <LoginRequest>
+      <Username>admin1</Username>
+      <Password>demo</Password>
+      <Community>Enterprise_Investments</Community>
+   </LoginRequest>
+   <ContentType>rffGeneric</ContentType>
+   <DataFile>LoaderData.xml</DataFile>
+   <TargetFolder>//Sites/EnterpriseInvestments/Files/Loader</TargetFolder>
+</Loader>

@@ -23,6 +23,7 @@ import java.net.URL;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -111,19 +112,34 @@ public class SSLCertificateChecker {
         try {
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.connect();
-            Certificate[] certs = conn.getServerCertificates();
-            for (Certificate c : certs) {
-                if (c instanceof X509Certificate) {
-                    X509Certificate xc = (X509Certificate) c;
-                    Date expiresOn = xc.getNotAfter();
-                    Date now = new Date();
-                    long daysLeft = (expiresOn.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
-                    if (daysLeft < warningDays) {
-                        String msg = url + " : " + " Certificate Will expire on : " + expiresOn + " So, only " +
-                                daysLeft + " days to go";
-                        sendSlackMessage(msg);
+            SecureHeaderCheckResponse headerCheck = SecureHeaderChecker.check(conn);
+            if(headerCheck.isFailedCheck()){
+                StringBuilder msg = new StringBuilder();
+                msg.append(url).append(" is missing the following secure headers:\r\n");
+                        for(Map.Entry<String, Boolean> e : headerCheck.getChecks().entrySet()){
+                           if(Boolean.FALSE.equals(e.getValue()))
+                                msg.append(e.getKey()).append("\r\n");
+                        }
+                sendSlackMessage(msg.toString());
+            }
+
+            try {
+                Certificate[] certs = conn.getServerCertificates();
+                for (Certificate c : certs) {
+                    if (c instanceof X509Certificate) {
+                        X509Certificate xc = (X509Certificate) c;
+                        Date expiresOn = xc.getNotAfter();
+                        Date now = new Date();
+                        long daysLeft = (expiresOn.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+                        if (daysLeft < warningDays) {
+                            String msg = url + " : " + " Certificate Will expire on : " + expiresOn + " So, only " +
+                                    daysLeft + " days to go";
+                            sendSlackMessage(msg);
+                        }
                     }
                 }
+            }catch(IllegalStateException e){
+                log.error("Error: {} connecting to host: {}", url, PSExceptionUtils.getMessageForLog(e));
             }
 
         }catch (IOException io){

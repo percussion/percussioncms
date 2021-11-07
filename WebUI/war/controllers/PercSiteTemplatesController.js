@@ -255,7 +255,7 @@
         if(force) _cache.sites = null;
         if(_cache.sites != null && _cache.sites != 'undefined')
         {
-            callback(this,[$.merge([], _cache.sites)]);
+            callback(this, $.merge([], _cache.sites));
             return;
         }
 
