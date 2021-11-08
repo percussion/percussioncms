@@ -712,10 +712,11 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
                 return new PSRenderLink("", resource);
         }
         String regionCssPath = getRegionCSSRelativePath(themeName, useCachedRegionCSS, summary);
-        //Check if file is empty
+
+        //Check if file is empty, don't add url
         try {
-            File file = new File(regionCssPath);
-            if (file == null || file.length() == 0) {
+            File cssFile = new File(themeService.getThemesRootDirectory().concat(File.separator + regionCssPath));
+            if(!cssFile.exists() || cssFile.length() == 0){
                 return new PSRenderLink("", resource);
             }
         }catch (Exception e){
@@ -782,7 +783,12 @@ public class PSRenderLinkService implements IPSRenderLinkService, IPSResourceLin
             }
             public void visit(PSThemeResource resource)
             {
-                url.append(makeThemeUrl(resource.getThemeSummary().getCssFilePath()));
+                String cssFilePath = resource.getThemeSummary().getCssFilePath();
+                File cssFile = new File(themeService.getThemesRootDirectory().concat(File.separator + cssFilePath));
+                if(cssFile.exists() && cssFile.length()>0){
+                    url.append(makeThemeUrl(cssFilePath));
+                }
+
             }
 
             private String makeThemeUrl(String fileName)

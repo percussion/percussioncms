@@ -124,6 +124,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
     @POST
     @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public PSComments getComments(PSCommentCriteria criteria)
     {
         if(criteria == null){
@@ -183,9 +184,7 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
      */
     @Override
     @POST
-  //  @JSONP(callback = CALLBACK_FN, queryParam = "callback")
     @Path("/jsonp")
-    //@Produces({ "application/x-javascript", "application/json"})
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public GenericEntity getCommentsP(PSCommentCriteria criteria){
@@ -394,6 +393,9 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             PSComment comm = new PSComment(comment);
             IPSComment newComment = commentService.addComment(comment);
             String referer = headerParams.getFirst("Referer");
+            if(referer != null && comment.getPagePath() != null && !referer.contains(comment.getPagePath())){
+                referer = referer + comment.getPagePath();
+            }
             if(referer != null && referer.contains("?lastCommentId"))
             {
                 int commentIndex = referer.indexOf("?lastCommentId");
