@@ -57,6 +57,9 @@
                                 <beans:value>X-PINGOTHER</beans:value>
                                 <beans:value>pingpong</beans:value>
                                 <beans:value>Access-Control-Allow-Origin</beans:value>
+                                <beans:value>Access-Control-Allow-Credentials</beans:value>
+                                <beans:value>Access-Control-Allow-Headers</beans:value>
+                                <beans:value>X-CSRF-HEADER</beans:value>
                                 <beans:value>X-CSRF-TOKEN</beans:value>
                                 <beans:value>X-XSRF-TOKEN</beans:value>
                                 <beans:value>Strict-Transport-Security</beans:value>
@@ -86,8 +89,11 @@
                         </beans:property>
                         <beans:property name="exposedHeaders">
                             <beans:list>
-                                <beans:value>perc-version</beans:value>
+                                <beans:value>perc-version,X-CSRF-HEADER,X-CSRF-TOKEN</beans:value>
                             </beans:list>
+                        </beans:property>
+                        <beans:property name="allowCredentials">
+                                <beans:value>true</beans:value>
                         </beans:property>
                     </beans:bean>
                 </beans:entry>

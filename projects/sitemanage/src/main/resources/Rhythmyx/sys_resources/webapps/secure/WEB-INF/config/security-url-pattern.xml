@@ -74,8 +74,11 @@
                         </beans:property>
                         <beans:property name="exposedHeaders">
                             <beans:list>
-                                <beans:value>perc-version</beans:value>
+                                <beans:value>perc-version,X-CSRF-HEADER,X-CSRF-TOKEN</beans:value>
                             </beans:list>
+                        </beans:property>
+                        <beans:property name="allowCredentials">
+                            <beans:value>true</beans:value>
                         </beans:property>
                     </beans:bean>
                 </beans:entry>
