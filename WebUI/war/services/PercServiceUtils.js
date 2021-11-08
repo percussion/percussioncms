@@ -114,12 +114,12 @@
             if(!url.endsWith("/csrf")){
                 url = csrfGetURLFromServiceCall(url);
             }
-
-            if(!url.startsWith("http")){
-                var servicebase;
-                if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
-                    servicebase = jQuery.getDeliveryServiceBase();
-                    url = joinURL(servicebase,url);
+            if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
+                var servicebase = jQuery.getDeliveryServiceBase();
+                if(servicebase !== null && typeof servicebase !== 'undefined') {
+                    if(!url.startsWith(servicebase) && !url.startsWith("http")){
+                        url = joinURL(servicebase,url);
+                    }
                 }
             }
         }
@@ -133,6 +133,10 @@
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "text/plain"
+            },
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
@@ -223,6 +227,10 @@
             contentType: 'application/json',
             method: type,
             type: type,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             url: url,
             headers: {"perc-version": version},
             success: function (data, textstatus) {
@@ -310,6 +318,10 @@
             },
             async: !sync,
             method:type,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             contentType: contentType,
             type: type,
             url: (noEscape) ? url : escape(url),
@@ -376,7 +388,7 @@
      * </pre>
      * @param dataObject JSON payload object for request, may be null.
      */
-    async function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
+    function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
         let version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
@@ -410,11 +422,18 @@
         let init = {
             url:url,
             async: true,
+            dataType: "text",
             method: type, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'omit', // include, *same-origin, omit
-            body:body,
+            contentType: "application/json",
+            accept:"application/xml",
+            data:body,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "application/xml",
@@ -422,28 +441,27 @@
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'origin-when-cross-origin',
-
-        };
-
-        const response = await fetch(url, init);
-
-        response.text().then(data => {
-            if(response.ok) {
-
+            success: function(data, textstatus){
                 let resp = {
                     data: data,
-                    status: response.status
+                    status: textstatus
                 };
-                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
-            }else{
+                callback(self.STATUS_SUCCESS,resp);
+            },
+            error: function(request, textstatus, error){
                 let resp = {
-                    message: response.message,
-                    status: response.status
+                    message: error,
+                    status: textstatus
                 };
                 callback(self.STATUS_ERROR, resp);
             }
-        });
-   }
+        };
+        makeAjaxRequest(init);
+
+    }
+
+
+
 
     /**
      * Make a cross domain JSON ajax request to the delivery sevices. The request content type will be
@@ -514,6 +532,10 @@
             type: type,
             method:type,
             async: true,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             data:body,
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -587,6 +609,10 @@
             contentType: 'application/xml',
             method:type,
             type: type,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             url: url,
             headers: {"perc-version": version},
             success: function (data, textstatus) {
@@ -886,6 +912,7 @@
         TYPE_PUT: TYPE_PUT,
         csrfGetToken: csrfGetToken,
         makeJsonRequest: makeJsonRequest,
+        makeAjaxRequest:makeAjaxRequest,
         makeXmlRequest: makeXmlRequest,
         makeRequest: makeRequest,
         makeXdmJsonRequest: makeXdmJsonRequest,
