@@ -630,7 +630,7 @@ function processIncrementalPreview(serverId) {
             $('#percIncrementalPublishPreviewOverlayTarget').animateCss('fadeIn faster');
             $('#percIncrementalPublishPreviewOverlay').modal('_enforceFocus');
 
-            if(publishRelatedItems == "true" && serverType.toLowerCase() == 'production' && result.PagedItemList.childrenInPage.length > 0) {
+            if(publishRelatedItems === true && serverType.toLowerCase() == 'production' && result.PagedItemList.childrenInPage.length > 0) {
                 processIncrementalRelatedItemsPreview();
                 $('#percIncrementalRelatedItemsTarget').animateCss('fadeIn faster');
             }
