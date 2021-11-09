@@ -23,21 +23,22 @@
  */
 package com.percussion.sitemanage.service.impl;
 
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
-import static com.percussion.util.PSSqlHelper.qualifyTableName;
-
-import static org.apache.commons.lang.StringUtils.join;
-
 import com.percussion.assetmanagement.service.IPSAssetService;
-import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.pagemanagement.data.PSWidgetContentType;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.services.error.PSRuntimeException;
-
-import com.percussion.services.relationship.IPSRelationshipService;
-import com.percussion.services.relationship.PSRelationshipServiceLocator;
 import com.percussion.sitemanage.service.IPSSitePublishServiceHelper;
+import com.percussion.util.PSSiteManageBean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,17 +48,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.percussion.util.PSSiteManageBean;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
+import static com.percussion.util.PSSqlHelper.qualifyTableName;
+import static org.apache.commons.lang.StringUtils.join;
 
 @Repository("sitePublishServiceHelper")
 @PSSiteManageBean
@@ -73,9 +66,13 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
    
     List<Integer> publishableContentTypeIds;
     List<Integer> nonBinaryContentTypeIds;
+	List<Integer> sharedAssetContentTypeIds;
 
     private IPSAssetService assetService;
     private List<String> binaryAssetTypes = Arrays.asList("percFileAsset", "percImageAsset", "percFlashAsset");
+	private List<String> sharedAssetTypes = Arrays.asList("percRawHtmlAsset", "percRichTextAsset",
+			"percSimpleTextAsset","percEventAsset","percFileAsset","percCalendarAsset","percBlogPostAsset",
+			"percRssAsset","percPollAsset");
     
     @Autowired
     public PSSitePublishServiceHelper(IPSAssetService assetService)
@@ -128,10 +125,21 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 			Set<Integer> ncids = getNonPublishableRelatedItemIds(sess, cids);
 			// now lets get the direct publishable related items
 			if (!ncids.isEmpty()) {
+				//Want to add shared Assets in relatd List.
+				results.addAll(getSharedAssetsRelatedItemIds(sess,ncids));
 				results.addAll(getPublishableRelatedItemIds(sess, ncids));
 			}
 		}
 		return results;
+	}
+
+	private Set<Integer> getSharedAssetsRelatedItemIds(Session sess, Set<Integer> cids) throws SQLException{
+			String sql = String.format(
+				"SELECT DISTINCT CS1.CONTENTID FROM %s as CS1 WHERE CS1.CONTENTID in (%s) AND CS1.CONTENTTYPEID in (%s) "
+						+ "AND CS1.TITLE NOT LIKE %s ", qualifyTableName("CONTENTSTATUS")
+				,join(cids, ","), join(getSharedAssetTypeIds(), ","),"'LocalContent-%'");
+		SQLQuery query = sess.createSQLQuery(sql);
+		return new HashSet(query.list());
 	}
 	
     private Set<Integer> getPublishableRelatedItemIds(Session sess, Set<Integer> cids) throws SQLException{
@@ -152,7 +160,7 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
         		"SELECT DISTINCT REL.DEPENDENT_ID FROM %s as CS1, %s as CS2, "
         	    		+ "%s as ST, %s as REL  WHERE REL.OWNER_ID IN (%s) AND "
         	    		+ "REL.OWNER_ID = CS1.CONTENTID AND REL.OWNER_REVISION = CS1.CURRENTREVISION AND "
-        	    		+ "REL.DEPENDENT_ID = CS2.CONTENTID AND CS2.CONTENTTYPEID in (%s)", qualifyTableName("CONTENTSTATUS"), 
+        	    		+ "REL.DEPENDENT_ID = CS2.CONTENTID AND CS2.CONTENTTYPEID in (%s)", qualifyTableName("CONTENTSTATUS"),
         	    		qualifyTableName("CONTENTSTATUS"), qualifyTableName("STATES"), qualifyTableName("PSX_OBJECTRELATIONSHIP"),
         	    		join(cids, ","), join(getNonPublishableContentTypeIds(), ","));           
         SQLQuery query = sess.createSQLQuery(sql);
@@ -166,11 +174,15 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 					.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE);
 			List<PSWidgetContentType> assetTypes = assetService.getAssetTypes("no");
 			publishableContentTypeIds = new ArrayList<>();
+			sharedAssetContentTypeIds = new ArrayList<>();
 			nonBinaryContentTypeIds = new ArrayList<>();
 			for (PSWidgetContentType type : assetTypes) {
 				try {
 					if (binaryAssetTypes.contains(type.getContentTypeName())) {
 						publishableContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
+					} else if (sharedAssetTypes.contains(type.getContentTypeName())){
+						sharedAssetContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
+						nonBinaryContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
 					} else {
 						nonBinaryContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
 					}
@@ -193,6 +205,13 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 			initTypeIds();
 		}
 		return publishableContentTypeIds;
+	}
+
+	private List<Integer> getSharedAssetTypeIds() {
+		if (sharedAssetContentTypeIds == null) {
+			initTypeIds();
+		}
+		return sharedAssetContentTypeIds;
 	}
 
 	private List<Integer> getNonPublishableContentTypeIds() {
