@@ -64,8 +64,8 @@
                         {{#each PagedItemList.childrenInPage}}
                         <tr>
                           <td>{{#filterByValue columnData.column 'name' 'sys_title'}}{{/filterByValue}}</td>
-                          <td>{{name}}</td>
                             <td>{{category}}</td>
+                            <td>{{name}}</td>
                           <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                           <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
                           <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
@@ -130,8 +130,8 @@
                   </div>
                 </td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_title'}}{{/filterByValue}}</td>
-                <td>{{name}}</td>
                   <td>{{category}}</td>
+                  <td>{{name}}</td>
                 <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
