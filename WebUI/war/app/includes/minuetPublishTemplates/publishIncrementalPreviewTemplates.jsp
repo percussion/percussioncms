@@ -52,6 +52,7 @@
                       <thead>
                         <tr>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Filename"/></th>
+                            <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Type"/></th>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Title"/></th>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified"/></th>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified By"/></th>
@@ -64,6 +65,7 @@
                         <tr>
                           <td>{{#filterByValue columnData.column 'name' 'sys_title'}}{{/filterByValue}}</td>
                           <td>{{name}}</td>
+                            <td>{{category}}</td>
                           <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                           <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
                           <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
@@ -111,6 +113,7 @@
                     </div>
                   </th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Filename"/></th>
+                  <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Type"/></th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Title"/></th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified"/></th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified By"/></th>
@@ -128,6 +131,7 @@
                 </td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_title'}}{{/filterByValue}}</td>
                 <td>{{name}}</td>
+                  <td>{{category}}</td>
                 <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
