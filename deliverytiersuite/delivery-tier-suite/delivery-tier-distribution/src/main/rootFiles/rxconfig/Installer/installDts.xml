@@ -713,6 +713,21 @@
                 </else>
             </if>
 
+            <echo>Adding Ciphers to connector...</echo>
+            <if>
+                <not>
+                    <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" substring="ciphers=" />
+                </not>
+                <then>
+                    <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/server.xml" summary="yes">
+                        <replacetoken><![CDATA[sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation"]]></replacetoken>
+                        <replacevalue><![CDATA[ciphers="${https.ciphers}"
+                        sslImplementationName="org.apache.tomcat.util.net.jsse.JSSEImplementation"]]>
+                        </replacevalue>
+                    </replace>
+                </then>
+            </if>
+
             <replace file="${install.dir}${staging.dir}/Deployment/Server/bin/setenv.sh" summary="yes"
                      token="@JAVA_OPTS@" value="-Drxdeploydir=${install.dir}">
             </replace>
