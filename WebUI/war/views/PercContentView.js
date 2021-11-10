@@ -324,7 +324,7 @@
                         });
                         var isEmptyDropOnWidget = false;
                         if(event.target.innerText.length === 0) {
-                            if(ui.draggable[0].innerText.length !== 0 && evt.target.getAttribute('widgetdefid') === ui.draggable[0].getAttribute('widgetdefid')) {
+                            if(ui.draggable[0].innerText.length !== 0 && event.target.getAttribute('widgetdefid') === ui.draggable[0].getAttribute('widgetdefid')) {
                                 var customText = event.target.innerHTML;
                                 dropOnWidget[0].innerHTML = ui.draggable[0].innerHTML;
                                 draggedWidget[0].innerHTML = customText;
