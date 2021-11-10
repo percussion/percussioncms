@@ -66,13 +66,13 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
    
     List<Integer> publishableContentTypeIds;
     List<Integer> nonBinaryContentTypeIds;
-	List<Integer> sharedAssetContentTypeIds;
+	String allSharedAssetContentTypeIds;
+	String allValidRelationshipConfigs;
 
     private IPSAssetService assetService;
     private List<String> binaryAssetTypes = Arrays.asList("percFileAsset", "percImageAsset", "percFlashAsset");
-	private List<String> sharedAssetTypes = Arrays.asList("percRawHtmlAsset", "percRichTextAsset",
-			"percSimpleTextAsset","percEventAsset","percFileAsset","percCalendarAsset","percBlogPostAsset",
-			"percRssAsset","percPollAsset");
+	private String binaryAssetTypesStr = "'percPage','percFileAsset', 'percImageAsset', 'percFlashAsset'";
+	private String invalidRelationshipConfigName = "'RecycledContent','LocalContent'";
     
     @Autowired
     public PSSitePublishServiceHelper(IPSAssetService assetService)
@@ -113,7 +113,6 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 		return results;
 	}
 
-	
 
     private Set<Integer> getRelatedItemIds(Session sess, Set<Integer> cids) throws SQLException {
 		Set<Integer> results = new HashSet<>();
@@ -126,18 +125,22 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 			// now lets get the direct publishable related items
 			if (!ncids.isEmpty()) {
 				//Want to add shared Assets in relatd List.
-				results.addAll(getSharedAssetsRelatedItemIds(sess,ncids));
+				results.addAll(getSharedAssetsRelatedItemIds(sess,cids,ncids));
 				results.addAll(getPublishableRelatedItemIds(sess, ncids));
 			}
 		}
 		return results;
 	}
 
-	private Set<Integer> getSharedAssetsRelatedItemIds(Session sess, Set<Integer> cids) throws SQLException{
-			String sql = String.format(
-				"SELECT DISTINCT CS1.CONTENTID FROM %s as CS1 WHERE CS1.CONTENTID in (%s) AND CS1.CONTENTTYPEID in (%s) "
-						+ "AND CS1.TITLE NOT LIKE %s ", qualifyTableName("CONTENTSTATUS")
-				,join(cids, ","), join(getSharedAssetTypeIds(), ","),"'LocalContent-%'");
+	private Set<Integer> getSharedAssetsRelatedItemIds(Session sess, Set<Integer> cids, Set<Integer> ncids) throws SQLException{
+		String sql = String.format(
+    	"SELECT DISTINCT REL.DEPENDENT_ID FROM %s as CS1, %s as CS2, "
+				+ "%s as ST, %s as REL  WHERE REL.OWNER_ID IN (%s) AND "
+				+ "REL.OWNER_ID = CS1.CONTENTID AND REL.OWNER_REVISION = CS1.CURRENTREVISION AND "
+				+ "REL.DEPENDENT_ID = CS2.CONTENTID AND REL.DEPENDENT_ID IN (%s) AND CS2.CONTENTTYPEID in (%s) AND ST.WORKFLOWAPPID = CS2.WORKFLOWAPPID AND "
+				+ "ST.STATEID = CS2.CONTENTSTATEID AND REL.CONFIG_ID IN (%s) AND ST.CONTENTVALID IN('n','i')", qualifyTableName("CONTENTSTATUS"),
+				qualifyTableName("CONTENTSTATUS"), qualifyTableName("STATES"), qualifyTableName("PSX_OBJECTRELATIONSHIP"),
+				join(cids, ","),join(ncids, ","),allSharedAssetContentTypeIds,allValidRelationshipConfigs);
 		SQLQuery query = sess.createSQLQuery(sql);
 		return new HashSet(query.list());
 	}
@@ -150,7 +153,7 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
         	    		+ "REL.DEPENDENT_ID = CS2.CONTENTID	AND CS2.CONTENTTYPEID in (%s) AND ST.WORKFLOWAPPID = CS2.WORKFLOWAPPID AND "
         	    		+ "ST.STATEID = CS2.CONTENTSTATEID AND ST.CONTENTVALID IN('n','i')", qualifyTableName("CONTENTSTATUS"),
         	    		qualifyTableName("CONTENTSTATUS"), qualifyTableName("STATES"), qualifyTableName("PSX_OBJECTRELATIONSHIP"),
-        	    		join(cids, ","), join(getPublishableContentTypeIds(), ","));           
+        	    		join(cids, ","), join(getPublishableContentTypeIds(sess), ","));
         SQLQuery query = sess.createSQLQuery(sql);
         return new HashSet(query.list());
     }
@@ -162,27 +165,29 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
         	    		+ "REL.OWNER_ID = CS1.CONTENTID AND REL.OWNER_REVISION = CS1.CURRENTREVISION AND "
         	    		+ "REL.DEPENDENT_ID = CS2.CONTENTID AND CS2.CONTENTTYPEID in (%s)", qualifyTableName("CONTENTSTATUS"),
         	    		qualifyTableName("CONTENTSTATUS"), qualifyTableName("STATES"), qualifyTableName("PSX_OBJECTRELATIONSHIP"),
-        	    		join(cids, ","), join(getNonPublishableContentTypeIds(), ","));           
+        	    		join(cids, ","), join(getNonPublishableContentTypeIds(sess), ","));
         SQLQuery query = sess.createSQLQuery(sql);
         return new HashSet(query.list());
     }
         
-	private void initTypeIds() {
+	private void initTypeIds(Session sess) {
 		try {
 			PSItemDefManager defMgr = PSItemDefManager.getInstance();
 			long pageContentTypeId = defMgr
 					.contentTypeNameToId(IPSPageService.PAGE_CONTENT_TYPE);
+			if(allSharedAssetContentTypeIds == null) {
+				allSharedAssetContentTypeIds = join(loadSharedAssetContentType(sess), ",");
+			}
+			if(allValidRelationshipConfigs == null) {
+				allValidRelationshipConfigs = join(loadValidRelationshipConfigNames(sess), ",");
+			}
 			List<PSWidgetContentType> assetTypes = assetService.getAssetTypes("no");
 			publishableContentTypeIds = new ArrayList<>();
-			sharedAssetContentTypeIds = new ArrayList<>();
 			nonBinaryContentTypeIds = new ArrayList<>();
 			for (PSWidgetContentType type : assetTypes) {
 				try {
 					if (binaryAssetTypes.contains(type.getContentTypeName())) {
 						publishableContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
-					} else if (sharedAssetTypes.contains(type.getContentTypeName())){
-						sharedAssetContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
-						nonBinaryContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
 					} else {
 						nonBinaryContentTypeIds.add(Integer.valueOf(type.getContentTypeId()));
 					}
@@ -200,23 +205,32 @@ public class PSSitePublishServiceHelper implements IPSSitePublishServiceHelper
 		}		
 	}
 
-	private List<Integer> getPublishableContentTypeIds() {
+	private List loadSharedAssetContentType(Session sess)throws SQLException{
+		String sql = String.format(
+				"SELECT DISTINCT CONTENTTYPEID FROM %s WHERE CONTENTTYPENAME NOT IN (%s)" , qualifyTableName("CONTENTTYPES")
+				,binaryAssetTypesStr);
+		SQLQuery query = sess.createSQLQuery(sql);
+		return query.list();
+	}
+
+	private List loadValidRelationshipConfigNames(Session sess)throws SQLException{
+		String sql = String.format(
+				"SELECT DISTINCT CONFIG_ID FROM %s WHERE CONFIG_NAME NOT IN (%s)" , qualifyTableName("PSX_RELATIONSHIPCONFIGNAME")
+				,invalidRelationshipConfigName);
+		SQLQuery query = sess.createSQLQuery(sql);
+		return query.list();
+	}
+
+	private List<Integer> getPublishableContentTypeIds(Session sess) {
 		if (publishableContentTypeIds == null) {
-			initTypeIds();
+			initTypeIds(sess);
 		}
 		return publishableContentTypeIds;
 	}
 
-	private List<Integer> getSharedAssetTypeIds() {
-		if (sharedAssetContentTypeIds == null) {
-			initTypeIds();
-		}
-		return sharedAssetContentTypeIds;
-	}
-
-	private List<Integer> getNonPublishableContentTypeIds() {
+	private List<Integer> getNonPublishableContentTypeIds(Session sess) {
 		if (nonBinaryContentTypeIds == null) {
-			initTypeIds();
+			initTypeIds(sess);
 		}
 		return nonBinaryContentTypeIds;
 	}
