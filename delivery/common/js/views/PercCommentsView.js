@@ -81,7 +81,7 @@
         commentForm.attr("action", url);
         var tokenHeader;
         var token;
-       if( $.isEditMode === "true" || commentForm.length === 0){
+       if( $.isEditMode === "true" || commentForm.length === 0 || jQuery("input[type = 'submit']").attr('disabled') ===  'disabled'){
            return;
        }
         $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(deliveryServicesURL,"/perc-comments-services/comment/csrf"),function (response) {
@@ -100,12 +100,12 @@
 
     var globals = {
         dateFormatter: null 
-    }; 
-    
+    };
+
     var settings = {
         serviceurl: null, // The comments service url. Expects no query string.
         site: null, // The sitename
-        pagepath: null, 
+        pagepath: null,
         tag: null,
         username: null,
         state: 'APPROVED', // either APPROVED or REJECTED
@@ -209,8 +209,7 @@
     {
         var fullLink =  getUrl();
         var splittedLink = fullLink.split("?");
-        var href = splittedLink[0];
-        var qs = splittedLink[0] + "/list";
+        var href = splittedLink[0] + "/list";
         var commentsQueryString = splittedLink[1];
         var splittedQs = commentsQueryString.split('&');
         var body = {};
@@ -225,6 +224,9 @@
             data: JSON.stringify(body),
             crossDomain: true,
             headers: {  'Access-Control-Allow-Origin': '*' },
+            xhrFields: {
+                withCredentials: true
+            },
             contentType: "application/json; charset=utf-8",
             url: href,
             success: function(data, status){
@@ -236,20 +238,7 @@
             }
         };
 
-        $.PercServiceUtils.csrfGetToken(href,function (response) {
-            if (typeof response !== 'undefined' && response != null) {
-                var tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
-                if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
-                    var token = response.getResponseHeader("X-CSRF-TOKEN");
-                    if (typeof token !== "undefined" && token != null) {
-                        if (tokenHeader != null && token != null) {
-                            init.headers[tokenHeader] = token;
-                        }
-                    }
-                }
-            }
-            $.ajax(init);
-        });
+        $.PercServiceUtils.makeAjaxRequest(init);
     }
 
     
@@ -263,7 +252,7 @@
         var version = typeof($.getCMSVersion) === "function"?$.getCMSVersion():"";
         
         //Build a valid service URL based on the value stored in the delivery
-        var url = deliveryServicesURL + "/perc-comments-services/comment/jsonp";
+        var url = deliveryServicesURL + "/perc-comments-services/comment";
 
         url += "?site=" + settings.site;
         if(!isBlank(settings.pagepath))

@@ -82,6 +82,10 @@
 
                     var doc=$(this);
 
+                    if( jQuery("input[type = 'submit']").attr('disabled') === 'disabled'){
+                        return;
+                    };
+
                     $.PercServiceUtils.csrfGetToken($.PercServiceUtils.joinURL(servicebase,"/perc-form-processor/forms/csrf"),function (response) {
                         if (typeof response !== 'undefined' && response != null)
                             tokenHeader = response.getResponseHeader("X-CSRF-HEADER");
