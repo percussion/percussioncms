@@ -1017,6 +1017,15 @@
 				<seg>Nombre del Archivo</seg>
             </tuv>
     	</tu>
+    	<tu tuid="perc.ui.publish.title@Type">
+            <note xml:lang="en-us">Title of the column.</note>
+            <tuv xml:lang="en-us">
+                <seg>Type</seg>
+            </tuv>
+            <tuv xml:lang="es">
+                <seg>Escribe</seg>
+            </tuv>
+        </tu>
     	<tu tuid="perc.ui.publish.title@Title">
             <note xml:lang="en-us">Title of the column.</note>
             <tuv xml:lang="en-us">
