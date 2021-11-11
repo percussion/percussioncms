@@ -1394,19 +1394,14 @@ var layoutModel;
                     var widgetInfo = this;
                     var widgetDef = widgetDefs[widgetInfo.widgetName];
                     var wdgElem = $("div.perc-widget-tool[id=widget-" + widgetInfo.widgetName + "-0]").closest("a");
-                    wdgElem.tooltip({
-                        delay: 800,
-                        bodyHandler: function(){
-                            //TODO: I18N HTML Below
-                            var infoHtml =
-                                "<p> Name: " + widgetDef.label + "</p>" +
-                                "<p> Description: " + widgetDef.description + "</p>" +
-                                "<p class=\"perc-widget-is-responsive-label\" status=\"" + (widgetDef.responsive ? "Yes" : "No") + "\"> Is Responsive: " + (widgetDef.responsive ? "Yes" : "No") + "</p>" +
-                                "<p> Provider URL: " + widgetInfo.providerUrl + "</p>" +
-                                "<p> Version: " + widgetInfo.version + "</p>";
-                            return infoHtml;
-                        }
-                    });
+                    var infoHtml =
+                        "<p> Name: " + widgetDef.label + "\nDescription: " + widgetDef.description +
+                        "\nIs Responsive: " + (widgetDef.responsive ? "Yes" : "No") +
+                        "\nProvider URL: " + widgetInfo.providerUrl +
+                        "\nVersion: " + widgetInfo.version + "</p>";
+                    wdgElem.attr('title',$(infoHtml).html());
+                    //Setting the tooltip on entire block
+                    wdgElem.attr('alt',$(infoHtml).html());
 
                 });
 
