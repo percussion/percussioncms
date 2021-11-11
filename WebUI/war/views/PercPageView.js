@@ -529,11 +529,15 @@
                             return helper;
                         },
                         appendTo: 'body',
+                        iframeFix:true,
                         refreshPositions: true,
                         zIndex: 9990,
                         revert: true,
                         revertDuration: 0,
-                        delay: 25
+                        delay: 25,
+                        containment: "window",
+                        scope : $.perc_iframe_scope,
+                        scroll: true
                     });
 
                 $("#perc_orphan_assets_maximizer").removeClass("perc-disabled");
