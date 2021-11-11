@@ -138,9 +138,15 @@ public class PSPageChangeHandler implements IPSPageChangeListener
        if(asset!=null)
           updateAuthor(page, asset);
        updateSummary(page);
-       PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.PAGE_SAVED, page.getId());
-       IPSNotificationService srv = PSNotificationServiceLocator.getNotificationService();
-       srv.notifyEvent(notifyEvent);
+       if(page.isPage()) {
+           PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.PAGE_SAVED, page.getId());
+           IPSNotificationService srv = PSNotificationServiceLocator.getNotificationService();
+           srv.notifyEvent(notifyEvent);
+       }else{
+           PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.TEMPLATE_SAVED, page.getId());
+           IPSNotificationService srv = PSNotificationServiceLocator.getNotificationService();
+           srv.notifyEvent(notifyEvent);
+       }
    }
    
     /**
