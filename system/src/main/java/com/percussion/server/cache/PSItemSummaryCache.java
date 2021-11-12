@@ -65,12 +65,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -108,12 +106,11 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     *
     * @return The instance of this class.
     *
-    * @throws IllegalStateException if {@link #createInstance()} has already
+    * @throws IllegalStateException if has already
     *    been called.
     * @throws PSCacheException if other error occurs.
     */
    static synchronized PSItemSummaryCache createInstance()
-         throws PSCacheException
    {
       if (ms_instance != null)
          throw new IllegalStateException(
@@ -148,7 +145,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     * It populates the cache with name and acl for all folders. Do nothing if
     * it is already started.
     * <p>
-    * Note: Assume the caller is sychronized by {@link #m_cacheMonitor}.
     *
     * @throws PSCacheException if an error occurs.
     */
@@ -174,7 +170,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       m_isStarted = true;
 
       watch.stop();
-      log.debug("start elapse time: {} ", watch.toString());
+      log.debug("start elapse time: {} ", watch);
    }
 
    /**
@@ -189,8 +185,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     */
    void reinitialize(boolean isEnabled) throws PSCacheException
    {
-      synchronized (m_cacheMonitor)
-      {
          if (isEnabled)
          {
             stop();
@@ -200,13 +194,11 @@ public class PSItemSummaryCache implements IPSTableChangeListener
          {
             stop();
          }
-      }
    }
 
    /**
     * Stops the caching operation and release all cached data.
     * <p>
-    * Note: Assume the caller is sychronized by {@link #m_cacheMonitor}.
     */
    private void stop()
    {
@@ -236,7 +228,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     */
    private PSItemEntry getCachedItem(Integer id)
    {
-      PSItemEntry item = (PSItemEntry) m_items.get(id);
+      PSItemEntry item = m_items.get(id);
       //If Not found in cache, load the item.
       if(item == null) {
          item = loadItem(id);
@@ -256,7 +248,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
 
          IPSItemEntry itemEntry = m_cmsObjectMgr.loadItemEntry(id);
          if(itemEntry != null) {
-            synchronized (getCacheSyncObject(id)) {
                if (itemEntry.getObjectType() == PSCmsObject.TYPE_FOLDER) {
                   item = new PSFolderEntry(itemEntry.getContentId(), itemEntry.getName(), itemEntry.getCommunityId(),
                           itemEntry.getContentTypeId(), itemEntry.getObjectType());
@@ -264,7 +255,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
                   item = (PSItemEntry) itemEntry;
                }
                m_items.put(itemEntry.getContentId(), item);
-            }
          }
       return item;
 
@@ -280,7 +270,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     */
    private class FoundColumns
    {
-      Map<String, Boolean> mi_foundColumns = new HashMap<>();
+      ConcurrentMap<String, Boolean> mi_foundColumns = new ConcurrentHashMap<>();
       
       /**
        * Constructs the object for a list of updated columns.
@@ -327,13 +317,13 @@ public class PSItemSummaryCache implements IPSTableChangeListener
        */
       boolean hasUpdateColumns()
       {
-         return mi_foundColumns.get(CONTENTID_COLUMN).booleanValue()
-               && (mi_foundColumns.get(TITLE_COLUMN).booleanValue()
-                     || mi_foundColumns.get(CONTENTLASTMODIFIEDDATE_COLUMN).booleanValue()
-                     || mi_foundColumns.get(CONTENTPOSTDATE_COLUMN).booleanValue()
-                     || mi_foundColumns.get(CONTENTSTATEID_COLUMN).booleanValue() 
-                     || mi_foundColumns.get(WORKFLOWAPPID_COLUMN).booleanValue()
-                     || mi_foundColumns.get(CONTENTPUBLISHDATE_COLUMN).booleanValue());
+         return mi_foundColumns.get(CONTENTID_COLUMN)
+               && (mi_foundColumns.get(TITLE_COLUMN)
+                     || mi_foundColumns.get(CONTENTLASTMODIFIEDDATE_COLUMN)
+                     || mi_foundColumns.get(CONTENTPOSTDATE_COLUMN)
+                     || mi_foundColumns.get(CONTENTSTATEID_COLUMN)
+                     || mi_foundColumns.get(WORKFLOWAPPID_COLUMN)
+                     || mi_foundColumns.get(CONTENTPUBLISHDATE_COLUMN));
       }
       
       /**
@@ -342,10 +332,10 @@ public class PSItemSummaryCache implements IPSTableChangeListener
        */
       boolean hasInsertColumns()
       {
-         return mi_foundColumns.get(CONTENTID_COLUMN).booleanValue()
-               && mi_foundColumns.get(TITLE_COLUMN).booleanValue()
-               && mi_foundColumns.get(OBJECTTYPE_COLUMN).booleanValue()
-               && mi_foundColumns.get(CONTENTTYPEID_COLUMN).booleanValue();
+         return mi_foundColumns.get(CONTENTID_COLUMN)
+               && mi_foundColumns.get(TITLE_COLUMN)
+               && mi_foundColumns.get(OBJECTTYPE_COLUMN)
+               && mi_foundColumns.get(CONTENTTYPEID_COLUMN);
       }
       
       /**
@@ -354,7 +344,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
        */
       boolean hasDeleteColumns()
       {
-         return mi_foundColumns.get(CONTENTID_COLUMN).booleanValue();
+         return mi_foundColumns.get(CONTENTID_COLUMN);
       }
       
    }
@@ -389,13 +379,11 @@ public class PSItemSummaryCache implements IPSTableChangeListener
          PSDataSynchronizer sync = upPipe.getDataSynchronizer();
    
          PSCollection tableCol = upPipe.getBackEndDataTank().getTables();
-   
-         boolean added = false;
-         Iterator tables = tableCol.iterator();
-         while (tables.hasNext() && !added)
-         {
-            PSBackEndTable table = (PSBackEndTable) tables.next();
-   
+
+
+         for (Object o : tableCol) {
+            PSBackEndTable table = (PSBackEndTable) o;
+
             // interested in CONTENTSTATUS table changes only
             if (!table.getTable().equalsIgnoreCase(IPSConstants.CONTENT_STATUS_TABLE))
                continue;
@@ -403,21 +391,11 @@ public class PSItemSummaryCache implements IPSTableChangeListener
             FoundColumns foundColumns = new FoundColumns(sync.getUpdateColumns().iterator());
 
             // register the notification if needed
-            if (sync.isUpdatingAllowed() && foundColumns.hasUpdateColumns())
-            {
+            if (sync.isUpdatingAllowed() && foundColumns.hasUpdateColumns() ||
+                    sync.isInsertingAllowed() && foundColumns.hasInsertColumns() ||
+                    sync.isDeletingAllowed() && foundColumns.hasDeleteColumns()
+            ) {
                // to be notified after update
-               uh.addTableChangeListener(this);
-               return;
-            }
-            else if (sync.isInsertingAllowed() && foundColumns.hasInsertColumns())
-            {
-               // to be notified after insert
-               uh.addTableChangeListener(this);
-               return;
-            }
-            else if (sync.isDeletingAllowed() && foundColumns.hasDeleteColumns())
-            {
-               // to be notified after delete
                uh.addTableChangeListener(this);
                return;
             }
@@ -653,10 +631,9 @@ public class PSItemSummaryCache implements IPSTableChangeListener
 
          int contentId = getInteger(itemInfo.mi_contentIdS);
          Integer id = contentId;
-         PSItemEntry item = (PSItemEntry) m_items.get(id);
+         PSItemEntry item = m_items.get(id);
          if (item == null)
          {
-            synchronized (getCacheSyncObject(contentId)) {
                int objectType = getInteger(itemInfo.mi_objectTypeS);
                int communityId = getInteger(itemInfo.mi_communityIdS);
                int contentTypeId = getInteger(itemInfo.mi_contentTypeIdS);
@@ -715,7 +692,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
                
                m_items.put(id, item);
                log.debug("insert item id: {} ", contentId);
-            }
+
          }
   
    }
@@ -827,11 +804,13 @@ public class PSItemSummaryCache implements IPSTableChangeListener
                origRevs.remove(currentRevision);
                origRevs.remove(publicRevision);
                
-               if (origRevs.size()>0)
+               if (!origRevs.isEmpty())
                {
                   log.debug("Content status revision change, clean up AA revisions {} for id {} name {} ", origRevs, contentId, itemInfo.mi_title);
                   PSFolderRelationshipCache relCache = PSFolderRelationshipCache.getInstance();
-                  relCache.deleteOwnerRevisions(contentId, origRevs);
+                  if(relCache != null) {
+                     relCache.deleteOwnerRevisions(contentId, origRevs);
+                  }
                }
             
             }
@@ -913,7 +892,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    {
       PSItemEntry folder = getCachedItem(id);
 
-      return (folder != null) ? folder.isFolder() : false;
+      return folder != null && folder.isFolder();
    }
 
    /**
@@ -925,11 +904,10 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    public void updateFolder(PSFolder folder)
    {
     
-      PSLocator locator = (PSLocator) folder.getLocator();
+      PSLocator locator = folder.getLocator();
       Integer id = (locator.getId());
-      synchronized (getCacheSyncObject(id))
-      {
-         PSItemEntry item = (PSItemEntry) m_items.get(id);
+
+         PSItemEntry item = m_items.get(id);
          PSFolderEntry folderEntry;
          if (item == null)
          {
@@ -943,7 +921,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
             folderEntry.updateFolder(folder);
             log.debug("update PSFolder for id: {} ", id);
          }
-      }
+
    }
 
    /**
@@ -1061,7 +1039,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    /**
     * Loads all folder ACL's for the cached folders from the repository. 
     * <p>
-    * Note: Assume the caller is sychronized by {@link #m_cacheMonitor}.
     * 
     * @throws IllegalStateException if {@link #m_items} has not been initialized
     * @throws PSCacheException if an error occurs.
@@ -1087,9 +1064,8 @@ public class PSItemSummaryCache implements IPSTableChangeListener
 
    /**
     * Loads all folder ACL's from the repository and set EMPTY folder acl object 
-    * for the folders whoes folder acl are not defined.
+    * for the folders who's folder acl are not defined.
     * <p>
-    * Note: Assume the caller is sychronized by {@link #m_cacheMonitor}.
     *
     * @param idList a list of folder id's as <code>Integer</code>. This is used
     *    to set EMPTY acls, assumed not <code>null</code>, may be empty.
@@ -1102,7 +1078,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       for (int i=0; i<idList.size(); i++)
       {
          Integer id = (Integer) idList.get(i);
-         ids[i++] = id.intValue();
+         ids[i++] = id;
       }
 
       PSFolderAcl[] acls = null;
@@ -1119,15 +1095,13 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       // populate the folder acls
       PSFolderEntry folder;
       PSItemEntry item;
-      List emptyAcls = new ArrayList(idList);
-      for (int i=0; i<acls.length; i++)
-      {
-         Integer id = acls[i].getContentId();
-         item = (PSItemEntry) m_items.get(id);
-         if (item != null && (item instanceof PSFolderEntry))
-         {
+      List emptyAcls = new ArrayList<>(idList);
+      for (PSFolderAcl psFolderAcl : acls) {
+         Integer id = psFolderAcl.getContentId();
+         item =  m_items.get(id);
+         if ( (item instanceof PSFolderEntry)) {
             folder = (PSFolderEntry) item;
-            folder.setFolderAcl(acls[i]);
+            folder.setFolderAcl(psFolderAcl);
             emptyAcls.remove(id);
          }
       }
@@ -1135,15 +1109,13 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       // set an EMPTY acl object for all folders who have no acl was found
       // this is used for getFolderAcl(int), so that the cached folders
       // always have a folder acl object.
-      for (int i=0; i<emptyAcls.size(); i++)
-      {
-         Integer id = (Integer) emptyAcls.get(i);
-         item = (PSItemEntry) m_items.get(id);
-         if (item.isFolder())
-         {
+      for (Object emptyAcl : emptyAcls) {
+         Integer id = (Integer) emptyAcl;
+         item = m_items.get(id);
+         if (item.isFolder()) {
             folder = (PSFolderEntry) m_items.get(id);
-            PSFolderAcl acl = new PSFolderAcl(folder.getContentId(), 
-               folder.getCommunityId());
+            PSFolderAcl acl = new PSFolderAcl(folder.getContentId(),
+                    folder.getCommunityId());
             folder.setFolderAcl(acl);
          }
       }
@@ -1155,7 +1127,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     * Load the sys_pubFileName property value for all folders from the backend
     * repository.
     * <p>
-    * Note: Assume the caller is sychronized by {@link #m_cacheMonitor}.
     * 
     * @throws PSCacheException if an error occurs.
     */
@@ -1194,7 +1165,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     * Load the cached property values for all folders from the backend
     * repository.
     * <p>
-    * Note: Assume the caller is sychronized by {@link #m_cacheMonitor}.
     * 
     * @throws PSCacheException if an error occurs.
     */
@@ -1206,10 +1176,9 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       if (ir == null)
          throw new PSCacheException(IPSCmsErrors.REQUIRED_RESOURCE_MISSING,
                GET_CACHED_FOLDER_PROPS_RSC);
-      ResultSet rs = null;
-      try
+
+      try(ResultSet rs = ir.getResultSet() )
       {
-         rs = ir.getResultSet();
          int contentId;
          String propName;
          String propValue;
@@ -1220,7 +1189,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
             propValue = rs.getString(3);
             
             Object item = m_items.get(contentId);
-            if (item != null && (item instanceof PSFolderEntry))
+            if ((item instanceof PSFolderEntry))
             {
                PSFolderEntry folder = (PSFolderEntry) item;
                if (PSFolder.PROPERTY_GLOBALTEMPLATE.equalsIgnoreCase(propName))
@@ -1242,18 +1211,6 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       }
       finally
       {
-         if (rs != null)
-         {
-            try
-            {
-               rs.close();
-            }
-            catch (SQLException e)
-            {
-               // close quietly
-            }
-         }
-         
          ir.cleanUp();
       }
    }
@@ -1294,8 +1251,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
 
       int totalItems;
       int totalFolders = 0;
-      synchronized (m_cacheMonitor)
-      {
+
          totalItems = m_items.size();
          Iterator it = m_items.values().iterator();
          PSItemEntry item;
@@ -1305,7 +1261,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
             if (item.isFolder())
                totalFolders++;
          }
-      }
+
 
       Element el = doc.createElement("ItemSummaryCacheStatistics");
       PSXmlDocumentBuilder.addElement( doc, el, "totalItemsAndFolders",
@@ -1318,7 +1274,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
       return el;
    }
    
-   private IPSCmsObjectMgrInternal m_cmsObjectMgr = (IPSCmsObjectMgrInternal)PSCmsObjectMgrLocator.getObjectManager();;
+   private IPSCmsObjectMgrInternal m_cmsObjectMgr = (IPSCmsObjectMgrInternal)PSCmsObjectMgrLocator.getObjectManager();
    
    /**
     * The singleton instance of the {@link PSItemSummaryCache} class.
@@ -1351,31 +1307,31 @@ public class PSItemSummaryCache implements IPSTableChangeListener
    /**
     * The column names in {@link #ms_columns}
     */
-   private final static String CONTENTID_COLUMN = "CONTENTID";
-   private final static String CONTENTTYPEID_COLUMN = "CONTENTTYPEID";
-   private final static String TITLE_COLUMN = "TITLE";
-   private final static String COMMUNITYID_COLUMN = "COMMUNITYID";
-   private final static String OBJECTTYPE_COLUMN = "OBJECTTYPE";
+   private static final  String CONTENTID_COLUMN = "CONTENTID";
+   private static final  String CONTENTTYPEID_COLUMN = "CONTENTTYPEID";
+   private static final  String TITLE_COLUMN = "TITLE";
+   private static final  String COMMUNITYID_COLUMN = "COMMUNITYID";
+   private static final  String OBJECTTYPE_COLUMN = "OBJECTTYPE";
    
-   private final static String CONTENTCREATEDBY_COLUMN = "CONTENTCREATEDBY";
-   private final static String CONTENTPOSTDATE_COLUMN = "CONTENTPOSTDATE";
-   private final static String CONTENTSTATEID_COLUMN = "CONTENTSTATEID";
-   private final static String WORKFLOWAPPID_COLUMN = "WORKFLOWAPPID";
-   private final static String CONTENTCREATEDDATE_COLUMN = "CONTENTCREATEDDATE";
-   private final static String CONTENTLASTMODIFIEDDATE_COLUMN = "CONTENTLASTMODIFIEDDATE";
-   private final static String TIPREVISION_COLUMN = "TIPREVISION";
-   private final static String CURRENTREVISION_COLUMN = "CURRENTREVISION";
-   private final static String PUBLIC_REVISION_COLUMN = "PUBLIC_REVISION";
-   private final static String CONTENTLASTMODIFIER_COLUMN = "CONTENTLASTMODIFIER";
-   private final static String CONTENTCHECKOUTUSERNAME_COLUMN = "CONTENTCHECKOUTUSERNAME";
-   private final static String CONTENTPUBLISHDATE_COLUMN = "CONTENTPUBLISHDATE";
+   private static final  String CONTENTCREATEDBY_COLUMN = "CONTENTCREATEDBY";
+   private static final  String CONTENTPOSTDATE_COLUMN = "CONTENTPOSTDATE";
+   private static final  String CONTENTSTATEID_COLUMN = "CONTENTSTATEID";
+   private static final  String WORKFLOWAPPID_COLUMN = "WORKFLOWAPPID";
+   private static final  String CONTENTCREATEDDATE_COLUMN = "CONTENTCREATEDDATE";
+   private static final  String CONTENTLASTMODIFIEDDATE_COLUMN = "CONTENTLASTMODIFIEDDATE";
+   private static final  String TIPREVISION_COLUMN = "TIPREVISION";
+   private static final  String CURRENTREVISION_COLUMN = "CURRENTREVISION";
+   private static final  String PUBLIC_REVISION_COLUMN = "PUBLIC_REVISION";
+   private static final  String CONTENTLASTMODIFIER_COLUMN = "CONTENTLASTMODIFIER";
+   private static final  String CONTENTCHECKOUTUSERNAME_COLUMN = "CONTENTCHECKOUTUSERNAME";
+   private static final  String CONTENTPUBLISHDATE_COLUMN = "CONTENTPUBLISHDATE";
    
 
    /**
     * The updated column names for the update handlers, used for setup
     * the table changed notification.
     */
-   private final static String[] ms_columns = new String[]
+   private static final  String[] ms_columns = new String[]
    {
       CONTENTID_COLUMN,
       CONTENTTYPEID_COLUMN,
@@ -1401,12 +1357,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
     */
    private static final String GET_CACHED_FOLDER_PROPS_RSC =
       "sys_psxInternalResources/getCachedFolderProperties";
-   
-   /**
-    * Object used to synchronize access to the handler's cache.  Never 
-    * <code>null</code>, immutable.
-    */
-   private Object m_cacheMonitor = new Object();  
+
    
    private ConcurrentMap<Integer, Integer> locks = new ConcurrentHashMap<>();
    

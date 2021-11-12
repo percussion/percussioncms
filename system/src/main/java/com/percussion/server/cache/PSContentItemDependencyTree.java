@@ -50,7 +50,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -598,12 +597,12 @@ public class PSContentItemDependencyTree
    {
       ItemSet result = new ItemSet(contentId, revisionId);
 
-      Map done = new HashMap();
+      Map done = new ConcurrentHashMap<>();
       if (contentId >= 0)
       {
-         Integer cid = new Integer(contentId);
+         Integer cid = contentId;
          Integer rid = null;
-         rid = new Integer(revisionId);
+         rid = revisionId;
          add(cid, rid, result, done);
       }
       else if (variantId >= 0)
@@ -621,8 +620,8 @@ public class PSContentItemDependencyTree
                   item = (PSItemDependency) items.get(i);
                   if (item.getVariantId() == variantId)
                   {
-                     Integer cid = new Integer(item.getRelatedContentid());
-                     Integer rid = new Integer(-1);
+                     Integer cid = item.getRelatedContentid();
+                     Integer rid = -1;
                      add(cid, rid, result, done);
                   }
                }
@@ -652,23 +651,20 @@ public class PSContentItemDependencyTree
     *    that have been processed, assumed not <code>null</code>. This map is
     *    used to avoid endless loops.
     */
-   private void add(Integer cid, Integer rid, ItemSet target, Map done)
+   private void add(Integer cid, Integer rid, ItemSet target, Map<Integer,Integer> done)
    {
       if (done.get(cid) != null)
          return;
       else
          done.put(cid, rid);
 
-      List dependencies = (List) m_dependencyMap.get(cid);
+      List<PSItemDependency> dependencies = m_dependencyMap.get(cid);
       if (dependencies != null)
       {
-         Iterator deps = dependencies.iterator();
-         while (deps.hasNext())
-         {
-            PSItemDependency dependency = (PSItemDependency)deps.next();
+         for (PSItemDependency dependency : dependencies) {
             target.add(dependency.getContentId(), dependency.getRevisionId());
-            add(new Integer(dependency.getContentId()),
-               new Integer(dependency.getRevisionId()), target, done);
+            add(dependency.getContentId(),
+                    dependency.getRevisionId(), target, done);
          }
       }
    }
@@ -678,7 +674,7 @@ public class PSContentItemDependencyTree
     * <p>
     * This API is a <b>HACK</b> see {@link #getInstance()} for detail
     *
-    * @param dependentid The dependent id, never <code>null</code>.
+    * @param contentid The dependent id, never <code>null</code>.
     *
     * @return An iterator over zero or more owner ids in <code>Integer</code>
     *    objects, never <code>null</code>.
