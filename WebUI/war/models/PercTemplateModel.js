@@ -197,9 +197,9 @@
                     }
 
                     callback();
-                    $.PercNavigationManager.setTemplateModel(modelObject);
+
                 });
-                // } JGA
+                $.PercNavigationManager.setTemplateModel(modelObject);
             });
         }
 
@@ -404,9 +404,12 @@
 
         function getWidgetContentTypes (widgetid)
         {
-            return widgetContentTypes[ widgetid ];
+            if(Array.isArray(widgetContentTypes[ widgetid ])){
+                return widgetContentTypes[ widgetid ][0];
+            }else{
+                return widgetContentTypes[ widgetid ];
+            }
         }
-
         function getWidgetPrefs (widgetDefId)
         {
             return widgetPrefs[ widgetDefId ];

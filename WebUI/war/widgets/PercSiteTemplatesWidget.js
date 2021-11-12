@@ -1129,6 +1129,10 @@
 
             // get the current template name to update text field
             var template = this.controller.getTemplateById(templateId);
+            //Incase Template gets deleted, we want to check.
+            if(template === null || typeof template === 'undefined' ){
+                return;
+            }
             var currentTemplateName = template.getTemplateName();
             $("#perc-template-name-field").attr("value", currentTemplateName);
 
