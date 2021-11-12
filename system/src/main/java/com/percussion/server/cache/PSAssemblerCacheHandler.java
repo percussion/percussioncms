@@ -59,12 +59,12 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles the caching of Content Assembler pages.  Will only cache pages with
@@ -124,13 +124,11 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
     *
     * @throws PSCacheException if there are any errors.
     */
+   @Override
    void start() throws PSCacheException
    {
-      synchronized(m_variantMapMonitor)
-      {
          loadContentVariants(m_variants);
          m_dependencyTree = new PSContentItemDependencyTree();
-      }
    }
 
    /**
@@ -226,7 +224,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
          while (tables.hasNext() && !added)
          {
             PSBackEndTable table = (PSBackEndTable)tables.next();
-            Map actions = (Map)m_updateTables.get(table.getTable());
+            Map<Integer,List<String>> actions = m_updateTables.get(table.getTable());
             if (actions != null)
             {
                // we want to be notified
@@ -246,6 +244,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
    /**
     * Flushes all cached responses.
     */
+   @Override
    void flush()
    {
       logFlushMessage(null);
@@ -344,6 +343,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
    }
 
    // see base class
+   @Override
    void flushSession(String sessionId)
    {
       if (sessionId == null || sessionId.trim().length() == 0)
@@ -374,10 +374,10 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
             "tableName may not be null or empty");
 
       Iterator columns = null;
-      Map actionMap = (Map)m_updateTables.get(tableName);
+      Map actionMap = m_updateTables.get(tableName);
       if (actionMap != null)
       {
-         List colList = (List)actionMap.get(new Integer(actionType));
+         List colList = (List)actionMap.get(actionType);
          if (colList != null)
             columns = colList.iterator();
       }
@@ -456,12 +456,14 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
          return;
 
       List depKeys;
-      Map done = new HashMap();
+      Map done = new ConcurrentHashMap<>();
       List allKeys = new ArrayList();
-      Iterator relationships = event.getRelationships().iterator();
-      while (relationships.hasNext())
-      {
-         PSRelationship relationship = (PSRelationship) relationships.next();
+      /**
+       * We are only interested in relationship changes for Active Assembly
+       * categories.
+       */
+      for (PSRelationship psRelationship : (Iterable<PSRelationship>) event.getRelationships()) {
+         PSRelationship relationship = psRelationship;
 
          /**
           * We are only interested in relationship changes for Active Assembly
@@ -469,26 +471,21 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
           */
          String category = relationship.getConfig().getCategory();
          if (category == null ||
-            !category.equals(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY))
+                 !category.equals(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY))
             continue;
 
-         switch (event.getAction())
-         {
+         switch (event.getAction()) {
             case PSRelationshipChangeEvent.ACTION_ADD:
-            case PSRelationshipChangeEvent.ACTION_MODIFY:
-            {
+            case PSRelationshipChangeEvent.ACTION_MODIFY: {
                int rid = relationship.getId();
                int ownerid = relationship.getOwner().getId();
                int ownerrevision = relationship.getOwner().getRevision();
                int dependentid = relationship.getDependent().getId();
                int variantid = -1;
-               try
-               {
+               try {
                   variantid = Integer.parseInt(
-                     relationship.getProperty(IPSHtmlParameters.SYS_VARIANTID));
-               }
-               catch (NumberFormatException e)
-               {
+                          relationship.getProperty(IPSHtmlParameters.SYS_VARIANTID));
+               } catch (NumberFormatException e) {
                   // this should never happen
                }
 
@@ -500,18 +497,17 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
                cache.flush(keys);
 
                // update the tree and flush anything related
-               if (event.getAction() == event.ACTION_ADD)
+               if (event.getAction() == PSRelationshipChangeEvent.ACTION_ADD)
                   depKeys = m_dependencyTree.addDependency(rid, ownerid,
-                        ownerrevision, dependentid, variantid, done);
+                          ownerrevision, dependentid, variantid, done);
                else
                   depKeys = m_dependencyTree.updateDependency(rid, ownerid,
-                        ownerrevision, dependentid, variantid, done);
+                          ownerrevision, dependentid, variantid, done);
                allKeys.addAll(depKeys);
                break;
             }
 
-            case PSRelationshipChangeEvent.ACTION_REMOVE:
-            {
+            case PSRelationshipChangeEvent.ACTION_REMOVE: {
                // update the tree and flush anything related - this will include
                // the item whose related content was removed.
                depKeys = m_dependencyTree.removeDependency(relationship.getId(), done);
@@ -750,7 +746,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
     */
    private void flushDependencies(PSMultiLevelCache cache, List deps)
    {
-      Object keys[] = new Object[KEY_SIZE];
+      Object[] keys = new Object[KEY_SIZE];
 
       Iterator i = deps.iterator();
       while (i.hasNext())
@@ -838,9 +834,9 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
 
       // add port if not default http port
       int port = session.getOriginalPort();
-      if (port != 80);
+      if (port != 80 && port != 443)
       {
-         buf.append(String.valueOf(port));
+         buf.append(port);
          buf.append(KEY_SEP);
       }
 
@@ -853,8 +849,7 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
       buf.append(KEY_SEP);
 
       // add all other params, sorted by name, case-sensitive
-      Map sortedParams = new TreeMap();
-      sortedParams.putAll(request.getParameters());
+      Map sortedParams = new TreeMap(request.getParameters());
       Iterator params = sortedParams.entrySet().iterator();
       while(params.hasNext())
       {
@@ -1017,16 +1012,13 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
    }
 
    /**
-    * Provides synchronized access to the variants map.
+    * Provides access to the variants map.
     *
     * @return The map, never <code>null</code>.
     */
    private Map getVariantsMap()
    {
-      synchronized(m_variantMapMonitor)
-      {
          return m_variants;
-      }
    }
 
    /**
@@ -1043,13 +1035,8 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
     * <code>String</code> in the form <appname>/<requestpage>.  Never
     * <code>null</code>.
     */
-   private Map m_variants = new HashMap();
+   private Map m_variants = new ConcurrentHashMap();
 
-   /**
-    * Monitor object to synchronize access to variant map.  Never
-    * <code>null</code>.
-    */
-   private Object m_variantMapMonitor = new Object();
 
    /**
     * Key rules used to determine if optional keys should be used for a
@@ -1180,21 +1167,21 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
     * <code>String</code> objects.  Initialized by static intializer, never
     * <code>null</code> or modified after that.
     */
-   private static Map m_updateTables;
+   private static Map<String, Map<Integer,List<String>>> m_updateTables;
 
    static
    {
       // initialize the update tables map
-      m_updateTables = new HashMap(4);
+      m_updateTables = new ConcurrentHashMap<>();
       
-      List colList;
-      Map actionMap;
+      List<String> colList;
+      Map<Integer,List<String>> actionMap;
 
       // create lists for CONTENTSTATUS - just need delete
-      actionMap = new HashMap(1);
-      colList = new ArrayList(1);
+      actionMap = new ConcurrentHashMap<>(1);
+      colList = new ArrayList<>(1);
       colList.add(IPSConstants.ITEM_PKEY_CONTENTID);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_DELETE), colList);
+      actionMap.put(PSTableChangeEvent.ACTION_DELETE, colList);
       m_updateTables.put(IPSConstants.CONTENT_STATUS_TABLE, actionMap);
 
       /**
@@ -1203,42 +1190,42 @@ public class PSAssemblerCacheHandler extends PSCacheHandler
        *    for relationship changes.
        */
       // create lists for {@link IPSConstants#PSX_RELATIONSHIPS} table
-      actionMap = new HashMap(1);
-      colList = new ArrayList(1);
+      actionMap = new ConcurrentHashMap<>(1);
+      colList = new ArrayList<>(1);
       colList.add(IPSConstants.RS_RID);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_DELETE), colList);
+      actionMap.put(PSTableChangeEvent.ACTION_DELETE, colList);
       m_updateTables.put(IPSConstants.PSX_RELATIONSHIPS, actionMap);
 
       // create lists for {@link IPSConstants#PSX_RELATIONSHIPPROPERTIES} table
-      actionMap = new HashMap(1);
-      colList = new ArrayList(2);
+      actionMap = new ConcurrentHashMap<>(1);
+      colList = new ArrayList<>(2);
       colList.add(IPSConstants.RS_RID);
       colList.add(IPSConstants.RS_PROPERTYNAME);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_INSERT), colList);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_UPDATE), colList);
+      actionMap.put(PSTableChangeEvent.ACTION_INSERT, colList);
+      actionMap.put(PSTableChangeEvent.ACTION_UPDATE, colList);
       m_updateTables.put(IPSConstants.PSX_RELATIONSHIPPROPERTIES, actionMap);
 
       // create lists for PSX_TEMPLATE
-      actionMap = new HashMap(3);
-      colList = new ArrayList(2);
+      actionMap = new ConcurrentHashMap<>(3);
+      colList = new ArrayList<>(2);
       colList.add(IPSConstants.VARIANTID_COLUMN);
       colList.add(IPSConstants.ASSEMBLYURL_COLUMN);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_INSERT), colList);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_UPDATE), colList);
+      actionMap.put(PSTableChangeEvent.ACTION_INSERT, colList);
+      actionMap.put(PSTableChangeEvent.ACTION_UPDATE, colList);
 
-      colList = new ArrayList(1);
+      colList = new ArrayList<>(1);
       colList.add(IPSConstants.VARIANTID_COLUMN);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_DELETE), colList);
+      actionMap.put(PSTableChangeEvent.ACTION_DELETE, colList);
       m_updateTables.put(IPSConstants.CONTENT_VARIANTS_TABLE, actionMap);
 
       // create lists for RXASSEMBLERPROPERTIES
-      actionMap = new HashMap(1);
-      colList = new ArrayList(1);
+      actionMap = new ConcurrentHashMap<>(1);
+      colList = new ArrayList<>(1);
       colList.add(IPSConstants.PROPERTYVALUE_COLUMN);
 
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_UPDATE), colList);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_INSERT), colList);
-      actionMap.put(new Integer(PSTableChangeEvent.ACTION_DELETE), colList);
+      actionMap.put(PSTableChangeEvent.ACTION_UPDATE, colList);
+      actionMap.put(PSTableChangeEvent.ACTION_INSERT, colList);
+      actionMap.put(PSTableChangeEvent.ACTION_DELETE, colList);
       m_updateTables.put(IPSConstants.RXASSEMBLERPROPERTIES_TABLE, actionMap);
    }
 }

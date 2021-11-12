@@ -59,7 +59,6 @@ import com.percussion.utils.guid.IPSGuid;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +113,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
             {
                tableChanged(new PSTableChangeEvent(table, 
                   PSTableChangeEvent.ACTION_UPDATE, 
-                  new HashMap<String, String>()));
+                  new ConcurrentHashMap<>()));
             }            
          }});
    }
@@ -169,15 +168,11 @@ public class PSResourceCacheHandler extends PSCacheHandler
       }
 
       //validate all required keys are present
-      for(int i=0; i<numKeys; i++)
-      {
-         String keyName =  KEY_ENUM[i];
-
-         if( !keys.containsKey( keyName ) )
-         {
+      for (String keyName : KEY_ENUM) {
+         if (!keys.containsKey(keyName)) {
             throw new PSSystemValidationException(
-               IPSServerErrors.MISSING_CACHE_KEY,
-               new Object[] { keyName } );
+                    IPSServerErrors.MISSING_CACHE_KEY,
+                    new Object[]{keyName});
          }
       }
    }
@@ -261,6 +256,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
    /**
     * Flushes all cached responses.
     */
+   @Override
    void flush()
    {
       logFlushMessage(null);
@@ -386,7 +382,6 @@ public class PSResourceCacheHandler extends PSCacheHandler
     *
     * See base class for more info.
     */
-   @SuppressWarnings("unchecked")
    protected Object[] getKeys(PSCacheContext context) throws PSCacheException
    {
       if (context == null)
@@ -426,9 +421,9 @@ public class PSResourceCacheHandler extends PSCacheHandler
 
       // add port if not default http port
       int port = session.getOriginalPort();
-      if (port != 80);
+      if (port != 80 && port!=443)
       {
-         buf.append(String.valueOf(port));
+         buf.append(port);
          buf.append(KEY_SEP);
       }
 
@@ -441,8 +436,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
       buf.append(KEY_SEP);
 
       // add all other html params, sorted by name, case-sensitive
-      Map sortedParams = new TreeMap();
-      sortedParams.putAll(request.getParameters());
+      Map sortedParams = new TreeMap<>(request.getParameters());
       Iterator params = sortedParams.entrySet().iterator();
       while(params.hasNext())
       {
@@ -452,7 +446,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
          buf.append(key);
          buf.append(PARAM_SEP);
          if (entry.getValue() != null)
-            buf.append(entry.getValue().toString());
+            buf.append(entry.getValue());
          buf.append(KEY_SEP);
       }
 
@@ -578,14 +572,14 @@ public class PSResourceCacheHandler extends PSCacheHandler
     * <code>null</code> or modified after construction.
     */
    private static Map<String, Collection<String>> ms_viewMap = 
-      new HashMap<String, Collection<String>>();
+      new ConcurrentHashMap<>();
    
    /**
     * Map of object type to associated table name to flush if an object of that
     * type is evicted from the hibernate cache
     */
    private static Map<PSTypeEnum, String> ms_tableTypeMap = 
-      new HashMap<>();
+      new ConcurrentHashMap<>();
    
    
    static
@@ -732,7 +726,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
    /**
     * Class to encapsulate runtime information about cached resources, and
     * dependencies between query resources and their child resource and table
-    * depenedencies.
+    * dependencies.
     */
    private class PSResourceDependencyTree
    {
@@ -754,9 +748,6 @@ public class PSResourceCacheHandler extends PSCacheHandler
 
          PSDataSetKey dsKey = new PSDataSetKey(appName, ds.getName());
 
-         // Synchronize access to all data while adding a resource
-         synchronized (m_resourceMonitor)
-         {
             // build map of table names to datasets
             PSCollection tableCol =
                ds.getPipe().getBackEndDataTank().getTables();
@@ -789,9 +780,8 @@ public class PSResourceCacheHandler extends PSCacheHandler
             if (pipe instanceof PSQueryPipe) // should always be true
             {
                PSResourceCacheSettings settings =
-                  ((PSQueryPipe)ds.getPipe()).getCacheSettings();
-               if (settings.isCachingEnabled())
-               {
+                       ((PSQueryPipe) ds.getPipe()).getCacheSettings();
+               if (settings.isCachingEnabled()) {
                   // build map of dataset to cache settings
                   m_settingsMap.put(dsKey, settings);
                   initExtractors(settings, dsKey);
@@ -799,18 +789,11 @@ public class PSResourceCacheHandler extends PSCacheHandler
                   // build map of any child resource names to list of parent
                   // datasets names
                   Iterator children = settings.getDependencies();
-                  while (children.hasNext())
-                  {
-                     String childName = (String)children.next();
-                     List<PSDataSetKey> parents = m_parentMap.get(childName);
-                     if (parents == null)
-                     {
-                        parents = new ArrayList<>();
-                        m_parentMap.put(childName, parents);
-                     }
+                  while (children.hasNext()) {
+                     String childName = (String) children.next();
+                     List<PSDataSetKey> parents = m_parentMap.computeIfAbsent(childName, k -> new ArrayList<>());
                      parents.add(dsKey);
                   }
-               }
             }
          }
       }
@@ -852,15 +835,9 @@ public class PSResourceCacheHandler extends PSCacheHandler
          if (datasetName == null || datasetName.trim().length() == 0)
             throw new IllegalArgumentException(
                "appName may not be null or empty");
-         if (datasetName == null || datasetName.trim().length() == 0)
-            throw new IllegalArgumentException(
-               "appName may not be null or empty");
 
          PSDataSetKey dsKey = new PSDataSetKey(appName, datasetName);
 
-         // Synchronize access to all data while removing a resource
-         synchronized (m_resourceMonitor)
-         {
             m_settingsMap.remove(dsKey);
             m_keyExtractors.remove(dsKey);
             String resourceName = m_resourceMap.remove(dsKey);
@@ -874,7 +851,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
 
             // remove from tablemap
             removeFromMapEntryList(m_tableMap, dsKey);
-         }
+
       }
 
       /**
@@ -896,32 +873,20 @@ public class PSResourceCacheHandler extends PSCacheHandler
 
          /*
             Check map of table to dataset names.  For each dataset, add to list.
-            Recursively check for and add all parent datasets.  Synchronize
-            use of lists to avoid modifications while walking.
-         */
-         synchronized (m_resourceMonitor)
-         {
+            Recursively check for and add all parent datasets. */
             List<PSDataSetKey> resources = m_tableMap.get(tableName);
             if (resources != null)
                dsList.addAll(resources);
-         }
+
 
          // need separate list to avoid concurrent modifications
          List<PSDataSetKey> processed = new ArrayList<>();
-         Iterator keys = dsList.iterator();
-         while (keys.hasNext())
-         {
+         for (PSDataSetKey dsKey : dsList) {
             // add dataset if its cached
-            PSDataSetKey dsKey = (PSDataSetKey)keys.next();
             if (m_settingsMap.containsKey(dsKey))
                result.add(dsKey);
 
-            // now add parents.  Synchronize to avoid modifications of lists
-            // stored in maps while walking them.
-            synchronized(m_resourceMonitor)
-            {
                result.addAll(getParents(dsKey, processed));
-            }
          }
 
          return result.iterator();
@@ -976,12 +941,9 @@ public class PSResourceCacheHandler extends PSCacheHandler
          // return copy of list to avoid concurrent modification exceptions
          List<IPSDataExtractor> extractors = new ArrayList<>();
          PSDataSetKey dsKey = new PSDataSetKey(appName, dsName);
-         synchronized(m_resourceMonitor)
-         {
             List<IPSDataExtractor> intList = m_keyExtractors.get(dsKey);
             if (intList != null)
                extractors.addAll(intList);
-         }
 
          return extractors.iterator();
       }
@@ -1048,19 +1010,15 @@ public class PSResourceCacheHandler extends PSCacheHandler
       private void removeFromMapEntryList(Map map, Object value)
       {
          List removalList = new ArrayList();
-         Iterator entries = map.entrySet().iterator();
-         while (entries.hasNext())
-         {
-            Map.Entry entry = (Map.Entry)entries.next();
-            List values = (List)entry.getValue();
+         for (Object o : map.entrySet()) {
+            Map.Entry entry = (Map.Entry) o;
+            List values = (List) entry.getValue();
             values.remove(value);
             if (values.isEmpty())
-              removalList.add(entry.getKey());  // avoid concurrent mods
+               removalList.add(entry.getKey());  // avoid concurrent mods
          }
 
-         Iterator removals = removalList.iterator();
-         while (removals.hasNext())
-            map.remove(removals.next());
+         for (Object o : removalList) map.remove(o);
       }
 
       /**
@@ -1112,12 +1070,6 @@ public class PSResourceCacheHandler extends PSCacheHandler
          return appName + NAME_SEP + resourceName;
       }
 
-      /**
-       * Monitor object used synchronize all map entry access to avoid
-       * concurrent modification exceptions on contained lists.  Never
-       * <code>null</code> or modified.
-       */
-      private Object m_resourceMonitor = new Object();
 
       /**
        * Map of cache settings for each dataset that has caching enabled, where
@@ -1139,7 +1091,7 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * concurrent modification exceptions.
        */
       private Map<String, List<PSDataSetKey>> m_tableMap = 
-         new HashMap<>();
+         new ConcurrentHashMap<>();
 
       /**
        * Map of dataset to resource (page) names.  Key is the
@@ -1161,18 +1113,17 @@ public class PSResourceCacheHandler extends PSCacheHandler
        * to be thread safe and avoid concurrent modification exceptions.
        */
       private Map<String, List<PSDataSetKey>> m_parentMap = 
-         new HashMap<>();
+         new ConcurrentHashMap<>();
 
       /**
        * Map of additional key extractor for each cached resource.  Key is a
        * <code>PSDataSetKey</code> object, value is a <code>List</code> of
        * <code>IPSDataExtractor</code> objects. Never <code>null</code>,
        * modified by calls to <code>addResource()</code> and
-       * <code>removeResource()</code>.  Since this object contains lists,
-       * access to this object must be synchronized to be thread safe and avoid
-       * concurrent modification exceptions.
+       * <code>removeResource()</code>.
        */
       private Map<PSDataSetKey, List<IPSDataExtractor>> m_keyExtractors = 
-         new HashMap<>();
-   }
+         new ConcurrentHashMap<>();
+
+}
 }
