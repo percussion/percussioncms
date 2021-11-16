@@ -402,7 +402,7 @@
                     itemType = 'Asset';
 
                     // Constructed image asset api request url
-                    url = 'http://' + window.location.host + '/Rhythmyx/rest/assets/by-path' + currentImagePath;
+                    url = window.location.protocol + '//' + window.location.host + '/Rhythmyx/rest/assets/by-path' + currentImagePath;
 
                     // We need to check the workflow status of the image to make sure it is not set to Archive
                     checkItemStatus(url, currentElement, imageTargetClass, itemType);
@@ -425,7 +425,7 @@
 
                         // We need to drop off the '/Sites/' folder at the beginning of the path
                         // for the page api to work
-                        url = 'http://' + window.location.host + '/Rhythmyx/rest/pages/by-path' + currentInternalPagePath.replace('/Sites/', '/');
+                        url = window.location.protocol + '//' + window.location.host + '/Rhythmyx/rest/pages/by-path' + currentInternalPagePath.replace('/Sites/', '/');
 
                         checkItemStatus(url, currentElement, internalPageTargetClass, itemType);
 
