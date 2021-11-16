@@ -24,14 +24,14 @@
 package com.percussion.webservices;
 
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import java.util.Objects;
 
 /**
  * This exception may be thrown by web services which operate on multiple
@@ -51,20 +51,20 @@ public class PSErrorResultsException extends Exception
     * operation the map value represents the object returned for successful
     * execution.
     */
-   private Map<IPSGuid, Object> results = new HashMap<IPSGuid, Object>();
+   private Map<IPSGuid, Object> results = new HashMap<>();
    
    /**
     * A map with all errors collected for the requested operation, never 
     * <code>null</code>, may be empty. Depending on the operation the map
     * value represents the error produced for a failed execcution.
     */
-   private Map<IPSGuid, Object> errors = new HashMap<IPSGuid, Object>();
+   private Map<IPSGuid, Object> errors = new HashMap<>();
    
    /**
     * A list of ids for all objects, never <code>null</code>, may be empty. The
     * order of the list is undefined
     */
-   private List<IPSGuid> ids = new ArrayList<IPSGuid>();
+   private List<IPSGuid> ids = new ArrayList<>();
    
    /**
     * Construct a new exception with empty results and errors collections.
@@ -95,15 +95,12 @@ public class PSErrorResultsException extends Exception
    @SuppressWarnings("unchecked")
    public List getResults(List<IPSGuid> ids)
    {
-      List resultList = new ArrayList();
+      List resultList = new ArrayList<>();
       for (IPSGuid id : ids)
       {
          Object result = results.get(id);
-         if (result == null)
-            throw new IllegalArgumentException("No result found for id: " + 
-               id.toString());
-         
-         resultList.add(result);
+         if (result != null)
+            resultList.add(result);
       }
       
       return resultList;
@@ -218,5 +215,46 @@ public class PSErrorResultsException extends Exception
       
       return builder.hashCode();
    }
+
+   /**
+    * Gets the list of id's with error in a single string form
+    * @return a comma seperated list of guids in xx-xx-xxx form.
+    */
+   public String getAllErrorIdsString(){
+      StringBuilder ret = new StringBuilder();
+      for(Map.Entry<IPSGuid, Object> entry : errors.entrySet()){
+         if(ret.length()==0)
+            ret.append(entry.getKey().toString());
+         else
+            ret.append(", ").append(entry.getKey());
+      }
+      return ret.toString();
+   }
+
+   /**
+    * Gets the list of id's with error in a single string form
+    * @return a comma seperated list of guids in xx-xx-xxx form.
+    */
+   public String getAllErrorString(){
+      StringBuilder ret = new StringBuilder();
+      for(Map.Entry<IPSGuid, Object> entry : errors.entrySet()){
+         if(ret.length()==0) {
+            if(entry.getValue() instanceof Throwable)
+               ret.append(((Throwable) entry.getValue()).getMessage());
+            else
+               ret.append(Objects.toString(entry.getValue(),""));
+         }
+         else {
+            if(entry.getValue() instanceof Throwable)
+               ret.append(", ").append(((Throwable) entry.getValue()).getMessage());
+            else
+               ret.append(", ").append(Objects.toString(entry.getValue(),""));
+         }
+      }
+      return ret.toString();
+   }
+
+
+
 }
 
