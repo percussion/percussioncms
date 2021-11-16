@@ -38,6 +38,7 @@ import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.LogOutputStream;
 import org.apache.commons.exec.PumpStreamHandler;
@@ -133,6 +134,9 @@ public class PSScreenCapture {
                 }
             }
         } catch (Exception e) {
+            if(e instanceof ExecuteException && ((ExecuteException) e).getExitValue() ==143){
+                return;
+            }
             log.error("Error taking screen capture using phantomjs with error: {}" ,PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
