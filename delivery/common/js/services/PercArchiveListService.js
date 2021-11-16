@@ -35,13 +35,17 @@
     function getArchiveEntries(queryString, callback)
     {
     	var deliveryUrl = "";
+    	//Don't fetch results in case in Edit Mode
+    	if(queryString != null && typeof queryString !== 'undefined'){
+    	    if(queryString.isEditMode === true){
+    	        return;
+            }
+        }
     	try{
     		if ("undefined" !== typeof (queryString.deliveryurl)){
     		    deliveryUrl = queryString.deliveryurl;
     		    delete queryString.deliveryurl;
     	    }
-
-
     	}
         catch (err) {
 		    console.error(err);

@@ -48,6 +48,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
+import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
+
 /**
  * Implementation of the analytics provider service.
  * @author erikserating
@@ -68,7 +70,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#storeConfig(
     *  com.percussion.analytics.data.PSAnalyticsProviderConfig)
     */
-   public void saveConfig(PSAnalyticsProviderConfig config) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException {
+   public void saveConfig(PSAnalyticsProviderConfig config) throws PSValidationException,IPSGenericDao.LoadException, IPSGenericDao.SaveException {
       /* Storing configuration to metadata service as a JSON string in the following format:
        *  {"uid": "userid",
        *   "password": "encryptedPassword",
@@ -127,7 +129,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#getStoredConfig(boolean)
     */
-   public PSAnalyticsProviderConfig loadConfig(boolean encrypted) throws IPSGenericDao.LoadException {
+   public PSAnalyticsProviderConfig loadConfig(boolean encrypted) throws IPSGenericDao.LoadException, PSValidationException {
 
       PSMetadata metadata = metadataService.find(METADATA_KEY);
        PSAnalyticsProviderConfig config = null;
@@ -137,7 +139,8 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
        String json = metadata.getData();
        com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
        try {
-           config = objectMapper.readValue(json, PSAnalyticsProviderConfig.class);
+               config = objectMapper.readValue(json, PSAnalyticsProviderConfig.class);
+
            String rawPwd = config.getPassword();
            userID=config.getUserid();
            if(userID==null){
@@ -156,11 +159,14 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
 
            config.setPassword(pwd);
            config.setUserid(userID);
-
        } catch (JsonProcessingException e) {
            log.error("Error parsing Analytics configuration: {}" ,e.getMessage());
            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+           PSValidationErrorsBuilder builder = validateParameters("json file");
+           String msg = "Error parsing Analytics configuration:" +  e.getMessage();
+           builder.reject("Invalid JSON", msg).throwIfInvalid();
        }
+
 
        return config;
    }
@@ -229,7 +235,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.IPSAnalyticsProviderService#isProfileConfigured(java.lang.String)
     */
-   public boolean isProfileConfigured(String sitename) throws IPSGenericDao.LoadException {
+   public boolean isProfileConfigured(String sitename) throws IPSGenericDao.LoadException, PSValidationException {
       return getSiteProfile(sitename) != null;     
    }   
    
@@ -267,7 +273,15 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * @return the profile property. It is <code>null</code> if it is not configured for the site.
     */
    private String getProfileProperty(String sitename, int propertyIndex) throws IPSGenericDao.LoadException {
-       String profile = getSiteProfile(sitename);
+       String profile = null;
+       try {
+           profile = getSiteProfile(sitename);
+       } catch (PSValidationException e) {
+           log.error("Error Getting Site profile - > {}" ,PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+           return null;
+
+       }
        if (profile == null)
            return null;
 
@@ -287,7 +301,7 @@ public class PSAnalyticsProviderService implements IPSAnalyticsProviderService
     * 
     * @return the profile of the site. It may be <code>null</code> if it is not configured for the site.
     */
-   private String getSiteProfile(String sitename) throws IPSGenericDao.LoadException {
+   private String getSiteProfile(String sitename) throws IPSGenericDao.LoadException, PSValidationException {
        if(StringUtils.isBlank(sitename))
            throw new IllegalArgumentException("sitename cannot be null or empty.");
         PSAnalyticsProviderConfig config = loadConfig(false);
