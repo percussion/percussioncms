@@ -49,7 +49,7 @@ public interface IPSAnalyticsProviderService
     * @param config The analytics <code>PSAnalyticsProviderConfig</code> object. Cannot
     * be <code>null</code>.
     */
-   public void saveConfig(PSAnalyticsProviderConfig config) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException;
+   public void saveConfig(PSAnalyticsProviderConfig config) throws IPSGenericDao.LoadException, IPSGenericDao.SaveException, PSValidationException;
    
    /**
     * Deletes the stored configuration if exists.
@@ -62,7 +62,7 @@ public interface IPSAnalyticsProviderService
     * in the returned config object.
     * @return the config object or <code>null</code> if not found.
     */
-   public PSAnalyticsProviderConfig loadConfig(boolean encrypted) throws IPSGenericDao.LoadException;
+   public PSAnalyticsProviderConfig loadConfig(boolean encrypted) throws IPSGenericDao.LoadException, PSValidationException;
    
    /**
     * Retrieves a list of "profiles" from the provider. Profiles are basically id's used to
@@ -93,7 +93,7 @@ public interface IPSAnalyticsProviderService
     * @param sitename the name of the site to check. Cannot be <code>null</code> or empty.
     * @return <code>true</code> if the profile is configured for the site
     */
-   public boolean isProfileConfigured(String sitename) throws IPSGenericDao.LoadException;
+   public boolean isProfileConfigured(String sitename) throws IPSGenericDao.LoadException, PSValidationException;
    
    /**
     * Returns the configured profile id|webpropertyId for the specified sitename.

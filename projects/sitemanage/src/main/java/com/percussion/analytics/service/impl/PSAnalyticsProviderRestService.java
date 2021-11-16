@@ -115,6 +115,10 @@ public class PSAnalyticsProviderRestService
             }
 
             providerService.testConnection(StringUtils.trimToEmpty(uid), creds);
+        }catch (PSValidationException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw e;
         } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
@@ -133,10 +137,14 @@ public class PSAnalyticsProviderRestService
     @POST
     @Path("/config")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public void storeConfig(PSAnalyticsProviderConfig config)
+    public void storeConfig(PSAnalyticsProviderConfig config) throws PSValidationException
     {
         try {
             providerService.saveConfig(config);
+        }catch (PSValidationException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw e;
         } catch (IPSGenericDao.SaveException | IPSGenericDao.LoadException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
@@ -147,10 +155,13 @@ public class PSAnalyticsProviderRestService
     @GET
     @Path("/config")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSAnalyticsProviderConfig getStoredConfig()
-    {
+    public PSAnalyticsProviderConfig getStoredConfig() throws PSValidationException {
         try {
             return providerService.loadConfig(true);
+        }catch (PSValidationException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw e;
         } catch (IPSGenericDao.LoadException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
@@ -181,10 +192,13 @@ public class PSAnalyticsProviderRestService
     @GET
     @Path("/isProfileConfigured/{sitename}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String isProfileConfigured(@PathParam("sitename") String sitename)
-    {
+    public String isProfileConfigured(@PathParam("sitename") String sitename) throws PSValidationException {
         try {
             return ((Boolean) providerService.isProfileConfigured(sitename)).toString();
+        }catch (PSValidationException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw e;
         } catch (IPSGenericDao.LoadException e) {
             log.error(PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));

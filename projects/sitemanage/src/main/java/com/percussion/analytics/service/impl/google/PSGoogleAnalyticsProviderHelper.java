@@ -23,6 +23,7 @@
  */
 package com.percussion.analytics.service.impl.google;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -61,6 +62,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.percussion.share.service.exception.PSParameterValidationUtils.validateParameters;
 
 /**
  * @author erikserating
@@ -126,6 +129,13 @@ public class PSGoogleAnalyticsProviderHelper
             log.error("Google Auth error: {}",PSExceptionUtils.getMessageForLog(e));
             throw new PSAnalyticsProviderException(e.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
 
+        }
+        catch (JsonParseException je){
+            log.error("Error parsing Analytics configuration: {}" ,je.getMessage());
+            log.debug(PSExceptionUtils.getDebugMessageForLog(je));
+            PSValidationErrorsBuilder builder = validateParameters("json file");
+            String msg = "Error parsing Analytics configuration:" +  je.getMessage();
+            builder.reject("Invalid JSON", msg).throwIfInvalid();
         }
         catch (IOException e)
         {
