@@ -987,8 +987,15 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty()) {
+         //Only throw an exception if there aren't any valid results
          throw results;
+      }
+      else if(results.hasErrors() ){
+         logger.warn("Error processing folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
 
       return results.getResults(ids);
    }
@@ -1083,8 +1090,15 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty()) {
+         //Only throw an exception if there aren't any valid results
          throw results;
+      }
+      else if(results.hasErrors() ){
+         logger.warn("Error processing folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
 
       return results.getResults(ids);
    }
@@ -1218,8 +1232,15 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
             }
          }
 
-         if (errorResults.hasErrors())
+         if (errorResults.hasErrors() && errorResults.getResults().isEmpty()) {
+            //Only throw an exception if there aren't any valid results
             throw errorResults;
+         }
+         else if(errorResults.hasErrors() ){
+            logger.warn("Error processing folder(s): {} Error: {}",
+                    errorResults.getAllErrorIdsString(),
+                    errorResults.getAllErrorString());
+         }
 
          results.addAll(errorResults.getResults(resultIds));
       }
@@ -1462,8 +1483,13 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
+      else{
+         logger.warn("Error processing folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
 
       return results.getResults(ids);
    }
@@ -2033,8 +2059,13 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
+      else{
+         logger.warn("Error processing folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
 
       return results.getIds();
    }
@@ -2224,8 +2255,13 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
+      else{
+         logger.warn("Error processing folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
 
       return results.getResults(ids);
    }
@@ -3482,7 +3518,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          {
             throw new PSErrorException(IPSWebserviceErrors.NO_FOLDER_PATH_FOR_FOLDERID,
                PSWebserviceErrors
-                  .createErrorMessage(IPSWebserviceErrors.NO_FOLDER_PATH_FOR_FOLDERID, folderId.longValue()),
+                  .createErrorMessage(IPSWebserviceErrors.NO_FOLDER_PATH_FOR_FOLDERID, folderId.getContentId()),
                ExceptionUtils.getFullStackTrace(new Exception()));
          }
          return paths[0];
@@ -4448,9 +4484,15 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty()) {
+         //Only throw an exception if there aren't any valid results
          throw results;
-
+      }
+      else if(results.hasErrors() ){
+         logger.warn("Error loading properties for folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
       return results.getResults(ids);
    }
 
@@ -4639,8 +4681,13 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          ids.add(id);
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
+      else{
+         logger.warn("Error processing folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
 
       return results.getResults(ids);
    }
@@ -5085,8 +5132,15 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
          }
       }
 
-      if (results.hasErrors())
+      if (results.hasErrors() && results.getResults().isEmpty()) {
+         //Only throw an exception if there aren't any valid results
          throw results;
+      }
+      else if(results.hasErrors() ){
+         logger.warn("Error processing folder(s): {} Error: {}",
+                 results.getAllErrorIdsString(),
+                 results.getAllErrorString());
+      }
 
       return results.getResults(originalIds);
    }
