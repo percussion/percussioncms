@@ -1,6 +1,5 @@
 <!-- Start Common JS -->
 <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
-
 <script src="/cm/jslib/profiles/3x/libraries/bowser/es5.js"></script>
 <script src="/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js"></script>
 <script src="/cm/jslib/profiles/3x/libraries/perc-retiredjs/json2.js"></script>
