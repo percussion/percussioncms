@@ -23,7 +23,6 @@
  */
 package com.percussion.analytics.service.impl.google;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -51,7 +50,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -120,27 +118,14 @@ public class PSGoogleAnalyticsProviderHelper
                     .build();
             service = new com.google.api.services.analytics.Analytics.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
                     APPLICATION_NAME).setHttpRequestInitializer(credential).build();
-
-        } catch (PSAnalyticsProviderException e) {
-            throw e;
-
-        }
-        catch (GeneralSecurityException e) {
+        }catch (PSValidationException ve){
+            throw ve;
+        } catch (Exception e) {
             log.error("Google Auth error: {}",PSExceptionUtils.getMessageForLog(e));
-            throw new PSAnalyticsProviderException(e.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
-
-        }
-        catch (JsonParseException je){
-            log.error("Error parsing Analytics configuration: {}" ,je.getMessage());
-            log.debug(PSExceptionUtils.getDebugMessageForLog(je));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e),e);
             PSValidationErrorsBuilder builder = validateParameters("json file");
-            String msg = "Error parsing Analytics configuration:" +  je.getMessage();
-            builder.reject("Invalid JSON", msg).throwIfInvalid();
-        }
-        catch (IOException e)
-        {
-            log.error("Google Auth error:",e);
-            throw new PSAnalyticsProviderException(e, CAUSETYPE.INVALID_CREDS);
+            String msg = "Google Auth error: {}" +  PSExceptionUtils.getMessageForLog(e);
+            builder.reject("Google Auth error", msg).throwIfInvalid();
         }
         return service;
     }
@@ -151,7 +136,7 @@ public class PSGoogleAnalyticsProviderHelper
      * @param key
      * @return
      */
-    public  AnalyticsReporting initializeAnalyticsReporting(String email, String key) throws PSAnalyticsProviderException {
+    public  AnalyticsReporting initializeAnalyticsReporting(String email, String key) throws PSAnalyticsProviderException, PSValidationException {
         // Construct a GoogleCredential object with the service account email
         JacksonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
         AnalyticsReporting analyticsReporting = null;
@@ -160,7 +145,8 @@ public class PSGoogleAnalyticsProviderHelper
             ObjectMapper mapper = new ObjectMapper();
             GoogleCreds creds = mapper.readValue(key, GoogleCreds.class);
             if (!StringUtils.equals(creds.getClient_email(), email)) {
-                throw new PSAnalyticsProviderException("Email does not match key file", CAUSETYPE.INVALID_CREDS);
+                PSValidationErrorsBuilder builder = validateParameters("Email");
+                builder.reject("Google Auth error", "Email does not match key file").throwIfInvalid();
             }
             PrivateKey serviceAccountPrivateKey = privateKeyFromPkcs8(creds.getPrivate_key());
             GoogleCredential credential = new GoogleCredential.Builder()
@@ -174,18 +160,16 @@ public class PSGoogleAnalyticsProviderHelper
             // Construct the Analytics Reporting service object.
             analyticsReporting = new AnalyticsReporting.Builder(httpTransport, JSON_FACTORY, credential)
                     .setApplicationName(APPLICATION_NAME).build();
-        } catch (PSAnalyticsProviderException e) {
-            throw e;
-        } catch (GeneralSecurityException e) {
-            log.error(PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-            log.error("Google Auth error:",e);
-            throw new PSAnalyticsProviderException(e.getMessage(), CAUSETYPE.AUTHENTICATION_ERROR);
-        } catch (IOException e) {
-                log.error("Google Auth error:",e);
-                throw new PSAnalyticsProviderException(e, CAUSETYPE.INVALID_CREDS);
+        }catch (PSValidationException ve){
+            throw ve;
+        } catch (Exception e) {
+            log.error("Google Auth error: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e),e);
+            PSValidationErrorsBuilder builder = validateParameters("json file");
+            String msg = "Google Auth error: {}" +  PSExceptionUtils.getMessageForLog(e);
+            builder.reject("Google Auth error", msg).throwIfInvalid();
         }
-            return analyticsReporting;
+        return analyticsReporting;
     }
    /**
     * Helper method to create a new Google analytics <code>DataQuery</code> object.
