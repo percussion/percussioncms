@@ -1485,7 +1485,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 
       if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
-      else{
+      else if(results.hasErrors() ){
          logger.warn("Error processing folder(s): {} Error: {}",
                  results.getAllErrorIdsString(),
                  results.getAllErrorString());
@@ -2061,7 +2061,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 
       if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
-      else{
+      else if(results.hasErrors() ){
          logger.warn("Error processing folder(s): {} Error: {}",
                  results.getAllErrorIdsString(),
                  results.getAllErrorString());
@@ -2257,10 +2257,11 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 
       if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
-      else{
+      else if(results.hasErrors()) {
          logger.warn("Error processing folder(s): {} Error: {}",
                  results.getAllErrorIdsString(),
                  results.getAllErrorString());
+
       }
 
       return results.getResults(ids);
@@ -4683,7 +4684,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 
       if (results.hasErrors() && results.getResults().isEmpty())
          throw results;
-      else{
+      else if(results.hasErrors() ){
          logger.warn("Error processing folder(s): {} Error: {}",
                  results.getAllErrorIdsString(),
                  results.getAllErrorString());
