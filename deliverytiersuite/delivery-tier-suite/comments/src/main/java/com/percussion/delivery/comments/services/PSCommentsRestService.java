@@ -394,6 +394,9 @@ public class PSCommentsRestService extends PSAbstractRestService implements IPSC
             IPSComment newComment = commentService.addComment(comment);
             String referer = headerParams.getFirst("Referer");
             if(referer != null && comment.getPagePath() != null && !referer.contains(comment.getPagePath())){
+                if(referer.endsWith("/") && comment.getPagePath().startsWith("/")){
+                    referer = referer.substring(0,referer.length() -1);
+                }
                 referer = referer + comment.getPagePath();
             }
             if(referer != null && referer.contains("?lastCommentId"))
