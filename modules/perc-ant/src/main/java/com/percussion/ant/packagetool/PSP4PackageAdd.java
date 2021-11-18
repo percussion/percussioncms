@@ -94,6 +94,7 @@ import java.io.File;
  *
  * </pre>
  */
+@Deprecated
 public class PSP4PackageAdd extends P4Add
 {
 

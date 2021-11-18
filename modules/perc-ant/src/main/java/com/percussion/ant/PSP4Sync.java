@@ -91,6 +91,7 @@ import java.io.File;
  * 
  * </pre>
  */
+@Deprecated
 public class PSP4Sync extends Task
 {
   
