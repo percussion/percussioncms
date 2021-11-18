@@ -1,36 +1,25 @@
-/*
- *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+/*[ PSOracleLobColumnInitializer.java ]****************************************
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * COPYRIGHT (c) 1999 - 2003 by Percussion Software, Inc., Stoneham, MA USA.
+ * All rights reserved. This material contains unpublished, copyrighted
+ * work including confidential and proprietary information of Percussion.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     Mailing Address:
- *
- *      Percussion Software, Inc.
- *      PO Box 767
- *      Burlington, MA 01803, USA
- *      +01-781-438-9900
- *      support@percussion.com
- *      https://www.percussion.com
- *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
- */
+ ******************************************************************************/
 
 package com.percussion.data;
 
 /**
- * The PSOracleLobColumnInitializer class is used to determing what text 
+ * The PSOracleLobColumnInitializer class is used to determing what text
  * needs to be placed on the right side of an INSERT or UPDATE statement when
  * initializing Clob and Blob columns instead of a placeholder.
  */
 public class PSOracleLobColumnInitializer implements IPSLobColumnInitializer
 {
+
+   private PSOracleLobColumnInitializer(){
+      //Hide constructor
+   }
+
    /* <*** IPSLobColumnInitializer interface methods **> */
 
    /**
@@ -87,7 +76,7 @@ public class PSOracleLobColumnInitializer implements IPSLobColumnInitializer
     *
     *  @return The IPSLobColumnInitializer instance for Oracle.
     */
-   static PSOracleLobColumnInitializer getInstance()
+   public static synchronized PSOracleLobColumnInitializer getInstance()
    {
       if (ms_instance == null)
          ms_instance = new PSOracleLobColumnInitializer();
