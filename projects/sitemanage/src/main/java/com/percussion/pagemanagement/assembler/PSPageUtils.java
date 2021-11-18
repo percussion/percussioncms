@@ -64,6 +64,7 @@ import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.security.ToDoVulnerability;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyErrors;
@@ -3036,6 +3037,13 @@ public class PSPageUtils extends PSJexlUtilBase
     public IPSPubServerService getPubServerService()
     {
         return pubServerService;
+    }
+
+    public boolean isValidString(String str){
+        if(!SecureStringUtils.isValidString(str)){
+            throw new IllegalArgumentException("Invalid Param: " + str);
+        }
+        return true;
     }
 
     public void setPubServerService(IPSPubServerService pubServerService)
