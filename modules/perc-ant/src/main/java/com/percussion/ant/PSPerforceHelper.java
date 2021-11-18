@@ -42,6 +42,7 @@ import java.util.List;
  * Some helper methods that wrap around the P4 Java API to
  * facilitate editing and submitting a file in perforce.
  */
+@Deprecated
 public class PSPerforceHelper
 {
 

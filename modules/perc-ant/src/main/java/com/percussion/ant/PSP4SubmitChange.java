@@ -93,6 +93,7 @@ import java.io.File;
  * 
  * </pre>
  */
+@Deprecated
 public class PSP4SubmitChange extends Task
 {   
   

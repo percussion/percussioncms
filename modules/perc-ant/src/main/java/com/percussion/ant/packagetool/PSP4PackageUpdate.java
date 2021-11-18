@@ -94,6 +94,7 @@ import java.util.List;
  *
  * </pre>
  */
+@Deprecated
 public class PSP4PackageUpdate
 {
 
