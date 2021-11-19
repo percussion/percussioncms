@@ -632,7 +632,7 @@ public class PSManagedNavService implements IPSManagedNavService
       notNull(nodeId);
       
       List<IPSGuid> results = new ArrayList<>();
-      PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
       
       try
       {

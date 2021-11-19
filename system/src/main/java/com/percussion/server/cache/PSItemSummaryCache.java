@@ -807,7 +807,7 @@ public class PSItemSummaryCache implements IPSTableChangeListener
                if (!origRevs.isEmpty())
                {
                   log.debug("Content status revision change, clean up AA revisions {} for id {} name {} ", origRevs, contentId, itemInfo.mi_title);
-                  PSFolderRelationshipCache relCache = PSFolderRelationshipCache.getInstance();
+                  PSFolderRelationshipCache relCache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
                   if(relCache != null) {
                      relCache.deleteOwnerRevisions(contentId, origRevs);
                   }

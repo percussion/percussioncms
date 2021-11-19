@@ -52,6 +52,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.cache.IPSCacheHandler;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSAssemblerCacheHandler;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSFolderRelationshipCache;
@@ -205,7 +206,7 @@ public class PSRelationshipDbProcessor
          
          QueryRelationshipCriteria params = new QueryRelationshipCriteria();
 
-         PSFolderRelationshipCache folderCache = canProcessedByFolderCache(
+         IPSFolderRelationshipCache folderCache = canProcessedByFolderCache(
                filter, params);
          
             String useAaRelationshipCacheString = StringUtils.defaultString((String)PSServer.getServerProps().get("useAaRelationshipCache"),"true");
@@ -492,7 +493,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    private void setExtraDependentProperties(Collection<PSRelationship> rels)
          throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache
+      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
             .getInstance();
       if (folderCache == null)
       {
@@ -775,7 +776,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     */
    private PSFolderRelationshipCache getFolderCache(String relationshipName)
    {
-      PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
       
       if (cache != null
             && (!relationshipName
@@ -802,7 +803,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * @throws PSCmsException if an error occurs.
     */
    private List<PSRelationship> getRelationshipsFromFolderCache(
-         PSFolderRelationshipCache relCache,
+         IPSFolderRelationshipCache relCache,
          QueryRelationshipCriteria params, PSRelationshipFilter filter) throws PSCmsException
    {
       List<PSRelationship> rels = new ArrayList<>();
@@ -934,10 +935,10 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * @return the instance of the Folder Cache if the request can be processed 
     *    by folder cache; otherwise return <code>null</code>.
     */
-   private PSFolderRelationshipCache canProcessedByFolderCache(PSRelationshipFilter filter,
+   private IPSFolderRelationshipCache canProcessedByFolderCache(PSRelationshipFilter filter,
          QueryRelationshipCriteria criteria)
    {
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache folderCache = PSFolderRelationshipCache.getInstance();
 
       if (folderCache == null)
          return null;
@@ -1000,7 +1001,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    private PSFolderRelationshipCache canProcessedByAssemblyCache(PSRelationshipFilter filter,
          QueryRelationshipCriteria criteria)
    {
-      PSFolderRelationshipCache assemblyCache = PSFolderRelationshipCache.getInstance();
+      PSFolderRelationshipCache assemblyCache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
 
       if (assemblyCache == null)
          return null;
@@ -1845,7 +1846,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
                      + "'");
       }
       
-      PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
       if (cache != null)
       {
          return cache.getIdByPath(paths, relationshipTypeName);

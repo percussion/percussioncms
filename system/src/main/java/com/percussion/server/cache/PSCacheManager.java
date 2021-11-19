@@ -255,7 +255,7 @@ public class PSCacheManager implements IPSHandlerInitListener
    /**
     * Returns the first cache handler that will cache the request in the 
     * supplied cache context.  Determines this by calling 
-    * {@link IPSCacheHandler#isRequestCacheable(context) isRequestCacheable()} 
+    *
     * on each handler, so the caller will not need to make this check before 
     * calling 
     * {@link IPSCacheHandler#storeResponse(PSCacheContext, PSCachedResponse)} or 
@@ -662,9 +662,14 @@ public class PSCacheManager implements IPSHandlerInitListener
    {
       synchronized(m_initMonitor)
       {
-         if (!m_inited)
+         if (!m_inited) {
             throw new IllegalStateException(
-               "The Cache Manager must be intialized before it can be used.");
+                    "The Cache Manager must be initialized before it can be used.");
+         }
+
+         if(m_folderRelationships == null){
+            m_folderRelationships = PSFolderRelationshipCache.getInstance();
+         }
       }
    }
 
@@ -822,5 +827,5 @@ public class PSCacheManager implements IPSHandlerInitListener
    /**
     * The folder relationship cache. Initialized by {@link #start()} 
     */
-   private PSFolderRelationshipCache m_folderRelationships = null;
+   private IPSFolderRelationshipCache m_folderRelationships = null;
 }

@@ -123,7 +123,7 @@ public class PSConsoleCommandDumpFolderRelationshipCache extends PSConsoleComman
       if(doc == null)
          throw new IllegalArgumentException("doc may not be null");
 
-      PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
       if (cache == null)
          return null;
       

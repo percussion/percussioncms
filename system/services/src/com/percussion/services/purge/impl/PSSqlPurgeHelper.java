@@ -1151,7 +1151,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       srv.notifyEvent(notifyEvent);
 
       // update the folder cache if needed
-      PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
       if (cache != null)
       {
          cache.delete(relationships);
