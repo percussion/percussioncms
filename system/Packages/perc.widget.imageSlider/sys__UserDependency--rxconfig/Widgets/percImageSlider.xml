@@ -462,7 +462,7 @@
           ## If path is broken the image has been deleted and should not be included in the slider
            #if( $image.percImagePath && $image.percImagePath != '#' )##
           #set( $query = "" )##
-           #if($rx.pageutils.isValidString(${image.percImageContentId})##
+          #if($rx.pageutils.isValidString(${image.percImageContentId}))##
           #set( $query = "select * from rx:percImageAsset where rx:sys_contentid = ${image.percImageContentId}")##
           #set( $maxResults = 1 )##
           #set( $params= $rx.string.stringToMap(null) )##
