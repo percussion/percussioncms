@@ -65,4 +65,17 @@ public class PSCacheException extends PSException
       super( msgCode );
    }
 
+   /**
+    * Construct an exception for messages taking an array of
+    * arguments. Be sure to store the arguments in the correct order in
+    * the array, where {0} in the string is array element 0, etc.
+    *
+    * @param msgCode   the error string to load
+    * @param cause     the causal exception
+    * @param arrayArgs the array of arguments to use as the arguments
+    *                  in the error message. May be <code>null</code>. <code>null</code> entries
+    */
+   public PSCacheException(int msgCode, Throwable cause, Object... arrayArgs) {
+      super(msgCode, cause, arrayArgs);
+   }
 }

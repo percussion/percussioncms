@@ -23,8 +23,6 @@
  */
 package com.percussion.services.assembly.impl.nav;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -66,7 +64,21 @@ import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.jsr170.PSProperty;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.net.nntp.NNTPConnectionClosedException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
+import javax.jcr.ValueFormatException;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -80,21 +92,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.jcr.AccessDeniedException;
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-import javax.jcr.ValueFormatException;
-
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.commons.net.nntp.NNTPConnectionClosedException;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 
@@ -515,7 +513,7 @@ public class PSNavHelper
    {
       init();
       
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache
+      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
             .getInstance();
       
       
@@ -1091,7 +1089,7 @@ public class PSNavHelper
     */
    private PSLocator getParentFolder(PSLocator psLocator) throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache
+      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
             .getInstance();
       
       List<PSLocator> parents = folderCache.getParentLocators(psLocator);
@@ -1111,7 +1109,7 @@ public class PSNavHelper
     */
    private List<PSLocator> getChildFolders(PSLocator locator) throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache
+      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
             .getInstance();
       
       return folderCache.getChildLocators(locator);

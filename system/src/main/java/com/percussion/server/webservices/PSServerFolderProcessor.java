@@ -3255,7 +3255,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
          return null;  // cannot find root.
       
       PSItemSummaryCache itemCache = getItemCache();
-      PSFolderRelationshipCache folderCache = PSFolderRelationshipCache.getInstance();
+      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
       if (itemCache != null && folderCache != null)
          return findMatchingFoldersFromCache(path, matchPatterns, rootID, rootPath, itemCache, folderCache);
       else

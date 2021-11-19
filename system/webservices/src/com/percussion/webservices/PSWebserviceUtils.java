@@ -1165,7 +1165,7 @@ public class PSWebserviceUtils
          PSRelationshipSet rels = new PSRelationshipSet();
          rels.add(rel);
          getRelationshipProcessor().save(rels);
-         PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+         PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
          if(cache!=null) {
             cache.update(rels);
          }else{
