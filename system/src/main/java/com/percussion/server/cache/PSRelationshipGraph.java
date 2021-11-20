@@ -242,7 +242,7 @@ class PSRelationshipGraph
     */
    private void getFolderPath(List<PSGraphEntry> path, PSGraphEntry childFolder, String relationshipTypeName)
    {
-      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
       PSRelationship childRel = null;
       if (cache != null) {
          try {

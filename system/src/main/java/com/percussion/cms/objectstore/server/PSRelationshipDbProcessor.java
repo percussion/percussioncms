@@ -220,7 +220,7 @@ public class PSRelationshipDbProcessor
          }
          else if (testAaCache || useAaRelationshipCache)
          {
-            PSFolderRelationshipCache assemblyCache = canProcessedByAssemblyCache(
+            IPSFolderRelationshipCache assemblyCache = canProcessedByAssemblyCache(
                   filter, params);
             if (assemblyCache != null)
             {
@@ -375,7 +375,7 @@ public class PSRelationshipDbProcessor
    
 
 
-private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCache relCache, PSRelationshipFilter filter, QueryRelationshipCriteria params) throws PSCmsException
+private List<PSRelationship> getRelationshipsFromAaCache(IPSFolderRelationshipCache relCache, PSRelationshipFilter filter, QueryRelationshipCriteria params) throws PSCmsException
 {
    List<PSRelationship> rels = new ArrayList<>();
    List<PSRelationship> result = null;
@@ -493,8 +493,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
    private void setExtraDependentProperties(Collection<PSRelationship> rels)
          throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
-            .getInstance();
+      IPSFolderRelationshipCache folderCache = PSFolderRelationshipCache.getInstance();
       if (folderCache == null)
       {
          // get component summary for all dependent items  
@@ -774,20 +773,10 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     *         if the cache is not initialized or the relationship name is not
     *         the name of the folder relationship.
     */
-   private PSFolderRelationshipCache getFolderCache(String relationshipName)
+   private IPSFolderRelationshipCache getFolderCache(String relationshipName)
    {
-      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
-      
-      if (cache != null
-            && (!relationshipName
-                  .equalsIgnoreCase(PSRelationshipConfig.TYPE_FOLDER_CONTENT) || !relationshipName.equalsIgnoreCase(PSRelationshipConfig.TYPE_RECYCLED_CONTENT)))
-      {
-         return cache;
-      }
-      else
-      {
-         return null;
-      }
+      return PSFolderRelationshipCache.getInstance();
+
    }
    
    /**
@@ -998,10 +987,10 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
     * @return the instance of the Folder Cache if the request can be processed 
     *    by folder cache; otherwise return <code>null</code>.
     */
-   private PSFolderRelationshipCache canProcessedByAssemblyCache(PSRelationshipFilter filter,
+   private IPSFolderRelationshipCache canProcessedByAssemblyCache(PSRelationshipFilter filter,
          QueryRelationshipCriteria criteria)
    {
-      PSFolderRelationshipCache assemblyCache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache assemblyCache = PSFolderRelationshipCache.getInstance();
 
       if (assemblyCache == null)
          return null;
@@ -1744,7 +1733,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
          throw new IllegalArgumentException(
          "relationshipTypeName must not be null or empty");
 
-      PSFolderRelationshipCache cache = getFolderCache(relationshipTypeName);
+      IPSFolderRelationshipCache cache = getFolderCache(relationshipTypeName);
       if (cache != null
             && (relationshipTypeName
                   .equalsIgnoreCase(PSRelationshipConfig.TYPE_FOLDER_CONTENT) ||
@@ -1846,7 +1835,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
                      + "'");
       }
       
-      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
       if (cache != null)
       {
          return cache.getIdByPath(paths, relationshipTypeName);
@@ -1936,7 +1925,7 @@ private List<PSRelationship> getRelationshipsFromAaCache(PSFolderRelationshipCac
                      + "' is not supported.");
 
       
-      PSFolderRelationshipCache cache = getFolderCache(relationshipTypeName);
+      IPSFolderRelationshipCache cache = getFolderCache(relationshipTypeName);
       if (cache != null)
          return cache.getParentPaths(object, relationshipTypeName);
       else

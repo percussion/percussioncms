@@ -26,6 +26,7 @@ package com.percussion.server.command;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.server.PSRequest;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.services.error.PSNotFoundException;
 import org.w3c.dom.Document;
@@ -123,7 +124,7 @@ public class PSConsoleCommandDumpFolderRelationshipCache extends PSConsoleComman
       if(doc == null)
          throw new IllegalArgumentException("doc may not be null");
 
-      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
       if (cache == null)
          return null;
       

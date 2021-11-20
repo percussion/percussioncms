@@ -37,6 +37,7 @@ import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSConsole;
 import com.percussion.server.cache.IPSCacheHandler;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSAssemblerCacheHandler;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSFolderRelationshipCache;
@@ -53,7 +54,11 @@ import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This extension builds a content item list for deletion by the Rhythmyx
@@ -264,7 +269,7 @@ public class PSDeleteContent implements IPSRequestPreProcessor
    private void updateCaches(PSRelationshipSet relationships)
    {
       // update the folder cache if needed
-      PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
       if (cache != null)
       {
             cache.delete(relationships);

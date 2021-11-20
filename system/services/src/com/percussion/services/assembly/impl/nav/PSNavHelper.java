@@ -32,6 +32,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -513,7 +514,7 @@ public class PSNavHelper
    {
       init();
       
-      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
+      IPSFolderRelationshipCache folderCache = PSFolderRelationshipCache
             .getInstance();
       
       
@@ -1089,16 +1090,17 @@ public class PSNavHelper
     */
    private PSLocator getParentFolder(PSLocator psLocator) throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
+      IPSFolderRelationshipCache folderCache = PSFolderRelationshipCache
             .getInstance();
       
       List<PSLocator> parents = folderCache.getParentLocators(psLocator);
       if (parents.isEmpty())
-         ms_log.warn("Navon with id "+psLocator.getId()+" is not in any folder");
+         ms_log.warn("Navon with id {} is not in any folder", psLocator.getId());
       else if (parents.size()>1)
-         ms_log.warn("Navon with id "+psLocator.getId()+" is in multiple folders "+parents.toString());
+         ms_log.warn("Navon with id {} is in multiple folders {}", psLocator.getId(),
+                 parents);
       
-      return parents.size()>0 ? parents.get(0): null;
+      return !parents.isEmpty() ? parents.get(0): null;
    }
 
    /**
@@ -1109,7 +1111,7 @@ public class PSNavHelper
     */
    private List<PSLocator> getChildFolders(PSLocator locator) throws PSCmsException
    {
-      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache
+      IPSFolderRelationshipCache folderCache =  PSFolderRelationshipCache
             .getInstance();
       
       return folderCache.getChildLocators(locator);

@@ -49,6 +49,7 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.server.config.PSConfigManager;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
@@ -1165,7 +1166,7 @@ public class PSWebserviceUtils
          PSRelationshipSet rels = new PSRelationshipSet();
          rels.add(rel);
          getRelationshipProcessor().save(rels);
-         PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+         IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
          if(cache!=null) {
             cache.update(rels);
          }else{
