@@ -46,6 +46,7 @@ import com.percussion.itemmanagement.data.PSItemStateTransition;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.recycle.service.IPSRecycleService;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -302,7 +303,7 @@ public class PSRecycleService implements IPSRecycleService {
             createRootSiteDeleteRelationship(path);
             // transition the item to archive state if necessary
             transitionWorkflowItem(folderRel, dependentId);
-            PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+            IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
             renameIfRequired(itemGuid, FOLDER_TYPE,false);
             updateRelationshipConfigId(RECYCLED_TYPE, folderRel);
             if (cache != null) {
@@ -323,7 +324,7 @@ public class PSRecycleService implements IPSRecycleService {
     @Override
     public void recycleFolder(IPSGuid guid) {
         log.debug("Received guid for deleting a folder: {}", guid);
-        PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+        IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
         int folderId = idMapper.getContentId(guid);
         String path;
 
@@ -393,7 +394,7 @@ public class PSRecycleService implements IPSRecycleService {
             PSRelationship recycledRel = rels.get(0);
             IPSGuid itemGuid = idMapper.getGuid(recycledRel.getDependent());
             // second get parents of item.
-            PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+            IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
             List<PSLocator> parentLocators = cache.getParentLocators(depLocator);
             IPSGuid parentGuid = idMapper.getGuid(recycledRel.getOwner());
             renameIfRequired(itemGuid, RECYCLED_TYPE,false);
@@ -406,7 +407,7 @@ public class PSRecycleService implements IPSRecycleService {
         }
     }
 
-    private void updateParentFolders(List<PSLocator> parentLocators, String originalType, String newType,PSFolderRelationshipCache cache) throws  PSErrorException {
+    private void updateParentFolders(List<PSLocator> parentLocators, String originalType, String newType,IPSFolderRelationshipCache cache) throws  PSErrorException {
         if (parentLocators == null) {
             return;
         }
@@ -444,7 +445,7 @@ public class PSRecycleService implements IPSRecycleService {
     @Override
     public void restoreFolder(String guid) {
         log.debug("Received guid for delete folder: {}" , guid);
-        PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+        IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
 
         // load relationships for the folder being restored
         PSRelationshipFilter filter = generateDependentFilter(idMapper.getContentId(guid), RECYCLED_TYPE);
@@ -525,7 +526,7 @@ public class PSRecycleService implements IPSRecycleService {
 
     }
 
-    private void restoreChildItems(List<PSRelationship> childRels,PSFolderRelationshipCache cache) throws PSErrorException {
+    private void restoreChildItems(List<PSRelationship> childRels,IPSFolderRelationshipCache cache) throws PSErrorException {
         for (PSRelationship child : childRels) {
             log.debug("Child flagged for restore to a folder is: {}" , child.getDependent().getId());
             if (child.getConfig().getName().equalsIgnoreCase(RECYCLED_TYPE)) {

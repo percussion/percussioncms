@@ -41,6 +41,7 @@ import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -170,7 +171,7 @@ public class PSManagedNavService implements IPSManagedNavService
       IPSRequestContext req = getRequestCtx();
       PSLocator parentLoc = ((PSLegacyGuid) parentFolderId).getLocator();
       PSLocator childLoc = ((PSLegacyGuid) childFolderId).getLocator();
-      Long slotUuid = new Long(getMenuSlotId());
+      Long slotUuid = getMenuSlotId();
       Object curWfId = null;
       if (workflowId != -1)
       {
@@ -190,8 +191,7 @@ public class PSManagedNavService implements IPSManagedNavService
       if (navon == null)
          return null;
       
-      PSLegacyGuid navonId = new PSLegacyGuid(navon.getCurrentLocator());
-      return navonId;
+      return  new PSLegacyGuid(navon.getCurrentLocator());
    }
 
    /**
@@ -571,10 +571,9 @@ public class PSManagedNavService implements IPSManagedNavService
       }
       catch (Exception e)
       {
-         String errorMsg = "Cannot get properties from nav-node id = "
-               + navId.toString();
-         log.error(errorMsg, e);
-         throw new PSNavException(errorMsg, e);
+         String errorMsg = "Cannot get properties from nav-node id = {} Error: {}";
+         log.error(errorMsg, navId, PSExceptionUtils.getMessageForLog(e));
+         throw new PSNavException(e);
       }
       return propertyMap;
    }
@@ -632,7 +631,7 @@ public class PSManagedNavService implements IPSManagedNavService
       notNull(nodeId);
       
       List<IPSGuid> results = new ArrayList<>();
-      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
       
       try
       {
@@ -656,7 +655,7 @@ public class PSManagedNavService implements IPSManagedNavService
       return results;
    }
 
-    private boolean doesParentFolderExist(PSFolderRelationshipCache cache, PSLocator psLocator) {
+    private boolean doesParentFolderExist(IPSFolderRelationshipCache cache, PSLocator psLocator) {
         boolean doesParentFolderExist = false;
         if (cache != null) {
             List<PSRelationship> parentRels = cache.getParents(psLocator);

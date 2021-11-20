@@ -51,6 +51,7 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.cache.IPSCacheHandler;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSAssemblerCacheHandler;
 import com.percussion.server.cache.PSCacheManager;
 import com.percussion.server.cache.PSFolderRelationshipCache;
@@ -1151,7 +1152,7 @@ public class PSSqlPurgeHelper implements IPSSqlPurgeHelper
       srv.notifyEvent(notifyEvent);
 
       // update the folder cache if needed
-      PSFolderRelationshipCache cache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache cache =  PSFolderRelationshipCache.getInstance();
       if (cache != null)
       {
          cache.delete(relationships);

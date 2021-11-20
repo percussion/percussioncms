@@ -85,6 +85,7 @@ import com.percussion.server.PSInternalRequest;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderEntry;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.server.cache.PSItemSummaryCache;
@@ -3255,7 +3256,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
          return null;  // cannot find root.
       
       PSItemSummaryCache itemCache = getItemCache();
-      PSFolderRelationshipCache folderCache = (PSFolderRelationshipCache) PSFolderRelationshipCache.getInstance();
+      IPSFolderRelationshipCache folderCache = PSFolderRelationshipCache.getInstance();
       if (itemCache != null && folderCache != null)
          return findMatchingFoldersFromCache(path, matchPatterns, rootID, rootPath, itemCache, folderCache);
       else
@@ -3280,7 +3281,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
     */
    private List<IPSGuid> findMatchingFoldersFromCache(String matchPath,
          Pattern[] matchPatterns, int rootID, String rootPath, 
-         PSItemSummaryCache itemCache, PSFolderRelationshipCache folderCache)
+         PSItemSummaryCache itemCache, IPSFolderRelationshipCache folderCache)
       throws PSCmsException
    {
       IPSItemEntry rootFolder = itemCache.getItem(rootID);
@@ -3333,7 +3334,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
    private void findMatchingFoldersFromCache(String preWildCard,
          Pattern[] matchPatterns, IPSItemEntry folder, String paths[],
          List<IPSGuid> rval, PSItemSummaryCache itemCache,
-         PSFolderRelationshipCache folderCache) throws PSCmsException
+         IPSFolderRelationshipCache folderCache) throws PSCmsException
    {
       if (PSFolderStringUtils.oneMatched(paths, matchPatterns))
       {
@@ -3401,7 +3402,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
    }
 
    /**
-    * The same as the {@link #findMatchingFoldersFromCache(String, Pattern[], int, String, PSItemSummaryCache, PSFolderRelationshipCache)},
+    * The same as the {@link #findMatchingFoldersFromCache(String, Pattern[], int, String, PSItemSummaryCache, IPSFolderRelationshipCache)},
     * except this is processed without accessing folder cache.
     * 
     * @param path the path, assumed never <code>null</code> or empty
@@ -3429,7 +3430,7 @@ public class PSServerFolderProcessor extends PSProcessorCommon implements
    }
 
    /**
-    * The same as the {@link #findMatchingFoldersFromCache(String, Pattern[], int, String, PSItemSummaryCache, PSFolderRelationshipCache)}
+    * The same as the {@link #findMatchingFoldersFromCache(String, Pattern[], int, String, PSItemSummaryCache, IPSFolderRelationshipCache)}
     * except this is processed without accessing folder cache.
     * 
     * @param folder the folder to process, assumed not <code>null</code>.
