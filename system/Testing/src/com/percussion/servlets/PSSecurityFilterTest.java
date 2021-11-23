@@ -288,8 +288,7 @@ public class PSSecurityFilterTest
       ms_filter.doFilter(request, response, chain);
 
       //Insecure - expect bad value
-      assertNotEquals(response.getHeader("Location"), "/login?sys_redirect=https%3a%2f%2fappscanheaderinjection%2ecom%3a9991");
-      assertEquals(403 , response.getStatus());
+      assertEquals(response.getHeader("Location"), "/login?sys_redirect=https%3a%2f%2fappscanheaderinjection%2ecom%3a9991");
 
       //Configure with publicCMSHostName set
       updateServerProperties("mycms.percussion.marketing", "*");
