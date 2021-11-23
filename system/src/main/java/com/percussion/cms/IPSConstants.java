@@ -579,5 +579,12 @@ public interface IPSConstants
 
 
    public static final String SERVER_PROP_MANAGELINKS = "AUTO_MANAGE_LOCAL_PATHS";
+
+   public static final String SERVER_PROP_ALLOWED_ORIGINS = "allowedOrigins";
+   public static final String SERVER_PROP_ALLOWED_ORIGINS_DEFAULT = "*";
+   public static final String SERVER_PROP_PUBLIC_CMS_HOSTNAME = "publicCmsHostname";
+   public static final String SERVER_PROP_REQUEST_BEHIND_PROXY= "requestBehindProxy";
+
+
 }
 

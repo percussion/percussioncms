@@ -23,39 +23,23 @@
  */
 package com.percussion.servlets;
 
-import static com.percussion.servlets.PSSecurityFilter.NON_SECURE_HTTP_BIND_ADDRESS;
-import static com.percussion.servlets.PSSecurityFilter.NON_SECURE_HTTP_BIND_HEADER;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
+import com.percussion.cms.IPSConstants;
 import com.percussion.server.PSServer;
 import com.percussion.servlets.PSSecurityFilter.AuthType;
 import com.percussion.servlets.PSSecurityFilter.SecurityEntry;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
-
-import javax.servlet.ServletException;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.junit.AfterClass;
-import org.junit.Assert;
-
-import junit.framework.TestCase;
-
-import org.apache.commons.httpclient.Credentials;
+import com.percussion.utils.io.PathUtils;
+import com.percussion.utils.testing.UnitTest;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runners.MethodSorters;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockFilterConfig;
@@ -63,27 +47,82 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockServletContext;
 
+import javax.servlet.ServletException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import static com.percussion.servlets.PSSecurityFilter.NON_SECURE_HTTP_BIND_ADDRESS;
+import static com.percussion.servlets.PSSecurityFilter.NON_SECURE_HTTP_BIND_HEADER;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Test case for the {@link PSSecurityFilter} class. Tests security
  * configurations and pattern matching only.
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-@Category(IntegrationTest.class)
+@Category(UnitTest.class)
 public class PSSecurityFilterTest
 {
+
+   @ClassRule
+   public static TemporaryFolder tempFolder = TemporaryFolder.builder().build();
+
    @AfterClass
-   protected void tearDown() throws Exception
+   public static void tearDown() throws Exception
    {
       System.setProperty(NON_SECURE_HTTP_BIND_ADDRESS, "");
       System.setProperty(NON_SECURE_HTTP_BIND_HEADER,"");
 
+
+   }
+
+   public static void copyDirectory(String sourceDirectoryLocation, String destinationDirectoryLocation)
+        throws IOException {
+   Files.walk(Paths.get(sourceDirectoryLocation))
+           .forEach(source -> {
+              Path destination = Paths.get(destinationDirectoryLocation, source.toString()
+                      .substring(sourceDirectoryLocation.length()));
+              try {
+                 Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+              } catch (IOException e) {
+                 e.printStackTrace();
+              }
+           });
+}
+
+   @BeforeClass
+   public static void setupClass() throws IOException {
+      System.setProperty(PathUtils.DEPLOY_DIR_PROP, tempFolder.getRoot().getAbsolutePath());
+
+      copyDirectory(PSSecurityFilterTest.class.getResource(PSSecurityFilterTest.TEST_FILE_DIR).getPath(),
+              tempFolder.getRoot().getAbsolutePath() );
+
+   }
+
+   @Before
+   public void setup(){
+         ms_filter = new PSSecurityFilter();
    }
 
    MockServletContext context = new MockServletContext() {
       @Override
       public String getRealPath(String path)
       {
-         return new File(new File(TEST_FILE_DIR), path).getAbsolutePath();
+         if(path.startsWith("/"))
+            path = path.substring(1);
+         return tempFolder.getRoot().toPath().resolve(path).toAbsolutePath().toString();
       }
 
    };
@@ -101,32 +140,14 @@ public class PSSecurityFilterTest
    @Test
    public void test10InitSecurityConfiguration() throws Exception
    {
-      ms_filter.initSecurityConfiguration(TEST_FILE_DIR);
+      ms_filter.initSecurityConfiguration(tempFolder.getRoot().getAbsolutePath());
       assertEquals(ms_configuredRequests, ms_filter.getConfiguredEntries());
       assertTrue(ms_filter.isSecureLogin());
    }
 
-   @Test
-   public void test20NonSecureRequestsForbidden() throws Exception {
 
-      System.setProperty(NON_SECURE_HTTP_BIND_ADDRESS, "127.0.0.1");
-      ms_filter.init(config);
-      request.setRemoteAddr("192.168.1.1");
-      ms_filter.doFilter(request, response, chain);
-      assertEquals(403, response.getStatus());
-   }
 
-   @Test
-   public void test30CrossSiteForgery() throws Exception {
 
-      HttpClient client = new HttpClient();
-      Credentials defaultcreds = new UsernamePasswordCredentials("admin1", "demo");
-      client.getState().setCredentials(AuthScope.ANY, defaultcreds);
-
-      checkRequestHeaderRedirectLogin(client, "Referer", "http://www.msn.com", "http://127.0.0.1:9992/Rhythmyx/test");
-
-      checkRequestHeaderRedirectLogin(client, "Origin", "https://www.msn.com", "http://127.0.0.1:9992/Rhythmyx/test");
-   }
 
    private void checkRequestHeaderRedirectLogin(HttpClient client, String strHeader, String strHdrVal, String strRequestURL) throws Exception {
 
@@ -167,42 +188,6 @@ public class PSSecurityFilterTest
       assertEquals(403, response.getStatus());
    }
 
-   @Test
-   public void test60HTTPtoHTTPS() throws Exception {
-
-      System.setProperty(NON_SECURE_HTTP_BIND_ADDRESS, "non_secure_address");
-      System.setProperty(NON_SECURE_HTTP_BIND_HEADER, "REAL_IP");
-
-      ms_filter.init(config);
-      
-      //Ensure the requireHTTPS property is not already set.
-      Properties serverProperties = PSServer.getServerProps();
-      assertNull(serverProperties.getProperty(require_HTTPS));      
-      try {
-      //now set the require property to true
-      serverProperties.setProperty(require_HTTPS, "true");
-      
-      //set port to 443
-      PSServer.ms_sslListenerPort = 443;
-
-      //random address to go to via http
-      String serverName = UUID.randomUUID().toString();
-      request.setServerName(serverName);
-      request.addHeader("REAL_IP", "non_secure_address");
-                  
-      ms_filter.doFilter(request, response, chain);
-      
-      //property should not have been modified
-      assertEquals("true", PSServer.getServerProps().getProperty(require_HTTPS));
-
-      //Check to see if it has become an https url now.
-      String serverNamewithHttps = "https://"  + serverName;  
-      assertEquals(serverNamewithHttps, response.getRedirectedUrl());
-      } finally {
-         serverProperties.setProperty(require_HTTPS, "false");
-      }
-   }
-
    /**
     * Test loading various security configurations.
     * 
@@ -227,7 +212,7 @@ public class PSSecurityFilterTest
    public void doTestLoadConfig(int index) throws Exception
    {
       File securityConfig;
-      securityConfig = new File(TEST_FILE_DIR, "test-security-conf-"
+      securityConfig = new File(tempFolder.getRoot().getAbsolutePath(), "test-security-conf-"
             + (index + 1) + ".xml");
       boolean isSecure = PSSecurityFilter.loadConfig(securityConfig, false, 
             new ArrayList<SecurityEntry>());
@@ -262,6 +247,100 @@ public class PSSecurityFilterTest
       assertEquals(AuthType.FORM, match("/", "GET"));
    }
 
+   @Test
+   public void testAllowedOriginsOnInit() throws ServletException, IOException {
+      ms_filter.init(config);
+      assertTrue(ms_filter.allowedOrigins.isEmpty());
+
+      updateServerProperties("mycms.percussion.marketing", "*");
+      ms_filter.init(config);
+      assertFalse(ms_filter.allowedOrigins.isEmpty());
+      assertEquals("mycms.percussion.marketing",ms_filter.allowedOrigins.get(0));
+
+      updateServerProperties("", "https://mycms.percussion.marketing:9991/, mycms.percussion.marketing, mycms");
+      ms_filter.init(config);
+      assertFalse(ms_filter.allowedOrigins.isEmpty());
+      assertEquals("mycms.percussion.marketing",ms_filter.allowedOrigins.get(0));
+      assertEquals("mycms.percussion.marketing",ms_filter.allowedOrigins.get(1));
+      assertEquals("mycms",ms_filter.allowedOrigins.get(2));
+
+
+   }
+
+   @Test
+   public void testInjectedHostHeader() throws ServletException, IOException {
+      request.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36");
+      request.addHeader("Referrer", "https://localhost:9991/login");
+      request.addHeader("Cookie", "pssessionid=0f35a3c6ec0686f85b308920beb741d1f8a3fe7c2c6d6a54138c525945ffdff3;JSESSIONID=node0d5pyy5zahlb4lt6q5bfxq795675.node0");
+      request.addHeader("Host", "appscanheaderinjection.com" );
+      request.addHeader("OWASP-CSRFTOKEN", "RQTC-9SKO-HGL9-VRE5-0KWP-7RDS-70TX-3WVW, RQTC-9SKO-HGL9-VRE5-0KWP-7RDS-70TX-3WVW" );
+      request.addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+      request.addHeader("Accept-Language", "en-US");
+      request.setMethod("GET");
+      request.setScheme("https");
+      request.setServerPort(9991);
+      request.setSecure(true);
+
+
+      ms_filter.init(config);
+      ms_filter.doFilter(request, response, chain);
+
+      //Insecure - expect bad value
+      assertEquals(response.getHeader("Location"), "/login?sys_redirect=https%3a%2f%2fappscanheaderinjection%2ecom%3a9991");
+
+
+      //Configure with publicCMSHostName set
+      updateServerProperties("mycms.percussion.marketing", "*");
+      response = new MockHttpServletResponse();
+      ms_filter.init(config);
+      ms_filter.doFilter(request, response, chain);
+
+      assertNotEquals(response.getHeader("Location"), "/login?sys_redirect=https%3a%2f%2fappscanheaderinjection%2ecom%3a9991");
+      assertEquals(403, response.getStatus());
+
+      request.removeHeader("Host");
+      request.addHeader("Host", "mycms.percussion.marketing");
+      response = new MockHttpServletResponse();
+      ms_filter.doFilter(request, response, chain);
+      assertEquals(302, response.getStatus());
+
+
+      //Configure with allowedOrigins set
+      updateServerProperties("", "https://mycms.percussion.marketing:9991/, mycms.percussion.marketing, mycms");
+      request.removeHeader("Host");
+      request.addHeader("Host", "mycms.percussion.marketing");
+      response = new MockHttpServletResponse();
+      assertNotEquals(response.getHeader("Location"), "/login?sys_redirect=https%3a%2f%2fappscanheaderinjection%2ecom%3a9991");
+      assertEquals(200, response.getStatus());
+
+
+
+   }
+
+   /**
+    * Utility method for updating the server.properties file with different values to
+    * test behaviors
+    * @param cmsHostName  The value for the publicCMSHostName property.
+    * @param allowedOrigins The value for the allowedOrigins property
+    * @throws IOException If an exception occurs
+    */
+   private void updateServerProperties(String cmsHostName, String allowedOrigins) throws IOException {
+      Properties props = new Properties();
+
+      try (FileInputStream in = new FileInputStream(
+              tempFolder.getRoot().getAbsolutePath() + "/rxconfig/Server/server.properties")) {
+         props.load(in);
+      }
+
+      try (FileOutputStream out = new FileOutputStream(tempFolder.getRoot().getAbsolutePath() + "/rxconfig/Server/server.properties")) {
+         props.setProperty(IPSConstants.SERVER_PROP_PUBLIC_CMS_HOSTNAME, cmsHostName);
+         props.setProperty(IPSConstants.SERVER_PROP_ALLOWED_ORIGINS, allowedOrigins);
+         props.store(out, null);
+      }
+      PSServer.getServerProps(true);
+   }
+
+
    /**
     * Test the loaded filter configuration against the given method and url
     * @param url
@@ -292,7 +371,7 @@ public class PSSecurityFilterTest
    /**
     * 
     */
-   private static PSSecurityFilter ms_filter = new PSSecurityFilter();
+   private static PSSecurityFilter ms_filter;
 
    /**
     * 

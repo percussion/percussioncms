@@ -70,6 +70,7 @@ import com.percussion.design.objectstore.server.PSXmlObjectStoreHandler;
 import com.percussion.design.server.PSDesignerConnectionHandler;
 import com.percussion.error.PSErrorHandler;
 import com.percussion.error.PSErrorManager;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.error.PSInternalError;
 import com.percussion.error.PSRuntimeException;
 import com.percussion.extension.IPSExtensionHandler;
@@ -1807,11 +1808,8 @@ public class PSServer {
       try 
       {
          // load the server properties file
+         loadServerProps();
 
-         File propFile = PSProperties.getConfig(ENTRY_NAME, PROPS_SERVER,
-               getRxConfigDir());
-
-         ms_serverProps = new PSProperties(propFile.getPath());
 
          if (!ms_serverProps.isEmpty())
          {
@@ -1885,13 +1883,22 @@ public class PSServer {
       }
    }
 
+   private static void loadServerProps() throws IOException {
+
+      File propFile = PSProperties.getConfig(ENTRY_NAME, PROPS_SERVER,
+              getRxConfigDir());
+
+      ms_serverProps = new PSProperties(propFile.getPath());
+
+   }
+
    /**
     * Initialize the object store handler and load the server configuration.
     * @return <code>true</code> if it is successfully initialized, 
     * <code>false</code> if not.
     *
     * @throws PSServerException if the server is not responding.
-    * @throws PSNotFoundException if the server configuation is not be found.
+    * @throws PSNotFoundException if the server configuration is not be found.
     */
    @SuppressWarnings(value="unchecked")
    private static boolean initObjectStoreHandler() throws PSServerException,
@@ -3313,7 +3320,26 @@ public class PSServer {
    {
          return ms_serverProps;
    }
-   
+
+   /**
+    * Gets the server properties
+    * @param reloadFromDisk when true the properties will be re-read from disk
+    * @return the properties
+    */
+   public static Properties getServerProps(boolean reloadFromDisk)
+   {
+      if(!reloadFromDisk)
+         return getServerProps();
+      else{
+         try {
+            loadServerProps();
+         }catch (IOException e) {
+            logger.warn("An error was encountered while reloading the Server properties from the server.properties file. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+         }
+      }
+      return ms_serverProps;
+   }
    /**
     * Gets the specified server property.
     * @param key the key of the property, not <code>null</code>.
