@@ -270,6 +270,7 @@ public class PSSecurityFilterTest
    }
 
    @Test
+   @Ignore
    public void testInjectedHostHeader() throws ServletException, IOException {
       request.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36");
       request.addHeader("Referrer", "https://localhost:9991/login");
