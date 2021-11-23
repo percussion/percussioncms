@@ -26,6 +26,8 @@ package com.percussion.servlets;
 import com.percussion.auditlog.PSActionOutcome;
 import com.percussion.auditlog.PSAuditLogService;
 import com.percussion.auditlog.PSAuthenticationEvent;
+import com.percussion.cms.IPSConstants;
+import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSSecurityProvider;
@@ -94,6 +96,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -425,6 +428,9 @@ public class PSSecurityFilter implements Filter
       }
 
       initSecurityConfiguration(new File(config.getServletContext().getRealPath("/WEB-INF")).getParentFile().getAbsolutePath());
+
+      allowedOrigins = getAllowedOriginHosts();
+
    }
 
    /**
@@ -587,6 +593,11 @@ public class PSSecurityFilter implements Filter
                httpResp.sendError(HttpServletResponse.SC_FORBIDDEN, "Only TLS/SSL connections allowed");
                return;
             }
+
+            if(!isValidHostHeader(httpReq)){
+               httpResp.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid host header detected");
+               return;
+            }
             //If the request is not secure, check whether http is allowed or not before we proceed.
              if(!httpReq.isSecure() && !isHttpAllowed(httpReq) ){
                String oldPath = httpReq.getRequestURL().toString();
@@ -647,16 +658,20 @@ public class PSSecurityFilter implements Filter
    private boolean isHttpAllowed(HttpServletRequest request)
    {
       boolean isAllowed = true;
-      if (!securityUtil.httpsRequired()) {
-         return true;
-      }
-      StringBuffer urlBuf = request.getRequestURL();
-      if(urlBuf != null){
-         String url = urlBuf.toString().toLowerCase();
-         if(!(url.startsWith("http://127.0.0.1:") || url.startsWith("http://127.0.0.1/") || 
-               url.startsWith("http://localhost:") || url.startsWith("http://localhost/"))){
-            isAllowed = false;
+      try {
+         if (!securityUtil.httpsRequired()) {
+            return true;
          }
+         StringBuffer urlBuf = request.getRequestURL();
+         if (urlBuf != null) {
+            String url = urlBuf.toString().toLowerCase();
+            if (!(url.startsWith("http://127.0.0.1:") || url.startsWith("http://127.0.0.1/") ||
+                    url.startsWith("http://localhost:") || url.startsWith("http://localhost/"))) {
+               isAllowed = false;
+            }
+         }
+      }catch (IllegalArgumentException e){
+         //NOOP
       }
       return isAllowed;
    }
@@ -730,8 +745,14 @@ public class PSSecurityFilter implements Filter
     */
    private void updateSessionTimeout(HttpServletRequest httpReq)
    {
-      httpReq.getSession().setMaxInactiveInterval(
-            PSServer.getServerConfiguration().getUserSessionTimeout());
+      int sessionTimeOut = PSServerConfiguration.DEFAULT_SESSION_TIMEOUT;
+
+      try {
+        sessionTimeOut =  PSServer.getServerConfiguration().getUserSessionTimeout();
+      }catch(Exception e){
+         //Ignore any exceptions and return the default value.
+      }
+      httpReq.getSession().setMaxInactiveInterval(sessionTimeOut);
    }
 
 
@@ -2179,6 +2200,108 @@ public class PSSecurityFilter implements Filter
       return m_configuredEntries;
    }
 
+   /**
+    * Checks to make sure that the supplied Host header is valid.  Valid host names include
+    * 127.0.0.1, localhost, publicCMSHostName from server.properties, allowedOrigins, in server.properties.
+    * If allowedOrigins is set to *, all hostnames are allowed.
+    *
+    * @param request The current request
+    * @return When true, the Host header is valid.  When false, the hostHeader is invalid and the request should be rejected.
+    */
+   public boolean isValidHostHeader(HttpServletRequest request){
+      boolean ret = false; //assume failure
+
+      List<String> hosts = Collections.list(request.getHeaders("Host"));
+
+      if( hosts.isEmpty() || allowedOrigins.isEmpty()) {
+         ret = true; //no Host header so is valid
+      }
+     else{
+         for(String h : hosts){
+            if(allowedOrigins.contains(h)) {
+               ret = true;
+               break;
+            }
+         }
+      }
+      return ret;
+   }
+
+   /**
+    * Set when the filter is initialized to the configured allowedOrigins for this
+    * CMS service
+    */
+   protected List<String> allowedOrigins = new ArrayList<>();
+
+   /**
+    * Gets the configured allowed origins and public cms hostname.  These are used to prevent
+    * Host header injection.
+    *
+    * @return The list of allowed hosts
+    */
+   protected List<String> getAllowedOriginHosts(){
+      List<String> ret = new ArrayList<>();
+
+      String origins = PSServer.getProperty(IPSConstants.SERVER_PROP_ALLOWED_ORIGINS,
+              IPSConstants.SERVER_PROP_ALLOWED_ORIGINS_DEFAULT);
+
+      if(origins.equalsIgnoreCase( IPSConstants.SERVER_PROP_ALLOWED_ORIGINS_DEFAULT) || origins.isEmpty()){
+         //
+      }else if(origins.contains(",")){
+         String[] splitOrigins = origins.split(",");
+         for(String s : splitOrigins){
+            s = s.trim();
+            if(s.startsWith("http")){
+               String t= getHostFromURLString(s);
+               if(!t.isEmpty()){
+                  ret.add(t);
+               }
+            }else{
+               if(!ret.isEmpty()) {
+                  ret.add(s);
+               }
+            }
+         }
+      }else{
+         if(origins.startsWith("http")){
+            String t = getHostFromURLString(origins);
+            if(!t.isEmpty())
+               ret.add(t);
+         }
+      }
+
+      //we also need to allow the public cms hostname if that is configured.
+      String publicHost = PSServer.getProperty(IPSConstants.SERVER_PROP_PUBLIC_CMS_HOSTNAME,"");
+
+      if(!publicHost.isEmpty())
+         ret.add(publicHost);
 
 
+      return ret;
+   }
+
+   /**
+    * Gets the host portion of the url
+    * @param s A url string (http(s)://host:port/
+    * @return the host portion of the url or ""
+    */
+   private String getHostFromURLString(String s){
+      if(s == null || s.isEmpty()){
+         return "";
+      }
+      String ret = "";
+      if(s.startsWith("http")){
+         try {
+            URI uri = new URI(s);
+            ret = uri.getHost();
+         } catch (URISyntaxException e) {
+            //handle bad uri
+            ms_log.warn("Invalid url detected in {} server.property. Skipping origin {}. Error: {}",
+                    IPSConstants.SERVER_PROP_ALLOWED_ORIGINS,
+                    s,
+                    PSExceptionUtils.getMessageForLog(e));
+         }
+      }
+      return ret;
+   }
 }
