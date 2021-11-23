@@ -505,6 +505,7 @@
                         </then>
                     </if>
 
+
                     <!-- Restore mysql-connector if present -->
 
                     <echo>Restore mysql-connector if present in Server/common/lib.....................</echo>
@@ -711,6 +712,23 @@
                     </if>
 
                 </else>
+            </if>
+            <!-- Updating hibernate.dialect for MySql -->
+            <echo>Updating hibernate.dialect </echo>
+            <if>
+                <available file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-datasources.properties"/>
+                <then>
+                    <if>
+                        <resourcecontains resource="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-datasources.properties" substring="org.hibernate.dialect.MySQLInnoDBDialect" />
+                        <then>
+                            <echo>Updating hibernate.dialect</echo>
+                            <replace file="${install.dir}${staging.dir}/Deployment/Server/conf/perc/perc-datasources.properties" summary="yes">
+                                <replacetoken><![CDATA[org.hibernate.dialect.MySQLInnoDBDialect]]></replacetoken>
+                                <replacevalue><![CDATA[org.hibernate.dialect.MySQL5InnoDBDialect]]></replacevalue>
+                            </replace>
+                        </then>
+                    </if>
+                </then>
             </if>
 
             <echo>Adding Ciphers to connector...</echo>
