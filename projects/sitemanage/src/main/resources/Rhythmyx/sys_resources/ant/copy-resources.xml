@@ -107,28 +107,6 @@
 
 	</target>
 
-    <target name="publishingFTPS" if="perc.publishingFtps.set" >
-        <property name="install.dir" location="${perc.sys.dir}" />
-        <taskdef name="ftps" classname="org.apache.tools.ant.taskdefs.optional.net.FTPS">
-            <classpath>
-                <pathelement location="${install.dir}/sys_resources/ant/lib/ant-commons-net.jar"/>
-            </classpath>
-        </taskdef>
-        <ftps server="${perc.ftp.serverAddress}"
-              port="${perc.ftp.port}"
-              remotedir="${perc.ftp.remoteDir}"
-              userid="${perc.ftp.username}"
-              password="${perc.ftp.password}"
-              passive="yes"
-              skipFailedTransfers="true"
-              verbose="yes"
-              ignoreNoncriticalErrors="yes"
-        >
-            <fileset dir="${perc.ftp.all_resources}"  />
-        </ftps>
-    </target>
-
-
 	<target name="publishingFTP" if="perc.publishingFtp.set" >
 		<property name="install.dir" location="${perc.sys.dir}" />
 		<taskdef name="ftp" classname="org.apache.tools.ant.taskdefs.optional.net.FTP">
@@ -141,6 +119,7 @@
            	   remotedir="${perc.ftp.remoteDir}" 
                userid="${perc.ftp.username}"
                password="${perc.ftp.password}"
+			   useFtps="${perc.ftp.useFtps}"
 			   passive="yes"
                skipFailedTransfers="true"
                verbose="yes"
@@ -170,5 +149,5 @@
     	</if>
     </target>
 	
-	<target name="all" depends="default, publishingFTP, publishingFTPS, publishingSecureFTP" />
+	<target name="all" depends="default, publishingFTP,publishingSecureFTP" />
 </project>

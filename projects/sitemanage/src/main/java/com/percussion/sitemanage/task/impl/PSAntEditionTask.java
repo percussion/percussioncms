@@ -413,11 +413,13 @@ public class PSAntEditionTask implements IPSEditionTask
         if (isFtpType(deliveryType))
         {
             props.put("perc.publishingFtp.set", Boolean.TRUE.toString());
+            props.put("perc.ftp.useFtps", Boolean.FALSE.toString());
             props.put("perc.ftp.port", pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_PORT_PROPERTY, "21"));
         }
         if (isFtpsType(deliveryType))
         {
-            props.put("perc.publishingFtps.set", Boolean.TRUE.toString());
+            props.put("perc.publishingFtp.set", Boolean.TRUE.toString());
+            props.put("perc.ftp.useFtps", Boolean.TRUE.toString());
             props.put("perc.ftp.port", pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_PORT_PROPERTY, "23"));
         }
 
