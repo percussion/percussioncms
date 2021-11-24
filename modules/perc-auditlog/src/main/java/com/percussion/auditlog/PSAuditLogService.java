@@ -151,7 +151,7 @@ public class PSAuditLogService  implements IPSAuditLogService {
 
     private static PSAuditLogService instance;
 
-    synchronized public static PSAuditLogService getInstance(){
+    public static synchronized PSAuditLogService getInstance(){
         if (instance == null)
         {
             // if instance is null, initialize
