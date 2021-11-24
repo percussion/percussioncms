@@ -22,8 +22,11 @@
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.security.SecureStringUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -111,6 +114,21 @@ public class TestSecureStringUtils {
         testPath = SecureStringUtils.cleanWildPath(resourcePaths,"%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5c%2e%2e%5cwindows%5cwin.ini","unit.test");
         assertNull(testPath);
 
+    }
+
+    @Test
+    @Ignore
+    public void testPwdDecryption(){
+        String encPwd = "Qhmee/8dNs2SL0+499RqMv/1hoNxdAgdnyIOewLB7xrt5A==";
+        //Add .key and .legacyKey in this dir to get decrypted pwd.
+        String secureDir = "c:/test/secure/";
+        try {
+            String pwd = PSEncryptor.decryptString(secureDir,encPwd);
+            assertTrue("mypass".equals(pwd));
+            System.out.println(pwd);
+        } catch (PSEncryptionException e) {
+            assertNull(e);
+        }
     }
 
     @Test
