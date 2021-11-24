@@ -61,6 +61,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings(value={"unchecked"})
 public class PSServerConfiguration implements IPSDocument
 {
+   public static final int DEFAULT_SESSION_TIMEOUT = 1800;
+
    /**
     * Construct a Java object from its XML representation. See the
     * {@link #toXml() toXml} method for a description of the XML object.
@@ -1335,7 +1337,7 @@ public class PSServerConfiguration implements IPSDocument
          //create user sessions time out
          sTemp = tree.getElementData("userSessionTimeout", false);
          if (sTemp == null)
-            m_sessionTimeout = 1800;
+            m_sessionTimeout = DEFAULT_SESSION_TIMEOUT;
          else {
             try {
                m_sessionTimeout = Integer.parseInt(sTemp);
