@@ -296,7 +296,6 @@ public class PSCryptographer
             }
          }
 
-         //String ret = bOut3.toString(String.valueOf(StandardCharsets.UTF_8));
          // pad must be between 1 and 7 bytes, fix for bug id Rx-99-11-0049
          if ((padLen > 0) & (padLen  < 8))
             ret = ret.substring(0, ret.length() - padLen);
