@@ -124,7 +124,7 @@ public class PSCryptographer
                }
             }
 
-         String ret = bOut.toString(String.valueOf(StandardCharsets.UTF_8));
+            String ret = bOut.toString();
             // pad must be between 1 and 7 bytes, fix for bug id Rx-99-11-0049
             if ((padLen > 0) & (padLen  < 8))
                ret = ret.substring(0, ret.length() - padLen);
@@ -228,86 +228,6 @@ public class PSCryptographer
 
       } catch (Exception e) {
          return null;
-      }
-   }
-
-   @Deprecated
-   public static String decryptOldAlgo(String key1, String key2, String str)
-   {
-      if (key1 == null || key1.trim().length() == 0)
-         throw new IllegalArgumentException("key1 may not be null or empty");
-
-      if (key2 == null || key2.trim().length() == 0)
-         throw new IllegalArgumentException("key2 may not be null or empty");
-
-      if ((str == null) || (str.equals("")))
-         return "";
-
-      int partone = key1.hashCode();
-      int parttwo = key2.hashCode();
-
-      partone /= 7;
-      parttwo /= 13;
-
-
-      int padLen = 0;
-      try(ByteArrayOutputStream bOut = new ByteArrayOutputStream()){
-         String ret = "";
-         byte[] bOutarr = Base64.getMimeDecoder().decode(str.getBytes(
-                 StandardCharsets.UTF_8));
-
-         IPSKey key = (IPSKey)com.percussion.legacy.security.deprecated.PSDESKey.class.newInstance();
-         if ((key != null) && (key instanceof IPSSecretKey))
-         {
-            IPSSecretKey secretKey = (IPSSecretKey)key;
-            byte[] baOuter = new byte[8];
-            for (int i = 0; i < 4; i++)
-               baOuter[i] = (byte)((partone >> i) & 0xFF);
-            for (int i = 4; i < 8; i++)
-               baOuter[i] = (byte)((parttwo >> (i-4)) & 0xFF);
-
-            secretKey.setSecret(baOuter);
-            IPSDecryptor decr = secretKey.getDecryptor();
-
-            try(ByteArrayOutputStream bOut2 = new ByteArrayOutputStream())
-            {
-               try(ByteArrayInputStream by = new ByteArrayInputStream(bOutarr)) {
-                  decr.decrypt(by, bOut2);
-               }
-               byte[] bTemp = bOut2.toByteArray();
-               byte[] baInner = new byte[8];
-               System.arraycopy(bTemp, 0, baInner, 0, 4);
-               System.arraycopy(bTemp, bTemp.length - 4, baInner, 4, 4);
-               int innerDataLength = bTemp.length - 8;
-
-               for (int i = 0; i < 8; i++)
-                  baInner[i] ^= (byte) ((1 << i) & innerDataLength);
-
-               padLen = baInner[0];
-
-               secretKey.setSecret(baInner);
-               try(ByteArrayOutputStream bOut3 = new ByteArrayOutputStream())
-               {
-                  try(ByteArrayInputStream bin = new ByteArrayInputStream(bTemp, 4, innerDataLength)) {
-                     decr.decrypt(bin, bOut3);
-                  }
-                  ret = bOut3.toString(String.valueOf(StandardCharsets.UTF_8));
-               }
-            }
-         }
-
-         //String ret = bOut3.toString(String.valueOf(StandardCharsets.UTF_8));
-         // pad must be between 1 and 7 bytes, fix for bug id Rx-99-11-0049
-         if ((padLen > 0) & (padLen  < 8))
-            ret = ret.substring(0, ret.length() - padLen);
-
-         return ret;
-      }
-      catch (Exception e)
-      {
-         // we were returning null which caused a decryption error downstream
-         // now we return ""
-         return "";
       }
    }
 }
