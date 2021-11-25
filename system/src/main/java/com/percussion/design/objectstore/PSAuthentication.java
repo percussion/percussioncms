@@ -473,18 +473,29 @@ public class PSAuthentication extends PSComponent
          encryptedValue.trim().equalsIgnoreCase(XML_ATTRVALUE_YES));
 
       data = tree.getElementData(XML_ELEM_PASSWORD, false);
+      String encData = data;
       if (encrypted)
       {
          try{
             data = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),data);
-         } catch (PSEncryptionException e) { String userStr = getUser();
+         } catch (PSEncryptionException e) {
+            String userStr = getUser();
             String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).INVALID_DRIVER() : userStr;
 
-            data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).INVALID_CRED(), key, data);
+               try{
+                  data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
+                          PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                  ).INVALID_CRED(), key, data);
+                  if(data.isEmpty()){
+                     key = userStr.trim().length() == 0 ? INVALID_DRIVER : userStr;
+                     data = PSCryptographer.decryptOldAlgo(INVALID_CRED, key, encData);
+                  }
+               }catch (Exception e1){
+                  key = userStr.trim().length() == 0 ? INVALID_DRIVER : userStr;
+                  data = PSCryptographer.decryptOldAlgo(INVALID_CRED, key, encData);
+               }
          }
 
       }
@@ -688,6 +699,19 @@ public class PSAuthentication extends PSComponent
     * applied.
     */
    private String m_filterExtension = "";
+
+   /**
+    * Constant to use for part one key when encrypting/decrypting the password.
+    */
+   private static final String INVALID_CRED =
+           "Invalid user id or password!!!!!";
+
+   /**
+    * Constant to use for part two key if the user is empty when
+    * encrypting/decrypting the password.
+    */
+   private static final String  INVALID_DRIVER =
+           "The driver name you have entered is invalid.";
 
    // XML element and attribute constants.
    private static final String XML_ATTR_NAME = "name";
