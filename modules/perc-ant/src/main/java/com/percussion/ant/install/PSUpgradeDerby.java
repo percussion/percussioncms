@@ -25,6 +25,7 @@
 package com.percussion.ant.install;
 
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.install.PSLogger;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.tools.ant.BuildException;
@@ -38,6 +39,7 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLNonTransientConnectionException;
 import java.util.Properties;
@@ -117,17 +119,53 @@ public class PSUpgradeDerby extends PSAction {
             stmt = (org.apache.derby.impl.jdbc.EmbedStatement) conn.createStatement();
             String sql2 = "DROP TABLE PERC_PAGE_METADATA_PROPERTIES";
             stmt.executeUpdate(sql2);
-        }catch (SQLException throwables) {
-            PSLogger.logWarn("SQL State: Drop table for PERC_PAGE_METADATA_PROPERTIES failed, may be doesn't exist");
+
+        }catch (SQLException e) {
+            PSLogger.logWarn("SQL State: Drop table for PERC_PAGE_METADATA_PROPERTIES failed, may be doesn't exist" + PSExceptionUtils.getMessageForLog(e) );
         }
         try {
             String sql = "DROP TABLE PERC_PAGE_METADATA";
             stmt.executeUpdate(sql);
+
         }catch (SQLException e){
-            PSLogger.logWarn("SQL State: Drop table for PERC_PAGE_METADATA failed, may be doesn't exist");
+            PSLogger.logWarn("SQL State: Drop table for PERC_PAGE_METADATA failed, may be doesn't exist" + PSExceptionUtils.getMessageForLog(e) );
+        }
+        try {
+            String sql = "SELECT COUNT(*) from PERC_COOKIE_CONSENT";
+            org.apache.derby.impl.jdbc.EmbedStatement prepStmt = (org.apache.derby.impl.jdbc.EmbedStatement) conn.createStatement();
+            ResultSet rs = prepStmt.executeQuery(sql);
+            rs.next();
+            int count = rs.getInt(1);
+            rs.close();
+            PSLogger.logInfo("Got Result in PERC_COOKIE_CONSENT.");
+            if (count == 0) {
+                PSLogger.logInfo("Rows in PERC_COOKIE_CONSENT are 0 thus deleting table.");
+                String sql2 = "DROP TABLE PERC_COOKIE_CONSENT";
+                stmt.execute(sql2);
+            }
+
+        }catch (SQLException e){
+            PSLogger.logWarn("SQL State: Drop table for PERC_COOKIE_CONSENT failed, may be doesn't exist: "+ PSExceptionUtils.getMessageForLog(e)  );
+        }
+
+        try {
+            String sql = "SELECT COUNT(*) from BLOG_POST_VISIT";
+            org.apache.derby.impl.jdbc.EmbedStatement prepStmt = (org.apache.derby.impl.jdbc.EmbedStatement) conn.createStatement();
+            ResultSet rs = prepStmt.executeQuery(sql);
+            rs.next();
+            int count = rs.getInt(1);
+            rs.close();
+            PSLogger.logInfo("Got Result in BLOG_POST_VISIT.");
+            if (count == 0) {
+                PSLogger.logInfo("Rows in BLOG_POST_VISIT are 0 thus deleting table.");
+                String sql2 = "DROP TABLE BLOG_POST_VISIT";
+                stmt.execute(sql2);
+            }
+
+        }catch (SQLException e){
+            PSLogger.logWarn("SQL State: Drop table for BLOG_POST_VISIT failed, may be doesn't exist" + PSExceptionUtils.getMessageForLog(e) );
         }
     }
-
     public synchronized void loadDerbyJDBCJar() throws MalformedURLException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         PSLogger.logInfo("Loading DerbyDriver at RunTime");
         File derbyJDBCDriver = null;

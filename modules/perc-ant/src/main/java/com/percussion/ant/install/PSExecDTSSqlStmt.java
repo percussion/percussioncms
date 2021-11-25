@@ -33,15 +33,40 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
 public class PSExecDTSSqlStmt extends PSExecSQLStmt {
 
+    /**
+     * The sql statement to execute if database specific sql statment is
+     * empty, never <code>null</code>, may be empty
+     */
+    private String preSql = "";
+
+    private int preSqlValue = 0;
 
     protected  String getDBPropertyFile(){
         return   getRootDir() + File.separator
                 + "Deployment/Server/conf/perc/perc-datasources.properties";
+    }
+
+    public String getPreSql() {
+        return preSql;
+    }
+
+    public void setPreSql(String preSql) {
+        this.preSql = preSql;
+    }
+
+    public int getPreSqlValue() {
+        return preSqlValue;
+    }
+
+    public void setPreSqlValue(int preSqlValue) {
+        this.preSqlValue = preSqlValue;
     }
 
     @Override
@@ -96,13 +121,23 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
             InstallUtil.setRootDir(this.getRootDir());
             try (Connection conn = InstallUtil.createConnection(dbType,
                     PSJdbcUtils.getServerFromUrl(jdbcUrl),user,dpwd)) {
-                String strStmt = getSql();
-                PSLogger.logInfo("Executing statement : " + strStmt);
-                try(Statement stmt = conn.createStatement()) {
-                    stmt.execute(strStmt);
-                    PSLogger.logInfo("Successfully executed statement.");
+                if(getPreSql() != null){
+                    String strPreStmt = getPreSql();
+                    PSLogger.logInfo("Executing statement : " + strPreStmt);
+                    try(Statement stmt = conn.createStatement()) {
+                        ResultSet rs = stmt.executeQuery(strPreStmt);
+                        rs.next();
+                        int count = rs.getInt(1);
+                        rs.close();
+                        PSLogger.logInfo("Got Result in PreStmt.");
+                       if(count == getPreSqlValue()){
+                           PSLogger.logInfo("Result in PreStmt match returned result.");
+                           executeStmt(conn);
+                       }
+                    }
+                }else{
+                    executeStmt(conn);
                 }
-
         }catch( Exception ex ) {
                 if(!isFailonerror()){
                     if(!isSilenceErrors()){
@@ -124,5 +159,16 @@ public class PSExecDTSSqlStmt extends PSExecSQLStmt {
 
         }
     }
+
+    private void executeStmt(Connection conn) throws SQLException {
+        String strStmt = getSql();
+        PSLogger.logInfo("Executing statement : " + strStmt);
+        try(Statement stmt2 = conn.createStatement()) {
+            stmt2.execute(strStmt);
+            PSLogger.logInfo("Successfully executed statement.");
+        }
+    }
+
 }
+
 

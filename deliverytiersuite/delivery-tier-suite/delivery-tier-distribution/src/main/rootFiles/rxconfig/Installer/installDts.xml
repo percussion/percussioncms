@@ -202,6 +202,12 @@
                           sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
         <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
                           qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from BLOG_POST_VISIT" preSqlValue="0"
+                          sql="drop table BLOG_POST_VISIT"/>
+        <PSExecDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from PERC_COOKIE_CONSENT" preSqlValue="0"
+                          sql="drop table PERC_COOKIE_CONSENT"/>
     </target>
 
 
@@ -211,6 +217,12 @@
                                  qualifyViewNames="" sql="drop table PERC_PAGE_METADATA_PROPERTIES"/>
         <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
                                  qualifyViewNames="" sql="drop table PERC_PAGE_METADATA"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from BLOG_POST_VISIT" preSqlValue="0"
+                          sql="drop table BLOG_POST_VISIT"/>
+        <PSExecStagingDTSSQLStmt silenceErrors="false" failonerror="false" rootDir="${install.dir}" printExceptionStackTrace="true" qualifyTableNames=""
+                          qualifyViewNames="" preSql="select COUNT(*) from PERC_COOKIE_CONSENT" preSqlValue="0"
+                          sql="drop table PERC_COOKIE_CONSENT"/>
 
     </target>
 
