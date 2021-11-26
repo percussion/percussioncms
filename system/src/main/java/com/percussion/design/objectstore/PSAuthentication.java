@@ -490,11 +490,11 @@ public class PSAuthentication extends PSComponent
                   ).INVALID_CRED(), key, data);
                   if(data.isEmpty()){
                      key = userStr.trim().length() == 0 ? INVALID_DRIVER : userStr;
-                     data = PSCryptographer.decryptOldAlgo(INVALID_CRED, key, encData);
+                     data = PSCryptographer.decryptWithOldAlgo(INVALID_CRED, key, encData);
                   }
                }catch (Exception e1){
                   key = userStr.trim().length() == 0 ? INVALID_DRIVER : userStr;
-                  data = PSCryptographer.decryptOldAlgo(INVALID_CRED, key, encData);
+                  data = PSCryptographer.decryptWithOldAlgo(INVALID_CRED, key, encData);
                }
          }
 
