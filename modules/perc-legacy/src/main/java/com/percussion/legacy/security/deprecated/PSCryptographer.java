@@ -61,7 +61,7 @@ public class PSCryptographer
     * is <code>null</code> or empty.
     */
    @Deprecated
-   public static String decrypt(String key1, String key2, String str)
+   public static String decryptWithAlgo(String key1, String key2, String str, IPSKey key)
    {
       if (key1 == null || key1.trim().length() == 0)
          throw new IllegalArgumentException("key1 may not be null or empty");
@@ -81,11 +81,10 @@ public class PSCryptographer
 
          int padLen = 0;
          try(ByteArrayOutputStream bOut = new ByteArrayOutputStream()){
-
+            String ret = "";
             byte[] bOutarr = Base64.getMimeDecoder().decode(str.getBytes(
                     StandardCharsets.UTF_8));
 
-            IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.DES_ALGORITHM);
             if ((key != null) && (key instanceof IPSSecretKey))
             {
                IPSSecretKey secretKey = (IPSSecretKey)key;
@@ -120,11 +119,11 @@ public class PSCryptographer
                      try(ByteArrayInputStream bin = new ByteArrayInputStream(bTemp, 4, innerDataLength)) {
                         decr.decrypt(bin, bOut3);
                      }
+                     ret = bOut3.toString(String.valueOf(StandardCharsets.UTF_8));
                   }
                }
             }
 
-            String ret = bOut.toString();
             // pad must be between 1 and 7 bytes, fix for bug id Rx-99-11-0049
             if ((padLen > 0) & (padLen  < 8))
                ret = ret.substring(0, ret.length() - padLen);
@@ -230,4 +229,26 @@ public class PSCryptographer
          return null;
       }
    }
+
+   @Deprecated
+   public static String decrypt(String key1, String key2, String str)
+   {
+      IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.DES_ALGORITHM);
+      return decryptWithAlgo(key1,key2,str,key);
+   }
+
+   @Deprecated
+   public static String decryptWithOldAlgo(String userStr, String str)
+   {
+      try{
+         String INVALID_CRED = "Invalid user id or password!!!!!";
+         String INVALID_DRIVER = "The driver name you have entered is invalid.";
+         IPSKey key = (IPSKey)com.percussion.legacy.security.deprecated.PSDESKey.class.newInstance();
+         String key2 = userStr.trim().length() == 0 ? INVALID_DRIVER : userStr;
+         return decryptWithAlgo(INVALID_CRED,key2,str,key);
+      }catch (Exception e){
+            return  "";
+      }
+   }
+
 }
