@@ -473,18 +473,27 @@ public class PSAuthentication extends PSComponent
          encryptedValue.trim().equalsIgnoreCase(XML_ATTRVALUE_YES));
 
       data = tree.getElementData(XML_ELEM_PASSWORD, false);
+      String encData = data;
       if (encrypted)
       {
          try{
             data = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),data);
-         } catch (PSEncryptionException e) { String userStr = getUser();
+         } catch (PSEncryptionException e) {
+            String userStr = getUser();
             String key = userStr.trim().length() == 0 ? PSLegacyEncrypter.getInstance(
                     PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
             ).INVALID_DRIVER() : userStr;
 
-            data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
-                    PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
-            ).INVALID_CRED(), key, data);
+               try{
+                  data = PSCryptographer.decrypt(PSLegacyEncrypter.getInstance(
+                          PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+                  ).INVALID_CRED(), key, data);
+                  if(data.isEmpty()){
+                     data = PSCryptographer.decryptWithOldAlgo(userStr, encData);
+                  }
+               }catch (Exception e1){
+                  data = PSCryptographer.decryptWithOldAlgo(userStr, encData);
+               }
          }
 
       }
