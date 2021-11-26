@@ -232,7 +232,7 @@ public class PSCryptographer
    }
 
    @Deprecated
-   public static String decryptOldAlgo(String key1, String key2, String str)
+   public static String decryptWithOldAlgo(String key1, String key2, String str)
    {
       if (key1 == null || key1.trim().length() == 0)
          throw new IllegalArgumentException("key1 may not be null or empty");
