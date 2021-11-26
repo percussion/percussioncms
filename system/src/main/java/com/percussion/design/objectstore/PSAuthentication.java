@@ -489,12 +489,10 @@ public class PSAuthentication extends PSComponent
                           PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                   ).INVALID_CRED(), key, data);
                   if(data.isEmpty()){
-                     key = userStr.trim().length() == 0 ? INVALID_DRIVER : userStr;
-                     data = PSCryptographer.decryptWithOldAlgo(INVALID_CRED, key, encData);
+                     data = PSCryptographer.decryptWithOldAlgo(userStr, encData);
                   }
                }catch (Exception e1){
-                  key = userStr.trim().length() == 0 ? INVALID_DRIVER : userStr;
-                  data = PSCryptographer.decryptWithOldAlgo(INVALID_CRED, key, encData);
+                  data = PSCryptographer.decryptWithOldAlgo(userStr, encData);
                }
          }
 
@@ -699,19 +697,6 @@ public class PSAuthentication extends PSComponent
     * applied.
     */
    private String m_filterExtension = "";
-
-   /**
-    * Constant to use for part one key when encrypting/decrypting the password.
-    */
-   private static final String INVALID_CRED =
-           "Invalid user id or password!!!!!";
-
-   /**
-    * Constant to use for part two key if the user is empty when
-    * encrypting/decrypting the password.
-    */
-   private static final String  INVALID_DRIVER =
-           "The driver name you have entered is invalid.";
 
    // XML element and attribute constants.
    private static final String XML_ATTR_NAME = "name";
