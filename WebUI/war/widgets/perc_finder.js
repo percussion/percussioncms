@@ -970,18 +970,20 @@ var assetPagination = null;
                     load_folder_path( ut.acop( item_path ) ) );
             }
 
-            listing.on("click", function(evt){onClick(evt);} );
-            listing.on("dblclick", function(evt){
-                validatePath(evt, item_path, function(){
-                    if(spec.type==="Folder" || item_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH)
-                    {
-                        onClick(evt);
-                    }
-                    else
-                    {
-                        fireOpenEvent(spec);
-                    }
-                });
+			var clickCount = 0;
+			listing.on("click", function(evt){
+				 clickCount++;
+				if (clickCount === 1) {
+					singleClickTimer = setTimeout(function() {
+						clickCount = 0;
+						onClick(evt);
+					}, 400);
+				} else if (clickCount === 2) {
+					clearTimeout(singleClickTimer);
+					clickCount = 0;
+					doubleClick(evt);
+				}
+
             });
 
             if(isDraggableItem(spec))
@@ -1045,6 +1047,19 @@ var assetPagination = null;
             function hoverCancel(event, ui){
                 $(this).removeClass("perc-finder-item-over");
                 hoverCount++;
+            }
+
+			function doubleClick(evt){
+                validatePath(evt, item_path, function(){
+                    if(spec.type==="Folder" || item_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH)
+                    {
+                        onClick(evt);
+                    }
+                    else
+                    {
+                        fireOpenEvent(spec);
+                    }
+                });
             }
 
             /**
@@ -1771,27 +1786,19 @@ var assetPagination = null;
             var pItem = null;
             var objectId = null;
             $.each(_finderPathIdArray, function(key, value){
-                if(key == path)
-                {
+                if (key == path) {
                     objectId = value;
-                }
-            });
-            if (!objectId)
-            {
-                var altPath = "";
-                if (path[path.length - 1] != "/")
+                    return;
+                }else if (key.endsWith("/") && !path.endsWith("/")) {
                     altPath = path + "/";
-                else
-                    altPath = path.substring(0,path.length - 1);
-                $.each(_finderPathIdArray, function(key, value){
                     if(key == altPath)
                     {
                         objectId = value;
+                        return;
                     }
-                });
-            }
-            if(objectId)
-            {
+                }
+            });
+            if(objectId){
                 pItem = getPathItemById(objectId.toString());
             }
             return pItem;
