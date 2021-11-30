@@ -735,15 +735,15 @@ var assetPagination = null;
             }
         }
 
-        function pagePrevious(evt){
-            var dir = $(this).parents("td");
+        function pagePrevious(evt,target){
+            var dir = target.parents("td");
             var newStartIndex = dir.data('startIndex') - MAX_RESULTS;
             dir.data('startIndex', newStartIndex);
             load_folder(dir, $(this).closest('.perc-paging-finder').is('.perc-paging-finder-bottom'));
         }
 
-        function pageNext(evt){
-            var dir = $(this).parents("td");
+        function pageNext(evt,target){
+            var dir = target.parents("td");
             var newStartIndex = dir.data('startIndex') + MAX_RESULTS;
             dir.data('startIndex', newStartIndex);
             load_folder(dir, $(this).closest('.perc-paging-finder').is('.perc-paging-finder-bottom'));
@@ -753,6 +753,9 @@ var assetPagination = null;
         function load_folder(dir, scrollBottom) {
             //Generate the url with startIndex and maxResult.
             var path = dir.data('path');
+            if(typeof path === 'undefined'){
+                    return;
+            }
             var startIndex = dir.data('startIndex');
             var str_path = $.perc_utils.encodeURL(path.join("/")) + "/?startIndex=" + startIndex + "&maxResults=" + MAX_RESULTS;
 
@@ -794,11 +797,11 @@ var assetPagination = null;
                     $('<div class="perc-paging-finder-navigator" />')
                         .append($('<a class="perc-paging-finder-previous" />').text('<<').on("click",
                             function(evt){
-                                pagePrevious(evt);
+                                pagePrevious(evt,$(this));
                             }))
                         .append($('<a class="perc-paging-finder-next"/>').text('>>').on("click",
                             function(evt){
-                                pageNext(evt);
+                                pageNext(evt,$(this));
                             }))
                 ).addClass(position);
             header = $("<div/>").append(header).append("<div style='clear:both'/>");
