@@ -165,10 +165,12 @@ public class PSMakeIntLink extends PSSimpleJavaUdfExtension
       URL result = null;
       try
       {
+         String protocol = request.getOriginalProtocol();
+         boolean secure = "https".equalsIgnoreCase(protocol)?true:false;
          result =
-               PSUrlUtils.createUrl("127.0.0.1",
-               new Integer(request.getServerListenerPort()), sourceUrl,
-               paramMap.entrySet().iterator(), null, request, false);
+               PSUrlUtils.createUrl(request.getOriginalHost(),
+               new Integer(request.getOriginalPort()), sourceUrl,
+               paramMap.entrySet().iterator(), null, request, secure);
          /*FIXME - This function used to return the url with atleast one parameter
          called pssessionid. Now the pssessionid parameter has been removed. If there
          are no parameters then the url will be returned without ? at the end.
