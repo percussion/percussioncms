@@ -40,7 +40,7 @@
                         <xsl:variable name="bannerurl" select="document(//bannerurl)/*/url"/>
                         <xsl:copy-of select="document($bannerurl)/*/body/*"/>
                      </td>
-                     <td align="left" valign="top">
+                     <td align="right" valign="bottom">
                         <a href="/dce/dce.jnlp">Desktop Content Explorer</a>
                      </td>
 
