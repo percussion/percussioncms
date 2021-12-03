@@ -104,7 +104,7 @@ public class PSSteppedWorkflowMetadata implements IPSSteppedWorkflowMetadata
     static final String TRANSITION_NAME_SUBMIT = "Submit";
     static final String TRANSITION_NAME_PUBLISH = "Publish";
     static String[] defaultTransitionsValues =
-        {TRANSITION_NAME_SUBMIT, TRANSITION_NAME_REJECT, TRANSITION_NAME_APPROVE, TRANSITION_NAME_PUBLISH};
+        {TRANSITION_NAME_SUBMIT, TRANSITION_NAME_REJECT, TRANSITION_NAME_APPROVE, TRANSITION_NAME_PUBLISH, TRANSITION_NAME_ARCHIVE};
     static List<String> defaultTransitions = 
         new ArrayList<>(Arrays.asList(defaultTransitionsValues));
     
