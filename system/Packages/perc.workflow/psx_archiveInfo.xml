@@ -40,7 +40,7 @@
             <Description>This package contains the 'Default Workflow'.</Description>
             <Publisher name="Percussion Software, Inc." url="www.percussion.com"/>
             <CmsVersion max="9.0.0" min="2.4.0"/>
-            <Version>1.1.4</Version>
+            <Version>1.1.5</Version>
             <ImplConfigFile/>
             <LocalConfigFile/>
             <PKGDependencies/>
@@ -125,14 +125,20 @@
                                        </PSXDeployableObject>
                                        <PSXDeployableObject>
                                           <PSXDependency autoDep="no" autoExpand="yes" dependencyId="8" dependencyType="Local" displayName="Edit" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
+                                    <Dependencies/>
+                                 </PSXDependency>
+                                 <RequiredClasses/>
+                              </PSXDeployableObject>
+                                       <PSXDeployableObject>
+                                          <PSXDependency autoDep="no" autoExpand="yes" dependencyId="21" dependencyType="Local" displayName="Archive" isAssociation="no" isIncluded="yes" objectType="TransitionDef" objectTypeName="Transition Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
                                              <Dependencies/>
                                           </PSXDependency>
                                           <RequiredClasses/>
                                        </PSXDeployableObject>
-                                    </Dependencies>
-                                 </PSXDependency>
-                                 <RequiredClasses/>
-                              </PSXDeployableObject>
+                           </Dependencies>
+                        </PSXDependency>
+                        <RequiredClasses/>
+                     </PSXDeployableObject>
                               <PSXDeployableObject>
                                  <PSXDependency autoDep="no" autoExpand="yes" dependencyId="4" dependencyType="Local" displayName="Pending" isAssociation="no" isIncluded="yes" objectType="StateDef" objectTypeName="State Definition" parentId="6" parentType="WorkflowDef" supportsIdMapping="yes" supportsIdTypes="no" supportsParentId="yes" supportsUserDependencies="no">
                                     <Dependencies>
