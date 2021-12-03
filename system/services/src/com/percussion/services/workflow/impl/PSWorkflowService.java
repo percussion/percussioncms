@@ -96,6 +96,10 @@ public class PSWorkflowService
 {
 
 
+   static final String LIVE_STATE = "Live";
+   static final String ARCHIVE_STATE = "Archive";
+   static final String TRANSITION_NAME_ARCHIVE = "Archive";
+   static final String TRANSITION_LIVE_TO_ARCHIVE_DESC = "Archive content from Live State";
 
    private SessionFactory sessionFactory;
 
@@ -325,9 +329,64 @@ public class PSWorkflowService
       if (rval != null)
       {
          forceLazyLoad(rval);
+         addArchiveTransitionToLiveState(rval);
          m_cache.save(id, rval, CACHE_REGION);
       }
       return rval;
+   }
+
+   private void addArchiveTransitionToLiveState(PSWorkflow rval){
+      for (PSState state : rval.getStates())
+      {
+         if(state.getName().equals(LIVE_STATE))
+         {
+            Boolean isArchiveTransitionPresent = false;
+
+            List<PSTransition> transitions = state.getTransitions();
+            for(PSTransition tr : transitions){
+               if(tr.getName().equals(TRANSITION_NAME_ARCHIVE)){
+                  isArchiveTransitionPresent = true;
+                  break;
+               }
+            }
+            if(!isArchiveTransitionPresent) {
+               IPSGuid workflowGuid = rval.getGUID();
+               PSTransition archivetransition = createTransition(workflowGuid, state.getGUID());
+               archivetransition.setAllowAllRoles(false);
+               archivetransition.setLabel(TRANSITION_NAME_ARCHIVE);
+               archivetransition.setDescription(TRANSITION_LIVE_TO_ARCHIVE_DESC);
+               archivetransition.setTrigger(TRANSITION_NAME_ARCHIVE);
+               archivetransition.setToState(getWorkflowStateByName(rval, ARCHIVE_STATE).getStateId());
+               long notificationId = 0;
+               notificationId = rval.getNotificationDefs().get(0).getGUID().getUUID();
+               PSNotification notification = createNotification(workflowGuid, archivetransition.getGUID());
+               notification.setNotificationId(notificationId);
+               List<PSNotification> notifications = archivetransition.getNotifications();
+               notifications.add(notification);
+               archivetransition.setNotifications(notifications);
+               List<PSTransitionRole> transitionRoles = transitions.get(0).getTransitionRoles();
+               List<PSTransitionRole> archiveTransitionRoles = new ArrayList<>();
+               archiveTransitionRoles.addAll(transitionRoles);
+               transitions.add(archivetransition);
+               state.setTransitions(transitions);
+               saveWorkflow(rval);
+            }
+         }
+      }
+   }
+
+   private PSState getWorkflowStateByName(PSWorkflow workflow, String stateName)
+   {
+      PSState stateFound = null;
+      for (PSState state : workflow.getStates())
+      {
+         if(state.getName().equals(stateName))
+         {
+            stateFound = state;
+            break;
+         }
+      }
+      return stateFound;
    }
    
    /*
