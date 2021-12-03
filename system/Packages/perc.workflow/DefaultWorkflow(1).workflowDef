@@ -52,6 +52,15 @@
       </indexdefinitions>
    </table>
    <table name="TRANSITIONNOTIFICATIONS" onCreateOnly="yes">
+        <row action="n" onTableCreateOnly="no">
+                 <column encoding="text" name="TRANSITIONNOTIFICATIONID">18</column>
+                 <column encoding="text" name="TRANSITIONID">21</column>
+                 <column encoding="text" name="NOTIFICATIONID">1</column>
+                 <column encoding="text" name="STATEROLERECIPIENTTYPES">1</column>
+                 <column encoding="text" isEmptyNull="no" name="ADDITIONALRECIPIENTLIST"/>
+                 <column encoding="text" isEmptyNull="no" name="CCLIST"/>
+                 <column encoding="text" name="WORKFLOWAPPID">6</column>
+              </row>
       <row action="n" onTableCreateOnly="no">
          <column encoding="text" name="TRANSITIONNOTIFICATIONID">17</column>
          <column encoding="text" name="TRANSITIONID">1</column>
@@ -205,5 +214,6 @@
          <column encoding="text" isEmptyNull="no" name="CCLIST"/>
          <column encoding="text" name="WORKFLOWAPPID">6</column>
       </row>
+
    </table>
 </PSXDependencyData>

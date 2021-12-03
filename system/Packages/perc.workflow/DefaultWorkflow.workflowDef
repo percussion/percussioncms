@@ -273,5 +273,20 @@
          <column encoding="text" name="WORKFLOWAPPID">6</column>
          <column encoding="text" name="TRANSITIONROLEID">4</column>
       </row>
+      <row action="n" onTableCreateOnly="no">
+               <column encoding="text" name="TRANSITIONID">21</column>
+               <column encoding="text" name="WORKFLOWAPPID">6</column>
+               <column encoding="text" name="TRANSITIONROLEID">1</column>
+            </row>
+            <row action="n" onTableCreateOnly="no">
+               <column encoding="text" name="TRANSITIONID">21</column>
+               <column encoding="text" name="WORKFLOWAPPID">6</column>
+               <column encoding="text" name="TRANSITIONROLEID">3</column>
+            </row>
+            <row action="n" onTableCreateOnly="no">
+               <column encoding="text" name="TRANSITIONID">21</column>
+               <column encoding="text" name="WORKFLOWAPPID">6</column>
+               <column encoding="text" name="TRANSITIONROLEID">4</column>
+            </row>
    </table>
 </PSXDependencyData>

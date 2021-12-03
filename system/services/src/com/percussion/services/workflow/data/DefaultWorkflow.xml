@@ -649,6 +649,42 @@
             <trigger>Quick Edit</trigger>
             <workflow-id>6</workflow-id>
           </transition>
+          <transition>
+            <guid>0-27-21</guid>
+            <allow-all-roles>false</allow-all-roles>
+            <approvals>1</approvals>
+            <default-transition>false</default-transition>
+            <description>Archive content from Live</description>
+            <label>Archive</label>
+            <name>Archive</name>
+            <notifications/>
+            <requires-comment>OPTIONAL</requires-comment>
+            <state-id>5</state-id>
+            <to-state>7</to-state>
+            <transition-action/>
+            <transition-roles>
+              <transition-role>
+                <guid>0-25-1</guid>
+                <role-id>1</role-id>
+                <transition-id>6</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role>
+                <guid>0-25-4</guid>
+                <role-id>4</role-id>
+                <transition-id>6</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+              <transition-role>
+                <guid>0-25-5</guid>
+                <role-id>5</role-id>
+                <transition-id>6</transition-id>
+                <workflow-id>6</workflow-id>
+              </transition-role>
+            </transition-roles>
+            <trigger>Quick Edit</trigger>
+            <workflow-id>6</workflow-id>
+          </transition>
         </transitions>
         <workflow-id>6</workflow-id>
       </state>
