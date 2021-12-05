@@ -137,7 +137,7 @@
 						<% }%>
 					</select>
 				</div>
-				<button id="perc-login-button" form="loginform" class="btn btn-primary btn-default">${rxcomp:i18ntext('jsp_login@LoginButton',locale)}</button>
+				<button type="submit" id="perc-login-button" form="loginform" class="btn btn-primary btn-default">${rxcomp:i18ntext('jsp_login@LoginButton',locale)}</button>
 			</div>
 		</csrf:form>
 	</div>
@@ -171,6 +171,8 @@
 	<div class="error"><%=error%></div>
 	<%  }
 	%>
+
+</div>
 </div>
 </body>
 </html>
