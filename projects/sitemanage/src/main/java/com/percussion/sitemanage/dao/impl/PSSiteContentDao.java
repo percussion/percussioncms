@@ -258,10 +258,11 @@ public class PSSiteContentDao
             PSLocator srcLoc = idMapper.getLocator(srcSum.getId());
             IPSItemSummary tgtSum = folderHelper.findFolder(PSPathUtils.getFolderPath(PSPathUtils.SITES_FINDER_ROOT));
             PSLocator tgtLoc = idMapper.getLocator(tgtSum.getId());
-            PSCloningOptions options = new PSCloningOptions(PSCloningOptions.TYPE_SITE, srcName, destName, destName,
+            PSCloningOptions options = new PSCloningOptions(PSCloningOptions.TYPE_SITE_SUBFOLDER, srcName, destName, destName,
                     PSCloningOptions.COPY_ALL_CONTENT, PSCloningOptions.COPYCONTENT_AS_NEW_COPY, null);
             options.setUseSrcItemWorkflow(true);
-            fp.copyFolder(srcLoc, tgtLoc, options);
+
+            fp.copyFolder(srcLoc, tgtLoc, options,true,asmBridge.getDispatchTemplate());
         }
         catch (Exception e)
         {
