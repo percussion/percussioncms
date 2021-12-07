@@ -1133,8 +1133,11 @@ try{
 		
 		if(folder == null)
 			folder = "";
-		
-		folder = StringUtils.substringBeforeLast(folder, "/");
+
+		if(folder.endsWith("/")){
+            folder = StringUtils.substringBeforeLast(folder, "/");
+        }
+
 		String path = folder;
 
 		try {
@@ -1151,8 +1154,11 @@ try{
 		
 		if(folder == null)
 			folder = "";
-		
-		folder = StringUtils.substringBeforeLast(folder, "/");
+
+        if(folder.endsWith("/")) {
+            folder = StringUtils.substringBeforeLast(folder, "/");
+        }
+
 		String path = folder;
 
 		try {
