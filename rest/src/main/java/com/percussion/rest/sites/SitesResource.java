@@ -50,6 +50,7 @@ public class SitesResource {
     public SitesResource(){};
 
     @GET
+    // TODO: Implement Me
     public SiteList listSites(){
         SiteList ret = null;
 
