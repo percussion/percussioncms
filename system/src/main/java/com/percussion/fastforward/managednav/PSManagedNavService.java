@@ -793,6 +793,8 @@ public class PSManagedNavService implements IPSManagedNavService
       {
          nodeId = contentDsWs.getItemGuid(nodeId);
          removeLinksToLandingPages(nodeId);
+         contentWs.prepareForEdit(nodeId);
+         contentWs.prepareForEdit(pageId);
          contentWs.addContentRelations(nodeId, 
                Collections.singletonList(pageId), lpSlotName, templateName, 0);
       }
