@@ -364,9 +364,16 @@ public class PSWorkflowService
                List<PSNotification> notifications = archivetransition.getNotifications();
                notifications.add(notification);
                archivetransition.setNotifications(notifications);
-               List<PSTransitionRole> transitionRoles = transitions.get(0).getTransitionRoles();
                List<PSTransitionRole> archiveTransitionRoles = new ArrayList<>();
-               archiveTransitionRoles.addAll(transitionRoles);
+               List<PSTransitionRole> transitionRoles = transitions.get(0).getTransitionRoles();
+               for(PSTransitionRole tr : transitionRoles){
+                  PSTransitionRole archivetransRole = new PSTransitionRole();
+                  archivetransRole.setRoleId(tr.getRoleId());
+                  archivetransRole.setTransitionId(archivetransition.getGUID().getUUID());
+                  archivetransRole.setWorkflowId(rval.getGUID().getUUID());
+                  archiveTransitionRoles.add(archivetransRole);
+               }
+               archivetransition.setTransitionRoles(archiveTransitionRoles);
                transitions.add(archivetransition);
                state.setTransitions(transitions);
                saveWorkflow(rval);

@@ -158,7 +158,7 @@ $.perc_newSectionDialog = function() {
             dialog.find("#perc-landing-page").empty();
             var path = pathItem.path;
             //Add double slash if path doesn't start with //
-            if(path.substring(0, 1) === "/" && (path.substring(0, 2) === "//"))
+            if(path.substring(0, 1) === "/" && !(path.substring(0, 2) === "//"))
                 path = "/" + path;
             
             //Some of the services from server are not setting the path on PathItem, if not defined get it from folderPaths
