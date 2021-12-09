@@ -2337,6 +2337,25 @@
             <column name="TYPE">1</column>
             <column name="STATE"/>
         </row>
+        <!-- adding following lines for updating existing instances with correct value-->
+        <row action="u" onTableCreateOnly="no">
+            <column name="COMPONENTID">1</column>
+            <column name="NAME">cmp_userstatus</column>
+            <column name="DISPLAYNAME">User Status</column>
+            <column name="DESCRIPTION">User login details component for all pages.</column>
+            <column name="URL">/ui/userstatus.jsp</column>
+            <column name="TYPE">1</column>
+            <column name="STATE"/>
+        </row>
+        <row action="u" onTableCreateOnly="no">
+            <column name="COMPONENTID">2</column>
+            <column name="NAME">cmp_banner</column>
+            <column name="DISPLAYNAME">Banner</column>
+            <column name="DESCRIPTION">Banner component for all pages.</column>
+            <column name="URL">/ui/banner.jsp</column>
+            <column name="TYPE">1</column>
+            <column name="STATE"/>
+        </row>
         <row onTableCreateOnly="no" action="i">
             <column name="COMPONENTID">3</column>
             <column name="NAME">cmp_ca_mycontentmenu</column>
