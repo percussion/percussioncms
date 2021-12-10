@@ -261,7 +261,8 @@ public class PSSiteContentDao
             PSCloningOptions options = new PSCloningOptions(PSCloningOptions.TYPE_SITE, srcName, destName, destName,
                     PSCloningOptions.COPY_ALL_CONTENT, PSCloningOptions.COPYCONTENT_AS_NEW_COPY, null);
             options.setUseSrcItemWorkflow(true);
-            fp.copyFolder(srcLoc, tgtLoc, options);
+
+            fp.copyFolder(srcLoc, tgtLoc, options,true,asmBridge.getDispatchTemplate());
         }
         catch (Exception e)
         {
