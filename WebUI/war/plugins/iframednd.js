@@ -78,6 +78,7 @@
             {
                 var orig = $(this);
                 var orig_drop = $.data( this, 'ui-droppable' );
+                orig_drop.options.disabled=true;
                 var clone = $("<div/>").addClass("allDroppablesHelpers").addClass("perc-iframe-dnd-overlay-droppable").attr("for", orig.attr("id")).width( orig.outerWidth() ).height( orig.outerHeight() );
                 overlay.append( clone );
                 var iframeLeft, iframeTop;
@@ -113,6 +114,7 @@
                         greedy: orig_drop.options.greedy,
                         tolerance: orig_drop.options.tolerance,
                         accept: orig_drop.options.accept,
+                        iframeFix: true,
                         scope: orig_drop.options.scope,
                         over: function(evt,ui){
                             evt.preventDefault();
@@ -142,6 +144,13 @@
         function removeDroppables()
         {
             overlay.empty();
+            var droppables = frame.contents().find( ':data(ui-droppable)' );
+
+            droppables.each( function() {
+                var orig = $(this);
+                var orig_drop = $.data(this, 'ui-droppable');
+                orig_drop.options.disabled = false;
+            });
         }
 
         function onDragStart()
@@ -169,6 +178,7 @@
                     addClasses: false,
                     scope: $.perc_iframe_scope,
                     tolerance : 'pointer',
+                    iframeFix: true,
                     activate: function(event,ui)
                     {
                         onDragStart(ui.draggable);
