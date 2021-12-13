@@ -2064,7 +2064,7 @@ public class PSPubServerService implements IPSPubServerService
         try {
             return PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
 
-        } catch (PSEncryptionException e) {
+        } catch (PSEncryptionException | IllegalArgumentException e) {
             log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",PSExceptionUtils.getMessageForLog(e));
             try {
                 PSAesCBC aes = new PSAesCBC();
