@@ -488,9 +488,12 @@ public class PSEncryptor extends PSAbstractEncryptor {
 
             if (encrypted == null)
                 throw new IllegalArgumentException();
-
-            byte[] encryptedBytes = Base64.getDecoder().decode(encrypted.getBytes(StandardCharsets.UTF_8));
-            return secretKey.getDecryptor().decrypt(encryptedBytes);
+            try {
+                byte[] encryptedBytes = Base64.getDecoder().decode(encrypted.getBytes(StandardCharsets.UTF_8));
+                return secretKey.getDecryptor().decrypt(encryptedBytes);
+            }catch (IllegalArgumentException e){
+                throw new PSEncryptionException(e);
+            }
     }
 
     public String decryptWithOld(String encrypted) throws PSEncryptionException{
@@ -501,8 +504,12 @@ public class PSEncryptor extends PSAbstractEncryptor {
             throw new PSEncryptionException();
         }
 
-        byte[] encryptedBytes = Base64.getDecoder().decode(encrypted.getBytes(StandardCharsets.UTF_8));
-        return oldSecretKey.getDecryptor().decrypt(encryptedBytes);
+        try {
+            byte[] encryptedBytes = Base64.getDecoder().decode(encrypted.getBytes(StandardCharsets.UTF_8));
+            return oldSecretKey.getDecryptor().decrypt(encryptedBytes);
+        }catch (IllegalArgumentException e){
+            throw new PSEncryptionException(e);
+        }
     }
 
     /**
@@ -592,13 +599,16 @@ public class PSEncryptor extends PSAbstractEncryptor {
      * @throws PSEncryptionException
      */
     public String decryptLegacyKey(String encrypted) throws PSEncryptionException{
-
+        try {
             //Read the secure key
             byte[] data = getLegacyKeyFile();
             IPSKey key = PSEncryptionKeyFactory.getKeyGenerator(PSEncryptionKeyFactory.AES_GCM_ALGORIYTHM);
             key.setSecret(Base64.getDecoder().decode(data));
 
             return key.getDecryptor().decrypt(Base64.getDecoder().decode(encrypted));
+        }catch (IllegalArgumentException e){
+            throw new PSEncryptionException(e);
+        }
 
     }
 
