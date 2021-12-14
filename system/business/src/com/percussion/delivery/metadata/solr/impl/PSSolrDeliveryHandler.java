@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,11 +27,12 @@ package com.percussion.delivery.metadata.solr.impl;
 import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.extractor.data.PSMetadataProperty;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryErrors;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.util.PSPurgableTempFile;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
@@ -57,7 +58,7 @@ public class PSSolrDeliveryHandler
    /**
     * Logger for this class
     */
-   public static Log log = LogFactory.getLog(PSSolrDeliveryHandler.class);
+   public static final Logger log = LogManager.getLogger(PSSolrDeliveryHandler.class);
 
    private boolean fatalError = false;
 
@@ -121,22 +122,11 @@ public class PSSolrDeliveryHandler
          {
             solrClient.deleteByQuery("*:*");
             serverConfig.setDelivered(true);
-         }
-         catch (SolrServerException e)
+         } catch (Exception e)
          {
             rollback();
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, PSExceptionUtils.getMessageForLog(e));
 
-         }
-         catch (IOException e)
-         {
-            rollback();
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
-         }
-
-         catch (Exception e ){
-             rollback();
-             throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
          }
       }
 
@@ -213,13 +203,13 @@ public class PSSolrDeliveryHandler
       catch (SolrServerException e)
       {
          solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
 
       }
       catch (IOException e)
       {
          solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
 
       }
    
@@ -250,17 +240,17 @@ public class PSSolrDeliveryHandler
       catch (SolrException e)
       {
          solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
       }
       catch (SolrServerException e)
       {
          solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
       }
       catch (IOException e)
       {
          solrConfig.incrError();
-         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+         throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
       }
       log.debug("Solr Result: " + result);
       return true;
@@ -291,18 +281,18 @@ public class PSSolrDeliveryHandler
          catch (SolrException e)
          {
             serverConfig.incrError();
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
          }
          catch (SolrServerException e)
          {
             serverConfig.incrError();
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
 
          }
          catch (IOException e)
          {
             serverConfig.incrError();
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
          }
       }
 
@@ -335,15 +325,15 @@ public class PSSolrDeliveryHandler
          }
          catch (SolrException e)
          {
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
          }
          catch (SolrServerException e)
          {
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
          }
          catch (IOException e)
          {
-            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e, e.getMessage());
+            throw new PSDeliveryException(IPSDeliveryErrors.SOLR_COMMUNICATION_EXCEPTION, e,PSExceptionUtils.getMessageForLog(e));
          }
          finally
          {
@@ -427,7 +417,7 @@ public class PSSolrDeliveryHandler
 
    private Set<IPSMetadataProperty> transform(SolrServer solrConfig,IPSMetadataEntry entry)
    {
-      Set<IPSMetadataProperty> transformed = new HashSet<IPSMetadataProperty>();
+      Set<IPSMetadataProperty> transformed = new HashSet<>();
       
       transformed.add(new PSMetadataProperty("name", entry.getName()));
       transformed.add(new PSMetadataProperty("linktext", entry.getLinktext()));

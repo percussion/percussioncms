@@ -17,11 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.data;
+
+import com.percussion.share.dao.PSSerializerUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.percussion.share.test.PSDataObjectTestUtils.assertEqualsMethod;
 import static com.percussion.share.test.PSDataObjectTestUtils.assertXmlSerialization;
@@ -29,16 +38,6 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-
-import com.percussion.share.dao.PSSerializerUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
 
 public class PSPageRegionBranchesSerializationTest
 {
@@ -111,5 +110,5 @@ public class PSPageRegionBranchesSerializationTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPageRegionBranchesSerializationTest.class);
+    private static final Logger log = LogManager.getLogger(PSPageRegionBranchesSerializationTest.class);
 }

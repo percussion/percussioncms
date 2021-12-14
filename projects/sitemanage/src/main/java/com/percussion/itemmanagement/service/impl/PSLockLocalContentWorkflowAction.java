@@ -17,15 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.itemmanagement.service.impl;
 
+import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSWorkFlowContext;
 import com.percussion.extension.IPSWorkflowAction;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +43,7 @@ import java.util.Map;
 public class PSLockLocalContentWorkflowAction extends PSAbstractWorkflowExtension implements IPSWorkflowAction
 {
 
+    private static final Logger log = LogManager.getLogger(PSLockLocalContentWorkflowAction.class);
     /**
      * The workflow state that page must be in for local content to be locked.
      */
@@ -54,14 +59,16 @@ public class PSLockLocalContentWorkflowAction extends PSAbstractWorkflowExtensio
         
         try
         {
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put(STATE_PARAMETER, LOCK_STATE);
             WorkflowItemWorker worker = getWorker(params);
             worker.processItem(wfContext);
 
             log.debug("Finished workflowing assets");
-        }
-        finally
+        } catch (IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+            log.error("Error workflowing local assets Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        } finally
         {
             setSecurity(currentUser);
         }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,11 @@ import com.percussion.cms.objectstore.PSDisplayColumn;
 import com.percussion.cms.objectstore.PSDisplayFormat;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
 import com.percussion.rest.Guid;
-import com.percussion.rest.displayformat.*;
+import com.percussion.rest.displayformat.DisplayFormat;
+import com.percussion.rest.displayformat.DisplayFormatColumn;
+import com.percussion.rest.displayformat.DisplayFormatColumnList;
+import com.percussion.rest.displayformat.DisplayFormatPropertyList;
+import com.percussion.rest.displayformat.IDisplayFormatAdaptor;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
@@ -75,9 +79,9 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
     @Override
     public List<DisplayFormat> findAllDisplayFormats() throws PSCmsException, PSErrorResultsException, PSUnknownNodeTypeException {
 
-        List<DisplayFormat> ret = new ArrayList<DisplayFormat>();
+        List<DisplayFormat> ret = new ArrayList<>();
         List<IPSCatalogSummary> displayFormats = designWs.findDisplayFormats(null, null);
-        List<IPSGuid> guids = new ArrayList<IPSGuid>();
+        List<IPSGuid> guids = new ArrayList<>();
 
         for(IPSCatalogSummary c: displayFormats){
             guids.add(c.getGUID());
@@ -96,7 +100,7 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
     }
 
     private DisplayFormatPropertyList copyDisplayFormatProps(PSDFProperties props){
-        DisplayFormatPropertyList ret = new DisplayFormatPropertyList(new ArrayList<DisplayFormatProperty>());
+        DisplayFormatPropertyList ret = new DisplayFormatPropertyList(new ArrayList<>());
 
 
         return ret;
@@ -104,17 +108,20 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
     private DisplayFormat copyDisplayFormat(PSDisplayFormat f) throws PSCmsException, PSUnknownNodeTypeException {
         DisplayFormat ret = new DisplayFormat();
 
-        if(f.getPropertyContainer()!= null)
+        if(f.getPropertyContainer()!= null) {
             ret.setProperties(copyDisplayFormatProps(f.getPropertyContainer()));
+        }
 
         ret.setInternalName(f.getInternalName());
 
-        if(f.getColumnContainer() != null)
+        if(f.getColumnContainer() != null) {
             ret.setColumns(copyDisplayFormatColumns(f.getColumnContainer()));
+        }
 
 
-        if(f.getAllowedCommunities() != null)
+        if(f.getAllowedCommunities() != null) {
             ret.setAllowedCommunities(copyAllowedCommunities(f.getAllowedCommunities()));
+        }
 
         ret.setAscendingSort(f.isAscendingSort());
         ret.setDescendingSort(f.isDescendingSort());
@@ -144,7 +151,7 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
 
     private Map<Guid, String> copyAllowedCommunities(Map<IPSGuid, String> allowedCommunities) {
 
-        Map<Guid,String> ret = new HashMap<Guid,String>();
+        Map<Guid,String> ret = new HashMap<>();
 
         for(Map.Entry<IPSGuid,String>  e : allowedCommunities.entrySet()){
             IPSGuid g = e.getKey();
@@ -156,7 +163,7 @@ public class DisplayFormatAdaptor implements IDisplayFormatAdaptor {
 
     private DisplayFormatColumnList copyDisplayFormatColumns(PSDFColumns columnContainer) {
 
-        DisplayFormatColumnList ret = new DisplayFormatColumnList(new ArrayList<DisplayFormatColumn>());
+        DisplayFormatColumnList ret = new DisplayFormatColumnList(new ArrayList<>());
 
         for(int i=0;i<columnContainer.size();i++){
             PSDisplayColumn col = (PSDisplayColumn)columnContainer.get(i);

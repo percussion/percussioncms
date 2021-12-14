@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -27,14 +27,14 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.0.2.10</version>
+        <version>8.0.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-system</artifactId>
-  <version>8.0.2.10</version>
+  <version>8.0.3</version>
     <packaging>jar</packaging>
     <build>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>Testing/src</testSourceDirectory>
         <resources>
             <resource>
@@ -82,12 +82,6 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>webservices/sample/loader/java/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
                 <directory>webservices/src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
@@ -118,16 +112,7 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>release/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>rxfiletracker/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
+                <directory>src/main/resources</directory>
             </resource>
             <resource>
                 <directory>business/src</directory>
@@ -148,20 +133,7 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-                <filtering>false</filtering>
-            </resource>
-            <resource>
                 <directory>Tools/Converters/src</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-            <resource>
-                <directory>misctools/src</directory>
                 <excludes>
                     <exclude>**/*.java</exclude>
                 </excludes>
@@ -244,7 +216,6 @@
                                 <source>beans/src</source>
                                 <source>i18n/src</source>
                                 <source>release/src</source>
-                                <source>rxfiletracker/src</source>
                                 <source>business/src</source>
                                 <source>services/src</source>
                                 <source>servlet/src</source>
@@ -252,8 +223,8 @@
                                 <source>Tools/InstallerBot/src</source>
                                 <source>Tools/RxFix/src</source>
                                 <source>uploader/src</source>
-                                <source>misctools/src</source>
                                 <source>Tools/InlineLinkConverter/src</source>
+                                <source>controls/src</source>
                             </sources>
                         </configuration>
                     </execution>
@@ -382,68 +353,74 @@
 
     </build>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.apache.derby/derbyclient -->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derbyclient</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.percussion</groupId>
-            <artifactId>rxutils</artifactId>
-            <version>8.0.2.10</version>
+            <artifactId>perc-security-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-xml-security</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
+            <artifactId>perc-legacy</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>rxutils</artifactId>
+            <version>8.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.2.10</version>
+            <version>${project.parent.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>servlet-utils</artifactId>
-            <version>8.0.2.10</version>
+            <version>8.0.3</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-simple</artifactId>
-            <version>8.0.2.10</version>
+            <version>8.0.3</version>
         </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.0.2.10</version>
+            <version>8.0.3</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>tablefactory</artifactId>
-            <version>8.0.2.10</version>
+            <version>8.0.3</version>
         </dependency>
-
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>webservices</artifactId>
-            <version>8.0.2.10</version>
+            <version>8.0.3</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock</artifactId>
-
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jmock/jmock-junit4 -->
         <dependency>
             <groupId>org.jmock</groupId>
             <artifactId>jmock-junit4</artifactId>
@@ -593,7 +570,6 @@
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
-
         </dependency>
 
         <dependency>
@@ -602,8 +578,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
         </dependency>
 
 
@@ -612,66 +589,44 @@
             <artifactId>httpclient-cache</artifactId>
         </dependency>
 
-
-        <!-- https://mvnrepository.com/artifact/org.apache.geronimo.specs/geronimo-jms_1.1_spec -->
         <dependency>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jms_1.1_spec</artifactId>
 
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.apache.jackrabbit/jackrabbit-jcr-commons -->
         <dependency>
             <groupId>org.apache.jackrabbit</groupId>
             <artifactId>jackrabbit-jcr-commons</artifactId>
 
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/net.sf.jtidy/jtidy -->
         <dependency>
             <groupId>net.sf.jtidy</groupId>
             <artifactId>jtidy</artifactId>
-
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-
+            <artifactId>velocity-engine-core</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/velocity-tools/velocity-tools-view -->
         <dependency>
-            <groupId>velocity-tools</groupId>
-            <artifactId>velocity-tools</artifactId>
-
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-scripting</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/javax.jcr/jcr -->
+        <dependency>
+            <groupId>org.apache.velocity.tools</groupId>
+            <artifactId>velocity-tools-generic</artifactId>
+        </dependency>
         <dependency>
             <groupId>javax.jcr</groupId>
             <artifactId>jcr</artifactId>
-
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
         <dependency>
             <groupId>org.codehaus.jettison</groupId>
             <artifactId>jettison</artifactId>
-
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
@@ -699,21 +654,20 @@
             <groupId>org.apache.myfaces.core</groupId>
             <artifactId>myfaces-impl</artifactId>
         </dependency>
-
-
-        <!-- https://mvnrepository.com/artifact/net.sf.saxon/saxon -->
-        <!-- <dependency> package now net.sf.saxon have to be aware of license 
-            changes also. <groupId>net.sf.saxon</groupId> <artifactId>saxon</artifactId> 
-            <version>7.9.1</version> </dependency> -->
-        <!-- https://mvnrepository.com/artifact/com.icl.saxon/saxon -->
-        <!-- https://mvnrepository.com/artifact/saxon/saxon -->
         <dependency>
             <groupId>saxon</groupId>
             <artifactId>saxon</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.jsonld-java</groupId>
             <artifactId>jsonld-java</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.solr</groupId>
@@ -820,6 +774,18 @@
             <artifactId>commons-dbcp</artifactId>
         </dependency>
 
+     <!--  Re-enable for CMS-8062
+        <dependency>
+            <groupId>de.digitalcollections.imageio</groupId>
+            <artifactId>imageio-turbojpeg</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.digitalcollections.imageio</groupId>
+            <artifactId>imageio-openjpeg</artifactId>
+        </dependency>
+        -->
+
         <dependency>
             <groupId>com.twelvemonkeys.servlet</groupId>
             <artifactId>servlet</artifactId>
@@ -912,7 +878,15 @@
             <groupId>com.twelvemonkeys.imageio</groupId>
             <artifactId>imageio-thumbsdb</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-webp</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>com.github.jai-imageio</groupId>
+            <artifactId>jai-imageio-jpeg2000</artifactId>
+        </dependency>
         <dependency>
             <groupId>nl.bitwalker</groupId>
             <artifactId>UserAgentUtils</artifactId>
@@ -1009,13 +983,11 @@
         </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-transcoder</artifactId>
-            <version>1.13</version>
+            <artifactId>batik-all</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>xmlgraphics-commons</artifactId>
-            <version>2.4</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
         <dependency>
@@ -1217,6 +1189,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-iostreams</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-1.2-api -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -1320,12 +1298,20 @@
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-
+        </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>serializer</artifactId>
+            <version>2.7.2</version>
         </dependency>
         <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
-
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -1333,9 +1319,23 @@
         </dependency>
 
         <dependency>
-            <groupId>io.swagger</groupId>
+            <groupId>org.webjars</groupId>
+            <artifactId>swagger-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2-servlet-initializer-v2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.mozilla</groupId>
             <artifactId>rhino</artifactId>
@@ -1355,13 +1355,18 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome</artifactId>
             <version>${rome.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -1394,6 +1399,10 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sts</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
@@ -1423,10 +1432,48 @@
             <version>2.4.8</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.ws.rs</groupId>
-            <artifactId>jakarta.ws.rs-api</artifactId>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-exceptions-spring</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard</artifactId>
+        </dependency>
+
+        <!-- Stateful web application support -->
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard-extension-session</artifactId>
+        </dependency>
+
+        <!-- JSP TAG support -->
+        <dependency>
+            <groupId>org.owasp</groupId>
+            <artifactId>csrfguard-jsp-tags</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>xml-resolver</groupId>
+            <artifactId>xml-resolver</artifactId>
+        </dependency>
+        <!-- JNLP support -->
+        <dependency>
+            <groupId>jardiff</groupId>
+            <artifactId>jardiff</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>jnlp-servlet</groupId>
+            <artifactId>jnlp-servlet</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.rpc</groupId>
+            <artifactId>javax.xml.rpc-api</artifactId>
+            <version>1.1.2</version>
+        </dependency>
     </dependencies>
     <distributionManagement>
         <snapshotRepository>

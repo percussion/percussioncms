@@ -17,18 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers;
 
-import java.io.File;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
+import com.percussion.share.service.IPSDataService;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
@@ -37,6 +32,9 @@ import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.PSSiteImportLogger;
 import com.percussion.sitemanage.importer.helpers.impl.PSThemeHelper;
 import com.percussion.theme.service.impl.PSThemeService;
+import junit.framework.TestCase;
+
+import java.io.File;
 
 /**
  * @author federicoromanelli
@@ -56,8 +54,7 @@ public class PSThemeHelperTest extends TestCase
         themeHelper.setThemesRootDirectory(WEB_RESOURCES_ROOT);
     }
 
-    public void tearDown()
-    {
+    public void tearDown() throws IPSDataService.DataServiceDeleteException, IPSDataService.DataServiceNotFoundException {
         // remove all themes created
         themeService.delete(SITE_NAME);
         themeService.delete(SITE_NAME_2_TRANSFORMED);

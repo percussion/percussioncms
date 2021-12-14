@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,7 @@ import com.percussion.rx.config.PSConfigServiceLocator;
 import com.percussion.rx.config.data.PSConfigStatus;
 import com.percussion.rx.config.data.PSConfigStatus.ConfigStatus;
 import com.percussion.rx.config.impl.PSConfigService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.junit.experimental.categories.Category;
@@ -38,8 +39,7 @@ import java.util.List;
 @Category(IntegrationTest.class)
 public class PSConfigStatusMgrTest extends ServletTestCase
 {
-   public void testConfigStatus()
-   {
+   public void testConfigStatus() throws PSNotFoundException {
       PSConfigService cfgSrvc = (PSConfigService) PSConfigServiceLocator
             .getConfigService();
       IPSConfigStatusMgr mgr = cfgSrvc.getConfigStatusManager();

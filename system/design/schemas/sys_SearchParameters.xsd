@@ -18,12 +18,15 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<xs:schema targetNamespace="urn:www.percussion.com/webservices/search" xmlns:com="urn:www.percussion.com/webservices/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:www.percussion.com/webservices/search" xmlns:si="urn:www.percussion.com/webservices/standarditem" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema targetNamespace="urn:www.percussion.com/webservices/search"
+           xmlns:com="urn:www.percussion.com/webservices/common" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="urn:www.percussion.com/webservices/search"
+           elementFormDefault="qualified" attributeFormDefault="unqualified">
    <xs:import namespace="urn:www.percussion.com/webservices/common" schemaLocation="sys_Common.xsd"/>
    <xs:element name="search">
       <xs:complexType>

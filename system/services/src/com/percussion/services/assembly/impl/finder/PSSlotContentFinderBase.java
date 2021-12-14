@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,14 +29,14 @@ import com.percussion.services.assembly.IPSSlotContentFinder;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.jexl.PSAssemblerUtils;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.IPSHtmlParameters;
 
+import javax.jcr.RepositoryException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.RepositoryException;
 
 /**
  * The base slot content finder provides the common functionality needed by each
@@ -63,11 +63,9 @@ implements IPSSlotContentFinder
     *      com.percussion.services.assembly.IPSTemplateSlot, java.util.Map)
     */
    @Override
-   @SuppressWarnings("unchecked")
    public List<IPSAssemblyItem> find(IPSAssemblyItem sourceItem,
          IPSTemplateSlot slot, Map<String, Object> selectors)
-         throws RepositoryException, PSFilterException, PSAssemblyException
-   {
+           throws RepositoryException, PSFilterException, PSAssemblyException, PSNotFoundException {
       Map<String, Object> params = mergeParameters(slot, selectors);
       return super.find(sourceItem, slot, params);
    }
@@ -86,7 +84,7 @@ implements IPSSlotContentFinder
          Map<String, Object> params)
    {
       Map<String, ? extends Object> args = slot.getFinderArguments();
-      Map<String, Object> mergedParams = new HashMap<String, Object>();
+      Map<String, Object> mergedParams = new HashMap<>();
       mergedParams.putAll(args);
       mergedParams.putAll(params);
       return mergedParams;

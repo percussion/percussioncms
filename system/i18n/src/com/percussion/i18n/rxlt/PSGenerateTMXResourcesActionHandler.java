@@ -17,23 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.i18n.rxlt;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.i18n.PSTmxResourceBundle;
 import com.percussion.i18n.tmxdom.IPSTmxDocument;
 import com.percussion.i18n.tmxdom.IPSTmxHeader;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import java.io.File;
+import java.io.InputStream;
 
 /**
  * This class generates a single TMX document out of the TMX documents for all
@@ -99,29 +100,26 @@ public class PSGenerateTMXResourcesActionHandler
           */
          tmxDocSectionMaster = new PSTmxDocument();
          //load and set the merge config document
-         tmxDocSectionMaster.setMergeConfigDoc(
-            PSXmlDocumentBuilder.createXmlDocument(getClass()
-               .getResourceAsStream(SECTION_MERGE_CONFIG_FILE), false));
-         //
-         NodeList nl = cfgdata.getElementsByTagName("section");
-         Element sect = null;
-         IPSTmxDocument tmxDoc = null;
-         for(int i=0; nl!=null && i<nl.getLength(); i++)
-         {
-            sect = (Element)nl.item(i);
-            if(sect.getAttribute("process").equalsIgnoreCase("yes"))
-            {
-               try
-               {
-                  //Get the TMX document for the current section
-                  tmxDoc = processSection(sect);
-                  //Merge with section master TMX document
-                  tmxDocSectionMaster.merge(tmxDoc);
-               }
-               catch(PSSectionProcessingException e)
-               {
-                  PSCommandLineProcessor.logMessage("errorMessageException",
-                     e.getMessage());
+         try(InputStream is = getClass()
+                 .getResourceAsStream(SECTION_MERGE_CONFIG_FILE)) {
+            tmxDocSectionMaster.setMergeConfigDoc(
+                    PSXmlDocumentBuilder.createXmlDocument(is, false));
+            //
+            NodeList nl = cfgdata.getElementsByTagName("section");
+            Element sect = null;
+            IPSTmxDocument tmxDoc = null;
+            for (int i = 0; nl != null && i < nl.getLength(); i++) {
+               sect = (Element) nl.item(i);
+               if (sect.getAttribute("process").equalsIgnoreCase("yes")) {
+                  try {
+                     //Get the TMX document for the current section
+                     tmxDoc = processSection(sect);
+                     //Merge with section master TMX document
+                     tmxDocSectionMaster.merge(tmxDoc);
+                  } catch (PSSectionProcessingException e) {
+                     PSCommandLineProcessor.logMessage("errorMessageException",
+                             e.getMessage());
+                  }
                }
             }
          }
@@ -140,16 +138,18 @@ public class PSGenerateTMXResourcesActionHandler
          if(keepmissingonly.equalsIgnoreCase("yes"))
          {
             //User chose to generate only the missing keys.
-            mergeDoc =
-               PSXmlDocumentBuilder.createXmlDocument(
-                  getClass().getResourceAsStream(
-                  MASTER_MERGE_CONFIG_FILE_MISSING_ONLY), false);
+            try(InputStream is = getClass().getResourceAsStream(
+                    MASTER_MERGE_CONFIG_FILE_MISSING_ONLY)) {
+               mergeDoc = PSXmlDocumentBuilder.createXmlDocument(is
+                               , false);
+            }
          }
          else
          {
-            mergeDoc =
-               PSXmlDocumentBuilder.createXmlDocument(getClass()
-               .getResourceAsStream(MASTER_MERGE_CONFIG_FILE), false);
+            try(InputStream is = getClass()
+                    .getResourceAsStream(MASTER_MERGE_CONFIG_FILE)) {
+               mergeDoc = PSXmlDocumentBuilder.createXmlDocument(is, false);
+            }
          }
 
          /*
@@ -186,7 +186,7 @@ public class PSGenerateTMXResourcesActionHandler
       }
       catch(Exception e) //catch any Exception
       {
-         PSCommandLineProcessor.logMessage("processFailedError", e.getMessage());
+         PSCommandLineProcessor.logMessage("processFailedError", PSExceptionUtils.getMessageForLog(e));
          throw new PSActionProcessingException(e.getMessage(),e);
       }
       PSCommandLineProcessor.logMessage("processFinished", "");

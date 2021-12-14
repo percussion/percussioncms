@@ -18,20 +18,23 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
 <!DOCTYPE xsl:stylesheet [
-    <!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
+        <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
         %HTMLlat1;
-    <!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
+        <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
         %HTMLsymbol;
-    <!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
+        <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
         %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:psxctl="urn:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
 <xsl:template match="/" />
 <!--
      percQueryControl
@@ -57,7 +60,7 @@
         
 <!-- JavaScript -->            
         <psxctl:FileDescriptor name="dropdownchecklist.js" type="script" mimetype="text/javascript">
-                <psxctl:FileLocation>../../cm/jslib/dropdownchecklist.js</psxctl:FileLocation>
+                <psxctl:FileLocation>../../cm/jslib/profiles/3x/jquery/plugins/jquery-ui-multiselect-widget/jquery.multiselect.js</psxctl:FileLocation>
                 <psxctl:Timestamp/>
             </psxctl:FileDescriptor>
         <psxctl:FileDescriptor name="perc_utils.js" type="script" mimetype="text/javascript">

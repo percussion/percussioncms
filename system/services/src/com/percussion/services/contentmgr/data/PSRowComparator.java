@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,14 +27,11 @@ import com.percussion.services.contentmgr.IPSContentPropertyConstants;
 import com.percussion.utils.jsr170.PSValueComparator;
 import com.percussion.utils.types.PSPair;
 
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Compares two rows according to a list of property names with directions. This

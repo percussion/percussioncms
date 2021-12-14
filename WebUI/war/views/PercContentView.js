@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -81,16 +81,16 @@
                         imgSrc = '/cm/images/icons/editor/editAsset';
                     }
 
-                    if(model.getWidgetContentTypes(wId) == "")
+                    if(model.getWidgetContentTypes(wId) === "")
                         imgSrc = '/cm/images/icons/editor/editInactive';
                     else if(model.isTemplate() || model.isLandingPage())
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") == "false") || (model.isPage() && model.isLandingPage() && wDef == "percTitle")) {
+                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") || (model.isPage() && model.isLandingPage() && wDef === "percTitle")) {
                             imgSrc = '/cm/images/icons/editor/editInactive';
                         }
                     }
-                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && model.getWidgetPrefs(wDef).attr("is_editable_on_template") != "false")
+                    if(model.isTemplate() && assetInfo && !assetInfo.locked  && elem.attr('assetid') && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                     {
                         imgSrc += "Middle";
                     }
@@ -105,11 +105,11 @@
                     return tooltip;
                 },
                 callback: function(elem) {
-                    if(model.getWidgetContentTypes(elem.attr('widgetid')) != "" )
+                    if(model.getWidgetContentTypes(elem.attr('widgetid')) !== "" )
                     {
                         var wDef = elem.attr('widgetdefid');
-                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") == "false") ||
-                            (model.isPage() && model.isLandingPage() && wDef == "percTitle"))
+                        if((model.isTemplate() && model.getWidgetPrefs(wDef).attr("is_editable_on_template") === "false") ||
+                            (model.isPage() && model.isLandingPage() && wDef === "percTitle"))
                         {
                             return;
                         }
@@ -135,7 +135,7 @@
                         var assetInfo = model.getAssetDropCriteria()[elem.attr('widgetid')];
                         var assetId = assetInfo && !assetInfo.locked?elem.attr('assetid'):"";
                         var wDef = elem.attr('widgetdefid');
-                        if(assetId && model.getWidgetPrefs(wDef).attr("is_editable_on_template") != "false")
+                        if(assetId && model.getWidgetPrefs(wDef).attr("is_editable_on_template") !== "false")
                         {
                             imgSrc = '/cm/images/icons/editor/promote';
                         }
@@ -179,9 +179,9 @@
             widgetMenu.push(promoteMenu);
         }
 
-        var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-selected', widgetMenu);
+        var widgetDecorator = P.decorationController( allWidgets, 'perc-widget-puff', 'perc-widget-active', widgetMenu);
 
-        $('#show-hide-decorations').unbind().click( function(){
+        $('#show-hide-decorations').off().on("click", function(){
             widgetDecorator.visible( !widgetDecorator.visible());
         });
 
@@ -200,7 +200,7 @@
          */
         $.perc_finder().addActionListener(function(action, data){
             // verify that we are deleting an asset
-            if(action == $.perc_finder().ACTIONS.DELETE && (data.type == 'asset' || data.type == 'page')) {
+            if(action === $.perc_finder().ACTIONS.DELETE && (data.type === 'asset' || data.type === 'page')) {
                 if (typeof(data.isOpen) != 'undefined' && data.isOpen)
                 {
                     // current item is open for edit, no need to refresh as it will be cleared
@@ -209,12 +209,12 @@
 
                 // find out where we are, what view and what tab within that view
                 var currentView     = $.PercNavigationManager.getView();
-                if(currentView == $.PercNavigationManager.VIEW_DESIGN) {
+                if(currentView === $.PercNavigationManager.VIEW_DESIGN) {
                     var currentTabIndex = $("#tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 1) renderContent();
-                } else if(currentView == $.PercNavigationManager.VIEW_EDITOR) {
+                    if(currentTabIndex === 1) renderContent();
+                } else if(currentView === $.PercNavigationManager.VIEW_EDITOR) {
                     var currentTabIndex = $("#perc-pageEditor-tabs").tabs('option', 'selected');
-                    if(currentTabIndex == 0) renderContent();
+                    if(currentTabIndex === 0) renderContent();
                 }
             }
         });
@@ -256,18 +256,23 @@
             function accepts(item)
             {
                 var ctype = item.data('spec') && item.data( 'spec' ).type;
-                if (ctype == undefined || ctype == "")
+                if (typeof ctype === 'undefined' || ctype === "")
                 {
                     ctype = item.data('percRowData') && item.data( 'percRowData' ).type;
                 }
-                var accept = ctype && ctypes && ( ctype == ctypes || $.grep( ctypes, function(ct) { return ct == ctype; } ).length );
+                var accept = ctype && ctypes && ( ctype === ctypes || $.grep( ctypes, function(ct) { return ct === ctype; } ).length );
                 return accept;
             }
+
+
             var inside = insideIframe(widget);
             if(typeof(inside.draggable) == 'function')
             {
                 insideIframe(widget).draggable({
                     scope: $.perc_iframe_scope,
+                    iframeFix: true,
+                    delay:$.dragDelay,
+                    scroll: true,
                     revert: true,
                     drag: function(event, ui) {
                         if(event.target.innerText.length <= 0)
@@ -278,6 +283,7 @@
                     // only interact with iframe draggables
                     scope: $.perc_iframe_scope,
                     tolerance : 'pointer',
+                    iframeFix: true,
                     // as you hover over the widget, update cursor and background
                     over : function(evt, ui) {
 
@@ -286,7 +292,7 @@
                         overlapContentWidgets++;
 
                         document.body.style.cursor="default";
-                        if(parentRegionId == currentRegionId || overlapContentWidgets == 1) {
+                        if(parentRegionId === currentRegionId || overlapContentWidgets === 1) {
                             // clear background of all other widgets
                             widgets.each(function(){
                                 $(this).css("background-color", "");
@@ -300,25 +306,25 @@
                     out : function(evt, ui) {
                         overlapContentWidgets--;
                         document.body.style.cursor="default";
-                        $(this).css("background-color", "")
+                        $(this).css("background-color", "");
                     },
                     drop : function(event, ui) {
                         overlapContentWidgets--;
                         // when you drop on widget, update cursor and background
                         document.body.style.cursor="default";
-                        $(this).css("background-color", "")
+                        $(this).css("background-color", "");
 
                         var draggedWidget = "";
                         var dropOnWidget =  widget;
 
                         widgets.each(function(){
-                            if($(this).attr('widgetid') == ui.draggable[0].getAttribute('widgetid')){
+                            if($(this).attr('widgetid') === ui.draggable[0].getAttribute('widgetid')){
                                 draggedWidget = $(this);
                             }
                         });
                         var isEmptyDropOnWidget = false;
-                        if(event.target.innerText.length == 0) {
-                            if(ui.draggable[0].innerText.length != 0 && event.target.getAttribute('widgetdefid') == ui.draggable[0].getAttribute('widgetdefid')) {
+                        if(event.target.innerText.length === 0) {
+                            if(ui.draggable[0].innerText.length !== 0 && event.target.getAttribute('widgetdefid') === ui.draggable[0].getAttribute('widgetdefid')) {
                                 var customText = event.target.innerHTML;
                                 dropOnWidget[0].innerHTML = ui.draggable[0].innerHTML;
                                 draggedWidget[0].innerHTML = customText;
@@ -346,7 +352,7 @@
 
                         if(isEmptyDropOnWidget) {
                             model.setAssetRelationship( dropOnWidgetData, draggedWidget.attr('assetid'), false, renderContent );
-                        } else if(dropOnWidgetData.widgetdefid==draggetWidgetData.widgetdefid){
+                        } else if(dropOnWidgetData.widgetdefid===draggetWidgetData.widgetdefid){
                             model.updateAssetRelationship( dropOnWidgetData, draggedWidget.attr('assetid'), draggedWidgetAssetInfo.relationshipId, function(){
                                 model.updateAssetRelationship( draggetWidgetData, dropOnWidget.attr('assetid'), dropOnWidgetAssetInfo.relationshipId, function(){
                                     updateOrphanAssetTray(ui.draggable);
@@ -364,17 +370,15 @@
             }
 
             widget.droppable({
-                // only interact with iframe draggables
                 scope: $.perc_iframe_scope,
                 tolerance : 'pointer',
                 // as you hover over the widget, update cursor and background
                 over : function(evt, ui) {
                     var parentRegionId = $(this).parent().parent().attr("id");
-
                     overlap++;
                     if(accepts(ui.draggable)) {
                         document.body.style.cursor="default";
-                        if(parentRegionId == currentRegionId || overlap == 1) {
+                        if(parentRegionId === currentRegionId || overlap === 1 ) {
                             // clear background of all other widgets
                             widgets.each(function(){
                                 $(this).css("background-color", "");
@@ -390,13 +394,13 @@
                 out : function(evt, ui) {
                     overlap--;
                     document.body.style.cursor="default";
-                    $(this).css("background-color", "")
+                    $(this).css("background-color", "");
                 },
                 drop : function(evt, ui) {
                     overlap--;
                     // when you drop on widget, update cursor and background
                     document.body.style.cursor="default";
-                    $(this).css("background-color", "")
+                    $(this).css("background-color", "");
 
                     // if item is not accepted, returnSpec
                     if(!accepts(ui.draggable))
@@ -406,6 +410,7 @@
                     if(widget.hasClass('perc-locked')) {
                         return false;
                     }
+
                     var assetid = "";
                     var relationshipId = "";
                     var spec = ui.draggable.data('spec');
@@ -435,7 +440,7 @@
                             type:"YES_NO",
                             cancel:function(){},
                             success:function(){
-                                if (relationshipId == "")
+                                if (relationshipId === "")
                                     model.setAssetRelationship( widgetData, assetid, true, renderContent );
                                 else {
                                     model.updateAssetRelationship( widgetData, assetid, relationshipId, function(){
@@ -454,7 +459,7 @@
                         }
                         else
                         {
-                            if (relationshipId == "")
+                            if (relationshipId === "")
                                 model.setAssetRelationship( widgetData, assetid, true, renderContent );
                             else{
                                 model.updateAssetRelationship( widgetData, assetid, relationshipId, function(){
@@ -481,16 +486,16 @@
                 okCallBack: function() {
                     updateOrphanAssetTray(draggable);
                 }
-            }
+            };
             $.perc_utils.alert_dialog(settings);
         }
 
         function updateOrphanAssetTray(draggedAsset){
             draggedAsset.remove();
             var orphanAssetsContainer = $(".perc-orphan-assets-list");
-            if(orphanAssetsContainer.find(".perc-orphan-asset").size() == 0){
+            if(orphanAssetsContainer.find(".perc-orphan-asset").length === 0){
                 $.fn.percOrphanAssetsMaximizer(P);
-                $("#perc_orphan_assets_expander").addClass("perc-disabled").unbind();
+                $("#perc_orphan_assets_expander").addClass("perc-disabled").off();
                 $("#perc_orphan_assets_maximizer").addClass("perc-disabled");
             }
         }
@@ -525,21 +530,20 @@
             root.contents().find("body")
                 .css("z-index","-1000")
                 .css("position","static")
-                .unbind().click(function() {
+                .off().on("click", function() {
                 widgetDecorator.unselectAll();
             });
             overlap = 0;
-
             iframe = $("#frame");
-
             // grab all the regions and widgets
             regions = iframe.contents().find(".perc-region");
             widgets = iframe.contents().find(".perc-widget");
 
-            regions.mouseover(function(event){
+            regions.on("mouseover", (function(event){
                 currentRegionId = $(this).attr("id");
                 event.stopPropagation();
-            });
+            }));
+
         }
 
         /**
@@ -547,10 +551,10 @@
          * current status. Calls the model#initRender to reinitialize the view.
          */
         $(document).ready(function() {
-            $("#perc-content-menu a.perc-dropdown-option-DisableJavaScript").unbind().click(function() {
+            $("#perc-content-menu a.perc-dropdown-option-DisableJavaScript").off("click").on("click", function() {
                 var scriptOff = I18N.message( "perc.ui.menu@JavaScript Off" );
                 var scriptOn = I18N.message( "perc.ui.menu@JavaScript On" );
-                if($(this).text() == scriptOff)
+                if($(this).text() === scriptOff)
                 {
                     $(this).text(scriptOn);
                     $(this).attr("title", I18N.message("perc.ui.content.view@Turns On JavaScript"));

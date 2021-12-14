@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,7 +40,7 @@ import java.util.Map;
  * access to the records and fields of the backend tables
  * 'STATEROLES' and the state name from the 'ROLES' table.
  */
-
+@Deprecated //TODO: This entire class needs refactored to use hibernate / spring
 public class PSStateRolesContext implements IPSStateRolesContext
 {
    /**
@@ -162,17 +162,11 @@ public class PSStateRolesContext implements IPSStateRolesContext
    /**
     * Closes the result set and statement if necessary
     */
+   @Deprecated
    private void close()
    {
-      //release resouces
-      try
-      {
-         if(null != connection && false == connection.getAutoCommit())
-            connection.setAutoCommit(true);
-      }
-      catch(SQLException e)
-      {
-      }
+      //release resources
+
       try
       {
          if(null != rs)
@@ -271,7 +265,7 @@ public class PSStateRolesContext implements IPSStateRolesContext
     */
    public String toString()
    {
-       StringBuffer buf = new StringBuffer();
+       StringBuilder buf = new StringBuilder();
        buf.append("\nPSContentAdhocUsersContext:");
        if (m_StateRoleIDs.isEmpty())
        {

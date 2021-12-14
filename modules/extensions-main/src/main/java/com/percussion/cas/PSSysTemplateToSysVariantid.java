@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,16 +35,15 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSXMLDomUtil;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This exit will turn the sys_template values into the appropriate
@@ -87,7 +86,7 @@ public class PSSysTemplateToSysVariantid implements IPSRequestPreProcessor
    private Map<String, String> getVariantMap(IPSRequestContext request)
       throws PSExtensionProcessingException
    {
-      Map<String, String> results = new HashMap<String, String>();
+      Map<String, String> results = new HashMap<>();
       IPSInternalRequest ir = 
          request.getInternalRequest(VARIANT_LIST_RESOURCE);
       try

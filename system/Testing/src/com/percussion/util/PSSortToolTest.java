@@ -17,19 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util;
 
-import java.util.Comparator;
-import java.util.Random;
-import java.util.Vector;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import java.security.SecureRandom;
+import java.util.Comparator;
+import java.util.Vector;
 
 /**
  *   Unit tests for the PSSortTool class
@@ -216,7 +216,7 @@ public class PSSortToolTest extends TestCase
    public void setUp()
    {
       m_randomLongVector = new Vector(VECTOR_SIZE);
-      Random rand = new Random();
+      SecureRandom rand = new SecureRandom();
       for (int i = 0; i < VECTOR_SIZE; i++)
       {
          m_randomLongVector.addElement(new Long(rand.nextLong()));

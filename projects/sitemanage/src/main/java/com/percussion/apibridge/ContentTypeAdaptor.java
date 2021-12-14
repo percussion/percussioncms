@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -50,7 +50,7 @@ public class ContentTypeAdaptor implements IContentTypesAdaptor {
      */
     @Override
     public List<ContentType> listContentTypes(URI baseUri) {
-        List<ContentType> ret = new ArrayList<ContentType>();
+        List<ContentType> ret = new ArrayList<>();
 
             List<IPSCatalogSummary> types = designSvc.findContentTypes("*");
             for(IPSCatalogSummary s : types){

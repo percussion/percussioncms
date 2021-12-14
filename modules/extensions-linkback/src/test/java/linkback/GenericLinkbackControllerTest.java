@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,8 +34,8 @@ import com.percussion.soln.linkback.codec.impl.StringLinkBackTokenImpl;
 import com.percussion.soln.linkback.servlet.GenericLinkbackController;
 import com.percussion.soln.linkback.utils.LinkbackUtils;
 import com.percussion.util.IPSHtmlParameters;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -47,7 +47,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * 
@@ -57,7 +60,7 @@ import static org.junit.Assert.*;
  */
 public class GenericLinkbackControllerTest {
 
-    private static Log log = LogFactory.getLog(GenericLinkbackControllerTest.class);
+    private static final Logger log = LogManager.getLogger(GenericLinkbackControllerTest.class);
 
     GenericLinkbackController cut;
 

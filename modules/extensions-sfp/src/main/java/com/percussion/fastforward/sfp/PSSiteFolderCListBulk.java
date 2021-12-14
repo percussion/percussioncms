@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -162,7 +162,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          throws PSUnknownNodeTypeException, PSCmsException,
          PSExtensionProcessingException
    {
-      Map<Integer, Set<ParentFolder>> siteItems = new HashMap<Integer, Set<ParentFolder>>();
+      Map<Integer, Set<ParentFolder>> siteItems = new HashMap<>();
 
       /*
        * Assume the root folder is being published, so the path starts with "/".
@@ -240,20 +240,12 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          PSExtensionProcessingException
    {
 
-      m_log.debug(
-         "NEW FOLDER. Path="
-         + parentFolderPath
-         + ", folderId="
-         + folderId
-         + ", Site folder path="
-         + siteFolderPath
-         + ", context="
-         + filenameContext);
+      log.debug("NEW FOLDER. Path={}, folderId={}, Site folder path={}, context={}", parentFolderPath, folderId, siteFolderPath, filenameContext);
 
       String folderPath;
       if (appendFolderName)
       {
-         StringBuffer folderPathBuf = new StringBuffer();
+         StringBuilder folderPathBuf = new StringBuilder();
          folderPathBuf.append(parentFolderPath);
          folderPathBuf.append(m_folderProcessor.getPubFileName(folderId));
          folderPathBuf.append(PSSite.SITE_PATH_SEPARATOR);
@@ -264,12 +256,12 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          folderPath = parentFolderPath;
       }
 
-      m_log.debug("Processing: " + folderPath);
+      log.debug("Processing: {}", folderPath);
 
       boolean bExclude = !includeOverride && isFolderExcluded(folderId);
       boolean bOverrideInclude = false;
       if(bExclude)
-         m_log.debug("Excluding: " + folderPath);
+         log.debug("Excluding: {}", folderPath);
       if(bExclude && m_folderIncludeMode.equals(INCLUDE_MODE_UNFLAGGED))
       {
          // We can just stop here since all child folders are excluded
@@ -301,7 +293,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
                Set<ParentFolder> pFolderSet = null;
                if(siteItems.get(depId)== null)
                {
-                  pFolderSet = new HashSet<ParentFolder>();
+                  pFolderSet = new HashSet<>();
                }
                else
                {
@@ -357,7 +349,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
 
       // generate the content items by groups, each group contains up to
       // "maxIdLength" items.
-      StringBuffer idBuffer = new StringBuffer();
+      StringBuilder idBuffer = new StringBuilder();
       Iterator ids = siteItems.keySet().iterator();
       Integer id;
       int collected = 0;
@@ -377,7 +369,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
             generateContentItems(location_context, idBuffer.toString(),
                   siteItems);
             // reset for the next round
-            idBuffer = new StringBuffer();
+            idBuffer = new StringBuilder();
             collected = 0;
          }
       }
@@ -400,7 +392,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
       if (m_quickEditCList.isEmpty())
          return;  // do nothing if there is no items in quick-edit state
 
-      List<Integer> idList = new ArrayList<Integer>(m_quickEditCList.keySet());
+      List<Integer> idList = new ArrayList<>(m_quickEditCList.keySet());
       Map<Integer, Integer> fixupItems = null;
       try
       {
@@ -460,7 +452,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
          throws PSExtensionProcessingException, PSCmsException
    {
       // set required parameters.
-      Map<String, String> lookupParams = new HashMap<String, String>(6);
+      Map<String, String> lookupParams = new HashMap<>(6);
       lookupParams.put(IPSHtmlParameters.SYS_SITEID,
             m_request.getParameter(IPSHtmlParameters.SYS_SITEID));
       // must use IPSHtmlParameters.SYS_CONTEXT to lookup the publishable items
@@ -547,7 +539,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
                   Set<PSContentListItem> itemSet = null;
                   if (m_quickEditCList.get(new Integer(contentId)) == null)
                   {
-                     itemSet = new HashSet<PSContentListItem>();
+                     itemSet = new HashSet<>();
                   }
                   else
                   {
@@ -605,7 +597,7 @@ public class PSSiteFolderCListBulk extends PSSiteFolderCListBase
     * <code>Integer</code> objects, which map to the related
     * {@link PSContentListItem} set. Never <code>null</code>.
     */
-   private Map<Integer, Set<PSContentListItem>> m_quickEditCList = new HashMap<Integer, Set<PSContentListItem>>();
+   private Map<Integer, Set<PSContentListItem>> m_quickEditCList = new HashMap<>();
 
    /**
     * Name of the Rhythmyx internal resource used to catalog the published

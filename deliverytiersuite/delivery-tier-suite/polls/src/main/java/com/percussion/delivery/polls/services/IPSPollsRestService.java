@@ -17,11 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.polls.services;
+
+import com.percussion.delivery.polls.data.PSPollsResponse;
+import com.percussion.delivery.polls.data.PSRestPoll;
+import com.percussion.delivery.services.IPSRestService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -31,10 +35,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
-import com.percussion.delivery.polls.data.PSPollsResponse;
-import com.percussion.delivery.polls.data.PSRestPoll;
-import com.percussion.delivery.services.IPSRestService;
 
 /**
  * 

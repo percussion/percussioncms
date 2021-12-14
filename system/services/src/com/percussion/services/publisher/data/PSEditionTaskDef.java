@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -46,7 +46,16 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Version;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -127,7 +136,7 @@ IPSEditionTaskDef
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, 
          region = "PSEditionTask_params")
    @Fetch(FetchMode. SUBSELECT)
-   private Map<String, PSEditionTaskParam> params = new HashMap<String, PSEditionTaskParam>();
+   private Map<String, PSEditionTaskParam> params = new HashMap<>();
 
    /**
     * Default constructor, required by hibernate implementation.
@@ -280,7 +289,7 @@ IPSEditionTaskDef
     */
    public Map<String, String> getParams()
    {
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       for (Map.Entry<String, PSEditionTaskParam> e : this.params.entrySet())
       {
          rval.put(e.getKey(), e.getValue().getValue());

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -46,7 +46,7 @@ public class PSGetIDsJexlVisitor extends PSBaseJexlParserVisitor
    /**
     * The list of ids if any that need to be mapped may be <code>empty</code>
     */
-   private List<String> m_ids = new ArrayList<String>();
+   private List<String> m_ids = new ArrayList<>();
 
    
    /**

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,12 +29,12 @@ import com.percussion.services.contentmgr.data.PSQuery.SortOrder;
 import com.percussion.services.contentmgr.impl.PSContentUtils;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
+import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeConjunction;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeLiteral;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
-import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.utils.guid.IPSGuid;
@@ -42,6 +42,11 @@ import com.percussion.utils.jsr170.PSValueFactory;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.types.PSPair;
 
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
+import javax.jcr.query.InvalidQueryException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,12 +54,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.ValueFormatException;
-import javax.jcr.query.InvalidQueryException;
 
 /**
  * The where builder actually serves two purposes. It builds the where clause
@@ -107,12 +106,12 @@ public class PSQueryWhereBuilder extends PSQueryNodeVisitor
    /**
     * The query parameters, built as we go.
     */
-   Map<String, Object> m_queryParams = new HashMap<String, Object>();
+   Map<String, Object> m_queryParams = new HashMap<>();
 
    /**
     * The classes in use in the query, see {@link #getInuse()} for details.
     */
-   List<Class> m_inuse = new ArrayList<Class>();
+   List<Class> m_inuse = new ArrayList<>();
 
    /**
     * The parameter name counter
@@ -131,7 +130,7 @@ public class PSQueryWhereBuilder extends PSQueryNodeVisitor
     * longs. Used in the query handling to avoid binding the wrong type of
     * parameter.
     */
-   private static Set<String> ms_integerProperties = new HashSet<String>();
+   private static Set<String> ms_integerProperties = new HashSet<>();
 
    static
    {
@@ -163,7 +162,7 @@ public class PSQueryWhereBuilder extends PSQueryNodeVisitor
       if (params != null)
          m_parameters = params;
       else
-         m_parameters = new HashMap<String, Object>();
+         m_parameters = new HashMap<>();
       
       // Make sure that the main class is always "in use". This makes references
       // to c0 always valid

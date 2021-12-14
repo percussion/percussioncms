@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,7 +32,12 @@ import com.percussion.server.PSServer;
 import com.percussion.services.filestorage.error.PSBinaryMigrationException;
 import com.percussion.services.filestorage.impl.PSHashedFieldCataloger;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import org.apache.axis.utils.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.naming.NamingException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -44,13 +49,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.naming.NamingException;
-
-import org.apache.axis.utils.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -324,7 +322,7 @@ public class PSFileStorageMigrator implements Runnable
         PSItemDefManager itemDefMgr = PSItemDefManager.getInstance();
         long[] typeIds = itemDefMgr.getAllContentTypeIds(-1);
 
-        List<PSField> fields = new ArrayList<PSField>();
+        List<PSField> fields = new ArrayList<>();
 
         for (int i = 0; i < typeIds.length; i++)
         {
@@ -346,7 +344,7 @@ public class PSFileStorageMigrator implements Runnable
             }
         }
 
-        Map<String, Map<String, String>> fieldInfoMap = new HashMap<String, Map<String, String>>();
+        Map<String, Map<String, String>> fieldInfoMap = new HashMap<>();
 
         for (PSField field : fields)
         {
@@ -364,7 +362,7 @@ public class PSFileStorageMigrator implements Runnable
                 Map<String, String> fieldInfo = fieldInfoMap.get(fieldKey);
                 if (fieldInfo == null)
                 {
-                    fieldInfo = new HashMap<String, String>();
+                    fieldInfo = new HashMap<>();
                     fieldInfo.put("base", fieldName);
                     fieldInfo.put("tableName", tableName);
                     fieldInfoMap.put(fieldKey, fieldInfo);
@@ -376,7 +374,7 @@ public class PSFileStorageMigrator implements Runnable
                 Map<String, String> fieldInfo = fieldInfoMap.get(fieldKey);
                 if (fieldInfo == null)
                 {
-                    fieldInfo = new HashMap<String, String>();
+                    fieldInfo = new HashMap<>();
                     fieldInfo.put("base", fieldName);
                     fieldInfo.put("tableName", tableName);
                     fieldInfoMap.put(fieldKey, fieldInfo);
@@ -509,7 +507,7 @@ public class PSFileStorageMigrator implements Runnable
     /**
      * Logger for this class
      */
-    private static final Log log = LogFactory.getLog(PSFileStorageMigrator.class);
+    private static final Logger log = LogManager.getLogger(PSFileStorageMigrator.class);
 
     /**
      * Number of rows to process as a batch.

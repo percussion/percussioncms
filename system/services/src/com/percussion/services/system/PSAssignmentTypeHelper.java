@@ -17,16 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.system;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -48,8 +45,10 @@ import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.util.PSCms;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,10 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This class computes the assignment type for one or more content items. This
@@ -79,7 +74,7 @@ public class PSAssignmentTypeHelper
    /**
     * Commons logger
     */
-   static Log ms_logger = LogFactory.getLog("PSAssignmentTypeHelper");
+    private static final Logger ms_logger = LogManager.getLogger("PSAssignmentTypeHelper");
 
    /**
     * The workflow service
@@ -158,7 +153,7 @@ public class PSAssignmentTypeHelper
          throw new IllegalArgumentException("roles may not be null");
       }
       m_user = userName;
-      m_roles = new HashSet<String>();
+      m_roles = new HashSet<>();
       m_roles.addAll(roles);
       m_backendRoleInfo = new PSBackendRoleInfo();
    }
@@ -397,7 +392,7 @@ public class PSAssignmentTypeHelper
       PSComponentSummary sum = loadComponentSummary(contentId);
       PSWorkflow wf = loadWorkflow(sum.getWorkflowAppId());    
       
-      Set<Integer> roleIds = new HashSet<Integer>(assignedRoleIds);
+      Set<Integer> roleIds = new HashSet<>(assignedRoleIds);
       filterAssignedRolesByCommunity(sum.getCommunityId(), wf, roleIds, 
          new PSBackendRoleInfo());
       assignedRoleIds.clear();
@@ -507,7 +502,7 @@ public class PSAssignmentTypeHelper
       }
       
       IPSGuidManager guidMgr = PSGuidManagerLocator.getGuidMgr();
-      List<IPSGuid> roleGuids = new ArrayList<IPSGuid>(assignedRoleIds.size());
+      List<IPSGuid> roleGuids = new ArrayList<>(assignedRoleIds.size());
       for (Long id : assignedRoleIds)
       {
          roleGuids.add(guidMgr.makeGuid(id, PSTypeEnum.ROLE));
@@ -517,8 +512,8 @@ public class PSAssignmentTypeHelper
       List<PSCommunityRoleAssociation> commRoles = 
          beRoleInfo.getCommunityRoleAssociations(roleGuids);
 
-      Set<Long> rolesWithCommunities = new HashSet<Long>();
-      Set<Long> roleMatches = new HashSet<Long>();
+      Set<Long> rolesWithCommunities = new HashSet<>();
+      Set<Long> roleMatches = new HashSet<>();
       for (PSCommunityRoleAssociation cr : commRoles)
       {
          Long roleId = new Long(cr.getRoleId());
@@ -527,7 +522,7 @@ public class PSAssignmentTypeHelper
             roleMatches.add(roleId);
       }
       
-      Set<Long> rolesWithoutCommunties = new HashSet<Long>(
+      Set<Long> rolesWithoutCommunties = new HashSet<>(
          assignedRoleIds);
       rolesWithoutCommunties.removeAll(rolesWithCommunities);
       assignedRoleIds.retainAll(roleMatches);
@@ -629,7 +624,7 @@ public class PSAssignmentTypeHelper
          {
             if (rval == Collections.EMPTY_SET)
             {
-               rval = new HashSet<Integer>();
+               rval = new HashSet<>();
             }
             int roleid = role.getGUID().getUUID();
             if (isUserInAdhocRole(id, roleid, roleids, role.getAdhocType()))
@@ -698,7 +693,7 @@ public class PSAssignmentTypeHelper
     */
    private Set<Integer> getAssignedRoles(PSState state, Set<Integer> roleids)
    {
-      Set<Integer> rids = new HashSet<Integer>();
+      Set<Integer> rids = new HashSet<>();
       for (PSAssignedRole role : state.getAssignedRoles())
       {
          Integer roleid = role.getGUID().getUUID();
@@ -720,18 +715,18 @@ public class PSAssignmentTypeHelper
       /**
        * Cached map of backend role ids to role names, never <code>null</code>.
        */
-      private Map<Long, String> mi_roleNameMap = new HashMap<Long, String>();
+      private Map<Long, String> mi_roleNameMap = new HashMap<>();
       
       /**
        * Cached map of role names to backend role ids, never <code>null</code>.
        */
-      private Map<String, Long> mi_roleIdMap = new HashMap<String, Long>();
+      private Map<String, Long> mi_roleIdMap = new HashMap<>();
 
       /**
        * Cached map of role ids to community role associations
        */
       private Map<Long, List<PSCommunityRoleAssociation>> mi_communityRoleMap = 
-         new HashMap<Long, List<PSCommunityRoleAssociation>>();
+         new HashMap<>();
       
       /**
        * Get the back-end role IDs that correspond to the supplied role names.
@@ -748,8 +743,8 @@ public class PSAssignmentTypeHelper
          if (roleNames == null)
             throw new IllegalArgumentException("roleNames may not be null");
          
-         Set<String> roleNameSet = new HashSet<String>(roleNames);
-         Set<Long> assignedRoleIds = new HashSet<Long>();
+         Set<String> roleNameSet = new HashSet<>(roleNames);
+         Set<Long> assignedRoleIds = new HashSet<>();
          
          IPSBackEndRoleMgr mgr = PSRoleMgrLocator.getBackEndRoleManager();
          for (String roleName : roleNameSet)
@@ -794,7 +789,7 @@ public class PSAssignmentTypeHelper
          if (roleIds == null)
             throw new IllegalArgumentException("roleIds may not be null");
          
-         Set<String> filteredNames = new HashSet<String>();
+         Set<String> filteredNames = new HashSet<>();
          for (long id : roleIds)
          {
             filteredNames.add(mi_roleNameMap.get(id));
@@ -820,10 +815,10 @@ public class PSAssignmentTypeHelper
                "roleGuids may not be null or empty");
          
          List <PSCommunityRoleAssociation> results = 
-            new ArrayList<PSCommunityRoleAssociation>();
+            new ArrayList<>();
          
          // first check the cache
-         List<IPSGuid> toFindList = new ArrayList<IPSGuid>();
+         List<IPSGuid> toFindList = new ArrayList<>();
          for (IPSGuid guid : roleGuids)
          {
             if (!mi_communityRoleMap.containsKey(guid.longValue()))
@@ -847,7 +842,7 @@ public class PSAssignmentTypeHelper
                   mi_communityRoleMap.get(assoc.getRoleId());
                if (assocList == null)
                {
-                  assocList = new ArrayList<PSCommunityRoleAssociation>();
+                  assocList = new ArrayList<>();
                   mi_communityRoleMap.put(assoc.getRoleId(), assocList);
                }
                assocList.add(assoc);

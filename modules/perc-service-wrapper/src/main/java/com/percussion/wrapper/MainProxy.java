@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,17 +25,37 @@
 package com.percussion.wrapper;
 
 
-import java.io.*;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.net.UnknownHostException;
 
 import static com.percussion.wrapper.JettyStartUtils.debug;
 import static com.percussion.wrapper.JettyStartUtils.info;
 import static org.eclipse.jetty.start.StartLog.error;
 
 public class MainProxy {
+
+    private static final Logger log = LogManager.getLogger(MainProxy.class);
+
     private static final String JETTY_START_MAIN_CLASS = "org.eclipse.jetty.start.Main";
 
     private Object main = null;
@@ -50,7 +70,8 @@ public class MainProxy {
             Constructor<?> constructor = cls.getConstructor();
             main = constructor.newInstance();
         } catch (MalformedURLException | ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
 
@@ -61,11 +82,14 @@ public class MainProxy {
             Method proceesCommand = main.getClass().getMethod("processCommandLine",args.getClass());
             return new StartArgsProxy(proceesCommand.invoke(main,new Object[]{args}));
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return null;
     }
@@ -76,7 +100,8 @@ public class MainProxy {
             Method startCommand = main.getClass().getMethod("start",startArgs.getInstance().getClass());
             startCommand.invoke(main,new Object[]{startArgs.getInstance()});
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
 
@@ -100,15 +125,18 @@ public class MainProxy {
                 if (timeout > 0)
                 {
                     info("Waiting %,d seconds for jetty to stop%n",timeout);
-                    LineNumberReader lin = new LineNumberReader(new InputStreamReader(s.getInputStream()));
-                    String response;
-                    while ((response = lin.readLine()) != null)
-                    {
-                        debug("Received \"%s\"",response);
-                        if ("Stopped".equals(response))
-                        {
-                            debug(String.format("Server reports itself as Stopped"));
-                            return true;
+                    try(InputStream io = s.getInputStream()) {
+                        try(InputStreamReader isr = new InputStreamReader(io)){
+                            try(LineNumberReader lin = new LineNumberReader(isr)) {
+                                String response;
+                                while ((response = lin.readLine()) != null) {
+                                    debug("Received \"%s\"", response);
+                                    if ("Stopped".equals(response)) {
+                                        debug(String.format("Server reports itself as Stopped"));
+                                        return true;
+                                    }
+                                }
+                            }
                         }
                     }
                 }

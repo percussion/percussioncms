@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,15 +29,14 @@ import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 /**
 import com.percussion.delivery.caching.data.PSInvalidateRequest;
 import com.percussion.delivery.caching.utils.PSJaxbUtils;
@@ -201,7 +200,7 @@ public class PSFlushPublicationCacheTask implements IPSEditionTask
    /**
     * Logger.
     */
-   private static final Log ms_log = LogFactory.getLog(PSFlushPublicationCacheTask.class);
+   private static final Logger ms_log = LogManager.getLogger(PSFlushPublicationCacheTask.class);
    
    /**
     * Default maximum number of urls to submit for page cache flushing.

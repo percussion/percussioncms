@@ -199,7 +199,7 @@ public class RxFindCPFiles extends RxIAAction
    * List of .cp files (if any), never <code>null</code>,
    * may be empty.
    */
-   private static List<String> ms_cpFiles = new ArrayList<String>();
+   private static List<String> ms_cpFiles = new ArrayList<>();
    
   /**
    * Flag for .cp files found

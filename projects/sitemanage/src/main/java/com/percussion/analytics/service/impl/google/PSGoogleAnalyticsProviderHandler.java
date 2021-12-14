@@ -17,20 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.analytics.service.impl.google;
 
 import com.google.api.services.analytics.Analytics;
-import com.google.api.services.analytics.model.*;
+import com.google.api.services.analytics.model.Account;
+import com.google.api.services.analytics.model.Accounts;
+import com.google.api.services.analytics.model.Profile;
+import com.google.api.services.analytics.model.Profiles;
+import com.google.api.services.analytics.model.Webproperties;
+import com.google.api.services.analytics.model.Webproperty;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.error.PSAnalyticsProviderException.CAUSETYPE;
 import com.percussion.analytics.service.IPSAnalyticsProviderService;
 import com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSValidationErrorsBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,16 +53,18 @@ public class PSGoogleAnalyticsProviderHandler
          implements
             IPSAnalyticsProviderHandler
 {
-    private static final Log log = LogFactory.getLog(PSGoogleAnalyticsProviderHandler.class);
+    private static final Logger log = LogManager.getLogger(PSGoogleAnalyticsProviderHandler.class);
   /* *//* (non-Javadoc)
     * @see com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler#getProfiles(java.lang.String, java.lang.String)
     */
-    public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException
+    public Map<String, String> getProfiles(String uid, String password) throws PSAnalyticsProviderException, PSValidationException
     {
-        Map<String, String> profiles = new LinkedHashMap<String, String>();
-        Map<String, String[]> temp = new TreeMap<String, String[]>();
+        Map<String, String> profiles = new LinkedHashMap<>();
+        Map<String, String[]> temp = new TreeMap<>();
         try {
-            Analytics analytics = PSGoogleAnalyticsProviderHelper.getAnalyticsService(uid, password);
+            Analytics analytics = PSGoogleAnalyticsProviderHelper.getInstance()
+                    .getAnalyticsService(uid, password);
+
             Accounts accounts =  analytics.management().accounts().list().execute();
             if (accounts.getItems().isEmpty()) {
                 log.error("No accounts found");
@@ -105,6 +114,9 @@ public class PSGoogleAnalyticsProviderHandler
             }
         } catch (Exception e)
         {
+            if(e instanceof PSValidationException){
+                throw (PSValidationException)e;
+            }
             throw new PSAnalyticsProviderException("Error occurred while attempting to retrieve profiles: "
                     + e.getLocalizedMessage(), e);
         }
@@ -114,20 +126,21 @@ public class PSGoogleAnalyticsProviderHandler
    /* (non-Javadoc)
     * @see com.percussion.analytics.service.impl.IPSAnalyticsProviderHandler#testConnection(java.lang.String, java.lang.String)
     */
-   public void testConnection(String uid, String password) throws PSAnalyticsProviderException
-   {
+   public void testConnection(String uid, String password) throws PSValidationException, PSAnalyticsProviderException {
       try
       {
-         PSGoogleAnalyticsProviderHelper.getAnalyticsService(uid, password);
+         PSGoogleAnalyticsProviderHelper.getInstance().
+                 getAnalyticsService(uid, password);
          getProfiles(uid, password);
       }     
-      catch (PSAnalyticsProviderException e)
+      catch (PSAnalyticsProviderException  e)
       {
          if(e.getCauseType() == CAUSETYPE.NO_ANALYTICS_ACCOUNT)
          {
             String msg = "No Analytics account found for the specified user.";
-            throw new PSAnalyticsProviderException(msg, e, e.getCauseType());
-            
+             PSValidationErrorsBuilder builder = new PSValidationErrorsBuilder(this.getClass().getCanonicalName());
+             builder.reject(PSAnalyticsProviderException.CAUSETYPE.INVALID_CREDS.toString(), msg).throwIfInvalid();
+
          }
          throw e;
       }

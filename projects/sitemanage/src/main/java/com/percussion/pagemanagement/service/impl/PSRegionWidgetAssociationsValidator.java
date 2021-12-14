@@ -17,27 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service.impl;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-
-import org.springframework.validation.ObjectError;
 
 import com.percussion.pagemanagement.data.PSRegionWidgetAssociations;
 import com.percussion.pagemanagement.data.PSRegionWidgets;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.share.service.exception.PSBeanValidationException;
+import com.percussion.share.service.exception.PSPropertiesValidationException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.validation.PSAbstractBeanValidator;
+import org.springframework.validation.ObjectError;
+
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Validates Region Widget Assocations.
@@ -72,7 +71,7 @@ public abstract class PSRegionWidgetAssociationsValidator<BEAN> extends PSAbstra
     
     
     protected void doWidgetAssociations(PSRegionWidgetAssociations a, PSBeanValidationException e) {
-        Set<String> ids = new HashSet<String>();
+        Set<String> ids = new HashSet<>();
         for (PSRegionWidgets ws : a.getRegionWidgetAssociations()) {
             if (ids.contains(ws.getRegionId())) {
                 e.reject("regionWidgetAssocations.dupIds", "Duplicate ids for region");
@@ -91,22 +90,23 @@ public abstract class PSRegionWidgetAssociationsValidator<BEAN> extends PSAbstra
     }
     
     protected void validateWidgetItem(PSWidgetItem widgetItem, PSBeanValidationException e) {
-        PSSpringValidationException we = widgetService.validateWidgetItem(widgetItem);
-        List<ObjectError> errors = we.getAllErrors();
-        StringBuilder messageBuilder = new StringBuilder();
-        if (errors!=null && !errors.isEmpty())
-        {
-            Iterator<ObjectError> iter = errors.iterator();
-            while(iter.hasNext())
-            {
-                ObjectError error = iter.next();
-                messageBuilder.append(error.getDefaultMessage());
-                if(iter.hasNext())
-                {
-                    messageBuilder.append(",");
-                }
-            }
-            e.reject("regionWidgetAssocations.widgetItem", messageBuilder.toString());
-        }
+       try {
+           PSSpringValidationException we = widgetService.validateWidgetItem(widgetItem);
+           List<ObjectError> errors = we.getAllErrors();
+           StringBuilder messageBuilder = new StringBuilder();
+           if (errors != null && !errors.isEmpty()) {
+               Iterator<ObjectError> iter = errors.iterator();
+               while (iter.hasNext()) {
+                   ObjectError error = iter.next();
+                   messageBuilder.append(error.getDefaultMessage());
+                   if (iter.hasNext()) {
+                       messageBuilder.append(",");
+                   }
+               }
+               e.reject("regionWidgetAssocations.widgetItem", messageBuilder.toString());
+           }
+       } catch (PSPropertiesValidationException psPropertiesValidationException) {
+           e.addSuppressed(psPropertiesValidationException);
+       }
     }
 }

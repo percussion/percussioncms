@@ -17,42 +17,41 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.category.extension;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-
 import com.percussion.category.data.PSCategory;
 import com.percussion.category.data.PSCategoryNode;
 import com.percussion.category.service.IPSCategoryService;
-
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+
 public class PSCategoryControlUtils {
 	
     private static volatile IPSCategoryService categoryService = null;
     
-	public static Log log = LogFactory.getLog(PSCategoryControlUtils.class);
+	public static final Logger log = LogManager.getLogger(PSCategoryControlUtils.class);
 	
-	public static PSCategory getCategories(String siteName, String rootPath, boolean includeDeleted, boolean includeNotSelectable) {
+	public static PSCategory getCategories(String siteName, String rootPath, boolean includeDeleted, boolean includeNotSelectable) throws PSDataServiceException {
 		
 	    if (categoryService== null)
 	        categoryService = (IPSCategoryService) getWebApplicationContext().getBean("categoryService");
@@ -129,7 +128,7 @@ public class PSCategoryControlUtils {
 	 */
 	private static PSCategoryNode filterNode(PSCategoryNode parentNode) {
 		
-		List<PSCategoryNode> childNodeList = new ArrayList<PSCategoryNode>();
+		List<PSCategoryNode> childNodeList = new ArrayList<>();
 		
 		if(parentNode.getChildNodes() != null && !parentNode.getChildNodes().isEmpty()) {
 			for(PSCategoryNode node : parentNode.getChildNodes()) {

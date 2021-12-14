@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -152,7 +152,7 @@ public class PSBeanProperties implements IPSBeanPropertiesInternal
    /**
     * All bean properties. Defaults to empty. It never <code>null</code>.
     */
-   Map<String, Object> m_props = new HashMap<String, Object>();
+   Map<String, Object> m_props = new HashMap<>();
    
    /**
     * The properties file, default to <code>null</code>.
@@ -162,6 +162,6 @@ public class PSBeanProperties implements IPSBeanPropertiesInternal
    /**
     * Logger for this class.
     */
-   //private static Log ms_log = LogFactory.getLog("PSBeanProperties");
+   //private static final Logger ms_log = LogManager.getLogger("PSBeanProperties");
    
 }

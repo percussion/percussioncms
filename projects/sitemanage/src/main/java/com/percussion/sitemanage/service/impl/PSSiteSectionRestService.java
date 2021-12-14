@@ -17,32 +17,58 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.service.impl;
 
-import static com.percussion.share.web.service.PSRestServicePathConstants.DELETE_PATH;
-import static com.percussion.share.web.service.PSRestServicePathConstants.ID_PATH_PARAM;
-import static com.percussion.share.web.service.PSRestServicePathConstants.LOAD_PATH;
-
-import static org.apache.commons.lang.Validate.notNull;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.share.data.PSNoContent;
-import com.percussion.sitemanage.data.*;
-
-import java.util.List;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSParameterValidationUtils;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.sitemanage.data.PSCreateExternalLinkSection;
+import com.percussion.sitemanage.data.PSCreateSectionFromFolderRequest;
+import com.percussion.sitemanage.data.PSCreateSiteSection;
+import com.percussion.sitemanage.data.PSMoveSiteSection;
+import com.percussion.sitemanage.data.PSReplaceLandingPage;
+import com.percussion.sitemanage.data.PSSectionNode;
+import com.percussion.sitemanage.data.PSSiteBlogPosts;
+import com.percussion.sitemanage.data.PSSiteBlogProperties;
+import com.percussion.sitemanage.data.PSSiteBlogPropertiesList;
+import com.percussion.sitemanage.data.PSSiteSection;
+import com.percussion.sitemanage.data.PSSiteSectionList;
+import com.percussion.sitemanage.data.PSSiteSectionProperties;
+import com.percussion.sitemanage.data.PSUpdateSectionLink;
+import com.percussion.sitemanage.service.IPSSiteSectionService;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
+import java.util.List;
+
+import static com.percussion.share.web.service.PSRestServicePathConstants.DELETE_PATH;
+import static com.percussion.share.web.service.PSRestServicePathConstants.ID_PATH_PARAM;
+import static com.percussion.share.web.service.PSRestServicePathConstants.LOAD_PATH;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The actual implementation of the CRUD service for site sections.
@@ -55,11 +81,12 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @Lazy
 public class PSSiteSectionRestService 
 {
+    private static final Logger log = LogManager.getLogger(PSSiteSectionRestService.class);
 
     /**
      * The base SiteSectionService
      */
-    private PSSiteSectionService siteSectionService;
+    private final PSSiteSectionService siteSectionService;
 
    
     @Autowired
@@ -78,9 +105,14 @@ public class PSSiteSectionRestService
     @Path("/create")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection create(PSCreateSiteSection req)
+    public PSSiteSection create(PSCreateSiteSection req) throws PSDataServiceException
     {
-        return siteSectionService.create(req);
+        try {
+            return siteSectionService.create(req);
+        } catch (PSDataServiceException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
 
     }
 
@@ -91,9 +123,13 @@ public class PSSiteSectionRestService
     @Path("/createExternalLinkSection")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection createExternalLinkSection(PSCreateExternalLinkSection req)
-    {
-        return siteSectionService.createExternalLinkSection(req);
+    public PSSiteSection createExternalLinkSection(PSCreateExternalLinkSection req) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException, IPSPathService.PSPathNotFoundServiceException {
+        try {
+            return siteSectionService.createExternalLinkSection(req);
+        } catch (IPSSiteSectionService.PSSiteSectionException | PSValidationException | IPSPathService.PSPathNotFoundServiceException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
 
     /*
@@ -103,10 +139,13 @@ public class PSSiteSectionRestService
     @Path("/createSectionLink/{targetSectionGuid}/{parentSectionGuid}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSSiteSection createSectionLink(@PathParam("targetSectionGuid") String targetSectionGuid,
-            @PathParam("parentSectionGuid") String parentSectionGuid)
-    {
-       
-        return siteSectionService.createSectionLink(targetSectionGuid, parentSectionGuid);
+            @PathParam("parentSectionGuid") String parentSectionGuid) throws IPSSiteSectionService.PSSiteSectionException {
+       try {
+           return siteSectionService.createSectionLink(targetSectionGuid, parentSectionGuid);
+       } catch (IPSSiteSectionService.PSSiteSectionException e) {
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+           throw (e);
+       }
     }
     
     
@@ -114,10 +153,13 @@ public class PSSiteSectionRestService
     @Path("/createSectionFromFolder")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection createSectionFromFolder(PSCreateSectionFromFolderRequest req)
-    {
-        
-        return siteSectionService.createSectionFromFolder(req);
+    public PSSiteSection createSectionFromFolder(PSCreateSectionFromFolderRequest req) throws PSDataServiceException {
+        try {
+            return siteSectionService.createSectionFromFolder(req);
+        } catch (PSDataServiceException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
 
 
@@ -140,10 +182,13 @@ public class PSSiteSectionRestService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSSiteSection updateExternalLink(@PathParam("sectionGuid") String sectionGuid,
-            PSCreateExternalLinkSection req)
-    {
-       
-        return siteSectionService.updateExternalLink(sectionGuid, req);
+            PSCreateExternalLinkSection req) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException {
+       try {
+           return siteSectionService.updateExternalLink(sectionGuid, req);
+       } catch (IPSSiteSectionService.PSSiteSectionException | PSValidationException e) {
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+           throw (e);
+       }
     }
 
     
@@ -151,9 +196,13 @@ public class PSSiteSectionRestService
     @Path("/updateSectionLink")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection updateSectionLink(PSUpdateSectionLink req)
-    {
-        return siteSectionService.updateSectionLink(req);
+    public PSSiteSection updateSectionLink(PSUpdateSectionLink req) throws IPSSiteSectionService.PSSiteSectionException {
+        try {
+            return siteSectionService.updateSectionLink(req);
+        } catch (IPSSiteSectionService.PSSiteSectionException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
     
 
@@ -162,35 +211,50 @@ public class PSSiteSectionRestService
     @Path("/blogs/{siteName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @SuppressFBWarnings("NP_NULL_ON_SOME_PATH")
-    public List<PSSiteBlogProperties> getBlogsForSite(@PathParam("siteName")String siteName)
-    {
-        return new PSSiteBlogPropertiesList(siteSectionService.getBlogsForSite(siteName));
+    public List<PSSiteBlogProperties> getBlogsForSite(@PathParam("siteName")String siteName) throws PSValidationException {
+        try {
+            return new PSSiteBlogPropertiesList(siteSectionService.getBlogsForSite(siteName));
+        } catch (PSValidationException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
     
     
     @GET
     @Path("/allBlogs")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<PSSiteBlogProperties> getAllBlogs()
-    {
-        return new PSSiteBlogPropertiesList(siteSectionService.getAllBlogs());
+    public List<PSSiteBlogProperties> getAllBlogs() throws PSDataServiceException {
+        try {
+            return new PSSiteBlogPropertiesList(siteSectionService.getAllBlogs());
+        } catch (PSDataServiceException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
   
     @GET
     @Path("/blogPosts/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteBlogPosts getBlogPosts(@PathParam("id") String id)
-    {
-        return siteSectionService.getBlogPosts(id);
+    public PSSiteBlogPosts getBlogPosts(@PathParam("id") String id) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException {
+        try {
+            return siteSectionService.getBlogPosts(id);
+        } catch (PSValidationException | IPSSiteSectionService.PSSiteSectionException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
 
     @GET
     @Path("/properties/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSectionProperties getSectionProperties(@PathParam("id") String id)
-    {
-       
-        return siteSectionService.getSectionProperties(id);
+    public PSSiteSectionProperties getSectionProperties(@PathParam("id") String id) throws IPSSiteSectionService.PSSiteSectionException {
+       try {
+           return siteSectionService.getSectionProperties(id);
+       } catch (IPSSiteSectionService.PSSiteSectionException e) {
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+           throw (e);
+       }
     }
 
     /*
@@ -200,9 +264,13 @@ public class PSSiteSectionRestService
     @Path("/update")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection update(PSSiteSectionProperties req)
-    {
-        return siteSectionService.update(req);
+    public PSSiteSection update(PSSiteSectionProperties req) throws PSDataServiceException {
+        try {
+            return siteSectionService.update(req);
+        } catch (PSDataServiceException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
 
     
@@ -212,26 +280,49 @@ public class PSSiteSectionRestService
     @GET
     @Path("/tree/{siteName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSectionNode loadTree(@PathParam("siteName") String siteName)
-    {
-        return siteSectionService.loadTree(siteName);
+    public PSSectionNode loadTree(@PathParam("siteName") String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSNotFoundException {
+        try {
+            return siteSectionService.loadTree(siteName);
+        } catch (IPSSiteSectionService.PSSiteSectionException | PSNotFoundException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
    
     @GET
     @Path("/root/{siteName}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection loadRoot(@PathParam("siteName") String siteName)
-    {
-        return siteSectionService.loadRoot(siteName);
+    public PSSiteSection loadRoot(@PathParam("siteName") String siteName) throws IPSSiteSectionService.PSSiteSectionException, PSNotFoundException, PSValidationException {
+        try {
+            return siteSectionService.loadRoot(siteName);
+        } catch (PSNotFoundException pne){
+            Object[] args = {siteName};
+            String invalidMessage = new String(MessageFormat.format("The site with name: {0} does not exist", args).getBytes(StandardCharsets.UTF_8));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(pne));
+            log.error(PSExceptionUtils.getMessageForLog(pne) + " : " + invalidMessage);
+            PSNoContent validationResponse = new PSNoContent("Success");
+            validationResponse.setOperation("loadSite");
+            PSParameterValidationUtils.validateParameters("loadSite").reject(siteName,invalidMessage).throwIfInvalid();
+        }
+        catch (IPSSiteSectionService.PSSiteSectionException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
+        return null;
     }
     
     
     @GET
     @Path(LOAD_PATH)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection load(@PathParam("id") String sId)
+    public PSSiteSection load(@PathParam(value = "id") String id) throws IPSSiteSectionService.PSSiteSectionException
     {
-        return siteSectionService.load(sId);
+        try {
+            return siteSectionService.load(id);
+        } catch (IPSSiteSectionService.PSSiteSectionException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
 
     /*
@@ -239,15 +330,24 @@ public class PSSiteSectionRestService
      */
     @DELETE
     @Path(DELETE_PATH)
-    public void delete(@PathParam(ID_PATH_PARAM) String id)
-    {
-        siteSectionService.delete(id);
+    public void delete(@PathParam(ID_PATH_PARAM) String id) throws IPSDataService.DataServiceSaveException, PSValidationException {
+        try {
+            siteSectionService.delete(id);
+        } catch (PSValidationException | IPSDataService.DataServiceSaveException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
     
     @DELETE
     @Path("/convertToFolder/{id}")
-    public void convertToFolder(@PathParam("id") String id) {
-        siteSectionService.convertToFolder(id);
+    public void convertToFolder(@PathParam("id") String id) throws PSValidationException{
+        try {
+            siteSectionService.convertToFolder(id);
+        } catch (PSValidationException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
     
     @POST
@@ -263,18 +363,26 @@ public class PSSiteSectionRestService
     @Path("/replaceLandingPage")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSReplaceLandingPage replaceLandingPage(PSReplaceLandingPage request)
-    {
-        return siteSectionService.replaceLandingPage(request);
+    public PSReplaceLandingPage replaceLandingPage(PSReplaceLandingPage request) throws PSDataServiceException {
+        try {
+            return siteSectionService.replaceLandingPage(request);
+        } catch (PSDataServiceException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
     
     @POST
     @Path("/move")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSiteSection move(PSMoveSiteSection req)
-    {
-        return siteSectionService.move(req);
+    public PSSiteSection move(PSMoveSiteSection req) throws IPSSiteSectionService.PSSiteSectionException, PSValidationException {
+        try {
+            return siteSectionService.move(req);
+        } catch (PSValidationException | IPSSiteSectionService.PSSiteSectionException e) {
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw (e);
+        }
     }
 
 }

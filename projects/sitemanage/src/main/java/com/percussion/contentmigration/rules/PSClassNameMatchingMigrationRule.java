@@ -17,20 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.contentmigration.rules;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 /**
  * Find a content match based on the class name of an element. If multiple
@@ -49,8 +49,9 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
     {
         // find region
         Element regionElem = findEnclosingRegionElement(widgetId, sourceDoc);
-        if(regionElem == null)
+        if(regionElem == null) {
             return null;
+        }
         
         // filter non-perc classnames
         PSClassNameMatcher srcMatch = new PSClassNameMatcher(regionElem);
@@ -81,15 +82,16 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
             return null; 
         }
         
-        List<PSClassNameMatcher> matches = new ArrayList<PSClassNameMatcher>();
+        List<PSClassNameMatcher> matches = new ArrayList<>();
         for (Element elem : elems)
         {
             matches.add(new PSClassNameMatcher(elem));
         }
         
         Element match = findParentMatch(srcMatch, matches);
-        if (match == null)
+        if (match == null) {
             return null;
+        }
         
         return match.html();
     }
@@ -105,15 +107,18 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
     private Element findParentMatch(PSClassNameMatcher srcMatch, List<PSClassNameMatcher> matches)
     {
         Set<String> classNames = srcMatch.getNextParentElementClasses();
-        if (classNames.isEmpty())
-            return null;  // nothing left to match
+        if (classNames.isEmpty()) {
+            return null;
+        }// nothing left to match
         
         filterParentMatches(matches, classNames);
-        if (matches.isEmpty())
+        if (matches.isEmpty()) {
             return null;
+        }
         
-        if (matches.size() == 1)
+        if (matches.size() == 1) {
             return matches.get(0).getSrcElement();
+        }
         
         // recurse up the parent stack and try again
         return findParentMatch(srcMatch, matches);
@@ -132,16 +137,17 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
         while (iter.hasNext())
         {
             PSClassNameMatcher match = iter.next();
-            if (!match.matchParentClasses(classNames))
+            if (!match.matchParentClasses(classNames)) {
                 iter.remove();
+            }
         }
     }
 
     private Elements findMatches(Document targetDoc, Set<String> classNames)
     {
         Elements found = new Elements();
-        //FB: SBSC_USE_STRINGBUFFER_CONCATENATION NC 1-17-16
-        StringBuffer buffer = new StringBuffer();
+        //FB: SBSC_USE_StringBuilder_CONCATENATION NC 1-17-16
+        StringBuilder buffer = new StringBuilder();
         for (String className : classNames)
         {
             buffer.append(".").append(className);
@@ -160,8 +166,9 @@ public class PSClassNameMatchingMigrationRule extends PSBaseMatchingMigrationRul
                 elems = targetDoc.select("." + className);
                 for (Element element : elems)
                 {
-                    if(!found.contains(element))
+                    if(!found.contains(element)) {
                         found.add(element);
+                    }
                 }
             }
         }

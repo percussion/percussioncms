@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,7 +39,15 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.xml.sax.SAXException;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -145,7 +153,7 @@ public class PSPubServer extends PSAbstractDataObject implements Serializable, I
    @JoinColumn(name = "PUBSERVERID", nullable = false, insertable = false, updatable = false)
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSPubServerProperty")
    @Fetch(FetchMode. SUBSELECT)
-   private Set<PSPubServerProperty> properties = new HashSet<PSPubServerProperty>();  
+   private Set<PSPubServerProperty> properties = new HashSet<>();
    
    /**
     * The default constructor.

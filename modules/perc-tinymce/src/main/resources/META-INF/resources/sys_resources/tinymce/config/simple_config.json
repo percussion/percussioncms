@@ -4,5 +4,6 @@
 	"browser_spellcheck": true,
 	"plugins" : "-example",
 	"toolbar": "bold,italic,underline,undo,redo,formatselect",
+	"paste_word_valid_elements": "b,strong,i,em,h1,h2",
 	"valid_elements": "*[*]"
 }]

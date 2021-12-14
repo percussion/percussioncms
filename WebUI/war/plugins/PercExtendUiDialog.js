@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -54,7 +54,7 @@
     $.ui.dialog.prototype._setData = function(key, value)
     {
         var self = this;
-        if (key == 'perc-buttons')
+        if (key === 'perc-buttons')
             self._createPercButtons(value);
         _setData.apply(this, [key, value]);
     };
@@ -429,23 +429,15 @@
                     .css("border-width", "2px")
                     .html(mappingName.txt)
                     .addClass(mappingName.cls )
-                    //.addClass(fn.cls)
-                    .click(function()
+                    .on("click",function()
                     {
                         fn.click.apply(self.element[0], arguments);
                     })
-                    .hover(function()
+                    .on("focus",function()
                     {
-                        // $(this).css('background-image', mapping[name].bgimageOver);
-                    }, function()
-                    {
-                        //  $(this).css('background-image', mapping[name].bgimage);
+                        $(this).addClass('ui-state-focus');
                     })
-                    .focus(function()
-                    {
-                        //$(this).addClass('ui-state-focus');
-                    })
-                    .blur(function()
+                    .on("blur",function()
                     {
                         $(this).removeClass('ui-state-focus');
                     })

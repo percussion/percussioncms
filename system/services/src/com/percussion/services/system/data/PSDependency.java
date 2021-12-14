@@ -17,13 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.system.data;
 
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,11 +35,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.xml.sax.SAXException;
 
 /**
  * This object represents a single design object dependency.
@@ -55,7 +54,7 @@ public class PSDependency implements Serializable
    /**
     * All dependent design object, never <code>null</code>, may be empty. 
     */
-   private List<PSDependent> dependents = new ArrayList<PSDependent>();
+   private List<PSDependent> dependents = new ArrayList<>();
 
    /**
     * Default construcctor.
@@ -104,7 +103,7 @@ public class PSDependency implements Serializable
    public void setDependents(List<PSDependent> dependents)
    {
       if (dependents == null)
-         this.dependents = new ArrayList<PSDependent>();
+         this.dependents = new ArrayList<>();
       else
          this.dependents = dependents;
    }
@@ -130,7 +129,7 @@ public class PSDependency implements Serializable
     */
    public String getDependentTypes()
    {
-      Set<String> types = new HashSet<String>();
+      Set<String> types = new HashSet<>();
       for (PSDependent dependent : dependents)
       {
          types.add(dependent.getDisplayType());

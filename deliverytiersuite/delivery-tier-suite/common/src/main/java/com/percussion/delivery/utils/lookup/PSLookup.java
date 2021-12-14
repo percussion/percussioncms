@@ -17,23 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.utils.lookup;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /***
  * Provides a generic sys_Lookup style
@@ -48,7 +47,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class PSLookup implements List<PSXEntry>{
 
 	@XmlElement(name="PSXEntry")
-	private List<PSXEntry> list = new ArrayList<PSXEntry>();
+	private List<PSXEntry> list = new ArrayList<>();
 	
 	public PSLookup(){}
 	

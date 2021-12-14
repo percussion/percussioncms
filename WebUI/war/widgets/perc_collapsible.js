@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,8 +36,9 @@ var Collapsible = {
 	    return $("<span/>")
 		.append( $("<span class=\"ui-icon ui-icon-plus ui-state-disabled ui-state-default\">+</span>") )
 		.append( $("<span class=\"ui-icon ui-icon-minus ui-state-default\">-</span>")
-			 .hover( function() { $(this).addClass("ui-state-hover"); }, function() { $(this).removeClass("ui-state-hover");} )
-			 .click( function() { 
+			 .on("mouseenter", function() { $(this).addClass("ui-state-hover"); })
+			 .on("mouseleave",function() { $(this).removeClass("ui-state-hover");} )
+			 .on("click", function() {
 				     self.collapse(); 
 				     toggle.empty().append( toggle_off() ); } ) );
 	};
@@ -45,8 +46,9 @@ var Collapsible = {
 	var toggle_off = function () { 
 	    return $("<span/>")
 		.append( $("<span class=\"ui-icon ui-icon-plus ui-state-default\">+</span>")
-			 .hover( function() { $(this).addClass("ui-state-hover"); }, function() { $(this).removeClass("ui-state-hover");} )
-			 .click( function() { 
+			 .on("mouseenter", function() { $(this).addClass("ui-state-hover"); })
+			 .on("mouseleave", function() { $(this).removeClass("ui-state-hover");} )
+			 .on("click", function() {
 				     self.uncollapse(); 
 				     toggle.empty().append( toggle_on() ); } ) )
 		.append( $("<span class=\"ui-icon ui-icon-minus ui-state-default ui-state-disabled\">-</span>") );

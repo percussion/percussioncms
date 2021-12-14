@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -228,6 +228,7 @@ public class PSVisibilityTab
       m_showByBtn.setSelected(true);
       m_showByBtn.setAutoFit(true);
       m_showByBtn.setWidth(150);
+      m_showByBtn.setAutoFit(true);
       m_showByBtn.addMouseUpHandler(new MouseUpHandler()
       {
          public void onMouseUp(MouseUpEvent event)
@@ -512,12 +513,12 @@ public class PSVisibilityTab
     */
    private String[] removeAll(String[] from, String[] remove)
    {
-      List<String> l1 = new ArrayList<String>();
+      List<String> l1 = new ArrayList<>();
       for (int i = 0; i < from.length; i++)
       {
          l1.add(from[i]);
       }
-      List<String> l2 = new ArrayList<String>();
+      List<String> l2 = new ArrayList<>();
       for (int i = 0; i < from.length; i++)
       {
          l2.add(remove[i]);

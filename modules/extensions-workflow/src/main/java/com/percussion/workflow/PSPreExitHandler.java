@@ -17,19 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.tools.PrintNode;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.StringWriter;
@@ -40,6 +43,9 @@ import java.io.StringWriter;
  */
 public class PSPreExitHandler implements IPSRequestPreProcessor
 {
+
+  private static final Logger log = LogManager.getLogger(PSPreExitHandler.class);
+
   /**
   * Default constructor, as requiredL for use by IPSExtensionHandler.
   */
@@ -59,43 +65,42 @@ public class PSPreExitHandler implements IPSRequestPreProcessor
    public void preProcessRequest(Object[] params, IPSRequestContext request)
       throws PSExtensionProcessingException
    {
-    System.out.println("");
-    System.out.println(
-       "             *** Beginning of Pre-Processor Exit Debugger ***");
-    System.out.println("");
+    log.info("");
+    log.info("             *** Beginning of Pre-Processor Exit Debugger ***");
+    log.info("");
 
     if(null == request)
     {
-      System.out.println("Request context is null!");
+      log.info("Request context is null!");
     }
     else
     {
       PSPostExitHandler.printRequestContext(request);
 
-      System.out.println("");
-      System.out.println("Input XML Document:");
-      System.out.println("");
-      System.out.println("*** Starts Here ***");
+      log.info("");
+      log.info("Input XML Document:");
+      log.info("");
+      log.info("*** Starts Here ***");
       try
       {
         if(null == request.getInputDocument())
-          System.out.println("   Document is empty");
+          log.info("   Document is empty");
         else
         {
           StringWriter writer = new StringWriter();
           PrintNode.printNode(request.getInputDocument(), " " , writer);
-          System.out.println(writer.toString());
+          log.info(writer.toString());
         }
       }
       catch (Exception e)
       {
-        e.printStackTrace();
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
-      System.out.println("*** Ends Here ***");
+      log.info("*** Ends Here ***");
     }
-    System.out.println("");
-    System.out.println(
-       "             *** End of Pre-Processor Exit Debugger ***");
-    System.out.println("");
+    log.info("");
+    log.info("             *** End of Pre-Processor Exit Debugger ***");
+    log.info("");
    }
 }

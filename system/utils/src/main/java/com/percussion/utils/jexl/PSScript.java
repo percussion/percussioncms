@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -43,7 +43,7 @@ import java.util.Properties;
 
 public class PSScript implements IPSScript
 {
-    /** The logger. */
+    /** The logger. NOTE:  jexl requires commons logging */
     private static final Log LOG = LogFactory.getLog(PSScript.class);
 
     /** The shared expression cache size. */
@@ -259,5 +259,13 @@ public class PSScript implements IPSScript
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "PSScript{" + "scriptText='" + scriptText + '\'' +
+                ", compilable=" + compilable +
+                ", compiledScript=" + compiledScript +
+                ", ownerType='" + ownerType + '\'' +
+                ", ownerName='" + ownerName + '\'' +
+                '}';
+    }
 }

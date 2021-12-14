@@ -17,20 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.web.service;
-
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
 
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.data.PSWidgetPackageInfo;
@@ -38,10 +29,21 @@ import com.percussion.pagemanagement.data.PSWidgetPackageInfoRequest;
 import com.percussion.pagemanagement.data.PSWidgetPackageInfoResult;
 import com.percussion.pagemanagement.data.PSWidgetSummary;
 import com.percussion.share.test.PSDataServiceRestClient;
-import com.percussion.share.test.PSRestTestCase;
 import com.percussion.share.test.PSObjectRestClient.DataValidationRestClientException;
+import com.percussion.share.test.PSRestTestCase;
 import com.percussion.share.validation.PSValidationErrors;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @Category(IntegrationTest.class)
 public class PSWidgetServiceTest extends PSRestTestCase<PSWidgetServiceTest.PSWidgetRestClient> {
@@ -129,6 +131,6 @@ public class PSWidgetServiceTest extends PSRestTestCase<PSWidgetServiceTest.PSWi
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetServiceTest.class);
 
 }

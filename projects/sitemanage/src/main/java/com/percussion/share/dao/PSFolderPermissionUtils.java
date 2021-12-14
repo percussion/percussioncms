@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
-
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.cms.objectstore.PSObjectAcl;
@@ -34,18 +31,19 @@ import com.percussion.pathmanagement.data.PSFolderPermission.Access;
 import com.percussion.pathmanagement.data.PSFolderPermission.Principal;
 import com.percussion.pathmanagement.data.PSFolderPermission.PrincipalType;
 import com.percussion.utils.types.PSPair;
-
-import static com.percussion.role.service.IPSRoleService.ADMINISTRATOR_ROLE;
-import static com.percussion.role.service.IPSRoleService.DESIGNER_ROLE;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.role.service.IPSRoleService.ADMINISTRATOR_ROLE;
+import static com.percussion.role.service.IPSRoleService.DESIGNER_ROLE;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * A utility class used to retrieve and store {@link PSFolderPermission} from {@link PSFolder}
@@ -77,7 +75,7 @@ public class PSFolderPermissionUtils
     /**
      * The logger
      */
-    public static Log log = LogFactory.getLog(PSFolderPermissionUtils.class);
+    public static final Logger log = LogManager.getLogger(PSFolderPermissionUtils.class);
 
     /**
      * Gets the permission for the specified folder.
@@ -104,9 +102,9 @@ public class PSFolderPermissionUtils
                 permission.setAccessLevel(PSFolderPermission.Access.READ);
         }
         
-        List<Principal> adminPrincipals = new ArrayList<Principal>();
-        List<Principal> readPrincipals = new ArrayList<Principal>();
-        List<Principal> writePrincipals = new ArrayList<Principal>();
+        List<Principal> adminPrincipals = new ArrayList<>();
+        List<Principal> readPrincipals = new ArrayList<>();
+        List<Principal> writePrincipals = new ArrayList<>();
         
         // Walk the folder acl, adding users to the appropriate list
         Iterator<?> acls = acl.iterator();
@@ -176,12 +174,12 @@ public class PSFolderPermissionUtils
         PSObjectAcl folderAcl = folder.getAcl();
         
         if (folderAcl == null)
-            return new PSPair<PSFolderPermission.Access, Boolean>(Access.ADMIN, false);
+            return new PSPair<>(Access.ADMIN, false);
         
         boolean didAdd = ensureAdminAccess(folder);
             
         if (roles.contains(ADMINISTRATOR_ROLE))
-            return new PSPair<PSFolderPermission.Access, Boolean>(Access.ADMIN, didAdd);       
+            return new PSPair<>(Access.ADMIN, didAdd);
         
         PSFolderPermission.Access userAcl = getUserAcl(folderAcl, userName);
         for (String role : roles)
@@ -192,13 +190,13 @@ public class PSFolderPermissionUtils
         
         if (userAcl != null)
         {
-            return new PSPair<PSFolderPermission.Access, Boolean>(userAcl, didAdd);
+            return new PSPair<>(userAcl, didAdd);
         }
         
         PSObjectAclEntry virtualAcl = getVirtualAcl(folderAcl);
         userAcl = (virtualAcl == null) ? PSFolderPermission.Access.ADMIN : convertAcl(virtualAcl);
         
-        return new PSPair<PSFolderPermission.Access, Boolean>(userAcl, didAdd);
+        return new PSPair<>(userAcl, didAdd);
     }
     
     /**
@@ -522,7 +520,7 @@ public class PSFolderPermissionUtils
         if (acl == null)
             return;
         
-        List<PSObjectAclEntry> entries = new ArrayList<PSObjectAclEntry>();
+        List<PSObjectAclEntry> entries = new ArrayList<>();
         Iterator<?> acls = acl.iterator();
         while (acls.hasNext())
         {

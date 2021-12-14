@@ -17,24 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.test.fixtures;
 
-import static org.junit.Assert.assertEquals;
-
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.share.IPSSitemanageConstants;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -45,6 +39,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.JAXB;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class PSRestFixtures

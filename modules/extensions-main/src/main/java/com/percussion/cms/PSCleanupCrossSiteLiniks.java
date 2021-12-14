@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,8 +25,6 @@ package com.percussion.cms;
 
 import com.percussion.cms.objectstore.IPSFolderProcessor;
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.cms.objectstore.PSFolderProcessorProxy;
-import com.percussion.cms.objectstore.PSProcessorProxy;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSSite;
@@ -35,6 +33,7 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -42,15 +41,15 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
 
 /**
  * The cleanup program is used to reset, log and optionally remove the incorrect
@@ -132,8 +131,8 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
       } 
       catch (Exception e) 
       {
-         e.printStackTrace();
-         ms_logger.error(e.toString());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       } 
       finally 
       {
@@ -210,8 +209,8 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
          } 
          catch (Exception e) 
          {
-            logErrorMessage("failed to process link: \n" + rel.toString()
-                     + "\n", e);
+            log.error("failed to process link: {}, Error: {}", rel.toString(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }
@@ -504,7 +503,7 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
       else
          filter.setDependent(locator);
       PSRelationshipSet relset = m_relProcessor.getRelationships(filter);
-      List<PSLocator> parent = new ArrayList<PSLocator>();
+      List<PSLocator> parent = new ArrayList<>();
 
       Iterator rels = relset.iterator();
       while (rels.hasNext()) 
@@ -582,7 +581,7 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
       PSRelationshipSet relset = m_relProcessor.getRelationships(filter);
 
       // get all folders that exist under the target site
-      List<PSLocator> siteFolders = new ArrayList<PSLocator>();
+      List<PSLocator> siteFolders = new ArrayList<>();
       Iterator rels = relset.iterator();
       while (rels.hasNext()) 
       {
@@ -1142,17 +1141,16 @@ public class PSCleanupCrossSiteLiniks extends PSDefaultExtension implements
     * It maps the site id (as {@link Integer}) to the site def (as
     * {@link PSSite}). Set by {@link #populateSites()}.
     */
-   private Map<Integer, PSSite> m_siteDefMap = new HashMap<Integer, PSSite>();
+   private Map<Integer, PSSite> m_siteDefMap = new HashMap<>();
 
    /**
     * It maps the site id (as {@link Integer}) to the locator of the site root
     * (as {@link PSLocator}). Set by {@link #populateSites()}.
     */
-   private Map<Integer, PSLocator> m_siteRootMap = new HashMap<Integer, PSLocator>();
+   private Map<Integer, PSLocator> m_siteRootMap = new HashMap<>();
 
    /**
     * The logger instance for this class, never <code>null</code>.
     */
-   private static Logger ms_logger = Logger
-            .getLogger("PSCleanupCrossSiteLiniks");
+   private static final Logger log = LogManager.getLogger(PSCleanupCrossSiteLiniks.class);
 }

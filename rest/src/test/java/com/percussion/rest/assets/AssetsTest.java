@@ -17,27 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.assets;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.MainTest;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import static junit.framework.TestCase.assertTrue;
 
 @Category(IntegrationTest.class)
 public class AssetsTest extends MainTest
 {
+
+    private static final Logger log = LogManager.getLogger(AssetsTest.class);
     
     @Test
     public void testRenameAsset(){
@@ -50,7 +54,8 @@ public class AssetsTest extends MainTest
             assertTrue("New Name Should Match", response.getName().equals("newname.png"));
         } catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw e;
         }
 

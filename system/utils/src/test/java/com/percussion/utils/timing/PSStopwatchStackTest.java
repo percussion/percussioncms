@@ -17,17 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.timing;
 
-import java.util.Random;
-
 import junit.framework.TestCase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.security.SecureRandom;
 
 /**
  * Test the stopwatch stack
@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSStopwatchStackTest extends TestCase
 {
-   private static Log ms_log = LogFactory.getLog(PSStopwatchStackTest.class);
+   private static final Logger ms_log = LogManager.getLogger(PSStopwatchStackTest.class);
 
    /**
     * Single level test to see that things are working correctly
@@ -95,7 +95,7 @@ public class PSStopwatchStackTest extends TestCase
    public void testOverhead() throws Exception
    {
       int count = 0;
-      Random rand = new Random(1);
+      SecureRandom rand = new SecureRandom();
       PSStopwatch sw = new PSStopwatch();
       PSStopwatchStack sws = PSStopwatchStack.getStack();
       String cats[] =

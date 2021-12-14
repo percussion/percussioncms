@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,11 +26,11 @@ package com.percussion.rxverify;
 import com.percussion.rxverify.modules.PSJdbcTableCheck;
 import com.percussion.utils.tools.PSParseArguments;
 import com.percussion.utils.xml.PSEntityResolver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 /**
  * @author peterfrontiero
@@ -61,7 +61,7 @@ public class PSVerifyTable
       System.setProperty("javax.xml.parsers.SAXParserFactory",
          "com.percussion.xml.PSSaxParserFactoryImpl");
       
-      Logger l = Logger.getLogger("Main");
+      Logger l = LogManager.getLogger("Main");
       PSVerifyTable it = new PSVerifyTable(args);
             
       try
@@ -81,7 +81,7 @@ public class PSVerifyTable
     */
    private void run() throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       
       // Verify Rhythmyx directory
       List args = m_arguments.getRest();
@@ -128,7 +128,7 @@ public class PSVerifyTable
     */
    private void doVerifyIndexes( File rxdir, boolean debug ) throws Exception
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       
       l.info("Started");
       PSJdbcTableCheck tc = new PSJdbcTableCheck();

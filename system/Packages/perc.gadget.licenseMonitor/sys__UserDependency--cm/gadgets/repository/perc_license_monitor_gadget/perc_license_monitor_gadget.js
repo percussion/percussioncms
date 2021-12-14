@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -241,7 +241,9 @@
     {
         // Append the Activate button to the refresh information DIV
         var refreshButton = $(`<a href="#" class="perc-lmg-button perc-lmg-refresh hidden" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Refresh")}">${I18N.message("perc.ui.gadgets.licenseMonitor@Refresh")}</a>`);
-        refreshButton.click(refreshGadgetStatus);
+        refreshButton.on("click",function(evt){
+            refreshGadgetStatus(evt);
+        });
         $('.perc-lmg-refresh-info').removeClass('nodisplay').append(refreshButton);
     }
 

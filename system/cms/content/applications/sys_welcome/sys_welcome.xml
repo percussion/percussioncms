@@ -3,7 +3,7 @@
    <name>sys_welcome</name>
    <description/>
    <requestRoot>sys_welcome</requestRoot>
-   <defaultRequestPage>rxlogin.html</defaultRequestPage>
+   <defaultRequestPage>/login</defaultRequestPage>
    <appExtensionContext>application/_JB_1012327781921/</appExtensionContext>
    <PSXRevisionHistory>
       <PSXRevisionEntry majorVersion="1" minorVersion="0">

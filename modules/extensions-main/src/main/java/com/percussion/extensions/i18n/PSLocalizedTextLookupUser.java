@@ -17,16 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.i18n;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +50,9 @@ import java.util.List;
 public class PSLocalizedTextLookupUser
    extends PSSimpleJavaUdfExtension
 {
+
+   private static final Logger log = LogManager.getLogger(PSLocalizedTextLookupUser.class);
+
    /* ************ IPSUdfProcessor Interface Implementation ************ */
    public Object processUdf(Object[] parm1, IPSRequestContext request)
       throws com.percussion.data.PSConversionException
@@ -90,7 +96,8 @@ public class PSLocalizedTextLookupUser
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

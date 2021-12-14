@@ -1,6 +1,6 @@
 <!--
   ~     Percussion CMS
-  ~     Copyright (C) 1999-2021 Percussion Software, Inc.
+  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
   ~
   ~     This program is free software: you can redistribute it and/or modify
   ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -27,7 +27,7 @@
   <parent>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.0.2.10</version>
+    <version>8.0.3</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>sitemanage</artifactId>
@@ -51,13 +51,7 @@
             </excludes>
             <filtering>false</filtering>
         </resource>
-         <resource>
-            <directory>src/api/java</directory>
-            <excludes>
-                <exclude>**/*.java</exclude>
-            </excludes>
-            <filtering>false</filtering>
-        </resource>
+
         <resource>
           <directory>src/main/java</directory>
           <excludes>
@@ -76,13 +70,7 @@
             </excludes>
             <filtering>false</filtering>
         </testResource>
-         <testResource>
-            <directory>src/api/java</directory>
-            <excludes>
-                <exclude>**/*.java</exclude>
-            </excludes>
-            <filtering>false</filtering>
-        </testResource>
+
         <testResource>
             <directory>src/test/java</directory>
             <excludes>
@@ -91,7 +79,6 @@
             <filtering>false</filtering>
         </testResource>
     </testResources>
-    
     
     <plugins>    
          <plugin>
@@ -110,18 +97,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <executions>
-                    <execution>
-                    <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>src/api/java</source>
-                            </sources>
-                        </configuration>
-                    </execution>
                     <execution>
                         <id>add-test-source</id>
                         <phase>generate-test-sources</phase>
@@ -156,6 +131,16 @@
     </plugins>
   </build>
   <dependencies>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-security-utils</artifactId>
+          <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-legacy</artifactId>
+          <version>${project.parent.version}</version>
+      </dependency>
   <dependency>
         <groupId>com.percussion</groupId>
         <artifactId>perc-system</artifactId>
@@ -165,7 +150,6 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjrt</artifactId>
             </exclusion>
-            
             <exclusion>
                 <groupId>org.codehaus.woodstox</groupId>
                 <artifactId>woodstox-core-asl</artifactId>
@@ -215,7 +199,7 @@
       <dependency>
           <groupId>org.jsoup</groupId>
           <artifactId>jsoup</artifactId>
-          <version>1.11.3</version>
+          <version>1.14.2</version>
       </dependency>
 
 <!-- https://mvnrepository.com/artifact/net.sf.oval/oval -->
@@ -294,7 +278,7 @@
 <dependency>
     <groupId>com.google.oauth-client</groupId>
     <artifactId>google-oauth-client</artifactId>
-    <version>1.25.0</version>
+    <version>1.32.1</version>
 </dependency>
 <dependency>
    <groupId>net.sf.supercsv</groupId>
@@ -614,8 +598,8 @@
           <scope>compile</scope>
       </dependency>
       <dependency>
-          <groupId>com.google.code.findbugs</groupId>
-          <artifactId>annotations</artifactId>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-annotations</artifactId>
           <scope>compile</scope>
       </dependency>
       <dependency>
@@ -680,9 +664,21 @@
           <scope>compile</scope>
       </dependency>
       <dependency>
-          <groupId>io.swagger</groupId>
+          <groupId>org.webjars</groupId>
+          <artifactId>swagger-ui</artifactId>
+      </dependency>
+
+      <dependency>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-jaxrs2</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>io.swagger.core.v3</groupId>
+          <artifactId>swagger-jaxrs2-servlet-initializer-v2</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>io.swagger.core.v3</groupId>
           <artifactId>swagger-annotations</artifactId>
-          <scope>compile</scope>
       </dependency>
       <dependency>
           <groupId>com.google.guava</groupId>
@@ -718,6 +714,57 @@
           <groupId>commons-httpclient</groupId>
           <artifactId>commons-httpclient</artifactId>
           <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-exceptions-spring</artifactId>
+          <version>${project.parent.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>com.github.javafaker</groupId>
+          <artifactId>javafaker</artifactId>
+          <version>1.0.2</version>
+          <scope>test</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.owasp</groupId>
+          <artifactId>csrfguard</artifactId>
+      </dependency>
+      <!-- Stateful web application support -->
+      <dependency>
+          <groupId>org.owasp</groupId>
+          <artifactId>csrfguard-extension-session</artifactId>
+      </dependency>
+
+      <!-- JSP TAG support -->
+      <dependency>
+          <groupId>org.owasp</groupId>
+          <artifactId>csrfguard-jsp-tags</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>xml-resolver</groupId>
+          <artifactId>xml-resolver</artifactId>
+          <version>1.2</version>
+      </dependency>
+      <dependency>
+          <groupId>com.percussion</groupId>
+          <artifactId>perc-exceptions-spring</artifactId>
+          <version>${project.parent.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>org.owasp.esapi</groupId>
+          <artifactId>esapi</artifactId>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.slf4j</groupId>
+                  <artifactId>*</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+      <dependency>
+          <groupId>org.owasp.encoder</groupId>
+          <artifactId>encoder</artifactId>
       </dependency>
   </dependencies>
 </project>

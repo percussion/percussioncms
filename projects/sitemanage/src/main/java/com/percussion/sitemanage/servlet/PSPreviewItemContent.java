@@ -17,58 +17,49 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.servlet;
 
-import static com.percussion.pathmanagement.service.impl.PSPathUtils.ASSETS_FINDER_ROOT;
-import static com.percussion.pathmanagement.service.impl.PSPathUtils.SITES_FINDER_ROOT;
-
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
-
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSInlineLinkRequest;
 import com.percussion.pagemanagement.data.PSInlineRenderLink;
 import com.percussion.pagemanagement.service.impl.PSRenderLinkService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
-import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestParsingException;
 import com.percussion.server.webservices.PSServerFolderProcessor;
-import com.percussion.services.assembly.impl.PSReplacementFilter;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.share.dao.impl.PSFolderHelper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.PSCharSets;
 import com.percussion.util.PSMutableUrl;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.pathmanagement.service.impl.PSPathUtils.SITES_FINDER_ROOT;
 
 /**
  * The servlet used to preview content of the item, where the item is specified by its folder path.
@@ -78,9 +69,9 @@ import org.apache.commons.logging.LogFactory;
 public class PSPreviewItemContent extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
-    private static Log ms_log = LogFactory.getLog(PSPreviewItemContent.class);
+    private static final Logger log = LogManager.getLogger(PSPreviewItemContent.class);
     private static PSRenderLinkService linkService;
-    private IPSiteDao siteDao;
+    private static IPSiteDao siteDao;
     
     public PSPreviewItemContent()
     {
@@ -98,41 +89,24 @@ public class PSPreviewItemContent extends HttpServlet
         try
         {
             String type = request.getParameter("type");
+            if (requestUri.endsWith(".css") || requestUri.endsWith("favicon.ico"))
+                return;
             String url = createAssemblyUrl(requestUri, revision, type);
             
             HttpServletRequest forwardReq = getRequestFromUrl(url, request);
             
             RequestDispatcher disp = request.getRequestDispatcher("/assembler/render");
             disp.forward(forwardReq, response);
+        }catch (ServletException | UnsupportedOperationException| PSCmsException | PSDataServiceException | PSRequestParsingException | PSNotFoundException | IOException e) {
+                log.error("Unable to preview resource:{} Error: {}",requestUri,
+                        PSExceptionUtils.getMessageForLog(e));
+                try {
+                    response.sendError(404);
+                } catch (IOException ioException) {
+                    response.setStatus(404);
+                }
         }
-        catch (PSNotFoundException notFoundEx)
-        {
-            if (!requestUri.endsWith("favicon.ico"))
-                ms_log.warn(notFoundEx);
-            responseWithError(response, SC_NOT_FOUND, notFoundEx);
-        }
-        catch (UnsupportedOperationException unsupportedOpEx)
-        {
-            ms_log.warn(unsupportedOpEx,unsupportedOpEx);
-            responseWithError(response, SC_BAD_REQUEST, unsupportedOpEx);
-        }
-        catch (Exception e)
-        {
-            ms_log.error("Preview Exception", e);
-            responseWithError(response, SC_INTERNAL_SERVER_ERROR, e);
-        }
-    }
 
-    private void responseWithError(HttpServletResponse response, int status, Exception e)
-    {
-        try
-        {
-            response.sendError(status, e.getMessage());
-        }
-        catch (IOException ioEx)
-        {
-            ms_log.error(ioEx);
-        }
     }
 
     
@@ -142,7 +116,7 @@ public class PSPreviewItemContent extends HttpServlet
         PSMutableUrl mutableUrl = new PSMutableUrl(url);
         Map<String, String> params = mutableUrl.getParamMap();
 
-        Map<String, String[]> params2 = new HashMap<String, String[]>();
+        Map<String, String[]> params2 = new HashMap<>();
         for (Map.Entry<String, String> entry : params.entrySet())
         {
             params2.put(entry.getKey(), new String[]{entry.getValue()});
@@ -161,27 +135,25 @@ public class PSPreviewItemContent extends HttpServlet
      * @param renderType it is "xml", "html" or "database", assumed not blank.
      * @return the assembly URL, not blank.
      */
-    private String createAssemblyUrl(String path, String revision, String renderType)
-    {
+    private String createAssemblyUrl(String path, String revision, String renderType) throws PSDataServiceException, PSNotFoundException, PSCmsException, UnsupportedEncodingException {
         IPSGuid id = getItemId(path, revision);
-        if (id!=null)
-        {
+        if (id!=null) {
             IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
             PSComponentSummary item = objMgr.loadComponentSummary(id.getUUID());
-            
-            if (item.isFolder())
-            {
-                PSSiteSummary siteSum = siteDao.findByPath("/"+path);
+
+            if (item.isFolder()) {
+
+
+                PSSiteSummary siteSum = siteDao.findByPath("/" + path);
                 if (!path.endsWith("/"))
-                    path+="/";
+                    path += "/";
                 path += siteSum.getDefaultDocument();
                 // get default page id
                 id = getItemId(path, revision);
             }
         }
         if (id==null)
-            throw new PSNotFoundException(path);
-        
+                throw new PSNotFoundException(path);
         PSInlineLinkRequest linkRequest = new PSInlineLinkRequest();
         linkRequest.setTargetId(id.toString());
         PSInlineRenderLink renderLink;
@@ -189,10 +161,10 @@ public class PSPreviewItemContent extends HttpServlet
             renderLink = linkService.renderPreviewPageLink(id.toString(), renderType);
         else
             renderLink = linkService.renderPreviewResourceLink(linkRequest);
-        
+
         return renderLink.getUrl();
     }
-    
+
     /**
      * Gets the ID of the item from its path.
      * @param path the path if the item in question.
@@ -200,40 +172,27 @@ public class PSPreviewItemContent extends HttpServlet
      * @return the ID of the item, never <code>null</code>.
      * @throws PSNotFoundException if cannot find the item from the path.
      */
-    private IPSGuid getItemId(String path, String revision)
-    {
+    private IPSGuid getItemId(String path, String revision) throws PSNotFoundException, PSCmsException, UnsupportedEncodingException {
         path = escapeChars(path);
-        //path = PSReplacementFilter.filter(path);
         path = PSPathUtils.getFolderPath(path);
-       
+
         int revisionId = -1;
         PSServerFolderProcessor srv = PSServerFolderProcessor.getInstance();
-        
-        try
-        {
+
             if(!StringUtils.isBlank(revision))
             {
                 revisionId = Integer.parseInt(revision);
             }
-            
+
             int id = srv.getIdByPath(path);
-            
-           
-            
+
+
+
             if (id == -1)
                 throw new PSNotFoundException("Cannot find item with path = \"" + path + "\".");
             
-            PSLegacyGuid gui = new PSLegacyGuid(id, revisionId);
-            return gui;
-        }
-        catch (PSCmsException e)
-        {
-            throw new RuntimeException("Failed to get item ID from path=" + path, e);
-        }
-        catch (NumberFormatException e)
-        {
-            throw new RuntimeException("Failed to parse integer from revision=" + revision, e);
-        }
+            return new PSLegacyGuid(id, revisionId);
+
     }
 
     /**
@@ -252,38 +211,35 @@ public class PSPreviewItemContent extends HttpServlet
      * @return
      *      the same path but with the '+' symbol replaced by '%2B'
      */
-    private String escapeChars(String path)
-    {
+    private String escapeChars(String path) throws UnsupportedEncodingException {
         String ret = path;
-        try {
-            String test = URLDecoder.decode(path, "utf8");
-            if(!test.equals(path)) {
-                ret = test;
-            }
+
+        String test = URLDecoder.decode(path, "utf8");
+        if(!test.equals(path)) {
+            ret = test;
         }
-        catch (UnsupportedEncodingException e) {
-        }
+
         return ret;
     }
 
-    public void setRenderLinkService(PSRenderLinkService service)
+    public static void setRenderLinkService(PSRenderLinkService service)
     {
         linkService = service;
     }
     
-    public PSRenderLinkService getRenderLinkService()
+    public static PSRenderLinkService getRenderLinkService()
     {
         return linkService;
     }   
     
-    public IPSiteDao getSiteDao()
+    public static IPSiteDao getSiteDao()
     {
         return siteDao;
     }
 
-    public void setSiteDao(IPSiteDao siteDao)
+    public static void setSiteDao(IPSiteDao dao)
     {
-        this.siteDao = siteDao;
+        siteDao = dao;
     }
 
 }

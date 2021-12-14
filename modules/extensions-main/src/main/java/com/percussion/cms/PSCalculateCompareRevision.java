@@ -17,23 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.cms;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionParams;
 import com.percussion.server.IPSRequestContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * The compare panel defaults to using the previous revision if the second
@@ -45,7 +45,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSCalculateCompareRevision implements IPSRequestPreProcessor
 {
    private static final String SYS_REVISION2 = "sys_revision2";
-   private static Log ms_log = LogFactory.getLog(PSCalculateCompareRevision.class);
+   private static final Logger log = LogManager.getLogger(PSCalculateCompareRevision.class);
 
    /**
     * Calculate the right revision to use for the second revision. Returns an
@@ -121,7 +121,8 @@ public class PSCalculateCompareRevision implements IPSRequestPreProcessor
       }
       catch(PSConversionException e)
       {
-         ms_log.error("Problem calculating revision for compare", e);
+         log.error("Problem calculating revision for compare, Error: {}", PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

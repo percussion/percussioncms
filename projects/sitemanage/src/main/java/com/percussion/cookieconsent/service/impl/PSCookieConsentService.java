@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,16 +25,20 @@
 package com.percussion.cookieconsent.service.impl;
 
 import com.percussion.cookieconsent.service.IPSCookieConsentService;
-import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pubserver.IPSPubServerService;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.request.PSRequestInfo;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -60,7 +64,7 @@ import static com.percussion.share.service.exception.PSParameterValidationUtils.
 @PSSiteManageBean("cookieConsentService")
 public class PSCookieConsentService implements IPSCookieConsentService {
     
-    private static final Logger log = Logger.getLogger(PSCookieConsentService.class.getName());
+    private static final Logger log = LogManager.getLogger(PSCookieConsentService.class);
     
     private static final String DTS_URL = "/perc-metadata-services/metadata/consent/log";
     
@@ -92,37 +96,37 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     @Produces({"text/csv"})
     public String exportCookieConsentData(@PathParam("siteName") String siteName, 
             @PathParam("csvFileName") String csvFileName) {
-        rejectIfBlank("exportCookieConsentData", "csvFileName", csvFileName);
-        
-        try {
-            String fullPath = null;
+       try {
+           rejectIfBlank("exportCookieConsentData", "csvFileName", csvFileName);
 
-            if (siteName == null) {
-                fullPath = DTS_URL + "/" + csvFileName;
-            } else {
-                fullPath = DTS_URL + "/" + siteName + "/" + csvFileName;
-            }
+           String fullPath = null;
 
-            PSDeliveryInfo deliveryServer = findServer(siteName);
+           if (siteName == null) {
+               fullPath = DTS_URL + "/" + csvFileName;
+           } else {
+               fullPath = DTS_URL + "/" + siteName + "/" + csvFileName;
+           }
 
-            if (deliveryServer == null) {
-                log.warn("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
-                return "";
-            }
+           PSDeliveryInfo deliveryServer = findServer(siteName);
 
-            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+           if (deliveryServer == null) {
+               throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+           }
 
-            String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
-                    fullPath, HttpMethodType.GET, true));
+           PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
-            if (response != null)
-                log.debug(response);
+           String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
+                   fullPath, HttpMethodType.GET, true));
 
-            return response;
-        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
-           log.error(e.getMessage());
-           throw new WebApplicationException(e);
-        }
+           if (response != null) {
+               log.debug(response);
+           }
+
+           return response;
+       } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           throw new WebApplicationException(e.getMessage());
+       }
     }
     
     @Override
@@ -130,14 +134,13 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     @Path("log/totals/{siteName}")
     @Produces(MediaType.APPLICATION_JSON)
     public String getCookieConsentForSite(@PathParam("siteName") String siteName) {
-        rejectIfBlank("getcookieConsentForSite", "siteName", siteName);
-
         try {
+            rejectIfBlank("getcookieConsentForSite", "siteName", siteName);
+
             PSDeliveryInfo deliveryServer = findServer(siteName);
 
             if (deliveryServer == null) {
-                log.warn("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
-                return "";
+                throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
             }
 
             PSDeliveryClient deliveryClient = new PSDeliveryClient();
@@ -145,13 +148,15 @@ public class PSCookieConsentService implements IPSCookieConsentService {
             String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
                     TOTAL_ENTRIES_URL + "/" + siteName, HttpMethodType.GET, true));
 
-            if (response != null)
-                log.debug(response);
+            if (response != null) {
+                log.debug(SecureStringUtils.stripAllLineBreaks(response));
+            }
 
             return response;
-        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
-            log.error(e.getMessage());
-            throw new WebApplicationException(e);
+        } catch (PSValidationException | IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e.getMessage());
         }
     }
     
@@ -160,28 +165,22 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     @Path("/log/totals")
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllCookieConsentTotals() {
-
-        try {
-            PSDeliveryInfo deliveryServer = findServer();
-
-            if (deliveryServer == null){
-                log.warn("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
-                return "{}";
-            }
-
-            PSDeliveryClient deliveryClient = new PSDeliveryClient();
-
-            String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
-                    TOTAL_ENTRIES_URL, HttpMethodType.GET, true));
-
-            if (response != null)
-                log.debug(response);
-
-            return response;
-        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
-            log.error(e.getMessage());
-            throw new WebApplicationException(e);
+        PSDeliveryInfo deliveryServer = findServer();
+        
+        if (deliveryServer == null) {
+            throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
         }
+        
+        PSDeliveryClient deliveryClient = new PSDeliveryClient();
+        
+        String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
+                TOTAL_ENTRIES_URL, HttpMethodType.GET, true));
+        
+        if (response != null) {
+            log.debug(SecureStringUtils.stripAllLineBreaks(response));
+        }
+        
+        return response;
     }
     
 
@@ -190,29 +189,22 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     @Path("/log")
     @Consumes(MediaType.APPLICATION_JSON)
     public void deleteAllCookieConsentEntries() {
-
-        try {
-            String currentUser = (String) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
-
-            log.info("All cookie consent entries are being deleted by: " + currentUser);
-
-            PSDeliveryInfo deliveryServer = findServer();
-
-            if (deliveryServer == null) {
-                log.warn("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
-                return;
-            }
-
-            PSDeliveryClient deliveryClient = new PSDeliveryClient();
-
-            String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
-                    DTS_URL, HttpMethodType.DELETE, true));
-
-            if (response != null)
-                log.debug(response);
-        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
-            log.error(e.getMessage());
-            throw new WebApplicationException(e);
+        String currentUser = (String)PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
+        log.info("All cookie consent entries are being deleted by: {}", currentUser);
+        
+        PSDeliveryInfo deliveryServer = findServer();
+        
+        if (deliveryServer == null) {
+            throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+        }
+        
+        PSDeliveryClient deliveryClient = new PSDeliveryClient();
+        
+        String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
+                DTS_URL, HttpMethodType.DELETE, true));
+        
+        if (response != null) {
+            log.debug(SecureStringUtils.stripAllLineBreaks(response));
         }
     }
     
@@ -221,29 +213,29 @@ public class PSCookieConsentService implements IPSCookieConsentService {
     @Path("/log/{siteName}")
     @Consumes(MediaType.APPLICATION_JSON)
     public void deleteCookieConsentEntriesForSite(@PathParam("siteName") String siteName) {
+      try {
+          String currentUser = (String) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
 
-        try {
-            String currentUser = (String) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
-            log.info("Cookie consent entries for site: " + siteName + " are being deleted by: " + currentUser);
+          log.info("Cookie consent entries for site: {} are being deleted by: {}",
+                  siteName, currentUser);
 
-            PSDeliveryInfo deliveryServer = findServer(siteName);
+          PSDeliveryInfo deliveryServer = findServer(siteName);
 
-            if (deliveryServer == null) {
-                log.warn("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
-                return;
-            }
+          if (deliveryServer == null) {
+              throw new WebApplicationException("Cannot find service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+          }
 
-            PSDeliveryClient deliveryClient = new PSDeliveryClient();
+          PSDeliveryClient deliveryClient = new PSDeliveryClient();
 
-            String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
-                    DTS_URL + "/" + siteName, HttpMethodType.DELETE, true));
+          String response = deliveryClient.getString(new PSDeliveryActionOptions(deliveryServer,
+                  DTS_URL + "/" + siteName, HttpMethodType.DELETE, true));
 
-            if (response != null)
-                log.debug(response);
-        } catch (IPSDeliveryClient.PSDeliveryClientException e) {
-           log.error(e.getMessage());
-           throw new WebApplicationException(e);
-        }
+          if (response != null) {
+              log.debug(SecureStringUtils.stripAllLineBreaks(response));
+          }
+      } catch (IPSPubServerService.PSPubServerServiceException | PSNotFoundException e) {
+         throw new WebApplicationException(e);
+      }
     }
     
     /**
@@ -252,13 +244,13 @@ public class PSCookieConsentService implements IPSCookieConsentService {
      * @return the server, it may be <code>null</code> if cannot find the
      *         server.
      */
-    private PSDeliveryInfo findServer(String site)
-    {
+    private PSDeliveryInfo findServer(String site) throws IPSPubServerService.PSPubServerServiceException, PSNotFoundException {
         String adminURl= pubServerService.getDefaultAdminURL(site);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
-        //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
-        if (server == null)
-            log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+
+        if (server == null) {
+            log.debug("Cannot find server with service of: {}" , PSDeliveryInfo.SERVICE_INDEXER);
+        }
 
         return server;
     }
@@ -267,8 +259,9 @@ public class PSCookieConsentService implements IPSCookieConsentService {
         //String adminURl= pubServerService.getDefaultAdminURL(site);
         //PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER,null,adminURl);
         PSDeliveryInfo server = deliveryService.findByService(PSDeliveryInfo.SERVICE_INDEXER);
-        if (server == null)
-            log.debug("Cannot find server with service of: " + PSDeliveryInfo.SERVICE_INDEXER);
+        if (server == null) {
+            log.debug("Cannot find server with service of: {}" , PSDeliveryInfo.SERVICE_INDEXER);
+        }
 
         return server;
     }

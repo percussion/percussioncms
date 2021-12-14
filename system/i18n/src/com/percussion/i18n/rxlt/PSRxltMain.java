@@ -17,17 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.i18n.rxlt;
 
-import com.percussion.util.PSProperties;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.xml.PSEntityResolver;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,14 +32,17 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 /**
- * This is the main class for the Rhythmyx Language Tool. Runs the processor in
+ * This is the main class for the Percussion Language Tool. Runs the processor in
  * the {@link #main} method and provides some static utility methods to provide
  * information about the tool.
  */
 public class PSRxltMain
 {
+   private static final Logger log = Logger.getLogger("I18N");
+
    /**
     * Main method. Accepts three optional commandline arguments ?, -noui and
     * -R<rxroot>. Option ? displays the usage syntax, -noui runs the tool without
@@ -72,15 +72,15 @@ public class PSRxltMain
          }
          else if(temp.equals("?"))
          {
-            System.out.println(getVersionString());
-            System.out.println("Usage: java com.percussion.i18n.rxlt.PXRXLTMain"
+            log.info(getVersionString());
+            log.info("Usage: java com.percussion.i18n.rxlt.PXRXLTMain"
                + " [options]");
-            System.out.println("Options:");
-            System.out.println("-noui           No user interaction. Run the " +
+            log.info("Options:");
+            log.info("-noui           No user interaction. Run the " +
                "tool with default settings");
-            System.out.println("-R<rxroot>      Use the supplied Rhythmyx " +
+            log.info("-R<rxroot>      Use the supplied Rhythmyx " +
                "Root Directory (No space betweenn -R and <rxroot>");
-            System.out.println("?               Display this message");
+            log.info("?               Display this message");
             System.exit(0);
          }
       }
@@ -91,10 +91,9 @@ public class PSRxltMain
    public static boolean process(boolean ui, String rxroot)
    {
       PSCommandLineProcessor processor = null;
-      BufferedReader conReader = new BufferedReader(
-         new InputStreamReader(System.in));
-      try
-      {
+      try(BufferedReader conReader = new BufferedReader(
+         new InputStreamReader(System.in))){
+
          File file = new File(rxroot);
          
          if (ui)
@@ -120,12 +119,12 @@ public class PSRxltMain
             }
             catch(PSActionProcessingException e)
             {
-               System.out.println(e.getMessage());
+               log.severe(PSExceptionUtils.getMessageForLog(e));
                return false;
             }
             if(ui && loop)
             {
-               System.out.println("Press ENTER to continue...");
+               log.info("Press ENTER to continue...");
                conReader.readLine();
             }
          }while(ui && loop);
@@ -146,8 +145,8 @@ public class PSRxltMain
     * Returns the version string for this program.
     *
     * @return the version string in the form of
-    *    "Rhythmyx Language Tool 1.0; Build:127". If the version resources can
-    *    not be found, the string "Rhythmyx Language Tool" is returned.
+    *    "Percussion Language Tool 1.0; Build:127". If the version resources can
+    *    not be found, the string "Percussion Language Tool" is returned.
     */
    public static String getVersionString()
    {
@@ -187,7 +186,7 @@ public class PSRxltMain
       catch (MissingResourceException e)
       {
          // this should never happen
-         e.printStackTrace();
+         log.severe(PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -204,47 +203,15 @@ public class PSRxltMain
       {
          if (!rxRoot.isDirectory())
             rxRoot = new File("."); //default to current dir
-         
-         // init the log4j properties if it has not been configured
-         if (!Logger.getRootLogger().getAllAppenders().hasMoreElements())
-         {
-            LogManager.resetConfiguration();
-            
-            // Not configured, setup a minimal configuration here that
-            // logs to the console only. 
-            PSProperties props = new PSProperties();
-            
-            //set console appender for WARN and up at rool level
-            props.setProperty("log4j.rootCategory", "ALL, rxltFile");
-            props.setProperty("log4j.additivity.rxltFile", "false");
-            props.setProperty("log4j.appender.rxltFile",
-               "org.apache.log4j.RollingFileAppender");
-
-            props.setProperty("log4j.appender.rxltFile.Threshold", "DEBUG");
-            props.setProperty("log4j.appender.rxltFile.File", 
-                  rxRoot.getAbsolutePath() + "/jetty/base/logs/rxlt.log");
-
-            props.setProperty("log4j.appender.rxltFile.layout",
-               "org.apache.log4j.PatternLayout");
-
-            props.setProperty("log4j.appender.rxltFile.layout.ConversionPattern",
-               "%-5p [%c{1}] %d{MM/dd/yy HH:mm:ss}  %m%n");
-
-            props.setProperty("log4j.appender.rxltFile.MaxFileSize", "800KB");
-            props.setProperty("log4j.appender.rxltFile.MaxBackupIndex", "10");          
-               
-            PropertyConfigurator.configure(props);
-
-         }
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
-         e.printStackTrace();
+        log.severe(PSExceptionUtils.getMessageForLog(e));
       }
    }
    
    /**
     * The publisher version string. constant.
     */
-   public static final String PROGRAM_NAME = "Rhythmyx Language Tool";
+   public static final String PROGRAM_NAME = "Percussion Language Tool";
 }

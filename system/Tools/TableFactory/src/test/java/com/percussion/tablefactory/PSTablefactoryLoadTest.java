@@ -17,15 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.UnitTest;
 import org.apache.commons.io.FileUtils;
 import org.apache.derby.drda.NetworkServerControl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -49,6 +52,9 @@ import static org.junit.Assert.assertTrue;
 @Category(UnitTest.class)
 public class PSTablefactoryLoadTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSTablefactoryLoadTest.class);
+
    @Rule
    public TemporaryFolder temporaryFolder = new TemporaryFolder();
    private String rxdeploydir;
@@ -101,7 +107,8 @@ public class PSTablefactoryLoadTest
 
          server.start(null);
       } catch (Exception e) {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -114,7 +121,8 @@ public class PSTablefactoryLoadTest
 
          server.shutdown();
       } catch (Exception e) {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
    @Test

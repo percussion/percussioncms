@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -113,18 +113,26 @@
 
     <echo>development install=${DEVELOPMENT}</echo>
     <echo>clean.install=${clean.install}</echo>
-    <echo>base.dir=${basedir}</echo>
+    <echo>base.dir=${base.dir}</echo>
     <echo>install.src=${install.src}</echo>
     <echo>install.dir= ${install.dir}</echo>
     <echo>upgrade=${do.upgrade}</echo>
     <echo>install=${do.install}</echo>
+    <echo>Copying JDBC Jars...</echo>
+    <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
+    <copy todir="${install.dir}/jetty/base/lib/jdbc" overwrite="true" force="true">
+        <fileset dir="${install.src}/jetty/base/lib/jdbc">
+            <include name="**/*.jar"/>
+        </fileset>
+    </copy>
 
-    <!-- Delete json files here Start-->
-    <!--<condition property="jetty.present" else="false">
-        <available file="${install.dir}/jetty" type="dir"  property="jetty.present"/>
-    </condition> -->
-
-    <path id="ant.deps">
+    <path id="ant.deps" cache="true">
+        <fileset dir="${install.dir}/jetty/base/lib/jdbc">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${install.src}/jetty/base/lib/jdbc">
+            <include name="**/*.jar" />
+        </fileset>
         <fileset dir="${customer.jdbc.drivers}"  erroronmissingdir="false">
             <include name="**/*.jar" />
         </fileset>
@@ -138,26 +146,17 @@
 
     <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
 
-    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
 
-    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
 
     <echo>Checking jetty directory exists...</echo>
 
-    <if>
-        <available file="${install.dir}/jetty" type="dir"  property="jetty.present"/>
-        <then>
-            <echo>Pages and Assets for startup processing not required</echo>
-        </then>
-        <else>
-            <!-- Flagging Pages & Assets for startup processing -->
-            <echo>Flagging Assets and Pages for startup processing...</echo>
-            <delete file="${install.dir}/upgrade/processedlinks/Assets.json" failonerror="false"/>
-            <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
-        </else>
-    </if>
-
-
+    <!-- Flagging Pages & Assets for startup processing -->
+    <!-- This always needs run on upgrade to 8.0.3 -->
+    <echo>Flagging Assets and Pages for startup processing...</echo>
+    <delete file="${install.dir}/upgrade/processedlinks/Assets.json" failonerror="false"/>
+    <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
 
 
     <!-- Delete json files here end-->
@@ -174,31 +173,10 @@
         </fileset>
     </copy>
 
-    <echo>Checking for existing PSO Toolkit deployment...</echo>
-    <mkdir dir="${install.dir}/jetty/base/lib/extra"/>
-    <copy verbose="true" todir="${install.dir}/jetty/base/lib/extra" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
-        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib">
-            <include name="PSOToolkit*.jar"/>
-            <include name="pso-toolkit*.jar"/>
-        </fileset>
-        <fileset dir="${install.dir}/AppServer/server/rx/lib">
-            <include name="PSOToolkit*.jar"/>
-            <include name="pso-toolkit*.jar"/>
-        </fileset>
-    </copy>
-
-    <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+       <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
         <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
         </fileset>
     </copy>
-
-
-    <!--
-    <classloader classpathref="ant.deps"/>
-    <taskdef resource="com/percussion/ant/antlib.xml"/>
-
-    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
--->
 
     <target name="setup-logging">
         <mkdir dir="${install.dir}/rxconfig/Installer"/>
@@ -255,6 +233,15 @@
                 <include name=".legacy-key"/>
             </fileset>
         </copy>
+
+        <mkdir dir="${install.dir}/rxconfig/esapi"/>
+        <copy todir="${install.dir}/rxconfig/esapi/"
+              failonerror="true" overwrite="false" verbose="true">
+            <fileset dir="${install.src}/rxconfig/esapi/" defaultexcludes="no">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
         <echo>Configuring Datasource...</echo>
         <touch mkdirs="true" file="${install.dir}/jetty/base/etc/perc-ds.xml"/>
         <PSUpdateJettyConfigFromJBoss rootDir="${install.dir}" />
@@ -343,6 +330,7 @@
 
 
     <patternset id="upgrade.delete">
+        <include name="jetty/base/webapps/Rhythmyx/**" />
         <include name="Repository/derby.properties" />
         <include name="cm/**"/>
         <include name="jdbc/**"/>
@@ -499,26 +487,51 @@
         <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
         <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
-        <antcall target="renameCamelCasedFontAwsomeFolder"  inheritall="true" inheritrefs="true"/>
+        <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
+        <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
+        <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
     </target>
 
-    <target name="renameCamelCasedFontAwsomeFolder">
+    <target name="deleteOldJqueryUIJsFile">
+        <if>
+            <available file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js" type="file" />
+            <then>
+                <delete file="${install.dir}/web_resources/cm/jslib/jquery-ui.1.12.1.js"/>
+            </then>
+        </if>
+    </target>
+
+    <target name="deleteOldJqueryJsFile">
+        <if>
+            <available file="${install.dir}/web_resources/widgets/navBar/js/jquery-1.2.6.min.js" type="file" />
+            <then>
+                <delete file="${install.dir}/web_resources/widgets/navBar/js/jquery-1.2.6.min.js"/>
+            </then>
+        </if>
+        <if>
+            <available file="${install.dir}/rx_resources/js/jquery-2.1.4.js" type="file" />
+            <then>
+                <delete file="${install.dir}/rx_resources/js/jquery-2.1.4.js"/>
+            </then>
+        </if>
+    </target>
+
+    <target name="upgradeSiteConfig">
+        <echo>Upgrading Site Configs for Secure Sites...</echo>
+        <PSUpgradeSiteConfig rootDir="${install.dir}" />
+    </target>
+
+    <target name="replaceOldFontAwesome">
         <if>
         <available file="${install.dir}/web_resources/cm/css/FontAwesome/" type="dir" />
-            <then>
-                <echo>Camel cased FonTAwesome folder found...</echo>
-                <echo>Renaming Font Awesome Folder....</echo>
-                <mkdir dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
-                <move todir="${install.dir}/web_resources/cm/css/tempFontAwesome/">
-                    <fileset dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
-                </move>
-                <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
-                <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
-                <move todir="${install.dir}/web_resources/cm/css/fontawesome/">
-                    <fileset dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
-                </move>
-                <delete dir="${install.dir}/web_resources/cm/css/tempFontAwesome/"/>
-            </then>
+        <then>
+            <delete dir="${install.dir}/web_resources/cm/css/FontAwesome/"/>
+            <mkdir dir="${install.dir}/web_resources/cm/css/fontawesome/"/>
+            <copy todir="${install.dir}/web_resources/cm/css/fontawesome/">
+                <fileset dir="${install.src}/jetty/base/webapps/Rhythmyx/cm/jslib/profiles/3x/libraries/fontawesome" includes="**/*" />
+            </copy>
+        </then>
         </if>
     </target>
 
@@ -592,6 +605,10 @@
                 <patternset refid="upgrade.overwrite"/>
                 <patternset refid="cache.file.excludes"/>
                 <patternset refid="upgrade.excludes"/>
+                <exclude name="**/Deployment/**"/>
+                <exclude name="**/Staging/**"/>
+                <exclude name="TomcatStartup.*"/>
+                <exclude name="TomcatShutdown.*"/>
             </fileset>
         </delete>
         <copy verbose="true" todir="${install.dir}" preservelastmodified="true" filtering="false" overwrite="true" force="true" includeEmptyDirs="true">
@@ -725,6 +742,8 @@
         <echo>Fixing Line Feed</echo>
         <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
             <patternset refid="text.files"/>
+            <exclude name="**/Deployment/**"/>
+            <exclude name="**/Staging/**"/>
         </fixcrlf>
 
         <if>
@@ -758,6 +777,16 @@
             </fileset>
         </copy>
 
+        <copy todir="${install.dir}/rxconfig/trusted_certificates/" overwrite="false" failonerror="false" flatten="true">
+            <fileset dir="${install.dir}/AppServer" casesensitive="false">
+                <include name="**/*.cert"/>
+                <include name="**/*.cer"/>
+                <include name="**/*.crt"/>
+                <include name="**/*.pem"/>
+                <include name="**/*.key"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
         <delete dir="${install.dir}/AppServer" verbose="true" failonerror="false" />
     </target>
 
@@ -784,6 +813,8 @@
         <echo>Fixing Line Feeds</echo>
         <fixcrlf srcdir="${install.dir}" preservelastmodified="true">
             <patternset refid="text.files"/>
+            <exclude name="**/Deployment/**"/>
+            <exclude name="**/Staging/**"/>
         </fixcrlf>
 
         <if>
@@ -883,14 +914,26 @@
 
 
     <target name="updateExtensions">
-
+        <echo>Updating updateExtensions ...</echo>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-main-${project.parent.version}.jar" destDir="Exits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-workflow-${project.parent.version}.jar" destDir="WorkflowExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-sfp-${project.parent.version}.jar" destDir="SiteFolderPublishinExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-nav-${project.parent.version}.jar" destDir="ManagedNavExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-default-template-${project.parent.version}.jar" destDir="DefaultTemplateExits"/>
         <PSInstallExtensions extensionJar="${extensions.jar.path}/extensions-linkback-${project.parent.version}.jar" destDir="LinkbackExits"/>
-
+        <if>
+            <available file="${install.dir}/LinkbackExits/install-files.xml"/>
+            <then>
+                <ant antfile="${install.dir}/LinkbackExits/install-files.xml" inheritall="true"/>
+            </then>
+        </if>
+        <PSInstallExtensions extensionJar="${extensions.jar.path}/perc-toolkit-${project.parent.version}.jar" destDir="PercToolkitExits"/>
+        <if>
+            <available file="${install.dir}/PercToolkitExits/install-files.xml"/>
+            <then>
+                <ant antfile="${install.dir}/PercToolkitExits/install-files.xml" inheritall="true"/>
+            </then>
+        </if>
     </target>
 
     <!--==========================================================-->
@@ -927,7 +970,8 @@
                             <exclude name="**/META-INF" />
                         </patternset>
                     </unzip>
-                    <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="C:\\DevEnv\\dev\\modules\\perc-distribution-tree\\target\\classes/distribution/Extensions/@{destDir}-ext.xml"/>
+                    <echo>Updating Add-On Extensions...</echo>
+                    <copy file="${install.dir}/@{destDir}/Extensions.xml" tofile="${install.dir}/Extensions/@{destDir}-ext.xml"/>
                     <PSExtensions installLocation="@{destDir}" />
                 </then>
                 <else>
@@ -940,6 +984,13 @@
     </macrodef>
 
     <target name="alwaysCopyIfMissing">
+        <mkdir dir="${install.dir}/rxconfig/velocity"/>
+        <copy todir="${install.dir}/rxconfig/velocity">
+            <fileset dir="${install.src}/rxconfig/velocity" includes="**/*" />
+        </copy>
+        <copy todir="${install.dir}/rxconfig/Server">
+            <fileset dir="${install.src}/rxconfig/velocity/2.2/config" includes="**/*.properties" />
+        </copy>
         <mkdir dir="${install.dir}/rxconfig/ssh-keys" />
         <touch file="${install.dir}/rxconfig/ssh-keys/config" />
         <mkdir dir="${install.dir}/rxconfig/trusted_certificates" />
@@ -949,6 +1000,8 @@
                 <present present="srconly" targetdir="${install.dir}/web_resources/themes"/>
             </fileset>
         </copy>
+        <echo>Deleting misplaced files....</echo>
+        <delete dir="${install.dir}/jetty/base/webapps/Rhythmyx/cm/WEB-INF" verbose="true" includeEmptyDirs="true" performgconfaileddelete="true" failonerror="false"/>
     </target>
 
 </project>

@@ -19,16 +19,14 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<web-app xmlns:j2ee="http://java.sun.com/xml/ns/j2ee"
-  xmlns:xsi=
-  "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=
-    "http://java.sun.com/xml/ns/j2ee 
-      http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+<web-app
+        xmlns:xsi=
+                "http://www.w3.org/2001/XMLSchema-instance" version="2.4">
 	<display-name>Rhythmyx Web Services</display-name>
 	<description>This web application contains the Rhythmyx client and publisher web services. In this
 		application are also the publisher component jars, as well as the Apache SOAP handler that

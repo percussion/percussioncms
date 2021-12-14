@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_PERCTWITTERCARDS">
+<table allowSchemaChanges="y" alter="y" create="y" delolddata="n" isView="n" name="CT_PERCTWITTERCARDS">
    <row>
       <column action="c" limitSizeForIndex="n" name="CONTENTID">
          <jdbctype>INTEGER</jdbctype>

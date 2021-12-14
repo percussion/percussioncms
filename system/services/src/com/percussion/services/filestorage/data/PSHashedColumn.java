@@ -17,15 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filestorage.data;
 
 import com.percussion.services.filestorage.data.PSHashedColumn.HashedColumnsPK;
-
-import java.io.Serializable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -34,8 +34,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.apache.log4j.Logger;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "PSX_BINARYCOLUMNS")
@@ -124,7 +123,7 @@ public class PSHashedColumn implements Serializable
    
    private static final long serialVersionUID = 1;
 
-   private static Logger ms_logger = Logger.getLogger(PSHashedColumn.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSHashedColumn.class);
 
    @Embeddable
    public static class HashedColumnsPK implements Serializable

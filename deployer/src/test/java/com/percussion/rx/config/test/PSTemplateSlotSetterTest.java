@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,6 +32,7 @@ import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.types.PSPair;
@@ -251,8 +252,7 @@ public class PSTemplateSlotSetterTest extends PSConfigurationTest // TestCase
    }
 
    
-   private IPSTemplateSlot getSlot()
-   {
+   private IPSTemplateSlot getSlot() throws PSNotFoundException {
       IPSDesignModel model = getSlotModel();
       IPSTemplateSlot slot = (IPSTemplateSlot) model.loadModifiable(SLOT_NAME);
       return slot;

@@ -2,33 +2,10 @@
 <%@ page import="java.util.*" %>
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%@ page import="com.percussion.i18n.PSI18nUtils" %>
 <%@ page import="com.percussion.i18n.ui.PSI18NTranslationKeyValues" %>
-
-<%--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  --%>
-
 <%
 	String locale= PSRoleUtilities.getUserCurrentLocale();
 	String lang="en";
@@ -85,7 +62,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--Meta Includes -->
 <%@include file="includes/common_meta.jsp" %>
-    <%@include file='includes/siteimprove_integration.html'%>
+<%@include file='includes/siteimprove_integration.html'%>
 
 <%--
    When ran in normal mode all javascript will be in one compressed file and
@@ -100,9 +77,10 @@
 --%>
 
 <!-- Themes never should be concatenated or packed -->
-<link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css"/>
-<script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
-
+<link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+    <script src="/JavaScriptServlet"></script>
 <% if (isDebug) { %>
 
 <!-- CSS Includes -->
@@ -119,7 +97,6 @@
 <link rel="stylesheet" type="text/css" href="../css/styles.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_template_layout.css"/>
 <link rel="stylesheet" type="text/css" href="../css/PercCommentsDialog.css"/>
-<link rel="stylesheet" type="text/css" href="../css/PercPageOptimizerDialog.css"/>
 <link rel="stylesheet" type="text/css" href="../css/perc_ChangePw.css"/>
 
 <%--  JavaScript Includes (order matters)
@@ -161,7 +138,7 @@
 
 <%-- --%>
 
-<script src="../jslib/jquery.xmldom-1.0.js"></script>
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js"></script>
 
 <script src="../plugins/perc_page_schema.js"></script>
 <script src="../plugins/perc_template_manager.js"></script>
@@ -177,10 +154,9 @@
 <script src="../widgets/perc_widget_library.js"></script>
 <script src="../plugins/perc_content_viewer.js"></script>
 <script src="../plugins/perc_contentEditDecorate.js"></script>
-<script src="../jslib/jquery.dataTables.js"></script>
-<script src="../jslib/jquery.dynatree.js"></script>
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
 
-<script src="../jslib/jquery.jmodal.js"></script>
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.jmodal.js"></script>
 <script src="../classes/perc_page_class.js"></script>
 <script src="../classes/perc_template_layout_class.js"></script>
 <script src="../plugins/perc_template_layout_helper.js"></script>
@@ -205,7 +181,7 @@
 <script src="../plugins/PercContentEditorHandlers.js"></script>
 <script src="../services/PercRevisionService.js"></script>
 <script src="../plugins/PercRevisionDialog.js"></script>
-<script src="../jslib/timepicker.js"></script>
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/timepicker.js"></script>
 <script src="../plugins/PercScheduleDialog.js"></script>
 <script src="../views/PercChangeTemplateDialog.js"></script>
 
@@ -215,8 +191,6 @@
 <script src="../services/PercSiteImpactService.js"></script>
 <script src="../views/PercSiteImpactView.js"></script>
 <script src="../plugins/PercCommentsDialog.js"></script>
-<script src="../services/PercPageOptimizerService.js"></script>
-<script src="../plugins/PercPageOptimizerDialog.js"></script>
 <script src="../services/PercUtilService.js"></script>
 <script src="../plugins/PercContributorUiAdaptor.js"></script>
 <script src="../services/PercBlogService.js"></script>
@@ -227,15 +201,23 @@
 <script src="../jslibMin/perc_webmgt.packed.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../cssMin/perc_webmgt.packed.min.css"/>
 <% } %>
+<script>
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var headers = {};
+    headers[csrfHeader] = csrfToken;
+    $.ajaxSetup({
+        headers: headers
+    });
+</script>
 <!-- Stuff needed for finder to work like Editor -->
 <%if ("library".equals(initialScreen)) { %>
 <script>
     //Finder initialization code
-    $j(document).ready(function () {
-        $j.Percussion.PercFinderView();
-        $j("#top-menu .button").click(function () {
-            var locsearch = "?view=home&initialScreen=" + $j(this).attr("for");
-            window.location.search = locsearch;
+    $(document).ready(function () {
+        $.Percussion.PercFinderView();
+        $("#top-menu .button").on("click",function () {
+            window.location.search = "?view=home&initialScreen=" + $(this).attr("for");
         })
     });
 </script>

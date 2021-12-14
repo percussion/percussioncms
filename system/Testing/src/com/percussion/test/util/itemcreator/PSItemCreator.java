@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,10 @@ import com.percussion.cms.objectstore.ws.PSClientItem;
 import com.percussion.cms.objectstore.ws.PSRemoteFolderProcessor;
 import com.percussion.design.objectstore.PSEntry;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSRemoteRequester;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,6 +48,8 @@ import java.util.Map;
  */
 public class PSItemCreator
 {
+
+   private static final Logger log = LogManager.getLogger(PSItemCreator.class);
 
    public PSItemCreator(String filepath)
       throws PSInvalidItemCreatorConfigException
@@ -308,7 +313,8 @@ public class PSItemCreator
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.out.println("\nFinished with errors!!");
       }      
     }

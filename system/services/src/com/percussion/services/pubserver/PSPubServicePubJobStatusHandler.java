@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,7 +26,6 @@ package com.percussion.services.pubserver;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus.State;
 import com.percussion.rx.publisher.IPSPublishingJobStatusCallback;
-import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationServiceLocator;
@@ -38,9 +37,8 @@ import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.guid.IPSGuid;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author JaySeletz
@@ -52,7 +50,7 @@ public class PSPubServicePubJobStatusHandler implements IPSPublishingJobStatusCa
    private IPSPublisherService m_pubSvc;
    private IPSPubServerDao m_pubServerDao;
    private IPSSiteManager m_siteManager;
-   private static Log m_log = LogFactory.getLog(PSPubServicePubJobStatusHandler.class);
+   private static final Logger m_log = LogManager.getLogger(PSPubServicePubJobStatusHandler.class);
 
    public PSPubServicePubJobStatusHandler()
    {

@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.itemmanagement.web.service;
-
-import static org.junit.Assert.assertEquals;
 
 import com.percussion.assetmanagement.web.service.PSAssetServiceRestClient;
 import com.percussion.itemmanagement.data.PSRevision;
@@ -32,12 +30,13 @@ import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.web.service.PSTestSiteData;
 import com.percussion.share.test.PSRestTestCase;
 import com.percussion.share.test.PSTestDataCleaner;
-
-import java.util.List;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class PSItemRestServiceTest extends PSRestTestCase<PSItemServiceRestClient> {

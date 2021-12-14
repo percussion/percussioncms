@@ -17,27 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.share.data.PSEnumVals;
+import com.percussion.share.test.PSObjectRestClient;
 import com.percussion.share.test.PSObjectRestClient.DataRestClientException;
 import com.percussion.share.test.PSRestClient.RestClientException;
-import com.percussion.share.test.PSObjectRestClient;
 import com.percussion.share.test.PSRestTestCase;
 import com.percussion.workflow.data.PSUiWorkflow;
 import com.percussion.workflow.data.PSUiWorkflowStep;
 import com.percussion.workflow.data.PSUiWorkflowStepRole;
 import com.percussion.workflow.data.PSUiWorkflowStepRoleTransition;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -49,9 +47,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author leonardohildt
@@ -155,7 +155,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException,PSExceptionUtils.getMessageForLog(e));
         }
     }
     
@@ -177,7 +177,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException,PSExceptionUtils.getMessageForLog(e));
         }
     }
     
@@ -225,7 +225,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException,PSExceptionUtils.getMessageForLog(e));
         }
     }
     
@@ -248,7 +248,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (Exception e)
         {
-            assertEquals(expectedMessageException, e.getMessage());
+            assertEquals(expectedMessageException, PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -731,7 +731,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (InterruptedException e)
         {
-            // okay, we tried
+            Thread.currentThread().interrupt();
         }
 
         try
@@ -831,7 +831,7 @@ public class PSSteppedWorkflowRestServiceTest extends PSRestTestCase<PSSteppedWo
         }
         catch (InterruptedException e)
         {
-            // okay, we tried
+            Thread.currentThread().interrupt();
         }
         
         try

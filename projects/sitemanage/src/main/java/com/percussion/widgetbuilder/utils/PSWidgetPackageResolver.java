@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,8 @@ package com.percussion.widgetbuilder.utils;
 
 import com.percussion.utils.IPSTokenResolver;
 import com.percussion.widgetbuilder.data.PSWidgetBuilderFieldData;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,9 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
 
 /**
  * Used to resolve tokens in widget package files
@@ -48,7 +47,7 @@ public class PSWidgetPackageResolver implements IPSTokenResolver
     private Map<String, String> tokenMap;
     private Set<String> optionalTokens;
     private PSWidgetPackageSpec packageSpec;
-    private static List<IPSBindingGenerator> bindingGenerators = new ArrayList<IPSBindingGenerator>();
+    private static List<IPSBindingGenerator> bindingGenerators = new ArrayList<>();
     
     static
     {
@@ -65,7 +64,7 @@ public class PSWidgetPackageResolver implements IPSTokenResolver
     {
         Validate.notNull(packageSpec);
 
-        tokenMap = new HashMap<String, String>();
+        tokenMap = new HashMap<>();
         tokenMap.put("WIDGET_PKG_NAME", packageSpec.getPackageName());
         tokenMap.put("PROPERCASE_WIDGET_NAME", packageSpec.getFullWidgetName());
         tokenMap.put("WIDGET_VERSION", packageSpec.getWidgetVersion());
@@ -78,7 +77,7 @@ public class PSWidgetPackageResolver implements IPSTokenResolver
         tokenMap.put("WIDGET_HTML", packageSpec.getWidgetHtml()); 
         tokenMap.put("FIELD_BINDINGS", generateFieldBindings(packageSpec.getFields()));
         tokenMap.put("IS_RESPONSIVE", Boolean.toString(packageSpec.isResponsive()));
-        optionalTokens = new HashSet<String>();
+        optionalTokens = new HashSet<>();
         optionalTokens.add("WIDGET_DESCRIPTION");
         String defaultToolTipMessage="This widget is showing sample content";
         String defaultIconPath="/rx_resources/widgets/"+packageSpec.getFullWidgetName()+"/images/"+packageSpec.getFullWidgetName()+"Icon.png";

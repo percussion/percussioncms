@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,7 +28,10 @@ import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.util.PSStringTemplate.PSStringTemplateException;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,10 +43,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
 
 /**
  * Detect and attempt to fix missing entries in CONTENTSTATUSHISTORY for items
@@ -363,7 +362,7 @@ public class PSFixContentStatusHistory extends PSFixDBBase implements IPSFix
          throws PSStringTemplateException, SQLException, NamingException
    {
       List<Integer> rval = new ArrayList<Integer>();
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       int nextid = getNextIdBlock(20, "CONTENTSTATUSHISTORY", preview);
       int end = nextid + 20 - 1;
       while (rs.next())
@@ -414,7 +413,7 @@ public class PSFixContentStatusHistory extends PSFixDBBase implements IPSFix
          NamingException
    {
       List<Integer> rval = new ArrayList<Integer>();
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       int nextid = getNextIdBlock(20, "CONTENTSTATUSHISTORY", preview);
       int end = nextid + 20 - 1;
       while (rs.next())

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,9 @@ import com.percussion.util.PSCollection;
 import com.percussion.util.PSDataTypeConverter;
 import com.percussion.util.PSOutputEscaping;
 import com.percussion.util.PSPreparedStatement;
+import oracle.jdbc.OracleResultSet;
+import oracle.sql.BLOB;
+import oracle.sql.CLOB;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -41,10 +44,6 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import oracle.jdbc.OracleResultSet;
-import oracle.sql.BLOB;
-import oracle.sql.CLOB;
 
 /**
  * Wraps Prepared Sql Statement for Oracle and contains bound parameters.
@@ -217,6 +216,7 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
     * @throws IllegalArgumentException if conn is <code>null</code>.
     * @throws SQLException if any errors occur.
     */
+   @Override
    public int execute(Connection conn) throws SQLException
    {
       if (conn == null)
@@ -282,8 +282,8 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
       PreparedStatement lobStmt = null;
       ResultSet lobRs = null;
       boolean commit = conn.getAutoCommit();
-      List tempClobsList = new ArrayList();
-      List tempBlobsList = new ArrayList();
+      List<CLOB> tempClobsList = new ArrayList<>();
+      List<BLOB> tempBlobsList = new ArrayList<>();
       try
       {
          lobStmt =
@@ -606,18 +606,18 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
    /**
     * Closes all the temporary LOBs in the two lists.
     *
-    * @param clobsToCloseList list containing temporary CLOBs, assumed
+    * @param tempclobsList list containing temporary CLOBs, assumed
     * not <code>null</code>, may be empty list.
-    * @param blobsToCloseList list containing temporary BLOBs, assumed
+    * @param tempBlobsList list containing temporary BLOBs, assumed
     * not <code>null</code>, may be empty list.
     */
-   private void closeTempLOBs(List tempclobsList, List tempBlobsList)
+   private void closeTempLOBs(List<CLOB> tempclobsList, List<BLOB> tempBlobsList)
    {
       Iterator it = tempclobsList.iterator();
       while (it.hasNext())
       {
          Object obj = it.next();
-         if ((obj != null ) && (obj instanceof CLOB))
+         if (obj instanceof CLOB)
          {
             // If the CLOB is open, close it
             CLOB clob = (CLOB)obj;
@@ -628,7 +628,7 @@ public class PSJdbcOracleSqlStatement extends PSJdbcPreparedSqlStatement
       while (it.hasNext())
       {
          Object obj = it.next();
-         if ((obj != null ) && (obj instanceof BLOB))
+         if (obj instanceof BLOB)
          {
             // If the CLOB is open, close it
             BLOB blob = (BLOB)obj;

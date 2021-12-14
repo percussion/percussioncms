@@ -17,15 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.touchitem.impl;
-
-import static java.util.Arrays.asList;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.PSItemField;
@@ -33,7 +30,7 @@ import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.server.PSServer;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -45,21 +42,27 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
-import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
 import com.percussion.webservices.system.IPSSystemWs;
 import com.percussion.webservices.system.PSSystemWsLocator;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.Validate.notNull;
 
 @Category(IntegrationTest.class)
 public abstract class PSCrossSiteTestCase extends ServletTestCase
 {
+
+   private static final Logger log = LogManager.getLogger(PSCrossSiteTestCase.class);
+
    protected IPSContentWs c;
    protected IPSGuidManager g;
    protected IPSRelationshipService rservice;
@@ -154,7 +157,8 @@ public abstract class PSCrossSiteTestCase extends ServletTestCase
       }
       catch (InterruptedException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -317,7 +321,8 @@ public abstract class PSCrossSiteTestCase extends ServletTestCase
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       

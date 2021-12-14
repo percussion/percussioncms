@@ -17,23 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.secure.services;
 
 import com.percussion.secure.data.PSMembershipConfiguration;
-
-import java.io.IOException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import java.io.IOException;
 
 /**
  * Class to handle setting the membership session cookie after a successful authentication
@@ -62,6 +60,7 @@ public class PSMembershipLoginHandler extends SavedRequestAwareAuthenticationSuc
 	        {
 	            Cookie cookie = new Cookie(membershipConfig.getMembershipSessionCookieName(), sessionId);
 	            cookie.setSecure(true);
+	            cookie.setHttpOnly(true);
 	            cookie.setPath("/");
 	            response.addCookie(cookie);            
 	        }

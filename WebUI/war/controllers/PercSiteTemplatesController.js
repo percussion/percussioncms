@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -51,7 +51,7 @@
         };
     };
 
-    var _cache = new Object();
+    var _cache = {};
     var _pseudoIdPrefix = "perc-pseudo-temp-";
     var _pseudoIdIncrement = 0;
     var _currentSiteId = null;
@@ -68,15 +68,15 @@
 
     function getSitesWithTemplates()
     {
-        sites = new Array();
-        for(t in _cache.templates)
+        sites = [];
+        for(var t in _cache.templates)
         {
             assignedSites = _cache.templates[t].getAssignedSites();
-            for(s in assignedSites)
+            for(var s in assignedSites)
             {
                 contains = false;
-                for (ss in sites)
-                if (assignedSites[s] == sites[ss]) contains = true;
+                for (var ss in sites)
+                    if (assignedSites[s] == sites[ss]) contains = true;
                 if (!contains) sites.push(assignedSites[s]);
             }
         }
@@ -166,10 +166,10 @@
                 {
                     var defMsg = $.PercServiceUtils.extractDefaultErrorMessage(result[0]);
                     $.perc_utils.alert_dialog(
-                    {
-                        title: 'Error',
-                        content: defMsg
-                    });
+                        {
+                            title: 'Error',
+                            content: defMsg
+                        });
                     callback(false);
                 }
             });
@@ -255,37 +255,46 @@
         if(force) _cache.sites = null;
         if(_cache.sites != null && _cache.sites != 'undefined')
         {
-            callback($.merge([], _cache.sites));
+            callback(this, $.merge([], _cache.sites));
             return;
         }
+
         $.PercServiceUtils.makeJsonRequest(
-        $.perc_paths.SITES_ALL + "/", $.PercServiceUtils.TYPE_GET, false, function(status, result)
+            $.perc_paths.SITES_ALL + "/", $.PercServiceUtils.TYPE_GET, false,
+            function(status, result){
+                getSitesCallback(status,result,callback);
+            }
+            ,null, null // abort callback function not needed in this case
+        );
+    }
+
+    function getSitesCallback(status, result,callback){
+
+        if(status == $.PercServiceUtils.STATUS_SUCCESS)
         {
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            var sites = result.data.SiteSummary;
+            var results = [];
+            for(let site of sites)
             {
-                var sites = result.data.SiteSummary;
-                var results = new Array();
-                for(i = 0; i < sites.length; i++)
-                {
-                    var site = sites[i];
-                    results.push(site.name);
-                }
-                _cache.sites = $.merge([], results);
+                results.push(site.name);
+            }
+            _cache.sites = $.merge([], results);
+            if(typeof callback !== 'undefined'){
                 callback(results);
             }
-            else
-            {
-                var error = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
-                var defMsg = "Unable to get sites. Error " + error;
-                $.perc_utils.alert_dialog(
+        }
+        else
+        {
+            var error = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+            var defMsg = "Unable to get sites. Error " + error;
+            $.perc_utils.alert_dialog(
                 {
                     title: 'Error',
                     content: defMsg
                 });
-            }
-        }, null, null // abort callback function not needed in this case
-        );
+        }
     }
+
 
     /**
      * Based on a template id in the current site, return all assigned sites.
@@ -295,9 +304,9 @@
     function getAssignedSitesByTemplate(templateid)
     {
         var temp = _getAssignedTemplateById(templateid);
-        if(temp == null) return new Array();
+        if(temp == null) return [];
         var sites = temp.getAssignedSites();
-        if(sites == null || sites == 'undefined') return new Array();
+        if(sites == null || sites == 'undefined') return [];
         return sites;
     }
 
@@ -321,8 +330,8 @@
         }
 
         // figure out which templates need to be created new and which just assigned
-        var assigns = new Array();
-        var creates = new Array();
+        var assigns = [];
+        var creates = [];
 
         // iterate over dirty templates
         for(var i = 0; i < dirtyTemps.length; i++)
@@ -334,11 +343,11 @@
                 // if the template has been copied since the last save,
                 // then it has a pseudo id, not a real id. add to the creates array for creation
                 creates.push(
-                {
-                    sourceTemplateId: temp.getSourceId(),
-                    name: temp.getTemplateName(),
-                    siteIds: temp.getAssignedSites()
-                });
+                    {
+                        sourceTemplateId: temp.getSourceId(),
+                        name: temp.getTemplateName(),
+                        siteIds: temp.getAssignedSites()
+                    });
             }
             else
             {
@@ -347,11 +356,11 @@
                 // it is dirty because it has been associated to new sites and it needs to be updated in the database
                 // add to assigns array
                 assigns.push(
-                {
-                    templateId: temp.getTemplateId(),
-                    name: temp.getTemplateName(),
-                    siteIds: temp.getAssignedSites()
-                });
+                    {
+                        templateId: temp.getTemplateId(),
+                        name: temp.getTemplateName(),
+                        siteIds: temp.getAssignedSites()
+                    });
             }
         }
         // add the assigns and creates arrays to the JSON data structure to be POSTed to the template save service
@@ -399,7 +408,7 @@
      * @param postCallback the callback function that will be executed
      * when load is complete.
      * @param clearCache true if we want to re-load all the data from the server.
-     * @param siteRequest accepts the name of the site requested from the add 
+     * @param siteRequest accepts the name of the site requested from the add
      * templates filter dialog.
      */
     function load(postCallback, clearCache, siteRequest)
@@ -413,49 +422,53 @@
 
         if(_cache.templates != null && siteRequest === '') return;
 
-        if(_cache.templates == null) _cache.templates = new Array();
-        
+        if(_cache.templates == null) _cache.templates = [];
+
         var currentSiteName;
-        
+
         if ((currentSiteName = $.PercNavigationManager.getSiteName()) != null && siteRequest == null) {
-        	currentSiteName = "/" + currentSiteName;
+            currentSiteName = "/" + currentSiteName;
         }
-		
-		else if (siteRequest != null) {
-			currentSiteName = "/" + siteRequest;
-		}
-        
+
+        else if (siteRequest != null) {
+            currentSiteName = "/" + siteRequest;
+        }
+
         else {
-        	currentSiteName = "/unknown";
+            currentSiteName = "/unknown";
         }
 
         // load all the template summaries
         $.PercServiceUtils.makeJsonRequest(
-        $.perc_paths.TEMPLATES_ALL + currentSiteName, $.PercServiceUtils.TYPE_GET, false, function(status, jsonresult)
+            $.perc_paths.TEMPLATES_ALL + currentSiteName, $.PercServiceUtils.TYPE_GET, false,
+            function(status,result){
+                loadCallback(status,result,loadPostCallbacks);
+            }, null, null // abort callback function not needed in this case
+        );
+    }
+
+    function loadCallback(status, result,loadPostCallbacks){
+        if(status == $.PercServiceUtils.STATUS_SUCCESS)
         {
-            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+            var summaries = result.data.TemplateSummary;
+            _updateCache(summaries, function()
             {
-                var summaries = jsonresult.data.TemplateSummary;
-                _updateCache(summaries, function()
+                for(var i = 0; i < loadPostCallbacks.length; i++)
                 {
-                    for(var i = 0; i < loadPostCallbacks.length; i++)
-                    {
-                        loadPostCallbacks[i]();
-                    }
-                });
-            }
-            else
-            {
-                var error = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
-                var defMsg = "Unable to load templates.\nError: " + error;
-                $.perc_utils.alert_dialog(
+                    loadPostCallbacks[i]();
+                }
+            });
+        }
+        else
+        {
+            var error = $.PercServiceUtils.extractDefaultErrorMessage(jsonresult);
+            var defMsg = "Unable to load templates.\nError: " + error;
+            $.perc_utils.alert_dialog(
                 {
                     title: 'Error',
                     content: defMsg
                 });
-            }
-        }, null, null // abort callback function not needed in this case
-        );
+        }
     }
 
     /**
@@ -464,8 +477,10 @@
      */
     function _updateCache(templateSummaries, callback)
     {
+        var cbCount = 0;
         for(var i = 0; i < templateSummaries.length; i++)
         {
+
             // create template summary object from JSON data
             var sum = templateSummaries[i];
             var isBase = sum.readOnly == true;
@@ -476,16 +491,39 @@
             result.setContentMigrationVersion(sum.contentMigrationVersion);
             if(!isBase)
             {
-                _getTemplateSites(sum.id, function(sites)
+                cbCount = cbCount + 1;
+                _getTemplateSites(sum.id, function(sites,sumId)
                 {
-                    result.setAssignedSites(sites);
+                    cbCount = cbCount -1;
+                    if(cbCount == 0){
+                        cbCount = -1;
+                        templateSitesCB(sites,callback,sumId);
+                    }else{
+                        templateSitesCB(sites,null,sumId);
+                    }
+
+
+
                 });
+
             }
             _cache.templates[sum.id] = result;
+
+        }
+        if(cbCount === 0){
+            callback();
         }
 
-        callback();
     }
+
+    function templateSitesCB(sites,callback,id){
+        _cache.templates[id].setAssignedSites(sites);
+        if(callback != null){
+            callback();
+        }
+    }
+
+
 
     function clearChanges()
     {
@@ -504,10 +542,10 @@
         {
             var defMsg = "Template names can not be blank.";
             $.perc_utils.alert_dialog(
-            {
-                title: 'Error',
-                content: defMsg
-            });
+                {
+                    title: 'Error',
+                    content: defMsg
+                });
             return;
         }
 
@@ -515,17 +553,18 @@
         var nameLowerCase = name.toLowerCase();
 
         // check to see if that name is already in use and alert appropriately
-        for(tempId in _cache.templates)
+        for(var tempId in _cache.templates)
         {
             var template = _cache.templates[tempId];
             if(template.containsSite(currentSite) && nameLowerCase == template.getTemplateNameLowerCase())
             {
-                var defMsg = "Template name '" + name + "' is already in use in the current site.\nPlease use a different name for the template." + "\nNote that template names are case insensitive.";
-                return defMsg;
+                var defMsg1 = "Template name '" + name + "' is already in use in the current site.\nPlease use a different name for the template." + "\nNote that template names are case insensitive.";
+                return defMsg1;
             }
         }
 
-        // if the name is valid, get the template and change its name
+        // if the name is valid, get
+        // the template and change its name
         var temp = _cache.templates[templateId];
         temp.setTemplateName(name);
         temp.setPersisted(false);
@@ -596,34 +635,38 @@
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SITES_BY_TEMPLATE + "/" + templateid,
             $.PercServiceUtils.TYPE_GET,
-            true,
-            function(status, result)
-            {
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
-                {
-                    var sites = result.data.SiteSummary;
-                    var results = new Array();
-                    for(i = 0; i < sites.length; i++)
-                    {
-                        var site = sites[i];
-                        results.push(site.name);
-                    }
-                    callback(results);
-                }
-                else
-                {
-                    var error = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
-                    var defMsg = "Unable to load sites for template " + templateid + "\nError: " + error;
-                    $.perc_utils.alert_dialog(
-                    {
-                        title: 'Error',
-                        content: defMsg
-                    });
-                }
+            false,function(status,result){
+                getTemplateSitesCallback(status,result,callback,templateid);
             },
             null,
             null // abort callback function not needed in this case
         );
+    }
+
+    function getTemplateSitesCallback(status, result,callback,templateid){
+        if(status == $.PercServiceUtils.STATUS_SUCCESS)
+        {
+            var sites = result.data.SiteSummary;
+            var results = [];
+            for(i = 0; i < sites.length; i++)
+            {
+                var site = sites[i];
+                results.push(site.name);
+            }
+            if(typeof callback !== 'undefined'){
+                callback(results,templateid);
+            }
+        }
+        else
+        {
+            var error = $.PercServiceUtils.extractDefaultErrorMessage(result.error);
+            var defMsg = "Unable to load sites for template " + templateid + "\nError: " + error;
+            $.perc_utils.alert_dialog(
+                {
+                    title: 'Error',
+                    content: defMsg
+                });
+        }
     }
 
     function _grepArrayHash(elems, callback, inv)
@@ -632,8 +675,11 @@
 
         // Go through the array, only saving the items
         // that pass the validator function
-        for(var elem in elems)
-        if (!inv != !callback(elems[elem])) ret.push(elems[elem]);
+        for(var elem in elems) {
+            if (!inv !== !callback(elems[elem])) {
+                ret.push(elems[elem]);
+            }
+        }
 
         return ret;
     }
@@ -691,11 +737,11 @@
          */
         function getPagetIdFromTemplate(XHRstatus, percPageServiceData)
         {
-            var querystring = $j.deparam.querystring();
+            var querystring = $.deparam.querystring();
             // Add the last element needed in the memento and redirect
             memento.pageId = percPageServiceData.firstItemId;
-            $j.PercNavigationManager.goToLocation(
-                $j.PercNavigationManager.VIEW_EDIT_TEMPLATE,
+            $.PercNavigationManager.goToLocation(
+                $.PercNavigationManager.VIEW_EDIT_TEMPLATE,
                 querystring.site,
                 null,
                 null,

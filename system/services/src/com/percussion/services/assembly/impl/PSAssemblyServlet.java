@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.server.PSServer;
 import com.percussion.services.PSMissingBeanConfigurationException;
@@ -49,8 +50,8 @@ import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatch;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 
 import javax.servlet.RequestDispatcher;
@@ -104,12 +105,12 @@ public class PSAssemblyServlet extends HttpServlet
    /**
     * The logger for this class
     */
-   private static Log ms_log = LogFactory.getLog(PSAssemblyServlet.class);
+   private static final Logger log = LogManager.getLogger(PSAssemblyServlet.class);
 
    /**
     * A preparsed expression for the inner template
     */
-   private IPSScript ms_inner_template = PSJexlEvaluator
+   private final IPSScript ms_inner_template = PSJexlEvaluator
          .createStaticExpression("$sys.innertemplate");
 
    /*
@@ -132,21 +133,19 @@ public class PSAssemblyServlet extends HttpServlet
       if (!StringUtils.isEmpty(reset) && reset.equalsIgnoreCase("true"))
          PSAAStubUtil.reset();
 
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
-         ms_log.debug("Parameters to assembly:");
+         log.debug("Parameters to assembly:");
          Enumeration<String> names = request.getParameterNames();
          while (names.hasMoreElements())
          {
             String name = names.nextElement();
             String vals[] = request.getParameterValues(name);
-            ms_log.debug(name + ": " + PSStringUtils.arrayToString(vals));
+            log.debug("{}: {}", name, PSStringUtils.arrayToString(vals));
          }
       }
       PSStopwatch watch = new PSStopwatch();
-      OutputStream os = null;
-      InputStream is = null;
-      
+
       try
       {
          IPSAssemblyService assembly = PSAssemblyServiceLocator
@@ -227,33 +226,32 @@ public class PSAssemblyServlet extends HttpServlet
                response.setContentLength((int) result.getResultLength());
             }
             response.setStatus(success ? 200 : 500);
-            os = response.getOutputStream();
-            is = result.getResultStream();
-            IOUtils.copy(is, os);
-            os.flush();
+            try(OutputStream os = response.getOutputStream()) {
+               try (InputStream is = result.getResultStream()) {
+                  IOUtils.copy(is, os);
+                  os.flush();
+               }
+            }
          }
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
          Throwable cause = PSExceptionHelper.findRootCause(e, true);
          if (PSServletUtils.isClientAbortException(e) ||
                cause.getMessage().startsWith("Software caused connection abort:") ||
                cause.getMessage().startsWith("Connection reset by peer:")) {
-            ms_log.debug("Client aborted connection", e);
+            log.debug("Client aborted connection. Error: {}",
+                    PSExceptionUtils.getDebugMessageForLog(e));
             return; //Client closed connection, do not throw error   
          }
-         ms_log.error("Problem in assembly servlet", e);
+         log.error("Problem in assembly servlet.  Error: {}",
+                 PSExceptionUtils.getMessageForLog(e));
          reportError(request, cause.getLocalizedMessage(), response);
       }
       finally
       {
          watch.stop();
-         ms_log.debug("Assembling item "
-               + request.getParameter(IPSHtmlParameters.SYS_CONTENTID)
-               + " template " + (template != null ? template : variantid)
-               + " took " + watch.toString());
-         IOUtils.closeQuietly(os);
-         IOUtils.closeQuietly(is);
+         log.debug("Assembling item {}, template {} took {}", request.getParameter(IPSHtmlParameters.SYS_CONTENTID),(template != null ? template : variantid), watch);
       }
 
    }
@@ -356,14 +354,15 @@ public class PSAssemblyServlet extends HttpServlet
       // Back to a string
       String output = builder.toString();
       // Bytes
-      byte outbytes[] = output.getBytes(charset.name());
+      byte[] outbytes = output.getBytes(charset.name());
 
       response.setContentType(result.getMimeType());
       response.setContentLength(outbytes.length);
       response.setStatus(200);
-      OutputStream os = response.getOutputStream();
-      os.write(outbytes);
-      os.flush();
+      try(OutputStream os = response.getOutputStream()) {
+         os.write(outbytes);
+         os.flush();
+      }
    }
 
    /**
@@ -391,7 +390,7 @@ public class PSAssemblyServlet extends HttpServlet
    {
       Locale.getDefault();
       
-      Map<String, String> vars = new HashMap<String, String>();
+      Map<String, String> vars = new HashMap<>();
       vars.put("AAMODE", getAAMode(request));
       vars.put("RXROOT", getRoot(request));
       vars.put("ROOT", "..");
@@ -419,7 +418,7 @@ public class PSAssemblyServlet extends HttpServlet
       throws PSStringTemplateException, PSAssemblyException,
       PSMissingBeanConfigurationException, JSONException
    {
-      Map<String, String> vars = new HashMap<String, String>();
+      Map<String, String> vars = new HashMap<>();
       vars.put("RXROOT", getRoot(request));
       vars.put("ROOT", "..");
       vars.put("LOCALE", getLocale());
@@ -493,8 +492,7 @@ public class PSAssemblyServlet extends HttpServlet
       /* Discard if the connection has closed */
       if (response.isCommitted())
       {
-         ms_log.error("Could not return error information "
-               + "because response is committed: " + string);
+         log.error("Could not return error information because response is committed: {}", string);
          return;
       }
 
@@ -517,7 +515,7 @@ public class PSAssemblyServlet extends HttpServlet
          {
             url = url + "?" + request.getQueryString();
          }
-         ms_log.error("Problem assembling item (" + id + "): " + string);
+         log.error("Problem assembling item ({}): {}", id, string);
          request.setAttribute("error", string);
          request.setAttribute("id", id);
          request.setAttribute("debugurl", url);
@@ -527,7 +525,9 @@ public class PSAssemblyServlet extends HttpServlet
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to report error: " + string, e);
+         log.error("Failed to report error: {}.  Error: {}", string,
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

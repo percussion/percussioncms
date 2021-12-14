@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,8 +28,8 @@ import com.percussion.foldermanagement.data.PSGetAssignedFoldersJobStatus;
 import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.impl.PSAsyncJob;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -50,7 +50,7 @@ public class PSGetAssignedFoldersJob extends PSAsyncJob
     private boolean includeFoldersWithDifferentWorkflow;
     PSGetAssignedFoldersJobStatus status;
     
-    private static final Log log = LogFactory.getLog(PSGetAssignedFoldersJob.class);
+    private static final Logger log = LogManager.getLogger(PSGetAssignedFoldersJob.class);
 
     
     @Override
@@ -88,8 +88,7 @@ public class PSGetAssignedFoldersJob extends PSAsyncJob
 
 
     @Override
-    protected void doInit(Object config)
-    {
+    protected void doInit(Object config) throws IPSFolderService.PSWorkflowNotFoundException {
         Object[] args = (Object[]) config;
         workflowName = (String) args[0];
         path = (String) args[1];
@@ -98,14 +97,6 @@ public class PSGetAssignedFoldersJob extends PSAsyncJob
         Validate.notEmpty(path, "path cannot be empty");
         folderService.validateWorkflow(workflowName);
         status = new PSGetAssignedFoldersJobStatus();
-    }
-
-    
-    @Override
-    public void cancelJob()
-    {
-        super.cancelJob();
-        //interruptJob();
     }
 
     @Autowired

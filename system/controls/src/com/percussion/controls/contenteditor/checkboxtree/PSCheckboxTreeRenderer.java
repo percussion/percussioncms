@@ -17,18 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.controls.contenteditor.checkboxtree;
 
-import java.awt.Component;
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
  * The tree render controls the behavior on screen. This one returns the 
@@ -72,7 +71,7 @@ public class PSCheckboxTreeRenderer extends DefaultTreeCellRenderer
    public void setParameters(Map<String, String> parameters)
    {
       if (parameters == null)
-         m_parameters = new HashMap<String, String>();
+         m_parameters = new HashMap<>();
       else
          m_parameters = parameters;
    }
@@ -81,7 +80,7 @@ public class PSCheckboxTreeRenderer extends DefaultTreeCellRenderer
     * The extra parameters set for this renderer, never <code>null</code>, may
     * be empty.
     */
-   private Map<String, String> m_parameters = new HashMap<String, String>();
+   private Map<String, String> m_parameters = new HashMap<>();
    
    /**
     * Generated serial version id.

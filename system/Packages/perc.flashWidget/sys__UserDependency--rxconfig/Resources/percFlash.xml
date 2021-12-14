@@ -18,18 +18,11 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
 <Resources>
-    <asset primary="true" id="flashBinary" contentType="percFlashAsset" legacyTemplate="perc.fileBinary">
-        <linkAndLocations type="jexl">
-        <![CDATA[
-        $rx.resourceHelper.createDefaultLinkAndLocations($perc);
-        ]]>  
-        </linkAndLocations>         
-    </asset>
 	<file id="swfobject_js" path="/web_resources/widgets/flash/js/swfobject.js" type="javascript"/>
 </Resources>

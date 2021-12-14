@@ -17,16 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.security.loginmods;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.security.PSJaasUtils;
-
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
@@ -35,6 +36,7 @@ import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
+import java.util.Map;
 
 /**
  * A login module that delegates authentication to Rhythmyx security 
@@ -42,6 +44,9 @@ import javax.security.auth.spi.LoginModule;
  */
 public class PSRxLoginModule implements LoginModule
 {
+
+   private static final Logger log = LogManager.getLogger(PSRxLoginModule.class);
+
    /**
     * Default constructor for this module
     */
@@ -70,7 +75,8 @@ public class PSRxLoginModule implements LoginModule
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          return;
       }
 

@@ -17,29 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.user.service.impl;
 
-import static com.percussion.share.test.PSMatchers.emptyString;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.user.data.PSLdapConfig;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.tools.ant.taskdefs.condition.IsTrue;
-import org.junit.Before;
-import org.junit.Test;
+import static com.percussion.share.test.PSMatchers.emptyString;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Test XML file loading and clearing password.

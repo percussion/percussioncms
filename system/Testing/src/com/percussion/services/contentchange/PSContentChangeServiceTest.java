@@ -17,24 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.contentchange;
 
-import static org.junit.Assert.*;
-
 import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.percussion.utils.testing.IntegrationTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author JaySeletz
@@ -45,13 +47,12 @@ public class PSContentChangeServiceTest
 {
 
    @Test
-   public void test()
-   {
+   public void test() throws IPSGenericDao.SaveException {
       IPSContentChangeService changeSvc = PSContentChangeServiceLocator.getContentChangeService();
       assertNotNull(changeSvc);
       
-      List<Integer> changedItems = null;
-      Set<Integer> site1Ids = new HashSet<Integer>();
+      List<Integer> changedItems;
+      Set<Integer> site1Ids = new HashSet<>();
 
       try
       {

@@ -18,19 +18,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.widgets.image.data;
-     
-     import java.io.ByteArrayInputStream;
-     import java.io.ByteArrayOutputStream;
-     import java.io.IOException;
-     import java.io.InputStream;
-     import java.io.OutputStream;
-     import javax.activation.DataSource;
+
+import javax.activation.DataSource;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
      
      public class ByteArrayDataSource
        implements DataSource
@@ -64,8 +64,9 @@ package com.percussion.widgets.image.data;
        public InputStream getInputStream()
          throws IOException
        {
-       ByteArrayInputStream bis = new ByteArrayInputStream(this.store.toByteArray());
-       return bis;
+           try(ByteArrayInputStream bis = new ByteArrayInputStream(this.store.toByteArray())) {
+               return bis;
+           }
        }
      
        public String getName()

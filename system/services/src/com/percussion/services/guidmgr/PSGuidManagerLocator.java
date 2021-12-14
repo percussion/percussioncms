@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,31 +26,29 @@ package com.percussion.services.guidmgr;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.PSMissingBeanConfigurationException;
 
+import javax.annotation.concurrent.ThreadSafe;
+
 /**
  * Find the guid manager service
  * 
  * @author dougrand
  */
+@ThreadSafe
 public class PSGuidManagerLocator extends PSBaseServiceLocator
 {
-   private static volatile IPSGuidManager gmgr=null;
+   private static  IPSGuidManager gmgr=null;
    /**
     * Locator for guid manager
     * @return instance of guid manager
     * @throws PSMissingBeanConfigurationException
     */
-   public static IPSGuidManager getGuidMgr() throws PSMissingBeanConfigurationException
+   public static synchronized IPSGuidManager getGuidMgr() throws PSMissingBeanConfigurationException
    {
-      if (gmgr==null)
-      {
-         synchronized (PSGuidManagerLocator.class)
-         {
              if (gmgr==null)
              {
                  gmgr = (IPSGuidManager) getBean("sys_guidmanager");
              }
-         }
-      }
+
       return gmgr;
    }
 }

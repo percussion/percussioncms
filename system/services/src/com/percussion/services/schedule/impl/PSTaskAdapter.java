@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,7 @@ import com.percussion.design.objectstore.PSAttribute;
 import com.percussion.design.objectstore.PSAttributeList;
 import com.percussion.design.objectstore.PSNotFoundException;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
@@ -53,11 +54,10 @@ import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.workflow.PSWorkFlowUtils;
 import com.percussion.workflow.mail.PSMailMessageContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeInstance;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.quartz.Job;
@@ -65,7 +65,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,7 +84,7 @@ public class PSTaskAdapter implements Job
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog(PSTaskAdapter.class);
+   private static final Logger log = LogManager.getLogger(PSTaskAdapter.class);
    
    // see base
    public void execute(JobExecutionContext context)
@@ -178,8 +177,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         ms_log.error("Failed notification for task: " + job.getName(), e);
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed notification for task: {} {}", job.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -426,7 +426,7 @@ public class PSTaskAdapter implements Job
       if (StringUtils.isBlank(addresses))
          return null;
       
-      StringBuffer result = new StringBuffer();
+      StringBuilder result = new StringBuilder();
       boolean isFirst = true;
       for (final String s : addresses.split(","))
       {
@@ -476,7 +476,7 @@ public class PSTaskAdapter implements Job
       if (StringUtils.isBlank(roleName))
          return null;
       
-      StringBuffer emails = new StringBuffer();
+      StringBuilder emails = new StringBuilder();
       boolean isFirst = true;
       PSRoleManager rmgr = PSRoleManager.getInstance();
       Set<PSSubject> users = rmgr.getSubjects(roleName, null);
@@ -516,7 +516,7 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to evaluate subject: " + subject, e);
+         log.error("Failed to evaluate subject: " + subject, e);
          return "";
       }
    }
@@ -539,7 +539,7 @@ public class PSTaskAdapter implements Job
          catch (Exception e)
          {
             ms_toolsMap = null;
-            ms_log.error("Failed to load Velocity Tools", e);
+            log.error("Failed to load Velocity Tools", e);
          }
       }
       return ms_toolsMap;
@@ -586,9 +586,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         ms_log.error("Failed to format Notification Template id="
-               + nt.getId(), e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to format Notification Template id= {} : {}", nt.getId(),PSExceptionUtils.getMessageForLog(e));
          return null;
       }
    }
@@ -601,8 +601,6 @@ public class PSTaskAdapter implements Job
    private static RuntimeServices getVelocityRS() throws Exception
    {
       RuntimeServices rs = new RuntimeInstance();
-      File logpath = new File(PSServer.getRxDir(), "notificationVelocity.log");
-      rs.addProperty(RuntimeConstants.RUNTIME_LOG, logpath.getAbsolutePath());
       rs.init();
       
       return rs;
@@ -699,7 +697,7 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to execute job: " + curJob.toString(), e);
+         log.error("Failed to execute job: " + curJob.toString(), e);
          result = getErrorResult(curJob, e, startTime);
          return result;
       }
@@ -796,20 +794,20 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         ms_log.error("Failed to identify server name or IP address.", e);
+         log.error("Failed to identify server name or IP address.", e);
       }
       
-      if (ms_log.isDebugEnabled())
+      if (log.isDebugEnabled())
       {
          String hostName = PSServer.getHostName();
          if (isHostMatch && isPortMatch)
          {
-            ms_log.debug("Task of '" + curJob.getName()
+            log.debug("Task of '" + curJob.getName()
                   + "' is registered for the server '" + hostName + "'.");
          }
          else
          {
-            ms_log.debug("Task of '" + curJob.getName()
+            log.debug("Task of '" + curJob.getName()
                   + "' is not registered for the server '" + hostName + "'.");
          }
       }
@@ -879,8 +877,9 @@ public class PSTaskAdapter implements Job
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         ms_log.error("Failed to log task execution", e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to log task execution",PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -923,6 +922,6 @@ public class PSTaskAdapter implements Job
     * none scheduled (manually invoked) jobs. It never <code>null</code>, but
     * may be empty.
     */
-   private static List<IPSGuid> ms_activeJobs = new ArrayList<IPSGuid>();
+   private static List<IPSGuid> ms_activeJobs = new ArrayList<>();
    
 }

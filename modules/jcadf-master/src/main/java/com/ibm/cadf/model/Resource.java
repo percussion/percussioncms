@@ -16,13 +16,12 @@
 
 package com.ibm.cadf.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.ibm.cadf.exception.CADFException;
 import com.ibm.cadf.util.Constants;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Resource extends CADFType
 {
@@ -156,7 +155,7 @@ public class Resource extends CADFType
     {
         if (addresses == null)
         {
-            addresses = new ArrayList<EndPoint>();
+            addresses = new ArrayList<>();
         }
         addresses.add(endpoint);
     }
@@ -165,7 +164,7 @@ public class Resource extends CADFType
     {
         if (attachments == null)
         {
-            attachments = new ArrayList<Attachment>();
+            attachments = new ArrayList<>();
         }
         attachments.add(attachment);
     }

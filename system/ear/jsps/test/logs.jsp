@@ -1,8 +1,13 @@
 <%@ page import="com.percussion.server.PSServer, com.percussion.services.utils.jspel.PSRoleUtilities, java.io.BufferedReader, java.io.FileNotFoundException"
          import="java.io.FileReader"
-
+         import="com.percussion.i18n.PSI18nUtils"
+         contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"
 %>
-
+<%@ page import="org.owasp.encoder.Encoder" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 
 <%--
   ~     Percussion CMS
@@ -23,22 +28,27 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
-
-<!-- Import all neccesary packages to send and recieve sql queries and updates.
-Import PS Admin Security-->
 <%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
+
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
     String fullrolestr = PSRoleUtilities.getUserRoles();
 
-    if (fullrolestr.contains("Admin") == false)
-        response.sendRedirect(response.encodeRedirectURL(request.getContextPath()
-                + "/ui/RxNotAuthorized.jsp"));
+    if (!fullrolestr.contains("Admin"))
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
 %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 
     <title>
@@ -161,7 +171,7 @@ Import PS Admin Security-->
             sb.setLength(0); // set length of buffer to 0
             sb.trimToSize(); // trim the underlying buffer
             while ((line = reader.readLine()) != null) {
-                if (line == "")
+                if (line.equalsIgnoreCase(""))
                     continue;
                 if (line.contains("INFO"))
                     displayClass = "";
@@ -172,8 +182,9 @@ Import PS Admin Security-->
                 if (line.contains("start()"))
                     displayClass = "success";
 
-
-                sb.append("<tr rownum='" + i + "' id='line-" + i + "' class='" + displayClass + "'><td>" + line + "</td></tr>");
+                line = Encode.forHtml(line);
+                sb.append("<tr rownum='").append( i).append("' id='line-").append(i).append("' class='").append(displayClass).append("'><td>").append(
+                        line).append("</td></tr>");
                 lastLine = line;
                 i++;
             }
@@ -187,10 +198,10 @@ Import PS Admin Security-->
     </tbody>
 </table>
 </body>
-<script src="/rx_resources/js/jquery-2.1.4.js"></script>
-<script src="/rx_resources/js/bootstrap/3.3.4/bootstrap.min.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+<script src="/cm/jslib/profiles/3x/libraries/bootstrap/js/bootstrap.bundle.js"></script>
 <script>
-    $(document).ready(function () {
+    $(function () {
         var row;
         var rownum;
         $("#DefaultJNDIReplacer").on("click", function (e) {
@@ -201,43 +212,42 @@ Import PS Admin Security-->
         {
             /* Stuff to do when the mouse enters the element */
         }
-        $("tr").hover(function () {
+        $("tr").on("mouseenter", function () {
             row = $(this);
-            if (row != undefined)
+            if (typeof row !== "undefined")
                 row.addClass("active");
-
-
-        }, function () {
-            row = $(this);
-            if (row != undefined)
-                row.removeClass('active')
         })
+        .on("mouseleave", function () {
+            row = $(this);
+            if (typeof row !== "undefined")
+                row.removeClass('active');
+        });
 
-        $('#nextStartup').click(function (event) {
+        $('#nextStartup').on("click",function (event) {
 
-            if (row == undefined)
+            if (typeof row === "undefined")
                 rownum = 0;
             else
                 rownum = row.attr("rownum")
             console.log("")
             var newrow = $('tr.success')[rownum + 1];
 
-            if (newrow != undefined)
+            if (typeof newrow !== "undefined")
                 $('table').scrollTop(newrow.top);
             else
                 alert("No More Startups");
 
 
         });
-        $('#previousStartup').click(function (event) {
+        $('#previousStartup').on("click", function (event) {
             var newrow;
 
 
         });
 
-        $('#nextWarning').click(function (event) {
+        $('#nextWarning').on("click", function (event) {
 
-            if (row == undefined)
+            if (row === undefined)
                 rownum = 0;
             else
                 rownum = row.attr("rownum")
@@ -258,18 +268,16 @@ Import PS Admin Security-->
 
 
         });
-        $('#previousWarning').click(function (event) {
+        $('#previousWarning').on("click", function (event) {
+            var newrow;
+        });
+
+        $('#nextError').on("click", function (event) {
             var newrow;
 
 
         });
-
-        $('#nextError').click(function (event) {
-            var newrow;
-
-
-        });
-        $('#previousError').click(function (event) {
+        $('#previousError').on("click", function (event) {
             var newrow;
 
 

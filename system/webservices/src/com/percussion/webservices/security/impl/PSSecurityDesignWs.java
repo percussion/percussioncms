@@ -17,13 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.security.impl;
 
 import com.percussion.design.objectstore.PSRole;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
@@ -32,6 +34,7 @@ import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.locking.IPSObjectLockService;
@@ -53,8 +56,6 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
-import com.percussion.utils.security.PSSecurityCatalogException;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
@@ -327,7 +328,7 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
       catch (PSErrorResultsException e)
       {
          // collect all error messages into one string
-         StringBuffer message = new StringBuffer();
+         StringBuilder message = new StringBuilder();
          for (Object value : e.getErrors().values())
          {
             if (value != null)
@@ -514,17 +515,17 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
    private Map<PSCommunity, List<PSObjectSummary>> filterByCommunityVisibility(
          Map<IPSGuid,IPSCatalogSummary> catSummaries, Map<IPSGuid,PSCommunity> communities)
    {
-
       IPSAclService service = PSAclServiceLocator.getAclService();
+
       Map<IPSGuid,IPSAcl> objectAcls = new HashMap<IPSGuid,IPSAcl>();
       for (IPSGuid g : catSummaries.keySet()) {
          IPSAcl acl = service.loadAclForObject(g);
+
          objectAcls.put(g ,acl);
       }
 
       Map<PSCommunity, List<PSObjectSummary>> filteredSummaries =
          new HashMap<PSCommunity, List<PSObjectSummary>>();
-
       Map<IPSGuid,PSObjectSummary> objSummaries = PSWebserviceUtils
               .toObjectSummaries(catSummaries, objectAcls);
 
@@ -534,6 +535,7 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
       }
 
       return filteredSummaries;
+
    }
 
    /**
@@ -787,7 +789,7 @@ public class PSSecurityDesignWs extends PSSecurityBaseWs implements
                {
                   s = siteMgr.getSummaries(objectType);   
                }
-               catch (PSCatalogException e)
+               catch (PSCatalogException | PSNotFoundException e)
                {
                   s = new ArrayList<IPSCatalogSummary>();
                }

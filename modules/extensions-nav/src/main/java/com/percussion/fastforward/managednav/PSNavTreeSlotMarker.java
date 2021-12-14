@@ -17,23 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.managednav;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import com.percussion.cms.IPSCmsErrors;
 import com.percussion.cms.PSCmsException;
@@ -50,6 +38,18 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.IPSServerErrors;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * <p>
@@ -334,7 +334,7 @@ public class PSNavTreeSlotMarker extends PSDefaultExtension
    /**
     * The logger for this class
     */
-   private static final Logger ms_log = Logger
+   private static final Logger ms_log = LogManager
          .getLogger(PSNavTreeSlotMarker.class);
 
    /**

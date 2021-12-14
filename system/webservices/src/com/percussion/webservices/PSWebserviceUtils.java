@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.PSAaRelationship;
@@ -40,6 +41,7 @@ import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipConfigSet;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.security.PSUserEntry;
@@ -47,6 +49,7 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
+import com.percussion.server.cache.IPSFolderRelationshipCache;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.server.config.PSConfigManager;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
@@ -61,7 +64,6 @@ import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.content.data.PSAutoTranslation;
-import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
@@ -88,6 +90,7 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.assembly.IPSAssemblyDesignWs;
@@ -108,8 +111,8 @@ import com.percussion.webservices.ui.PSUiWsLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -121,6 +124,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 
@@ -131,8 +135,7 @@ public class PSWebserviceUtils
 {
    
    
-   private static Log log = LogFactory
-         .getLog(PSWebserviceUtils.class);
+   private static final Logger log = LogManager.getLogger(IPSConstants.WEBSERVICES_LOG);
    
    /**
     * Converts the supplied catalog summaries into object summaries and adds the
@@ -145,14 +148,13 @@ public class PSWebserviceUtils
     * @return the object summaries with ACL and the lock information set if the
     * cataloged object is locked, never <code>null</code>.
     */
-   @SuppressWarnings("unchecked")
    public static List<IPSCatalogSummary> toObjectSummaries(Collection objects)
    {
 
       if (objects.isEmpty())
-         return Collections.EMPTY_LIST;
+         return Collections.emptyList();
 
-      Map<IPSGuid,IPSCatalogSummary> summaries = new HashMap<IPSGuid,IPSCatalogSummary>();
+      Map<IPSGuid,IPSCatalogSummary> summaries = new HashMap<>();
 
       for (Object obj : objects)
       {
@@ -164,7 +166,7 @@ public class PSWebserviceUtils
       }
 
       IPSAclService service = PSAclServiceLocator.getAclService();
-      Map<IPSGuid,IPSAcl> objectAcls = new HashMap<IPSGuid,IPSAcl>();
+      Map<IPSGuid,IPSAcl> objectAcls = new HashMap<>();
 
       for(IPSGuid objectGuid : summaries.keySet()) {
          objectAcls.put(objectGuid, service.loadAclForObject(objectGuid));
@@ -196,20 +198,20 @@ public class PSWebserviceUtils
 
       IPSObjectLockService lockService = PSObjectLockServiceLocator
             .getLockingService();
-      List<PSObjectLock> locks = new ArrayList<PSObjectLock>();
+      List<PSObjectLock> locks = new ArrayList<>();
       if (!objIds.isEmpty())
       {
          locks = lockService.findLocksByObjectIds(objIds, null, null);
       }
 
       // add nulls for missing locks
-      Map<IPSGuid, PSObjectLock> guidToLock = new HashMap<IPSGuid, PSObjectLock>();
+      Map<IPSGuid, PSObjectLock> guidToLock = new HashMap<>();
       for (PSObjectLock lock : locks)
       {
          guidToLock.put(lock.getObjectId(), lock);
       }
 
-      HashMap<IPSGuid,PSObjectSummary> summaries = new HashMap<IPSGuid,PSObjectSummary>();
+      HashMap<IPSGuid,PSObjectSummary> summaries = new HashMap<>();
       IPSAclService aclService = PSAclServiceLocator.getAclService();
 
       for (IPSGuid catGuid : values.keySet())
@@ -243,7 +245,7 @@ public class PSWebserviceUtils
          List<PSObjectLock> locks) throws PSErrorResultsException
    {
       // prepare the id lists by object type
-      Map<PSTypeEnum, List<IPSGuid>> idsByType = new HashMap<PSTypeEnum, List<IPSGuid>>();
+      Map<PSTypeEnum, List<IPSGuid>> idsByType = new HashMap<>();
       for (PSObjectLock lock : locks)
       {
          IPSGuid id = lock.getObjectId();
@@ -252,14 +254,14 @@ public class PSWebserviceUtils
          List<IPSGuid> ids = idsByType.get(type);
          if (ids == null)
          {
-            ids = new ArrayList<IPSGuid>();
+            ids = new ArrayList<>();
             idsByType.put(type, ids);
          }
          ids.add(id);
       }
 
       // now process the various types and build the summaries
-      List<PSObjectSummary> summaries = new ArrayList<PSObjectSummary>();
+      List<PSObjectSummary> summaries = new ArrayList<>();
       for (PSTypeEnum type : idsByType.keySet())
       {
          List<IPSGuid> ids = idsByType.get(type);
@@ -319,9 +321,9 @@ public class PSWebserviceUtils
          switch (type)
          {
             case ACL:
-               return new ArrayList<IPSCatalogSummary>(loadAcls(ids));
+               return new ArrayList<>(loadAcls(ids));
             case ACTION:
-               return new ArrayList<IPSCatalogSummary>(uiService.loadActions(
+               return new ArrayList<>(uiService.loadActions(
                      ids, false, false, null, null));
             case AUTO_TRANSLATIONS:
                List<PSAutoTranslation> list = new ArrayList();
@@ -334,28 +336,28 @@ public class PSWebserviceUtils
                {
                   // Should not happen since we do not want to lock
                }
-               return new ArrayList<IPSCatalogSummary>(list);
+               return new ArrayList<>(list);
             case COMMUNITY_DEF:
-               return new ArrayList<IPSCatalogSummary>(securityService
+               return new ArrayList<>(securityService
                      .loadCommunities(ids, false, false, null, null));
             case DISPLAY_FORMAT:
-               return new ArrayList<IPSCatalogSummary>(uiService
+               return new ArrayList<>(uiService
                      .loadDisplayFormats(ids, false, false, null, null));
             case HIERARCHY_NODE:
-               return new ArrayList<IPSCatalogSummary>(uiService
+               return new ArrayList<>(uiService
                      .loadHierachyNodes(ids, false, false, null, null));
             case KEYWORD_DEF:
-               return new ArrayList<IPSCatalogSummary>(contentService
+               return new ArrayList<>(contentService
                      .loadKeywords(ids, false, false, null, null));
             case LOCALE:
-               return new ArrayList<IPSCatalogSummary>(contentService
+               return new ArrayList<>(contentService
                      .loadLocales(ids, false, false, null, null));
             case SEARCH_DEF:
-               return new ArrayList<IPSCatalogSummary>(uiService.loadSearches(
+               return new ArrayList<>(uiService.loadSearches(
                      ids, false, false, null, null));
             case SLOT:
             {
-               List<IPSCatalogSummary> summaries = new ArrayList<IPSCatalogSummary>();
+               List<IPSCatalogSummary> summaries = new ArrayList<>();
                for (IPSTemplateSlot slot : assemblyService.loadSlots(ids,
                      false, false, null, null))
                {
@@ -364,23 +366,23 @@ public class PSWebserviceUtils
                return summaries;
             }
             case TEMPLATE:
-               return new ArrayList<IPSCatalogSummary>(assemblyService
+               return new ArrayList<>(assemblyService
                      .loadAssemblyTemplates(ids, false, false, null, null));
             case VIEW_DEF:
-               return new ArrayList<IPSCatalogSummary>(uiService.loadViews(
+               return new ArrayList<>(uiService.loadViews(
                      ids, false, false, null, null));
             case NODEDEF:
-               return new ArrayList<IPSCatalogSummary>(contentService
+               return new ArrayList<>(contentService
                      .loadContentTypes(ids, false, false, null, null));
             case RELATIONSHIP_CONFIGNAME:
-               return new ArrayList<IPSCatalogSummary>(systemService
+               return new ArrayList<>(systemService
                      .loadRelationshipTypes(ids, false, false, null, null));
             case ITEM_FILTER:
-               return new ArrayList<IPSCatalogSummary>(systemService
+               return new ArrayList<>(systemService
                      .loadItemFilters(ids, false, false, null, null));
             case CONFIGURATION:
             {
-               List<IPSCatalogSummary> summaries = new ArrayList<IPSCatalogSummary>();
+               List<IPSCatalogSummary> summaries = new ArrayList<>();
                IPSGuid id = ids.get(0);
                if (id.longValue() == PSContentEditorSharedDef.SHARED_DEF_ID)
                   summaries.add(new PSObjectSummary(id,
@@ -437,7 +439,7 @@ public class PSWebserviceUtils
             default:
                throw new UnsupportedOperationException(
                      "the supplied id specifies an unsupported object type: "
-                           + type.toString());
+                           + type);
          }
       }
       catch (PSErrorResultsException e)
@@ -447,11 +449,8 @@ public class PSWebserviceUtils
 
          // copy all success results from the one catched
          Map<IPSGuid, Object> results = e.getResults();
-         Iterator resIter = results.entrySet().iterator();
-         while (resIter.hasNext())
-         {
-            Map.Entry entry = (Map.Entry) resIter.next();
-            newException.addResult((IPSGuid) entry.getKey(), entry.getValue());
+         for (Map.Entry<IPSGuid, Object> ipsGuidObjectEntry : results.entrySet()) {
+            newException.addResult( ipsGuidObjectEntry.getKey(), ipsGuidObjectEntry.getValue());
          }
 
          // deal with errors now
@@ -485,7 +484,7 @@ public class PSWebserviceUtils
 
    /**
     * Convenience method that wraps the guid and version in an array and calls
-    * {@link #createLocks(IPSGuid[], String, String, Integer[], boolean)}.
+    * {@link #createLocks(List, String, String, List, boolean)}.
     * 
     * @param version May be <code>null</code> if the object doesn't support
     * versions.
@@ -540,9 +539,8 @@ public class PSWebserviceUtils
       }
       catch (PSLockException e)
       {
-         PSLockErrorException error = new PSLockErrorException(e.getResults(),
+         throw new PSLockErrorException(e.getResults(),
                e.getErrors());
-         throw error;
       }
    }
 
@@ -676,7 +674,9 @@ public class PSWebserviceUtils
       }
       catch (PSLockException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
          int code = IPSWebserviceErrors.SAVE_FAILED;
          PSDesignGuid guid = new PSDesignGuid(id);
          PSErrorException error = new PSErrorException(code,
@@ -688,7 +688,7 @@ public class PSWebserviceUtils
    }
 
    /**
-    * This method has been moved
+    * This method has been moved (?? where to ??)
     * 
     * @param id The id to check, may not be <code>null</code>.
     * 
@@ -701,9 +701,13 @@ public class PSWebserviceUtils
       if (depTypes != null)
       {
          int code = IPSWebserviceErrors.DELETE_FAILED_DEPENDENTS;
+         PSTypeEnum type = PSTypeEnum.valueOf(id.getType());
+         String displayName = "Undefined";
+         if(type!=null){
+            displayName = type.getDisplayName();
+         }
          error = new PSErrorException(code, PSWebserviceErrors
-               .createErrorMessage(code, PSTypeEnum.valueOf(id.getType())
-                     .getDisplayName(), id.longValue(), depTypes),
+               .createErrorMessage(code,displayName, id.longValue(), depTypes),
                ExceptionUtils.getFullStackTrace(new Exception()));
 
       }
@@ -733,9 +737,9 @@ public class PSWebserviceUtils
       {
          int code = IPSWebserviceErrors.DELETE_ASSOCIATION_FAILED_DEPENDENTS;
          error = new PSErrorException(code, PSWebserviceErrors
-               .createErrorMessage(code, PSTypeEnum.valueOf(parent.getType())
-                     .getDisplayName(), parent.longValue(), PSTypeEnum
-                     .valueOf(children.get(0).getType()).getDisplayName(),
+               .createErrorMessage(code, Objects.requireNonNull(PSTypeEnum.valueOf(parent.getType()))
+                     .getDisplayName(), parent.longValue(), Objects.requireNonNull(PSTypeEnum
+                               .valueOf(children.get(0).getType())).getDisplayName(),
                      PSStringUtils.listToString(pair.getFirst(), ", "), pair
                            .getSecond()), ExceptionUtils
                .getFullStackTrace(new Exception()));
@@ -819,22 +823,26 @@ public class PSWebserviceUtils
     * 
     * @throws PSErrorException if the specified item does not exist.
     */
-   public static PSComponentSummary getItemSummary(int id)
+   public static PSComponentSummary getItemSummary(int id,boolean refresh)
       throws PSErrorException
    {
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-      PSComponentSummary summary = cms.loadComponentSummary(id);
+      PSComponentSummary summary = cms.loadComponentSummary(id,refresh);
       if (summary == null)
       {
-         int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
-         PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code,
+         throw new PSErrorException(IPSWebserviceErrors.OBJECT_NOT_FOUND,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.OBJECT_NOT_FOUND,
                      PSComponentSummary.class.getName(), id), ExceptionUtils
                      .getFullStackTrace(new Exception()));
-         throw error;
       }
 
       return summary;
+   }
+
+   public static PSComponentSummary getItemSummary(int id)
+           throws PSErrorException
+   {
+      return getItemSummary(id,false);
    }
 
    /**
@@ -943,23 +951,19 @@ public class PSWebserviceUtils
                .getAssemblyService();
          if (isSlot)
          {
-            IPSTemplateSlot slot = service.findSlotByName(name);
-            return slot;
+            return service.findSlotByName(name);
          }
          else
          {
-            IPSAssemblyTemplate template = service.findTemplateByName(name);
-            return template;
+            return service.findTemplateByName(name);
          }
       }
       catch (PSAssemblyException e)
       {
-         e.printStackTrace();
-         int code = IPSWebserviceErrors.OBJECT_NOT_FOUND_BY_NAME;
-         PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code, PSSlotType.class
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         throw new PSErrorException(IPSWebserviceErrors.OBJECT_NOT_FOUND_BY_NAME,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.OBJECT_NOT_FOUND_BY_NAME, PSSlotType.class
                      .getName(), name), ExceptionUtils.getFullStackTrace(e));
-         throw error;
       }
    }
 
@@ -1014,14 +1018,13 @@ public class PSWebserviceUtils
       {
          return service.loadSlot(slotId);
       }
-      catch (PSNotFoundException e)
+      catch (PSAssemblyException e)
       {
-         int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
-         PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code,
+         throw new PSErrorException(IPSWebserviceErrors.OBJECT_NOT_FOUND,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.OBJECT_NOT_FOUND,
                      IPSTemplateSlot.class.getName(), slotId), ExceptionUtils
                      .getFullStackTrace(e));
-         throw error;
+
       }
    }
 
@@ -1052,13 +1055,10 @@ public class PSWebserviceUtils
       }
       catch (PSAssemblyException e)
       {
-         int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
-         PSDesignGuid guid = new PSDesignGuid(templateId);
-         PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code,
-                     IPSAssemblyTemplate.class.getName(), guid.getValue()),
+         throw new PSErrorException(IPSWebserviceErrors.OBJECT_NOT_FOUND,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.OBJECT_NOT_FOUND,
+                     IPSAssemblyTemplate.class.getName(), new PSDesignGuid(templateId).getValue()),
                ExceptionUtils.getFullStackTrace(e));
-         throw error;
       }
    }
 
@@ -1086,13 +1086,11 @@ public class PSWebserviceUtils
       }
       catch (PSAssemblyException e)
       {
-         int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
-         PSDesignGuid guid = new PSDesignGuid(templateId);
-         PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code,
-                     IPSAssemblyTemplate.class.getName(), guid.getValue()),
+
+        throw new PSErrorException(IPSWebserviceErrors.OBJECT_NOT_FOUND,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.OBJECT_NOT_FOUND,
+                     IPSAssemblyTemplate.class.getName(), new PSDesignGuid(templateId).getValue()),
                ExceptionUtils.getFullStackTrace(e));
-         throw error;
       }
    }
 
@@ -1112,7 +1110,7 @@ public class PSWebserviceUtils
       catch (PSCmsException e)
       {
          // not possible in a healthy server
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new IllegalStateException("Failed to get next relationship id",
                e);
       }
@@ -1128,7 +1126,7 @@ public class PSWebserviceUtils
     */
    public static void validateLegacyGuid(IPSGuid id)
    {
-      if (id == null || (!(id instanceof PSLegacyGuid)))
+      if ((!(id instanceof PSLegacyGuid)))
          throw new IllegalArgumentException("id must be an instance of "
                + PSLegacyGuid.class.getName());
    }
@@ -1168,20 +1166,22 @@ public class PSWebserviceUtils
          PSRelationshipSet rels = new PSRelationshipSet();
          rels.add(rel);
          getRelationshipProcessor().save(rels);
-         PSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
-         cache.update(rels);
+         IPSFolderRelationshipCache cache = PSFolderRelationshipCache.getInstance();
+         if(cache!=null) {
+            cache.update(rels);
+         }else{
+            log.warn("Folder relationship cache is not initialized. This may result in performance degradation of the instance.");
+         }
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
 
-         int errorCode = IPSWebserviceErrors.FAILED_SAVE_RELATIONSHIPS;
-         PSErrorException error = new PSErrorException(errorCode,
-               PSWebserviceErrors.createErrorMessage(errorCode, e
+         throw new PSErrorException(IPSWebserviceErrors.FAILED_SAVE_RELATIONSHIPS,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_SAVE_RELATIONSHIPS, e
                      .getLocalizedMessage()), ExceptionUtils
                      .getFullStackTrace(e));
 
-         throw error;
       }
 
    }
@@ -1209,7 +1209,11 @@ public class PSWebserviceUtils
          }
          catch (PSErrorException e)
          {
-            results.addError(rel.getGuid(), e);
+            if(rel != null) {
+               results.addError(rel.getGuid(), e);
+            }else{
+               results.addSuppressed(e);
+            }
          }
       }
       if (results.hasErrors())
@@ -1240,15 +1244,11 @@ public class PSWebserviceUtils
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+        log.error(PSExceptionUtils.getMessageForLog(e));
 
-         int errorCode = IPSWebserviceErrors.FAILED_SAVE_RELATIONSHIPS;
-         PSErrorException error = new PSErrorException(errorCode,
-               PSWebserviceErrors.createErrorMessage(errorCode, e
-                     .getLocalizedMessage()), ExceptionUtils
+         throw new PSErrorException(IPSWebserviceErrors.FAILED_SAVE_RELATIONSHIPS,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_SAVE_RELATIONSHIPS, PSExceptionUtils.getMessageForLog(e)), ExceptionUtils
                      .getFullStackTrace(e));
-
-         throw error;
       }
    }
 
@@ -1270,7 +1270,7 @@ public class PSWebserviceUtils
       if (ids == null || ids.isEmpty())
          throw new IllegalArgumentException("ids may not be null or empty.");
 
-      List<PSRelationship> relationships = new ArrayList<PSRelationship>();
+      List<PSRelationship> relationships = new ArrayList<>();
       PSErrorsException results = new PSErrorsException();
 
       // load the relationship instances from the ids
@@ -1287,26 +1287,21 @@ public class PSWebserviceUtils
          }
          catch (PSException e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
 
-            int errorCode = IPSWebserviceErrors.FAILED_LOAD_RELATIONSHIP;
-            PSErrorException error = new PSErrorException(errorCode,
-                  PSWebserviceErrors.createErrorMessage(errorCode, id
-                        .longValue(), e.getLocalizedMessage()), ExceptionUtils
-                        .getFullStackTrace(e));
+            throw new PSErrorException(IPSWebserviceErrors.FAILED_LOAD_RELATIONSHIP,
+                  PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_LOAD_RELATIONSHIP, id
+                        .longValue(), PSExceptionUtils.getMessageForLog(e)), PSExceptionUtils.getDebugMessageForLog(e));
 
-            throw error;
          }
+
          if (rel == null)
          {
-            int errorCode = IPSWebserviceErrors.CANNOT_FIND_RELATIONSHIP;
-            PSErrorException error = new PSErrorException(errorCode,
-                  PSWebserviceErrors.createErrorMessage(errorCode, id
-                        .longValue()), ExceptionUtils
-                        .getFullStackTrace(new Exception()));
-
-            throw error;
+            throw new PSErrorException(IPSWebserviceErrors.CANNOT_FIND_RELATIONSHIP,
+                  PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.CANNOT_FIND_RELATIONSHIP, id
+                        .longValue()), PSExceptionUtils.getDebugMessageForLog(new Exception()));
          }
+
          relationships.add(rel);
       }
 
@@ -1324,12 +1319,10 @@ public class PSWebserviceUtils
          }
          catch (PSCmsException e)
          {
-            e.printStackTrace();
-            int errorCode = IPSWebserviceErrors.FAILED_DELETE_RELATIONSHIPS;
-            PSErrorException error = new PSErrorException(errorCode,
-                  PSWebserviceErrors.createErrorMessage(errorCode, e
-                        .getLocalizedMessage()), ExceptionUtils
-                        .getFullStackTrace(e));
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            PSErrorException error = new PSErrorException(IPSWebserviceErrors.FAILED_DELETE_RELATIONSHIPS,
+                  PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_DELETE_RELATIONSHIPS,
+                          PSExceptionUtils.getMessageForLog(e)), PSExceptionUtils.getDebugMessageForLog(e));
 
             results.addError(r.getGuid(), error);
          }
@@ -1359,12 +1352,11 @@ public class PSWebserviceUtils
             .getId());
       if (!isItemCheckedOutToUser(summary))
       {
-         int errorCode = IPSWebserviceErrors.ITEM_NOT_CHECKOUT_BY_USER;
-         PSErrorException error = new PSErrorException(errorCode,
-               PSWebserviceErrors.createErrorMessage(errorCode, locator
+
+         throw new PSErrorException(IPSWebserviceErrors.ITEM_NOT_CHECKOUT_BY_USER,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.ITEM_NOT_CHECKOUT_BY_USER, locator
                      .getId(), getUserName()), ExceptionUtils
                      .getFullStackTrace(new Exception()));
-         throw error;
       }
       else
       {
@@ -1447,7 +1439,7 @@ public class PSWebserviceUtils
     * @return <code>true</code> if item is checked out to the supplied user,
     * <code>false</code> otherwise.
     */
-   static public boolean isItemCheckedOutToUser(PSComponentSummary item)
+   public static boolean isItemCheckedOutToUser(PSComponentSummary item)
    {
       if (item == null)
       {
@@ -1493,16 +1485,13 @@ public class PSWebserviceUtils
     * @return <code>true</code> if item is checked out to someone else, distinct of current user,
     * <code>false</code> otherwise.
     */
-   static public boolean isItemCheckedOutToSomeoneElse(PSComponentSummary item)
+   public static boolean isItemCheckedOutToSomeoneElse(PSComponentSummary item)
    {
       if (item == null)
       {
          throw new IllegalArgumentException("item must not be null");
       }
-      if (StringUtils.isBlank(item.getCheckoutUserName()) || isItemCheckedOutToUser(item))
-         return false;
-      
-      return true;
+      return !StringUtils.isBlank(item.getCheckoutUserName()) && !isItemCheckedOutToUser(item);
    }
 
 
@@ -1531,14 +1520,15 @@ public class PSWebserviceUtils
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
-         int code = IPSWebserviceErrors.LOAD_OBJECTS_ERROR;
-         PSErrorException error = new PSErrorException(code,
-               PSWebserviceErrors.createErrorMessage(code,
-                     PSRelationship.class.getName(), filter.toString(), e
-                           .getLocalizedMessage()), ExceptionUtils
-                     .getFullStackTrace(e));
-         throw error;
+        log.error(PSExceptionUtils.getMessageForLog(e));
+
+         throw new PSErrorException(IPSWebserviceErrors.LOAD_OBJECTS_ERROR,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.LOAD_OBJECTS_ERROR,
+                     PSRelationship.class.getName(),
+                       filter.toString(),
+                       PSExceptionUtils.getMessageForLog(e)),
+                 PSExceptionUtils.getDebugMessageForLog(e));
+
       }
    }
 
@@ -1569,14 +1559,13 @@ public class PSWebserviceUtils
       // set relationship id
       if (src.getId() != null)
       {
-         PSGuid id = new PSGuid(PSTypeEnum.RELATIONSHIP, src.getId()
-               .longValue());
+         PSGuid id = new PSGuid(PSTypeEnum.RELATIONSHIP, src.getId());
          filter.setRelationshipId(id.getUUID());
       }
       // set owner
       if (src.getOwner() != null)
       {
-         PSLegacyGuid id = new PSLegacyGuid(src.getOwner().longValue());
+         PSLegacyGuid id = new PSLegacyGuid(src.getOwner());
          PSLocator owner;
          if (src.isLimitToOwnerRevisions())
             owner = getItemLocator(id);
@@ -1587,7 +1576,7 @@ public class PSWebserviceUtils
       // set dependents
       if (src.getDependent() != null && src.getDependent().length > 0)
       {
-         List<PSLocator> ids = new ArrayList<PSLocator>();
+         List<PSLocator> ids = new ArrayList<>();
          for (long id : src.getDependent())
          {
             PSLegacyGuid guid = new PSLegacyGuid(id);
@@ -1608,7 +1597,7 @@ public class PSWebserviceUtils
       if (src.getDependentContentType() != null
             && src.getDependentContentType().length > 0)
       {
-         List<Long> contentTypes = new ArrayList<Long>();
+         List<Long> contentTypes = new ArrayList<>();
          for (Reference contentType : src.getDependentContentType())
          {
             PSGuid id = new PSGuid(PSTypeEnum.NODEDEF, contentType.getId());
@@ -1699,17 +1688,16 @@ public class PSWebserviceUtils
           wf = svc.loadWorkflow(gmgr.makeGuid(workflowId,
             PSTypeEnum.WORKFLOW));
       }catch(Exception e){
-         log.error("Unable to load workflow with id: " + workflowId, e);
+         log.error("Unable to load workflow with id: {} Error:{}" , workflowId,
+                 PSExceptionUtils.getMessageForLog(e));
       }
       
       if (wf == null)
       {
-         int errorCode = IPSWebserviceErrors.FAILED_LOAD_WORKFLOW;
-         PSErrorException error = new PSErrorException(errorCode,
-               PSWebserviceErrors.createErrorMessage(errorCode, new Integer(
-                     workflowId)), ExceptionUtils
+         throw new PSErrorException(IPSWebserviceErrors.FAILED_LOAD_WORKFLOW,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_LOAD_WORKFLOW,
+                     workflowId), ExceptionUtils
                      .getFullStackTrace(new Exception()));
-         throw error;
       }
 
       return wf;
@@ -1734,12 +1722,10 @@ public class PSWebserviceUtils
             return s;
       }
 
-      int errorCode = IPSWebserviceErrors.CANNOT_FIND_WORKFLOW_STATE_ID;
-      PSErrorException error = new PSErrorException(errorCode,
-            PSWebserviceErrors.createErrorMessage(errorCode, id, wf.getGUID()
+      throw new PSErrorException(IPSWebserviceErrors.CANNOT_FIND_WORKFLOW_STATE_ID,
+            PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.CANNOT_FIND_WORKFLOW_STATE_ID, id, wf.getGUID()
                   .longValue(), wf.getName()), ExceptionUtils
                   .getFullStackTrace(new Exception()));
-      throw error;
    }
 
    /**
@@ -1762,14 +1748,14 @@ public class PSWebserviceUtils
 
       PSRequest req = getRequest();
 
-      HashMap oldParams = req.getParameters();
-      req.setParameters(new HashMap());
+      Map<String, Object> oldParams = req.getParameters();
+      req.setParameters( Collections.synchronizedMap(new HashMap<>()));
 
       String addhocList = null;
       // concatenate a list of user names with ';' delimiter
       if (addhocUsers != null && (!addhocUsers.isEmpty()))
       {
-         StringBuffer users = new StringBuffer();
+         StringBuilder users = new StringBuilder();
          for (int i = 0; i < addhocUsers.size(); i++)
          {
             if (i > 0)
@@ -1787,13 +1773,12 @@ public class PSWebserviceUtils
       }
       catch (PSException e)
       {
-         int errorCode = IPSWebserviceErrors.FAILED_TRANSITION_ITEM;
          Throwable rootCause = PSExceptionHelper.findRootCause(e,false);
-         PSErrorException error = new PSErrorException(errorCode,
-               PSWebserviceErrors.createErrorMessage(errorCode, trigger, id),
+         PSErrorException error = new PSErrorException(IPSWebserviceErrors.FAILED_TRANSITION_ITEM,
+               PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.FAILED_TRANSITION_ITEM, trigger, id),
                ExceptionUtils.getFullStackTrace(rootCause),e);
-         PSErrorException error1 = new PSErrorException("Failed transition due to server error.",error);
-         throw error1;
+         throw new PSErrorException("Failed transition due to server error.",error);
+
       }
       finally
       {
@@ -1838,7 +1823,7 @@ public class PSWebserviceUtils
          throw new IllegalArgumentException(
                "longIds must not be null or empty.");
 
-      List<IPSGuid> ids = new ArrayList<IPSGuid>(longIds.length);
+      List<IPSGuid> ids = new ArrayList<>(longIds.length);
       for (long guidId : longIds)
          ids.add(new PSLegacyGuid(guidId));
 
@@ -1856,7 +1841,7 @@ public class PSWebserviceUtils
       if (ids == null || ids.length == 0)
          throw new IllegalArgumentException("ids cannot be null or empty");
 
-      List<IPSGuid> guids = new ArrayList<IPSGuid>(ids.length);
+      List<IPSGuid> guids = new ArrayList<>(ids.length);
       for (long id : ids)
          guids.add(new PSDesignGuid(id));
 
@@ -1881,7 +1866,7 @@ public class PSWebserviceUtils
          throw new IllegalArgumentException("aclIds cannot be null or empty");
 
       IPSAclService aclService = PSAclServiceLocator.getAclService();
-      List<PSAclImpl> aclList = new ArrayList<PSAclImpl>(aclIds.size());
+      List<PSAclImpl> aclList = new ArrayList<>(aclIds.size());
       PSErrorResultsException results = new PSErrorResultsException();
       for (IPSGuid id : aclIds)
       {
@@ -1944,7 +1929,7 @@ public class PSWebserviceUtils
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       List<IPSTemplateSlot> allSlots = service.findSlotsByName(null);
-      List<IPSTemplateSlot> modSlots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> modSlots = new ArrayList<>();
       for (IPSTemplateSlot slot : allSlots)
       {
          Collection<PSPair<IPSGuid, IPSGuid>> slotAssociations = slot
@@ -1971,7 +1956,7 @@ public class PSWebserviceUtils
       {
          IPSObjectLockService lockService = PSObjectLockServiceLocator
                .getLockingService();
-         List<IPSGuid> slotLocks = new ArrayList<IPSGuid>();
+         List<IPSGuid> slotLocks = new ArrayList<>();
          try
          {
             for (IPSTemplateSlot slot : modSlots)
@@ -2036,8 +2021,7 @@ public class PSWebserviceUtils
             .getPrivateObject(IPSHtmlParameters.SYS_COMMUNITY);
       if (StringUtils.isNotBlank(usercomm))
       {
-         int communityId = Integer.parseInt(usercomm);
-         return communityId;
+         return Integer.parseInt(usercomm);
       }
       else
       {
@@ -2056,9 +2040,7 @@ public class PSWebserviceUtils
    {
       PSRequest req = getRequest();
       IPSRequestContext ctx = new PSRequestContext(req);
-      List<String> roles = new ArrayList<String>();
-      roles.addAll(ctx.getSubjectRoles());
-      return roles;
+      return new ArrayList<>(ctx.getSubjectRoles());
 
    }
    /**
@@ -2071,7 +2053,7 @@ public class PSWebserviceUtils
     */
    public static String getUserName()
    {
-      String user = (String) PSRequestInfo
+      String user = (String) PSRequestInfoBase
             .getRequestInfo(PSRequestInfo.KEY_USER);
 
       if (StringUtils.isBlank(user))
@@ -2127,11 +2109,10 @@ public class PSWebserviceUtils
       }
       catch (PSException e)
       {
-         e.printStackTrace();
-         PSErrorException error = new PSErrorException(errorCode,
+         throw new PSErrorException(errorCode,
             PSWebserviceErrors.createErrorMessage(errorCode, e
                .getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
-         throw error;
+
       }
    }
    
@@ -2148,8 +2129,7 @@ public class PSWebserviceUtils
    public static boolean isRootCauseOfType(PSErrorException e, int errorCode)
    {
       Throwable rootCause = PSExceptionHelper.findRootCause(e, true);      
-      return (rootCause != null && (rootCause instanceof PSException) &&
-            ((PSException) rootCause).getErrorCode() == errorCode);
+      return rootCause instanceof PSException && ((PSException) rootCause).getErrorCode() == errorCode;
    }
 
    
@@ -2163,7 +2143,7 @@ public class PSWebserviceUtils
     * <p>
     * Initialized when class is loaded, then never modified.
     */
-   private static Map<PSRelationshipFilterCategory, String> ms_wsCategoryToRelationshipCategory = new HashMap<PSRelationshipFilterCategory, String>();
+   private static final Map<PSRelationshipFilterCategory, String> ms_wsCategoryToRelationshipCategory = new HashMap<>();
 
    static
    {

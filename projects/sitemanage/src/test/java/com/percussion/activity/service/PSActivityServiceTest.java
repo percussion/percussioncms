@@ -17,17 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.activity.service;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.injectDependencies;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,12 +39,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.injectDependencies;
 
 @Category(IntegrationTest.class)
 public class PSActivityServiceTest extends ServletTestCase
 {
+
+    private static final Logger log = LogManager.getLogger(PSActivityServiceTest.class);
     private boolean hasStarted = false;
     private IPSActivityService activityService;
     
@@ -146,7 +150,8 @@ public class PSActivityServiceTest extends ServletTestCase
        }
        catch (Exception e)
        {
-          e.printStackTrace();
+           log.error(PSExceptionUtils.getMessageForLog(e));
+           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
     }
     

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,12 @@ package com.percussion.tools.simple;
 
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,11 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 /**
  * This class is used to create template from an Content Editor application
  * XML file and write it to a new file(target).  A DTD must be specified to
@@ -53,6 +54,9 @@ import org.xml.sax.SAXException;
  */
 public class PSCETemplateGenerator
 {
+
+   private static final Logger log = LogManager.getLogger(PSCETemplateGenerator.class);
+
    /**
     * Extracts the &lt;PSXContentEditor> element from the source file, modifies
     * the element to use that as template and writes the modified element to the
@@ -106,15 +110,10 @@ public class PSCETemplateGenerator
             "dtd must be specified to validate content editor template");
 
       String result = null;
-      FileInputStream in = null;
-      FileOutputStream out = null;
-      try
-      {
+
          // load source doc
-         in = new FileInputStream(source);
+      try (FileInputStream in = new FileInputStream(source)){
          Document doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
-         in.close();
-         in = null;
 
          // Check whether content editor element exists or not
          PSXmlTreeWalker tree = new PSXmlTreeWalker(doc);
@@ -123,14 +122,13 @@ public class PSCETemplateGenerator
          Element el = tree.getNextElement(CE_ROOT_ELEMENT_NAME);
          if (el == null)
             throw new IllegalArgumentException(
-               "Content editor element not found in source to create template");
+                    "Content editor element not found in source to create template");
 
-         if(hasMultiPropertySimpleChild(doc))
-         {
+         if (hasMultiPropertySimpleChild(doc)) {
             result = "Failed to create template for '" + source.getPath() + "'\n";
 
             result += "Reason: Templates do not support MultiProperty Simple " +
-               " Child field sets.";
+                    " Child field sets.";
 
             throw new PSCreateTemplateException(result);
          }
@@ -146,8 +144,8 @@ public class PSCETemplateGenerator
          Map addList = new HashMap();
          Document dummyDoc = PSXmlDocumentBuilder.createXmlDocument();
          Element tableRef = dummyDoc.createElement(TABLE_REFERENCE_ELEMENT);
-         tableRef.setAttribute( TABLE_REFERENCE_NAME_ATTRIBUTE,
-            DUMMY_TABLE_REFERENCE_NAME);
+         tableRef.setAttribute(TABLE_REFERENCE_NAME_ATTRIBUTE,
+                 DUMMY_TABLE_REFERENCE_NAME);
          addList.put(TABLE_SET_ELEMENT, tableRef);
 
          /* Tell the extractor to remove the elements in exclude list, add
@@ -156,41 +154,29 @@ public class PSCETemplateGenerator
           * If the document type is specified, it uses the given document type
           * to write it to the target, otherwise it uses the specified dtd url.
           */
-         if(docTypePath == null || docTypePath.trim().length() == 0)
-         {
+         if (docTypePath == null || docTypePath.trim().length() == 0) {
             //Writes to the target with document type as given dtd url
-            result = PSXmlExtractor.extract( source, target,
-               CE_ROOT_ELEMENT_NAME, dtd, excludeList, addList, true);
-         }
-         else
-         {
+            result = PSXmlExtractor.extract(source, target,
+                    CE_ROOT_ELEMENT_NAME, dtd, excludeList, addList, true);
+         } else {
             //Writes to the target and validates the target with given dtd
-            result = PSXmlExtractor.extract( source, target,
-               CE_ROOT_ELEMENT_NAME, dtd, excludeList, addList, false);
+            result = PSXmlExtractor.extract(source, target,
+                    CE_ROOT_ELEMENT_NAME, dtd, excludeList, addList, false);
 
             //Adds the given document type and rewrites to the target.
-            if(result == null )
-            {
-               in = new FileInputStream(target);
-               doc = PSXmlDocumentBuilder.createXmlDocument(in, false);
-               in.close();
-               in = null;
-
-               out = new FileOutputStream(target);
-               PSXmlDocumentBuilder.write(doc, out);
+            if (result == null) {
+               try(FileInputStream in2 = new FileInputStream(target)) {
+                  doc = PSXmlDocumentBuilder.createXmlDocument(in2, false);
+                  try(FileOutputStream out2 = new FileOutputStream(target)) {
+                     PSXmlDocumentBuilder.write(doc, out2);
+                  }
+               }
             }
          }
-         if(result != null)
+         if (result != null)
             throw new PSCreateTemplateException(result);
       }
-      finally
-      {
-         if (in != null)
-         {
-            try {in.close();} catch (Exception e){}
-            try {out.close();} catch (Exception e){}
-         }
-      }
+
    }
 
    /**
@@ -321,7 +307,8 @@ public class PSCETemplateGenerator
       {
          System.out.println("Creation of template from " + source +
                " is failed:");
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

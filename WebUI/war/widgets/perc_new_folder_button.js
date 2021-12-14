@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,20 +30,19 @@
         var ut = $.perc_utils;
         var finder_path = ["", $.perc_paths.SITES_ROOT_NO_SLASH];
         var pitem = {};
-        var oldFolderName = null;
-        var btn = $("<a id='perc-finder-new-folder' class='perc-font-icon ui-disabled' href='#' title='"+I18N.message("perc.ui.new.folder.button@Click New Folder") + "'><span class='icon-plus'></span><span class='icon-folder-close'></span></a>")
-            .perc_button().click(function () {
-                createNewFolder();
+        var btn = $("<a id='perc-finder-new-folder' class='perc-font-icon ui-disabled' href='#' title='"+I18N.message("perc.ui.new.folder.button@Click New Folder") + "'><span class='icon-plus fas fa-plus'></span><span class='icon-folder-close fas fa-folder'></span></a>")
+            .perc_button().on("click",function (evt) {
+                createNewFolder(evt);
             });
 
 
         /**
          * Makes an ajax request to create the new folder. Passes the finder path.
          */
-        function createNewFolder(){
+        function createNewFolder(evt){
             //Check user access
             $.PercFolderHelper().getAccessLevelByPath(finder_path.join('/'),false,function(status, result){
-                if(status == $.PercFolderHelper().PERMISSION_ERROR || result == $.PercFolderHelper().PERMISSION_READ)
+                if(status === $.PercFolderHelper().PERMISSION_ERROR || result === $.PercFolderHelper().PERMISSION_READ)
                 {
                     $.perc_utils.alert_dialog({title: I18N.message("perc.ui.page.general@Warning"), content: I18N.message("perc.ui.new.folder.button@Permissions to Create Folder")});
                     return;
@@ -53,11 +52,11 @@
                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     $.PercPathService.createNewFolder(finder_path.join('/'),
                         function(status, result){
-                            if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                            if(status === $.PercServiceUtils.STATUS_SUCCESS)
                             {
                                 pitem = result;
                                 finder.refresh(function() {
-                                    var expanded = $(".perc-finder").css("visibility") == "visible";
+                                    var expanded = $(".perc-finder").css("visibility") === "visible";
                                     if(expanded){
                                         ut.makeFolderEditable(pitem.PathItem);
                                     }
@@ -116,10 +115,13 @@
         function enableButton(flag)
         {
             if(flag){
-                $( ".perc-finder-menu #perc-finder-new-folder" ).removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( createNewFolder );
+                $( ".perc-finder-menu #perc-finder-new-folder" ).removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        createNewFolder(evt);
+                    } );
             }
             else{
-                $( ".perc-finder-menu #perc-finder-new-folder" ).addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                $( ".perc-finder-menu #perc-finder-new-folder" ).addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
         }
 

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<tools>
+    <data key="version" type="number" value="2.0"/>
+    <toolbox scope="request">
+        <tool key="context" class="org.apache.velocity.tools.generic.ContextTool"/>
+        <tool key="link" class="org.apache.velocity.tools.generic.LinkTool"/>
+        <tool key="loop" class="org.apache.velocity.tools.generic.LoopTool"/>
+        <tool key="text" class="org.apache.velocity.tools.generic.ResourceTool"/>
+    </toolbox>
+    <toolbox scope="application">
+        <tool key="alternator" class="org.apache.velocity.tools.generic.AlternatorTool"/>
+        <tool key="class" class="org.apache.velocity.tools.generic.ClassTool"/>
+        <tool key="collection" class="org.apache.velocity.tools.generic.CollectionTool"/>
+        <tool key="date" class="org.apache.velocity.tools.generic.ComparisonDateTool"/>
+        <tool key="display" class="org.apache.velocity.tools.generic.DisplayTool"/>
+        <tool key="esc" class="org.apache.velocity.tools.generic.EscapeTool"/>
+        <tool key="field" class="org.apache.velocity.tools.generic.FieldTool"/>
+        <tool key="json" class="org.apache.velocity.tools.generic.JsonTool"/>
+ 		<tool key="list" class="com.percussion.extension.PSVelocityListTool"/>
+        <tool key="log" class="org.apache.velocity.tools.generic.LogTool"/>
+        <tool key="mark" class="org.apache.velocity.tools.generic.MarkupTool"/>
+        <tool key="math" class="org.apache.velocity.tools.generic.MathTool"/>
+        <tool key="number" class="org.apache.velocity.tools.generic.NumberTool"/>
+        <tool key="parser" class="org.apache.velocity.tools.generic.ValueParser"/>
+        <tool key="render" class="org.apache.velocity.tools.generic.RenderTool"/>
+        <tool key="sorter" class="org.apache.velocity.tools.generic.SortTool"/>
+        <tool key="xml" class="org.apache.velocity.tools.generic.XmlTool"/>  
+    </toolbox>
+</tools>

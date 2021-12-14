@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.design.impl;
 
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.utils.guid.IPSGuid;
@@ -31,7 +32,6 @@ import com.percussion.utils.guid.IPSGuid;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The design model manages {@link IPSLocationScheme} objects.
@@ -46,21 +46,18 @@ import java.util.Map;
 public class PSLocationSchemeModel extends PSDesignModel
 {
    @Override
-   public void delete(IPSGuid id)
-   {
+   public void delete(IPSGuid id) throws PSNotFoundException {
       IPSLocationScheme scheme = getSiteMgr().loadSchemeModifiable(id);
       getSiteMgr().deleteScheme(scheme);
    }
    
    @Override
-   public Object load(IPSGuid guid)
-   {
+   public Object load(IPSGuid guid) throws PSNotFoundException {
       return getSiteMgr().loadScheme(guid);
    }
 
    @Override
-   public Object loadModifiable(IPSGuid guid)
-   {
+   public Object loadModifiable(IPSGuid guid) throws PSNotFoundException {
       return getSiteMgr().loadSchemeModifiable(guid);
    }
 
@@ -79,7 +76,7 @@ public class PSLocationSchemeModel extends PSDesignModel
    @Override
    public Collection<String> findAllNames()
    {
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (IPSLocationScheme scheme : findAllSchemes())
       {
          names.add(scheme.getName());

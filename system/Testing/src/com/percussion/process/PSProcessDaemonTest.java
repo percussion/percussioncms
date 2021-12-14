@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -169,7 +169,7 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
    public void testMakeDirectories()
       throws Exception
    {
-      StringBuffer result = new StringBuffer(1000);
+      StringBuilder result = new StringBuilder(1000);
       List param = new ArrayList();
       param.add("/a/b/c/d");
       assertTrue(sendCommand("mkdir", param, result) == 0);
@@ -188,7 +188,7 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
       throws Exception
    {
       //first, set up a sample structure
-      StringBuffer result = new StringBuffer(1000);
+      StringBuilder result = new StringBuilder(1000);
       List param = new ArrayList();
       param.add("/x/y/z");
       assertTrue(sendCommand("mkdir", param, result) == 0);
@@ -238,7 +238,7 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
       throws Exception
    {
       //first, set up a sample structure
-      StringBuffer result = new StringBuffer(1000);
+      StringBuilder result = new StringBuilder(1000);
       List param = new ArrayList();
       String rootDir = "/checkexists";
       String sampleDir = rootDir + "/a";
@@ -292,7 +292,7 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
    public void testPut()
       throws Exception
    {
-      StringBuffer result = new StringBuffer(1000);
+      StringBuilder result = new StringBuilder(1000);
       List param = new ArrayList();
       param.add("/a");
       sendCommand("mkdir", param, result);
@@ -327,7 +327,7 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
    public void testInvalidCommand()
       throws Exception
    {
-      StringBuffer result = new StringBuffer(1000);
+      StringBuilder result = new StringBuilder(1000);
       List param = new ArrayList();
       param.add("param1");
       assertTrue(sendCommand("foobar", param, result) == -1);
@@ -343,7 +343,7 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
       throws Exception
    {
       // supply a non-existent file path
-      StringBuffer result = new StringBuffer(1000);
+      StringBuilder result = new StringBuilder(1000);
       assertTrue(get("/bad/path/processes.xml", result) > 0);
       assertTrue(result.toString().indexOf("FileNotFoundException") > 0);
       result.delete(0, result.length());
@@ -418,14 +418,14 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
 
    /**
     * Convenience method that packages the supplied path into a list and calls
-    * {@link #sendCommand(String, List, StringBuffer) sendCommand(list, 
+    * {@link #sendCommand(String, List, StringBuilder) sendCommand(list,
     * result)}.
     * 
     * @param path Assumed not <code>null</code> or empty.
     *
     * @throws Exception If the send fails for any reason.
     */
-   private int get(String path, StringBuffer result)
+   private int get(String path, StringBuilder result)
       throws Exception
    {
       List param = new ArrayList();
@@ -436,10 +436,10 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
       
    /**
     * Convenience method that calls {@link PSProcessDaemon#sendCommand(String, 
-    * int, String, List, StringBuffer) PSProcessDaemon.sendCommand("localhost",
+    * int, String, List, StringBuilder) PSProcessDaemon.sendCommand("localhost",
     * 8888, cmdName, params, result)}.
     */
-   private int sendCommand(String cmdName, List params, StringBuffer result)
+   private int sendCommand(String cmdName, List params, StringBuilder result)
       throws Exception
    {
       return PSProcessDaemon.sendCommand("localhost", 8888, cmdName, params, 
@@ -487,7 +487,7 @@ public class PSProcessDaemonTest extends TestCase implements IPSCustomJunitTest
       System.out.println(output);
       List params = new ArrayList();
       params.add(output);
-      StringBuffer result = new StringBuffer(1000);
+      StringBuilder result = new StringBuilder(1000);
       int errorCode = sendCommand("execprocess", params, result);
       assertTrue("Error code returned from daemon.", errorCode == 0);
       Document doc = PSXmlDocumentBuilder.createXmlDocument(

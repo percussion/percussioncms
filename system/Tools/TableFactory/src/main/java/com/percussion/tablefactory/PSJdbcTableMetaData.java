@@ -17,15 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tablefactory;
 
-import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.util.PSSqlHelper;
+import com.percussion.utils.collections.PSIteratorUtils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -713,7 +713,7 @@ public class PSJdbcTableMetaData
                // -include them if they are Unique keys, but change their
                //  name to match what the was given in the SQL statement
                //  which created them.
-               StringBuffer nameBuffer = new StringBuffer(name);
+               StringBuilder nameBuffer = new StringBuilder(name);
                if (PSSqlHelper.handleBackingIndex(nameBuffer, md))
                   continue;
                name = nameBuffer.toString(); // update name of index

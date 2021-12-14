@@ -18,7 +18,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,7 +35,7 @@
         var finderPath;
 
 
-        var newPageButton = $('<a id="mcol-new-page" class="perc-font-icon" href="#" title="' +I18N.message("perc.ui.new.page.button@Click New Page") + '"class="ui-disabled"><span class="icon-plus"></span><span class="icon-file"></span></a>').perc_button();
+        var newPageButton = $('<a id="mcol-new-page" class="perc-font-icon" href="#" title="' +I18N.message("perc.ui.new.page.button@Click New Page") + '"class="ui-disabled"><span class="icon-plus fas fa-plus"></span><span class="icon-file fas fa-file"></span></a>').perc_button();
 
         /**
          * Listener function that is added to the finder listeners, this method gets called whenever there is a path change
@@ -88,10 +88,13 @@
         function enableButton(flag)
         {
             if(flag){
-                newPageButton.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( checkAndOpenNewPageDialog );
+                newPageButton.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt){
+                        checkAndOpenNewPageDialog(evt);
+                    } );
             }
             else{
-                newPageButton.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                newPageButton.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
         }
 
@@ -99,7 +102,7 @@
         /**
          * Checks whether the current user has permission to create a new page, if yes, then calls the contentViewer
          */
-        function checkAndOpenNewPageDialog()
+        function checkAndOpenNewPageDialog(evt)
         {
             var currentItem = finderRef.getCurrentItem();
             var folderPath = "";

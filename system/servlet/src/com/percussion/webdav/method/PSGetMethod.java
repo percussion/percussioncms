@@ -17,21 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.webdav.method;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.PSBinaryValue;
@@ -41,11 +32,22 @@ import com.percussion.cms.objectstore.client.PSRemoteAgent;
 import com.percussion.cms.objectstore.ws.PSClientItem;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSCharSets;
 import com.percussion.webdav.PSWebdavServlet;
 import com.percussion.webdav.PSWebdavStatus;
 import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.webdav.objectstore.PSWebdavContentType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Locale;
 
 
 /**
@@ -54,6 +56,8 @@ import com.percussion.webdav.objectstore.PSWebdavContentType;
 public class PSGetMethod
    extends PSWebdavMethod
 {
+
+   private static final Logger log = LogManager.getLogger(PSGetMethod.class);
 
    /**
     * Constructs an instance from the given parameters.
@@ -115,7 +119,6 @@ public class PSGetMethod
    private void processSysCommand(String sysCommand)
       throws PSWebdavException, IOException
    {
-      InputStream configInput = null; 
       try
       {
          if(sysCommand != null && 
@@ -123,14 +126,16 @@ public class PSGetMethod
          {
             PSWebdavConfigValidator validator = new PSWebdavConfigValidator(
                   getRequest(), getResponse(), getRemoteRequester());
-            configInput = getServlet().getWebdavConfigDef();
-            validator.validate(configInput, getServlet()
-                  .getRegisteredRxRootPaths());
+            try(InputStream configInput = getServlet().getWebdavConfigDef()) {
+               validator.validate(configInput, getServlet()
+                       .getRegisteredRxRootPaths());
+            }
          }
          else if (sysCommand != null && sysCommand.equalsIgnoreCase(GET_CONFIG))
          {
-            configInput = getServlet().getWebdavConfigDef();
-            outputWebdavConfigDef(configInput);
+            try(InputStream configInput = getServlet().getWebdavConfigDef()) {
+               outputWebdavConfigDef(configInput);
+            }
          }
          else // unknown command
          {
@@ -144,16 +149,13 @@ public class PSGetMethod
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          
-         getResponse().getWriter().print(e.getLocalizedMessage());
+         getResponse().getWriter().print(PSWebdavStatus.getStatusText(PSWebdavStatus.SC_INTERNAL_SERVER_ERROR));
          getResponse().setStatus(PSWebdavStatus.SC_OK);
       }  
-      finally 
-      {
-         if (configInput != null)
-            configInput.close();
-      }          
+
    }
    
    /**

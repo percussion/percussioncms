@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,19 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.services;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.io.IOException;
 
 /**
  * Custom date serializer to put the serialized date into a non numeric
@@ -40,7 +39,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class PSCustomDateSerializer extends JsonSerializer<Object>
 {
 
-   private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+   private final FastDateFormat formatter =  FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
    
    /* (non-Javadoc)
     * @see org.codehaus.jackson.map.JsonSerializer#serialize(
@@ -48,8 +47,8 @@ public class PSCustomDateSerializer extends JsonSerializer<Object>
     */
    @Override
    public void serialize(Object value, JsonGenerator gen,
-            @SuppressWarnings("unused") SerializerProvider provider) throws IOException,
-            JsonProcessingException
+            @SuppressWarnings("unused") SerializerProvider provider) throws
+           IOException
    {
       String formattedDate = formatter.format(value);
 

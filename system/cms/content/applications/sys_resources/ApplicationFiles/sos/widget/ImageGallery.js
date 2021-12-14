@@ -386,6 +386,7 @@ dojo.widget.HtmlWidget,
       var a = document.createElement("a");
       a.setAttribute("href",this.imageStore[pos]["link"]);
       a.setAttribute("target","_blank");
+      a.setAttribute("rel", "noopener noreferrer");
       div.appendChild(a);
       a.appendChild(img);
     }

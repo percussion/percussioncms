@@ -17,25 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Invokes a list of delivery handlers, so that it can deliver
@@ -48,12 +47,12 @@ public class PSDeliveryHandlerRunner extends PSBaseDeliveryHandler
    /**
     * A list of to be dispatched handlers, never <code>null</code>, but may be empty.
     */
-   private List<PSBaseDeliveryHandler> m_handlers = new ArrayList<PSBaseDeliveryHandler>();
+   private List<PSBaseDeliveryHandler> m_handlers = new ArrayList<>();
    
    /**
     * The logger.
     */
-   static Log ms_log = LogFactory.getLog(PSDeliveryHandlerRunner.class);
+    private static final Logger ms_log = LogManager.getLogger(PSDeliveryHandlerRunner.class);
    
    /*
     * (non-Javadoc)

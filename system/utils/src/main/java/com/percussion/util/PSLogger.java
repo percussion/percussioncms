@@ -17,11 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util;
+
+import com.percussion.error.PSExceptionUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -244,8 +246,14 @@ public class PSLogger implements IPSLogSink, IPSLogger
 
       if ( null == args )
          finalMsg = msg;
-      else
-         finalMsg = MessageFormat.format( msg, args );
+      else {
+       try {
+          finalMsg = MessageFormat.format(msg, args);
+       }catch(IllegalArgumentException e){
+          //If the message can't be formatted just return the msg.
+         finalMsg = msg;
+       }
+      }
 
       m_stdOut.println( finalMsg );
       try
@@ -259,7 +267,7 @@ public class PSLogger implements IPSLogSink, IPSLogger
       catch ( IOException e )
       {
          System.out.println( "[Logger] Logging to file failed: " +
-            e.getLocalizedMessage());
+                 PSExceptionUtils.getMessageForLog(e));
       }
    }
 

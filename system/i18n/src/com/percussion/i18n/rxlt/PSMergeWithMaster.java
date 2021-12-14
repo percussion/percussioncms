@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,15 +28,14 @@ import com.percussion.i18n.tmxdom.IPSTmxDocument;
 import com.percussion.i18n.tmxdom.IPSTmxHeader;
 import com.percussion.i18n.tmxdom.PSTmxDocument;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXParseException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This class handles the process of merging a translated TMX document with that
@@ -69,8 +68,10 @@ public class PSMergeWithMaster extends PSIdleDotter
    {
       try
       {
-         m_DocConifigMergeWithMaster = PSXmlDocumentBuilder.createXmlDocument(
-         getClass().getResourceAsStream(MERGE_CONFIG_FILE), false);
+         try(InputStream ir = getClass().getResourceAsStream(MERGE_CONFIG_FILE) ) {
+            m_DocConifigMergeWithMaster = PSXmlDocumentBuilder.createXmlDocument(ir
+                    , false);
+         }
       }
       catch (Exception e) //potentially IOException, SAXException
       {
@@ -111,11 +112,12 @@ public class PSMergeWithMaster extends PSIdleDotter
          if (file.exists())
          {
             try (FileInputStream fis = new FileInputStream(file)) {
-
-               Document srcDoc = PSXmlDocumentBuilder.createXmlDocument(
-                       new InputStreamReader(fis, "UTF8"), false);
-               IPSTmxDocument srcTmxdoc = new PSTmxDocument(srcDoc, false);
-               destTmxdoc.merge(srcTmxdoc);
+               try(InputStreamReader ir = new InputStreamReader(fis, StandardCharsets.UTF_8)) {
+                  Document srcDoc = PSXmlDocumentBuilder.createXmlDocument(ir
+                          , false);
+                  IPSTmxDocument srcTmxdoc = new PSTmxDocument(srcDoc, false);
+                  destTmxdoc.merge(srcTmxdoc);
+               }
             }
          }
          //make sure to set the language tool name and version in the header

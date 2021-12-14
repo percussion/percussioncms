@@ -17,16 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher;
 
-import static org.apache.commons.lang.Validate.notNull;
-import static org.apache.commons.lang.Validate.notEmpty;
-
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSContentList;
@@ -36,10 +34,12 @@ import com.percussion.services.publisher.PSPublisherException;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBaseHttpUtils;
-import com.percussion.utils.container.PSContainerUtilsFactory;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,9 +49,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Utility class for publishing activities.
@@ -67,7 +66,7 @@ public class PSPublisherUtils
    /**
     * The logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog(PSPublisherUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPublisherUtils.class);
    
    
    /**
@@ -98,7 +97,7 @@ public class PSPublisherUtils
       // If this is a legacy list, we need the full list, not paged
       String url = cList.getUrl();
 
-      Map<String, Object> additionalParams = new HashMap<String, Object>();
+      Map<String, Object> additionalParams = new HashMap<>();
       additionalParams.put(IPSHtmlParameters.SYS_CONTEXT, context);
       
       // ignore "sys_assembly_context" parameter in the URL of the Content List
@@ -148,7 +147,12 @@ public class PSPublisherUtils
 
       IPSPublisherService psvc = PSPublisherServiceLocator
             .getPublisherService();
+
+      try{
       return psvc.loadContentList(ecList.getContentListId());
+      } catch (PSNotFoundException e) {
+         throw new PSRuntimeException(e);
+      }
    }
    
    /**
@@ -253,7 +257,7 @@ public class PSPublisherUtils
    {
       IPSGuid editionGuid = new PSGuid(PSTypeEnum.EDITION, editionid);
       TreeSet<IPSEditionContentList> ecLists = getEditionContentList(editionGuid);
-      List<PSPair<String, Boolean>> isLastFlags = new ArrayList<PSPair<String, Boolean>>();
+      List<PSPair<String, Boolean>> isLastFlags = new ArrayList<>();
       for (IPSEditionContentList ecList : ecLists)
       {
          IPSContentList clist = getContentList(ecList);
@@ -261,7 +265,7 @@ public class PSPublisherUtils
          {
             Map<String, String> params = clist.getGeneratorParams();
             boolean isLast = isLastOnDemandGenerator(params);
-            PSPair<String, Boolean> pair = new PSPair<String, Boolean>(clist.getName(), isLast);
+            PSPair<String, Boolean> pair = new PSPair<>(clist.getName(), isLast);
             isLastFlags.add(pair);
          }
       }
@@ -288,7 +292,7 @@ public class PSPublisherUtils
    {
       final IPSPublisherService psvc = PSPublisherServiceLocator.getPublisherService();
       List<IPSEditionContentList> clists = psvc.loadEditionContentLists(editionId);
-      TreeSet<IPSEditionContentList> sortedclists = new TreeSet<IPSEditionContentList>(new EditionClistSorter());
+      TreeSet<IPSEditionContentList> sortedclists = new TreeSet<>(new EditionClistSorter());
       sortedclists.addAll(clists);
       return sortedclists;
    }

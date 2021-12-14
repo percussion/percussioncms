@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,7 @@ import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.design.IPSAssociationSet;
 import com.percussion.services.content.data.PSKeyword;
 import com.percussion.services.content.data.PSKeywordChoice;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.types.PSPair;
 
 import java.util.ArrayList;
@@ -65,16 +66,15 @@ public class PSKeywordSetter extends PSSimplePropertySetter
     * //see base class method for details
     */
    @Override
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (CHOICES_PAIRS.equals(propName))
       {
          PSKeyword kw = (PSKeyword) obj;
-         List<PSPair<String, String>> choices = new ArrayList<PSPair<String, String>>();
+         List<PSPair<String, String>> choices = new ArrayList<>();
          for (PSKeywordChoice c : kw.getChoices())
          {
             choices
-                  .add(new PSPair<String, String>(c.getLabel(), c.getValue()));
+                  .add(new PSPair<>(c.getLabel(), c.getValue()));
          }
          return choices;
       }
@@ -96,7 +96,7 @@ public class PSKeywordSetter extends PSSimplePropertySetter
 
       List<PSPair<String, String>> choices = 
          (List<PSPair<String, String>>) propValue;
-      List<PSKeywordChoice> kwchoices = new ArrayList<PSKeywordChoice>();
+      List<PSKeywordChoice> kwchoices = new ArrayList<>();
       for (int i = 0; i < choices.size(); i++)
       {
          PSPair<String, String> pair = choices.get(i);

@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -45,7 +45,7 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
     
     private static IPSMonitor monitor = null;
     
-    private static Set<Long> jobIds = new HashSet<Long>();
+    private static Set<Long> jobIds = new HashSet<>();
     
     private static IPSPublishingJobStatusCallback callback = null;
     
@@ -58,8 +58,9 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
     
     private static void updateStatusMessage()
     {
-        if (monitor == null)
+        if (monitor == null) {
             return;
+        }
         
         int count;
         synchronized (jobIds)
@@ -67,7 +68,7 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
             count = jobIds.size();
         }
         
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         if (count == 0)
         {
@@ -106,7 +107,7 @@ public class PSPublishingProcessMonitor implements IPSPublishingJobStatusCallbac
     }
 
     /**
-     * @param editionId
+     * @param jobId
      */
     public static void startPublishingJob(long jobId)
     {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,20 +29,21 @@
         getStates: getStates,
         getUsers: getUsers
     };
-    
+
     function getUsers(searchQuery, callback)
     {
         var url = $.perc_paths.USER_USERS_NAMES + "/" + searchQuery;
-    
+
         $.PercServiceUtils.makeJsonRequest(
             url,
             $.PercServiceUtils.TYPE_GET,
             false,
             function(status, result)
             {
-                var data = $.perc_utils.convertCXFArray(result.data.UserList.users);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
+                    var data = $.perc_utils.convertCXFArray(result.data.UserList.users);
+
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
                 else
@@ -53,7 +54,7 @@
             }
         );
     }
-    
+
     /**
      * Retrieves the license information status.
      * @param function
@@ -61,7 +62,7 @@
     function getSites(callback)
     {
         var url = $.perc_paths.SITES_ALL_CHOICES;
-    
+
         $.PercServiceUtils.makeJsonRequest(
             url,
             $.PercServiceUtils.TYPE_GET,
@@ -69,7 +70,7 @@
             function(status, result)
             {
                 var data = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
@@ -81,11 +82,11 @@
             }
         );
     }
-    
+
     function getWorkflows(callback)
     {
         var url = $.perc_paths.WORKFLOW_STEPPED;
-    
+
         $.PercServiceUtils.makeJsonRequest(
             url,
             $.PercServiceUtils.TYPE_GET,
@@ -93,7 +94,7 @@
             function(status, result)
             {
                 var data = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
@@ -105,11 +106,11 @@
             }
         );
     }
-    
+
     function getStates(workflow, callback)
     {
         var url = $.perc_paths.WORKFLOW_STEPPED + workflow + "/states/choices";
-    
+
         $.PercServiceUtils.makeJsonRequest(
             url,
             $.PercServiceUtils.TYPE_GET,
@@ -117,7 +118,7 @@
             function(status, result)
             {
                 var data = $.perc_utils.convertCXFArray(result.data.EnumVals.entries);
-                if(status == $.PercServiceUtils.STATUS_SUCCESS)
+                if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     callback($.PercServiceUtils.STATUS_SUCCESS, data);
                 }
@@ -128,5 +129,5 @@
                 }
             }
         );
-    }    
+    }
 })(jQuery);

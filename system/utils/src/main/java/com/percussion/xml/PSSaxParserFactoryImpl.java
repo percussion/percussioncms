@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,43 +17,60 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.xml;
 
-import com.percussion.utils.xml.PSEntityResolver;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
+
 /**
  * @author dougrand
  *
- * Create a parser for use in Rhythmyx. This parser has the entity resolver
+ * Create a parser for use in Percussion. This parser has the entity resolver
  * set to an instance of our entity resolver. This class is currently
  * configured to work with Xerces.
  */
 public class PSSaxParserFactoryImpl extends SAXParserFactory {
 
+    private static final Logger log = LogManager.getLogger(PSSaxParserFactoryImpl.class);
 
-    private static ThreadLocal<SAXParserFactory> factoryThreadLocal = ThreadLocal.withInitial(() -> {
+    private static final ThreadLocal<SAXParserFactory> factoryThreadLocal = ThreadLocal.withInitial(() -> {
         try {
-            SAXParserFactory factory = SAXParserFactory.newInstance("org.apache.xerces.jaxp.SAXParserFactoryImpl", null);
+            SAXParserFactory factory = PSSecureXMLUtils.getSecuredSaxParserFactory(
+                    "org.apache.xerces.jaxp.SAXParserFactoryImpl", null,
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    ));
             factory.setNamespaceAware(true);
+            factory.setValidating(false);
             factory.setFeature("http://xml.org/sax/features/namespaces",true);
+            factory.setFeature("http://xml.org/sax/features/namespace-prefixes",false);
 
             return factory;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            return null;
         }
     });
 
@@ -61,10 +78,9 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
     @Override
     public SAXParser newSAXParser() throws ParserConfigurationException, SAXException {
         SAXParserFactory parserFactory = factoryThreadLocal.get();
-        SAXParser parser = parserFactory.newSAXParser();
-        XMLReader reader = parser.getXMLReader();
-        reader.setEntityResolver(PSEntityResolver.getInstance());
-        return parser;
+
+        return parserFactory.newSAXParser();
+
     }
 
     @Override
@@ -72,9 +88,8 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
         try {
             factoryThreadLocal.get().setFeature(name, value);
         } catch (SAXNotRecognizedException | SAXNotSupportedException e1 ) {
-            throw e1;
-        } catch (SAXException e) {
-            throw new ParserConfigurationException("Failed to set feature name="+name+" value=");
+            log.warn(e1.getMessage());
+            log.debug(e1.getMessage(),e1);
         }
     }
 
@@ -83,18 +98,40 @@ public class PSSaxParserFactoryImpl extends SAXParserFactory {
         try {
             return factoryThreadLocal.get().getFeature(name);
         } catch (SAXException e) {
-            throw new ParserConfigurationException("Failed to get feature name="+name);
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new SAXNotSupportedException(e.getMessage());
         }
     }
 
     @Override
     public void setNamespaceAware(boolean awareness) {
-        factoryThreadLocal.get().setNamespaceAware(awareness);
+        try {
+            factoryThreadLocal.get().setNamespaceAware(awareness);
+        }catch(java.lang.UnsupportedOperationException e){
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
     }
 
     @Override
     public void setValidating(boolean validating)
     {
-        factoryThreadLocal.get().setValidating(validating);
+        try {
+            factoryThreadLocal.get().setValidating(validating);
+        }catch(java.lang.UnsupportedOperationException e){
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
+    }
+
+    @Override
+    public void setXIncludeAware(boolean state) {
+        try {
+            factoryThreadLocal.get().setXIncludeAware(state);
+        }catch(java.lang.UnsupportedOperationException e){
+            log.warn(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
     }
 }

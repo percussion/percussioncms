@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.config.test;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.config.IPSConfigHandler;
 import com.percussion.rx.config.IPSPropertySetter;
 import com.percussion.rx.config.impl.PSConfigNormalizer;
@@ -30,6 +31,8 @@ import com.percussion.rx.config.impl.PSImplConfigLoader;
 import com.percussion.rx.config.impl.PSObjectConfigHandler;
 import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.testing.UnitTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -48,6 +51,9 @@ import static org.junit.Assert.assertTrue;
 @Category(UnitTest.class)
 public class PSImplConfigLoaderTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSImplConfigLoaderTest.class);
+
    /**
     * Tests implementer's configure files contain simple property handler.
     *
@@ -86,7 +92,8 @@ public class PSImplConfigLoaderTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
       String[] beans = loader.getAllBeanNames();

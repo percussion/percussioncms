@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,6 +38,9 @@ import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.IPSXmlErrors;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,10 +50,6 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * This class works directly with ContentExplorer PSOptionManager, this
@@ -190,7 +189,7 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
       m_defaultLocalOptionMap = new HashMap();
 
 
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       sb.append("rx_resources");
       sb.append(File.separator);
       sb.append("css");
@@ -261,10 +260,9 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
    private Document loadOptionDoc(String localeKey)
       throws PSExtensionProcessingException
    {
-      FileInputStream inStream = null;
+
       Document doc = null;
-      try
-      {
+
          IPSRhythmyxInfo rxInfo = PSRhythmyxInfoLocator.getRhythmyxInfo();
          String rxRootDir = (String) rxInfo
                .getProperty(IPSRhythmyxInfo.Key.ROOT_DIRECTORY);
@@ -274,14 +272,15 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
                + USER_OPTION_FILE_NAME;
 
          File file = new File(fullPath);
-         inStream = new FileInputStream(file);
+         try(FileInputStream inStream = new FileInputStream(file))
+         {
 
-         doc = PSXmlDocumentBuilder.createXmlDocument(
-            new InputSource(inStream), false);
+            doc = PSXmlDocumentBuilder.createXmlDocument(
+               new InputSource(inStream), false);
 
-         addDocToMap(localeKey, doc);
+            addDocToMap(localeKey, doc);
 
-      }
+         }
       catch (FileNotFoundException e)
       {
          // this message constant doesn't look right, however,
@@ -301,20 +300,7 @@ public class PSGetAndSetCxOptions implements IPSResultDocumentProcessor,
             IPSExtensionErrors.CATALOG_EXT_RESOURCE_ERROR,
             e.getLocalizedMessage());
       }
-      finally
-      {
-         try
-         {
-            if(inStream != null)
-            {
-               inStream.close();
-            }
-         }
-         catch (IOException e)
-         {
-            // ignore
-         }
-      }
+
       return doc;
    }
 

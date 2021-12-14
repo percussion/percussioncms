@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,15 +40,13 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jsr170.PSLongValue;
 import com.percussion.utils.types.PSPair;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.Value;
 import javax.jcr.query.QueryResult;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A generator that returns the items selected by the user for demand
@@ -106,7 +104,7 @@ public class PSSelectedItemsGenerator extends PSBaseGenerator
       if (sum.getObjectType() == 1)
       {
          // Item
-         Map<String, Object> data = new HashMap<String, Object>();
+         Map<String, Object> data = new HashMap<>();
          Value idval = new PSLongValue(sum.getContentId());
          Value folderval = new PSLongValue(folderid);
          data.put(IPSContentPropertyConstants.RX_SYS_CONTENTID, idval);

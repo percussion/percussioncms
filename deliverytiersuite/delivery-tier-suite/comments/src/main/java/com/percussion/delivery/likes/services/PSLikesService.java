@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,11 @@ package com.percussion.delivery.likes.services;
 import com.percussion.delivery.comments.services.PSCommentsService;
 import com.percussion.delivery.likes.data.IPSLikes;
 import com.percussion.delivery.listeners.IPSServiceDataChangeListener;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,23 +38,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class PSLikesService implements IPSLikesService
 {
     
 	private IPSLikesDao dao;
 
-    private List<IPSServiceDataChangeListener> listeners = new ArrayList<IPSServiceDataChangeListener>();
+    private List<IPSServiceDataChangeListener> listeners = new ArrayList<>();
     private final String[] PERC_LIKES_SERVICES = {"perc-likes-services"};
 
     /**
      * Logger for this class
      */
-    public static Log log = LogFactory.getLog(PSCommentsService.class);
+    public static final Logger log = LogManager.getLogger(PSCommentsService.class);
     
        
     @Autowired
@@ -82,7 +82,9 @@ public class PSLikesService implements IPSLikesService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting likes by criteria: " + ex.getMessage());
+            log.error("Error in getting likes by criteria: {}",
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }        
     }
@@ -132,7 +134,7 @@ public class PSLikesService implements IPSLikesService
         Validate.notEmpty(likeId);
         Validate.notEmpty(type);
 
-        Set<String> sites = new HashSet<String>(1);
+        Set<String> sites = new HashSet<>(1);
         sites.add(site);
         fireDataChangeRequestedEvent(sites);
 
@@ -160,7 +162,9 @@ public class PSLikesService implements IPSLikesService
         }
         catch (Exception ex)
         {
-            log.error("Error in getting likes by criteria: " + ex.getMessage());
+            log.error("Error in getting likes by criteria: {}",
+                    PSExceptionUtils.getMessageForLog(ex));
+            log.debug(ex);
             throw new RuntimeException(ex);
         }
         finally
@@ -227,8 +231,8 @@ public class PSLikesService implements IPSLikesService
     @Override
     public void updateLikesForSiteAfterRename(String prevSiteName,
                                               String newSiteName) {
-        List<IPSLikes> likes = new ArrayList<IPSLikes>();
-        List<IPSLikes> newLikes = new ArrayList<IPSLikes>();
+        List<IPSLikes> likes = new ArrayList<>();
+        List<IPSLikes> newLikes = new ArrayList<>();
         try {
             likes = dao.findLikesForSite(prevSiteName);
             for (IPSLikes like : likes) {
@@ -238,9 +242,11 @@ public class PSLikesService implements IPSLikesService
             }
             dao.save(likes);
         } catch (Exception e) {
-            log.error("Error retrieving likes for site: " + prevSiteName + ". "
-                    + "An administrator should atttempty to update the likes table "
-                    + "in the DTS database.", e);
+            log.error("Error retrieving likes for site: {}. "
+                    + "An administrator should atttempt to update the likes table "
+                    + "in the DTS database. Error: {}",prevSiteName,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return;
         }
 

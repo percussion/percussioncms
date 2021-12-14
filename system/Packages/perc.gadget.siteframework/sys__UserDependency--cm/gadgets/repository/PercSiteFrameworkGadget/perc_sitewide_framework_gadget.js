@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -125,8 +125,15 @@ function renderFrameworkSettings(sitePropertiesData) {
 
         $('#percSitewideFrameworkTarget').append(gadgetHtml);
 
+        var siteName = site.name;
+
+        //CMS-7631 : Escape the "." character in the site name.
+        if(siteName.indexOf('.') != -1){
+            siteName= siteName.replace(/[^\w\s]/gi, '\\$&');
+        }
+
         // Each container needs to have separate accordion binding
-        $(`#perc-site-framework-container-${site.name}`).accordion({
+        $(`#perc-site-framework-container-`+siteName).accordion({
             active: false,
             collapsible: true
         });
@@ -142,7 +149,9 @@ function renderSubmit() {
 
     $('#percSitewideFrameworkTarget').append(submitHtml);
 
-    $('#percSitewideFrameworkSubmit').on('click', showSitewideWarningDialog);
+    $('#percSitewideFrameworkSubmit').on('click', function(evt){
+        showSitewideWarningDialog(evt);
+    });
 }
 
 function percSitewideFrameworkSubmitHandler() {
@@ -172,7 +181,7 @@ function percSitewideFrameworkSubmitHandler() {
 
 }
 
-function showSitewideWarningDialog() {
+function showSitewideWarningDialog(event) {
     errorDialogHtml = `<div><h4>${I18N.message("perc.ui.gadgets.sitewideFramework@Notfication detail")}</h4><br></div>`;
     var dialog = percJQuery(errorDialogHtml).perc_dialog({
         title: I18N.message("perc.ui.gadgets.sitewideFramework@Update Warning"),
@@ -222,9 +231,17 @@ function collectFrameworkUpdates() {
         };
         $this = $(this);
         frameworkObject.SiteProperties = $this.data('perc-site-properties');
-        frameworkObject.SiteProperties.overrideSystemFoundation = ( $(`#perc-foundation-override-${frameworkObject.SiteProperties.name}`).attr('checked')) ? true : false;
-        frameworkObject.SiteProperties.overrideSystemJQuery = ( $(`#perc-jquery-override-${frameworkObject.SiteProperties.name}`).attr('checked')) ? true : false;
-        frameworkObject.SiteProperties.overrideSystemJQueryUI = ( $(`#perc-jqueryui-override-${frameworkObject.SiteProperties.name}`).attr('checked')) ? true : false;
+
+        var siteName1 = frameworkObject.SiteProperties.name;
+
+        //CMS-7631 : Escape the "." character in the site name.
+        if(siteName1.indexOf('.') != -1){
+            siteName1= siteName1.replace(/[^\w\s]/gi, '\\$&');
+        }
+
+        frameworkObject.SiteProperties.overrideSystemFoundation = ( $(`#perc-foundation-override-`+siteName1).prop('checked')) ? true : false;
+        frameworkObject.SiteProperties.overrideSystemJQuery = ( $(`#perc-jquery-override-`+siteName1).prop('checked')) ? true : false;
+        frameworkObject.SiteProperties.overrideSystemJQueryUI = ( $(`#perc-jqueryui-override-`+siteName1).prop('checked')) ? true : false;
         frameworkObject.SiteProperties.siteAdditionalHeadContent = ( $this.find('.perc-site-framework-additional-head-content').val() == '' ) ? null : $this.find('.perc-site-framework-additional-head-content').val();
         frameworkObject.SiteProperties.siteAfterBodyOpenContent = ( $this.find('.perc-site-framework-after-body-open-content').val() == '' ) ? null : $this.find('.perc-site-framework-after-body-open-content').val();
         frameworkObject.SiteProperties.siteBeforeBodyCloseContent = ( $this.find('.perc-site-framework-before-body-close-content').val() == '' ) ? null : $this.find('.perc-site-framework-before-body-close-content').val();

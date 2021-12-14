@@ -17,15 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.util;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.function.Consumer;
@@ -33,7 +34,7 @@ import java.util.function.Consumer;
 public class PSConcurrentIterator <T>  implements Iterator<T> {
 
     private final Iterator iterator;
-    private static Logger log = LogManager.getLogger(PSConcurrentIterator.class);
+    private static final Logger log = LogManager.getLogger(PSConcurrentIterator.class);
 
     public PSConcurrentIterator( Iterator<T> iterator )
     {
@@ -85,7 +86,9 @@ public class PSConcurrentIterator <T>  implements Iterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentIterator does not support remove");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentIterator.remove().  Please correct the implementation to remove from the source collection itself.", e);
+            log.fatal("Detected potential thread safety problem, call to PSConcurrentIterator.remove().  Please correct the implementation to remove from the source collection itself. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
         }
     }

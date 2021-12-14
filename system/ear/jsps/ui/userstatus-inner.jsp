@@ -27,7 +27,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -41,7 +41,7 @@
 	String locale = PSRoleUtilities.getUserCurrentLocale();
 	String localeDisplay = PSLocaleManager.getInstance().getLocale(locale).getDisplayName();
 	String redirect = (String) request.getParameter("sys_redirecturl");
-	String rxloginurl = "../sys_welcome/rxlogin.html?communitypage=yes";
+	String rxloginurl = "/login";
 	if (redirect != null)
 	{
 	   rxloginurl += "&sys_redirecturl=" + URLEncoder.encode(redirect, "UTF-8");
@@ -61,7 +61,7 @@
 	</tr>
 	<tr>
 		<td class="field">${fn:escapeXml(rxcomp:i18ntext("jsp_userstatus@Roles",locale))}:</td>
-		<td><script language="javascript">
+		<td><script>
 				   var textWin = null;
 				   function textWindow(s)
 				   {
@@ -93,6 +93,6 @@
 	<tr>
 			<td rowspan="4" valign="bottom" align="right"><a href="../rxloggingout.jsp" target="_parent"><img
 			alt="Log out" title="Log out" height="17"
-			src="../rx_resources/images/${locale}/logout.gif" width="62"/></a></td>		
+			src="/rx_resources/images/${locale}/logout.gif" width="62"/></a></td>
 	</tr>
 </table>

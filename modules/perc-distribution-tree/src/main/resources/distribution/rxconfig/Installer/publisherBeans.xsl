@@ -17,7 +17,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -41,21 +41,14 @@
             <xsl:apply-templates select="@* | node()"/>
             <xsl:if test="not(bn:bean[@id = 'sys_ftpsDeliveryHandler'])">
             <bean id="sys_ftpsDeliveryHandler"
-                  class="com.percussion.rx.delivery.impl.PSFtpsDeliveryHandler"
+                  class="com.percussion.rx.delivery.impl.PSDeliveryHandlerRunner"
                   xmlns="http://www.springframework.org/schema/beans">
-                     <xsl:comment>
-                        Properties that can be set here:
-                        timeout
-                            (defaults to -1 as not defined.
-                            It is the socket timeout in milliseconds for both when opening a
-                            socket and a currently open connection).
-                        usePassiveMode
-                            (defaults to false.
-                            Determines if using passive or active mode for the FTP client.
-                            Defaults to use active mode. If using passive mode is on, then it
-                            will also disable the remote verification
-                        </xsl:comment>
-                        <property name="usePassiveMode" value="true" />
+                  <property name="deliveryHandlers">
+                        <list>
+                            <ref bean="sys_ftps"/>
+                            <ref bean="sys_metadataDeliveryHandler"/>
+                        </list>
+                  </property>
                  </bean>
                 <bean id="sys_ftps_default"
                       class="com.percussion.rx.delivery.impl.PSFtpsDeliveryHandler"

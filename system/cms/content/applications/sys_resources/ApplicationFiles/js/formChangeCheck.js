@@ -53,13 +53,13 @@
             if(!ps_hasWifx)
             {
                 _formAlreadySubmitted = false; // Get around double click check
-                ps_submitElem.click();
+                ps_submitElem.trigger("click");
             }
         }
         else if(window.opener != null)
         {
             window.opener.ps_noCloseFlag = false;
-            if(window.opener.ps_updateFlag == true)
+            if(window.opener.ps_updateFlag === true)
             {
                 if(!isOpenerActiveAssembly())
                 {
@@ -110,7 +110,7 @@ function ps_openFullEditor()
            window.opener.ps_openFullEditorFlag = true;
         }
         _formAlreadySubmitted = false;
-        ps_submitElem.click();
+        ps_submitElem.trigger("click");
      }
      else
      {

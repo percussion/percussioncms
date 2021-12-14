@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,6 +31,7 @@ import com.percussion.deployer.server.PSDependencyDef;
 import com.percussion.deployer.server.PSDependencyMap;
 import com.percussion.deployer.server.PSImportCtx;
 import com.percussion.security.PSSecurityToken;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.util.PSIteratorUtils;
 import org.w3c.dom.Document;
 
@@ -105,8 +106,7 @@ public class PSStylesheetDependencyHandler
    }
    
    // see base class
-   public boolean doesDependencyExist(PSSecurityToken tok, String id) throws PSDeployException
-   {
+   public boolean doesDependencyExist(PSSecurityToken tok, String id) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -117,9 +117,8 @@ public class PSStylesheetDependencyHandler
    }
    
    // see base class
-   public PSDependency getDependency(PSSecurityToken tok, String id) 
-      throws PSDeployException
-   {
+   public PSDependency getDependency(PSSecurityToken tok, String id)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          
@@ -137,9 +136,8 @@ public class PSStylesheetDependencyHandler
    }
    
    // see base class
-   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep) 
-      throws PSDeployException
-   {
+   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
+           throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
          

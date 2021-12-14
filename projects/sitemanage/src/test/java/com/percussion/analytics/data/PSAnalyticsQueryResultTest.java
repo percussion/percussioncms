@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,12 +26,11 @@ package com.percussion.analytics.data;
 import com.percussion.analytics.data.IPSAnalyticsQueryResult.DataType;
 import com.percussion.analytics.data.impl.PSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsQueryResultException;
+import junit.framework.TestCase;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 /**
  * @author erikserating

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,6 @@ import java.io.InputStreamReader;
 
 import static com.percussion.wrapper.JettyStartUtils.error;
 import static com.percussion.wrapper.JettyStartUtils.info;
-import static com.percussion.wrapper.JettyStartUtils.debug;
 
 /**
  * Empties stream passed into it in a separate thread line by line and
@@ -78,16 +77,17 @@ class PSStreamGobbler extends Thread {
     @Override
     public void run() {
         try {
-            final BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(m_in));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                info("{%s} %s",name,line);
-                // TODO: line.contains should probably be changed to a regex
-                // to detect INFO: bla bla Server startup in...
-                if (waitForStartString && line.contains(startupString)) {
-                    this.startedCallback.run();
-                    waitForStartString = false;
+            try(final BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(m_in))) {
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    info("{%s} %s", name, line);
+                    // TODO: line.contains should probably be changed to a regex
+                    // to detect INFO: bla bla Server startup in...
+                    if (waitForStartString && line.contains(startupString)) {
+                        this.startedCallback.run();
+                        waitForStartString = false;
+                    }
                 }
             }
         } catch (IOException e) {

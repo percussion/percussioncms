@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,7 +41,7 @@
 
         function renderSiteLogsSection() {
             renderSiteLogsContainer();
-            bindLogActions()
+            bindLogActions();
             renderSiteLogs();
         }
 
@@ -62,7 +62,7 @@
         }
 
         function getSiteLogs(logParams) {
-            $j.PercPublisherService(false).getPublishingLogs(logParams, getSiteLogsCallback);
+            $.PercPublisherService(false).getPublishingLogs(logParams, getSiteLogsCallback);
         }
 
         function getSiteLogsCallback(status, result) {
@@ -77,7 +77,8 @@
                 response = {};
                 response.result = {};
                 response.source = I18N.message("perc.ui.publish.title@Delete Publishing Logs");
-                if(result[1] == 'success') {
+                //CMS-8073 : The result is returned as 204 - No Content <host:port>/Rhythmyx/services/sitemanage/pubstatus/purge/ api
+                if(result[1] === 'success' || result[1] === 'nocontent') {
                     response.result.status = I18N.message("perc.ui.publish.title@Delete Logs Success");
                     refreshSiteLogs();
                 }
@@ -126,7 +127,7 @@
         }
 
         function getPublishingLogDetails(jobId) {
-            $j.PercPublisherService(false).getPublishingLogDetails(jobId, getPublishingLogDetailsCallback);
+            $.PercPublisherService(false).getPublishingLogDetails(jobId, getPublishingLogDetailsCallback);
         }
 
         function deleteSelectedLogsRequest() {
@@ -147,7 +148,7 @@
             $('.perc-fullscreen-dialog').animateCss('fadeIn');
 
             // Bind response click
-            $('.perc-confirmation-button').click(function() {
+            $('.perc-confirmation-button').on("click", function() {
                 confirmationDialogCallback(this);
             });
 
@@ -181,20 +182,20 @@
                     jobIdList.push(jobId);
                 }
             });
-            $j.PercPublisherService(false).purgeJob(jobIdList, deleteSelectedLogsCallback);
+            $.PercPublisherService(false).purgeJob(jobIdList, deleteSelectedLogsCallback);
         }
 
         function bindLogActions() {
 
-            $('#percToggleSelectAllLogs').click(function() {
+            $('#percToggleSelectAllLogs').on("click", function() {
                 toggleAllLogCheckboxes(this);
             });
 
-            $('#percDeleteServerLogs').click(function() {
+            $('#percDeleteServerLogs').on("click", function() {
                 deleteSelectedLogsRequest();
             });
 
-            $('.perc-report-selector').change(function() {
+            $('.perc-report-selector').on("change", function() {
                 $('#percServerLogListTarget').fadeOut('fast', function() {
                     renderSiteLogs();
                     $('#percServerLogListTarget').fadeIn('fast');
@@ -221,7 +222,7 @@
         }
 
         function bindLogsEvents() {
-            $('.perc-log-details').click(function() {
+            $('.perc-log-details').on("click", function() {
                 jobObject = $(this).data('perc-log-object');
                 renderPublishDetails(jobObject);
             });
@@ -229,11 +230,11 @@
 
         function bindLogDetailsEvents() {
 
-            $('#percClosePublishItemsDetails').click(function() {
+            $('#percClosePublishItemsDetails').on("click", function() {
                 hideSection('#percPublishLogDetailsOverlayTarget', 'fadeOut faster');
             });
 
-            $('.perc-publish-item-details-button').click(function() {
+            $('.perc-publish-item-details-button').on("click", function() {
                 itemData = $(this).data('perc-publish-item-data');
                 $('#percPublishItemLogDetailsTarget').animateCss('fadeOut faster', function() {
                     processTemplate(itemData, 'templatePercPublishItemLogDetails', 'percPublishItemLogDetailsTarget');

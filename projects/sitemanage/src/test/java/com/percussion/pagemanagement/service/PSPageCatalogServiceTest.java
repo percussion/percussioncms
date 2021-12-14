@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,13 +25,15 @@ package com.percussion.pagemanagement.service;
 
 import com.percussion.pagemanagement.data.PSCatalogPageSummary;
 import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.service.impl.PSPageCatalogService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
-import com.percussion.pagemanagement.service.impl.PSPageCatalogService;
 import com.percussion.share.service.IPSSystemProperties;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.experimental.categories.Category;
@@ -281,8 +283,7 @@ public class PSPageCatalogServiceTest extends PSServletTestCase
         assertEquals(folderPath, sum.getPath());        
     }
     
-    private void checkTemplate(String siteName)
-    {
+    private void checkTemplate(String siteName) throws PSDataServiceException, PSSiteImportException {
         String templateId = pageCatalogService.getCatalogTemplateIdBySite(siteName);
         assertNotNull(templateId);
     }
@@ -306,8 +307,7 @@ public class PSPageCatalogServiceTest extends PSServletTestCase
         assertTrue(PSPathUtils.doesItemExist(expectedFullPath));
     }
     
-    private PSPage createAndSavePage(String pageName, String folderPath)
-    {
+    private PSPage createAndSavePage(String pageName, String folderPath) throws PSDataServiceException {
         String templateId = fixture.template1.getId();
         String siteFolderPath = fixture.site1.getFolderPath() + folderPath;
         String linkTitle = "TestLink";
@@ -325,8 +325,7 @@ public class PSPageCatalogServiceTest extends PSServletTestCase
     }
     
     private String createPage(String name, String title, String templateId, String folderPath, String linkTitle,
-            String noindex, String description)
-    {
+            String noindex, String description) throws PSDataServiceException {
         PSPage page = new PSPage();
         page.setFolderPath(folderPath);
         page.setName(name);

@@ -17,13 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.design.objectstore;
 import junit.framework.TestCase;
+
+import java.security.SecureRandom;
+
 import static com.percussion.testing.PSTestCompare.assertEqualsWithHash;
 
 /**
@@ -62,7 +65,7 @@ public class PSLoggerTest extends TestCase
       final int MULTIPLE_HANDLER = 64;
       
       PSLogger logger = new PSLogger();
-      java.util.Random rand = new java.util.Random();
+      SecureRandom rand = new SecureRandom();
       int options = 0;
 
       for (int i = 0; i < 100; i++)

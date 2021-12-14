@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,21 +25,30 @@
 package com.percussion.widgets.image.services;
 
 import com.percussion.widgets.image.data.ImageData;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.io.InputStream;
 
-public abstract interface ImageResizeManager
-{
-  public static final int ROTATE_LEFT = -1;
-  public static final int ROTATE_RIGHT = 1;
+public interface ImageResizeManager {
 
-  public abstract ImageData generateImage(InputStream paramInputStream, Rectangle paramRectangle, Dimension paramDimension, int paramInt)
-    throws Exception;
+    int ROTATE_LEFT = -1;
+    int ROTATE_RIGHT = 1;
 
-  public abstract ImageData generateImage(InputStream paramInputStream)
-    throws Exception;
+    String getImageFormat();
+    void setImageFormat(String imageFormat);
 
-  public abstract ImageData generateImage(InputStream paramInputStream, Rectangle paramRectangle, Dimension paramDimension)
-    throws Exception;
+    String getExtension();
+    void setExtension(String extension);
+
+    String getContentType();
+    void setContentType(String contentType);
+
+    ImageData generateImage(InputStream paramInputStream, Rectangle paramRectangle, Dimension paramDimension, int paramInt)
+            throws Exception;
+
+    ImageData generateImage(InputStream paramInputStream)
+            throws Exception;
+
+    ImageData generateImage(InputStream paramInputStream, Rectangle paramRectangle, Dimension paramDimension)
+            throws Exception;
 }

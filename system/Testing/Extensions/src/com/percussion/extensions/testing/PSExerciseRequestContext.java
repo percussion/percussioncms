@@ -572,7 +572,7 @@ public class PSExerciseRequestContext extends PSDefaultExtension
       System.out.print(theMessage + ": ");
       if (null != subjectList)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          // print out all the attributes of each subject in the list
          Iterator subjectIter = subjectList.iterator();
@@ -602,7 +602,7 @@ public class PSExerciseRequestContext extends PSDefaultExtension
     */
    private static String iteratorToString(Iterator iter)
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       while (iter.hasNext())
       {
          Object o = iter.next();

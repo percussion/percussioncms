@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,6 +30,7 @@ import com.percussion.integritymanagement.data.PSIntegrityTask;
 import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
 import com.percussion.integritymanagement.service.IPSIntegrityCheckerService.IntegrityTaskType;
 import com.percussion.server.PSRequest;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.request.PSRequestInfo;
@@ -37,14 +38,13 @@ import com.percussion.utils.service.IPSUtilityService;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 @Category(IntegrationTest.class)
 public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
@@ -72,8 +72,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
         securityWs.login(request, response, uid, pwd, null, community, null);
     }
     @Test
-    public void testIntegrityService()
-    {
+    public void testIntegrityService() throws PSDataServiceException {
         if (utilityService.isSaaSEnvironment())
         {
             // Check the start and status methods
@@ -92,8 +91,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
         }
     }
     @Test
-    public void testIntegrityServiceHistory()
-    {
+    public void testIntegrityServiceHistory() throws PSDataServiceException {
         if (utilityService.isSaaSEnvironment())
         {
             List<PSIntegrityStatus> statuses = service.getHistory();
@@ -115,7 +113,7 @@ public class PSIntegrityCheckerServiceTest  extends PSServletTestCase
             assertEquals(statuses.size(), 0);
         }
     }
-    private PSIntegrityStatus start(){
+    private PSIntegrityStatus start() throws PSDataServiceException {
         String token = service.start(IntegrityTaskType.cm1);
         long startTime = new Date().getTime();
         long endTime = startTime;

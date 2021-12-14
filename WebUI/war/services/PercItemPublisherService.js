@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -53,7 +53,7 @@
      */
     function publishItem(itemId, itemType, callback)
     {
-        var publishUrl = itemType == 'Page' ? $.perc_paths.PAGE_PUBLISH:$.perc_paths.RESOURCE_PUBLISH;
+        var publishUrl = itemType === 'Page' ? $.perc_paths.PAGE_PUBLISH:$.perc_paths.RESOURCE_PUBLISH;
         publishUrl+="/" + itemId;
 
         _executePublishAction(publishUrl, callback);
@@ -69,11 +69,11 @@
     {
 
         var findLinkedItemsUrl = $.perc_paths.ITEM_LINKED_TO_ITEM + "/" + itemId;
-        var takeDownUrl = itemType == 'Page' ? $.perc_paths.PAGE_TAKEDOWN : $.perc_paths.RESOURCE_TAKEDOWN;
+        var takeDownUrl = itemType === 'Page' ? $.perc_paths.PAGE_TAKEDOWN : $.perc_paths.RESOURCE_TAKEDOWN;
         takeDownUrl+="/" + itemId;
 
         $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, false, function(status, result) {
-            if (status == $.PercServiceUtils.STATUS_ERROR) {
+            if (status === $.PercServiceUtils.STATUS_ERROR) {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result);
                 console.error(defaultMsg);
                 // if there is an error, we proceed with previous behavior (no confirm display)
@@ -133,15 +133,10 @@
      * @param url the url used to invoke the publish action
      * @param callback (function) callback function to be invoked when ajax call returns
      */
-    function _executePublishAction(url, callback)
-    {
-        _executePublishAction(url,callback,null);
-    }
-
-    function _executePublishAction(url, callback, dataObj)
+    function _executePublishAction(url, callback, dataObj = null)
     {
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -149,11 +144,11 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
-        if (dataObj == null || dataObj.length <= 0) {
-            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
+        };
+        if (dataObj === null || dataObj.length <= 0) {
+            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
         } else {
-            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_PUT, true, serviceCallback, dataObj);
+            $.PercServiceUtils.makeJsonRequest(url, $.PercServiceUtils.TYPE_PUT, false, serviceCallback, dataObj);
         }
     }
 
@@ -167,7 +162,7 @@
         var publishUrl = $.perc_paths.SITE_ITEM_PUBLISH_ACTIONS + "/" + itemId;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -175,8 +170,8 @@
             {
                 callback(true,results.data);
             }
-        }
-        $.PercServiceUtils.makeRequest(publishUrl, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
+        };
+        $.PercServiceUtils.makeRequest(publishUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
 
     }
 
@@ -190,7 +185,7 @@
         var getUrl = $.perc_paths.ITEM_GETDATES + "/" + itemId;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -198,8 +193,8 @@
             {
                 callback(true,results.data);
             }
-        }
-        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_GET, true, serviceCallback);
+        };
+        $.PercServiceUtils.makeRequest(getUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
 
     }
 
@@ -214,7 +209,7 @@
         var setUrl = $.perc_paths.ITEM_SETDATES;
         var obj = sendDates;
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(false,defaultMsg);
@@ -224,8 +219,8 @@
                 $.PercNavigationManager.goTo($.PercNavigationManager.VIEW_EDITOR, true);
                 callback(true,results.data);
             }
-        }
-        $.PercServiceUtils.makeJsonRequest(setUrl, $.PercServiceUtils.TYPE_POST, true, serviceCallback, obj);
+        };
+        $.PercServiceUtils.makeJsonRequest(setUrl, $.PercServiceUtils.TYPE_POST, false, serviceCallback, obj);
 
     }
 
@@ -236,25 +231,25 @@
      */
     function isDefaultServerModified(siteName, callback)
     {
-        serviceUrl = $.perc_paths.DEFAULT_SERVER_MODIFIED + siteName;
+        var serviceUrl = $.perc_paths.DEFAULT_SERVER_MODIFIED + siteName;
         var serviceCallback = function(status, results)
         {
-            if (status == $.PercServiceUtils.STATUS_ERROR)
+            if (status === $.PercServiceUtils.STATUS_ERROR)
             {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(results.request);
                 callback(false, defaultMsg);
             }
             else
             {
-                callback(true, results.data == "true");
+                callback(true, results.data === "true");
             }
-        }
+        };
         $.PercServiceUtils.makeRequest(serviceUrl, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
     }
 
     function publishToStaging(itemId, itemType, callback)
     {
-        var publishUrl = itemType == 'Page' ? $.perc_paths.PAGE_PUBLISH:$.perc_paths.RESOURCE_PUBLISH;
+        var publishUrl = itemType === 'Page' ? $.perc_paths.PAGE_PUBLISH:$.perc_paths.RESOURCE_PUBLISH;
         publishUrl+="/staging/" + itemId;
 
         _executePublishAction(publishUrl, callback);
@@ -262,7 +257,7 @@
 
     function removeFromStaging(itemId, itemType, callback)
     {
-        var publishUrl = itemType == 'Page' ? $.perc_paths.PAGE_TAKEDOWN:$.perc_paths.RESOURCE_TAKEDOWN;
+        var publishUrl = itemType === 'Page' ? $.perc_paths.PAGE_TAKEDOWN:$.perc_paths.RESOURCE_TAKEDOWN;
         publishUrl+="/staging/" + itemId;
 
         _executePublishAction(publishUrl, callback);

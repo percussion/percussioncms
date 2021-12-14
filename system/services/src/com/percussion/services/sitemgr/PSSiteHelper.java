@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,18 +27,17 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.server.PSRequest;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.jexl.PSServiceJexlEvaluatorBase;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Common code related to using a site
@@ -57,8 +56,7 @@ public class PSSiteHelper
     * @param contextstr the context string, never <code>null</code> or empty
     */
    public static void setupSiteInfo(PSServiceJexlEvaluatorBase eval,
-         String siteidstr, String contextstr)
-   {
+         String siteidstr, String contextstr) throws PSNotFoundException {
       if (eval == null)
       {
          throw new IllegalArgumentException("eval may not be null");
@@ -97,8 +95,7 @@ public class PSSiteHelper
     *         or if no definitions are provided.
     */
    private static Map<String, String> findVariablesForSite(IPSGuid siteid,
-         String contextstr)
-   {
+         String contextstr) throws PSNotFoundException {
       IPSSiteManager sitemgr = PSSiteManagerLocator.getSiteManager();
       IPSSite site = sitemgr.loadUnmodifiableSite(siteid);
       IPSPublishingContext context;
@@ -109,12 +106,12 @@ public class PSSiteHelper
          context = sitemgr.loadContext(PSGuidUtils.makeGuid(id,
                PSTypeEnum.CONTEXT));
       }
-      catch (NumberFormatException nfe)
+      catch (NumberFormatException | PSNotFoundException nfe)
       {
          context = sitemgr.loadContext(contextstr);
       }
       Set<String> names = site.getPropertyNames(context.getGUID());
-      Map<String, String> rval = new HashMap<String, String>();
+      Map<String, String> rval = new HashMap<>();
       for (String name : names)
       {
          rval.put(name, site.getProperty(name, context.getGUID()));
@@ -133,8 +130,7 @@ public class PSSiteHelper
     * @throws PSSiteManagerException  
     */
    public static int getSiteFolderId(String siteid) throws PSCmsException,
-         PSSiteManagerException
-   {
+           PSSiteManagerException, PSNotFoundException {
       if (StringUtils.isBlank(siteid))
          return -1;
       IPSSiteManager sitemgr = PSSiteManagerLocator.getSiteManager();

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,14 +33,13 @@ import com.percussion.services.general.IPSRhythmyxInfo;
 import com.percussion.services.general.PSRhythmyxInfoLocator;
 import com.percussion.xmldom.PSXmlDomContext;
 import com.percussion.xmldom.PSXmlDomUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * A Rhythmyx post-exit to load all user control XML documents from the file
@@ -72,7 +71,7 @@ public class PSAddUserControlsToTree extends PSDefaultExtension
             new PSXmlDomContext(this.getClass().toString(), request);
 
       // collect user control files
-      Set<File> ctrlFiles = new HashSet<File>();
+      Set<File> ctrlFiles = new HashSet<>();
       String rootDir = 
          (String) PSRhythmyxInfoLocator.getRhythmyxInfo().getProperty(
             IPSRhythmyxInfo.Key.ROOT_DIRECTORY);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,6 +39,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.percussion.cms.IPSConstants.SYS_PARAM_SYSTEM;
+import static com.percussion.cms.IPSConstants.SYS_PARAM_USER;
 
 /**
  * Helper class loads bound jexl functions by reading them from the extensions
@@ -69,7 +72,7 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
          String exp)
    {
       HashMap<String, List<String>> bindingsMap = 
-         new HashMap<String, List<String>>();
+         new HashMap<>();
       bindingsMap.put(SYS,  parseExpression(SYS_PREFIX, exp));
       bindingsMap.put(USER, parseExpression(USER_PREFIX, exp));
       return bindingsMap;
@@ -87,7 +90,7 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
          throw new IllegalArgumentException(
                "JEXL expression may not be null or empty");
       
-      List<String> extNames = new ArrayList<String>();
+      List<String> extNames = new ArrayList<>();
       // search for pattern such as "$sys.*.*("
       Pattern p = Pattern.compile((prefix==SYS_PREFIX?SYS_PATTERN:USER_PATTERN));
       Matcher m = p.matcher(exp.toLowerCase());
@@ -155,7 +158,7 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
    /**
     * A holder of extension names such as "$sys.codec", "$user.myext" etc
     */
-   private HashSet<String> m_extNameSet   = new HashSet<String>();
+   private HashSet<String> m_extNameSet   = new HashSet<>();
    
    /**
     * Place holder for system Extensions that are used for JEXL context
@@ -172,13 +175,13 @@ public class PSJexlHelper extends PSServiceJexlEvaluatorBase
     * Prefix for system extensions: JEXL expr has something like this:
     * $sys.codec etc
     */
-   public static final String SYS  = "$sys";
+   public static final String SYS  = SYS_PARAM_SYSTEM;
 
    /**
     * Prefix for system extensions: JEXL expr has something like this:
     * $sys.codec etc
     */
-   public static final String USER = "$user";
+   public static final String USER = SYS_PARAM_USER;
    
    /**
     * Escape pattern for the regular expression

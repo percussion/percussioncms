@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -42,7 +42,14 @@ import com.percussion.ui.data.PSSimpleDisplayFormat;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.ui.service.IPSListViewProcessor;
 import com.percussion.ui.service.IPSUiService;
-import com.percussion.user.data.*;
+import com.percussion.user.data.PSAccessLevel;
+import com.percussion.user.data.PSAccessLevelRequest;
+import com.percussion.user.data.PSCurrentUser;
+import com.percussion.user.data.PSExternalUser;
+import com.percussion.user.data.PSImportedUser;
+import com.percussion.user.data.PSRoleList;
+import com.percussion.user.data.PSUser;
+import com.percussion.user.data.PSUserList;
 import com.percussion.user.service.IPSUserService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
@@ -557,8 +564,7 @@ public class PSDispatchingPathServiceTest
     }
 
     @Test
-    public void shouldFindByDispatchingToA()
-    {
+    public void shouldFindByDispatchingToA() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that is valid.
          */
@@ -587,8 +593,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test(expected=PSPathServiceException.class)
-    public void shouldFailIfDispatchedServiceReturnsAPathItemWithOutPathSet()
-    {
+    public void shouldFailIfDispatchedServiceReturnsAPathItemWithOutPathSet() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that is INVALID
          * Because the path is null.
@@ -617,8 +622,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test(expected=PSPathServiceException.class)
-    public void shouldFailIfDispatchedServiceReturnsAPathItemWithPathNotStartingWithRelative()
-    {
+    public void shouldFailIfDispatchedServiceReturnsAPathItemWithPathNotStartingWithRelative() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that is INVALID
          * Because the path should begin with /b/c/.
@@ -646,8 +650,7 @@ public class PSDispatchingPathServiceTest
          */
     }
     
-    public void shouldNotFailIfDispatchedServiceReturnsAPathItemWithPathStartingWithIncorrectCasing()
-    {
+    public void shouldNotFailIfDispatchedServiceReturnsAPathItemWithPathStartingWithIncorrectCasing() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: See setup. We have a path item that the service will return that has different
          * casing then the path request /b/c/
@@ -676,8 +679,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test
-    public void shouldFindChildrenByDispatchingToB()
-    {
+    public void shouldFindChildrenByDispatchingToB() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: path service B has the following children under its root.
          */
@@ -713,8 +715,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test
-    public void shouldFindRootChildrenByCallingFindOnEachPathService()
-    {
+    public void shouldFindRootChildrenByCallingFindOnEachPathService() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: path service B has the following children under its root.
          */
@@ -755,8 +756,7 @@ public class PSDispatchingPathServiceTest
     }
     
     @Test
-    public void shouldFindRoot()
-    {
+    public void shouldFindRoot() throws PSPathServiceException, PSDataServiceException {
         /*
          * Given: nothing see setup.
          */

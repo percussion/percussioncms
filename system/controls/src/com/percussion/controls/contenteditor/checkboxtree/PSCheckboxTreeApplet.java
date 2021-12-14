@@ -17,15 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.controls.contenteditor.checkboxtree;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,15 +35,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import javax.swing.JApplet;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 /**
  * An xml driven tree applet designed for use as Rhythmyx custom control.
@@ -200,7 +192,7 @@ public class PSCheckboxTreeApplet extends JApplet implements Runnable
    protected Map<String, String> getExtraParameters()
    {
       if (m_parameters == null)
-         m_parameters = new HashMap<String, String>();
+         m_parameters = new HashMap<>();
       
       return m_parameters;
    }
@@ -323,7 +315,7 @@ public class PSCheckboxTreeApplet extends JApplet implements Runnable
     */
    private List<String> getSelectedNodes()
    {
-      List<String> selectedList = new ArrayList<String>();
+      List<String> selectedList = new ArrayList<>();
       
       PSCheckboxTreeRootNode rootNode = 
          (PSCheckboxTreeRootNode) m_tree.getModel().getRoot();
@@ -353,7 +345,7 @@ public class PSCheckboxTreeApplet extends JApplet implements Runnable
       if (delimitedString == null)
          throw new IllegalArgumentException("delimitedString cannot be null");
       
-      List<String> tokenList = new ArrayList<String>();
+      List<String> tokenList = new ArrayList<>();
 
       StringTokenizer tokens = new StringTokenizer(delimitedString, ",;");
       while (tokens.hasMoreTokens())
@@ -372,7 +364,7 @@ public class PSCheckboxTreeApplet extends JApplet implements Runnable
     */
    public static String listToString(List<String> tokens)
    {
-      StringBuffer delimitedString = new StringBuffer();
+      StringBuilder delimitedString = new StringBuilder();
       
       if (tokens != null)
       {

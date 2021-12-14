@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,6 @@ package com.percussion.services.contentmgr.impl.query;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
-
 import com.percussion.services.contentmgr.data.PSQuery;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
@@ -34,12 +33,11 @@ import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
 import com.percussion.services.contentmgr.impl.query.visitors.PSQueryNodePrinter;
 import com.percussion.testing.PSTestCompare;
+import junit.framework.TestCase;
 
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 public class PSQueryParserTest extends TestCase
 {

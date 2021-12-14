@@ -16,14 +16,13 @@
 
 package com.ibm.cadf.model;
 
-import java.text.MessageFormat;
-import java.util.List;
-
+import com.ibm.cadf.Messages;
+import com.ibm.cadf.exception.CADFException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.ibm.cadf.Messages;
-import com.ibm.cadf.exception.CADFException;
+import java.text.MessageFormat;
+import java.util.List;
 
 public class FederatedCredential extends Credential
 {
@@ -79,7 +78,7 @@ public class FederatedCredential extends Credential
     public boolean isValid() throws CADFException
     {
         boolean missingMandatoryField = false;
-        StringBuffer missingMadatoryFields = new StringBuffer();
+        StringBuilder missingMadatoryFields = new StringBuilder();
         if (StringUtils.isEmpty(identity_provider))
         {
             missingMandatoryField = true;

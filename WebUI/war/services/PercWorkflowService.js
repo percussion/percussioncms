@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -62,8 +62,8 @@
      */
     function getStatusByWorkflow(workflow, callback){
         var url = "/Rhythmyx/services/workflowmanagement/workflows/" + $.perc_utils.encodeURL(workflow) + "/states/choices";
-        callback = callback == null?function(){}:callback;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        callback = callback === null?function(){}:callback;
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
     /**
      * Makes an Ajax call to server to check out the item, Expects the following object from the server as result.
@@ -83,9 +83,9 @@
             $.perc_utils.debug(I18N.message("perc.ui.workflow.service@Blank Item ID checkOut"));
             return false;
         }
-        callback = callback == null?function(){}:callback;
+        callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_CHECKOUT + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -100,9 +100,9 @@
             $.perc_utils.debug(I18N.message("perc.ui.workflow.service@Blank Item ID checkIn"));
             return false;
         }
-        callback = callback == null?function(){}:callback;
+        callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_CHECKIN + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -125,9 +125,9 @@
             $.perc_utils.debug(I18N.message("perc.ui.workflow.service@Blank Item ID getTransitions"));
             return false;
         }
-        callback = callback == null?function(){}:callback;
+        callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_TRANSITIONS + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -143,9 +143,9 @@
             $.perc_utils.debug(I18N.message("perc.ui.workflow.service@Blank Item ID Transition"));
             return false;
         }
-        callback = callback == null?function(){}:callback;
+        callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_TRANSITION_COMMENT + "/" + itemId + "/" + transitionName + "?comment=" + comment;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -167,9 +167,9 @@
             $.perc_utils.debug(I18N.message("perc.ui.workflow.service@Blank Item ID"));
             return false;
         }
-        callback = callback == null?function(){}:callback;
+        callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_FORCE_CHECKOUT + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
 
     }
 
@@ -184,9 +184,9 @@
             $.perc_utils.debug(I18N.message("perc.ui.workflow.service@Blank Item ID"));
             return false;
         }
-        callback = callback == null?function(){}:callback;
+        callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_CHECKED_OUT_TO_USER + "/" + itemId;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
     /**
@@ -201,9 +201,9 @@
             $.perc_utils.debug(I18N.message("perc.ui.workflow.service@Blank folderPath"));
             return false;
         }
-        callback = callback == null?function(){}:callback;
+        callback = callback === null?function(){}:callback;
         var url = $.perc_paths.WORKFLOW_IS_APPROVE_ALLOWED + folderPath;
-        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,true,callback);
+        $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,callback);
     }
 
 
@@ -231,7 +231,7 @@
         var Url = $.perc_paths.WORKFLOW_STEPPED + workflowName;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback($.PercServiceUtils.STATUS_ERROR, [results.request,results.textstatus,results.error]);
             }
@@ -239,7 +239,7 @@
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, [results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
     }
 
@@ -263,7 +263,7 @@
         var Url = $.perc_paths.WORKFLOW_STEPPED +  workflowName + "/steps/" + stepName;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -271,7 +271,7 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_PUT, false, serviceCallback, StepObj);
     }
 
@@ -293,16 +293,16 @@
     function createNewWorkflowStep(workflowName,stepName, newStepObj, callback)
     {
         var Url = $.perc_paths.WORKFLOW_STEPPED +  workflowName + "/steps/" + encodeName(stepName);
-        if((stepName.indexOf("/") != -1)
-            || (stepName.indexOf("\\") != -1)
-            || (stepName.indexOf(";") != -1)
-            || (stepName.indexOf("\"") != -1))
+        if((stepName.indexOf("/") !== -1) || 
+            (stepName.indexOf("\\") !== -1) || 
+            (stepName.indexOf(";") !== -1) || 
+            (stepName.indexOf("\"") !== -1))
         {
-            newStepObj.Workflow.workflowSteps[0].stepName = stepName.replace(/[\\\/\;"]/g,'#');
+            newStepObj.Workflow.workflowSteps[0].stepName = stepName.replace(/[\\\/;"]/g,'#');
         }
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -310,7 +310,7 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_POST, false, serviceCallback, newStepObj);
     }
     /**
@@ -326,7 +326,7 @@
         var Url = $.perc_paths.WORKFLOW_STEPPED +  workflowName + "/steps/" + stepName ;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -334,7 +334,7 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_DELETE, false, serviceCallback);
     }
 
@@ -349,7 +349,7 @@
         var Url = $.perc_paths.WORKFLOW_STEPPED;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -358,7 +358,7 @@
                 results.data.EnumVals.entries = $.perc_utils.convertCXFArray(results.data.EnumVals.entries);
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
     }
 
@@ -372,7 +372,7 @@
         var Url = $.perc_paths.DEFAULT_WORKFLOW_META;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -381,7 +381,7 @@
                 results.data.EnumVals.entries = $.perc_utils.convertCXFArray(results.data.EnumVals.entries);
                 callback(true,results.data);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
     }
 
@@ -396,7 +396,7 @@
         var Url = $.perc_paths.WORKFLOW_META;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -404,7 +404,7 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
 
     }
@@ -413,16 +413,16 @@
     {
         var Url = $.perc_paths.WORKFLOW_STEPPED + encodeName(workflowName);
 
-        if ((workflowName.indexOf("/") != -1)
-            || (workflowName.indexOf("\\") != -1)
-            || (workflowName.indexOf(";") != -1)
-            || (workflowName.indexOf("\"") != -1))
+        if ((workflowName.indexOf("/") !== -1) || 
+            (workflowName.indexOf("\\") !== -1) || 
+            (workflowName.indexOf(";") !== -1) || 
+            (workflowName.indexOf("\"") !== -1))
         {
-            workflowObj.Workflow.workflowName = workflowName.replace(/[\\\/\;"]/g,'#');
+            workflowObj.Workflow.workflowName = workflowName.replace(/[\\\/;"]/g,'#');
         }
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -430,7 +430,7 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_POST, false, serviceCallback, workflowObj);
 
     }
@@ -455,7 +455,7 @@
         var Url = $.perc_paths.WORKFLOW_STEPPED + prevWfName;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -463,7 +463,7 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_PUT, false, serviceCallback, workflowObj);
     }
 
@@ -474,7 +474,7 @@
     function encodeName(nameToEncode)
     {
         var encodedName = nameToEncode.toString();
-        encodedName = encodedName.replace(/[\\\/\\;"]/g,'#');
+        encodedName = encodedName.replace(/[\\\/;"]/g,'#');
         return encodeURIComponent(JSON.stringify(encodedName));
     }
 
@@ -491,7 +491,7 @@
         var Url = $.perc_paths.WORKFLOW_STEPPED +  workflowName;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback(false,[results.request,results.textstatus,results.error]);
             }
@@ -499,7 +499,7 @@
             {
                 callback(true,[results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_DELETE, false, serviceCallback);
     }
 
@@ -508,7 +508,7 @@
         var Url = $.perc_paths.WORKFLOW_BULK_APPROVE;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback($.PercServiceUtils.STATUS_ERROR,[results.request,results.textstatus,results.error]);
             }
@@ -516,7 +516,7 @@
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, [results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_POST, false, serviceCallback, approvalItems);
 
     }
@@ -530,7 +530,7 @@
             Url += "/processed/" + jobId;
 
         var serviceCallback = function(status, results){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 callback($.PercServiceUtils.STATUS_ERROR, [results.request,results.textstatus,results.error]);
             }
@@ -538,7 +538,7 @@
             {
                 callback($.PercServiceUtils.STATUS_SUCCESS, [results.data,results.textstatus]);
             }
-        }
+        };
         $.PercServiceUtils.makeJsonRequest(Url, $.PercServiceUtils.TYPE_GET, false, serviceCallback);
 
     }

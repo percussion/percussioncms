@@ -17,23 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.aaclient;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * TODO
@@ -68,25 +66,20 @@ public class PSAaClientServlet extends HttpServlet
       pushResponse(response, resp, "text/plain", 404);
    }
 
-   static public void pushResponse(HttpServletResponse httpResponse,
+   public static void pushResponse(HttpServletResponse httpResponse,
       String resp, String ctype, int respCode) throws IOException
    {
       /* Discard if the connection has closed */
-      if (httpResponse.isCommitted())
+      if (httpResponse.isCommitted()) {
          return;
-      try
-      {
-         httpResponse.setContentType(ctype);
-         byte[] respBytes = resp.getBytes("UTF-8");
-         httpResponse.setContentLength(respBytes.length);
-         httpResponse.setStatus(respCode);
-         OutputStream os = httpResponse.getOutputStream();
-         os.write(respBytes);
-         os.flush();
       }
-      finally
-      {
 
-      }
+      httpResponse.setContentType(ctype);
+      byte[] respBytes = resp.getBytes(StandardCharsets.UTF_8);
+      httpResponse.setContentLength(respBytes.length);
+      httpResponse.setStatus(respCode);
+      OutputStream os = httpResponse.getOutputStream();
+      os.write(respBytes);
+      os.flush();
    }
 }

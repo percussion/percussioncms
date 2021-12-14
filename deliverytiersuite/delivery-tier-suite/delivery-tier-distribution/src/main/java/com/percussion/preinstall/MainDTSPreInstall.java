@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -152,7 +152,7 @@ public class MainDTSPreInstall {
             Path execPath = installSrc.resolve(Paths.get("rxconfig","Installer"));
             Path installAntJarPath = execPath.resolve(
                     getVersionLessJarFilePath(
-                    execPath,PERC_ANT_JAR + "-*.jar"));
+                            execPath,PERC_ANT_JAR + "-*.jar"));
 
             exitCode =  execJar(installAntJarPath,execPath,installPath,isProduction);
 
@@ -197,8 +197,6 @@ public class MainDTSPreInstall {
                 }
                 System.out.println("Creating file "+entryDest);
                 Files.copy(archive.getInputStream(entry), entryDest);
-
-
             }
         }
     }
@@ -231,4 +229,4 @@ public class MainDTSPreInstall {
     }
 
 
-            }
+}

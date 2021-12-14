@@ -17,19 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.system;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSServerConfiguration;
-import com.percussion.security.PSSecurityProviderPool;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -53,6 +50,13 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,13 +64,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import junit.framework.JUnit4TestAdapter;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test the adhoc user test
@@ -76,6 +75,9 @@ import org.junit.experimental.categories.Category;
 @Category(IntegrationTest.class)
 public class PSAssignmentTypeHelperTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSAssignmentTypeHelperTest.class);
+
    /**
     * State ID for the community roles test state
     */
@@ -495,7 +497,8 @@ public class PSAssignmentTypeHelperTest
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 

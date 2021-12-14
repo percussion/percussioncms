@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,7 +41,7 @@
         
         $.perc_filterField($("#page_tags-display"), $.perc_textFilters.TAGS);
 
-		if(window.percTagListSource !== undefined)
+		if(window.percTagListSource !== undefined && percTagListSource.length >0)
         {
             $("#page_tags-display").autocomplete(percTagListSource,{
 				minChars: 1,
@@ -62,8 +62,8 @@
 (function($) {
   $.perc_filterField = function(tgt, filter)
   {
-      $(tgt).bind('keypress.filterField', {'filter': filter}, function(evt){
-         var filter = function(txt){return txt};
+      $(tgt).on('keypress.filterField', {'filter': filter}, function(evt){
+         var filter = function(txt){return txt;};
          
          var rawCode = evt.charCode ? evt.charCode : evt.which;
          if(rawCode == 0 || rawCode == 8)
@@ -94,12 +94,12 @@
          }
       });
       
-      $(tgt).bind('blur.filterField', {'filter': filter}, function(evt){
+      $(tgt).on('blur.filterField', {'filter': filter}, function(evt){
          // Run through the filter on blur
          tgt.val(evt.data.filter(tgt.val()));
       });
       
-  }   
+  };
 })(jQuery); 
 
 /**
@@ -126,13 +126,13 @@
 
         $.each(newTagsArray, function()
         {
-            var thisTag = $.trim(this).toLowerCase();
+            var thisTag = this.trim().toLowerCase();
             if(thisTag.length > 0)
             {
                 processedArray.push(thisTag);
             }
         });
-        processedArray = $.unique(processedArray);
+        processedArray = $.uniqueSort(processedArray);
         $.each(processedArray, function()
         {
            $tagSelect.append("<option selected='selected'>" + this + "</option>");

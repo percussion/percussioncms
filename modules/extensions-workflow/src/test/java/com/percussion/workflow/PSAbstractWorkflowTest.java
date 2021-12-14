@@ -17,14 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
 import com.percussion.data.PSSqlException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSPreparedStatement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -44,6 +47,9 @@ import java.util.Calendar;
 
 public abstract class PSAbstractWorkflowTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSAbstractWorkflowTest.class);
+
    /**
     * This is the executive method for running a test. It gets a database
     * connection and calls methods to parse the command line arguments, run the
@@ -83,33 +89,37 @@ public abstract class PSAbstractWorkflowTest
       catch (PSWorkflowTestException e)
       {
 
-         System.err.println("Exception while testing ");
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Exception while testing ");
          Throwable throwable =  e.getThrowable();
-         System.out.println("throwable class = " + throwable.getClass());
+         log.info("throwable class = {}", throwable.getClass());
          if (null != throwable)
          {
             if ((java.sql.SQLException.class).isInstance(throwable))
             {
                SQLException sqlEx = (SQLException)throwable;
 
-               System.out.println("chain of SQL exceptions");
+               log.info("chain of SQL exceptions");
                for (;
                     null !=  sqlEx;
                     sqlEx = sqlEx.getNextException())
                {
-                  System.out.println("   " + PSSqlException.toString(sqlEx));
+                  log.info(" {} ", PSSqlException.toString(sqlEx));
                }
             }
             else
             {
-               System.out.println(throwable);
+               log.info(throwable);
 
             }
-            System.out.println("Stack Trace for original exception:");
-            throwable.printStackTrace();
+            log.info("Stack Trace for original exception:");
+            log.error(throwable.getMessage());
+            log.debug(throwable.getMessage(), throwable);
          }
-         System.out.println("Stack Trace for testing code:");
-         e.printStackTrace();
+         log.info("Stack Trace for testing code:");
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(e.getMessage(), throwable);
       }
       finally
       {
@@ -146,7 +156,7 @@ public abstract class PSAbstractWorkflowTest
 
             if (m_sArgs[i].equals("-h") || m_sArgs[i].equals("-help"))
             {
-               System.out.println(HelpMessage());
+               log.info(HelpMessage());
                return false;
             }
          } // End loop over args
@@ -187,7 +197,7 @@ public abstract class PSAbstractWorkflowTest
    public String HelpMessage()
    {
       // commented out line below shows how to include additional options
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:\n");
 //    buf.append("   -w, -workflowid    workflow ID\n");
       buf.append("   -h, -help          help\n");
@@ -229,7 +239,7 @@ public abstract class PSAbstractWorkflowTest
       {
           return "";
       }
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append((calendar.get(calendar.MONTH) + 1)+ "/" );
       buf.append(calendar.get(calendar.DAY_OF_MONTH)  + "/");
       buf.append(calendar.get(calendar.YEAR) + " ");
@@ -310,12 +320,17 @@ public abstract class PSAbstractWorkflowTest
       {
          if(null != rs)
          {
-            try {rs.close();} catch (Throwable T) {T.printStackTrace();};
+            try {rs.close();} catch (Throwable T) {
+               log.error(T.getMessage());
+               log.debug(T.getMessage(), T);
+            };
          }
 
          if(null != stmt)
          {
-            try {stmt.close();} catch (Throwable T) {T.printStackTrace();};
+            try {stmt.close();} catch (Throwable T) {log.error(T.getMessage());
+               log.debug(T.getMessage(), T);
+            };
          }
 
       }

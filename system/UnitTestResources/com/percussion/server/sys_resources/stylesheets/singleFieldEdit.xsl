@@ -18,21 +18,23 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
 <!DOCTYPE xsl:stylesheet [
-<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-%HTMLlat1;
-<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-%HTMLsymbol;
-<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-%HTMLspecial;
+        <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+        %HTMLlat1;
+        <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+        %HTMLsymbol;
+        <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+        %HTMLspecial;
 ]>
 <!-- $ Id: $ -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="URN:percussion.com/control" xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxctl="urn:percussion.com/control"
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:psxi18n="com.percussion.i18n"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:import href="file:sys_resources/stylesheets/sys_Templates.xsl"/>
    <xsl:import href="file:sys_resources/stylesheets/customControlImports.xsl"/>
@@ -68,11 +70,12 @@
                   <xsl:with-param name="lang" select="$lang"/>
                </xsl:call-template>
             </title>
-            <link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="../rx_resources/css/templates.css"/>
-            <link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+            <link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="/rx_resources/css/templates.css"/>
+            <link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 			<script language="javascript" src="../tmx/tmx.jsp?sys_lang={$lang}">;</script>
-			<script language="javascript" src="../../cm/jslib/jquery.js">;</script>
+             <script src="/cm/jslib/profiles/3x/jquery/jquery-3.0.6.js"></script>
+             <script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
             <script src="../sys_resources/js/browser.js">;</script>
             <script src="../sys_resources/js/href.js">;</script>
             <script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
@@ -80,7 +83,7 @@
             <script src="../sys_resources/js/AddFormParameters.js">;</script>
             <script src="../sys_resources/js/formValidation.js">;</script>
             <script src="../sys_resources/js/formChangeCheck.js">;</script>
-            <script language="Javascript"><![CDATA[
+            <script><![CDATA[
       		  var hasEditLiveControls = false;
       		  function updateFieldOnAaPage()
       		  {
@@ -110,7 +113,7 @@
                   return (false]]><xsl:apply-templates select="/*/ItemContent/DisplayField[@displayType='sys_normal']" mode="psxcontrol-customcontrol-isdirty"/><![CDATA[); 
                }]]></script>
             <xsl:if test="$isEditLive or $isEditLiveDynamic">
-               <script language="Javascript"><![CDATA[
+               <script><![CDATA[
       		  hasEditLiveControls = true;
          		]]></script>
             </xsl:if>
@@ -131,7 +134,7 @@
                <script src="../sys_resources/js/href.js">;</script>
                <script src="../rx_resources/webimagefx/rx_wifx.js">;</script>
             </xsl:if>
-            <script language="javascript">
+            <script>
                var canSubmit = true;
             </script>
          </head>
@@ -153,11 +156,11 @@
                                  <xsl:attribute name="onsubmit">ps_setUpdateFlag();<xsl:text>addFormRedirect(document.forms['EditForm']); return </xsl:text><xsl:if test="$hasWebImageFx"><xsl:text>wifxHandleSubmit</xsl:text></xsl:if><xsl:text>(_ignoreMultipleSubmit() &amp;&amp; canSubmit &amp;&amp; true</xsl:text><xsl:apply-templates select="/*/ItemContent" mode="psxcontrol-form-onsubmit"/><xsl:text>)</xsl:text></xsl:attribute>
                                  <table width="100%" border="0" cellspacing="5" cellpadding="0" summary="controls for editing metadata">
                                     <tr>
-                                       <td height="8"><img src="../sys_resources/images/spacer.gif" height="8"/></td>
+                                       <td height="8"><img src="/sys_resources/images/spacer.gif" height="8"/></td>
                                     </tr>
                                     <xsl:apply-templates select="ItemContent"/>
                                     <tr>
-                                       <td height="8"><img src="../sys_resources/images/spacer.gif" height="8"/></td>
+                                       <td height="8"><img src="/sys_resources/images/spacer.gif" height="8"/></td>
                                     </tr>
                                     <tr>
                                        <td align="center" colspan="2" class="headercell2">

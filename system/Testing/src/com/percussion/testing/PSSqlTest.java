@@ -17,13 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.testing;
 
-import com.percussion.util.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.util.PSSqlHelper;
+import com.percussion.util.PSStopwatch;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -42,6 +47,9 @@ import java.util.Properties;
  */
 public class PSSqlTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSSqlTest.class);
+
    /**
     * Create a new connection. The connection information is hard coded in 
     * this method.
@@ -221,7 +229,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -298,7 +307,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -388,7 +398,8 @@ public class PSSqlTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          
          if (e instanceof SQLException)
          {
@@ -417,7 +428,8 @@ public class PSSqlTest
             }
             catch (SQLException e)
             {
-               e.printStackTrace();
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             
             try { conn.close(); } catch (SQLException e) { /* noop */ }

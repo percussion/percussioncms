@@ -17,41 +17,36 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pagemanagement.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.percussion.share.test.PSRestClient.RestClientException;
+import com.percussion.share.test.PSRestTestCase;
+import com.percussion.theme.data.PSRegionCSS;
+import com.percussion.theme.data.PSRegionCSS.Property;
+import com.percussion.theme.data.PSRegionCssList;
+import com.percussion.theme.data.PSTheme;
+import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
-import com.percussion.pathmanagement.data.PSDeleteFolderCriteria.SkipItemsType;
-import com.percussion.pathmanagement.web.service.PSPathServiceRestClient;
-import com.percussion.share.test.PSRestClient.RestClientException;
-import com.percussion.share.test.PSRestTestCase;
-import com.percussion.share.test.PSTestDataCleaner;
-import com.percussion.theme.data.PSRegionCSS;
-import com.percussion.theme.data.PSRegionCSS.Property;
-import com.percussion.theme.data.PSRegionCssList;
-import com.percussion.theme.data.PSTheme;
-import com.percussion.theme.data.PSThemeSummary;
 import org.junit.experimental.categories.Category;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @Category(IntegrationTest.class)
 public class PSThemeServiceTest extends PSRestTestCase<PSThemeRestClient>

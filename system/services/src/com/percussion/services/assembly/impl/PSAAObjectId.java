@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,6 +27,7 @@ package com.percussion.services.assembly.impl;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyItem;
@@ -42,6 +43,8 @@ import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,6 +110,9 @@ import java.util.Map;
  */
 public class PSAAObjectId
 {
+
+   private static final Logger log = LogManager.getLogger(PSAAObjectId.class);
+
    /**
     * Constructor that takes a string representation of JSON array of values of
     * the parameters mentioned in the class description.
@@ -250,7 +256,7 @@ public class PSAAObjectId
             // relationshipid required
             temp = parseParam(allParams, IPSHtmlParameters.SYS_RELATIONSHIPID,
                   null, true);
-            params.put(IPSHtmlParameters.SYS_RELATIONSHIPID, temp.toString());
+            params.put(IPSHtmlParameters.SYS_RELATIONSHIPID, temp);
             // slotid required
             int snslotid = PSAssemblyServiceLocator.getAssemblyService()
             .findSlotByName(name).getGUID().getUUID();
@@ -271,7 +277,8 @@ public class PSAAObjectId
             }
             catch (RepositoryException e)
             {
-               e.printStackTrace();
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             break;
          case AA_NODE_TYPE_PAGE :
@@ -427,7 +434,7 @@ public class PSAAObjectId
       {
          throw new IllegalArgumentException("item must not be null");
       }
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       Map oldParams = item.getParameters();
       Iterator iter = oldParams.keySet().iterator();
       while (iter.hasNext())
@@ -460,7 +467,7 @@ public class PSAAObjectId
       Map params)
       throws PSAssemblyException, PSMissingBeanConfigurationException
    {
-      Map<String, String> id = new HashMap<String, String>();
+      Map<String, String> id = new HashMap<>();
       // ContentId
       String temp = parseParam(params, IPSHtmlParameters.SYS_CONTENTID, null,
             true);
@@ -478,7 +485,7 @@ public class PSAAObjectId
       {
          temp = parseParam(params, IPSHtmlParameters.SYS_VARIANTID, null, true);
       }
-      id.put(IPSHtmlParameters.SYS_VARIANTID, temp.toString());
+      id.put(IPSHtmlParameters.SYS_VARIANTID, temp);
 
       // Optional params
       // Parent Content Id
@@ -823,7 +830,7 @@ public class PSAAObjectId
     * Constant map for to maintain the indices of the parameters in the JSON
     * array object
     */
-   private static final Map<String, Integer> m_indices = new HashMap<String, Integer>();
+   private static final Map<String, Integer> m_indices = new HashMap<>();
 
    //Static initialization of indices with parameters
    static
@@ -852,7 +859,7 @@ public class PSAAObjectId
       String slotJsonArray = "[1,335,505,301,306,0,0,311,1,518,null,null,null]";
       String snippetJsonArray = "[2,372,503,301,null,0,0,311,0,518,1728,null,null]";
       String fieldJsonArray = "[3,372,503,301,null,0,0,311,0,null,null,displaytitle,null]";
-      Map<String,String> jsonArrays = new HashMap<String,String>();
+      Map<String,String> jsonArrays = new HashMap<>();
       jsonArrays.put("Page", pageJsonArray);
       jsonArrays.put("Slot", slotJsonArray);
       jsonArrays.put("Snippet", snippetJsonArray);
@@ -890,8 +897,8 @@ public class PSAAObjectId
       }
       catch (JSONException e)
       {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
    }

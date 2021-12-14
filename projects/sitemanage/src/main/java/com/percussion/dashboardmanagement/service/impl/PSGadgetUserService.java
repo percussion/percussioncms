@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -86,7 +86,7 @@ public class PSGadgetUserService implements IPSGadgetUserService {
     
     // stub support methods and data
     private ArrayList<PSGadget> createGadgetList(String[] urlList) {
-    	ArrayList<PSGadget> list = new ArrayList<PSGadget>(urlList.length);
+    	ArrayList<PSGadget> list = new ArrayList<>(urlList.length);
     	for(int i=0; i<urlList.length; i++) {
     		String url = urlList[i];
     		PSGadget gadget = new PSGadget();
@@ -128,6 +128,6 @@ public class PSGadgetUserService implements IPSGadgetUserService {
    	};
     int[][] bobGadgetLayout = {{0,0},{1,0},{1,1}};
 
-    ArrayList<PSGadget> alexGadgets = new ArrayList<PSGadget>();
-    ArrayList<PSGadget> bobGadgets = new ArrayList<PSGadget>();
+    ArrayList<PSGadget> alexGadgets = new ArrayList<>();
+    ArrayList<PSGadget> bobGadgets = new ArrayList<>();
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,9 +26,12 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.deployer.error.IPSDeploymentErrors;
 import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSArchiveFiles;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -51,6 +54,8 @@ import java.util.zip.ZipOutputStream;
  */
 public class PSArchive
 {
+
+   private static final Logger log = LogManager.getLogger(PSArchive.class);
 
    /**
     * Construct this object from an existing archive file.  This will open the
@@ -184,7 +189,8 @@ public class PSArchive
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_READ_ERROR,
             args);
@@ -277,10 +283,14 @@ public class PSArchive
       }
       catch (PSDeployException e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
       catch (Exception e) // this will get anything else
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_READ_ERROR,
             args);
@@ -338,17 +348,17 @@ public class PSArchive
       // archive manifest may not have been read yet
       if (getArchiveManifest() != null)
       {
-         Iterator pkgs = detail.getPackages();
+         Iterator<PSDeployableElement> pkgs = detail.getPackages();
          while (pkgs.hasNext())
          {
             Set infoSet = new HashSet();
-            PSDeployableElement pkg = (PSDeployableElement)pkgs.next();
-            Iterator deps = pkg.getDependencies();
+            PSDeployableElement pkg = pkgs.next();
+            Iterator<PSDependency> deps = pkg.getDependencies();
             if (deps != null)
             {
                while (deps.hasNext())
                {
-                  PSDependency dep = (PSDependency)deps.next();
+                  PSDependency dep = deps.next();
                   updateDbmsInfoList(dep, infoSet);
                }
             }
@@ -379,12 +389,12 @@ public class PSArchive
          }
 
          // recurse children even if not included
-         Iterator deps = dep.getDependencies();
+         Iterator<PSDependency> deps = dep.getDependencies();
          if (deps != null)
          {
             while (deps.hasNext())
             {
-               PSDependency child = (PSDependency)deps.next();
+               PSDependency child = deps.next();
                updateDbmsInfoList(child, infoSet);
             }
          }
@@ -412,30 +422,21 @@ public class PSArchive
    private void storeXmlDocument(Document doc, String archivePath, byte[] extra)
       throws PSDeployException
    {
-      PSPurgableTempFile file = null;
-      FileOutputStream out = null;
-      try
-      {
-         file = new PSPurgableTempFile("dpl_", ".xml", null);
-         out = new FileOutputStream(file);
-         PSXmlDocumentBuilder.write(doc, out);
-         out.close();
-         out = null;
+
+       try(PSPurgableTempFile file = new PSPurgableTempFile("dpl_", ".xml", null)){
+            try(FileOutputStream out = new FileOutputStream(file)){
+                PSXmlDocumentBuilder.write(doc, out);
+             }
+
          storeFile(file, archivePath, extra);
       }
-      catch (IOException e)
-      {
-         Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
-         throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_WRITE_ERROR,
-            args);
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch (IOException ioe){}
-         if (file != null)
-            file.release();
-      }
+       catch (Exception e) {
+          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_WRITE_ERROR,
+                  args);
+       }
    }
 
    /**
@@ -487,14 +488,16 @@ public class PSArchive
          throw new IllegalArgumentException(
             "archiveEntryPath may not be null or empty");
 
-      try
-      {
-         PSArchiveFiles.archiveFile(getZipOutputStream(), archiveEntryPath,
+      try{
+         ZipOutputStream zs = getZipOutputStream();
+         PSArchiveFiles.archiveFile(zs, archiveEntryPath,
             file, extra);
       }
       catch (IOException e)
       {
          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_WRITE_ERROR,
             args);
       }
@@ -549,6 +552,8 @@ public class PSArchive
       catch (IOException e)
       {
          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_READ_ERROR,
             args);
       }
@@ -584,6 +589,8 @@ public class PSArchive
       catch (IOException e)
       {
          Object args[] = {m_archiveFile.getPath(), e.getLocalizedMessage()};
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_READ_ERROR,
             args);
       }

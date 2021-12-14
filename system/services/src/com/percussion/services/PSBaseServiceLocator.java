@@ -17,22 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services;
 
-import com.percussion.server.PSServer;
 import com.percussion.util.PSOsTool;
-import com.percussion.util.PSResourceUtils;
 import com.percussion.utils.container.PSContainerUtilsFactory;
-import com.percussion.utils.container.PSStaticContainerUtils;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.spring.PSFileSystemXmlApplicationContext;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -43,7 +40,6 @@ import javax.naming.NamingException;
 import javax.naming.spi.NamingManager;
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +70,7 @@ public class PSBaseServiceLocator
    /**
     * The logger to use in this class
     */
-   private static Log ms_logger = LogFactory.getLog(PSBaseServiceLocator.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSBaseServiceLocator.class);
 
    /**
     * The location of the configuration directory in the source tree
@@ -109,7 +105,7 @@ public class PSBaseServiceLocator
     * them down during shutdown.
     */
    private static ArrayList<ConfigurableApplicationContext> ms_ctxList = 
-         new ArrayList<ConfigurableApplicationContext>();
+         new ArrayList<>();
    /**
     * Initialize the configuration for the server context. Only call this within
     * a J2EE container.
@@ -138,7 +134,7 @@ public class PSBaseServiceLocator
                     ctx.setServletContext(servletCtx);
 
                     String sysConfigDir = PSServletUtils.getSpringConfigPath();
-                    List<String> configFiles = new ArrayList<String>();
+                    List<String> configFiles = new ArrayList<>();
                     configFiles.add(sysConfigDir + "/" + PSServletUtils.SERVER_BEANS_FILE_NAME);
                     configFiles.add(sysConfigDir + "/" + PSServletUtils.DESIGN_BEANS_FILE_NAME);
                     configFiles.add(sysConfigDir + "/" + PSServletUtils.DEPLOYER_BEANS_FILE_NAME);
@@ -314,7 +310,7 @@ public class PSBaseServiceLocator
     */
    private static List<String> getUserConfigFiles()
    {
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
 
       String userConfigPath = PSServletUtils.getUserSpringConfigPath();
       File userConfigDir = PSServletUtils.getUserSpringConfigDir();

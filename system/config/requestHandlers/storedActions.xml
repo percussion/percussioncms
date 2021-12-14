@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE StoredActions SYSTEM "/Rhythmyx/DTD/sys_StoredActions.dtd">
+<!DOCTYPE StoredActions SYSTEM "sys_StoredActions.dtd">
 <StoredActions>
 	<ActionSet name="checkoutedit">
 		<!-- checks out, then edits a content item.  will not fail if item is already checked out -->
@@ -667,7 +667,7 @@
             sys_variantid - variantid of the page for active assembly, caller sends this as HTML parameter.
          -->
    <ActionSet name="checkoutaadoc">
-      <Action ignoreError="yes" name="checkout">
+      <Action name="checkout" ignoreError="yes">
          <PSXParam name="sys_command">
             <DataLocator>
                <PSXTextLiteral id="0">

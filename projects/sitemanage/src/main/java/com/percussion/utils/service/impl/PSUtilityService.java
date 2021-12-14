@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,33 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.service.impl;
 
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.ToDoVulnerability;
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.share.service.IPSSystemProperties;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.service.IPSUtilityService;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PSUtilityService implements IPSUtilityService
 {
-    @Deprecated
-    @ToDoVulnerability
 
-
-    private static final Log log = LogFactory.getLog(PSUtilityService.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
     private IPSSystemProperties systemProps = null;
     public PSUtilityService()
     {
@@ -58,9 +54,10 @@ public class PSUtilityService implements IPSUtilityService
             throw new IllegalArgumentException("str may not be null");
 
         try {
-            return PSEncryptor.getInstance().encrypt(str);
+            return PSEncryptor.encryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),str);
         } catch (PSEncryptionException e) {
-            log.error("Error encrypting text: " + e.getMessage(),e);
+            log.error("Error encrypting text: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return "";
         }
 
@@ -76,13 +73,17 @@ public class PSUtilityService implements IPSUtilityService
 
         if (key == null || key.length() == 0)
         {
-            key = PSLegacyEncrypter.DEFAULT_KEY();
+            key = PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).DEFAULT_KEY();
         }
         try{
-            ret = PSEncryptor.getInstance().decrypt(str);
+            ret = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),str);
 
         }catch(PSEncryptionException ex){
-            ret =  PSLegacyEncrypter.getInstance().decrypt(str, key);
+            ret =  PSLegacyEncrypter.getInstance(
+                    PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+            ).decrypt(str, key,null);
         }
 
         return ret;
@@ -140,7 +141,7 @@ public class PSUtilityService implements IPSUtilityService
     public boolean isSaaSEnvironment()
     {
         boolean isSaaS = false;
-        String saasProp = systemProps.getProperty(SAAS_FLAG_SERVER_PROP);
+        String saasProp = systemProps.getProperty(IPSConstants.SAAS_FLAG);
         if(StringUtils.isNotBlank(saasProp) && (saasProp.equalsIgnoreCase("true") || saasProp.equalsIgnoreCase("yes")))
             isSaaS = true;
         return isSaaS;

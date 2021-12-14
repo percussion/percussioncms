@@ -17,15 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.extensions.usersearch;
+
 import com.percussion.data.IPSDataErrors;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -39,6 +41,10 @@ import com.percussion.util.PSXMLDomUtil;
 import com.percussion.workflow.PSWorkFlowUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,11 +53,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
  /**
   * This exit can modify the result document by adding search results for the
@@ -214,7 +215,7 @@ import org.w3c.dom.NodeList;
       {
          PSXmlDocumentBuilder.addElement(resultDoc,
                   resultDoc.getDocumentElement(),
-                  "error", e.getMessage());
+                  "error", PSExceptionUtils.getMessageForLog(e));
          PSConsole.printMsg("Exit:" + ms_fullExtensionName, e);
       }
       return resultDoc;

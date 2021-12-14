@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,10 +31,11 @@
     
     P.templateDesignView = function()
     {
-        $.perc_iframe_fix($('#frame'));
-        // P.headerView( $('.perc-main-div'), $("#frame") );
-        var model, tab, cssController, finderIsMaximized;
         var frame = $('#frame');
+        $.perc_iframe_fix(frame);
+        var model, tab, cssController, finderIsMaximized;
+
+
 
         // by default, the templates view is displayed
         // remove all scrollbars from the document in the templates view
@@ -56,7 +57,7 @@
         }
 
         // A snippet to adjust the frame size on resizing the window.
-        $(window).resize(function()
+        $(window).on("resize",function()
         {
             fixIframeHeight();
             fixBottomHeight();
@@ -68,7 +69,7 @@
         //Snippet for displaying the inline help when no site is selected @Story 99
         var inline_help = $("#perc-pageEditor-menu-name").text();
 
-        if(inline_help == "")
+        if(inline_help === "")
         {
             $("#perc-site-templates-label").hide();
             $("#perc-site-templates-inline-help").show();
@@ -87,13 +88,14 @@
 
         //Add Action dropdown menu in toolbar
         var siteName = $.PercNavigationManager.getSiteName();
+        var isEnable = false;
         if(typeof siteName == 'undefined')
         {
-            var isEnable = false;
+            isEnable = false;
         }
         else
         {
-            var isEnable = true;
+            isEnable = true;
         }
 
         var percTemplateActions = $("#perc-dropdown-actions");
@@ -181,7 +183,7 @@
         function initializeUnassignedPanel(){
             var panelExpanderIcon = $(".perc-panel-expander-icon");
             var panel = $(".perc-unassigned-panel");
-            panelExpanderIcon.click(function(){
+            panelExpanderIcon.on("click", function(evt){
                 if (typeof($.PercNavigationManager.getSiteName()) != "undefined"){
                     setPanelPreference(panelExpanderIcon.is(".perc-collapsed"));
                     if (panelExpanderIcon.is(".perc-collapsed")){
@@ -200,15 +202,15 @@
                         });
                         panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
                         window.clearInterval(intervalId);
-                        setPanelPreference(false)
+                        setPanelPreference(false);
                     }
                 }
-            })
+            });
             
             var siteName = $.PercNavigationManager.getSiteName();
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, 1, UNASSIGNED_MAX_RESULTS, function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                         var panelSettings = JSON.parse($.cookie("perc-unassigned-panel-" + $.PercNavigationManager.getSiteName() + "-settings"));
                         var showPanel = false;
                         var pageNumber = 1;
@@ -217,7 +219,7 @@
                             pageNumber = panelSettings.pageNumber;
                         }
                         else{
-                            var unassignedResult = result.UnassignedResults
+                            var unassignedResult = result.UnassignedResults;
                             if (typeof(unassignedResult.unassignedItemList.childrenInPage) != "undefined")
                                 showPanel = unassignedResult.unassignedItemList.childrenInPage.length > 0;
                         }
@@ -229,7 +231,7 @@
                             intervalId = setInterval(requestUnassignedPages, 10000);
                         }
                     }
-                })
+                });
             }
             else{
                 panelExpanderIcon.addClass("perc-disabled");
@@ -240,25 +242,31 @@
             $.perc_filterField(percJump, $.perc_textFilters.ONLY_DIGITS);
             
             // Pagination controls - Previous button
-            $('.perc-unassigned-panel .perc-template-pages-controls .previous').click(unassignedPreviousClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",
+                function(evt){
+                    unassignedPreviousClick(evt);
+                });
             
             // Pagination controls - Next button - Click
-            $('.perc-unassigned-panel .perc-template-pages-controls .next').click(unassignedNextClick)
+            $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click",
+                function(evt){
+                    unassignedNextClick(evt);
+                });
             
              // Pagination controls - Text input for page selector
-            $('.perc-unassigned-panel .perc-template-pages-controls').submit(function()
+            $('.perc-unassigned-panel .perc-template-pages-controls').on("submit",function()
             {
                 requestUnassignedPages(parseInt(percJump.val()));
                 return false;
-            })
+            });
         }
         
-        function unassignedPreviousClick(){
+        function unassignedPreviousClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())-1);
         }
         
-        function unassignedNextClick(){
+        function unassignedNextClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())+1);
         }
@@ -267,7 +275,7 @@
             if (typeof(pageNumber) == "undefined"){
                 //Use the current pageNumber
                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
-                var pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
+                 pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
             }
             pageNumber = (pageNumber!=0)? pageNumber : 1;
             setPanelPreference(null, pageNumber);
@@ -277,17 +285,17 @@
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, startIndex, UNASSIGNED_MAX_RESULTS, function(status, result){
                     if(status == $.PercServiceUtils.STATUS_SUCCESS){
-                        var unassignedResult = result.UnassignedResults
+                        var unassignedResult = result.UnassignedResults;
                         updateProgressBar(unassignedResult.importStatus);
                         drawUnassignedPages(unassignedResult.unassignedItemList);
                         var totalPages = unassignedResult.importStatus.catalogedPageCount + unassignedResult.importStatus.importedPageCount;
                         var childrenInPage = 0;
                         if (typeof(unassignedResult.unassignedItemList.childrenInPage) != "undefined")
-                            childrenInPage = $.perc_utils.convertCXFArray(unassignedResult.unassignedItemList.childrenInPage).length
+                            childrenInPage = $.perc_utils.convertCXFArray(unassignedResult.unassignedItemList.childrenInPage).length;
                         updatePaging(unassignedResult.unassignedItemList.startIndex, childrenInPage, totalPages);
                     }
                     else{}
-                })
+                });
             }
         }
         
@@ -307,14 +315,17 @@
                 panel.find(".previous")
                     .removeClass('previous')
                     .addClass('previous-disabled')
-                    .unbind('click');
+                    .off('click');
             }
             else {
                 panel.find(".previous-disabled")
                     .removeClass('previous-disabled')
                     .addClass('previous')
-                    .unbind('click')
-                    .click(unassignedPreviousClick);
+                    .off('click')
+                    .on("click",
+                        function(evt){
+                            unassignedPreviousClick(evt);
+                        });
             }
             
             var endIndex = startIndex + UNASSIGNED_MAX_RESULTS - 1;
@@ -322,14 +333,16 @@
                 panel.find(".next")
                     .removeClass('next')
                     .addClass('next-disabled')
-                    .unbind('click');
+                    .off('click');
             }
             else {
                 panel.find(".next-disabled")
                     .removeClass('next-disabled')
                     .addClass('next')
-                    .unbind('click')
-                    .click(unassignedNextClick);
+                    .off('click')
+                    .on("click", function(evt){
+                            unassignedNextClick(evt);
+                    });
             }
         }
         
@@ -370,7 +383,7 @@
         function drawUnassignedPages(unassignedItemList){
             var panel = $(".perc-unassigned-panel");
             //This panel gets reloaded every 10 seconds, capture the previous selection and reapply
-            var selectedPageId = panel.find(".perc-imported-page-selected").size()==1?panel.find(".perc-imported-page-selected").attr("id"):null;
+            var selectedPageId = panel.find(".perc-imported-page-selected").length === 1? panel.find(".perc-imported-page-selected").attr("id"):null;
             var pageContainer = panel.find(".perc-panel-pages-list");
             pageContainer.empty();
             var pageList = $("<ul/>");
@@ -413,7 +426,7 @@
                 
                 switch (page.status){
                     case "Imported":
-                        pageObj.addClass("perc-imported-page").click(function(){
+                        pageObj.addClass("perc-imported-page").on("click", function(evt){
                             $(".perc-imported-page-selected").removeClass("perc-imported-page-selected");
                             $(this).addClass("perc-imported-page-selected");
                             var createTplPageMenuEntry = $(".perc-dropdown-option-CreateTemplatefromPage");
@@ -426,7 +439,7 @@
                     case "Importing":
                         pageObj.find(".perc-left-img").attr("src","/Rhythmyx/sys_resources/images/running.gif");
                         pageObj.find(".perc-imported-page-dropdown").hide();
-                        pageObj.attr("disabled", "disabled")
+                        pageObj.prop("disabled", true);
                         break;
                     case "Cataloged":
                         pageObj.find(".perc-left-img").attr("src","/Rhythmyx/sys_resources/images/iconSpider.png");
@@ -645,8 +658,8 @@
         function _cleanMementoView()
         {
             var memento;
-            memento = $j.PercNavigationManager.getMemento();
-            memento['view'] = null;
+            memento = $.PercNavigationManager.getMemento();
+            memento.view = null;
         }
 
         /**
@@ -701,7 +714,7 @@
                 panel.hide();
                 panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
                 window.clearInterval(intervalId);
-                setPanelPreference(false)
+                setPanelPreference(false);
             }
             panelExpander.hide();
             container.css("margin-left", "0px");
@@ -755,7 +768,7 @@
             showUnassignedPanel();
         }
 
-        $("#perc-wid-lib-expander").click(function()
+        $("#perc-wid-lib-expander").on("click", function()
         {
             $.fn.percWidLibMaximizer(P);
         });
@@ -802,15 +815,9 @@
 
             $("#region-tool").draggable(
             {
-                start: function(event, ui)
-                {
-                    utils.addAutoScroll();
-                },
-                stop: function(event, ui)
-                {
-                    utils.removeAutoScroll();
-                },
                 helper: 'clone',
+                iframeFix: true,
+                delay:$.dragDelay,
                 refreshPositions: true
             });
             $("#w1").data("widget", {
@@ -827,7 +834,7 @@
         }
 
         //Fixing Iframe size when clicking on sub-tabs under Style tab.
-        $(".perc-style-sub-tab").click(function()
+        $(".perc-style-sub-tab").on("click", function()
         {
             fixIframeHeight();
         });
@@ -889,8 +896,8 @@
                                         return;
                                     }
                                     $("#perc-import-template-frame").contents().find("#perc-import-template-form").attr("action", actionUrl);
-                                    $("#perc-import-template-frame").contents().find("#perc-import-template-form").submit();
-                                    $("#perc-import-template-frame").load(function()
+                                    $("#perc-import-template-frame").contents().find("#perc-import-template-form").trigger("submit");
+                                    $("#perc-import-template-frame").on("load",function()
                                     {
                                         closeDialogOnSuccess();
                                     });

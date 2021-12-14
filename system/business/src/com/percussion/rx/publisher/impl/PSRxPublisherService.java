@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.impl;
 
+import com.percussion.delivery.service.impl.PSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.PSConnectivityCheck;
 import com.percussion.rx.publisher.IPSPublisherItemStatus;
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
@@ -39,7 +41,11 @@ import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.jms.IPSQueueSender;
-import com.percussion.services.publisher.*;
+import com.percussion.services.publisher.IPSEdition;
+import com.percussion.services.publisher.IPSPubItemStatus;
+import com.percussion.services.publisher.IPSPubStatus;
+import com.percussion.services.publisher.IPSPublisherService;
+import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.pubserver.PSPubServerDaoLocator;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.utils.general.PSServiceConfigurationBean;
@@ -47,16 +53,31 @@ import com.percussion.util.PSDateFormatISO8601;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.ObjectFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
@@ -115,8 +136,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
                               state.isTerminal())
                         {
                            jobid = startPublishingJob(edition, null);
-                           ms_log.debug("Started demand edition " + edition + 
-                                 " job " + jobid);
+                           ms_log.debug("Started demand edition {} job {}" , edition ,jobid);
                         }
                      }
                   }
@@ -127,18 +147,18 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
                      m_demandWork.wait(DEMAND_WAIT_TIME);
                   }
             }
+         } catch (InterruptedException e) {
+             ms_log.warn(PSExceptionUtils.getMessageForLog(e));
+             Thread.currentThread().interrupt();
          }
-         catch(Exception e)
-         {
-            ms_log.error("Problem in monitor thread", e);
-         } 
+
       }
    }
    
    /**
     * Logger used for business publisher service
     */
-   static Log ms_log = LogFactory.getLog(PSRxPublisherService.class);
+    private static final Logger ms_log = LogManager.getLogger(PSRxPublisherService.class);
    
       public final String DEFAULT_GENERATOR =
       "Java/global/percussion/system/sys_SelectedItemsGenerator";
@@ -152,7 +172,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * all its calling methods are synchronized. 
     */
    protected static Map<Long, PSPublishingJob> m_jobs = 
-      new ConcurrentHashMap<Long, PSPublishingJob>();
+      new ConcurrentHashMap<>();
 
    /**
     * The key to the map is the edition id that is being queued. The value is
@@ -163,7 +183,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * the same time, except in the {@link PSDemandWork} - avoid deadlock. 
     */
    Map<Integer,  ConcurrentLinkedQueue<PSDemandWork>> m_demandWork = 
-      new ConcurrentHashMap<Integer,  ConcurrentLinkedQueue<PSDemandWork>>();
+      new ConcurrentHashMap<>();
    
    /**
     * This map holds the correspondence between the demand ids and the running
@@ -172,7 +192,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
     * NOTE, the accessing of this object is synchronized by "this" object or
     * all its calling methods are synchronized. 
     */
-   private Map<Long, Long> m_demandRequestToJob = new ConcurrentHashMap<Long, Long>();
+   private Map<Long, Long> m_demandRequestToJob = new ConcurrentHashMap<>();
    
    /**
     * The demand thread is started if this value is <code>null</code> or
@@ -236,7 +256,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
    /**
     * Setter used by Spring to wire the publishing sender.
     * 
-    * @param publisherSender the new sender to set, never <code>null</code>
+    * @param publisherSenderFactory the new sender to set, never <code>null</code>
     */
    public void setPublishSenderFactory(ObjectFactory publisherSenderFactory)
    {
@@ -265,10 +285,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
             PSPublishingJob job = m_jobs.get(key);
             if (edition.equals(job.getEdition()) && ! job.isFinished())
             {
-               // do not rerun for cm1
-               // job.setRerun(true);
-               
-               ms_log.debug("edition :"+job.getEdition().getUUID()+" is currently running, marked to rerun after completion");
+               ms_log.debug("edition :{}  is currently running, marked to rerun after completion.", job.getEdition().getUUID());
                // Now we are throwing exception when this could be counted as normal
                // processing.  Should use other mechanism.
                throw new IllegalStateException(
@@ -288,21 +305,21 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       
       try{
          if (checkConnectivity(edition, job)) {
+             PSDeliveryInfoService.copySecureKeyToDeliveryServer(edition);
             m_jobs.put(job.getJobid(), job);
             job.startJob();
             return job.getJobid();
          }
-      } catch (Exception e){
-         job.cancel(true);
-         throw new IllegalStateException(
-               "Cannot connect to FTP Server - check configuration",e);
+      } catch (PSNotFoundException e) {
+              job.cancel(true);
+              throw new IllegalStateException(
+                      "Cannot connect to publishing server - check configuration: " + e.getMessage(),e);
       }
-      jobid = job.getJobid();
+          jobid = job.getJobid();
       }
       return jobid;
    }
- protected boolean checkConnectivity(IPSGuid edition, PSPublishingJob job)
-   {
+ protected boolean checkConnectivity(IPSGuid edition, PSPublishingJob job) throws PSNotFoundException {
       IPSPublisherService pubService = PSPublisherServiceLocator.getPublisherService();
       IPSEdition editionObject =  pubService.loadEdition(edition);
       
@@ -318,14 +335,17 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       }
       return true;
    }
-   /**
+
+
+       /**
+
     *  Check existing jobs to see if any can be reaped.
     */
    private void reapActiveJobs()
    {
       // Check existing jobs to see if any can be reaped 
       long current = System.currentTimeMillis();
-      Set<Long> keysToRemove = new HashSet<Long>();
+      Set<Long> keysToRemove = new HashSet<>();
 
       for (Long key : m_jobs.keySet())
       {
@@ -368,7 +388,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
             m_jobs.remove(key);
          }  
          
-         Set<Long> requestsToRemove = new HashSet<Long>();
+         Set<Long> requestsToRemove = new HashSet<>();
          for (Long requestid : m_demandRequestToJob.keySet())
          {
             Long jobid = m_demandRequestToJob.get(requestid);
@@ -474,7 +494,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       IPSPublisherService svc = PSPublisherServiceLocator
          .getPublisherService();
       
-         List<IPSPublisherItemStatus> persistStatuses = new ArrayList<IPSPublisherItemStatus>();
+         List<IPSPublisherItemStatus> persistStatuses = new ArrayList<>();
    
          
          IPSPublisherItemStatus item = updateQueue.poll();
@@ -488,7 +508,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          if (item!=null)
             persistStatuses.add(item);
          
-         if (persistStatuses.size() > 0)
+         if (!persistStatuses.isEmpty())
          {
             svc.updatePublishingInfo(persistStatuses);
          }
@@ -528,7 +548,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       reapActiveJobs();
       
       Map<IPSGuid,PSPublishingJob> editionToJob = 
-         new HashMap<IPSGuid, PSPublishingJob>();
+         new HashMap<>();
       
       for(PSPublishingJob job : m_jobs.values())
       {
@@ -548,7 +568,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          }
       }
       
-      Collection<Long> rval = new ArrayList<Long>();
+      Collection<Long> rval = new ArrayList<>();
       for(PSPublishingJob job : editionToJob.values()) 
       {
          rval.add(job.getJobid());
@@ -621,13 +641,13 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       Long jobid = getEditionJobId(editionid);
       
       Queue<PSDemandWork> q = getDemandQueueForEdition(edition, isRetrieveOnly);
-      if (q == null || q.size() == 0)
+      if (q == null || q.isEmpty())
       {
          return Collections.emptyList();
       }
       else
       {
-         Collection<PSDemandWork> rval = new ArrayList<PSDemandWork>();
+         Collection<PSDemandWork> rval = new ArrayList<>();
          PSDemandWork item = q.poll();
    
             while(item != null)
@@ -654,10 +674,10 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
    private Queue<PSDemandWork> getDemandQueueForEdition(int edition, boolean isRetrieveOnly)
    {      
       Queue<PSDemandWork> q = m_demandWork.get(edition);
-      if (q == null || q.size() == 0 || (!isRetrieveOnly))
+      if (q == null || q.isEmpty() || (!isRetrieveOnly))
          return q;
       
-      Queue<PSDemandWork> qCloned = new LinkedList<PSDemandWork>();
+      Queue<PSDemandWork> qCloned = new LinkedList<>();
       qCloned.addAll(q);
       return qCloned;
    }
@@ -676,15 +696,15 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
       }
       else
       {
-         ms_log.debug("getDemandWorkStatus for request " + requestId + 
-               " job " + jobid);
+         ms_log.debug("getDemandWorkStatus for request {} job {}" , requestId
+               ,jobid);
          PSPublishingJob job = m_jobs.get(jobid);
          if (job == null)
          {
             return null;
          }
          job.resetLastAccessTime();
-         ms_log.debug("job state is " + job.getState());
+         ms_log.debug("job state is {}" ,job.getState());
          return job.getState();
       }
    }
@@ -722,7 +742,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
          {
             if (q == null)
             {
-               q = new  ConcurrentLinkedQueue<PSDemandWork>();
+               q = new  ConcurrentLinkedQueue<>();
                m_demandWork.put(editionid, q);
             }
          }
@@ -872,7 +892,7 @@ public class PSRxPublisherService implements IPSRxPublisherServiceInternal
 
       File archive = new File(archiveDir, filename);
       OutputStream os = new FileOutputStream(archive);
-      Writer archiveWriter = new OutputStreamWriter(os, "UTF-8");
+      Writer archiveWriter = new OutputStreamWriter(os, StandardCharsets.UTF_8);
       PSDateFormatISO8601 fmt = new PSDateFormatISO8601();
       IPSPublisherService psvc = PSPublisherServiceLocator
          .getPublisherService();

@@ -17,20 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices;
 
 import com.percussion.conn.PSDesignerConnection;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.testing.IPSUnitTestConfigHelper;
 import com.percussion.testing.PSClientTestCase;
 import com.percussion.testing.PSConfigHelperTestCase;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.content.ContentSOAPStub;
 import com.percussion.webservices.faults.PSErrorResultsFault;
@@ -56,23 +56,18 @@ import com.percussion.webservices.system.SystemSOAPStub;
 import com.percussion.webservices.systemdesign.DeleteAclsRequest;
 import com.percussion.webservices.systemdesign.SaveAclsRequest;
 import com.percussion.webservices.systemdesign.SystemDesignSOAPStub;
+import junit.framework.AssertionFailedError;
+import org.apache.axis.client.Call;
+import org.apache.commons.lang.StringUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
+import javax.xml.rpc.ServiceException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-
-import javax.xml.rpc.ServiceException;
-
-import junit.framework.AssertionFailedError;
-
-import org.apache.axis.client.Call;
-import org.apache.commons.lang.StringUtils;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

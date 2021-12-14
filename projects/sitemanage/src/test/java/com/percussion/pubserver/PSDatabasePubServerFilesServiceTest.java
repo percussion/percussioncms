@@ -17,28 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.pubserver;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import com.percussion.services.pubserver.IPSDatabasePubServerFilesService;
 import com.percussion.services.pubserver.data.PSDatabasePubServer;
 import com.percussion.services.pubserver.data.PSDatabasePubServer.DriverType;
 import com.percussion.services.pubserver.impl.PSDatabasePubServerFilesService;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.util.PSPurgableTempFile;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -47,6 +38,15 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test {@link IPSDatabasePubServerFilesService}.
@@ -74,8 +74,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test add created database pub servers
      */
     @Test
-    public void testAdd()
-    {
+    public void testAdd() throws PSDataServiceException {
         addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
 
         addDatabasePubServer(DriverType.ORACLE, "oracle", 200L);
@@ -90,8 +89,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test delete existing database pub servers
      */
     @Test
-    public void testDelete()
-    {
+    public void testDelete() throws PSDataServiceException {
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         List<PSDatabasePubServer> dbServers = m_fileService.getDatabasePubServers();
         m_fileService.deleteDatabasePubServer(myServer);
@@ -103,8 +101,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test to modify an existing database, but keep the driver type the same.
      */
     @Test
-    public void testModifySameType()
-    {
+    public void testModifySameType() throws PSDataServiceException {
         // same type, but different database, user, ...etc.
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         PSDatabasePubServer pubServer = (PSDatabasePubServer) myServer.clone();
@@ -129,8 +126,7 @@ public class PSDatabasePubServerFilesServiceTest
      * Test modify an existing database pub server to different driver type
      */
     @Test
-    public void testModifyDifferentType()
-    {
+    public void testModifyDifferentType() throws PSDataServiceException {
         // same type, but different database, user, ...etc.
         PSDatabasePubServer myServer = addDatabasePubServer(DriverType.MSSQL, "mssql", 1000L);
         PSDatabasePubServer pubServer = (PSDatabasePubServer) myServer.clone();
@@ -210,8 +206,7 @@ public class PSDatabasePubServerFilesServiceTest
         assertTrue(m_fileService.isServerModified(siteId, "Server1"));
     }
    
-    private PSDatabasePubServer addDatabasePubServer(DriverType type, String namePrefix, Long siteId)
-    {
+    private PSDatabasePubServer addDatabasePubServer(DriverType type, String namePrefix, Long siteId) throws PSDataServiceException {
         List<PSDatabasePubServer> dbServers = m_fileService.getDatabasePubServers();
 
         PSDatabasePubServer pubServer = createDbPubServer(type, namePrefix, siteId);

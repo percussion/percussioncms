@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,18 +37,17 @@ import com.percussion.pagemanagement.service.IPSRenderLinkService;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A field input transformer to convert any new style managed links in the specified content to old style inline links. 
@@ -70,7 +69,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     public static final String RXINLINESLOT = "rxinlineslot";
     public static final String SYS_DEPENDENTID = "sys_dependentid";
     public static final String SYS_DEPENDENTVARIANTID = "sys_dependentvariantid";
-    private static final Log log = LogFactory.getLog(PSManagedLinksConverter.class);
+    private static final Logger log = LogManager.getLogger(PSManagedLinksConverter.class);
     
     private IPSManagedLinkService managedService;
     private IPSRenderLinkService renderService;
@@ -93,9 +92,10 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
         PSExtensionParams ep = new PSExtensionParams(params);
         String value = ep.getStringParam(0, null, true);
         boolean returnMap = params.length > 1 && Boolean.parseBoolean(ep.getStringParam(1, "false", false));
-        if(StringUtils.isBlank(value))
+        if(StringUtils.isBlank(value)) {
             return value;
-        Map<String, String> attribs = new HashMap<String, String>();
+        }
+        Map<String, String> attribs = new HashMap<>();
         String updatedValue = processLinksAndImages(value, attribs);
         return returnMap?attribs:updatedValue;
     }
@@ -108,8 +108,9 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     	elems = doc.select(IPSManagedLinkService.A_HREF);
     	imgElems = doc.select(IPSManagedLinkService.IMG_SRC);
         
-        if(elems.size()<1 && imgElems.size()<1)
+        if(elems.size()<1 && imgElems.size()<1) {
             return value;
+        }
         for (Element elem : elems)
         {
             if(!elem.hasAttr(IPSManagedLinkService.LEGACY_INLINETYPE) && (managedService.doManageAll() || elem.attr(IPSManagedLinkService.PERC_MANAGED_ATTR).equalsIgnoreCase(IPSManagedLinkService.TRUE_VAL)))
@@ -134,8 +135,9 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
             if(dependent != -1)
             {
                 String depGuid = PSGuidManagerLocator.getGuidMgr().makeGuid(new PSLocator(dependent)).toString();
-                if(depGuid == null)
+                if(depGuid == null) {
                     return;
+                }
                 PSInlineRenderLink renderLink;
                 String path = "img".equalsIgnoreCase(elem.tagName())?elem.attr(IPSManagedLinkService.SRC_ATTR):elem.attr(IPSManagedLinkService.HREF_ATTR);
                 if (RXHYPERLINK.equalsIgnoreCase(type) && (path.startsWith("/Sites/") || path.startsWith("//Sites/")))
@@ -190,7 +192,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     /**
      * Setter for dependency injection
      * 
-     * @param service the service to set
+     * @param managedService the service to set
      */
     public void setManagedService(IPSManagedLinkService managedService)
     {
@@ -200,7 +202,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     /**
      * Setter for dependency injection
      * 
-     * @param service the service to set
+     * @param renderService the service to set
      */
     public void setRenderService(IPSRenderLinkService renderService)
     {

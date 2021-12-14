@@ -17,17 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * PSNotificationsContextTest is a test class for the class
@@ -36,6 +38,9 @@ import java.sql.SQLException;
 @Category(IntegrationTest.class)
 public class PSNotificationsContextTest extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSNotificationsContextTest.class);
+
    /**
     * Constructor specifying command line arguments
     *
@@ -50,7 +55,7 @@ public class PSNotificationsContextTest extends PSAbstractWorkflowTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("\nExecuting test of PSNotificationsContext\n");
+      log.info("\nExecuting test of PSNotificationsContext\n");
       Exception except = null;
       String exceptionMessage = "";
       int workflowID = 1;
@@ -66,18 +71,20 @@ public class PSNotificationsContextTest extends PSAbstractWorkflowTest
                                                 notificationID,
                                                 connection);
            subject = context.getSubject();
-           System.out.println("subject = " + subject);
+           log.info("subject = {}", subject);
            body = context.getBody();
-           System.out.println("body = " + body);
+           log.info("body = {}", body);
       }
       catch (Exception e) 
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "Exception: ";
          except = e;
       }
       finally 
       {
-         System.out.println("\nEnd test of PSNotificationsContext\n");
+         log.info("\nEnd test of PSNotificationsContext\n");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,

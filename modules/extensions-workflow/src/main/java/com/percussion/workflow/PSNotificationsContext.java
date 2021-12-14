@@ -17,29 +17,34 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
 import com.percussion.tablefactory.PSJdbcTableFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.naming.NamingException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import javax.naming.NamingException;
 
 /**
  * Implementation of the <CODE>IPSNotificationsContext</CODE> which
  * provides methods for accessing the subject and content of notifications
  * associated with a particular workflow and transition.
+ * @deprecated
  */
-
+@Deprecated
 public class PSNotificationsContext extends PSAbstractWorkflowContext
 implements IPSNotificationsContext
 {
+
+   private static final Logger log = LogManager.getLogger(PSNotificationsContext.class);
+
    /**
     * Constructor specifying the workflowID and notification ID.
     *
@@ -106,7 +111,8 @@ implements IPSNotificationsContext
       }
       catch(IOException ioe)
       {
-         ioe.printStackTrace();
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage());
       }
    }
 

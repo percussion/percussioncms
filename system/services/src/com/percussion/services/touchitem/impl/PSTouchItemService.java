@@ -17,14 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.touchitem.impl;
-
-import static com.percussion.cms.objectstore.PSCmsObject.TYPE_FOLDER;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
@@ -52,6 +50,8 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.system.IPSSystemWs;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +61,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import static com.percussion.cms.objectstore.PSCmsObject.TYPE_FOLDER;
 
 /**
  * See {@link IPSTouchItemService}.
@@ -76,7 +76,7 @@ public class PSTouchItemService
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSTouchItemService.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTouchItemService.class);
    private IPSContentWs contentWs;
    private IPSGuidManager guidMgr;
    private IPSCmsObjectMgr cmsMgr;
@@ -126,7 +126,7 @@ public class PSTouchItemService
       if (!requireExtendedTouchItems(rel))
          return 0;
       
-      Collection<Integer> touchedItems = new HashSet<Integer>();
+      Collection<Integer> touchedItems = new HashSet<>();
       
       PSLocator depLoc = rel.getDependent();
       if (rel.getDependentObjectType() == TYPE_FOLDER)
@@ -174,7 +174,7 @@ public class PSTouchItemService
       
       if (impact.isImpactItem)
       {
-         Collection<Integer> touchedItems = new HashSet<Integer>();
+         Collection<Integer> touchedItems = new HashSet<>();
          touchedItems.add(((PSLegacyGuid) id).getContentId());
          
          count += touchItems(id, impact.levelTargetTypesMap, touchedItems,
@@ -202,7 +202,7 @@ public class PSTouchItemService
          Collection<PSLocator> ids = folderProcessor.getDescendantFoldersWithItems(defId);
          List<IPSSite> sites = msg.getItemSites(new PSLegacyGuid(defId));
 
-         List<Integer> folderIds = new ArrayList<Integer>();
+         List<Integer> folderIds = new ArrayList<>();
          for (PSLocator loc : ids)
             folderIds.add(loc.getId());
          for (IPSSite site : sites)
@@ -252,7 +252,7 @@ public class PSTouchItemService
          boolean touchLandingPages)
    {
       List<IPSGuid> nodeIds = navService.findDescendantNavonIds(id);
-      List<Integer> ids = new ArrayList<Integer>();
+      List<Integer> ids = new ArrayList<>();
       
       for (IPSGuid nodeId : nodeIds)
       {
@@ -300,7 +300,7 @@ public class PSTouchItemService
       PSRelationshipFilter filter = new PSRelationshipFilter();
       filter.setName(PSRelationshipFilter.FILTER_NAME_ACTIVE_ASSEMBLY);
       
-      List<IPSGuid> ownerIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> ownerIds = new ArrayList<>();
       for (IPSGuid id : ids)
       {
          try
@@ -314,7 +314,7 @@ public class PSTouchItemService
          }
       }
       
-      Set<Integer> idSet = new HashSet<Integer>();
+      Set<Integer> idSet = new HashSet<>();
       
       if (!ownerIds.isEmpty())
       {
@@ -440,7 +440,7 @@ public class PSTouchItemService
        */
       public boolean isImpactItem = false;
       public Map<Integer, Set<String>> levelTargetTypesMap =
-         new HashMap<Integer, Set<String>>();
+         new HashMap<>();
       public boolean hasImpact() {
          return (isNavItem || isLandingPage || isImpactItem);
       }
@@ -507,7 +507,7 @@ public class PSTouchItemService
          
          if (touchAAParents)
          {
-            Set<IPSGuid> guids = new HashSet<IPSGuid>();
+            Set<IPSGuid> guids = new HashSet<>();
             for (Integer contentId : contentIds)
             {
                guids.add(childMap.get(contentId));
@@ -577,7 +577,7 @@ public class PSTouchItemService
    private Map<Integer, IPSGuid> findFolderChildrenByTypes(PSLocator parent,
          Collection<String> typeNames)
    {
-      Map<Integer, IPSGuid> childMap = new HashMap<Integer, IPSGuid>();
+      Map<Integer, IPSGuid> childMap = new HashMap<>();
       
       for (PSItemSummary item : findFolderChildren(parent))
       {

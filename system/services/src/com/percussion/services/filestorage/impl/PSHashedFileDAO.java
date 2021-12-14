@@ -17,20 +17,28 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filestorage.impl;
 
 import com.percussion.services.filestorage.IPSHashedFileDAO;
-import com.percussion.services.filestorage.data.*;
+import com.percussion.services.filestorage.data.PSBinary;
+import com.percussion.services.filestorage.data.PSBinaryMetaEntry;
+import com.percussion.services.filestorage.data.PSBinaryMetaKey;
+import com.percussion.services.filestorage.data.PSHashedColumn;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -38,9 +46,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.naming.NamingException;
 import java.io.InputStream;
-import java.sql.*;
-import java.util.*;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author stephenbolton
@@ -53,7 +68,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSHashedFileDAO.class);
+   private static final Logger log = LogManager.getLogger(PSHashedFileDAO.class);
 
    /**
     * The hibernate session factory injected by spring
@@ -226,7 +241,7 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
    {
       String sql = "";
       int count = 0;
-      List<String> results = new ArrayList<String>();
+      List<String> results = new ArrayList<>();
       // union will automatically remove duplicates.
       for (PSHashedColumn column : columns)
       {

@@ -1,7 +1,9 @@
-<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
+<%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities"
+         import="com.percussion.i18n.PSI18nUtils"
+         import="com.percussion.i18n.ui.PSI18NTranslationKeyValues"
+%>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
-<%@ page import="com.percussion.i18n.PSI18nUtils" %>
-<%@ page import="com.percussion.i18n.ui.PSI18NTranslationKeyValues" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -21,7 +23,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -47,7 +49,7 @@
    Boolean hasSites = (Boolean)request.getAttribute("hasSites");
     if (site == null)
         site = "";
-   String inlineHelpMsg = hasSites != null && hasSites.booleanValue()
+   String inlineHelpMsg = hasSites != null && hasSites
       ? PSI18nUtils.getString("perc.ui.template.create@Click Site To Work On Templates", locale)
       : PSI18nUtils.getString("perc.ui.site.architecture@Click Create Site To Create Site", locale);
 %>
@@ -80,14 +82,13 @@
         </div> 
         <div class="perc-panel-pages-list">    
         </div>
-        <form class="perc-template-pages-controls" action="#">
+        <csrf:form class="perc-template-pages-controls" method="post" action="template_create.jsp">
             <div class="previous-disabled" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>        
             <input type="text" autocomplete="off" name="perc-template-pages-controls-jump" class="perc-jump">
-            <div class="next" style="right:0px;"><i18n:message key = "perc.ui.common.label@Next"/></div>
-        </form>
+            <div class="next" style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>
+        </csrf:form>
         <div class="perc-panel-page-range"><i18n:message key = "perc.ui.template.create@Items"/><span class="perc-panel-page-group-range"></span></div>
         <div class="perc-panel-total-item"><i18n:message key = "perc.ui.template.create@Total Items"/><span class="perc-panel-total"></span></div>
-        <!-- <div class="perc-panel-view-all"><a href="#">View all</a></div> Will be implemented in 2.11-->
     </div>
     <div id="perc-template-view-container" style="overflow: hidden; margin-left: 38px">
         <div id="perc-activated-templates" class="perc-templates-detailed">

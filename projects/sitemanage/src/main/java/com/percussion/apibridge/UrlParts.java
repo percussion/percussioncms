@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -115,17 +115,21 @@ class UrlParts
     	if(!site.equals(FolderAdaptor.ASSETS)){
 	        StringBuilder sb = new StringBuilder("//Sites/");
 	        sb.append(this.site);
-	        if (StringUtils.isNotEmpty(this.path))
-	            sb.append("/").append(this.path);
-	        if (StringUtils.isNotEmpty(this.name))
-	            sb.append("/").append(this.name);
+	        if (StringUtils.isNotEmpty(this.path)) {
+				sb.append("/").append(this.path);
+			}
+	        if (StringUtils.isNotEmpty(this.name)) {
+				sb.append("/").append(this.name);
+			}
 	        return sb.toString();
     	}else{
     		StringBuilder sb = new StringBuilder("//Assets/");
-	        if (StringUtils.isNotEmpty(this.path))
-	            sb.append("/").append(this.path);
-	        if (StringUtils.isNotEmpty(this.name))
-	            sb.append("/").append(this.name);
+	        if (StringUtils.isNotEmpty(this.path)) {
+				sb.append("/").append(this.path);
+			}
+	        if (StringUtils.isNotEmpty(this.name)) {
+				sb.append("/").append(this.name);
+			}
 	        return sb.toString();
     	}
     }

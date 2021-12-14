@@ -17,23 +17,34 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.*;
-import static com.percussion.share.dao.PSFolderPathUtils.*;
+import com.percussion.share.data.IPSFolderPath;
+import com.percussion.share.data.IPSItemSummary;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import com.percussion.share.data.IPSFolderPath;
-import com.percussion.share.data.IPSItemSummary;
+import static com.percussion.share.dao.PSFolderPathUtils.addEnumeration;
+import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
+import static com.percussion.share.dao.PSFolderPathUtils.getBaseName;
+import static com.percussion.share.dao.PSFolderPathUtils.getName;
+import static com.percussion.share.dao.PSFolderPathUtils.isDescedentPath;
+import static com.percussion.share.dao.PSFolderPathUtils.matchingDescedentPaths;
+import static com.percussion.share.dao.PSFolderPathUtils.numberName;
+import static com.percussion.share.dao.PSFolderPathUtils.parentPath;
+import static com.percussion.share.dao.PSFolderPathUtils.replaceInvalidItemNameCharacters;
+import static com.percussion.share.dao.PSFolderPathUtils.resolveFolderPath;
+import static com.percussion.share.dao.PSFolderPathUtils.validatePath;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 public class PSFolderPathUtilsTest

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,7 +27,14 @@ package com.percussion.xml;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.IPSXmlErrors;
 import com.percussion.utils.xml.PSInvalidXmlException;
-import org.w3c.dom.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import javax.xml.transform.OutputKeys;
@@ -36,7 +43,16 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.io.Writer;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -52,6 +68,9 @@ import java.util.StringTokenizer;
  */
 public class PSXmlTreeWalker implements Serializable
 {
+
+   private static final Logger log = LogManager.getLogger(PSXmlTreeWalker.class);
+
    /**
     * 
     */
@@ -338,7 +357,7 @@ public class PSXmlTreeWalker implements Serializable
     */
    public static String getElementData(Node node)
    {
-      StringBuffer ret = new StringBuffer();
+      StringBuilder ret = new StringBuilder();
       Node text;
 
       if (node != null)
@@ -1421,7 +1440,8 @@ public class PSXmlTreeWalker implements Serializable
       catch (Throwable t)
       {
          System.out.println(t.getMessage());
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

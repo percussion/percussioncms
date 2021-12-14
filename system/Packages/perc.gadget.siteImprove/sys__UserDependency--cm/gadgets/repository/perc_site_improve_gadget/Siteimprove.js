@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,7 +40,7 @@ var IS_EXTEND_HEIGHT = true;
 var SITEIMPROVE_COOKIE_PATH = '/';
 var SITEIMPROVE_COOKIE_NAME = 'siteimprove_credentials';
 
-$(document).ready(function () {
+$(function () {
 
     //Hold onto our site configuration.
     var siteInfos = {};
@@ -51,7 +51,6 @@ $(document).ready(function () {
         $('#perc-site-improve-main').removeAttr('style');
         $('#perc-site-improve-back-div').css('display', 'none');
         $('#perc-existing-site-improve-credentials').css('display', 'none');
-        //$('#perc-try-out-siteimprove').css('display', 'none');
         $('#inactive-save-credentials-site-improve-img').css('display', 'none');
         $('#save-config-status-failure-message').text('');
     }
@@ -262,11 +261,15 @@ $(document).ready(function () {
 
     function storeCredentials(siteName, token) {
 
+        var secure = "";
+        if (window.isSecureContext) {
+            secure = " Secure;";
+        }
         // store cookie with the token so when we delete
-        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + ";";
+        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + "; SameSite=Lax;" + secure;
 
         // get current site
-        if(siteName === undefined || siteName == '')
+        if (siteName === undefined || siteName == '')
             siteName = $("#mySites").val();
 
         var credentials = {
@@ -454,7 +457,7 @@ $(document).ready(function () {
      * sites that have siteimprove enabled
      */
     function updateTokenForAccount(token) {
-        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + ";";
+        document.cookie = SITEIMPROVE_COOKIE_NAME + "=" + token + ";path=" + SITEIMPROVE_COOKIE_PATH + "; SameSite=Lax;";
         getAllSISiteCredentials(function (status, results) {
             if (status === PercSIServiceUtils.STATUS_ERROR) {
                 console.error(I18N.message("perc.ui.gadgets.siteimprove@Error Getting Credentials"));
@@ -511,7 +514,7 @@ $(document).ready(function () {
         var $mySiteDropdown = $("#mySites");
 
         // need to do it first
-        $mySiteDropdown.change(function () {
+        $mySiteDropdown.on("change",function () {
 
             $("#save-config-status").removeClass();
             $("#save-config-status-failure-message").text("");
@@ -558,12 +561,12 @@ $(document).ready(function () {
         var $resetBtn = $("#perc-site-improve-reset-btn");
         var $advancedBtn = $("#perc-site-improve-advanced-btn");
 
-        $backBtn.unbind().bind('click', onBack);
-        $existingSiteBtn.unbind().bind('click', onExistingSite);
-        $TrySiteBtn.unbind().bind('click', onTrySite);
-        $saveBtn.unbind().bind('click', save);
-        $resetBtn.unbind().bind('click', refreshToken);
-        $advancedBtn.unbind().bind('click', adjustIframeHeight);
+        $backBtn.off('click').on('click', onBack);
+        $existingSiteBtn.off('click').on('click', onExistingSite);
+        $TrySiteBtn.off('click').on('click', onTrySite);
+        $saveBtn.off('click').on('click', save);
+        $resetBtn.off('click').on('click', refreshToken);
+        $advancedBtn.off('click').on('click', adjustIframeHeight);
     }
 
     //Initialize the gadget
@@ -583,7 +586,7 @@ function saveSICredentials(metadataName, data, callback) {
         PercSIServiceUtils.TYPE_PUT,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -600,7 +603,7 @@ function getSIToken(siteName, callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -616,7 +619,7 @@ function getNewSiteImproveToken(callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -632,7 +635,7 @@ function getAllSISiteCredentials(callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -649,7 +652,7 @@ function saveSISiteConfig(metadataName, data, callback) {
         PercSIServiceUtils.TYPE_PUT,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {
@@ -665,7 +668,7 @@ function getAllSISiteConfig(callback) {
         PercSIServiceUtils.TYPE_GET,
         false,
         function (status, result) {
-            if (status == PercSIServiceUtils.STATUS_SUCCESS) {
+            if (status === PercSIServiceUtils.STATUS_SUCCESS) {
                 callback(PercSIServiceUtils.STATUS_SUCCESS, result.data);
             }
             else {

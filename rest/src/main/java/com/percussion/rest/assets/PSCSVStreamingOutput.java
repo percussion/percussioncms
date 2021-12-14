@@ -17,21 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.assets;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.StreamingOutput;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
-
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.StreamingOutput;
-import javax.xml.bind.annotation.XmlTransient;
 
 public class PSCSVStreamingOutput implements StreamingOutput{
 
@@ -46,12 +45,13 @@ public class PSCSVStreamingOutput implements StreamingOutput{
 	
 	@Override
 	public void write(OutputStream os) throws IOException, WebApplicationException {
-		 OutputStreamWriter writer = new OutputStreamWriter(os,"UTF-8");
-         writer.write(UTF8BOM);
-         for(String s : rows){
-       	  writer.write(s);
-         }
-         writer.flush();
+		 try(OutputStreamWriter writer = new OutputStreamWriter(os,"UTF-8")) {
+			 writer.write(UTF8BOM);
+			 for (String s : rows) {
+				 writer.write(s);
+			 }
+			 writer.flush();
+		 }
 	}
 	
 }

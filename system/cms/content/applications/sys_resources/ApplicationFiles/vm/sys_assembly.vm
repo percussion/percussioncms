@@ -392,7 +392,7 @@ $before##
 #set($widgetName = "")##
 #end##
 #set($widgetDescr = $!result.widget.item.description)##
-#if($tooltip == "" && $widgetDescr != "")##
+#if($tooltip == "" && ${widgetDescr})##
 #set($tooltip = $widgetDescr)##
 #end##
 #if($widgetName != "" && $tooltip != "")##
@@ -456,7 +456,7 @@ var jsErrorMsg = 'JavaScript error -- ' + msg;
 percGlobalErrors.push(jsErrorMsg);
 return false;
 }
-</script> ##
+</script>
 #set($percPageID = $perc.getPage().getId())##
 #if($perc.linkContext.getSite().isCanonical() && "$!{percPageID}" != "")##
 #set($renderCanonical = true)##
@@ -473,27 +473,7 @@ return false;
 #end##
 <link rel="canonical" href="${perc.linkContext.getSite().getSiteProtocol()}://${perc.linkContext.getSite().getName()}${canLink}" />
 #set($defaultDocument = ${perc.linkContext.getSite().getDefaultDocument()})##
-<script>
-function percCanonicalRedirect(defaultDocument){
-if(document.querySelector("link[rel='canonical']"))
-canonicalLink=document.querySelector("link[rel='canonical']").getAttribute("href")
-}
-requestUrl=window.location.href;lastUrlElement=window.location.pathname.split('/').pop();urlPartsQueryString=requestUrl.split('?');urlPartsHash=requestUrl.split('#');
-if(typeof(canonicalLink)!='undefined'&&lastUrlElement==defaultDocument){
-if(urlPartsQueryString.length>1||urlPartsHash.length>1){
-if(urlPartsQueryString.length>1){
-redirectUrl=canonicalLink+'?'+urlPartsQueryString[1]
-}
-else if(urlPartsHash.length>1){
-redirectUrl=canonicalLink+'#'+urlPartsHash[1]
-}
-}else{
-redirectUrl=canonicalLink
-}
-window.location.replace(redirectUrl)
-}
-
-</script>
+<script>function percCanonicalRedirect(defaultDocument){if(document.querySelector("link[rel='canonical']")){canonicalLink=document.querySelector("link[rel='canonical']").getAttribute("href");}requestUrl=window.location.href;lastUrlElement=window.location.pathname.split('/').pop();urlPartsQueryString=requestUrl.split('?');urlPartsHash=requestUrl.split('#');if(typeof(canonicalLink)!=='undefined'&&lastUrlElement===defaultDocument){if(urlPartsQueryString.length>1||urlPartsHash.length>1){if(urlPartsQueryString.length>1){redirectUrl=canonicalLink+'?'+urlPartsQueryString[1];}else if(urlPartsHash.length>1){redirectUrl=canonicalLink+'#'+urlPartsHash[1];}}else{redirectUrl=canonicalLink;}window.location.replace(redirectUrl);}}</script>
 #if(${perc.linkContext.getSite().getCanonicalDist()} == "sections" && $perc.linkContext.getMode().name() != "PREVIEW")##
 <script>
 percCanonicalRedirect('${defaultDocument}');
@@ -511,30 +491,26 @@ percCanonicalRedirect('${defaultDocument}');
 #set($widgetitemUI = $instanceUI.getItem())##
 #set($includeUIOnPublishedPage = $widgetitemUI.getProperties().get("includeUIOnPublishedPage"))##
 #set($jQueryUICSSTheme = $widgetitemUI.getProperties().get("jQueryUICSSTheme"))##
-#if("$!{jQueryUICSSTheme}" != "" )## load the jquery-ui.css provided by the user on jquery ui widget
-<link rel="preload" as="style" href="$jQueryUICSSTheme" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$jQueryUICSSTheme"></noscript>
+#if("$!{jQueryUICSSTheme}" != ""  && $widgetitemUI.getProperties().get("includeUIOnPublishedPage")  !=  "no")## load the jquery-ui.css provided by the user on jquery ui widget
+<link rel="stylesheet" href="$jQueryUICSSTheme">
 #else## if user has not provided jquery-ui.css then load default css
-<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$css_link"></noscript>
+#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($widgetitemUI.getProperties().get("includeUIOnPublishedPage")  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($widgetitemUI.getProperties().get("includeUIOnPublishedPage")  !=  "no")) || $perc.isEditMode())##
+<link rel="stylesheet" href="$css_link">
+#end##
 #end##
 #else## in this case load default jquery-ui.css file
 #if($perc.linkContext.site.overrideSystemJQueryUI==false || $perc.isEditMode())##
-<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$css_link"></noscript>
+<link rel="stylesheet" href="$css_link">
 #end##
 #end##
 #else## if the css file is other than jquery-ui.css
-<link rel="preload" as="style" href="$css_link" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$css_link"></noscript>
+<link rel="stylesheet" href="$css_link">
 #end##
 #end##
-<link rel="preload" as="style" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)"></noscript>
+<link rel="stylesheet" href="$rx.pageutils.themeLink($perc.linkContext, $perc.template.theme)">
 #set($__perc_region_css = $rx.pageutils.themeRegionCssLink($perc.linkContext, $perc.template.theme, $perc.editMode, $perc.editType).toString().trim())##
 #if("$!__perc_region_css" != "")##
-<link rel="preload" as="style" href="${__perc_region_css}" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="${__perc_region_css}"></noscript>
+<link rel="stylesheet" href="${__perc_region_css}">
 #end##
 #set($__style="")##
 #set($__style = $perc.template.cssRegion.replaceAll("$tools.esc.q", "").trim())##
@@ -550,6 +526,23 @@ $__style
 $__style
 </style>
 #end##
+#if($perc.isEditMode() || ($perc.isPreviewMode()))##
+<style>
+#perc-assembly-error{
+    border: 2px solid red;
+    background-color: #FFEEEE;
+    width:100%;
+    padding:5px;
+    margin:1px;
+}
+</style>
+#else##
+<style>
+#perc-assembly-error{
+    display:none;
+}
+</style>
+#end##
 #if("$!perc.page.noindex" == "true")##
 <meta name="robots" content="noindex" />
 #end##
@@ -563,6 +556,7 @@ $__style
 #end##
 <meta property="dcterms:type" content="page"/>
 <meta property="dcterms:source" content="$tools.esc.html($!perc.template.name)"/>
+<meta property="dcterms:date" content="#perc_displayXdsDateTime('rx:sys_contentcreateddate')"/>
 <meta property="dcterms:created" content="#perc_displayXdsDateTime('rx:sys_contentpostdate')"/>
 #set( $postDateTz = $sys.item.getProperty('rx:sys_contentpostdatetz').String )##
 #if($postDateTz != "Default" && $postDateTz != "")##
@@ -600,11 +594,16 @@ $__style
 #perc_displayText("$!perc.linkContext.site.siteAdditionalHeadContent")##
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery.js"))##
-#if($perc.isEditMode() || $perc.isPreviewMode())##
-<script src="/cm/jslib/jquery.js"></script>
+#set($jqueryWidgetInstances = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryWidget"))##
+    ##Need preview check as on page content view, it shows preview unless on edit mode
+#if($perc.isEditMode() || ($perc.isPreviewMode() && $jqueryWidgetInstances.size()==0))##
+<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+<script src="/cm/jslib/profiles/3x/jquery/jquery-migrate-3.3.2.js"></script>
 #else##
 #if($perc.linkContext.site.overrideSystemJQuery==false)##
 #print_jquery("additionalHeadContent")##
+#else##
+<script src="/web_resources/cm/jslib/jquery.js"></script>
 #end##
 #end##
 #end##
@@ -624,16 +623,14 @@ $__style
 #addMobilePreviewToolbar()##
 #addResponsiveResources()##
 </head>
-
 <body>
 <input type="hidden" id="perc_linkback_id" value="$perc.page.id"/>
-<h3 style="display:none;">$tools.esc.html($!perc.page.title)</h3>
 #if($perc.linkContext.mode == "PUBLISH" && $perc.template.protectedRegion && $perc.template.protectedRegion.String != "")##
 #set($loginPage = $rx.pageutils.getSiteLoginPage($perc.linkContext.site.name))##
-<div id="protectedRegionInformation" data="{&quot;protectedRegion&quot;:&quot;$!perc.template.protectedRegion&quot;,&quot;protectedRegionText&quot;:&quot;$!perc.template.protectedRegionText&quot;,&quot$
+<div id="protectedRegionInformation" data="{&quot;protectedRegion&quot;:&quot;$!perc.template.protectedRegion&quot;,&quot;protectedRegionText&quot;:&quot;$!perc.template.protectedRegionText&quot;,&quot$"/>
 #if("" != "$!{perc.template.protectedRegion}"))##
 <style>
-#$!perc.template.protectedRegion{
+$!perc.template.protectedRegion{
 display:none;
 }
 </style>
@@ -643,7 +640,7 @@ display:none;
 #if($perc.page.name && $sys.item.getProperty("rx:page_summary").String != "")##
 #set($summaryField=$sys.item.getProperty('rx:page_summary').String)##
 #set($summaryField2=$summaryField.replace("<!-- morelink -->",'<a class="perc-more-link"></a>'))##
-<div property="dcterms:abstract" style="display:none" datatype="rdf:XMLLiteral">$summaryField2</div>
+<div property='dcterms:abstract' style='display:none' datatype='rdf:XMLLiteral'>$summaryField2</div>
 #end##
 ##
 #print_jquery("afterBodyStart")##
@@ -663,23 +660,21 @@ display:none;
 #print_jqueryUI("beforeBodyClose")##
 #if ($perc.template.sourceTemplateName.startsWith("perc.resp") && $perc.linkContext.site.overrideSystemFoundation==false)##
 #if($perc.linkContext.mode == "PUBLISH")##
-<script defer src="/web_resources/cm/foundation/js/foundation.min.js"></script>
+<script defer src='/web_resources/cm/foundation/js/foundation.min.js'></script>
 #else##
-<script defer src="/Rhythmyx/web_resources/cm/foundation/js/foundation.min.js"></script>
+<script defer src='/Rhythmyx/web_resources/cm/foundation/js/foundation.min.js'></script>
 #end##
 #end##
-
 #perc_displayText("$!perc.linkContext.site.siteBeforeBodyCloseContent")##
 #perc_displayText("$!perc.page.beforeBodyCloseContent")##
 #perc_displayText("$!perc.template.beforeBodyCloseContent")##
-
 #set($jqueryUIwidget = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryUIWidget"))##
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
 #if($js_link.getUrl().endsWith("/jquery-ui.js"))##
-#if($perc.isEditMode())##
-<script src="/cm/jslib/jquery-ui.js"></script>
-#elseif ($perc.isPreviewMode() && ($perc.linkContext.site.overrideSystemJQueryUI==false) && ($jqueryUIwidget.size()==0) )##
-<script src="/cm/jslib/jquery-ui.js"></script>
+#if($perc.isEditMode() && ($includeOnPublishedPage != "no"))##
+<script src='/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js'></script>
+#elseif ($perc.isPreviewMode() && ($includeOnPublishedPage != "no") && ($perc.linkContext.site.overrideSystemJQueryUI==false) && ($jqueryUIwidget.size()==0) )##
+<script src='/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js'></script>
 #else##
 #print_jqueryUI("additionalHeadContent")##
 #end##
@@ -687,7 +682,7 @@ display:none;
 #end##
 #perc_addDeliveryJSFunctions()##
 #foreach($js_link in $rx.pageutils.javascriptLinks($perc.linkContext, $sys.assemblyItem))##
-#if(! $js_link.getUrl().endsWith("/jquery.js") && !($js_link.getUrl().endsWith("/jquery-ui.js")) )##
+#if(! $js_link.getUrl().endsWith("/jquery.js") && !($js_link.getUrl().endsWith("/jquery-ui.js")) && ($includeOnPublishedPage != "no"))##
 <script src="$js_link"></script>
 #end##
 #end##
@@ -749,11 +744,13 @@ ga('send', 'pageview');
 #if ($perc.isPreviewMode())##
 #if($perc.isEditMode())##
 #else##
+#if($includeOnPublishedPage != "no")
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
-(function($){$(document).ready(function(){$('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );$('a[href*="/.system/PageCatalog"]').click(function(e) {alert('This page has not yet been imported. It will be available for preview after import is complete.');e.preventDefault();});})    })(jQuery);
+(function($){$(document).ready(function(){$('a[href*="/.system/PageCatalog"]').attr('cataloged', 'true' );$('a[href*="/.system/PageCatalog"]').on("click",function(e) {alert('This page has not yet been imported. It will be available for preview after import is complete.');e.preventDefault();});})    })(jQuery);
 });
 </script>
+#end##
 #end##
 #end##
 #end##
@@ -763,7 +760,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #if ($perc.isPreviewMode())##
 #if($perc.isEditMode())##
 #else##
+#if($includeOnPublishedPage != "no")
 <script src="/Rhythmyx/sys_resources/mobilepreview/js/PercMobilePreview.js" defer></script>
+#end##
 #end##
 #end##
 #end##
@@ -775,15 +774,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #if ($perc.template.sourceTemplateName.startsWith("perc.resp") && $perc.linkContext.site.overrideSystemFoundation==false)##
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 #if($perc.linkContext.mode == "PUBLISH")##
-<link rel="preload" as="style" href="/web_resources/cm/foundation/css/foundation.min.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/web_resources/cm/foundation/css/foundation.min.css"></noscript>
-<link rel="preload" as="style" href="/web_resources/cm/foundation/css/normalize.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/web_resources/cm/foundation/css/normalize.cs"></noscript>
+<link rel="stylesheet" href="/web_resources/cm/foundation/css/foundation.min.css">
+<link rel="stylesheet" href="/web_resources/cm/foundation/css/normalize.cs">
 #else##
-<link rel="preload" as="style" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css"></noscript>
-<link rel="preload" as="style" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css" type="text/css" media="all" onload="this.onload=null;this.rel='stylesheet'"/>
-<noscript><link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css"></noscript>
+<link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/foundation.min.css">
+<link rel="stylesheet" href="/Rhythmyx/web_resources/cm/foundation/css/normalize.css">
 #end##
 #end##
 #end##
@@ -795,11 +790,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #set($cm1Version = $rx.pageutils.productVersion())##
 #if(! $cm1Version )##
 #set($cm1Version = "")##
-#end
-<script>(function() { jQuery.getDeliveryServiceBase = function(){ return '$dServiceBase';};jQuery.getCm1License = function(){ return 'deprecated-opensource';};jQuery.getCm1Version = function(){ return '$!{cm1Version}';};})();</script>
 #end##
-
-
+#if($includeOnPublishedPage != "no")
+<script>(function() { jQuery.getDeliveryServiceBase = function(){ return '$dServiceBase';};jQuery.getCMSVersion = function(){ return '$!{cm1Version}';};})();</script>
+#end##
+#end##
+##
+##
 ## Macro, perc_processCategoryNodeExpanded, used by Category List widget, recursively renders a list of lists of categories for Expanded hierarchy option
 ## categories: List of nodes
 ## maxRow: limit the rows of the tree. (0 = no limit)
@@ -811,9 +808,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #set($nLevel = $nLevel + 1)##
 #foreach ($category in $categories)##
 #if($maxRow > $nRow || $maxRow == 0)##
-    #set($_countTotal = $category.getCount().getFirst() + $category.getCount().getSecond())##
+    #set($_countTotal = $category.getCount().getFirst() )##
+    #set($_countTotalStr = "")##
+    #if($_countTotal >0 )##
+        #set($_countTotalStr = ($_countTotal))##
+    #end##
 <li class="perc-category-element">
-    <a title="$category.getCategory() ($_countTotal)" href="#">$category.getCategory() ($_countTotal)</a>
+    <a title="$category.getCategory() $_countTotalStr " href="#">$category.getCategory() $_countTotalStr</a>
 #if($category.getChildren().size() > 0)##
 #set($nRow = $nRow + 1)##
 #perc_processCategoryNodeExpanded($category.getChildren(), $maxRow, $nRow, $nLevel)##
@@ -838,9 +839,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
 #set($nRow = $nRow + 1)##
 #end##
 #if(($nLevel != 1 || $nRow <= $maxRow) || $maxRow == 0)##
-    #set($_countTotal = $category.getCount().getFirst() + $category.getCount().getSecond())##
+    #set($_countTotal = $category.getCount().getFirst() )##
+    #set($_countTotalStr = "")##
+    #if($_countTotal >0 )##
+        #set($_countTotalStr = ($_countTotal))##
+    #end##
 <li class="perc-category-element">
-    <a title="$category.getCategory() ($_countTotal)" href="#">$category.getCategory() ($_countTotal)</a>
+    <a title="$category.getCategory() $_countTotalStr" href="#">$category.getCategory() $_countTotalStr</a>
 #if($category.getChildren().size() > 0)##
 #perc_processCategoryNodeCollapsible($category.getChildren(), $maxRow, $nLevel)##
 #end##
@@ -994,7 +999,7 @@ $value.trim().replaceAll(" +"," ")##
 #if($perc.linkContext.mode.toString() == "PUBLISH")##
 #set($jQueryLocation = "/web_resources/cm/jslib/jquery.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js")##
 #end##
 #end##
 #if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage != "no")) || (($perc.linkContext.mode.toString() == "PREVIEW") && ($includeOnPublishedPage != "no")))##
@@ -1035,6 +1040,7 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 ## $location_name is a reference to additionalHeadContent, beforeBodyClose,
 ## or afterBodyStart, etc.
 #macro(print_jqueryUI $location_name)##
+#if($includeOnPublishedPage != "no")
 #set($instances = $rx.pageutils.findWidgetInstances($sys.assemblyItem, $NULL, "percJQueryUIWidget"))##
 #if($instances.size() > 0)##
 #set($instance = $instances.get(0))##
@@ -1048,9 +1054,9 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #set($jQueryLocation = $widgetitem.getProperties().get("jQueryUILocation"))##
 #if("${jQueryLocation}"  ==  "" )##
 #if($perc.linkContext.mode == "PUBLISH")##
-#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
 #end##
 #set($jQuerySRIHash = $widgetitem.getProperties().get("jQueryUILocationIntegrity"))##
@@ -1070,13 +1076,13 @@ crossorigin="$!{jQueryMigrateCrossOrigin}"
 #if(!$rx.pageutils.isLinkGood("$!{jQueryLocation}",$mode,$dontcache))##
 ## The jQueryLink link provided is no good
 <!-- Unable to verify CDN link - defaulting to system jquery version -->
-#if($perc.linkContext.mode.toString() == "PUBLISH")##
-#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.1.12.1.js")##
+#if($perc.linkContext.mode.toString() == "PUBLISH" && $widgetitem.getProperties().get("includeUIOnPublishedPage")  !=  "no")##
+#set($jQueryLocation = "/web_resources/cm/jslib/jquery-ui.js")##
 #else##
-#set($jQueryLocation = "/cm/jslib/jquery-ui.js")##
+#set($jQueryLocation = "/cm/jslib/profiles/3x/jquery/libraries/jquery-ui/jquery-ui.js")##
 #end##
 #end##
-#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($includeOnPublishedPage  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($includeOnPublishedPage  !=  "no")))##
+#if( (($perc.linkContext.mode.toString() == "PUBLISH") && ($widgetitem.getProperties().get("includeUIOnPublishedPage")  !=  "no")) || (($perc.linkContext.mode.toString()  ==  "PREVIEW") && ($widgetitem.getProperties().get("includeUIOnPublishedPage")  !=  "no")))##
 <script src="$!{jQueryLocation}"
 #if($isDeferred == "yes")
 defer
@@ -1093,114 +1099,12 @@ crossorigin="$!{jQueryCrossOrigin}"
 #elseif($perc.linkContext.mode.toString() == "PUBLISH" && $location_name == "additionalHeadContent")##
 #if($js_link.getUrl().endsWith("/jquery-ui.js"))##
 #if ($perc.linkContext.site.overrideSystemJQueryUI==false)##
-<script src="/web_resources/cm/jslib/jquery-ui.1.12.1.js"></script>
+<script src="/web_resources/cm/jslib/jquery-ui.js"></script>
 #end##
 #else##
 <script src="$js_link"></script>
 #end##
 #end##
 #end##
-##
-## Macro to preload css
-##
-#macro(cssPreload)
-<script>
-/*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-/* This file is meant as a standalone workflow for
-- testing support for link[rel=preload]
-- enabling async CSS loading in browsers that do not support rel=preload
-- applying rel preload css once loaded, whether supported or not.
-*/
-(function( w ){
-"use strict";
-// rel=preload support test
-if( !w.loadCSS ){
-w.loadCSS = function(){};
-}
-// define on the loadCSS obj
-var rp = loadCSS.relpreload = {};
-// rel=preload feature support test
-// runs once and returns a function for compat purposes
-rp.support = (function(){
-var ret;
-try {
-ret = w.document.createElement( "link" ).relList.supports( "preload" );
-} catch (e) {
-ret = false;
-}
-return function(){
-return ret;
-};
-})();
-// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
-// then change that media back to its intended value on load
-rp.bindMediaToggle = function( link ){
-// remember existing media attr for ultimate state, or default to 'all'
-var finalMedia = link.media || "all";
-function enableStylesheet(){
-link.media = finalMedia;
-}
-// bind load handlers to enable media
-if( link.addEventListener ){
-link.addEventListener( "load", enableStylesheet );
-} else if( link.attachEvent ){
-link.attachEvent( "onload", enableStylesheet );
-}
-// Set rel and non-applicable media type to start an async request
-// note: timeout allows this to happen async to let rendering continue in IE
-setTimeout(function(){
-link.rel = "stylesheet";
-link.media = "only x";
-});
-// also enable media after 3 seconds,
-// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
-setTimeout( enableStylesheet, 3000 );
-};
+#end##
 
-// loop through link elements in DOM
-rp.poly = function(){
-// double check this to prevent external calls from running
-if( rp.support() ){
-return;
-}
-var links = w.document.getElementsByTagName( "link" );
-for( var i = 0; i < links.length; i++ ){
-var link = links[ i ];
-// qualify links to those with rel=preload and as=style attrs
-if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
-// prevent rerunning on link
-link.setAttribute( "data-loadcss", true );
-// bind listeners to toggle media back
-rp.bindMediaToggle( link );
-}
-}
-};
-
-// if unsupported, run the polyfill
-if( !rp.support() ){
-// run once at least
-rp.poly();
-// rerun poly on an interval until onload
-var run = w.setInterval( rp.poly, 500 );
-if( w.addEventListener ){
-w.addEventListener( "load", function(){
-rp.poly();
-w.clearInterval( run );
-} );
-} else if( w.attachEvent ){
-w.attachEvent( "onload", function(){
-rp.poly();
-w.clearInterval( run );
-} );
-}
-}
-// commonjs
-if( typeof exports !== "undefined" ){
-exports.loadCSS = loadCSS;
-}
-else {
-w.loadCSS = loadCSS;
-}
-}( typeof global !== "undefined" ? global : this ) );
-</script>
-#end

@@ -17,12 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tools.simple;
+
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -44,7 +48,9 @@ import java.util.StringTokenizer;
  */
 public class PSRgs2Xml
 {
-   
+
+   private static final Logger log = LogManager.getLogger(PSRgs2Xml.class);
+
    /**
     * Construct a new converter.
     * @param rgsPath path to the rgs file to be converted, cannot be 
@@ -81,7 +87,8 @@ public class PSRgs2Xml
        }
        catch(IOException e)
        {
-          e.printStackTrace();
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
        }
        finally
        {
@@ -94,7 +101,8 @@ public class PSRgs2Xml
           }
           catch(IOException io)
           {
-             io.printStackTrace();   
+             log.error(io.getMessage());
+             log.debug(io.getMessage(), io);
           }
        }
    }
@@ -108,7 +116,7 @@ public class PSRgs2Xml
    private static String transform(String line)
    {
       line = line.trim();
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       
       if(line.length() == 0)
          return "\n";
@@ -216,7 +224,7 @@ public class PSRgs2Xml
       if(s == null)
          return "";
       List types = new ArrayList();
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       int pos = 0;
       int arrayDimensions = 0;
       String current = "";
@@ -271,7 +279,7 @@ public class PSRgs2Xml
    {
       if(path == null)
          return path;
-      StringBuffer sb = new StringBuffer();
+      StringBuilder sb = new StringBuilder();
       StringTokenizer st = new StringTokenizer(path, "\\/");
       while(st.hasMoreTokens())
       {

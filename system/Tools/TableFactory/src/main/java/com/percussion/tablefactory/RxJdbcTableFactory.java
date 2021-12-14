@@ -17,27 +17,33 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.tablefactory;
 
-import com.percussion.utils.security.IPSDecryptor;
-import com.percussion.utils.security.IPSKey;
-import com.percussion.utils.security.IPSSecretKey;
-import com.percussion.utils.security.PSEncryptionKeyFactory;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.util.PSPreparedStatement;
 import com.percussion.util.PSProperties;
 import com.percussion.util.PSSQLStatement;
 import com.percussion.util.PSSqlHelper;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import javax.xml.parsers.DocumentBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -57,17 +63,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.*;
-
-import javax.xml.parsers.DocumentBuilder;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
 *  This class is used to install and upgrade Rhythmyx tables.
@@ -156,7 +160,8 @@ public class RxJdbcTableFactory
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             m_logger.logMessage("Unable to create XML backup Documents");
             m_sStatus = "Unable to create XML backup Documents" ;
             return false;
@@ -180,8 +185,9 @@ public class RxJdbcTableFactory
                      eData!=null;
                      eData = walkerTableData.getNextElement("table", getSibling))
             {
-               if(eData.getAttribute("name").trim().equals(sTableName))
-               break;
+               if(eData.getAttribute("name").trim().equals(sTableName)) {
+                   break;
+               }
             }
 
             RxTables rxTable = null;
@@ -203,7 +209,8 @@ public class RxJdbcTableFactory
                 catch(SQLException e)
                 {
                   sError = e.getMessage();
-                  e.printStackTrace();
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
 
                 if(sError.length() > 0)
@@ -246,7 +253,7 @@ public class RxJdbcTableFactory
          }
          else
          {
-            System.out.println("No failed transaction while processing original data");
+             m_logger.logMessage("No failed transaction while processing original data");
          }
       }
       finally
@@ -279,7 +286,8 @@ public class RxJdbcTableFactory
     * Breaks down a workflow DTD document and stores it
     * in glabal DBStruct class.
     *
-    * @param  WorkFlow well formed DTD document
+    * @param  docTableDef well formed DTD document
+    * @param dbmsDef well formed database definition
     *
     * @return String : If empty then no errors, otherwise Error
     *
@@ -426,7 +434,8 @@ public class RxJdbcTableFactory
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          sStatus = e.getMessage();
       }
       return sStatus ;
@@ -560,10 +569,12 @@ public class RxJdbcTableFactory
          m_version = m_Props.getProperty("DB_DRIVER_VERSION");
          m_uid = m_Props.getProperty("UID");
          try {
-             m_pw = PSEncryptor.getInstance().decrypt(m_Props.getProperty("PWD"));
+             m_pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_Props.getProperty("PWD"));
          }catch(Exception e){
-             m_pw = PSLegacyEncrypter.getInstance().decrypt(m_Props.getProperty("PWD"),
-                     PSJdbcDbmsDef.getPartOneKey());
+             m_pw = PSLegacyEncrypter.getInstance(
+                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+             ).decrypt(m_Props.getProperty("PWD"),
+                     PSJdbcDbmsDef.getPartOneKey(),null);
          }
          String sSchema = m_Props.getProperty("DB_SCHEMA");
          cDB.setServer(m_Props.getProperty("DB_SERVER"));
@@ -694,7 +705,7 @@ public class RxJdbcTableFactory
               }
               catch (InterruptedException e1)
               {
-               // just ignore this
+                  Thread.currentThread().interrupt();
               }
            }
          }
@@ -803,7 +814,7 @@ public class RxJdbcTableFactory
 
       identifier = fixIdentifierCase(identifier);
 
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
 
       boolean addedCatalog = false;
       String catalog = null;
@@ -1043,7 +1054,7 @@ public class RxJdbcTableFactory
 
       public String getSelectStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          buf.append("SELECT * FROM ");
          buf.append(m_qualifiedName);
          return buf.toString();
@@ -1051,7 +1062,7 @@ public class RxJdbcTableFactory
 
       public String getAddColumnStatement(RxColumns addColumn)
       {
-          StringBuffer buf = new StringBuffer();
+          StringBuilder buf = new StringBuilder();
 
          buf.append("ALTER TABLE ");
          buf.append(m_qualifiedName);
@@ -1065,7 +1076,7 @@ public class RxJdbcTableFactory
 
       public String getInsertStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("INSERT INTO ");
          buf.append(m_qualifiedName);
@@ -1094,7 +1105,7 @@ public class RxJdbcTableFactory
 
       public String getCreateTableStatement(boolean includePrimaryKey)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          String fullDbName = new String();
 
          buf.append("CREATE TABLE ");
@@ -1140,7 +1151,7 @@ public class RxJdbcTableFactory
 
       public String getCopyTableStatement(RxTables rxTable, String strBackupTable)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
           String strFullSource = new String();
           String strFullTarget = new String();
           if(cDB.getDataBase()== null && cDB.getSchema()!=null)
@@ -1186,7 +1197,7 @@ public class RxJdbcTableFactory
 
       public String getCreateTableStatement(RxTables rxTable)
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
          String fullDbName = new String();
 
          buf.append("CREATE TABLE ");
@@ -1219,7 +1230,7 @@ public class RxJdbcTableFactory
 
       public String getAddPrimaryKeyStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("ALTER TABLE ");
          buf.append(m_qualifiedName);
@@ -1240,7 +1251,7 @@ public class RxJdbcTableFactory
       public String getAddPrimaryKeyStatement(Vector vKeys, RxTables rxTable)
          throws SQLException
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          String qualifiedName = "";
           if(cDB.getDataBase()== null && cDB.getSchema()!=null)
@@ -1283,7 +1294,7 @@ public class RxJdbcTableFactory
       {
          int size = m_fKey.size();
          String[] stmts = new String[size];
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          for (int i = 0; i < size; i++)
          {
@@ -1575,7 +1586,8 @@ public class RxJdbcTableFactory
             }
          } catch (Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          return sStatus;
       } // parseTableData()
@@ -1624,7 +1636,8 @@ public class RxJdbcTableFactory
          } catch (SQLException e)
          {
             System.out.println("\nConnection Error\n");
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             sAction = "";
             sStatus = "Connection Error; failed to insert";
          }
@@ -1656,7 +1669,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(PSExceptionUtils.getMessageForLog(e));
+                      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                      sStatus = e.getMessage();
                      return sStatus;
                   }
@@ -1682,7 +1696,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(PSExceptionUtils.getMessageForLog(e));
+                      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                      sStatus = e.getMessage();
                      return sStatus;
                   }
@@ -1708,7 +1723,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(PSExceptionUtils.getMessageForLog(e));
+                      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                      sStatus = e.getMessage();
                      return sStatus;
                   }
@@ -1749,7 +1765,8 @@ public class RxJdbcTableFactory
                      }
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(PSExceptionUtils.getMessageForLog(e));
+                      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                      System.out.println("Error:" + "\n\t" + sStatus);
                   }
                   break;
@@ -1848,7 +1865,8 @@ public class RxJdbcTableFactory
          } catch (SQLException e)
          {
             sStatus = e.getMessage();
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             System.out.println("Error Inserting:\n" + e.getMessage());
             return sStatus;
          } finally
@@ -1916,7 +1934,8 @@ public class RxJdbcTableFactory
          catch (SQLException e)
          {
             System.out.println("\nConnection Error\n");
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          newColumns = null ;
@@ -2019,7 +2038,8 @@ System.out.println("NULL Values not allowed as Update Key");
          {
             sStatus = e.getMessage();
             System.out.println("Error setting Update SQL Statement");
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             try
             {
               pStmt.close();
@@ -2035,7 +2055,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();;
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             System.out.println("Error Executing SQL Statement:\n" + e.getMessage());
             sStatus = e.getMessage();
             try
@@ -2103,7 +2124,8 @@ System.out.println("NULL Values not allowed as Update Key");
          catch (SQLException e)
          {
             System.out.println("\nConnection Error\n");
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          int i = 0 ;
@@ -2136,7 +2158,8 @@ System.out.println("NULL Values not allowed as Update Key");
          catch(SQLException e)
          {
             sStatus = e.getMessage();
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             System.out.println("\nError on Delete Option:\n" +e.getMessage());
             try
             {
@@ -2153,7 +2176,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();;
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             System.out.println("Error Executing SQL Statement:\n" + e.getMessage());
             sStatus = e.getMessage();
             try
@@ -2373,7 +2397,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          return pStmt ;
@@ -2496,7 +2521,8 @@ System.out.println("NULL Values not allowed as Update Key");
 
                      } catch (SQLException e)
                      {
-                        e.printStackTrace();
+                         log.error(PSExceptionUtils.getMessageForLog(e));
+                         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                      }
                      sStatus = processTableData(dbmsDef, rxTable,
                            cDB.dataDoc,
@@ -2698,13 +2724,15 @@ System.out.println("NULL Values not allowed as Update Key");
                               }
                               catch(SQLException sqle)
                               {
-                                 sqle.printStackTrace();
+                                  log.error(sqle.getMessage());
+                                  log.debug(sqle.getMessage(), sqle);
                                  bUpgradeOk = true;
                               }
                            }
                            catch (SQLException e)
                            {
-                              e.printStackTrace();
+                               log.error(PSExceptionUtils.getMessageForLog(e));
+                               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                               sStatus = e.getMessage();
                               bUpgradeOk = false;
                            }
@@ -2804,7 +2832,8 @@ System.out.println("NULL Values not allowed as Update Key");
                            // Store Data in the XML Doc.
                            System.out.println("Exception encountered: "+
                                              "Storing old data in XML File\n");
-                           e.printStackTrace();
+                           log.error(PSExceptionUtils.getMessageForLog(e));
+                           log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                         }
                         // TODO == This is other way == change later
                         if(sqlLog.errorMessage.length() == 0)
@@ -2883,7 +2912,8 @@ System.out.println("NULL Values not allowed as Update Key");
                            elementData);
                   } catch (Exception e)
                   {
-                     e.printStackTrace();
+                      log.error(PSExceptionUtils.getMessageForLog(e));
+                      log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
                } // if bExist
                else if (bExist == false) // TODO : Should we create and insert ?
@@ -2927,7 +2957,8 @@ System.out.println("NULL Values not allowed as Update Key");
             }
             catch (Exception e)
             {
-//          e.printStackTrace();// not worried about this outcome
+              log.error(PSExceptionUtils.getMessageForLog(e));
+              log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
 
@@ -2959,7 +2990,8 @@ System.out.println("NULL Values not allowed as Update Key");
             }
             catch (Exception e)
             {
-//          e.printStackTrace();// not worried about this outcome
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
 
@@ -3155,7 +3187,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             orgTable.sError = "Error retrieving Meta Data on Row " + rowCount ;
             return orgTable;
          }
@@ -3237,7 +3270,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             orgTable.sError = "Error retrieving Meta Data on Row " + rowCount ;
             return false ;
          }
@@ -3272,7 +3306,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          return count ;
       }
@@ -3311,7 +3346,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          String sColumn = new String();
@@ -3335,7 +3371,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          sqlLog = setColumnData(orgTable,rsResults);
@@ -3388,7 +3425,8 @@ System.out.println("NULL Values not allowed as Update Key");
                               e.getMessage()+"\n"+
                               e.getLocalizedMessage();
             sqlLog.rowCount = rowCount;
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return sqlLog;
          }
          vtOldTables.add(orgTable);
@@ -3455,7 +3493,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
 
          return dataDoc ;
@@ -3506,7 +3545,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(Exception e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          return xmlDoc ;  // TODO  == Change this later - not required
       }
@@ -3611,7 +3651,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             sqlLog.errorMessage =
                   "Error Inserting Data into " + oldTable.getTableName()+
                                     "\n\tStoring DATA and DTD in XML file";
@@ -3625,7 +3666,10 @@ System.out.println("NULL Values not allowed as Update Key");
                dtdXMLDoc = createDtdElement(dtdXMLDoc,sTableName,vtColumns);
                dataXMLDoc = createDataElement(dataXMLDoc,oldTable);
             }
-            catch(Exception en){en.printStackTrace();}
+            catch(Exception en){
+                log.error(en.getMessage());
+                log.debug(en.getMessage(), e);
+            }
             return sqlLog ;
          }
 
@@ -3718,7 +3762,8 @@ System.out.println("NULL Values not allowed as Update Key");
          }
          catch(SQLException e)
          {
-            e.printStackTrace();
+             log.error(PSExceptionUtils.getMessageForLog(e));
+             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             pStmt = null ;
          }
 
@@ -3780,7 +3825,8 @@ System.out.println("NULL Values not allowed as Update Key");
                }
                catch(Exception e)
                {
-                  e.printStackTrace();
+                   log.error(PSExceptionUtils.getMessageForLog(e));
+                   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                }
                break;
             case CREATE_NEW_OLD :
@@ -3806,7 +3852,8 @@ System.out.println("NULL Values not allowed as Update Key");
                }
                catch(Exception e)
                {
-                  e.printStackTrace();
+                   log.error(PSExceptionUtils.getMessageForLog(e));
+                   log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                }
                break;
             default :
@@ -4465,7 +4512,7 @@ System.out.println("NULL Values not allowed as Update Key");
 
       public String getColumnDef()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append(m_name);
          buf.append(" ");
@@ -4537,7 +4584,7 @@ System.out.println("NULL Values not allowed as Update Key");
 
       public String getCreateIndexStatement()
       {
-         StringBuffer buf = new StringBuffer();
+         StringBuilder buf = new StringBuilder();
 
          buf.append("CREATE INDEX ");
          buf.append(m_qualifiedName);
@@ -4749,7 +4796,8 @@ System.out.println("NULL Values not allowed as Update Key");
       {
          System.out.println();
          System.out.println("Exception encountered - copy aborted.");
-         e.printStackTrace();
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -4763,6 +4811,7 @@ System.out.println("NULL Values not allowed as Update Key");
     * -dbprops <propsFile> -typemap <typeMapFile> -def <defFile> -data <dataFile>
     * @param args see description.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    private static void main2(String args[])
    {
       if(args.length < 8)
@@ -4930,7 +4979,8 @@ System.out.println("NULL Values not allowed as Update Key");
       {
          System.out.println();
          System.out.println("Exception encountered - copy aborted.");
-         e.printStackTrace();
+          log.error(PSExceptionUtils.getMessageForLog(e));
+          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -4965,4 +5015,6 @@ System.out.println("NULL Values not allowed as Update Key");
 
    static final int getChild = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN;
    static final int getSibling = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS;
+
+   private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(RxJdbcTableFactory.class);
 }

@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl.finder;
-
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSInternalRequestCallException;
@@ -39,6 +37,12 @@ import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,12 +51,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
 
 /**
  * The auto slot content finder allows a slot to be filled with items returned
@@ -84,8 +83,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
    /**
     * Logger for this class
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSLegacyAutoSlotContentFinder.class);
+   private static final Logger ms_log = LogManager.getLogger(PSLegacyAutoSlotContentFinder.class);
    
    /**
     * These selectors and arguments should be removed before calling the 
@@ -106,7 +104,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
    protected Set<ContentItem> getContentItems(IPSAssemblyItem sourceItem,
          IPSTemplateSlot slot, Map<String, Object> selectors)
    {
-      Set<ContentItem> rval = new TreeSet<ContentItem>(new ContentItemOrder());
+      Set<ContentItem> rval = new TreeSet<>(new ContentItemOrder());
       String path = getValue(selectors, PARAM_RESOURCE, null);
       if (StringUtils.isBlank(path))
       {
@@ -115,7 +113,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
       }
       IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
       PSRequest req = (PSRequest) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-      Map<String,Object> overrides = new HashMap<String,Object>();
+      Map<String,Object> overrides = new HashMap<>();
       for(String key : selectors.keySet())
       {
          overrides.put(key, getValue(selectors, key, ""));
@@ -126,7 +124,7 @@ public class PSLegacyAutoSlotContentFinder extends PSSlotContentFinderBase
       }
       PSInternalRequest ireq = PSServer.getInternalRequest(path, req,
             overrides, false, null);
-      List<Integer> cids = new ArrayList<Integer>();
+      List<Integer> cids = new ArrayList<>();
       try
       {
          Document result = ireq.getResultDoc();

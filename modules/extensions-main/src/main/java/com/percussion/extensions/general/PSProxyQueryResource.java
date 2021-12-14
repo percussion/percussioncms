@@ -17,24 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.extensions.general;
 
-import static com.percussion.xml.PSXmlDocumentBuilder.createXmlDocument;
-import static java.util.Arrays.asList;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.extension.IPSResultDocumentProcessor;
+import com.percussion.extension.PSDefaultExtension;
+import com.percussion.extension.PSExtensionProcessingException;
+import com.percussion.extension.PSParameterMismatchException;
+import com.percussion.extensions.utils.PSExtensionParamsHelper;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.server.PSServer;
+import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -49,19 +47,22 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.percussion.extension.IPSResultDocumentProcessor;
-import com.percussion.extension.PSDefaultExtension;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.extension.PSParameterMismatchException;
-import com.percussion.extensions.utils.PSExtensionParamsHelper;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.PSServer;
-import com.percussion.utils.request.PSRequestInfo;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_JSESSIONID;
+import static com.percussion.xml.PSXmlDocumentBuilder.createXmlDocument;
+import static java.util.Arrays.asList;
 
 /**
  * This exit allows you to make an internal request to an external resource.
@@ -91,7 +92,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSProxyQueryResource.class);
+    private static final Logger log = LogManager.getLogger(PSProxyQueryResource.class);
 
     public boolean canModifyStyleSheet() {
         return false;
@@ -144,14 +145,14 @@ public class PSProxyQueryResource extends PSDefaultExtension
                
                //This is an internal request so pass the jsessionid
                String sessionid = (String) PSRequestInfo
-                     .getRequestInfo(PSRequestInfo.KEY_JSESSIONID);
+                     .getRequestInfo(KEY_JSESSIONID);
                
                uri.setPath(uri.getPath() + ";jsessionid=" + sessionid);
                
             }
             catch (URIException e)
             {
-               log.error("Error parsing supplied url:" + url, e);
+               log.error("Error parsing supplied url: {} Error: {}" ,url,PSExceptionUtils.getMessageForLog(e));
                throw new RuntimeException("Error parsing supplied url:" + url,e);
             }
        }else
@@ -164,14 +165,14 @@ public class PSProxyQueryResource extends PSDefaultExtension
           }
           catch (URIException e)
           {
-             log.error("Error parsing supplied url:" + url, e);
+             log.error("Error parsing supplied url: {} Error: {}" , url,PSExceptionUtils.getMessageForLog(e));
              throw new RuntimeException("Error parsing supplied url:" + url,e);
           }
        }
        
         
         String repr = "url = " + url + " user = " + user + " password = " + password;
-        log.debug("Trying to get document with: " + repr);
+        log.debug("Trying to get document with: {}" , repr);
         
         HttpClient client = new HttpClient();
         
@@ -185,7 +186,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
            method.setDoAuthentication(true);
            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user, password);
            client.getState().setCredentials(AuthScope.ANY, credentials);
-           List<String> authPrefs = new ArrayList<String>(1);
+           List<String> authPrefs = new ArrayList<>(1);
            authPrefs.add(AuthPolicy.BASIC);
            client.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPrefs);              
         }
@@ -196,7 +197,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
          }
          catch (URIException e1)
          {
-            log.error("Failed to parse url as a valid URI: " + url);
+            log.error("Failed to parse url as a valid URI: {}" , url);
             throw new RuntimeException(e1);
          }
         try {
@@ -204,7 +205,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
            int statusCode = client.executeMethod(method);
 
            if (statusCode != HttpStatus.SC_OK) {
-             log.error("Remote request to url: " + url + " failed with status code: " + statusCode);
+             log.error("Remote request to url: {} failed with status code: {}" ,url, statusCode);
              throw new RuntimeException("Remote request to url: " + url + " failed with status code: " + statusCode);
            }
 
@@ -223,13 +224,13 @@ public class PSProxyQueryResource extends PSDefaultExtension
           }
         }catch (HttpException e)
         {
-           log.error("Fatal protocol violation: " + e);
-           throw new Exception("Fatal protocol violation: " + e.getMessage(),e);
+           log.error("Fatal protocol violation: {}" ,PSExceptionUtils.getMessageForLog(e));
+           throw new Exception(e);
         }
         catch (IOException e)
         {
-          log.error("Fatal transport error: " + e);
-          throw new Exception("Fatal transport error: " + e.getMessage(),e);
+          log.error("Fatal transport error: {}" , PSExceptionUtils.getMessageForLog(e));
+          throw new Exception(e);
         }
         finally
         {
@@ -245,7 +246,7 @@ public class PSProxyQueryResource extends PSDefaultExtension
     @SuppressWarnings({ "unused", "unchecked" })
     private String buildUrlQueryString(IPSRequestContext request, List<String> ignore) {
         Iterator it = request.getParametersIterator();
-        List<String> params = new ArrayList<String>();
+        List<String> params = new ArrayList<>();
         while (it.hasNext()) {
             Entry<String, Object> element = (Entry<String, Object>) it.next();
             String name = element.getKey();

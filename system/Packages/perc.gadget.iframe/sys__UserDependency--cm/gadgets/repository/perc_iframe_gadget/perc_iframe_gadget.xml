@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -35,7 +35,7 @@
     <UserPref name="height_value" display_name="Gadget height" required="true" datatype="string" default_value = '320' />
   <Content type="html">
      <![CDATA[
-     
+     <!DOCTYPE html>
     <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
     <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
       
@@ -56,7 +56,7 @@
             }
             var appWidth = $("#perc-iframe-gadget").width();
             var appHeight = prefs.getString('height_value');
-            if(isNaN(appHeight) || $.trim(appHeight) == '') {
+            if(isNaN(appHeight) || appHeight.trim() === '') {
                 appHeight = DEFAULT_HEIGHT;
             }
             gadgets.window.setTitle(title); 

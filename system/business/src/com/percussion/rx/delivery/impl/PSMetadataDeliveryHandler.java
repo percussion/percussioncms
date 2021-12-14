@@ -17,13 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.delivery.impl;
 
-import com.percussion.delivery.client.IPSDeliveryClient;
 import com.percussion.delivery.client.IPSDeliveryClient.HttpMethodType;
 import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
@@ -36,12 +35,14 @@ import com.percussion.delivery.metadata.solr.impl.PSSolrDeliveryHandler;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
 import com.percussion.delivery.service.PSDeliveryInfoServiceLocator;
 import com.percussion.design.objectstore.PSContentTypeHelper;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.delivery.IPSDeliveryResult;
 import com.percussion.rx.delivery.IPSDeliveryResult.Outcome;
 import com.percussion.rx.delivery.PSDeliveryException;
 import com.percussion.rx.delivery.data.PSDeliveryResult;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.impl.PSPublishingJob;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSContentTypeSummary;
@@ -58,8 +59,8 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 
 import javax.ws.rs.core.MediaType;
@@ -102,13 +103,13 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     
     private int operationTimeout = DEFAULT_OPERATION_TIMEOUT;
     
-    private Map<Long, Worker> workers = new ConcurrentHashMap<Long, PSMetadataDeliveryHandler.Worker>();
+    private Map<Long, Worker> workers = new ConcurrentHashMap<>();
 
     private List<String> supportedMimeTypes = asList("application/xhtml+xml", "application/html", "text/html");
 
     private List<String> supportedContentTypes = asList("");
     
-    private Map<IPSGuid, String> allContentTypes = new HashMap<IPSGuid,String>();
+    private Map<IPSGuid, String> allContentTypes = new HashMap<>();
     
     private IPSCmsObjectMgr cmsObjectMgr;
     
@@ -120,7 +121,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
    /**
      * The logger
      */
-    private static final Log log = LogFactory.getLog(PSMetadataDeliveryHandler.class);
+    private static final Logger log = LogManager.getLogger(PSMetadataDeliveryHandler.class);
 
     public void init(long jobid, IPSSite site, IPSPubServer pubServer) throws PSDeliveryException
     {
@@ -150,7 +151,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     public void setSupportedMimeTypes(List<String> mimeTypes)
     {
         if (mimeTypes == null)
-            supportedMimeTypes = new ArrayList<String>();
+            supportedMimeTypes = new ArrayList<>();
         else
             supportedMimeTypes = mimeTypes;
     }
@@ -164,7 +165,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     public void setSupportedContentTypes(List<String> contentTypes)
     {
         if (contentTypes == null)
-            supportedContentTypes = new ArrayList<String>();
+            supportedContentTypes = new ArrayList<>();
         else
            supportedContentTypes = contentTypes;
     }    
@@ -247,7 +248,8 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
         {
            String msg = "The metadata delivery handler cannot be run in non-transactional mode.";
            IllegalStateException e = new IllegalStateException(msg);
-           ms_log.error(msg, e);
+           ms_log.error("{} Error: {}",msg, PSExceptionUtils.getMessageForLog(e));
+           ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
            throw e;
        }
@@ -258,11 +260,11 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
     {
         validateConfig();
         
-        log.debug("Preparing: " + jobId);
+        log.debug("Preparing: {}" ,jobId);
         
-        log.debug("Retry count for HTTP connections: " + retryCount);
-        log.debug("Connection timeout for HTTP connections: " + connectionTimeout);
-        log.debug("Operation timeout for HTTP connections: " + operationTimeout);
+        log.debug("Retry count for HTTP connections: {}" , retryCount);
+        log.debug("Connection timeout for HTTP connections: {}" , connectionTimeout);
+        log.debug("Operation timeout for HTTP connections: {}" , operationTimeout);
         PSDeliveryInfo deliveryServer;
         PSSolrDeliveryHandler solr;
         
@@ -319,7 +321,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
         if (!isEnabled(jobId))
             return;
 
-        log.debug("Releasing: " + jobId);
+        log.debug("Releasing: {}" , jobId);
         super.releaseForDelivery(jobId);
         Worker w = workers.remove(jobId);
         if (w != null)
@@ -362,7 +364,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
 
              if (isMimeTypeSupported(mimeType))
             {
-               log.debug("Posting " + description);
+               log.debug("Posting {}" , description);
                FileReader reader = null;
                try {
                    item.getFile().setSourceContentType(mimeType);
@@ -377,7 +379,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
             }
             else
             {
-               log.debug("Skipped because of mime type: " + description);
+               log.debug("Skipped because of mime type: {}" , description);
             }
          }
          // Metadata can not be added to non page asset templates for example files and images.
@@ -404,13 +406,13 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
       }
       catch (WorkerHttpException wh)
       {
-         log.error("Error for " + description, wh);
+         log.error("Error for {} Error:{}" , description, PSExceptionUtils.getMessageForLog(wh));
          return createErrorResult("Error for " + description + " caused by server responding: " + wh.getStatus()
                + "\nbody: " + wh.getError(), item, jobId, location);
       }
       catch (Exception e)
       {
-         log.error("Error for " + description, e);
+         log.error("Error for {} Error: {}" , description, PSExceptionUtils.getMessageForLog(e));
          return createErrorResult("Error for " + description + " caused by: " + e.getMessage(), item,
                jobId, location);
       }
@@ -513,7 +515,7 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
       if (site == null || site.getBaseUrl() == null)
          return null;
       String root = getPublishRoot(data.m_pubServer, site);
-      return new PSPair<String, String>(root, site.getBaseUrl());
+      return new PSPair<>(root, site.getBaseUrl());
    }
 
     @Override
@@ -640,21 +642,22 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
       }
 
       public void postMetadata(String path, IPSMetadataEntry metadataEntry) throws HttpException, IOException,
-              WorkerHttpException, JSONException, IPSDeliveryClient.PSDeliveryClientException {
+            WorkerHttpException, JSONException
+      {
          if (!deliveryEnabled())
             return;
          
-         log.debug("Posting metadata: " + metadataEntry.getJson());
+         log.debug("Posting metadata: {}" ,metadataEntry.getJson());
          deliveryClient.push(
-               new PSDeliveryActionOptions().setDeliveryInfo(deliveryServer).setActionUrl(actionUrl + "/" + path)
+               new PSDeliveryActionOptions().setDeliveryInfo(deliveryServer).setActionUrl(actionUrl + "/" + SecureStringUtils.stripLeadingSlash(path))
                      .setAdminOperation(true).setSuccessfullHttpStatusCodes(Collections.singleton(202))
                      .setHttpMethod(HttpMethodType.POST), "application/json", metadataEntry.getJson());
       }
 
-      public void delete(String path) throws PSDeliveryException, IPSDeliveryClient.PSDeliveryClientException {
+      public void delete(String path) throws PSDeliveryException
+      {
          if (!deliveryEnabled())
             return;
-
          deliveryClient.push(
                new PSDeliveryActionOptions().setDeliveryInfo(deliveryServer).setActionUrl(actionUrl + "/" + path)
                      .setAdminOperation(true).setHttpMethod(HttpMethodType.DELETE), MediaType.TEXT_PLAIN,
@@ -678,7 +681,8 @@ public class PSMetadataDeliveryHandler extends PSBaseDeliveryHandler
          }
          catch (PSDeliveryException e)
          {
-            log.error("Failed to commit solr transaction:",e);
+            log.error("Failed to commit solr transaction: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
    }

@@ -17,12 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tools.simple;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,8 +38,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 /**
  * This class is used to copy a workbench plugin's MANIFEST.MF file to the
@@ -50,6 +53,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class PSCopyManifest
 {
+
+   private static final Logger log = LogManager.getLogger(PSCopyManifest.class);
+
    /**
     * Copy MANIFEST.MF after performing necessary clean-up.
     *
@@ -236,7 +242,8 @@ public class PSCopyManifest
       }
       catch(Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          System.exit(1);
       }
    }

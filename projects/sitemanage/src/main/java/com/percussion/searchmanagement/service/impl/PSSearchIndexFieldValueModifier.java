@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,17 +38,16 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.util.PSDataTypeConverter;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Modifies field values before items are indexed, to ensure search queries behave as expected.  Currently
@@ -65,7 +64,7 @@ public class PSSearchIndexFieldValueModifier implements IPSFieldValueModifier, I
     private IPSIdMapper idMapper;
     
     
-    private static Log log = LogFactory.getLog(PSSearchIndexFieldValueModifier.class);
+    private static final Logger log = LogManager.getLogger(PSSearchIndexFieldValueModifier.class);
     
     @Autowired
     public PSSearchIndexFieldValueModifier(IPSFolderHelper folderHelper, IPSIdMapper idMapper, IPSNotificationService notificationService)
@@ -101,7 +100,7 @@ public class PSSearchIndexFieldValueModifier implements IPSFieldValueModifier, I
             if (StringUtils.isBlank(userName) || StringUtils.isBlank(strDate))
                 return;
             
-            StringBuffer patternUsed = new StringBuffer();
+            StringBuilder patternUsed = new StringBuilder();
             Date lastModified = PSDataTypeConverter.parseStringToDate(strDate, patternUsed);
             if (lastModified == null)
                 return;

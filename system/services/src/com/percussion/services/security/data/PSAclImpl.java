@@ -17,39 +17,57 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.data;
 
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.IPSCatalogItem;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
-import com.percussion.services.security.*;
+import com.percussion.services.security.IPSAcl;
+import com.percussion.services.security.IPSAclEntry;
+import com.percussion.services.security.PSAclUtils;
+import com.percussion.services.security.PSPermissions;
+import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.NaturalId;
 import org.xml.sax.SAXException;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.*;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import java.io.IOException;
 import java.security.Principal;
 import java.security.acl.AclEntry;
 import java.security.acl.LastOwnerException;
 import java.security.acl.NotOwnerException;
 import java.security.acl.Permission;
-import java.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Implementation of the interface
@@ -671,7 +689,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
       
       
       // now handle adds, removes, and updates of entries
-      Set<String> matches = new HashSet<String>();
+      Set<String> matches = new HashSet<>();
       Enumeration<AclEntry> entryEnum = acl.entries();
       while (entryEnum.hasMoreElements())
       {
@@ -730,7 +748,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
       else 
       {
          if (entries == null)
-            entries = new HashSet<IPSAclEntry>();
+            entries = new HashSet<>();
          for (PSAclEntryImpl ent : newEntries)
             addEntry(ent);
       }
@@ -822,7 +840,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
     * (non-Javadoc)
     * 
     * @see com.percussion.services.security.IPSAcl#createEntry(java.lang.String,
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes)
+    * com.percussion.security.IPSTypedPrincipal.PrincipalTypes)
     */
    public IPSAclEntry createEntry(String principalName, PrincipalTypes principalType)
    {
@@ -841,7 +859,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
     * (non-Javadoc)
     * 
     * @see com.percussion.services.security.IPSAcl#createEntry(java.lang.String,
-    * com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes,
+    * com.percussion.security.IPSTypedPrincipal.PrincipalTypes,
     * com.percussion.services.security.PSPermissions[])
     */
    public IPSAclEntry createEntry(String principalName, PrincipalTypes principalType,
@@ -865,7 +883,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.utils.security.IPSTypedPrincipal)
+    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.security.IPSTypedPrincipal)
     */
    public IPSAclEntry createEntry(IPSTypedPrincipal principal)
    {
@@ -879,7 +897,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.utils.security.IPSTypedPrincipal,
+    * @see com.percussion.services.security.IPSAcl#createEntry(com.percussion.security.IPSTypedPrincipal,
     * com.percussion.services.security.PSPermissions[])
     */
    public IPSAclEntry createEntry(IPSTypedPrincipal principal,
@@ -899,7 +917,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
    /*
     * (non-Javadoc)
     * 
-    * @see com.percussion.services.security.IPSAcl#findEntry(com.percussion.utils.security.IPSTypedPrincipal)
+    * @see com.percussion.services.security.IPSAcl#findEntry(com.percussion.security.IPSTypedPrincipal)
     */
    public IPSAclEntry findEntry(IPSTypedPrincipal principal)
    {
@@ -1007,7 +1025,7 @@ public class PSAclImpl implements IPSAcl, IPSCatalogItem, IPSCatalogSummary
            orphanRemoval=true, mappedBy="acl")
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSAclImpl_Entries")
    @Fetch(FetchMode.SUBSELECT)
-   private Set<IPSAclEntry> entries = new HashSet<IPSAclEntry>();
+   private Set<IPSAclEntry> entries = new HashSet<>();
 
    /**
     * The hibernate object version

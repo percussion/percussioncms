@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.user.data;
-
-import static org.junit.Assert.assertNotNull;
 
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSDataObjectTestCase;
@@ -32,13 +30,13 @@ import com.percussion.share.service.exception.PSBeanValidationUtils;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.user.data.PSLdapConfig.PSLdapServer;
 import com.percussion.user.data.PSLdapConfig.PSLdapServer.CatalogType;
+import org.junit.Test;
 
+import javax.xml.bind.UnmarshalException;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.bind.UnmarshalException;
-
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 
 public class PSUserDataObjectTests
 {
@@ -93,7 +91,7 @@ public class PSUserDataObjectTests
             loadXml("BadXmlOrgUnitsLdapConfig.xml");
         }
         
-        private PSSpringValidationException validate(PSLdapConfig c) {
+        private PSSpringValidationException validate(PSLdapConfig c) throws PSSpringValidationException {
             return PSBeanValidationUtils.validate(c.getServer()).throwIfInvalid();
         }
     

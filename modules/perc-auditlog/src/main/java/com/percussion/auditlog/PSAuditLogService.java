@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,13 +30,18 @@ import com.ibm.cadf.model.Event;
 import com.ibm.cadf.util.Constants;
 import com.percussion.auditlog.util.AuditPropertyLoader;
 import com.percussion.auditlog.util.FileCreator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Properties;
 
 public class PSAuditLogService  implements IPSAuditLogService {
+
+    private static final Logger log = LogManager.getLogger(PSAuditLogService.class);
 
     private static AuditMiddleware middleware;
     private static Properties properties;
@@ -118,7 +123,8 @@ public class PSAuditLogService  implements IPSAuditLogService {
             }
         }
         catch(Exception e){
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
 
@@ -134,7 +140,8 @@ public class PSAuditLogService  implements IPSAuditLogService {
             properties = AuditPropertyLoader.loadProperties(PathUtils.getRxDir(null)+ File.separator+CONFIG_FILE_BASE);
             middleware.setProperties(properties);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
     }
@@ -144,7 +151,7 @@ public class PSAuditLogService  implements IPSAuditLogService {
 
     private static PSAuditLogService instance;
 
-    synchronized public static PSAuditLogService getInstance(){
+    public static synchronized PSAuditLogService getInstance(){
         if (instance == null)
         {
             // if instance is null, initialize

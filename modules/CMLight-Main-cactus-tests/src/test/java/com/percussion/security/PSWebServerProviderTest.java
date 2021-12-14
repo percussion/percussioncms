@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,16 +31,14 @@ import com.percussion.server.PSServer;
 import com.percussion.services.security.PSServletRequestWrapper;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.utils.request.PSRequestInfo;
-
-import java.util.Iterator;
-import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.junit.experimental.categories.Category;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * Test the web server security provider.  Assumes one is configured.

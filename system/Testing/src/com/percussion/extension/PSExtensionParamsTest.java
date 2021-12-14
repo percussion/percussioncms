@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,11 +28,10 @@ import com.percussion.design.objectstore.PSDateLiteral;
 import com.percussion.design.objectstore.PSLiteral;
 import com.percussion.design.objectstore.PSSingleHtmlParameter;
 import com.percussion.design.objectstore.PSTextLiteral;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import junit.framework.TestCase;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import java.util.Date;
 
 /**
  * Test extensions params
@@ -97,7 +96,7 @@ public class PSExtensionParamsTest extends TestCase
 
       PSLiteral b = new PSTextLiteral("abc");
       Date today = new Date();
-      PSLiteral c = new PSDateLiteral(today, new SimpleDateFormat(
+      PSLiteral c = new PSDateLiteral(today, FastDateFormat.getInstance(
             "yyyy/MM/dd HH:mm:ss.SSS"));
 
       Object params[] =

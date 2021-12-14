@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,23 +30,21 @@ import com.percussion.itemmanagement.service.IPSItemWorkflowService.PSItemWorkfl
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.pathmanagement.data.PSFolderPermission;
-import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.share.async.impl.PSAsyncJob;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.user.service.IPSUserService;
-import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Class that implements job to approve a list of items.
@@ -57,7 +55,7 @@ import org.apache.commons.logging.LogFactory;
 public class PSBulkApprovalJob extends PSAsyncJob
 {
 
-    private static final Log log = LogFactory.getLog(PSBulkApprovalJob.class);
+    private static final Logger log = LogManager.getLogger(PSBulkApprovalJob.class);
 
     private static final String APPROVED_ITEM = "Approved";
 
@@ -77,9 +75,9 @@ public class PSBulkApprovalJob extends PSAsyncJob
 
     PSApprovableItems items;
     
-    List<PSApprovableItem> processedItems = new ArrayList<PSApprovableItem>();
+    List<PSApprovableItem> processedItems = new ArrayList<>();
     
-    private Map<String, String> approvalErrors = new HashMap<String, String>();
+    private Map<String, String> approvalErrors = new HashMap<>();
 
     @Override
     protected void doInit(Object config)
@@ -156,8 +154,7 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @param item assumed not <code>null</code>
      * @return true if it is checked out by someone else.
      */
-    private boolean isCheckedOutByOthers(PSApprovableItem item)
-    {
+    private boolean isCheckedOutByOthers(PSApprovableItem item) throws PSValidationException {
         boolean result = false;
         if(workflowHelper.isCheckedOutToSomeoneElse((item.getId())))
         {
@@ -173,10 +170,10 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @param item assumed not <code>null</code>
      * @return true if the user has approve transition.
      */
-    private boolean hasApproveTransition(PSApprovableItem item)
-    {
-        if(isAdmin)
+    private boolean hasApproveTransition(PSApprovableItem item) throws PSValidationException {
+        if(isAdmin) {
             return true;
+        }
         boolean result = true;
         if(!workflowHelper.isApproveAvailableToCurrentUser(item.getId()))
         {
@@ -191,13 +188,13 @@ public class PSBulkApprovalJob extends PSAsyncJob
     /**
      * Helper method to check whether user has at least write permission to the parent folder. 
      * If user doesn't have the access then updates the item status and error message.
-     * @param itemId assumed not <code>null</code>.
+     * @param item assumed not <code>null</code>.
      * @return true if user has at least write access or false.
      */
-    private boolean hasFolderAccess(PSApprovableItem item)
-    {
-        if(isAdmin)
+    private boolean hasFolderAccess(PSApprovableItem item) throws PSValidationException {
+        if(isAdmin) {
             return true;
+        }
         //check folder permission
         IPSGuid itemGuid = idMapper.getGuid(item.getId());
         IPSGuid parentFolder = folderHelper.getParentFolderId(itemGuid);
@@ -222,8 +219,7 @@ public class PSBulkApprovalJob extends PSAsyncJob
      * @param item assumed not <code>null</code>
      * @return true if the item is already in approved state.
      */
-    private boolean isInApprovedState(PSApprovableItem item)
-    {
+    private boolean isInApprovedState(PSApprovableItem item) throws PSValidationException {
         boolean result = false;
         if(workflowHelper.isLive(item.getId()) || workflowHelper.isPending(item.getId()))
         {

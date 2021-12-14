@@ -17,36 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.service;
 
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.copySecureSiteConfiguration;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.createSecureSiteConfiguration;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.createTouchedFile;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.filesModifiedAfterPublished;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getAllowedGroups;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getNonSecureConfigurationFolder;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getPublishedDateFromTouchedFile;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getSitesConfigPath;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getSourceConfigurationFolder;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getTouchedFile;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeSiteConfiguration;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeSiteConfigurationAndTouchedFile;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeTouchedFile;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.renameNonSecureSiteConfiguration;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.renameOrCreateSecureSiteConfiguration;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.setPublishedDateInTouchedFile;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeServerEntry;
-import static org.apache.commons.io.FileUtils.forceDelete;
-import static org.apache.commons.io.FileUtils.listFiles;
-import static org.apache.commons.io.FileUtils.touch;
-
 import com.percussion.sitemanage.data.PSSectionNode;
 import com.percussion.utils.service.impl.PSSiteConfigUtils;
 import com.percussion.utils.service.impl.PSSiteConfigUtils.SecureXmlData;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,12 +43,26 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.copySecureSiteConfiguration;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.createSecureSiteConfiguration;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.createTouchedFile;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.filesModifiedAfterPublished;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getAllowedGroups;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getNonSecureConfigurationFolder;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getPublishedDateFromTouchedFile;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getSitesConfigPath;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getSourceConfigurationFolder;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.getTouchedFile;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeServerEntry;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeSiteConfiguration;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeSiteConfigurationAndTouchedFile;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.removeTouchedFile;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.renameNonSecureSiteConfiguration;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.renameOrCreateSecureSiteConfiguration;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.setPublishedDateInTouchedFile;
+import static org.apache.commons.io.FileUtils.forceDelete;
+import static org.apache.commons.io.FileUtils.listFiles;
+import static org.apache.commons.io.FileUtils.touch;
 
 /**
  * Test cases for the {@link PSSiteConfigUtils} class.

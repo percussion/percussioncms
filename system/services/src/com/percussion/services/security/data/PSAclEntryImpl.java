@@ -17,31 +17,49 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.data;
 
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.security.IPSAclEntry;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.xml.IPSXmlSerialization;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.*;
+import javax.persistence.Transient;
 import java.security.Principal;
 import java.security.acl.Permission;
-import java.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**
@@ -60,7 +78,7 @@ import java.util.*;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "PSAclEntryImpl")
 public class PSAclEntryImpl implements IPSAclEntry
 {
-   private static final Logger log = Logger.getLogger(PSAclEntryImpl.class);
+   private static final Logger log = LogManager.getLogger(PSAclEntryImpl.class);
    
    /**
     * Default ctor. Added to keep the serializers happy. Not recommended but if
@@ -649,7 +667,7 @@ public class PSAclEntryImpl implements IPSAclEntry
       type = srcEntry.type;
 
     
-      Set<Short> updatePer = new HashSet<Short>();
+      Set<Short> updatePer = new HashSet<>();
       
       for (PSAccessLevelImpl updateAccess : srcEntry.getPsPermissions())
       {
@@ -657,8 +675,8 @@ public class PSAclEntryImpl implements IPSAclEntry
          }
       
       
-      HashMap<Short,PSAccessLevelImpl> curPer = new HashMap<Short,PSAccessLevelImpl>();
-      HashSet<Short> newPer = new HashSet<Short>();
+      HashMap<Short,PSAccessLevelImpl> curPer = new HashMap<>();
+      HashSet<Short> newPer = new HashSet<>();
       
       for (PSAccessLevelImpl currAccess : getPsPermissions())
          {
@@ -752,7 +770,7 @@ public class PSAclEntryImpl implements IPSAclEntry
    @JoinColumn(name = "ENTRYID", referencedColumnName = "ID", insertable = false, updatable = false)
    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSAclEntry_Perms")
    @Fetch(FetchMode.SUBSELECT)
-   private Set<PSAccessLevelImpl> psPermissions = new HashSet<PSAccessLevelImpl>();
+   private Set<PSAccessLevelImpl> psPermissions = new HashSet<>();
 
    /**
     * Constant to indicate an id is not initialized or invalid.

@@ -224,7 +224,7 @@ public class PSDeliveryTierServerConnectionModel extends RxIAModel
       {
          String driver = PSDeliveryTierProtocolModel.fetchDriver();
          
-         Map<String, String> vars = new HashMap<String, String>();
+         Map<String, String> vars = new HashMap<>();
          vars.put("HostName", InstallUtil.getMyHostName());
          
          //escape ':' in the driver name by underscore

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,18 +26,11 @@
  */
 package com.percussion.share.dao;
 
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -48,10 +41,14 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * A helper class to find our extended JCR 170 nodes.
@@ -220,7 +217,7 @@ public class PSJcrNodeFinder {
      */
     private List<IPSNode> executeQuery(String query)
     {
-        List<IPSNode> nodes = new ArrayList<IPSNode>();
+        List<IPSNode> nodes = new ArrayList<>();
         
         try
         {
@@ -273,7 +270,7 @@ public class PSJcrNodeFinder {
         notEmpty(uniqueId);
         notEmpty(selectFields);
         
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         
         // parse fields
         
@@ -324,6 +321,6 @@ public class PSJcrNodeFinder {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSJcrNodeFinder.class);
+    private static final Logger log = LogManager.getLogger(PSJcrNodeFinder.class);
     
 }

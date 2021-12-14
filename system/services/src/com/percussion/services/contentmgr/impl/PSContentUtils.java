@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,10 +26,9 @@ package com.percussion.services.contentmgr.impl;
 import com.percussion.services.contentmgr.impl.legacy.PSContentRepository;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Handy utilities for the content manager
@@ -69,18 +68,18 @@ public class PSContentUtils
       if (mapped != null)
       {
          fieldname = "cs.m_" + mapped;
-         return new PSPair<String, Class>(fieldname, null);
+         return new PSPair<>(fieldname, null);
       }
       else if (fieldname.equals("sys_contentid")
             || fieldname.equals("sys_revision"))
       {
          fieldname = "id." + fieldname;
-         return new PSPair<String, Class>(fieldname, type.getMainClass());
+         return new PSPair<>(fieldname, type.getMainClass());
       }
       else if (isNonPropertyRef(fieldname)
             || fieldname.startsWith("sys_componentsummary."))
       {
-         return new PSPair<String, Class>(fieldname, null);
+         return new PSPair<>(fieldname, null);
       }
       if (type != null)
       {
@@ -91,12 +90,12 @@ public class PSContentUtils
             List<String> props = type.getProperties().get(clazz);
             if (props != null && props.contains(fieldname))
             {
-               return new PSPair<String, Class>(fieldname, clazz);
+               return new PSPair<>(fieldname, clazz);
             }
          }
          if (type.getSimpleChildProperties().contains(fieldname))
          {
-            return new PSPair<String, Class>(fieldname, type.getMainClass());
+            return new PSPair<>(fieldname, type.getMainClass());
          }
       }
       return null;

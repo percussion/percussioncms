@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.tomcat;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.util.FunctionalUtils;
 import com.percussion.utils.container.IPSConnector;
 import com.percussion.utils.container.PSAbstractConnector;
@@ -33,7 +35,6 @@ import org.junit.experimental.categories.Category;
 import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,7 +46,7 @@ import java.util.stream.Collectors;
 @Category(UnitTest.class)
 public class PSTomcatConnectorTest extends TestCase
 {
-    public static final String DEFAULT_CIPHERS = "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDH_RSA_WITH_AES_256_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDH_RSA_WITH_AES_128_CBC_SHA,TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA";
+    public static final String DEFAULT_CIPHERS = "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256,TLS_CHACHA20_POLY1305_SHA256,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384";
    /**
     * Test the constructors and accessors for an http connector
     * 
@@ -121,8 +122,16 @@ public class PSTomcatConnectorTest extends TestCase
    {
       int port = 9992;
       PSAbstractConnector tc = PSAbstractConnector.getBuilder().setPort(9992).build();
-      DocumentBuilder db = 
-         DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      DocumentBuilder db =
+              PSSecureXMLUtils.getSecuredDocumentBuilderFactory(new PSXmlSecurityOptions(
+                              true,
+                              true,
+                              true,
+                              false,
+                              true,
+                              false
+                      ))
+                      .newDocumentBuilder();
 
       Element e = (Element) tc.toXml(tc.getProperties()).getElementsByTagName(PSTomcatConnector.CONNECTOR_NODE_NAME).item(0);
 
@@ -180,7 +189,7 @@ public class PSTomcatConnectorTest extends TestCase
       tc.setHostAddress("");
       assertEquals(tc.getHostAddress(), "");
       tc.setHostAddress(null);
-      assertEquals(tc.getHostAddress(), null);
+      assertNull(tc.getHostAddress());
 
    }   
 }

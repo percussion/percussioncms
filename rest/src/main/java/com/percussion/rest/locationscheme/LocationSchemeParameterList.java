@@ -17,21 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.locationscheme;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "LocationSchemeParemeterList")
-@ApiModel(description="Represents a List of LocationSchemeParameters")
+@ArraySchema(schema=@Schema(implementation = LocationSchemeParameter.class))
 public class LocationSchemeParameterList extends ArrayList<LocationSchemeParameter> {
     public LocationSchemeParameterList(Collection<? extends LocationSchemeParameter> c) {
         super(c);

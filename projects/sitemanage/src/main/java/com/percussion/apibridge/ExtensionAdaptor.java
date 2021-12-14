@@ -17,30 +17,44 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.apibridge;
 
-import com.percussion.extension.*;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSExtensionParamDef;
+import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionMethod;
+import com.percussion.extension.PSExtensionMethodParam;
+import com.percussion.extension.PSExtensionRef;
 import com.percussion.extensions.IPSExtensionService;
-import com.percussion.rest.extensions.*;
+import com.percussion.rest.extensions.Extension;
+import com.percussion.rest.extensions.ExtensionFilterOptions;
+import com.percussion.rest.extensions.ExtensionMethod;
+import com.percussion.rest.extensions.ExtensionParameter;
+import com.percussion.rest.extensions.IExtensionAdaptor;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @PSSiteManageBean
 public class ExtensionAdaptor implements IExtensionAdaptor {
 
     private IPSExtensionService extensionService;
-    private Log log = LogFactory.getLog(ExtensionAdaptor.class);
+    private Logger log = LogManager.getLogger(ExtensionAdaptor.class);
+
 
     @Autowired
     public ExtensionAdaptor(IPSExtensionService extensionService){
@@ -98,14 +112,14 @@ public class ExtensionAdaptor implements IExtensionAdaptor {
              }
              ret.setMethods(methods);
              it = def.getRequiredApplications();
-             List<String> apps = new ArrayList<String>();
+             List<String> apps = new ArrayList<>();
              while(it.hasNext()){
                apps.add((String)it.next() );
              }
              ret.setRequiredApplications(apps);
 
              it = def.getResourceLocations();
-             List<String> resources = new ArrayList<String>();
+             List<String> resources = new ArrayList<>();
              while(it.hasNext()){
                 resources.add(((URL)it.next()).toString());
              }
@@ -113,14 +127,14 @@ public class ExtensionAdaptor implements IExtensionAdaptor {
 
 
             it = def.getSuppliedResources();
-            List<String> supplied = new ArrayList<String>();
+            List<String> supplied = new ArrayList<>();
             while(it.hasNext()){
                 resources.add(((URL)it.next()).toString());
             }
             ret.setSuppliedResources(supplied);
 
             it = def.getRuntimeParameterNames();
-            List<ExtensionParameter> runParams = new ArrayList<ExtensionParameter>();
+            List<ExtensionParameter> runParams = new ArrayList<>();
             while(it.hasNext()){
                 String name = (String)it.next();
                 ExtensionParameter runP = new ExtensionParameter();
@@ -145,7 +159,7 @@ public class ExtensionAdaptor implements IExtensionAdaptor {
     @Override
     public List<Extension> getExtensions(URI baseURI, ExtensionFilterOptions filter) {
 
-        List<Extension> response = new ArrayList<Extension>();
+        List<Extension> response = new ArrayList<>();
         try {
             Iterator it = extensionService.getExtensionNames(filter.getHandlerNamePattern(), filter.getContext(), filter.getInterfacePattern(), filter.getExtensionNamePattern());
 

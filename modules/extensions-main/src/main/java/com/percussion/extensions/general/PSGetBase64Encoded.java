@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,6 @@
 package com.percussion.extensions.general;
 
 import com.percussion.HTTPClient.HttpURLConnection;
-
 import com.percussion.data.PSConversionException;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
@@ -145,11 +144,7 @@ public class PSGetBase64Encoded extends PSSimpleJavaUdfExtension
    {
       PSMakeIntLink link = new PSMakeIntLink();
       String encodedContents = "";
-      InputStream is = null;
-      ByteArrayOutputStream os = null;
       HttpURLConnection conn = null;
-      ByteArrayInputStream bis = null;
-      ByteArrayOutputStream bos = null;
 
       try
       {
@@ -158,19 +153,26 @@ public class PSGetBase64Encoded extends PSSimpleJavaUdfExtension
          conn = new HttpURLConnection(url);
          conn.connect();
 
-         is = getInputStream(conn);
+         try(InputStream is = getInputStream(conn)) {
 
-         bos = new ByteArrayOutputStream();
-         IOTools.copyStream(is, bos, 1024);
+            try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+               IOTools.copyStream(is, bos, 1024);
 
-         bis = new ByteArrayInputStream(bos.toByteArray());
+               try (ByteArrayInputStream bis = new ByteArrayInputStream(bos.toByteArray())) {
 
-         os = new ByteArrayOutputStream();
-         PSBase64Encoder.encode(bis, os);
-         os.flush();
-         encodedContents = os.toString();
+                  try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                     PSBase64Encoder.encode(bis, os);
+                     os.flush();
+                     encodedContents = os.toString();
+                  }
+               }
+            }
+
+         }
+         return encodedContents;
       }
-      catch (Throwable t)
+
+      catch (Exception t)
       {
          throw new PSConversionException(0, t.toString());
       }
@@ -178,20 +180,6 @@ public class PSGetBase64Encoded extends PSSimpleJavaUdfExtension
       {
          if (conn != null)
             conn.disconnect();
-
-         if (is != null)
-            try { is.close(); } catch (IOException e) { /* no-op */ }
-
-         if (os != null)
-            try { os.close(); } catch (IOException e) { /* no-op */ }
-
-         if (bos != null)
-            try { bos.close(); } catch (IOException e) { /* no-op */ }
-
-         if (bis != null)
-            try { bis.close(); } catch (IOException e) { /* no-op */ }
-
-         return encodedContents;
       }
    }
 

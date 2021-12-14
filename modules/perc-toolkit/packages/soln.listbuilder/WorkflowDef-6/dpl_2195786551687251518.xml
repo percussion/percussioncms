@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PSXDependencyData>
+   <table allowSchemaChanges="n" alter="n" create="y" delolddata="n" isView="n" name="NOTIFICATIONS">
+      <row>
+         <column action="c" limitSizeForIndex="n" name="NOTIFICATIONID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="SUBJECT">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>50</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="BODY">
+            <jdbctype>CLOB</jdbctype>
+            <allowsnull>yes</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="WORKFLOWAPPID">
+            <jdbctype>INTEGER</jdbctype>
+            <allowsnull>no</allowsnull>
+         </column>
+         <column action="c" limitSizeForIndex="n" name="DESCRIPTION">
+            <jdbctype>VARCHAR</jdbctype>
+            <size>255</size>
+            <allowsnull>yes</allowsnull>
+         </column>
+      </row>
+      <primarykey action="c">
+         <name>NOTIFICATIONID</name>
+         <name>WORKFLOWAPPID</name>
+      </primarykey>
+   </table>
+   <table name="NOTIFICATIONS" onCreateOnly="yes">
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="NOTIFICATIONID">1</column>
+         <column encoding="text" name="SUBJECT">Reminder Notification</column>
+         <column encoding="text" name="BODY">A content item has been waiting for your action.</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="DESCRIPTION">Notification to remind user to act on an item.</column>
+      </row>
+      <row action="n" onTableCreateOnly="no">
+         <column encoding="text" name="NOTIFICATIONID">2</column>
+         <column encoding="text" name="SUBJECT">Content archived</column>
+         <column encoding="text" name="BODY">A content item has transitioned into the archived state and will be removed from your web site.</column>
+         <column encoding="text" name="WORKFLOWAPPID">6</column>
+         <column encoding="text" name="DESCRIPTION">Notification for transitions into archive state</column>
+      </row>
+   </table>
+</PSXDependencyData>

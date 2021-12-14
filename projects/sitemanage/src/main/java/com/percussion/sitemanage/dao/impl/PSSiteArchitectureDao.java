@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.sitemanage.dao.impl;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.data.PSDataItemSummary;
 import com.percussion.share.service.IPSDataItemSummaryService;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.sitemanage.dao.IPSSiteArchitectureDao;
 import com.percussion.sitemanage.data.PSSiteArchitecture;
 import com.percussion.sitemanage.data.PSSiteSection;
@@ -57,8 +58,9 @@ public class PSSiteArchitectureDao implements IPSSiteArchitectureDao
      */
     public PSSiteArchitecture find(String id) throws LoadException
     {
-        if (id == null)
+        if (id == null) {
             throw new IllegalArgumentException("id must not be null");
+        }
         PSSiteArchitecture sa = createSiteArchitecture(id);
         return sa;
     }
@@ -81,11 +83,11 @@ public class PSSiteArchitectureDao implements IPSSiteArchitectureDao
             sa = new PSSiteArchitecture();
             sa.setName(name);
             String folderRoot = site.getFolderRoot();
-            List<PSSiteSection> sections = new ArrayList<PSSiteSection>();
+            List<PSSiteSection> sections = new ArrayList<>();
             sections.add(createSiteSection(folderRoot));
             sa.setSections(sections);
         }
-        catch (PSErrorException e)
+        catch (PSErrorException | IPSDataService.DataServiceNotFoundException | IPSDataService.DataServiceLoadException e)
         {
             throw new LoadException(e);
         }
@@ -98,8 +100,7 @@ public class PSSiteArchitectureDao implements IPSSiteArchitectureDao
      * @param folderRoot assumed not <code>null</code>.
      * @return The site section object for the given folder root.
      */
-    private PSSiteSection createSiteSection(String folderRoot)
-    {
+    private PSSiteSection createSiteSection(String folderRoot) throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException {
         PSSiteSection siteSection = new PSSiteSection();
         String id = dataItemSummaryService.pathToId(folderRoot);
         List<PSDataItemSummary> sums = dataItemSummaryService.findFolderChildren(id);

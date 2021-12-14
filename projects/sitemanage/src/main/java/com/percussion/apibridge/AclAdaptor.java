@@ -3,7 +3,8 @@
  *     Copyright (C) 1999-2020 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation,
+ *     either version 3 of the License, or (at your option) any later version.
  *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,9 +18,10 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
- *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
+ *     You should have received a copy of the GNU Affero General Public License along with this program.
+ *     If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.apibridge;
@@ -39,8 +41,8 @@ import com.percussion.services.security.PSSecurityException;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -52,7 +54,7 @@ import java.util.List;
 @Lazy
 public class AclAdaptor implements IAclAdaptor {
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private Logger log = LogManager.getLogger(this.getClass());
 
     @Autowired
     private IPSAclService aclService;
@@ -60,7 +62,9 @@ public class AclAdaptor implements IAclAdaptor {
     /***
      * CTOR
      */
-    public AclAdaptor(){}
+    public AclAdaptor(){
+        // Left blank
+    }
 
 
     @Override
@@ -72,21 +76,26 @@ public class AclAdaptor implements IAclAdaptor {
 
     @Override
     public UserAccessLevel calculateUserAccessLevel(String aclGuid) {
-        UserAccessLevel ret = null;
+            UserAccessLevel ret = null;
         Guid g = null;
         IPSAcl acl = null;
 
-        if(!StringUtils.isEmpty(aclGuid))
-             g = new Guid(aclGuid);
-        else
-            g = null;
-
+        {
+            if(!StringUtils.isEmpty(aclGuid)) {
+                g = new Guid(aclGuid);
+            }
+            else {
+                g = null;
+            }
+        }
         try {
-            if(g != null)
+            if(g != null) {
                 acl = aclService.loadAcl(ApiUtils.convertGuid(g));
+            }
         }catch(PSSecurityException e){
             log.error("Error loading acl " + aclGuid,e);
         }
+
          ret = ApiUtils.convertPSUserAccessLevel(
                 aclService.calculateUserAccessLevel(acl));
 
@@ -121,10 +130,13 @@ public class AclAdaptor implements IAclAdaptor {
 
            Acl ret = ApiUtils.convertAcl((PSAclImpl) aclService.loadAclForObject(ApiUtils.convertGuid(objectGuid)));
 
-             if(ret != null)
-                return ret;
+             if(ret != null) {
+                 return ret;
+             }
              else
+                 {
                  throw new NotFoundException();
+             }
     }
 
     @Override

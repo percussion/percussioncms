@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -128,7 +128,7 @@ public class PSDatasourceManager implements IPSDatasourceManager
    // see IPSDatasourceManager
    public List<String> getDatasources()
    {
-      List<String> dsList = new ArrayList<String>();
+      List<String> dsList = new ArrayList<>();
       for (IPSDatasourceConfig config : getDatasourceResolver().getDatasourceConfigurations())
       {
          dsList.add(config.getName());

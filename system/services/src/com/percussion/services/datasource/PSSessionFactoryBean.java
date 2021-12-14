@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -271,7 +271,7 @@ public class PSSessionFactoryBean extends LocalSessionFactoryBean
     * The list of events will be intercepted and logged to the console for aid
     * in debugging issues
     */
-   private List<String> m_interceptEvents = new ArrayList<String>();
+   private List<String> m_interceptEvents = new ArrayList<>();
 
    /**
     * Cached hibernate properties saved by overriden

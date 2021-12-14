@@ -17,24 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.naming.NamingException;
-
 /**
  * The PSTransitionNotificationsContext class is a wrapper class providing
  * access to  the records and fields of the backend table
- * 'TRANSITIONNOTIFICATIONS'. 
+ * 'TRANSITIONNOTIFICATIONS'.
+ * @deprecated
  */
-
+@Deprecated
 public class PSTransitionNotificationsContext
    extends PSAbstractMultipleRecordWorkflowContext
    implements IPSTransitionNotificationsContext

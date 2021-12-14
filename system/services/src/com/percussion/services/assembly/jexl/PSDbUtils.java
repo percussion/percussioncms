@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,7 +30,13 @@ import com.percussion.services.datasource.PSDatasourceMgrLocator;
 import com.percussion.utils.jdbc.IPSConnectionInfo;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionInfo;
+import org.apache.commons.lang.StringUtils;
 
+import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
+import javax.naming.NamingException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,14 +48,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
-import javax.jcr.Value;
-import javax.jcr.ValueFormatException;
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -80,7 +78,7 @@ public class PSDbUtils extends PSJexlUtilBase
       {
          throw new IllegalArgumentException("sqlselect may not be null or empty");
       }
-      List<Map<String,Object>> rval = new ArrayList<Map<String,Object>>();
+      List<Map<String,Object>> rval = new ArrayList<>();
       IPSDatasourceManager dsmgr = PSDatasourceMgrLocator.getDatasourceMgr();
       Connection c = null;
       PreparedStatement st = null;
@@ -95,7 +93,7 @@ public class PSDbUtils extends PSJexlUtilBase
          ResultSetMetaData rsmd = rs.getMetaData();
          while(rs.next())
          {
-            Map<String,Object> row = new HashMap<String,Object>();
+            Map<String,Object> row = new HashMap<>();
             rval.add(row);
             for(int i = 0; i < rsmd.getColumnCount(); i++)
             {

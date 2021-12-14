@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,14 +25,18 @@ package com.percussion.services.security;
 
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.security.IPSDirectoryCataloger;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.server.PSServer;
 import com.percussion.services.security.data.PSCatalogerConfig;
 import com.percussion.services.security.data.PSCatalogerConfig.ConfigTypes;
-import com.percussion.utils.security.IPSTypedPrincipal;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.cactus.ServletTestCase;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
 
+import javax.security.auth.Subject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.Principal;
@@ -43,12 +47,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.security.auth.Subject;
-
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
 
 /**
  * Test case for the {@link IPSRoleMgr}.

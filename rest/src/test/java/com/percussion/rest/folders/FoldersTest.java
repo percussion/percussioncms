@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,14 +29,13 @@ import com.percussion.rest.MoveFolderItem;
 import com.percussion.rest.Status;
 import com.percussion.rest.errors.RestError;
 import com.percussion.rest.errors.RestErrorCode;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 import static junit.framework.TestCase.assertEquals;
 

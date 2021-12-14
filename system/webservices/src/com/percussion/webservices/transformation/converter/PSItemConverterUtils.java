@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,6 +44,7 @@ import com.percussion.design.objectstore.PSDisplayMapping;
 import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSUISet;
 import com.percussion.services.assembly.IPSAssemblyService;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -61,15 +62,14 @@ import com.percussion.webservices.content.PSItemChildren;
 import com.percussion.webservices.content.PSItemFolders;
 import com.percussion.webservices.content.PSItemSlots;
 import com.percussion.webservices.content.PSRelatedItem;
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This class provides utility methods used by the item converter and possibly
@@ -683,8 +683,7 @@ public class PSItemConverterUtils
     *    grouped by slots, never <code>null</code>, may be empty.
     */
    public static PSItemSlots[] toClientRelatedContent(
-      Iterator<PSItemRelatedItem> relatedItems, PSConverter callingConverter) 
-   {
+      Iterator<PSItemRelatedItem> relatedItems, PSConverter callingConverter) throws PSAssemblyException {
       Map<String, List<PSRelatedItem>> relatedItemsBySlot = 
          new HashMap<String, List<PSRelatedItem>>();
       Map<IPSGuid, String> slotIdName = new HashMap<IPSGuid, String>();
@@ -740,8 +739,7 @@ public class PSItemConverterUtils
     * @return the slot name, never <code>null</code>.
     */
    private static String getSlotName(PSItemRelatedItem relatedItem,
-         Map<IPSGuid, String> slotIdName, IPSAssemblyService asrv)
-   {
+         Map<IPSGuid, String> slotIdName, IPSAssemblyService asrv) throws PSAssemblyException {
       PSAaRelationship rel = relatedItem.getRelationship();
       if (rel == null)
          throw new IllegalArgumentException(

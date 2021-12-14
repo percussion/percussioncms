@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,8 +25,8 @@
 package com.percussion.redirect.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.licensemanagement.data.PSModuleLicense;
-import com.percussion.licensemanagement.service.impl.PSLicenseService;
 import com.percussion.licensemanagement.service.impl.PSLicenseService;
 import com.percussion.redirect.data.PSCreateRedirectRequest;
 import com.percussion.redirect.data.PSRedirectStatus;
@@ -40,11 +40,18 @@ import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.service.IPSDataService.DataServiceLoadException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.impl.PSSiteDataService;
 import com.percussion.sitemanage.service.impl.PSSitePublishStatusService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.service.impl.PSUtilityService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -52,17 +59,10 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-
 @Service("pSRedirectService")
 public class PSRedirectService implements IPSRedirectService
 {
-    static Log ms_log = LogFactory.getLog(PSRedirectService.class);
+    private static final Logger log = LogManager.getLogger(PSRedirectService.class);
 
     @Autowired
     private PSLicenseService licenseService;
@@ -101,8 +101,9 @@ public class PSRedirectService implements IPSRedirectService
             String path = StringUtils.isBlank(data.getToPath())
                     ? StringUtils.defaultString(data.getFromPath())
                     : StringUtils.defaultString(data.getToPath());
-            if(path.startsWith("/Sites/"))
-                path = "/" + path;
+            if(path.startsWith("/Sites/")) {
+				path = "/" + path;
+			}
             String sitename = getSiteNameFromPath(path);
             PSSiteSummary site = siteDataService.find(sitename,true);
             if(site.getPubInfo() != null){
@@ -114,7 +115,9 @@ public class PSRedirectService implements IPSRedirectService
         catch (Exception e)
         {
             status =RedirectValidationStatus.Error;
-            ms_log.error("Error occurred validating the redirect object, data: " + getDataAsString(data), e);
+            log.error("Error occurred validating the redirect object, data: {}, Error: {}", getDataAsString(data),PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
             response.setErrorMessage("A redirect rule cannot be created at this time, Please note the time and date and submit this problem to Percussion support.");
         }
         response.setStatus(status);
@@ -178,16 +181,19 @@ public class PSRedirectService implements IPSRedirectService
         {
             // If there is no redirect license, we don't have to log it for on
             // prem customers.
-            if (utilityService.isSaaSEnvironment())
-                ms_log.error(e);
+            if (utilityService.isSaaSEnvironment()) {
+				log.error("Error: {}", PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+			}
         }
         return licInfo;
     }
 
     private RedirectValidationStatus validatePathStatus(String path, RedirectPathType type, PSSiteSummary site) throws DataServiceLoadException, Exception
     {
-        if(path.startsWith("/Sites"))
-            path = "/" + path;
+        if(path.startsWith("/Sites")) {
+			path = "/" + path;
+		}
         RedirectValidationStatus status = null;
         boolean isSitePublished = isSitePublished(site.getSiteId()+"");
         if (type.equals(RedirectPathType.page))
@@ -208,8 +214,7 @@ public class PSRedirectService implements IPSRedirectService
         return status;
     }
 
-    private boolean isSitePublished(String siteId)
-    {
+    private boolean isSitePublished(String siteId) throws PSDataServiceException {
         IPSGuid siteGuid = guidMgr.makeGuid(siteId, PSTypeEnum.SITE);
         return pubStatusService.isSitePublished(siteGuid);
     }
@@ -245,16 +250,19 @@ public class PSRedirectService implements IPSRedirectService
 			    
 		
 			}catch(Exception e){
-				ms_log.error("Error creating redirect from " + request.getCondition() + " to " + request.getRedirectTo(),e);
+				log.error("Error creating redirect from {}, to {}, Error: {}", request.getCondition(), request.getRedirectTo(),PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 			if(response != null && response.getStatus() == 200){
 				ret.setStatusCode(PSRedirectStatus.SERVICE_OK);
 				ret.setMessage("Redirect created successfully.");
 			}else{
-				if(response != null)
+				if(response != null) {
 					ret.setMessage("An error occurred while saving the redirect.  Remote service returned status code: " + response.getStatus());
-				else
+				}
+				else {
 					ret.setMessage("An error occurred while saving the redirect.  Remote service returned status code: null");
+				}
 
 			}
 			

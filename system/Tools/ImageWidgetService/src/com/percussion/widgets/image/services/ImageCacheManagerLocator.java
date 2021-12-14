@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,11 +36,11 @@ public class ImageCacheManagerLocator extends PSBaseServiceLocator
        {
            if (rsm==null)
            {
-               synchronized (ImageResizeManagerLocator.class)
+               synchronized (ImageCacheManagerLocator.class)
                {
                    if (rsm==null)
                    {
-                       rsm = (ImageCacheManager)getBean("imageWidgetCacheManager");
+                       rsm = (ImageCacheManager)getBean(IMAGE_CACHE_BEAN);
                    }
                }
            }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,14 +36,13 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * The site template expander adds the appropriate always publish page templates
@@ -53,6 +52,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSSiteTemplateExpander extends PSBaseTemplateExpander
 {
+   private static final Logger log = LogManager.getLogger(PSSiteTemplateExpander.class);
 
    private enum DefaultTemplateType {
       /**
@@ -67,7 +67,7 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
       /**
        * All publish when default templates should be chosen (default behavior)
        */
-      ALL;
+      ALL
    }
 
    /**
@@ -92,7 +92,7 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
          dt = dt.toUpperCase();
          dtype = DefaultTemplateType.valueOf(dt);
       }
-      List<IPSGuid> candidates = new ArrayList<IPSGuid>();
+      List<IPSGuid> candidates = new ArrayList<>();
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       IPSGuid siteg = new PSGuid(PSTypeEnum.SITE, siteid);
       IPSSite site = null;
@@ -106,13 +106,9 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
                siteg);
       }
 
-      Log log = LogFactory.getLog(getClass()); 
-      if (log.isDebugEnabled())
-      {
          log.debug("Site template expander found "
             + site.getAssociatedTemplates().size()
             + " associated templates before filtering");
-      }
       for (IPSAssemblyTemplate t : site.getAssociatedTemplates())
       {
          if ((t.getOutputFormat().equals(OutputFormat.Page) || 
@@ -135,9 +131,7 @@ public class PSSiteTemplateExpander extends PSBaseTemplateExpander
       }
       if (log.isDebugEnabled())
       {
-         log.debug("Site template expander retained "
-            + candidates.size()
-            + " templates after filtering");
+         log.debug("Site template expander retained {} templates after filtering.",  candidates.size());
       }
       return candidates;
    }

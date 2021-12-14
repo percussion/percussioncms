@@ -17,15 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl.plugin;
 
 import com.percussion.data.PSCachedStylesheet;
+import com.percussion.data.PSInternalRequestURIResolver;
 import com.percussion.data.PSTransformErrorListener;
-import com.percussion.data.PSUriResolver;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSCatalogResolver;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
@@ -36,19 +38,9 @@ import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.utils.xml.PSSaxHelper;
 import com.percussion.xml.PSStylesheetCacheManager;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
@@ -64,10 +56,19 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The database assembly plugin produces an xml document that is appropriate for
@@ -135,18 +136,18 @@ public class PSDatabaseAssembler extends PSAssemblerBase
     * Child expressions calculated, may be empty for non-child case, see
     * {@link #getChildExpression(int)} for more info
     */
-   private static final List<IPSScript> ms_children = new ArrayList<IPSScript>();
+   private static final List<IPSScript> ms_children = new ArrayList<>();
 
    /**
     * Child expressions calculated, may be empty for non-child case, see
     * {@link #getDbChildExpression(int)} for more info
     */
-   private static final List<IPSScript> ms_db_children = new ArrayList<IPSScript>();
+   private static final List<IPSScript> ms_db_children = new ArrayList<>();
 
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSDatabaseAssembler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSDatabaseAssembler.class);
 
    /**
     * Encoding constant
@@ -238,7 +239,10 @@ public class PSDatabaseAssembler extends PSAssemblerBase
                .getStyleSheetFromCache(previewSS.toURL());
             Transformer nt = ss.getStylesheetTemplate().newTransformer();
             nt.setErrorListener(errorListener);
-            nt.setURIResolver(new PSUriResolver());
+
+            PSCatalogResolver cr = new PSCatalogResolver();
+            cr.setInternalRequestURIResolver(new PSInternalRequestURIResolver());
+            nt.setURIResolver(cr);
 
             Source src = new StreamSource(new StringReader(dbdoc));
             ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -256,7 +260,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
          }
          else
          {
-            item.setResultData(dbdoc.getBytes("UTF8"));
+            item.setResultData(dbdoc.getBytes(StandardCharsets.UTF_8));
             item.setMimeType("text/xml");
          }
          item.setStatus(IPSAssemblyResult.Status.SUCCESS);
@@ -267,8 +271,8 @@ public class PSDatabaseAssembler extends PSAssemblerBase
       }
       catch (Exception e)
       {
-         return getFailureResult(item, "Serious problem "
-               + e.getLocalizedMessage());
+         return getFailureResult(item, "Unexpected error: "
+               + PSExceptionUtils.getMessageForLog(e));
       }
 
       return (IPSAssemblyResult) item;
@@ -464,7 +468,7 @@ public class PSDatabaseAssembler extends PSAssemblerBase
    {
       // Render children as long as we find a table name
       int j = 0;
-      Set<String> childnames = new HashSet<String>();
+      Set<String> childnames = new HashSet<>();
       while (true)
       {
          IPSScript childname = getDbChildExpression(j);

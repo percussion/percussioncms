@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,24 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.test.ant;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -43,6 +34,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+
 /**
  * Create the filter file for use in deploying the autotester client and server.
  * This task reads the server.xml from Tomcat and the server.properties file and
@@ -50,6 +52,7 @@ import org.xml.sax.SAXException;
  * 
  * @author dougrand
  */
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class PSMakeFilterFileTask extends Task
 {
 
@@ -112,7 +115,14 @@ public class PSMakeFilterFileTask extends Task
          {
             throw new BuildException("server.xml doesn't exist: " + serverxml);
          }
-         DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory f = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(  new PSXmlSecurityOptions(
+                 true,
+                 true,
+                 true,
+                 false,
+                 true,
+                 false
+         ));
          try
          {
             DocumentBuilder b = f.newDocumentBuilder();

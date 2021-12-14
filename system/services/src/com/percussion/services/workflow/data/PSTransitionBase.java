@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.workflow.data;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
@@ -32,7 +30,7 @@ import com.percussion.utils.guid.IPSGuid;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Table;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -61,7 +59,7 @@ public abstract class PSTransitionBase implements IPSTransitionBase
    
    private String transitionAction;
 
-   private List<PSNotification> notifications = new ArrayList<PSNotification>();
+   private List<PSNotification> notifications = new ArrayList<>();
 
    /* (non-Javadoc)
     * @see IPSCatalogSummary#getGUID()
@@ -231,7 +229,7 @@ public abstract class PSTransitionBase implements IPSTransitionBase
    public void setNotifications(List<PSNotification> notificationList)
    {
       if (notificationList == null)
-         notificationList = new ArrayList<PSNotification>();
+         notificationList = new ArrayList<>();
       
       notifications = notificationList;
    }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,12 +30,19 @@ import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFileResour
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFolderResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
 import com.percussion.pagemanagement.data.PSThemeResource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.Validate.notEmpty;
@@ -52,19 +59,19 @@ import static org.apache.commons.lang.Validate.notNull;
 @Lazy
 public class PSResourceDefinitionData
 {
-    private Map<PSResourceDefinitionUniqueId, PSResourceDefinition> resourceDefinitions = new HashMap<PSResourceDefinitionUniqueId, PSResourceDefinition>();
-    private Map<String, PSResourceDefinitionGroup> resourceDefinitionGroups = new HashMap<String, PSResourceDefinitionGroup>();
-    private Map<String, PSAssetResource> primaryAssetResources = new HashMap<String, PSAssetResource>();
-    private Map<String, Set<PSAssetResource>> contentTypeAssetResources = new HashMap<String, Set<PSAssetResource>>();
-    private Map<String, Set<PSAssetResource>> legacyTemplateAssetResources = new HashMap<String, Set<PSAssetResource>>();
+    private Map<PSResourceDefinitionUniqueId, PSResourceDefinition> resourceDefinitions = new HashMap<>();
+    private Map<String, PSResourceDefinitionGroup> resourceDefinitionGroups = new HashMap<>();
+    private Map<String, PSAssetResource> primaryAssetResources = new HashMap<>();
+    private Map<String, Set<PSAssetResource>> contentTypeAssetResources = new HashMap<>();
+    private Map<String, Set<PSAssetResource>> legacyTemplateAssetResources = new HashMap<>();
     
     private IPSResourceDefinitionVisitor resourceVisitor = new ResourceVisitor();
     
-    public void add(PSResourceDefinitionGroup group) {
+    public void add(PSResourceDefinitionGroup group) throws PSDataServiceException {
         notNull(group);
         notEmpty(group.getId());
         resourceDefinitionGroups.put(group.getId(), group);
-        List<PSResourceDefinition> rds = new ArrayList<PSResourceDefinition>();
+        List<PSResourceDefinition> rds = new ArrayList<>();
         add(rds, group.getAssetResources());
         add(rds, group.getFileResources());
         add(rds, group.getFolderResources());
@@ -134,7 +141,7 @@ public class PSResourceDefinitionData
         {
             String ct = resource.getContentType();
             if (isBlank(ct)) {
-                log.error("Content type is null for resource: " + resource);
+                log.error("Content type is null for resource: {} " , resource);
                 return;
             }
             String template = resource.getLegacyTemplate();
@@ -143,7 +150,7 @@ public class PSResourceDefinitionData
              * Add content type asset resources assocations.
              */
             Set<PSAssetResource> ars = contentTypeAssetResources.get(ct);
-            ars = ars == null ? new HashSet<PSAssetResource>() : ars;
+            ars = ars == null ? new HashSet<>() : ars;
             ars.add(resource);
             contentTypeAssetResources.put(ct, ars);
             
@@ -151,8 +158,9 @@ public class PSResourceDefinitionData
              * Add to primary asset resource assocations.
              */
             if(resource.isPrimary()) {
-                if (ct != null)
+                if (ct != null) {
                     primaryAssetResources.put(ct, resource);
+                }
             }
             
             /*
@@ -160,7 +168,7 @@ public class PSResourceDefinitionData
              */
             if (template != null) {
                 Set<PSAssetResource> trs = legacyTemplateAssetResources.get(template);
-                trs = trs == null ? new HashSet<PSAssetResource>() : trs;
+                trs = trs == null ? new HashSet<>() : trs;
                 trs.add(resource);
                 legacyTemplateAssetResources.put(template, trs);
             }
@@ -187,7 +195,8 @@ public class PSResourceDefinitionData
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSResourceDefinitionData.class);
+
+    private static final Logger log = LogManager.getLogger(PSResourceDefinitionData.class);
 
 
 }

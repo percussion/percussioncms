@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao.impl;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -34,14 +31,15 @@ import com.percussion.share.service.IPSIdMapper;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.ext.Provider;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Implements {@link IPSIdMapper}.
@@ -102,7 +100,7 @@ public class PSIdMapper implements IPSIdMapper
    {
        notNull(ids);
        
-       List<IPSGuid> guids = new ArrayList<IPSGuid>();
+       List<IPSGuid> guids = new ArrayList<>();
        for (String id : ids)
        {
            guids.add(getGuid(id));
@@ -125,7 +123,7 @@ public class PSIdMapper implements IPSIdMapper
    {
        notNull(ids);
 
-       List<String> result = new ArrayList<String>();
+       List<String> result = new ArrayList<>();
        for (IPSGuid id : ids)
        {
            result.add(getString(id));

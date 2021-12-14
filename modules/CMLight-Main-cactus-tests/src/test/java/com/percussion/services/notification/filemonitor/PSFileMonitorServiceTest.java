@@ -17,30 +17,28 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.notification.filemonitor;
 
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-
-import java.lang.Thread;
-
 import com.percussion.server.PSServer;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
-import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.services.notification.PSNotificationServiceLocator;
 import com.percussion.services.notification.filemonitor.impl.PSFileMonitorService;
 import com.percussion.util.PSPurgableTempFile;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
 import org.junit.experimental.categories.Category;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Unit Test for  File Monitor Notification service {@link PSFileMonitorService}

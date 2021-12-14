@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,14 +26,12 @@ package com.percussion.delivery.feeds.services.rdbms;
 import com.percussion.delivery.feeds.data.FeedType;
 import com.percussion.delivery.feeds.data.IPSFeedDescriptor;
 
-import java.io.Serializable;
-
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author erikserating
@@ -89,7 +87,7 @@ public class PSFeedDescriptor implements IPSFeedDescriptor, Serializable
         this.title = descriptor.getTitle();
         this.description = descriptor.getDescription();
         this.link = descriptor.getLink();
-        this.type = descriptor.getType().toString();
+        this.type = descriptor.getType();
         this.query = descriptor.getQuery();
     }
     
@@ -237,12 +235,11 @@ public class PSFeedDescriptor implements IPSFeedDescriptor, Serializable
 		} else if (!name.equals(other.name))
 			return false;
 		if (site == null) {
-			if (other.site != null)
-				return false;
-		} else if (!site.equals(other.site))
-			return false;
-		return true;
-	}
+            return other.site == null;
+		} else {
+            return site.equals(other.site);
+        }
+    }
 
 	@Override
 	public String toString() {

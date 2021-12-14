@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,14 +28,12 @@ import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
+import org.apache.commons.lang.StringUtils;
 
+import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Base class for consistency checker classes
@@ -73,7 +71,7 @@ public class PSConsistencyBase
       /**
        * The revisions that are not present in the table
        */
-      Set<Integer> mi_missingrevisions = new TreeSet<Integer>();
+      Set<Integer> mi_missingrevisions = new TreeSet<>();
 
       /**
        * Ctor

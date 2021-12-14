@@ -17,20 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata;
 
-import com.percussion.delivery.metadata.data.*;
+import com.percussion.delivery.metadata.data.PSCookieConsentQuery;
+import com.percussion.delivery.metadata.data.PSMetadataBlogResult;
+import com.percussion.delivery.metadata.data.PSMetadataDatedEntries;
+import com.percussion.delivery.metadata.data.PSMetadataDatedEvent;
+import com.percussion.delivery.metadata.data.PSMetadataQuery;
+import com.percussion.delivery.metadata.data.PSMetadataRestBlogList;
+import com.percussion.delivery.metadata.data.PSMetadataRestCategory;
+import com.percussion.delivery.metadata.data.PSMetadataRestEntry;
+import com.percussion.delivery.metadata.data.PSMetadataRestTagList;
+import com.percussion.delivery.metadata.data.PSSearchResults;
+import com.percussion.delivery.metadata.data.PSVisitQuery;
+import com.percussion.delivery.metadata.data.PSVisitRestEntry;
 import com.percussion.delivery.services.IPSRestService;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
@@ -41,10 +46,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author natechadwick

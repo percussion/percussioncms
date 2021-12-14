@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -51,7 +51,6 @@
         PUBMGT       : SERVICES_ROOT + "/publishmanagement",
         SHARE        : SERVICES_ROOT + "/share",
         WDGMGT       : SERVICES_ROOT + "/widgetmanagement",
-        PAGEOPTMGT   : SERVICES_ROOT + "/pageoptimizermanagement",
         RECMGT       : SERVICES_ROOT + "/recentmanagement",
         REDMGT       : SERVICES_ROOT + "/redirectmanagement",
         CLDSVC       : SERVICES_ROOT + "/cloudservicemanagement",
@@ -138,7 +137,7 @@
         SECTION_LINK_UPDATE          : SERVICES.SITEMGT + "/section/updateSectionLink",
         SECTION_EXTERNAL_LINK_UPDATE : SERVICES.SITEMGT + "/section/updateExternalLink",
         SECTION_GET_ROOT             : SERVICES.SITEMGT + "/section/root",
-        SECTION_GET_TREE             : SERVICES.SITEMGT + "/section/tree", // {sitename}
+        SECTION_GET_TREE             : SERVICES.SITEMGT + "/section/tree",
         SECTION_GET_CHILDREN         : SERVICES.SITEMGT + "/section/childSections",
         SECTION_GET_PROPERTIES       : SERVICES.SITEMGT + "/section/properties",
         PAGE_DELETE                  : SERVICES.PAGEMGT + "/page",
@@ -213,8 +212,8 @@
         SITE_CREATE_FROM_URL_ASYNC     : SERVICES.SITEMGT + "/site/importFromUrlAsync",
         SITE_CREATE_FROM_URL_RESULT    : SERVICES.SITEMGT + "/site/getImportedSite",
         VIEW_IMPORT_LOG                : SERVICES.SITEMGT + "/site/importLogViewer",
-        SITE_GET_PROPERTIES            : SERVICES.SITEMGT + "/site/properties", // {sitename}
-        SITE_IS_BEING_IMPORTED         : SERVICES.SITEMGT + "/site/isSiteImporting", // {sitename}
+        SITE_GET_PROPERTIES            : SERVICES.SITEMGT + "/site/properties",
+        SITE_IS_BEING_IMPORTED         : SERVICES.SITEMGT + "/site/isSiteImporting",
         SITE_PUBLISH                   : SERVICES.SITEMGT + "/publish",
         SITE_ITEM_PUBLISH_ACTIONS      : SERVICES.SITEMGT + "/publish/publishingActions",
         PAGE_PUBLISH                   : SERVICES.SITEMGT + "/publish/page",
@@ -246,10 +245,10 @@
         IMAGE_ROOT       : PERC_ROOT + "/images",
 
         //Metadata service paths
-        METADATA_FIND             : SERVICES.METADATAMGT + "/metadata", //{key}
-        METADATA_DELETE_BY_PREFIX : SERVICES.METADATAMGT  + "/metadata" + "/byprefix", //{prefix}
-        METADATA_FIND_BY_PREFIX   : SERVICES.METADATAMGT  + "/metadata" + "/byprefix", //{prefix}
-        METADATA_DELETE           : SERVICES.METADATAMGT + "/metadata", //{key}
+        METADATA_FIND             : SERVICES.METADATAMGT + "/metadata",
+        METADATA_DELETE_BY_PREFIX : SERVICES.METADATAMGT  + "/metadata" + "/byprefix",
+        METADATA_FIND_BY_PREFIX   : SERVICES.METADATAMGT  + "/metadata" + "/byprefix",
+        METADATA_DELETE           : SERVICES.METADATAMGT + "/metadata",
         METADATA_SAVE             : SERVICES.METADATAMGT + "/metadata",
         METADATA_SAVE_GLOBAL_VARIABLES  : SERVICES.METADATAMGT + "/metadata/globalvariables",
 
@@ -417,10 +416,6 @@
         CLDSVC_DATA             : SERVICES.CLDSVC + "/cloudservice/pagedata/",
         CLDSVC_DATA_FMT         : SERVICES.CLDSVC + "/cloudservice/%s/pagedata/",
 
-        // Page optimizer management services
-        PAGE_OPT_ACTIVE         : SERVICES.PAGEOPTMGT + "/pageoptimizer/active/",
-        PAGE_OPT_DATA           : SERVICES.PAGEOPTMGT + "/pageoptimizer/pagedata/",
-        PAGE_OPT_INFO           : SERVICES.PAGEOPTMGT + "/pageoptimizer/info/",
 
         //Recent management services
         RECENT_ROOT              : SERVICES.RECMGT + "/recent/",

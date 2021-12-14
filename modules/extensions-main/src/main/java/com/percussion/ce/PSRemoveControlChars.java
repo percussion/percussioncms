@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -90,7 +90,7 @@ public class PSRemoveControlChars implements IPSRequestPreProcessor
       boolean isModified = false;
       if(s == null)
          return null;
-      StringBuffer sb = new StringBuffer(s);      
+      StringBuilder sb = new StringBuilder(s);
       for(int i = 0; i < sb.length(); i++)
       {
          char ch = sb.charAt(i);

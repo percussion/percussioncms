@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@ package com.percussion.itemmanagement.service.impl;
 
 import com.percussion.assetmanagement.dao.IPSAssetDao;
 import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.assetmanagement.data.PSReportFailedToRunException;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.assetmanagement.service.impl.PSAssetRestService;
 import com.percussion.auditlog.PSActionOutcome;
@@ -36,6 +37,7 @@ import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.data.PSAssetSiteImpact;
 import com.percussion.itemmanagement.data.PSComment;
 import com.percussion.itemmanagement.data.PSItemDates;
@@ -49,8 +51,16 @@ import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pathmanagement.data.PSFolderPermission;
+import com.percussion.security.PSEncryptor;
+import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.content.data.PSItemSummary;
+import com.percussion.services.contentchange.IPSContentChangeService;
+import com.percussion.services.contentchange.data.PSContentChangeEvent;
+import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.guidmgr.PSGuidUtils;
+import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.linkmanagement.IPSManagedLinkDao;
 import com.percussion.services.linkmanagement.data.PSManagedLink;
 import com.percussion.services.notification.IPSNotificationListener;
@@ -72,26 +82,34 @@ import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.dao.IPSContentItemDao;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.PSDateUtils;
-import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.dao.impl.PSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSItemPropertiesList;
 import com.percussion.share.data.PSNoContent;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.io.PathUtils;
+import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentWs;
+import com.percussion.webservices.publishing.IPSPublishingWs;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -103,12 +121,15 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import java.text.DateFormat;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -156,9 +177,14 @@ public class PSItemService implements IPSItemService
     IPSPublisherService pubService;
     IPSManagedLinkDao linkService;
     @Autowired
+    IPSPublishingWs publishingWs;
+    @Autowired
+    IPSContentChangeService changeService;
+    @Autowired
     IPSRelationshipService relationshipService;
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
     private PSContentEvent psContentEvent;
+    private SecureKeyRotationListener secureKeyRotationListener;
 
 
 
@@ -201,7 +227,11 @@ public class PSItemService implements IPSItemService
             }
         });
 
-
+        //Adding Secure Key Rotation Listener, such that Assets with Encryption can republish
+        //pages after reencrypting using new key on rotation of secure key.
+        secureKeyRotationListener = new SecureKeyRotationListener();
+        PSEncryptor encryptor = PSEncryptor.getInstance("AES", PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
+        encryptor.addPropertyChangeListener(secureKeyRotationListener);
     }
 
     @GET
@@ -209,85 +239,79 @@ public class PSItemService implements IPSItemService
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSRevisionsSummary getRevisions(@PathParam("id") String id) throws PSItemServiceException {
 
-        rejectIfBlank("getRevisions", "id", id);
-        PSRevisionsSummary revSummary = new PSRevisionsSummary();
-        try
-        {
-        	validateItemRestorable(id);
-        	revSummary.setRestorable(true);
-        }
-        catch (Exception e)
-        {
-            revSummary.setRestorable(false);
-		}
-        // revisions for the client side
-        List<PSRevision> revisions = new ArrayList<PSRevision>();
-        // get the history details (revisions) for the page or asset from Rhythmyx
-        List<PSContentStatusHistory> _revisions = systemService.findContentStatusHistory(idMapper.getGuid(id));
-        List<PSComment> comments = createCommentsFromHistory(_revisions);
-        PSComponentSummary sum = null;
-        try
-        {
-            sum = workflowHelper.getComponentSummary(id);
-        }
-        catch(Exception e)
-        {
-            throw new PSItemServiceException("The page you are trying to act on no longer exists in the system.", e);
-        }
+        try {
+            rejectIfBlank("getRevisions", "id", id);
+            PSRevisionsSummary revSummary = new PSRevisionsSummary();
+            try {
+                validateItemRestorable(id);
+                revSummary.setRestorable(true);
+            } catch (PSValidationException | PSNotFoundException e) {
+                revSummary.setRestorable(false);
+            }
+            // revisions for the client side
+            List<PSRevision> revisions = new ArrayList<>();
+            // get the history details (revisions) for the page or asset from Rhythmyx
+            List<PSContentStatusHistory> _revisions = systemService.findContentStatusHistory(idMapper.getGuid(id));
+            List<PSComment> comments = createCommentsFromHistory(_revisions);
+            PSComponentSummary sum = null;
+            try {
+                sum = workflowHelper.getComponentSummary(id);
+            } catch (Exception e) {
+                throw new PSItemServiceException("The page you are trying to act on no longer exists in the system.", e);
+            }
 
-        if (_revisions.isEmpty())
-        {
-            if (sum.getCurrentLocator().getRevision() == 1)
-            {
-                // item has been created, but not checked in, so create a revision from the summary
-                revisions.add(getRevision(sum));
+            if (_revisions.isEmpty()) {
+                if (sum.getCurrentLocator().getRevision() == 1) {
+                    // item has been created, but not checked in, so create a revision from the summary
+                    revisions.add(getRevision(sum));
+                }
+            } else {
+                List<PSRevision> revs = getRevisions(_revisions);
+                revisions.addAll(revs);
+                // When user edits an item there is no entry for the edit revision in history table.
+                //until he checks in the item.
+                //The following code adds an entry from the item summary if the item is checked out to the current user
+                //and the head revision is not in the revisions.
+                int headRev = sum.getHeadLocator().getRevision();
+                if (workflowHelper.isCheckedOutToCurrentUser(id)) {
+                    boolean found = false;
+                    for (PSRevision rev : revs) {
+                        if (rev.getRevId() == headRev) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+						revisions.add(getRevision(sum));
+					}
+                }
             }
+            revSummary.setRevisions(revisions);
+            revSummary.setComments(comments);
+            // return the revisions to the client
+            return revSummary;
+        } catch (PSValidationException e) {
+           throw new WebApplicationException(e);
         }
-        else
-        {
-        	List<PSRevision> revs = getRevisions(_revisions);
-        	revisions.addAll(revs);
-        	// When user edits an item there is no entry for the edit revision in history table.
-        	//until he checks in the item.
-        	//The following code adds an entry from the item summary if the item is checked out to the current user
-        	//and the head revision is not in the revisions.
-        	int headRev = sum.getHeadLocator().getRevision();
-            if (workflowHelper.isCheckedOutToCurrentUser(id))
-            {
-            	boolean found = false;
-            	for(PSRevision rev: revs)
-            	{
-            		if(rev.getRevId() == headRev)
-            		{
-            			found = true;
-            			break;
-            		}
-            	}
-            	if(!found)
-            		revisions.add(getRevision(sum));
-            }
-        }
-        revSummary.setRevisions(revisions);
-        revSummary.setComments(comments);
-        // return the revisions to the client
-        return revSummary;
     }
 
     @GET
     @Path("pubhistory/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSItemPublishingHistory> getPublishingHistory(@PathParam("id") String id) throws PSItemServiceException {
-        rejectIfBlank("getPublishingHistory", "id", id);
-        List<PSItemPublishingHistory> pubHistoryList = new ArrayList<PSItemPublishingHistory>();
         try{
+            rejectIfBlank("getPublishingHistory", "id", id);
+            List<PSItemPublishingHistory> pubHistoryList = new ArrayList<>();
+
         	pubHistoryList = pubService.findItemPublishingHistory(idMapper.getGuid(id));
+            return new PSItemPublishingHistoryList(pubHistoryList);
         }
         catch(Exception e){
-        	log.error("Error fetching the publishing history for the supplies id: " + id + e);
-        	throw new PSItemServiceException("An unexpected error occurred while fetching the publishing history, " +
-        			"see log for details.",e);
+        	log.error("Error fetching the publishing history for the supplied id: {} Error: {}", id, PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        	throw new WebApplicationException("An unexpected error occurred while fetching the publishing history, " +
+        			"see log for details.");
         }
-    	return new PSItemPublishingHistoryList(pubHistoryList);
     }
 
     @GET
@@ -299,8 +323,9 @@ public class PSItemService implements IPSItemService
         Collections.reverse(historyEntries);
         for(int i=0; i < historyEntries.size(); i++){
         	PSContentStatusHistory entry = historyEntries.get(i);
-        	if(ArrayUtils.contains(WORKFLOW_TRANSITION_IGNORE_LIST, entry.getTransitionLabel()))
-        		continue;
+        	if(ArrayUtils.contains(WORKFLOW_TRANSITION_IGNORE_LIST, entry.getTransitionLabel())) {
+				continue;
+			}
         	lastComment = entry.getTransitionComment();
         	break;
         }
@@ -313,7 +338,7 @@ public class PSItemService implements IPSItemService
      * @return List of PSComment objects never <code>null</code> may be empty.
      */
     private List<PSComment> createCommentsFromHistory(List<PSContentStatusHistory> historyEntries) {
-    	List<PSComment> comments = new ArrayList<PSComment>();
+    	List<PSComment> comments = new ArrayList<>();
     	for (PSContentStatusHistory entry : historyEntries) {
 			if(StringUtils.isNotBlank(entry.getTransitionComment())){
 				comments.add(new PSComment(entry.getTransitionComment(), entry.getActor(), entry.getTransitionLabel(), entry.getEventTime()));
@@ -332,34 +357,47 @@ public class PSItemService implements IPSItemService
 	@GET
     @Path("restoreRevision/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSNoContent restoreRevision(@PathParam("id") String id) throws PSItemServiceException {
-        rejectIfBlank("restoreRevision", "id", id);
-        //If item can't be restored this method throws exception with a business message.
-        validateItemRestorable(id);
+    public PSNoContent restoreRevision(@PathParam("id") String id) {
+        try {
+            rejectIfBlank("restoreRevision", "id", id);
+            //If item can't be restored this method throws exception with a business message.
+            validateItemRestorable(id);
+            PSComponentSummary sum = workflowHelper.getComponentSummary(id);
 
-        //Create a list of ids and add the supplied item id first.
-        List<String> ids = new ArrayList<String>();
-        ids.add(id);
+            //Create a list of ids and add the supplied item id first.
+            List<String> ids = new ArrayList<>();
+            ids.add(id);
+            Set<String> lids = waRelService.getLocalAssets(id);
+            ids.addAll(lids);
+            try {
+                //prepare the item for promotion
+                prepareForRestore(id);
+                contentWs.promoteRevisions(idMapper.getGuids(ids));
+                //Adjust the relationships
+                sum = workflowHelper.getComponentSummary(id);
+                String cid = idMapper.getGuid(sum.getHeadLocator()).toString();
+                if(lids.size()>0)
+                {
+                    waRelService.adjustLocalContentRelationships(cid);
+                }
 
-        try
-        {
-            //prepare the item for promotion
-           	prepareForRestore(id);
-        	contentWs.promoteRevisions(idMapper.getGuids(ids));
+            } catch (Exception e) {
+                throw new WebApplicationException("An unexpected error occurred while restoring the prior revision, " +
+                        "see log for details.", e);
+            }
+
+            return new PSNoContent("Item with id " + id + " has been restored.");
+        } catch (PSValidationException | PSItemServiceException | PSNotFoundException | IPSWidgetAssetRelationshipService.PSWidgetAssetRelationshipServiceException e) {
+            log.error("Restore Revision Failed. Error: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
-        catch (Exception e)
-        {
-        	throw new PSItemServiceException("An unexpected error occurred while restoring the prior revision, " +
-        			"see log for details.",e);
-        }
-
-        return new PSNoContent("Item with id " + id + " has been restored.");
     }
 
 	@Override
     public List<PSAssetSiteImpact> getAssetSiteImpact(List<String> assetIds){
 
-		ArrayList<PSAssetSiteImpact> ret = new ArrayList<PSAssetSiteImpact>();
+		ArrayList<PSAssetSiteImpact> ret = new ArrayList<>();
 
 
 	    for(String id : assetIds){
@@ -374,7 +412,9 @@ public class PSItemService implements IPSItemService
 				fillOwners(id, ownerPages, ownerTemplates);
 				getManagedLinkOwners(id, ownerPages, ownerTemplates,MAX_PAGES_SITEIMPACT);
 			}catch(Exception e){
-				log.error("Error processing Site Impact for owner Pages and Templates for Asset id:" + id, e);
+				log.error("Error processing Site Impact for owner Pages and Templates for Asset id: {} Error: {}" ,id, PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+				//continue
 			}
 
 			for (String page : ownerPages)
@@ -382,19 +422,22 @@ public class PSItemService implements IPSItemService
                 try{
                 	impact.getOwnerPages().add(folderHelper.findItemPropertiesById(page));
                 }catch(Exception e){
-                	log.error("Error processing Site Impact with owner Page " + page + " for Asset id:" + id, e);
+                	log.error("Error processing Site Impact with owner Page {} for Asset id: {} Error: {}",page, id, PSExceptionUtils.getMessageForLog(e));
+                	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
 
-                List<IPSSite> sites = new ArrayList<IPSSite>();
+                List<IPSSite> sites = new ArrayList<>();
                 try{
                 	sites = folderHelper.getItemSites(page);
                 }catch(Exception e){
-                	log.error("Error processing Site Impact detecting owner Site for Page " + page + " for Asset id:" + id, e);
+                	log.error("Error processing Site Impact detecting owner Site for Page {} for Asset id: {} Error: {}",
+                             page,
+                             id,
+                             PSExceptionUtils.getMessageForLog(e));
+                	log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
 
-                for(IPSSite site : sites){
-                	ownerSites.add(site);
-                }
+                ownerSites.addAll(sites);
             }
 
 			for (String templateId : ownerTemplates){
@@ -405,7 +448,7 @@ public class PSItemService implements IPSItemService
 					log.error("Error processing Site Impact for Template " + templateId + " for Asset id:" + id, e);
 				}
 
-				List<IPSSite> sites = new ArrayList<IPSSite>();
+				List<IPSSite> sites = new ArrayList<>();
 				try{
 					sites = folderHelper.getItemSites(templateId);
 				}catch(Exception e){
@@ -432,8 +475,8 @@ public class PSItemService implements IPSItemService
     public String getAssetSiteImpact(@PathParam("assetId") String assetId)
     {
         JSONObject result = new JSONObject();
-        Set<String> ownerPages = new HashSet<String>();
-        Set<String> ownerTemplates = new HashSet<String>();
+        Set<String> ownerPages = new HashSet<>();
+        Set<String> ownerTemplates = new HashSet<>();
         try
         {
             fillOwners(assetId, ownerPages, ownerTemplates);
@@ -446,10 +489,12 @@ public class PSItemService implements IPSItemService
             	try{
                  itemProps = folderHelper.findItemPropertiesById(page);
             	}catch(Exception e){
-            		log.error("An error occurred while processing Asset Impact checking item properties for Page:" + page,e);
+            		log.error("An error occurred while processing Asset Impact checking item properties for Page: {} Error: {}", page,PSExceptionUtils.getMessageForLog(e));
+            		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             	}
-            	if(itemProps != null)
-            		pageArray.add(itemProps);
+            	if(itemProps != null) {
+					pageArray.add(itemProps);
+				}
             }
             JSONArray templateArray = new JSONArray();
             for (String templateId : ownerTemplates)
@@ -458,7 +503,8 @@ public class PSItemService implements IPSItemService
             	try{
             		template = templateService.find(templateId);
             	}catch(Exception e){
-            		log.error("An error occurred while processing Asset Impact with Template "+templateId,e);
+            		log.error("An error occurred while processing Asset Impact with Template {} Error: {}",templateId,PSExceptionUtils.getMessageForLog(e));
+            		log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             	}
 
 
@@ -467,12 +513,14 @@ public class PSItemService implements IPSItemService
                 {
                     JSONObject templateItem = new JSONObject();
 
-                    if(template != null)
-                    	templateItem.put("template", template);
+                    if(template != null) {
+						templateItem.put("template", template);
+					}
 
-                    if(sites!=null)
-                    	if(sites.get(0)!=null)
-                    		templateItem.put("site", sites.get(0).getName());
+                    if(sites!=null) {
+                        if (sites.get(0) != null)
+                            templateItem.put("site", sites.get(0).getName());
+                    }
                     templateArray.add(templateItem);
                 } else {
                 	 JSONObject templateItem = new JSONObject();
@@ -484,7 +532,7 @@ public class PSItemService implements IPSItemService
                      templateArray.add(templateItem);
 
                      if(template != null)
-                    	 log.warn("template "+ template.getName()+" with id "+template.getId()+" is not associated to any sites");
+                    	 log.warn("template {} with id {} is not associated to any sites",template.getName(),template.getId());
                 }
 
             }
@@ -494,7 +542,7 @@ public class PSItemService implements IPSItemService
         catch(Exception e)
         {
         	log.error("An unexpected error occurred while fetching the site impact details for the asset.",e);
-            throw new PSItemServiceException("An unexpected error occurred while fetching the site impact details for the asset.",e);
+            throw new WebApplicationException("An unexpected error occurred while fetching the site impact details for the asset.",e);
         }
         return result.toString();
     }
@@ -506,15 +554,11 @@ public class PSItemService implements IPSItemService
      * @param ownerPages assumed not <code>null</code>, may be empty.
      * @param ownerTemplates assumed not <code>null</code>, may be empty.
      */
-    private void fillOwners(String assetId, Set<String> ownerPages, Set<String> ownerTemplates)
-    {
+    private void fillOwners(String assetId, Set<String> ownerPages, Set<String> ownerTemplates) throws PSValidationException {
     	Set<String> owners=null;
 
-    	try{
-    		owners = waRelService.getRelationshipOwners(assetId,true);
-    	}catch(Exception e){
-    		log.error("An error occurred looking up relationships for Asset " + assetId + " while processing Site Impact",e);
-    	}
+    	owners = waRelService.getRelationshipOwners(assetId,true);
+
     	if(owners != null){
         for (String owner : owners)
         {
@@ -540,14 +584,21 @@ public class PSItemService implements IPSItemService
 
     		if(limit <=0 || ownerPages.size()<= limit){
 	    		if(link.getParentId() > 0){
-		    		PSContentItem parent = contentItemDao.find(idMapper.getGuidFromContentId(link.getParentId()).toString());
-		    		if(parent.isPage()){
-		    			ownerPages.add(parent.getId());
-		    		}else{
-		    			fillOwners(parent.getId(),ownerPages,ownerTemplates);
-		    		}
-	    		}else{
-	    			log.warn("Managed Link with a parentId of -1 detected for Link Id:" + link.getLinkId() + " . Skipping link in Site Impact.");
+	    		    try {
+                        PSContentItem parent = contentItemDao.find(idMapper.getGuidFromContentId(link.getParentId()).toString());
+
+                        if (parent.isPage()) {
+                            ownerPages.add(parent.getId());
+                        } else {
+                            fillOwners(parent.getId(), ownerPages, ownerTemplates);
+                        }
+                    } catch (PSDataServiceException e) {
+                        log.warn(PSExceptionUtils.getMessageForLog(e));
+                        log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                        //continue processing
+                    }
+                }else{
+	    			log.warn("Managed Link with a parentId of -1 detected for Link Id: {} . Skipping link in Site Impact.",link.getLinkId() );
 	    			//TODO: Add autofix here once we know what the correct fix is.
 	    		}
     		}else{
@@ -568,7 +619,7 @@ public class PSItemService implements IPSItemService
     private Map<Integer, Map<Long, PSContentStatusHistory>> buildRevisionMap(List<PSContentStatusHistory> history)
     {
         Map<Integer, Map<Long, PSContentStatusHistory>> revMap =
-            new HashMap<Integer, Map<Long, PSContentStatusHistory>>();
+            new HashMap<>();
 
         HistoryIdComparator hComp = new HistoryIdComparator();
         for (PSContentStatusHistory h : history)
@@ -577,7 +628,7 @@ public class PSItemService implements IPSItemService
             int hRev = h.getRevision();
             if (!revMap.containsKey(hRev))
             {
-                rMap = new TreeMap<Long, PSContentStatusHistory>(hComp);
+                rMap = new TreeMap<>(hComp);
                 revMap.put(hRev, rMap);
             }
             else
@@ -601,7 +652,7 @@ public class PSItemService implements IPSItemService
      */
     private List<PSRevision> getRevisions(List<PSContentStatusHistory> history)
     {
-        List<PSRevision> revisions = new ArrayList<PSRevision>();
+        List<PSRevision> revisions = new ArrayList<>();
 
         Map<Integer, Map<Long, PSContentStatusHistory>> revMap = buildRevisionMap(history);
         for (Integer rev : revMap.keySet())
@@ -727,10 +778,11 @@ public class PSItemService implements IPSItemService
      */
     private String convertDate(String inputDate, boolean isForSave) throws ParseException
     {
-    	if(StringUtils.isBlank(inputDate))
-    		return "";
-    	DateFormat format1 = new SimpleDateFormat(isForSave?"MM/dd/yyyy hh:mm a":"yyyy-MM-dd HH:mm:ss.S");
-    	DateFormat format2 = new SimpleDateFormat(isForSave?"yyyy-MM-dd HH:mm:ss.S":"MM/dd/yyyy hh:mm a");
+    	if(StringUtils.isBlank(inputDate)) {
+			return "";
+		}
+    	FastDateFormat format1 =  FastDateFormat.getInstance(isForSave?"MM/dd/yyyy hh:mm a":"yyyy-MM-dd HH:mm:ss.S");
+        FastDateFormat format2 = FastDateFormat.getInstance(isForSave?"yyyy-MM-dd HH:mm:ss.S":"MM/dd/yyyy hh:mm a");
         Date dbDate = format1.parse(inputDate);
         String date = format2.format(dbDate);
         return date;
@@ -744,8 +796,7 @@ public class PSItemService implements IPSItemService
      * Uses the head locator to checkin and transition.
      * @param id the ID of the item, must not be blank. Expects the string representation of guid.
      */
-    private void prepareForRestore(String id)
-    {
+    private void prepareForRestore(String id) throws PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         rejectIfBlank("isCheckedOutToCurrentUser", "id", id);
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
 
@@ -770,11 +821,12 @@ public class PSItemService implements IPSItemService
      * @param id the ID of the item, must not be blank. Expects the string representation of guid.
      * @throws PSItemServiceException when the item is not valid for revision promotion.
      */
-    private void validateItemRestorable(String id) throws PSItemServiceException
-    {
+    private void validateItemRestorable(String id) throws PSItemServiceException, PSValidationException, PSNotFoundException {
         rejectIfBlank("validateItemPromotable", "id", id);
         PSComponentSummary sum = workflowHelper.getComponentSummary(id);
         String type = workflowHelper.isPage(id)?PAGE:ASSET;
+		String opName = "Restore Revision";
+        PSNoContent validationResponse = new PSNoContent("Success");
 
         //throw exception if the user is not an assignee
         PSAssignmentTypeEnum asmtType = null;
@@ -786,13 +838,20 @@ public class PSItemService implements IPSItemService
         catch(Exception e)
         {
         	Object[] args = {type};
-        	throw new PSItemServiceException(MessageFormat.format("An unexpected error occurred while promoting this {0}" +
-        			", see log for details.",args),e);
+			
+			String invalidMessage = new String(MessageFormat.format("An unexpected error occurred while promoting this {0}" +
+        			", see log for details.",args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
+
         }
         if(asmtType == PSAssignmentTypeEnum.READER || asmtType == PSAssignmentTypeEnum.NONE)
         {
         	Object[] args = {type};
-        	throw new PSItemServiceException(MessageFormat.format("You are not authorized to restore this {0}.",args));
+			
+			String invalidMessage = new String(MessageFormat.format("You are not authorized to restore this {0}.",args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
         }
 
     	//throw exception if the user does not have folder permission
@@ -800,16 +859,23 @@ public class PSItemService implements IPSItemService
         PSFolderPermission.Access access = folderHelper.getFolderAccessLevel(pfGuid.toString());
         if(access == PSFolderPermission.Access.READ)
         {
+			
         	Object[] args = {type};
-        	throw new PSItemServiceException(MessageFormat.format("You do not have permission to restore this {0}.",args));
+			String invalidMessage = new String(MessageFormat.format("You do not have permission to restore this {0}.",args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
         }
 
         //if item is checked out to some one else throws exception.
         if(StringUtils.isNotBlank(sum.getCheckoutUserName()) && !workflowHelper.isCheckedOutToCurrentUser(id))
         {
+						
         	Object[] args = {type,sum.getCheckoutUserName()};
-        	throw new PSItemServiceException(MessageFormat.format("User {1} is editing this {0}. You cannot restore " +
-        			"earlier revisions.", args));
+			String invalidMessage = new String(MessageFormat.format("User {1} is editing this {0}. You cannot restore " +
+        			"earlier revisions.", args).getBytes(StandardCharsets.UTF_8));
+                	validationResponse.setOperation(invalidMessage);
+                    validateParameters(opName).reject(opName, invalidMessage).throwIfInvalid();
+        	
         }
 
     }
@@ -825,13 +891,13 @@ public class PSItemService implements IPSItemService
     	PSNoContent validationResponse = new PSNoContent("Success");
         try
         {   String opName = "dateValidation";
-            SimpleDateFormat formatter =
-                new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+            FastDateFormat formatter =
+                    FastDateFormat.getInstance("MM/dd/yyyy hh:mm a");
             Date currentDate = new Date();
             String currentDateString = formatter.format(currentDate);
             Date currentDateFormat = formatter.parse(currentDateString);
             //Generate the message to pass in
-        	String invalidMessage = new String("Invalid date range:\n".getBytes("UTF-8"));
+        	String invalidMessage = new String("Invalid date range:\n".getBytes(StandardCharsets.UTF_8));
 
             if(!StringUtils.isBlank(req.getStartDate()))
             {
@@ -876,37 +942,40 @@ public class PSItemService implements IPSItemService
 		return validationResponse;
 
     }
-    @SuppressWarnings("unchecked")
+
     @GET
     @Path("getitemdates/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSItemDates getItemDates(@PathParam("id") String id) throws PSItemServiceException {
 
-        rejectIfBlank("getItemDates", "id", id);
+        try {
+            rejectIfBlank("getItemDates", "id", id);
 
-        PSContentItem item = contentItemDao.find(id, true);
-        Map fields = item.getFields();
-        PSItemDates itemDates = new PSItemDates();
-        String startDateField = fields.get(START_DATE)!=null?fields.get(START_DATE).toString():"";
-        String endDateField = fields.get(END_DATE)!=null?fields.get(END_DATE).toString():"";
+            PSContentItem item = contentItemDao.find(id, true);
+            Map<String,Object> fields = item.getFields();
+            PSItemDates itemDates = new PSItemDates();
+            String startDateField = fields.get(START_DATE) != null ? fields.get(START_DATE).toString() : "";
+            String endDateField = fields.get(END_DATE) != null ? fields.get(END_DATE).toString() : "";
 
-        try
-        {
-            startDateField = convertDate(startDateField, false);
-            endDateField = convertDate(endDateField, false);
+            try {
+                startDateField = convertDate(startDateField, false);
+                endDateField = convertDate(endDateField, false);
+            } catch (ParseException e) {
+                Object[] args = {startDateField, endDateField};
+                throw new WebApplicationException(MessageFormat.format(
+                        "Error when converting one of the following date: {0}, {1}", args));
+            }
+
+            itemDates.setItemId(id);
+            itemDates.setStartDate(startDateField.toLowerCase());
+            itemDates.setEndDate(endDateField.toLowerCase());
+
+            return itemDates;
+        } catch (PSDataServiceException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
-        catch (ParseException e)
-        {
-            Object[] args = {startDateField,endDateField};
-            throw new PSItemServiceException(MessageFormat.format(
-               "Error when converting one of the following date: {0}, {1}", args));
-        }
-
-        itemDates.setItemId(id);
-        itemDates.setStartDate(startDateField.toLowerCase());
-        itemDates.setEndDate(endDateField.toLowerCase());
-
-        return itemDates;
     }
 
     @SuppressWarnings("unchecked")
@@ -919,7 +988,10 @@ public class PSItemService implements IPSItemService
         PSNoContent validationResponse = dateValidation(req);
         if (!validationResponse.getOperation().equals("Success"))
         {
-        	 throw new PSItemServiceException(validationResponse.getOperation());
+            String opName = "setItemDates";
+            PSValidationErrorsBuilder builder = validateParameters(opName).reject("Set Publish Dates",validationResponse.getOperation());
+            builder.throwIfInvalid();
+
         }
         String id = req.getItemId();
         IPSGuid guid = idMapper.getGuid(id);
@@ -959,24 +1031,20 @@ public class PSItemService implements IPSItemService
         }
 
         PSContentItem item = contentItemDao.find(id);
-
         Map<String,Object> fields = item.getFields();
-
-
         fields.put(START_DATE, startDate);
         fields.put(END_DATE, endDate);
-
         item.setFields(fields);
         contentItemDao.save(item);
 try{
     List<String> paths = folderHelper.findPaths(idMapper.getString(guid));
     String dependentId = guid.toString().substring(guid.toString().lastIndexOf("-") + 1, id.length());
 
-    if(startDate!="") {
+    if(! "".equals(startDate)) {
         psContentEvent = new PSContentEvent(guid.toString(), String.valueOf(dependentId), paths.get(0), PSContentEvent.ContentEventActions.pagePublishSchedule, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
         psAuditLogService.logContentEvent(psContentEvent);
     }
-    if(endDate!=""){
+    if(! "".equals(endDate)){
         psContentEvent = new PSContentEvent(guid.toString(), String.valueOf(dependentId), paths.get(0), PSContentEvent.ContentEventActions.pageRemovalSchedule, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
         psAuditLogService.logContentEvent(psContentEvent);
     }
@@ -988,11 +1056,14 @@ catch (Exception e){
     psContentEvent = new PSContentEvent(guid.toString(), String.valueOf(dependentId), paths.get(0), PSContentEvent.ContentEventActions.pagePublishSchedule, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.FAILURE);
     psAuditLogService.logContentEvent(psContentEvent);
 }
-
+        String comments = req.getComments();
+        if(comments == null || comments.trim().equals("")){
+            comments = "Auto approval while scheduling";
+        }
 
         //Below code has been done to approve page after scheduling
         try{
-            itemWfService.performApproveTransition(id,true,"Auto approval while scheduling");
+            itemWfService.performApproveTransition(id,true,comments);
 
         }
         catch(IPSItemWorkflowService.PSItemWorkflowServiceException iwe)
@@ -1012,61 +1083,66 @@ catch (Exception e){
     @GET
     @Path("getsoprometadata/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public PSSoProMetadata getSoProMetadata(@PathParam("id") String id) throws PSItemServiceException
+    @Deprecated
+    public PSSoProMetadata getSoProMetadata(@PathParam("id") String id)
     {
-        rejectIfBlank("getSoProMetadata", "id", id);
+        try {
+            rejectIfBlank("getSoProMetadata", "id", id);
 
-        PSContentItem item = contentItemDao.find(id, true);
-        Map<String, Object> fields = item.getFields();
-        Object meta = fields.get(SOPRO_METADATA);
-        String metadata = (meta != null) ? meta.toString() : "";
+            PSContentItem item = contentItemDao.find(id, true);
+            Map<String, Object> fields = item.getFields();
+            Object meta = fields.get(SOPRO_METADATA);
+            String metadata = (meta != null) ? meta.toString() : "";
 
-        PSSoProMetadata md = new PSSoProMetadata(id, metadata);
-        return md;
+            return new PSSoProMetadata(id, metadata);
+
+        } catch (PSDataServiceException e) {
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
+        }
     }
 
     @POST
     @Path("/setsoprometadata")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Deprecated
     public PSNoContent setSoProMetadata(PSSoProMetadata req) throws PSItemServiceException
     {
-        String id = req.getItemId();
+        try {
+                String id = req.getItemId();
 
-        // If item is checked out to some one else throw exception
-        PSComponentSummary sum = workflowHelper.getComponentSummary(id);
-        String type = workflowHelper.isPage(id)?PAGE:ASSET;
-        if (StringUtils.isNotBlank(sum.getCheckoutUserName()) &&
-            !workflowHelper.isCheckedOutToCurrentUser(id))
-        {
-            throw new PSItemServiceException(MessageFormat.format(
-                    "User {1} is editing this {0}. You cannot modify this item.",
-                    type, sum.getCheckoutUserName()));
+                // If item is checked out to some one else throw exception
+                PSComponentSummary sum = workflowHelper.getComponentSummary(id);
+                String type = workflowHelper.isPage(id)?PAGE:ASSET;
+                if (StringUtils.isNotBlank(sum.getCheckoutUserName()) &&
+                    !workflowHelper.isCheckedOutToCurrentUser(id))
+                {
+                    throw new PSItemServiceException(MessageFormat.format(
+                            "User {1} is editing this {0}. You cannot modify this item.",
+                            type, sum.getCheckoutUserName()));
+                }
+
+
+            PSContentItem item = contentItemDao.find(id);
+            Map<String, Object> fields = item.getFields();
+            fields.put(SOPRO_METADATA, req.getMetadata());
+            contentItemDao.save(item);
+            return new PSNoContent("Item with id " + id + " has been Updated");
+        } catch (PSDataServiceException | PSNotFoundException e) {
+            throw new WebApplicationException(e);
         }
 
-        PSContentItem item = contentItemDao.find(id);
-        Map<String, Object> fields = item.getFields();
-        fields.put(SOPRO_METADATA, req.getMetadata());
-        contentItemDao.save(item);
 
-        return new PSNoContent("Item with id " + id + " has been Updated");
     }
 
     /* (non-Javadoc)
      * @see com.percussion.itemmanagement.service.IPSItemService#copyFolder(java.lang.String, java.lang.String, java.lang.String)
      */
-    public Map<String,String> copyFolder(String srcPath, String destFolder, String name)
-    {
-        Map<String,String> assetMap = new HashMap<String,String>();
-        try {
-            copyFolder(assetMap,srcPath, destFolder, name);
-        }
-        catch (Exception e)
-        {
-            rollBackCopiedFolder(assetMap, PSFolderPathUtils.concatPath(destFolder,
-                    name));
-            throw new RuntimeException("Rolled back copied assets folder",e);
-        }
+    public Map<String,String> copyFolder(String srcPath, String destFolder, String name) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSErrorResultsException, PSDataServiceException {
+        Map<String,String> assetMap = new HashMap<>();
+
+        copyFolder(assetMap,srcPath, destFolder, name);
+
         return assetMap;
     }
 
@@ -1074,31 +1150,37 @@ catch (Exception e){
     @Path("findLinkedItems/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSPageLinkedToItem> findPagesLinkedToItem(@PathParam("id") String id) {
-        rejectIfBlank("findPagesLinkedToItem", "id", id);
-
-        List<PSPageLinkedToItem> linkedPages = new ArrayList<>();
-        int contentId = idMapper.getContentId(id);
         try {
+            rejectIfBlank("findPagesLinkedToItem", "id", id);
 
-            List<PSManagedLink> ownerLinks = linkService.findLinksByChildId(contentId);
-            for (PSManagedLink link : ownerLinks) {
-                final String s = idMapper.getGuidFromContentId(link.getParentId()).toString();
-                PSLocator depLocator = new PSLocator(link.getParentId(), -1);
+            List<PSPageLinkedToItem> linkedPages = new ArrayList<>();
+            int contentId = idMapper.getContentId(id);
 
-                linkedPages.addAll(getPageLinkItem(depLocator,s,null));
-            }
-        } catch (Exception e) {
-            // here it may be better not to throw exception, just proceed with the 'remove from site' as it was previous behavior.
-            log.error("Unable to retrieve pages which link to current item: " + id, e);
+
+                List<PSManagedLink> ownerLinks = linkService.findLinksByChildId(contentId);
+                for (PSManagedLink link : ownerLinks) {
+                    final String s = idMapper.getGuidFromContentId(link.getParentId()).toString();
+                    PSLocator depLocator = new PSLocator(link.getParentId(), -1);
+                    try {
+                        linkedPages.addAll(getPageLinkItem(depLocator, s, null));
+                    } catch (Exception e) {
+                        log.warn(PSExceptionUtils.getMessageForLog(e));
+                    }
+                }
+
+            List<PSPageLinkedToItem> relationships = getLinkedItemFromRelationship(contentId);
+            linkedPages.addAll(relationships);
+            return linkedPages;
+        } catch (PSValidationException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
-        List<PSPageLinkedToItem> relationships = getLinkedItemFromRelationship(contentId);
-        linkedPages.addAll(relationships);
-        return linkedPages;
     }
 
     private List<PSPageLinkedToItem> getPageLinkItem(PSLocator locator,String defaultString, PSRelationship relationship) throws Exception {
 
-        List<PSPageLinkedToItem> items = new ArrayList<PSPageLinkedToItem>();
+        List<PSPageLinkedToItem> items = new ArrayList<>();
         PSRelationshipFilter filter = new PSRelationshipFilter();
         filter.setDependent(locator);
         filter.setName(PSRelationshipConfig.TYPE_LOCAL_CONTENT);
@@ -1178,8 +1260,7 @@ catch (Exception e){
      * @param destFolder
      * @param name
      */
-    private void copyFolder(Map<String, String> assetMap, String srcPath, String destFolder, String name)
-    {
+    private void copyFolder(Map<String, String> assetMap, String srcPath, String destFolder, String name) throws PSDataServiceException, IPSItemWorkflowService.PSItemWorkflowServiceException, PSErrorResultsException {
         if (StringUtils.isBlank(srcPath))
         {
             throw new IllegalArgumentException("srcPath may not be blank");
@@ -1194,146 +1275,111 @@ catch (Exception e){
         {
             throw new IllegalArgumentException("name may not be blank");
         }
-       
-        try
-        {
+
             List<IPSItemSummary> sums = folderHelper.findItems(srcPath);
-            
-            String folderPath = folderHelper.concatPath(destFolder, name);            
+
+            String folderPath = folderHelper.concatPath(destFolder, name);
             IPSItemSummary destSum = null;
-            try
-            {
+            try {
                 destSum = folderHelper.findFolder(folderPath);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // folder doesn't exist
             }
-            
-            if (destSum == null)
-            {
+
+            if (destSum == null) {
                 contentWs.addFolder(name, destFolder, srcPath, false);
             }
-                        
-            for (IPSItemSummary sum : sums)
-            {
+
+            for (IPSItemSummary sum : sums) {
                 String sumName = sum.getName();
-                if (sum.isFolder())
-                {
-                   
-                    copyFolder(assetMap,folderHelper.concatPath(srcPath, sumName), folderPath, sumName);
-                }
-                else
-                {
+                if (sum.isFolder()) {
+
+                    copyFolder(assetMap, folderHelper.concatPath(srcPath, sumName), folderPath, sumName);
+                } else {
                     // copy the item (currently the item is assumed to be an asset), eventually this should delegate to
                     // the copy methods of the page service (for site sub-folder copy) and asset service (when copy
                     // asset is implemented).
                     String id = sum.getId();
-                    
-                    try
-                    {
-                        List<PSCoreItem> items = contentWs.newCopies(Collections.singletonList(idMapper.getGuid(id)),
-                                Collections.singletonList(folderPath), null, false);
-                        PSCoreItem item = items.get(0);
-                        PSLocator locator = (PSLocator) item.getLocator();
-                        
-                        String copyAssetId = idMapper.getString(locator);
-                       
-                        itemWfService.checkOut(copyAssetId);
-                        PSAsset copyAsset = assetDao.find(copyAssetId);
-                        Map<String, Object> fieldMap = copyAsset.getFields();
-                        String type = copyAsset.getType();
-                        if (type.equals(PSAssetRestService.FORM_CONTENT_TYPE))
-                        {
-                            // form names must be unique across the system
-                            int i = 2;
-                            String copyNameBase = sumName + "-copy";
-                            String copyName = copyNameBase;
-                            while (!assetDao.findByTypeAndName(type, copyName).isEmpty())
-                            {
-                                copyName = copyNameBase + '-' + i++; 
-                            }
-                            
-                            String renderedForm = 
+
+                    List<PSCoreItem> items = contentWs.newCopies(Collections.singletonList(idMapper.getGuid(id)),
+                            Collections.singletonList(folderPath), null, false);
+                    PSCoreItem item = items.get(0);
+                    PSLocator locator = (PSLocator) item.getLocator();
+
+                    String copyAssetId = idMapper.getString(locator);
+
+                    itemWfService.checkOut(copyAssetId);
+                    PSAsset copyAsset = assetDao.find(copyAssetId);
+                    Map<String, Object> fieldMap = copyAsset.getFields();
+                    String type = copyAsset.getType();
+                    if (type.equals(PSAssetRestService.FORM_CONTENT_TYPE)) {
+                        // form names must be unique across the system
+                        int i = 2;
+                        String copyNameBase = sumName + "-copy";
+                        String copyName = copyNameBase;
+                        while (!assetDao.findByTypeAndName(type, copyName).isEmpty()) {
+                            copyName = copyNameBase + '-' + i++;
+                        }
+
+                        String renderedForm =
                                 (String) fieldMap.get(PSAssetRestService.FORM_RENDEREDFORM_FIELD_NAME);
-                            renderedForm = StringUtils.replaceOnce(renderedForm, "{jQuery('#" + sumName + "')",
-                                    "{jQuery('#" + copyName + "')");
-                            renderedForm = StringUtils.replaceOnce(renderedForm, "<form name=\"" + sumName + "\"",
-                                    "<form name=\"" + copyName + "\"");
-                            renderedForm = StringUtils.replaceOnce(renderedForm, "<input value=\"" + sumName + "\"",
-                                    "<input value=\"" + copyName + "\"");
-                            fieldMap.put(PSAssetRestService.FORM_RENDEREDFORM_FIELD_NAME, renderedForm);
-                            
-                            String formData = (String) fieldMap.get(PSAssetRestService.FORM_FORMDATA_FIELD_NAME);
-                            formData = StringUtils.replaceOnce(formData, "{\"name\":\"" + sumName + "\"",
-                                    "{\"name\":\"" + copyName + "\"");
-                            fieldMap.put(PSAssetRestService.FORM_FORMDATA_FIELD_NAME, formData);
-                            
-                            sumName = copyName;
-                        }
-                        else if (UNIQUE_FIELDS.containsKey(type))
-                        {
-                           
-                           
-                            
-                            String uniqueField = UNIQUE_FIELDS.get(type);
-                           
-                            // name must be unique across the system
-                            int i = 2;
-                            String unique_name = StringUtils.defaultString((String)fieldMap.get(uniqueField),sumName);
-                                  
-                            String copyNameBase = unique_name + "-copy";
-                            String titleCopyNameBase = sumName + "-copy";
-                            
-                            String copyName = copyNameBase;
-                            String titleCopyName = titleCopyNameBase;
-                            HashSet<String> names = new HashSet<String>();
-                            HashSet<String> titles = new HashSet<String>();
-                            for (PSAsset asset : assetDao.findByType(type))
-                            {
-                                names.add((String)asset.getFields().get(uniqueField));   
-                                titles.add((String)asset.getFields().get("sys_title")); 
-                            }
-                            
-                            while(names.contains(copyName))
-                            {
-                                copyName = copyNameBase + '-' + i++; 
-                            }
-                            
-                            while(titles.contains(titleCopyName))
-                            {
-                                titleCopyName = titleCopyNameBase + '-' + i++; 
-                            }
+                        renderedForm = StringUtils.replaceOnce(renderedForm, "{jQuery('#" + sumName + "')",
+                                "{jQuery('#" + copyName + "')");
+                        renderedForm = StringUtils.replaceOnce(renderedForm, "<form name=\"" + sumName + "\"",
+                                "<form name=\"" + copyName + "\"");
+                        renderedForm = StringUtils.replaceOnce(renderedForm, "<input value=\"" + sumName + "\"",
+                                "<input value=\"" + copyName + "\"");
+                        fieldMap.put(PSAssetRestService.FORM_RENDEREDFORM_FIELD_NAME, renderedForm);
 
-                            if (unique_name!=null)
-                                fieldMap.put(uniqueField, copyName);
-                            
-                            sumName=titleCopyName;
-                        }
-                        
-                        fieldMap.put("sys_title", sumName);
-                        copyAsset.setName(sumName);
-                        assetDao.save(copyAsset);
-                        assetMap.put(id, idMapper.getString(locator));
-                        itemWfService.checkIn(copyAssetId);
+                        String formData = (String) fieldMap.get(PSAssetRestService.FORM_FORMDATA_FIELD_NAME);
+                        formData = StringUtils.replaceOnce(formData, "{\"name\":\"" + sumName + "\"",
+                                "{\"name\":\"" + copyName + "\"");
+                        fieldMap.put(PSAssetRestService.FORM_FORMDATA_FIELD_NAME, formData);
 
-                    }   
-                    catch (Exception e)
-                    {
-                        log.error("Error occurred while copying folder:'" + srcPath + "' item:'" + sumName + "': ",e);
-                        throw e;
+                        sumName = copyName;
+                    } else if (UNIQUE_FIELDS.containsKey(type)) {
+
+
+                        String uniqueField = UNIQUE_FIELDS.get(type);
+
+                        // name must be unique across the system
+                        int i = 2;
+                        String unique_name = StringUtils.defaultString((String) fieldMap.get(uniqueField), sumName);
+
+                        String copyNameBase = unique_name + "-copy";
+                        String titleCopyNameBase = sumName + "-copy";
+
+                        String copyName = copyNameBase;
+                        String titleCopyName = titleCopyNameBase;
+                        HashSet<String> names = new HashSet<>();
+                        HashSet<String> titles = new HashSet<>();
+                        for (PSAsset asset : assetDao.findByType(type)) {
+                            names.add((String) asset.getFields().get(uniqueField));
+                            titles.add((String) asset.getFields().get("sys_title"));
+                        }
+
+                        while (names.contains(copyName)) {
+                            copyName = copyNameBase + '-' + i++;
+                        }
+
+                        while (titles.contains(titleCopyName)) {
+                            titleCopyName = titleCopyNameBase + '-' + i++;
+                        }
+
+                        if (unique_name != null) {
+							fieldMap.put(uniqueField, copyName);
+						}
+
+                        sumName = titleCopyName;
                     }
+
+                    fieldMap.put("sys_title", sumName);
+                    copyAsset.setName(sumName);
+                    assetDao.save(copyAsset);
+                    assetMap.put(id, idMapper.getString(locator));
+                    itemWfService.checkIn(copyAssetId);
                 }
             }
-        }
-        catch (RuntimeException e)
-        {
-            throw e;            
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException(e);            
-        }
     }
     
     @PUT
@@ -1341,18 +1387,16 @@ catch (Exception e){
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent addToMyPages(@PathParam("pageId") String pageId)
     {
-        rejectIfBlank("isMyPage", "pageId", pageId);
-        try
-        {
+        try {
+            rejectIfBlank("isMyPage", "pageId", pageId);
+
             int id = idMapper.getContentId(pageId);
-            addUserItem(PSWebserviceUtils.getUserName(),id,PSUserItemTypeEnum.FAVORITE_PAGE);
+            addUserItem(PSWebserviceUtils.getUserName(), id, PSUserItemTypeEnum.FAVORITE_PAGE);
+
+            return new PSNoContent("Successfully added page to my pages");
+        } catch (PSValidationException | IPSGenericDao.SaveException e) {
+           throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
-        catch(Exception e)
-        {
-            log.error("Error occurred adding page to my page for user:'" + PSWebserviceUtils.getUserName() + "' for page: " + pageId, e);                   
-            throw new PSItemServiceException("Error occurred adding page to your pages.");
-        }
-        return new PSNoContent("Successfully added page to my pages");
     }
 
     @PUT
@@ -1360,19 +1404,19 @@ catch (Exception e){
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent addToMyPages(@PathParam("userName") String userName, @PathParam("pageId") String pageId)
     {
-    	rejectIfBlank("isMyPage", "userName", userName);
-        rejectIfBlank("isMyPage", "pageId", pageId);
-        try
-        {
+        try {
+            rejectIfBlank("isMyPage", "userName", userName);
+            rejectIfBlank("isMyPage", "pageId", pageId);
+
             int id = idMapper.getContentId(pageId);
-            addUserItem(userName,id,PSUserItemTypeEnum.FAVORITE_PAGE);
+            addUserItem(userName, id, PSUserItemTypeEnum.FAVORITE_PAGE);
+
+            return new PSNoContent("Successfully added page to my pages");
+        } catch (PSValidationException | IPSGenericDao.SaveException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
         }
-        catch(Exception e)
-        {
-            log.error("Error occurred adding page to my page for user:'" + PSWebserviceUtils.getUserName() + "' for page: " + pageId, e);                   
-            throw new PSItemServiceException("Error occurred adding page to your pages.");
-        }
-        return new PSNoContent("Successfully added page to my pages");
     }
     
     @DELETE
@@ -1380,18 +1424,16 @@ catch (Exception e){
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public PSNoContent removeFromMyPages(@PathParam("pageId") String pageId)
     {
-        rejectIfBlank("isMyPage", "pageId", pageId);
-        try
-        {
+        try {
+            rejectIfBlank("isMyPage", "pageId", pageId);
+
             int id = idMapper.getContentId(pageId);
-            removeUserItem(PSWebserviceUtils.getUserName(),id);
-        }
-        catch(Exception e)
-        {
-            log.error("Error occurred removing page from my page for user:'" + PSWebserviceUtils.getUserName() + "' for page: " + pageId, e);                   
-            throw new PSItemServiceException("Error occurred removing page from your pages.");
-        }
+            removeUserItem(PSWebserviceUtils.getUserName(), id);
+
         return new PSNoContent("Successfully removed page from my pages");
+        } catch (PSValidationException e) {
+            throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
+        }
     }
 
     @GET
@@ -1399,20 +1441,17 @@ catch (Exception e){
     @Produces(MediaType.TEXT_PLAIN)
     public boolean isMyPage(@PathParam("pageId") String pageId)
     {
-        rejectIfBlank("isMyPage", "pageId", pageId);
-        boolean result = false;
-        try
-        {
+        try {
+            rejectIfBlank("isMyPage", "pageId", pageId);
+            boolean result = false;
+
             int id = idMapper.getContentId(pageId);
             PSUserItem userItem = userItemDao.find(PSWebserviceUtils.getUserName(), id);
             result = userItem != null;
+            return result;
+        } catch (PSValidationException e) {
+           throw new WebApplicationException(PSExceptionUtils.getMessageForLog(e));
         }
-        catch(Exception e)
-        {
-            log.error("Error occurred checking whether page is my page or not for user:'" + PSWebserviceUtils.getUserName() + "' for page: " + pageId, e);                   
-            throw new PSItemServiceException("Error occurred checking whether page is your page or not.");
-        }
-        return result;
     }
 
     /*
@@ -1438,8 +1477,7 @@ catch (Exception e){
      * (non-Javadoc)
      * @see com.percussion.itemmanagement.service.IPSItemService#addUserItem(java.lang.String, int, com.percussion.itemmanagement.service.IPSItemService.PSUserItemTypeEnum)
      */
-    public void addUserItem(String userName, int itemId, PSUserItemTypeEnum type)
-    {
+    public void addUserItem(String userName, int itemId, PSUserItemTypeEnum type) throws IPSGenericDao.SaveException {
         Validate.notEmpty(userName);
         PSUserItem userItem = userItemDao.find(userName, itemId);
         if(userItem == null)
@@ -1530,7 +1568,7 @@ catch (Exception e){
         IPSSqlPurgeHelper purgeHelper = PSSqlPurgeHelperLocator.getPurgeHelper();
         if (itemMap!=null)
         {
-            ArrayList<PSLocator> itemsToDelete = new ArrayList<PSLocator>();
+            ArrayList<PSLocator> itemsToDelete = new ArrayList<>();
             for (String guid : itemMap.values())
             {
                 itemsToDelete.add(idMapper.getLocator(guid));
@@ -1553,8 +1591,9 @@ catch (Exception e){
             try
             {
                 id = folderHelper.findLegacyFolderIdFromPath(folderName);
-                if (id!=null)
-                    locator = new PSLocator(id.intValue());
+                if (id!=null) {
+					locator = new PSLocator(id.intValue());
+				}
             }
             catch (Exception e)
             {
@@ -1583,28 +1622,90 @@ catch (Exception e){
     {
         String user = PSWebserviceUtils.getUserName();
         List<PSUserItem> userItems = getUserItems(user);
-        List<PSItemProperties> items = new ArrayList<PSItemProperties>();
+        List<PSItemProperties> items = new ArrayList<>();
         for (PSUserItem uItem : userItems)
         {
             PSItemProperties itemProps = null;
-            itemProps = folderHelper.findItemPropertiesById(idMapper.getGuid(new PSLocator(uItem.getItemId())).toString());
-            if (itemProps != null)
-                items.add(itemProps);
+            try {
+                itemProps = folderHelper.findItemPropertiesById(idMapper.getGuid(new PSLocator(uItem.getItemId())).toString());
+                if (itemProps != null) {
+					items.add(itemProps);
+				}
+            } catch (IPSDataService.DataServiceLoadException | IPSGenericDao.LoadException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                //continue processing
+            }
         }
         return new PSItemPropertiesList(items);
     }
+
+
+    public class SecureKeyRotationListener implements PropertyChangeListener {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            try {
+                Set processedPages = new HashSet();
+                Collection<PSAsset> assets = assetDao.findAllAssetsUsingEncryption();
+                for (PSAsset asset:assets) {
+                    Set<String> pages = waRelService.getRelationshipOwners(asset.getId());
+                    for(String page : pages) {
+                        if(workflowHelper.isTemplate(page)){
+                            Collection<Integer> pageIds = templateService.getPageIdsForTemplate(page);
+                            for(Integer pageContentId:pageIds){
+                                if (processedPages.contains(pageContentId.intValue())) {
+                                    continue;
+                                }
+                                if(addToIncrementalQueue(pageContentId)) {
+                                    processedPages.add(pageContentId.intValue());
+                                }
+                            }
+                        }else if(workflowHelper.isPage(page)) {
+                            int contentId = ((PSLegacyGuid) idMapper.getGuid(page)).getContentId();
+                            if (processedPages.contains(contentId)) {
+                                continue;
+                            }
+                            if(addToIncrementalQueue(contentId)) {
+                                processedPages.add(contentId);
+                            }
+                        }
+                        }
+                    }
+
+            } catch (PSReportFailedToRunException | PSValidationException | PSNotFoundException | IPSGenericDao.LoadException  e) {
+               log.error("Secure Key Rotation Failed to get Asset Pages with Encryption. ERROR: {}",PSExceptionUtils.getMessageForLog(e));
+            }
+        }
+
+        private boolean addToIncrementalQueue(int pageId){
+            try {
+                IPSGuid contentGuid = PSGuidUtils.makeGuid(pageId, PSTypeEnum.LEGACY_CONTENT);
+                PSContentChangeEvent changeEvent = new PSContentChangeEvent();
+                changeEvent.setChangeType(PSContentChangeType.PENDING_LIVE);
+                changeEvent.setContentId(pageId);
+                IPSSite site = publishingWs.getItemSites(contentGuid).get(0);
+                changeEvent.setSiteId(site.getSiteId());
+                changeService.contentChanged(changeEvent);
+
+            } catch (IPSGenericDao.SaveException  e) {
+                log.error("Secure Key Rotation Failed to add page : {} to Incremental Queue. ERROR: {}", pageId, PSExceptionUtils.getMessageForLog(e));
+                return false;
+            }
+            return true;
+        }
+    }
     
-    public final static String PAGE = "page";
-    public final static String ASSET = "asset";
-    public final static String START_DATE = "sys_contentstartdate";
-    public final static String END_DATE = "sys_contentexpirydate";
-    public final static String SOPRO_METADATA = "social_promotion_metadata";
+    public  static final String PAGE = "page";
+    public  static final String ASSET = "asset";
+    public  static final String START_DATE = "sys_contentstartdate";
+    public  static final String END_DATE = "sys_contentexpirydate";
+    public  static final String SOPRO_METADATA = "social_promotion_metadata";
     private static final String[] WORKFLOW_TRANSITION_IGNORE_LIST = {"CheckOut", "CheckIn", "Edit", "Live"};
     
     /**
      * Logger for this service.
      */
-    public final static Log log = LogFactory.getLog(PSItemService.class);
+    public static final Logger log = LogManager.getLogger(PSItemService.class);
 
 
 

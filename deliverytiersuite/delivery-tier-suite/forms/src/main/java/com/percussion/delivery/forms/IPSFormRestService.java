@@ -17,13 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.forms;
 
-import java.io.IOException;
+import com.percussion.delivery.forms.data.PSFormSummaries;
+import com.percussion.delivery.services.IPSRestService;
+import org.glassfish.jersey.server.ContainerRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,18 +41,13 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
-
-import com.percussion.delivery.forms.data.PSFormSummaries;
-import com.percussion.delivery.services.IPSRestService;
-import org.glassfish.jersey.server.ContainerRequest;
+import java.io.IOException;
 
 /**
- * @author natechadwick
  *
  */
-@Path("/form")
+@Path("/forms")
 public interface IPSFormRestService extends IPSRestService{
 
 	/**
@@ -59,7 +56,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * is null or empty, then all exported forms are deleted. Form name
 	 * comparison is case-insensitive
 	 * 
-	 * @url /perc-form-processor/form/{formName}
+	 * @url /perc-form-processor/form/cms/{formName}
 	 * @httpverb DELETE
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -68,7 +65,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@DELETE
-	@Path("/{formName}")
+	@Path("/form/cms/{formName}")
 	public abstract void delete(@PathParam("formName") String formName);
 
 	/**
@@ -76,20 +73,17 @@ public interface IPSFormRestService extends IPSRestService{
 	 * form addition the form redirects back to the referer.
 	 * <p>
 	 * 
-	 * @url /perc-form-processor/form/
+	 * @url /perc-form-processor/forms/collect
 	 * @httpverb POST
 	 * @nullipotent yes (read-only method).
 	 * @secured no.
-	 * @param params the multivaluedmap of all parameters passed in by the form.
-	 *            Never <code>null</code>, may be empty.
-	 * @param headers the multivaluedmap of request header parameters. Never
-	 *            <code>null</code>, may be empty.
 	 * @throws IOException
 	 * @throws WebApplicationException
 	 * @httpcodeonsuccess HTTP 200.
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@POST
+	@Path("/form/collect")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public abstract void create(@Context ContainerRequest containerRequest,
 			@FormParam("action") String action, @Context HttpHeaders header,@Context HttpServletRequest request,
@@ -99,7 +93,7 @@ public interface IPSFormRestService extends IPSRestService{
 	/**
 	 * Retrieves the form given the name.
 	 * 
-	 * @url /perc-form-processor/form/{formName}
+	 * @url /perc-form-processor/form/cms/{formName}
 	 * @httpverb GET
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -110,7 +104,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/{formName}")
+	@Path("/form/cms/{formName}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public abstract PSFormSummaries get(@PathParam("formName") String formName);
 
@@ -118,7 +112,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * Retrieves list of form summaries. Form summaries include the name, total
 	 * forms count, and total exported forms count.
 	 * 
-	 * @url /perc-form-processor/form/
+	 * @url /perc-form-processor/form/cms/
 	 * @httpverb GET
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -128,13 +122,14 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
+	@Path("/form/cms/list")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public abstract PSFormSummaries get();
 
 	/**
 	 * Export the form given the name.
 	 * 
-	 * @url /perc-form-processor/form/{formName}/{csvFile}
+	 * @url /perc-form-processor/form/cms/{formName}/{csvFile}
 	 * @httpverb GET
 	 * @nullipotent no.
 	 * @secured yes (SSL and HTTP Basic Authentication).
@@ -147,7 +142,7 @@ public interface IPSFormRestService extends IPSRestService{
 	 * @httpcodeonerror HTTP 500.
 	 */
 	@GET
-	@Path("/{formName}/{csvFile}")
+	@Path("/form/cms/{formName}/{csvFile}")
 	@Produces({ "text/csv" })
 	public abstract Response export(@PathParam("formName") String formName,
 			@PathParam("csvFile") String csvFile);

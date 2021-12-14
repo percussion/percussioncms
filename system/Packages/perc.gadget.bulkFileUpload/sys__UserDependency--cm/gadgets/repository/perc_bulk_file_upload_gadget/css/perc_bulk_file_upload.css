@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -99,6 +99,7 @@
     margin-bottom: 10px;
     overflow: scroll;
     width: 380px;
+    display:block;
 }
 #perc-bulk-target-tree a:active {
     color: #0099cc !important;
@@ -116,6 +117,7 @@
     height: 16px;
     border: none;
     float: left;
+    display:inline-block !important;
 }
 .perc-bulk-expand{
     background-image:url("/cm/gadgets/repository/perc_bulk_file_upload_gadget/images/buttonBluePlus.png");
@@ -123,6 +125,7 @@
     height: 16px;
     border: none;
     float: left;
+    display:inline-block !important;
 }
 #perc-bulk-target-folder-label, #perc-bulk-details-label{
     padding-left: 5px;
@@ -154,7 +157,7 @@
     padding:0px;
     white-space:nowrap;
     margin-top:0px;
-    background-color:none;
+    background-color:unset;
 }
 #perc-folder-selector{
     float:left;

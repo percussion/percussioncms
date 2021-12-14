@@ -18,17 +18,14 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<jaxws:bindings version="2.1" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+<jaxws:bindings version="2.1"
                 xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
-                xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-               >
+>
 
 
     <jaxws:bindings wsdlLocation="assembly/assemblyDesign.wsdl">

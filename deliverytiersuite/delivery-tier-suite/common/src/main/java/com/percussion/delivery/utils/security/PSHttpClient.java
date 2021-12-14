@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,11 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.utils.security;
+
+import com.percussion.security.ToDoVulnerability;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -36,6 +38,8 @@ import javax.ws.rs.client.ClientBuilder;
  * @author leonardohildt
  * 
  */
+@ToDoVulnerability
+@Deprecated
 public class PSHttpClient
 {
     public PSHttpClient()
@@ -51,14 +55,15 @@ public class PSHttpClient
     public Client getSSLClient() throws Exception
     {
 
+        SSLContext ctx = SSLContext.getInstance("TLS");
 
-
-        //TODO: This looks like a security issue - isn't this whitelisting all ssl certificates?
-        SSLContext ctx = SSLContext.getInstance("SSL");
         ctx.init(null, new TrustManager[]
         {new PSSimpleTrustManager(null)}, null);
 
-
+        /* TODO: This looks like a security issue - isn't this whitelisting all ssl certificates?
+        Seems so.  This is used in PSFeedsService and PSMembershipService. I am assuming this is to
+        handle services calling each other with a self signed certificate.  Needs to be refactored.
+         */
         Client client = ClientBuilder.newBuilder()
                 .sslContext(ctx)
                 .hostnameVerifier(new HostnameVerifier(){

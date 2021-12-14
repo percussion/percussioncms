@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,4 +41,11 @@ public interface IPSCmsObjectMgrInternal extends IPSCmsObjectMgr
     * a properly configure system. 
     */
    Collection<IPSItemEntry> loadAllItemEntries();
+   /**
+    * Loads item for given Id from the repository. This is typically used by item cache,
+    * it should not be called for any other usage.
+    *
+    * @return item, if found in repository.
+    */
+   IPSItemEntry loadItemEntry(Integer id);
 }

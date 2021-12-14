@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,7 +44,7 @@ public class PSJexlBindings
    /**
     * The bindings that are being transformed with new IDs.
     */
-   private List<PSJexlBinding> m_bindings = new ArrayList<PSJexlBinding>();
+   private List<PSJexlBinding> m_bindings = new ArrayList<>();
 
    /**
     * hold a cloned copy of all the bindings. This list is useful when replacing
@@ -149,7 +149,7 @@ public class PSJexlBindings
     */
    protected PSJexlBindings clone()
    {
-      List<PSJexlBinding> bindings = new ArrayList<PSJexlBinding>(getBindings()
+      List<PSJexlBinding> bindings = new ArrayList<>(getBindings()
             .size());
       Iterator<PSJexlBinding> it = getBindings().iterator();
       while (it.hasNext())

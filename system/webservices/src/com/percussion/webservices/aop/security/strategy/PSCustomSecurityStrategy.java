@@ -17,22 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.aop.security.strategy;
 
 
-
 import com.percussion.services.security.PSPermissions;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.PSErrorsException;
+import org.aopalliance.intercept.MethodInvocation;
 
 import java.util.Collection;
-
-import org.aopalliance.intercept.MethodInvocation;
 
 /**
  * A basic strategy with some default behaviors, allows definition of custom

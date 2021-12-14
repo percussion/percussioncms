@@ -17,15 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.itemmanagement.service;
-
-import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
-import static java.util.Arrays.asList;
 
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSAssetWidgetRelationship;
@@ -40,21 +37,24 @@ import com.percussion.itemmanagement.data.PSItemUserInfo;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService.PSItemWorkflowServiceException;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pathmanagement.data.PSItemByWfStateRequest;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
-
 import org.apache.commons.lang.StringUtils;
 
+import javax.security.auth.login.LoginException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.security.auth.login.LoginException;
+import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
+import static java.util.Arrays.asList;
 
 public class PSItemWorkflowServiceTest extends PSItemWorkflowServiceTestBase
 {
@@ -120,8 +120,7 @@ public class PSItemWorkflowServiceTest extends PSItemWorkflowServiceTestBase
         checkinPageWithOutOfSyncRelationship(pageId, localAssetId1);
     }
     
-    private void checkinPageWithOutOfSyncRelationship(String pageId, String localAssetId)
-    {
+    private void checkinPageWithOutOfSyncRelationship(String pageId, String localAssetId) throws PSItemWorkflowServiceException {
         validateRevisions(pageId, localAssetId, 1, 1);
         validateLocalAssetRelationship(localAssetId, 1, pageId);
         
@@ -718,8 +717,7 @@ public class PSItemWorkflowServiceTest extends PSItemWorkflowServiceTestBase
         assertFalse(workflowHelper.isAsset(templateId));
     }
     
-    public void testTransitionRelatedNavigationItem() throws LoginException
-    {
+    public void testTransitionRelatedNavigationItem() throws LoginException, IPSPageService.PSPageException, PSValidationException {
         securityWs.login("admin1", "demo", "Enterprise_Investments", null);
         
         PSPage homePage = fixture.getPageService().findPageByPath(fixture.site1.getFolderPath() + "/index.html");

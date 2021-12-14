@@ -17,16 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
-import com.percussion.share.dao.PSSerializerUtils;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -41,6 +51,7 @@ import java.io.InputStream;
  */
 public abstract class PSXmlFileDataRepository<T, ITEM> extends PSFileDataRepository<T>
 {
+    protected static Logger log = LogManager.getLogger(PSXmlFileDataRepository.class);
 
     private Class<ITEM> type;
     
@@ -65,11 +76,28 @@ public abstract class PSXmlFileDataRepository<T, ITEM> extends PSFileDataReposit
      * @throws PSXmlFileDataRepositoryException Failure to load the XML file because its invalid.
      */
     protected ITEM fileToObject(PSFileDataRepository.PSFileEntry fileEntry) throws IOException, PSXmlFileDataRepositoryException {
+
+
+
         InputStream data = fileEntry.getInputStream();
         ITEM object;
         try
         {
-            object = PSSerializerUtils.unmarshalWithValidation(data, type);
+            //Remove the BOM if it is present so it doesn't break serialization.
+            Path p = Paths.get(fileEntry.getFileName());
+            if(isContainBOM(p)){
+                removeBom(p);
+            }
+
+            String text = new BufferedReader(
+                    new InputStreamReader(data))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
+
+            object = PSSerializerUtils.unmarshal(text.trim(), type);
+            if(object == null){
+                log.debug("Unable to process XML {}",data);
+            }
         }
         catch (Exception e)
         {
@@ -84,7 +112,7 @@ public abstract class PSXmlFileDataRepository<T, ITEM> extends PSFileDataReposit
      * @author adamgent
      *
      */
-    public static class PSXmlFileDataRepositoryException extends RuntimeException
+    public static class PSXmlFileDataRepositoryException extends Exception
     {
 
         private static final long serialVersionUID = 1L;
@@ -104,6 +132,60 @@ public abstract class PSXmlFileDataRepository<T, ITEM> extends PSFileDataReposit
             super(cause);
         }
 
+    }
+
+    private static void removeBom(Path path) throws IOException {
+
+        if (isContainBOM(path)) {
+
+            byte[] bytes = Files.readAllBytes(path);
+
+            ByteBuffer bb = ByteBuffer.wrap(bytes);
+
+            log.debug("Found BOM!");
+
+            byte[] bom = new byte[3];
+            // get the first 3 bytes
+            bb.get(bom, 0, bom.length);
+
+            // remaining
+            byte[] contentAfterFirst3Bytes = new byte[bytes.length - 3];
+            bb.get(contentAfterFirst3Bytes, 0, contentAfterFirst3Bytes.length);
+
+            log.debug("Remove the first 3 bytes, and overwrite the file!");
+
+            // override the same path
+            Files.write(path, contentAfterFirst3Bytes);
+
+        } else {
+            log.debug("This file doesn't contains UTF-8 BOM!");
+        }
+
+    }
+
+    private static boolean isContainBOM(Path path) throws IOException {
+
+        if (Files.notExists(path)) {
+            throw new IllegalArgumentException("Path: " + path + " does not exists!");
+        }
+
+        boolean result = false;
+
+        byte[] bom = new byte[3];
+        try (InputStream is = new FileInputStream(path.toFile())) {
+
+            // read 3 bytes of a file.
+            is.read(bom);
+
+            // BOM encoded as ef bb bf
+            String content = new String(Hex.encodeHex(bom));
+            if ("efbbbf".equalsIgnoreCase(content)) {
+                result = true;
+            }
+
+        }
+
+        return result;
     }
 
 }

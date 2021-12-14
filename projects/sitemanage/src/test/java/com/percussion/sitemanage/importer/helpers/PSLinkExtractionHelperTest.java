@@ -17,44 +17,48 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.importer.helpers;
 
-import static org.junit.Assert.*;
-import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
-import static com.percussion.share.dao.PSFolderPathUtils.pathSeparator;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.PAGE_CATALOG;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
-
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.service.IPSPageCatalogService;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
+import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSConnectivity;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
+import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.PSLink;
 import com.percussion.sitemanage.importer.PSSiteImportLogger;
-import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
+import com.percussion.sitemanage.importer.helpers.PSLinkExtractionHelperTest.TestablePSLinkExtractionHelper.PSLinkExtractionTestConnectivity;
 import com.percussion.sitemanage.importer.helpers.impl.PSLinkExtractionHelper;
 import com.percussion.sitemanage.importer.theme.PSURLConverter;
 import com.percussion.sitemanage.importer.utils.PSLinkExtractor;
-import com.percussion.sitemanage.importer.helpers.PSLinkExtractionHelperTest.TestablePSLinkExtractionHelper.PSLinkExtractionTestConnectivity;
 import com.percussion.theme.service.IPSThemeService;
-
-import java.io.IOException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.IOException;
+
+import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
+import static com.percussion.share.dao.PSFolderPathUtils.pathSeparator;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.PAGE_CATALOG;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class PSLinkExtractionHelperTest {
 
@@ -213,7 +217,7 @@ public class PSLinkExtractionHelperTest {
     }
 
     @Ignore("Test relied on broken error handling that has been fixed")
-    public void testFileUpload() {
+    public void testFileUpload() throws PSSiteImportException, IPSGenericDao.SaveException {
         PSLinkExtractionHelper linkExtractionHelper = new TestablePSLinkExtractionHelper(
                 null, null, null, null, null);
         // IOException catalog files - Document is null - Mock throws an
@@ -229,7 +233,7 @@ public class PSLinkExtractionHelperTest {
     }
 
     @Ignore("Awkward Coupling")
-    public void testStandardPath() {
+    public void testStandardPath() throws PSSiteImportException, IPSGenericDao.SaveException {
         PSLinkExtractionHelper linkExtractionHelper = new TestablePSLinkExtractionHelper(
                 null, null, null, null, null);
         PSLinkExtractionTestConnectivity testConn = (PSLinkExtractionTestConnectivity) ((TestablePSLinkExtractionHelper) linkExtractionHelper)

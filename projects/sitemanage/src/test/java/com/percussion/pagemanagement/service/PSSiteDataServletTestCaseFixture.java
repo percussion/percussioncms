@@ -17,32 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service;
 
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.startsWith;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSAssetService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.impl.PSTemplateDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
@@ -51,6 +34,7 @@ import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestDataCleaner;
 import com.percussion.sitemanage.data.PSSite;
@@ -64,6 +48,21 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.security.IPSSecurityWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.startsWith;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 public class PSSiteDataServletTestCaseFixture
 {
@@ -168,7 +167,8 @@ public class PSSiteDataServletTestCaseFixture
 	        
 	        return siteSummary;
     	} catch(Exception e) {
-    		e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
     	}
     	
     	return null;
@@ -201,7 +201,7 @@ public class PSSiteDataServletTestCaseFixture
         return getSiteTemplateService().save(siteTemplates).get(0);
     }
     
-    public PSPage createPage(PSPage page) {
+    public PSPage createPage(PSPage page) throws PSDataServiceException {
         String fullPath = page.getFolderPath() + "/" + page.getName();
         pageCleaner.add(fullPath);
         return getPageService().save(page);
@@ -215,8 +215,7 @@ public class PSSiteDataServletTestCaseFixture
      * 
      * @return the created page, never null.
      */
-    public PSPage createPage(String name)
-    {
+    public PSPage createPage(String name) throws PSDataServiceException {
         notEmpty(name);
         PSPage page = new PSPage();
         page.setFolderPath(site1.getFolderPath());
@@ -236,7 +235,7 @@ public class PSSiteDataServletTestCaseFixture
         return createTemplateWithSite(templateName, site1.getId());
     }
     
-    public PSAsset saveAsset(PSAsset asset) {
+    public PSAsset saveAsset(PSAsset asset) throws PSDataServiceException {
         asset = getAssetService().save(asset);
         assetCleaner.add(asset.getId());
         return asset;
@@ -486,7 +485,7 @@ public class PSSiteDataServletTestCaseFixture
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteDataServletTestCaseFixture.class);
+    private static final Logger log = LogManager.getLogger(PSSiteDataServletTestCaseFixture.class);
     
 
 }

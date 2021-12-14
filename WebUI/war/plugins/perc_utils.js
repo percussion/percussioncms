@@ -18,7 +18,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,13 +34,14 @@
     document.onclick = function() {
         $.each($.globalEventIds, function(k, v) {
                 if($(k).hasClass('perc-visible')) {
-                    $(v).click();
+                    $(v).trigger("click");
                 }
             }
-        )};
+        );};
 
     $.ajaxSetup( { cache: false } );
     $.Percussion = $.Percussion || {};
+
 
     $.perc_fakes = {
         path_service: false,
@@ -56,19 +57,6 @@
         }
     };
 
-//gives feedback on focus - not complete, but useful for debugging.
-    /*
-    setInterval( function() {
-                    $("a,input,button,textarea")
-                          .unbind('.focus')
-                          .bind( 'focus.focus', function(){
-                                     $(this).css({ border: 'thin dashed grey' } );
-                                        } )
-                       .bind( 'blur.focus', function(){
-                              $(this).css({border: 'none'});
-                              });
-    }, 500 );
-    */
 
     $.perc_utils = {
         id : id,
@@ -133,7 +121,7 @@
             var idArray = id.split("-");
             return idArray[idArray.length - 1];
         } else {
-            console.warn("Cannot get contentId from given Asset.")
+            console.warn("Cannot get contentId from given Asset.");
             return false;
         }
     }
@@ -161,7 +149,7 @@
         while (pathConstant.length > 0)
         {
             value = $.perc_displayformats[pathConstant.join("/")];
-            if (value != undefined)
+            if (value !== undefined)
             {
                 return value;
             }
@@ -177,7 +165,7 @@
      * @param {Object} message the message that needs to be logged must be a valid string if not no logging happens.
      */
     function logToServer(type, category, message){
-        if(!($.type( type ) === "string")){
+        if(($.type( type ) !== "string")){
             return;
         }
         //Log client side
@@ -238,8 +226,7 @@
         var showMandatoryFieldAlertPopUp=false;
         frame.contents().find("#perc-content-form").find('label').each(function(){
             if($(this).hasClass("perc-required-field")){
-                if($(this).siblings('input').val()==''){
-                    //dosubmit = false;
+                if($(this).siblings('input').val()===''){
                     showMandatoryFieldAlertPopUp=true;
                 }
             }
@@ -254,7 +241,7 @@
                     .append(
                         $('<p></p>')
                     )
-            )
+            );
 
             dialogMarkup.find('p').html(I18N.message("perc.ui.utils@Please fill all required fields"));
             var dialogButtons = {
@@ -292,11 +279,14 @@
      *  @param dateTime (string) the string with the original UTC format
      *  @return the created date from the transformed string.
      */
-    function parseUTCintoDate (dateTime)
-    {
-        var dateTimeString = dateTime.replace(/(\d\d)-(\d\d)-(\d\d)/, "$1/$2/$3").replace(/([+-]\d\d):(\d\d)/, "$1$2").replace(/\.\d\d\d/, "").replace("T"," ");
-        var dateObject = new Date(dateTimeString);
-        return dateObject;
+    function parseUTCintoDate (dateTime) {
+        if (typeof dateTime !== "undefined") {
+            var dateTimeString = dateTime.replace(/(\d\d)-(\d\d)-(\d\d)/, "$1/$2/$3").replace(/([+-]\d\d):(\d\d)/, "$1$2").replace(/\.\d\d\d/, "").replace("T", " ");
+            return new Date(dateTimeString);
+        }else{
+            return dateTime;
+        }
+
     }
 
     /**
@@ -330,7 +320,7 @@
         if(typeof(cxfarray) === 'undefined')
             return [];
 
-        if(!$.isArray(cxfarray))
+        if(!Array.isArray(cxfarray))
             return [cxfarray];
 
         return cxfarray;
@@ -344,7 +334,7 @@
      * @return true if the str is undefined or null or not string type or the length of it is < 1. Otherwise false.
      */
     function isBlankString(str){
-        return !str || str === null || 'string' !== typeof str || $.trim(str).length < 1 || "undefined" === typeof str;
+        return !str || str === null || 'string' !== typeof str || str.trim().length < 1 || "undefined" === typeof str;
     }
 
     function elem( needle, haystack ){
@@ -353,14 +343,14 @@
     }
 
     function select( label, name, id ) {
-        return "<label for='"+id+"'>" + label + "</label><br/>"
-            + "<select name='"+name+"' id='"+id+"' ></select><br/>";
+        return "<label for='"+id+"'>" + label + "</label><br/>" +
+            "<select name='"+name+"' id='"+id+"' ></select><br/>";
     }
 
     function input( label, name, id, tabindex, type ) {
         type = type || "text";
-        return "<label for='"+id+"'>" + label + "</label><br/>"
-            + "<input type='"+type+"' name='"+name+"' id='"+id+"' ></input><br/>";
+        return "<label for='"+id+"'>" + label + "</label><br/>" +
+            "<input type='"+type+"' name='"+name+"' id='"+id+"' /><br/>";
     }
 
     function extract_path( path ) {
@@ -374,7 +364,6 @@
         return $.map( path, function(x)
         {
             return x;
-            //return x.replace(/[^a-zA-Z0-9\/]/g, '_');
         }).join('-');
     }
 
@@ -391,11 +380,11 @@
         if(options.id)    {
             uiDialog.attr('id', options.id);
         }
-        // Fix for CML-3917.  Forces window to resize twice which apparently fixes the problem.
-        $(window).trigger("resize").trigger("resize");
+
+        $(window).show();
 
         return dlgContent;
-    }
+    };
 
     function initializeShowAgainCheck(event, ui){
         var showCheck =  $("<div/>")
@@ -549,7 +538,7 @@
                     click: function() {settings.dontSaveCallback(); dialog.dialog( "close" ); dialog.remove();},
                     id: "perc-confirm-generic-continue"
                 }
-            }
+            };
         }
         else if (settings.type === "CANCEL_CONTINUE")
         {
@@ -562,7 +551,7 @@
                     click: genericCancel,
                     id: "perc-confirm-generic-cancel"
                 }
-            }
+            };
         }
         else if (settings.type === "CANCEL_START")
         {
@@ -575,7 +564,7 @@
                     click: genericCancel,
                     id: "perc-confirm-generic-cancel"
                 }
-            }
+            };
         }
         else
         {
@@ -761,10 +750,11 @@
 
     $.fn.perc_button = function( ) {
         this.addClass("ui-state-default ui-corner-all")
-            .hover(function(){
-                    if( ! $(this).hasClass("ui-state-disabled") )
-                        $(this).addClass("ui-state-hover");
-                },
+            .on("mouseenter",function(){
+                if( ! $(this).hasClass("ui-state-disabled") )
+                    $(this).addClass("ui-state-hover");
+            })
+            .on("mouseleave",
                 function(){
                     $(this).removeClass("ui-state-hover");
                 } );
@@ -803,7 +793,7 @@
      * @param {id} - The id of the icon to return
      */
     function choose_icon( type, icon , id) {
-        var returnIcon = new Object();
+        var returnIcon = {};
         var type_icons = {
             'site': '/cm/images/images/iconWebsite.gif',
             'Folder' : '/cm/images/images/iconFolder.gif',
@@ -864,17 +854,11 @@
             //TODO: Need to map calls to this to make sure they are setting alt/title/role
             debug("Accessibility Check: Verify that " + icon + " has accessible attributes set");
             debug("i18n Check: Verify that " + icon + " has i18n strings set");
-
-            /*returnIcon.src=icon;
-            returnIcon.alt=I18N.message("perc.ui.images@FolderIconAlt");
-            returnIcon.title=I18N.message("perc.ui.images@FolderIconTitle");
-            returnIcon.decorative=true;
-            return returnIcon;*/
         }
 
         if( type && type_icons[ type ] ){
 
-            if(type=="site"){
+            if(type==="site"){
                 returnIcon.src='/cm/images/images/iconWebsite.gif';
                 returnIcon.alt=I18N.message("perc.ui.images@SiteIconAlt");
                 returnIcon.title=I18N.message("perc.ui.images@SiteIconTitle");
@@ -882,7 +866,7 @@
                 return returnIcon;
             }
 
-            if( type=="percPage" ){
+            if( type==="percPage" ){
                 returnIcon.src =  '/cm/images/images/iconPage.gif';
                 returnIcon.alt=I18N.message("perc.ui.images@PageIconAlt");
                 returnIcon.title=I18N.message("perc.ui.images@PageIconTitle");
@@ -979,24 +963,24 @@
      */
     $.fn.percWidLibMaximizer = function (P)    {
         var baseEle = "#perc-layout-menu";
-        if($j("#tabs-3").length)    {
+        if($("#tabs-3").length)    {
             baseEle = "#tabs-3 #perc-layout-menu";
         }
 
-        if($j(baseEle).parent().find(".perc-template-container").hasClass("perc-visible")) {
-            $j(baseEle).parent().find(".perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
-            $j(baseEle).parent().find("#perc-wid-lib-expander").removeClass("perc-whitebg");
-            $j(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a id="perc-wid-lib-maximizer" style="float: left;" href="#"></a>');
+        if($(baseEle).parent().find(".perc-template-container").hasClass("perc-visible")) {
+            $(baseEle).parent().find(".perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
+            $(baseEle).parent().find("#perc-wid-lib-expander").removeClass("perc-whitebg");
+            $(baseEle).parent().find("#perc-wid-lib-minimizer").replaceWith('<a id="perc-wid-lib-maximizer" style="float: left;" href="#"></a>');
         } else {
-            var regionLibContainer   = $j(baseEle).parent().find(".perc-region-library-container");
+            var regionLibContainer   = $(baseEle).parent().find(".perc-region-library-container");
             // if region tray is visible, toggle it (close it) so that only the widget tray is shown
             if(regionLibContainer.hasClass("perc-visible")) {
                 $.fn.percRegionLibraryMaximizer(P);
             }
 
-            $j(baseEle).parent().find(".perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
-            $j(baseEle).parent().find("#perc-wid-lib-expander").addClass("perc-whitebg");
-            $j(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a id="perc-wid-lib-minimizer" style="float: left;" href="#"></a>');
+            $(baseEle).parent().find(".perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
+            $(baseEle).parent().find("#perc-wid-lib-expander").addClass("perc-whitebg");
+            $(baseEle).parent().find("#perc-wid-lib-maximizer").replaceWith('<a id="perc-wid-lib-minimizer" style="float: left;" href="#"></a>');
         }
 
         // fix the height of the iframe based on the height of the top part
@@ -1011,16 +995,16 @@
      */
     $.fn.percRegionLibraryMaximizer = function (P)    {
         var baseEle = "#perc-layout-menu";
-        if($j("#tabs-3").length)    {
+        if($("#tabs-3").length)    {
             baseEle = "#tabs-3 #perc-layout-menu";
         }
 
-        var parent = $j(baseEle).parent();
-        var regionLibraryContainer = $j(parent.find(".perc-region-library-container"));
-        var templateContainer      = $j(baseEle).parent().find(".perc-template-container");
-        var regionLibraryExpander  = $j(parent.find("#perc-region-library-expander" ));
-        var regionLibraryMaximizer = $j(parent.find("#perc-region-library-maximizer"));
-        var regionLibraryMinimizer = $j(parent.find("#perc-region-library-minimizer"));
+        var parent = $(baseEle).parent();
+        var regionLibraryContainer = $(parent.find(".perc-region-library-container"));
+        var templateContainer      = $(baseEle).parent().find(".perc-template-container");
+        var regionLibraryExpander  = $(parent.find("#perc-region-library-expander" ));
+        var regionLibraryMaximizer = $(parent.find("#perc-region-library-maximizer"));
+        var regionLibraryMinimizer = $(parent.find("#perc-region-library-minimizer"));
 
         if( regionLibraryContainer.hasClass("perc-visible")) {
             regionLibraryContainer.removeClass("perc-visible").addClass("perc-hidden");
@@ -1049,11 +1033,11 @@
      */
     $.fn.percOrphanAssetsMaximizer = function (P) {
         var baseEle = "#perc-layout-menu";
-        if($j("#tabs-2").length)    {
+        if($("#tabs-2").length)    {
             baseEle = "#tabs-2 #perc-content-menu";
         }
 
-        var parent = $j(baseEle).parent();
+        var parent = $(baseEle).parent();
         var orphanAssetsContainer = parent.find("#perc_asset_library");
         var orphanAssetsExpander  = parent.find("#perc_orphan_assets_expander" );
 
@@ -1079,7 +1063,7 @@
     function click_and_double_click( elem, single, dbl ){
         var clicked = false;
         var interval = 500; //milliseconds
-        elem.click( function() {
+        elem.on("click", function() {
             if( clicked ) {
                 //Double click - ignore the click event.
             } else {
@@ -1089,7 +1073,9 @@
                 single();
             }
         });
-        elem.dblclick( dbl );
+        elem.on("dblclick", function(e){
+            dbl(e);
+        } );
     }
     $.fn.perc_toggle = function( d )    {
         if($(d).length && $(d).hasClass('perc-hidden'))    {
@@ -1105,34 +1091,16 @@
     };
     $.fn.perc_toggle_padding = function(  )    {
         var args = $.fn.perc_toggle_padding.arguments;
-        for(var i = 0 ; i < args.length ; i ++ )    {
-            if($(args[i]).length && $(args[i]).hasClass('perc-nopadding'))    {
-                $(args[i]).removeClass('perc-nopadding');
+        for(let i of args )    {
+            if(i.length && i.hasClass('perc-nopadding'))  {
+                i.removeClass('perc-nopadding');
             }
             else    {
-                $(args[i]).addClass('perc-nopadding');
+                i.addClass('perc-nopadding');
             }
         }
         return this;
     };
-
-
-
-    var tot = 0;
-
-    /*
-    var recursive_test_schema;
-    recursive_test_schema = {'a': '$', 'rts': [function(){ return recursive_test_schema; }]};
-    rts_schema = { 'Top': recursive_test_schema };
-
-    rts_json = {'a': 'x', 'rts': [{'a': 'y', 'rts': [{'a': 'z', 'rts': []}]}]};
-
-    // rexml( rts_schema, rts_json ) = <Top><a>x</a><rts><rt><a>y</a>....</Top>
-
-    option_schema = { 'Top': [function(tag) { if(tag == 'a'){ return {'b':'$'} } else { return {'d':'$'} } }] };
-
-    option_xml = "<Top><a><b>foo</b></a><c><d>bar</d></c><a><b>foo2</b></a></Top>";
-    */
 
     function addAutoScroll(){
         $("#frame").percAutoScroll({
@@ -1146,7 +1114,7 @@
                 if (!$(this).hasClass("ui-layout-ignore"))
                     $(this).css("top", $(this).position().top - movedY);
             });
-        }
+        };
     }
 
     function removeAutoScroll(){
@@ -1155,13 +1123,13 @@
 
 
     function unxml ( schema, data ) {
-        if( $.isFunction( schema ) ) {
+        if( typeof schema === "function" ) {
             schema = schema(data.get(0).tagName);
         }
         if( schema.valueOf() === '$' ) {
             return data.text();
         }
-        if( $.isArray( schema ) ) {
+        if( Array.isArray( schema ) ) {
             var ret = [];
             var child_schema = schema[0];
             var children = data.children();
@@ -1169,7 +1137,7 @@
             if(children.length === 0 && child_schema === '$')
             {
                 var len = data.length;
-                for(i = 0; i < len; i++)
+                for(let i = 0; i < len; i++)
                 {
                     ret.unshift($(data[i]).text());
                 }
@@ -1185,19 +1153,19 @@
 
             return ret;
         }
-        var ret = {};
+        var ret1 = {};
         $.each( schema, function( name ) {
             var tagNames = [];
             var matches =data.children().filter( function() {
                 tagNames.push( this.tagName );
                 return this.tagName.toLowerCase() === name.toLowerCase(); } );
             if( matches.length ) {
-                ret[ name ] = unxml( this, matches );
+                ret1[ name ] = unxml( this, matches );
             } else {
                 debug( I18N.message("perc.ui.utils@Expected To Find") + name + I18N.message("perc.ui.utils@Tags Found") + tagNames );
             }
         });
-        return ret;
+        return ret1;
     }
 
     function rexml( schema, pageObj ) {
@@ -1205,7 +1173,7 @@
     }
 
     function _rexml( schema, pageObj, elemName ) {
-        if( $.isFunction( schema ) ) {
+        if( typeof schema === "function") {
             schema = schema(pageObj._tagName);
         }
         if( schema.valueOf() === '$' ) {
@@ -1218,7 +1186,7 @@
                 else
                     return pageObj;
             }
-        } else if( $.isArray( schema ) ) {
+        } else if( Array.isArray( schema ) ) {
             var ret = "";
             if(schema.length === 1 && schema[0] === "$")
             {
@@ -1227,7 +1195,7 @@
                 {
                     ret += "<" + elemName + ">" + pageObj[i] + "</" + elemName + ">" ;
                 }
-            } else if( $.isArray( pageObj ) ) {
+            } else if( Array.isArray( pageObj ) ) {
                 $.each( pageObj, function() {
                     ret += "<" + this._tagName + ">" + _rexml( schema[0], this, this.tagName ) + "</" + this._tagName + ">" ;
                 } );
@@ -1237,18 +1205,18 @@
             return ret;
         } else {
             //Object
-            var ret = "";
+            var ret2 = "";
             $.each( schema, function(name) {
                 if( name in pageObj ) {
-                    var isStringArray = $.isArray(schema[name]) && schema[name].length === 1 && (schema[name])[0] === "$";
-                    if(!isStringArray) ret += "<" + name + ">";
-                    ret += _rexml( schema[ name ], pageObj[ name ], name );
-                    if(!isStringArray) ret += "</" + name + ">";
+                    var isStringArray = Array.isArray(schema[name]) && schema[name].length === 1 && (schema[name])[0] === "$";
+                    if(!isStringArray) ret2 += "<" + name + ">";
+                    ret2 += _rexml( schema[ name ], pageObj[ name ], name );
+                    if(!isStringArray) ret2 += "</" + name + ">";
                 } else {
                     debug("Can't find " + name + " in %o", pageObj);
                 }
             } );
-            return ret;
+            return ret2;
         }
     }
 
@@ -1332,14 +1300,7 @@
     {
         if( window.console && console && console.log)
         {
-            if( $.browser.msie )
-            {
-                console.log( arg );
-            }
-            else
-            {
-                console.log.apply( console, arguments );
-            }
+            console.log.apply( console, arguments );
         }
     }
 
@@ -1436,37 +1397,9 @@
             // Remove target
             $(this).removeAttr("target");
             // Deactivate the link by replacing its href value
-            $(this).attr("href", "javascript:void(0)");
-
-            /*
-            // For future use to handle the click ourselves, maybe
-            // Maybe checking for ctrl-click and then folowing
-            // the link. Notice we add the url into the event
-            // binding as extra data so that we retain the original href value
-            // and are able to use it in the events callback function.
-            // It is accessed as evt.data.url.
-            $(this).bind("click", {url: url}, function(evt){
-
-            });
-            */
-
+            $(this).attr("href", "javascript:void(0);");
         });
-        //Fix for YouTube iFrame Overlay and Z-Index Issues for IE
-        //CM-8286 -- Videos in Rich Text are placed over popup windows in Editor on IE
-        if($.browser.msie){
-            frame.contents().find("iframe").each(function(){
-                var ifr_source = $(this).attr('src');
-                if(ifr_source.length > 0){
-                    var wmode = "wmode=transparent";
-                    if(ifr_source.indexOf('?') != -1){
-                        $(this).attr('src',ifr_source+'&'+wmode);
-                    }
-                    else{
-                        $(this).attr('src',ifr_source+'?'+wmode);
-                    }
-                }
-            });
-        }
+
     }
 
 
@@ -1476,7 +1409,7 @@
      * @param list {array} The list of items to sort, may be modified.
      */
     function sortCaseInsensitive(list) {
-        if ($.isArray(list))
+        if (Array.isArray(list))
         {
             list.sort(function(x,y){
                 var a = String(x).toUpperCase();
@@ -1494,6 +1427,14 @@
      * Formats a date object into a time string h:mm AM
      */
     function formatTimeFromDate(date, showsecs) {
+
+        if(typeof date === "undefined"){
+            return "";
+            console.trace("undefined date passed to frmateTimeFromDate.");
+        }else if(typeof date === "string"){
+            date = new Date(date);
+        }
+
 
         var formattedTime;
         var hours      = date.getHours();
@@ -1515,7 +1456,7 @@
     }
     function max(array) {
         var mx = -1;
-        for(a=0; a<array.length; a++) {
+        for(let a=0; a<array.length; a++) {
             if(mx < array[a])
                 mx = array[a];
         }
@@ -1549,13 +1490,13 @@
     $.percHideBodyScrollbars = function() {
         $("body")
             .css("overflow","hidden");
-    }
+    };
 
     $.percShowBodyScrollbars = function() {
         $("body")
             .css("position","")
             .css("overflow","");
-    }
+    };
 
     /**
      * Makes the folder editable, by finding the new folder node and simulating
@@ -1563,13 +1504,13 @@
      */
     function makeFolderEditable(pathItem){
         // Add the JEditable plugin to folders for rename functionality
-        var listing = $('#perc-finder-listing-' + pathItem.id)
+        var listing = $('#perc-finder-listing-' + pathItem.id);
         var $itemName = listing.children('.perc-finder-item-name');
         var pageItemType = pathItem.type;
 
         $itemName.editable(
             function(value, settings){
-                value = $.trim(value);
+                value = value.trim();
                 value = $.perc_textFilters.WINDOWS_FILE_NAME(value);
 
                 // only replace spaces with dashes if we are not renaming fsfolders
@@ -1582,16 +1523,16 @@
                 var oldName = $nameEl.parent().attr('title');
                 if(value.length === 0)
                     return oldName;
-                if(value != oldName)
+                if(value !== oldName)
                 {
                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
                     $.PercPathService.renameFolder(
-                        pathItem['path'],
+                        pathItem.path,
                         value,
                         function(status, result, code){
                             if(status === $.PercServiceUtils.STATUS_SUCCESS)
                             {
-                                var pth = $.perc_finder().lastClickPath
+                                var pth = $.perc_finder().lastClickPath;
                                 if($.perc_finder().lastClickPath === null ||  typeof $.perc_finder().lastClickPath === "undefined")
                                 {
                                     pth = result.PathItem.path.split("/");
@@ -1606,8 +1547,8 @@
                                 $nameEl.text(oldName); // Reset back to old name
                                 $.unblockUI();
                                 var errorMsg = "";
-                                if (code === "renameFolderItem.reservedName" || code === "renameFolderItem.longName"
-                                    || code === "renameFolderItem.invalidCharInName")
+                                if (code === "renameFolderItem.reservedName" || code === "renameFolderItem.longName" ||
+                                    code === "renameFolderItem.invalidCharInName")
                                 {
                                     errorMsg = result.replace("<old_name>", oldName).replace("<new_name>", value);
                                 }
@@ -1641,7 +1582,7 @@
                 onblur: "submit",
                 fieldid: 'perc_finder_inline_field_edit',
                 onedit: function(settings){
-                    $("#perc_finder_inline_field_edit").blur();
+                    $("#perc_finder_inline_field_edit").trigger("blur");
                 },
                 data: function(value, settings){
                     return $(this).parent().attr('title');
@@ -1662,7 +1603,7 @@
      */
     function contains(enumVals, val) {
         var vals = enumVals.entries;
-        if (!$.isArray(vals))
+        if (!Array.isArray(vals))
         {
             var tempArray = [];
             tempArray.push(vals);
@@ -1713,14 +1654,7 @@
             return false;
         }
 
-        if(path[1] === 'Design')
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (path[1] === 'Design');
     }
 
 

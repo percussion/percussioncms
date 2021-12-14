@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,16 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.utils.security;
 
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import com.percussion.security.PSEncryptor;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,15 +38,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author erikserating
  *
  */
+@SuppressFBWarnings({"HARD_CODE_PASSWORD", "HARD_CODE_PASSWORD", "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN", "PATH_TRAVERSAL_IN"})
 public class PSSecurePropertyTest
 {
 
@@ -94,9 +95,9 @@ public class PSSecurePropertyTest
    @Test
    public void testGetClouded() throws Exception
    {
-      
-      String enc1 = PSSecureProperty.getClouded(pass, null, DEFAULT_ENCRYPTION);
-      String enc2 = PSSecureProperty.getClouded(pass, salt, DEFAULT_ENCRYPTION);
+      String encStr = PSEncryptor.encryptString(tempFolder.getRoot().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),pass);
+      String enc1 = PSSecureProperty.getClouded(encStr);
+      String enc2 = PSSecureProperty.getClouded(encStr);
       String dec1 = PSSecureProperty.getValue(enc1, null);
       String dec2 = PSSecureProperty.getValue(enc2, salt);
       assertEquals(pass, dec1);
@@ -124,19 +125,7 @@ public class PSSecurePropertyTest
       assertTrue(strongEncoding);
       assertFalse(notEncodedValue);
    }
-   
-   @Ignore
-   public void testGetValueFromEncToStrongEnc() throws Exception
-   {
-      String decOldValue = PSSecureProperty.getValue(oldKey, null);
-      String encStrong = PSSecureProperty.getClouded(decOldValue, null, STRONG_ENCRYPTION);
-      String decNewValue = PSSecureProperty.getValue(encStrong, null);
-      
-      assertEquals(pass, decOldValue);
-      assertEquals(pass, decNewValue);
-      assertEquals(decNewValue, decOldValue);
-      assertEquals(true, encStrong.startsWith("ENC2("));
-   }
+
    
    @Test
    public void testsecureProperties() throws Exception
@@ -174,33 +163,21 @@ public class PSSecurePropertyTest
    {
       File file = new File(tempFolder.getRoot().getAbsolutePath() + File.separator+  filename);
 
-      OutputStream os = new FileOutputStream(file);
-      try
-      {
+      try (OutputStream os = new FileOutputStream(file)) {
          props.store(os, "");
       }
-      finally
-      {
-         if(os != null)
-            os.close();
-      }
+
    }
    
-   private Properties loadProps(String filename) throws Exception
-   {
-      File file = new File(tempFolder.getRoot().getAbsolutePath() + File.separator+  filename);
-      InputStream is = new FileInputStream(file);
-      try
-      {
+   private Properties loadProps(String filename) throws Exception {
+      File file = new File(tempFolder.getRoot().getAbsolutePath() + File.separator + filename);
+
+      try (InputStream is = new FileInputStream(file)) {
          Properties props = new Properties();
          props.load(is);
          return props;
       }
-      finally
-      {
-         if(is != null)
-            is.close(); 
-      }
+
    }
    
    private void copyProps(String source, String target) throws Exception

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,14 +41,20 @@ import com.percussion.util.PSCharSets;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * A content list.
@@ -60,7 +66,7 @@ public class PSContentListNode extends PSDesignNode
    /**
     * Log.
     */
-   public final static Log ms_log = LogFactory.getLog(PSContentListNode.class);
+   public static final Logger ms_log = LogManager.getLogger(PSContentListNode.class);
 
    /**
     * Utils.
@@ -75,7 +81,7 @@ public class PSContentListNode extends PSDesignNode
    /**
     * These params are skipped for the "extra" params field.
     */
-   public static Set<String> ms_omit_params = new HashSet<String>();
+   public static Set<String> ms_omit_params = new HashSet<>();
 
    /*
     * Initialize
@@ -126,7 +132,7 @@ public class PSContentListNode extends PSDesignNode
    /**
     * The url parameters to allow simpler manipulation.
     */
-   Map<String, String> m_urlParams = new HashMap<String, String>();
+   Map<String, String> m_urlParams = new HashMap<>();
 
    /**
     * The base portion of the url, without the parameters.
@@ -140,7 +146,7 @@ public class PSContentListNode extends PSDesignNode
     */
    public PSContentListNode(IPSContentList contentlist) {
       super(contentlist.getName(), contentlist.getGUID());
-      Map<String, String> props = new HashMap<String, String>();
+      Map<String, String> props = new HashMap<>();
       props.put("description", contentlist.getDescription());
       props.put("type", contentlist.getType().name());
       setProperties(props);
@@ -254,7 +260,7 @@ public class PSContentListNode extends PSDesignNode
       }
 
       // Store the old data
-      Map<String, String> pdata = new HashMap<String, String>();
+      Map<String, String> pdata = new HashMap<>();
       for (PSParameter i : params)
       {
          if (i.getValue() == null)
@@ -336,7 +342,7 @@ public class PSContentListNode extends PSDesignNode
          // Adjust the list of parameters
          if (m_currentGenParams == null)
          {
-            m_currentGenParams = new ArrayList<PSParameter>();
+            m_currentGenParams = new ArrayList<>();
          }
          m_currentGenParams = adjustParameters(m_generator, m_currentGenParams);
          m_resetGenParams = false;
@@ -372,7 +378,7 @@ public class PSContentListNode extends PSDesignNode
          // Adjust the list of parameters
          if (m_currentExpParams == null)
          {
-            m_currentExpParams = new ArrayList<PSParameter>();
+            m_currentExpParams = new ArrayList<>();
          }
          m_currentExpParams = adjustParameters(m_expander, m_currentExpParams);
          m_resetExpParams = false;
@@ -634,8 +640,7 @@ public class PSContentListNode extends PSDesignNode
     * 
     * @return the delivery types, never <code>null</code>.
     */
-   public List<SelectItem> getDeliveryTypes()
-   {
+   public List<SelectItem> getDeliveryTypes() throws PSNotFoundException {
       return getSelectionFromContainer(PSDeliveryTypeContainerNode.NODE_TITLE);
    }
 
@@ -730,8 +735,8 @@ public class PSContentListNode extends PSDesignNode
       m_expander = m_clist.getExpander();
       m_generator = m_clist.getGenerator();
 
-      m_currentExpParams = new ArrayList<PSParameter>();
-      m_currentGenParams = new ArrayList<PSParameter>();
+      m_currentExpParams = new ArrayList<>();
+      m_currentGenParams = new ArrayList<>();
       // Extract the current parameters
       if (StringUtils.isNotBlank(m_expander))
       {
@@ -822,7 +827,7 @@ public class PSContentListNode extends PSDesignNode
     */
    private Set<String> extractKeys(List<PSParameter> currentParams)
    {
-      Set<String> rval = new HashSet<String>();
+      Set<String> rval = new HashSet<>();
 
       for (PSParameter i : currentParams)
       {
@@ -838,8 +843,7 @@ public class PSContentListNode extends PSDesignNode
     * @return the outcome of the cancel action
     */
    @Override
-   public String cancel()
-   {
+   public String cancel() throws PSNotFoundException {
       String result = super.cancel();
       if (m_clist != null && ((PSContentList) m_clist).getVersion() == null)
       {
@@ -864,8 +868,7 @@ public class PSContentListNode extends PSDesignNode
    }
 
    @Override
-   public String copy()
-   {
+   public String copy() throws PSNotFoundException {
       IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
 
       IPSContentList original = getContentList();

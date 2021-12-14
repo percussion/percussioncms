@@ -17,17 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.impl;
-
-import static org.apache.commons.lang.StringUtils.removeEnd;
-import static org.apache.commons.lang.StringUtils.startsWith;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSItemFilter;
@@ -40,6 +34,7 @@ import com.percussion.services.publisher.IPSEditionTaskDef;
 import com.percussion.services.publisher.data.PSEditionContentList;
 import com.percussion.services.publisher.data.PSEditionContentListPK;
 import com.percussion.services.publisher.data.PSEditionType;
+import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.pubserver.PSPubServerDaoLocator;
 import com.percussion.services.pubserver.data.PSPubServer;
@@ -52,12 +47,17 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.publishing.IPSPublishingWs;
 import com.percussion.webservices.publishing.PSPublishingWsLocator;
+import org.apache.commons.lang.Validate;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.Validate;
+import static org.apache.commons.lang.StringUtils.removeEnd;
+import static org.apache.commons.lang.StringUtils.startsWith;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Helper methods used to create Editions and content lists for CM1 publishing servers.  So far only
@@ -126,7 +126,7 @@ public class PSSitePublishDaoHelper
 
    /**
     * Builds the expander params for the given Server. If the server is for
-    * publishing in xml format, or it is {@link PublishType Database type}, it
+    * publishing in xml format, or it is {@link IPSPubServer.PublishType Database type}, it
     * needs to give a different template for the expander.
     * 
     * @param pubServer the {@link PSPubServer}, not <code>null</code>.
@@ -136,7 +136,7 @@ public class PSSitePublishDaoHelper
    public static Map<String, String> getExpanderParams(PSPubServer pubServer)
    {
        Validate.notNull(pubServer);
-       Map<String, String> params = new HashMap<String, String>();
+       Map<String, String> params = new HashMap<>();
    
        if (pubServer.isXmlFormat())
        {
@@ -169,8 +169,6 @@ public class PSSitePublishDaoHelper
     * @param genParams The content list generator parameters.
     * @param filterId The id of the filter to be used with the content list,
     *            may not be <code>null</code>.
-    * @param deliveryType The delivery type of the new content list which determines how it will be published, may not
-    *            be blank.
     * @param isPublish determines if the content list is used for publishing or unpublishing. It is <code>true</code>
     *            if it is used for publishing.
     * @param pubServer The pubServer, may not be <code>null</code>.      
@@ -218,8 +216,7 @@ public class PSSitePublishDaoHelper
     * @return default pubserver corresponding to the supplied site.
     * @throws PSNotFoundException if the site is not found.
     */
-   public static PSPubServer getDefaultPubServer(IPSGuid siteId)
-   {
+   public static PSPubServer getDefaultPubServer(IPSGuid siteId) throws PSNotFoundException {
        Validate.notNull(siteId);
        PSPubServer defaultPubServer = null;
        
@@ -245,8 +242,7 @@ public class PSSitePublishDaoHelper
     * @return staging pubserver corresponding to the supplied site, may be <code>null</code> if it has not been created yet.
     * @throws PSNotFoundException if the site is not found.
     */
-   public static PSPubServer getStagingPubServer(IPSGuid siteId)
-   {
+   public static PSPubServer getStagingPubServer(IPSGuid siteId) throws PSNotFoundException {
        Validate.notNull(siteId);
        PSPubServer stagingPubServer = null;
        
@@ -276,7 +272,7 @@ public class PSSitePublishDaoHelper
        Validate.notNull(pubServer);
        Validate.notNull(filterId);
        String suffix = createSiteSuffix(site);
-       Map<String, String> incrementalParams = new HashMap<String, String>();
+       Map<String, String> incrementalParams = new HashMap<>();
        if(PSPubServer.STAGING.equalsIgnoreCase(pubServer.getServerType())){
           suffix += "STAGING";
           incrementalParams.put(INCREMENTAL_CHANGETYPE_PARAM_NAME, INCREMENTAL_CHANGETYPE_STAGED);
@@ -307,8 +303,7 @@ public class PSSitePublishDaoHelper
     */
    public static void createEdition(IPSSite site, String suffix, String description, PSEditionType type,
            Priority priority, IPSContentList[] cLists, PSPubServer pubServer, boolean isPublishServer,
-           boolean isDefaultServer) throws PSErrorException
-   {
+           boolean isDefaultServer) throws PSErrorException, PSNotFoundException {
        notNull(site, "site");
        notEmpty(suffix, "suffix");
        notEmpty(description, "description");
@@ -533,8 +528,7 @@ public class PSSitePublishDaoHelper
 
    private static final String PERC_STAGING_ITEM_FILTER_NAME = "perc_staging";
 
-   public static void createIncrementalEdition(IPSSite site, PSPubServer pubServer, boolean isDefaultServer)
-   {
+   public static void createIncrementalEdition(IPSSite site, PSPubServer pubServer, boolean isDefaultServer) throws PSNotFoundException {
        Validate.notNull(site);
        Validate.notNull(pubServer);
       

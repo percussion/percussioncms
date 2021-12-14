@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,22 +25,22 @@
 package com.percussion.rest.extensions;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @XmlRootElement(name = "ExtensionMethod")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(description = "Represents an Extension Method")
+@Schema(description = "Represents an Extension Method")
 public class ExtensionMethod {
 
-    @ApiModelProperty(name="name", value="name", notes="The name of the Extension Method")
+    @Schema(name="name", description="The name of the Extension Method")
     private String name;
-    @ApiModelProperty(name="description", value="description", notes="The description of the Extension method")
+    @Schema(name="description", description="The description of the Extension method")
     private String description = null;
-    @ApiModelProperty(name="parameters", value="parameters", notes="A list of ExtensionParamater objects holding the parameters required by the method")
+    @ArraySchema(schema = @Schema(implementation = ExtensionParameter.class))
     private List<ExtensionParameter> parameters;
 
     public ExtensionMethod(){}

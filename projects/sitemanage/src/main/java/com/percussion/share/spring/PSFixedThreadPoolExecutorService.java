@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.spring;
 
-import static org.apache.commons.lang.Validate.isTrue;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.apache.commons.lang.Validate.isTrue;
 
 /**
  * Wraps {@link Executors#newFixedThreadPool(int, java.util.concurrent.ThreadFactory)} as

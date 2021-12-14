@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,9 +25,11 @@
 package com.percussion.rest.itemfilter;
 
 import com.percussion.util.PSSiteManageBean;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PSSiteManageBean(value="restItemFilterResource")
+@Tag(name="Item Filters")
 public class ItemFilterResource {
 
     @Autowired

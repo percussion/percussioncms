@@ -17,29 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.importer.utils;
 
-import static org.apache.commons.io.FileUtils.copyURLToFile;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
-import com.percussion.HTTPClient.Log;
 import com.percussion.HTTPClient.URI;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
-import com.percussion.share.service.exception.PSExtractHTMLException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
-import com.percussion.sitemanage.importer.PSSiteImporter;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
+import com.percussion.sitemanage.importer.PSSiteImporter;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
 import com.percussion.sitemanage.importer.theme.PSAssetCreator;
-import com.percussion.sitemanage.importer.theme.PSFileDownloader;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.Validate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,8 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.Validate;
+import static org.apache.commons.io.FileUtils.copyURLToFile;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 public class PSFileDownLoadJobRunner implements Runnable
 {
@@ -60,7 +56,7 @@ public class PSFileDownLoadJobRunner implements Runnable
 
     private PSFileDownloadJob job;
 
-    private List<PSPair<Boolean, String>> results = new ArrayList<PSPair<Boolean, String>>();
+    private List<PSPair<Boolean, String>> results = new ArrayList<>();
 
     private boolean hasCompleted = false;
 
@@ -146,7 +142,7 @@ public class PSFileDownLoadJobRunner implements Runnable
      */
     public List<PSPair<Boolean, String>> downloadFile(String url, String destinationPath)
     {
-        List<PSPair<Boolean, String>> localResults = new ArrayList<PSPair<Boolean, String>>();
+        List<PSPair<Boolean, String>> localResults = new ArrayList<>();
         try
         {
             URI uri = new URI(url);
@@ -155,17 +151,17 @@ public class PSFileDownLoadJobRunner implements Runnable
             File file = new File(destinationPath);
 
             if (doesFileExist(file))
-                localResults.add(new PSPair<Boolean, String>(true, getWarningMessage(url, destinationPath)));
+                localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
 
             copyToFile(fileUrl, file);
 
-            localResults.add(new PSPair<Boolean, String>(true, getSucessMessage(url, destinationPath)));
+            localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
         }
         catch (Exception e)
         {
             Exception debug = e;
             File destFile = new File(destinationPath);
-            PSPair<Boolean, String> result = new PSPair<Boolean, String>(false, getErrorMessage(url, destFile.getName()));
+            PSPair<Boolean, String> result = new PSPair<>(false, getErrorMessage(url, destFile.getName()));
             localResults.add(result);
         }
         return localResults;
@@ -205,7 +201,7 @@ public class PSFileDownLoadJobRunner implements Runnable
     public List<PSPair<Boolean, String>> downloadCreateAsset(String url, String destinationPath)
     {
         PSPurgableTempFile tempImage = null;
-        List<PSPair<Boolean, String>> localResults = new ArrayList<PSPair<Boolean, String>>();
+        List<PSPair<Boolean, String>> localResults = new ArrayList<>();
 
         try
         {
@@ -216,7 +212,7 @@ public class PSFileDownLoadJobRunner implements Runnable
 
             if (assetExist)
             {
-                localResults.add(new PSPair<Boolean, String>(true, getWarningMessage(url, destinationPath)));
+                localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
             }
             else
             {
@@ -227,14 +223,14 @@ public class PSFileDownLoadJobRunner implements Runnable
                 InputStream fileInput = new FileInputStream(tempImage);
                 createAsset(fileInput, destinationPath, this.assetCreator);
 
-                localResults.add(new PSPair<Boolean, String>(true, getSucessMessage(url, destinationPath)));
+                localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
             }
             return localResults;
         }
         catch (Exception e)
         {
             File destFile = new File(destinationPath);
-            localResults.add(new PSPair<Boolean, String>(false, getErrorMessage(url, destFile.getName())));
+            localResults.add(new PSPair<>(false, getErrorMessage(url, destFile.getName())));
             return localResults;
         }
         finally

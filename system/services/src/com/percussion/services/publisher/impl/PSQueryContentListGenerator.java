@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,16 +30,14 @@ import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.publisher.IPSContentListGenerator;
 import com.percussion.services.publisher.IPSPublisherServiceErrors;
 import com.percussion.services.publisher.PSPublisherException;
-
-import java.io.File;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
-
-import org.apache.commons.lang.StringUtils;
+import java.io.File;
+import java.util.Map;
 
 /**
  * Content list generator based on JSR-170 queries

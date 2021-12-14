@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,13 +27,12 @@ import com.percussion.services.assembly.impl.finder.PSContentFinderBase.ContentI
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.jcr.Value;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Record and use query result information in sorting the slot items. The
@@ -47,7 +46,7 @@ public class PSQueryResultOrderComparator implements Comparator<ContentItem>
    /**
     * Store the ordering information
     */
-   private Map<Integer, Integer> m_order = new HashMap<Integer, Integer>();
+   private Map<Integer, Integer> m_order = new HashMap<>();
 
    /**
     * Ctor - extract the ordering information from the results

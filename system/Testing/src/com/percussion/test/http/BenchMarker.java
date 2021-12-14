@@ -17,29 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.test.http;
 
-import com.percussion.test.io.*;
+import com.percussion.test.io.DataLoader;
+import com.percussion.test.io.LogSink;
+import com.percussion.test.io.XmlDataLoader;
+import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
-import java.net.URL;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
-
-import com.percussion.xml.PSXmlDocumentBuilder;
-import com.percussion.xml.PSXmlTreeWalker;
-import org.w3c.dom.*;
-
-import java.util.Random;
+import java.net.URL;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * The BenchMarker class will run a given test series
@@ -48,6 +48,9 @@ import java.util.Random;
  */
 public class BenchMarker implements Runnable, LogSink
 {
+
+   private static final Logger log = LogManager.getLogger(BenchMarker.class);
+
    public BenchMarker()
    {
    }
@@ -108,11 +111,7 @@ public class BenchMarker implements Runnable, LogSink
          return;
       }
 
-      Random rand = null;
-      if (m_seed != 0)
-         rand = new Random(m_seed);
-      else
-         rand = new Random();
+      SecureRandom rand = new SecureRandom();
 
       ms_stats = new HttpRequestStatistics();
       ms_stats.startedTimingAt(System.currentTimeMillis());
@@ -216,7 +215,8 @@ public class BenchMarker implements Runnable, LogSink
     */
    public void log(Throwable t)
    {
-      t.printStackTrace();
+      log.error(t.getMessage());
+      log.debug(t.getMessage(), t);
    }
 
    /**

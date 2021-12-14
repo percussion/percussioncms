@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,12 +25,15 @@ package com.percussion.rx.ui.jsf.beans;
 
 import com.percussion.server.PSRequest;
 import com.percussion.services.utils.jspel.PSRoleUtilities;
-import com.percussion.utils.request.PSRequestInfo;
 import org.apache.commons.lang.StringUtils;
 
 import javax.faces.model.DataModel;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.percussion.utils.request.PSRequestInfoBase.KEY_PSREQUEST;
+import static com.percussion.utils.request.PSRequestInfoBase.getRequestInfo;
 
 /**
  * This tree model contains and tracks the top level navigation tabs for
@@ -132,7 +135,7 @@ public class PSTopNavigation extends DataModel
       public Tab(String label, String url, String matchPath, String roles)
       {
          this(label, url, matchPath);
-         mi_id = "rx_tab_" + label.replaceAll(" ", "_");
+         mi_id = "rx_tab_" + label.replace(" ", "_");
          if (StringUtils.isBlank(roles))
             mi_enabled = true;
          else
@@ -232,7 +235,7 @@ public class PSTopNavigation extends DataModel
    private String m_path = null;
 
    /**
-    * The selected tab, set in {@link #setPath(String)} as a side effect.
+    * The selected tab
     */
    int m_selected = 0;
 
@@ -245,7 +248,7 @@ public class PSTopNavigation extends DataModel
     * Ctor.
     */
    public PSTopNavigation() {
-      m_tabs = new ArrayList<Tab>();
+      m_tabs = new ArrayList<>();
 
       m_tabs.add(new Tab("Content", "/Rhythmyx/sys_cx/mainpage.html", null));
       m_tabs.add(new Tab("Publishing Design",
@@ -260,7 +263,7 @@ public class PSTopNavigation extends DataModel
             + "sys_componentname=wf_all&amp;sys_pagename=wf_all",
             "wf", WORKFLOW_ROLE));
       m_tabs.add(new Tab("Admin", "/ui/admin", "/ui/admin",
-            "sysrole"));
+            ADMIN_ROLE));
    }
 
    /**
@@ -275,10 +278,11 @@ public class PSTopNavigation extends DataModel
     */
    private static boolean hasCompBannerRoles(String roles)
    {
-      String rolearr[] = roles.split(",");
+      String[] rolearr = roles.split(",");
       for (String role : rolearr)
       {
-         if (PSRoleUtilities.hasComponentRole(COMP_BANNER, role.trim()))
+         Boolean b = PSRoleUtilities.hasComponentRole(COMP_BANNER, role.trim());
+         if (Boolean.TRUE.equals(b))
          {
             return true;
          }
@@ -328,31 +332,31 @@ public class PSTopNavigation extends DataModel
    /**
     * The name of the banner component.
     */
-   final private static String COMP_BANNER = "cmp_banner";
+    private static final String COMP_BANNER = "cmp_banner";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility and accessibility of the "Publishing Design" tab.
     */
-   final private static String PUB_DESIGN_ROLE = "pubrole,PubDesignRole";
+    private static final String PUB_DESIGN_ROLE = "pubrole,PubDesignRole";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility and accessibility of the "Publishing Runtime" tab.
     */
-   final private static String PUB_RUNTIME_ROLE = "pubrole,PubRuntimeRole";
+    private static final String PUB_RUNTIME_ROLE = "pubrole,PubRuntimeRole";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility and accessibility of the "Admin" tab.
     */
-   final private static String ADMIN_ROLE = "sysrole";
+    private static final String ADMIN_ROLE = "sysrole";
    
    /**
     * The property names in {@link #COMP_BANNER} component for defining roles to 
     * control the visibility of the "Workflow" tab.
     */
-   final private static String WORKFLOW_ROLE = "wfrole";
+    private static final String WORKFLOW_ROLE = "wfrole";
    
    /**
     * @return the current set path, may be <code>null</code>.
@@ -435,9 +439,13 @@ public class PSTopNavigation extends DataModel
       if (path.equals("/ui/banner.jsp"))
       {
          // Invoked from xsl, use pagename instead
-         PSRequest req = (PSRequest) PSRequestInfo
-               .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
-         m_path = req.getServletRequest().getParameter("sys_pagename");
+         PSRequest req = (PSRequest) getRequestInfo(KEY_PSREQUEST);
+         if(req != null) {
+            HttpServletRequest servletRequest = req.getServletRequest();
+            if (servletRequest != null) {
+               m_path = servletRequest.getParameter("sys_pagename");
+            }
+         }
       }
       else
       {

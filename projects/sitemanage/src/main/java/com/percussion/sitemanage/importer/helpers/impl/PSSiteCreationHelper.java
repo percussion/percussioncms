@@ -17,18 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.share.IPSSitemanageConstants;
-import com.percussion.share.dao.IPSGenericDao.DeleteException;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSPageContent;
@@ -37,17 +35,18 @@ import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -63,7 +62,7 @@ public class PSSiteCreationHelper extends PSImportHelper
      * Server logger for the helper (It's a mandatory helper so context log will
      * be erased if an error occurs).
      */
-    public static Log log = LogFactory.getLog(PSSiteCreationHelper.class);
+    public static final Logger log = LogManager.getLogger(PSSiteCreationHelper.class);
     
     private IPSiteDao siteDao;
     
@@ -127,7 +126,7 @@ public class PSSiteCreationHelper extends PSImportHelper
             
             //Update the template count
             Map<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer> summaryStats = 
-                    new HashMap<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer>();
+                    new HashMap<>();
             if(context.getSummaryStats()!=null)
             {
                 summaryStats.putAll(context.getSummaryStats());
@@ -138,7 +137,7 @@ public class PSSiteCreationHelper extends PSImportHelper
             context.getSummaryService().update(context.getSite().getSiteId().intValue(), summaryStats);        
             
         }
-        catch (RuntimeException e)
+        catch (RuntimeException | PSDataServiceException e)
         {
             // Errors in mandatory helpers are not logged in siteImportLogger,
             // because that log is discarded. Log the error in the server log.
@@ -159,7 +158,7 @@ public class PSSiteCreationHelper extends PSImportHelper
             // Delete site and related content
             siteDao.delete(context.getSite().getId());
         }
-        catch (DeleteException e)
+        catch (PSDataServiceException e)
         {
             context.getLogger().appendLogMessage(PSLogEntryType.ERROR, "Delete Site",
                     "Failed to roll back site creation: " + e.getLocalizedMessage());

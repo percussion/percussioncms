@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,17 +27,16 @@ import com.percussion.packagemanagement.PSPackageFileEntry.PackageFileStatus;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.junit.experimental.categories.Category;
 
 /**
  * @author JaySeletz

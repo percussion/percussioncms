@@ -17,16 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.securitydesign;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.PSSecurityCatalogException;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSBaseSOAPImpl;
 import com.percussion.webservices.PSErrorResultsException;
@@ -42,12 +43,11 @@ import com.percussion.webservices.security.IPSSecurityDesignWs;
 import com.percussion.webservices.security.PSSecurityWsLocator;
 import com.percussion.webservices.security.data.PSCommunity;
 import com.percussion.webservices.security.data.PSCommunityVisibility;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
 
 /**
  * Server side implementations for web services defined in
@@ -333,7 +333,7 @@ public class SecurityDesignSOAPImpl extends PSBaseSOAPImpl implements SecurityDe
       catch (PSSecurityCatalogException e)
       {
          // this should never happen
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
    }
 

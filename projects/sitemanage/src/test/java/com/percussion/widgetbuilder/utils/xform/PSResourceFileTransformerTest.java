@@ -17,19 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.widgetbuilder.utils.xform;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.widgetbuilder.utils.PSWidgetPackageSpec;
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.InputStreamReader;
@@ -37,8 +35,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author JaySeletz

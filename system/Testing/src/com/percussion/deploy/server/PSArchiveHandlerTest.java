@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,13 +30,16 @@ import com.percussion.deploy.objectstore.PSArchiveInfo;
 import com.percussion.deploy.objectstore.PSArchiveInfoTest;
 import com.percussion.deploy.objectstore.PSArchiveManifestTest;
 import com.percussion.deploy.objectstore.PSDatasourceMap;
-import com.percussion.deploy.objectstore.PSDbmsInfo;
 import com.percussion.deploy.objectstore.PSDependency;
 import com.percussion.deploy.objectstore.PSDependencyFile;
 import com.percussion.deploy.objectstore.PSDeployableElement;
+import com.percussion.server.PSServer;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import com.percussion.server.PSServer;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,13 +48,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

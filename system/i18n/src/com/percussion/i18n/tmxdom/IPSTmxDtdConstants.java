@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -159,7 +159,7 @@ public interface IPSTmxDtdConstants
     * {@link #ELEM_HEADER} element.
     */
    static public final String DEFAULT_VALUE_ATTR_CREATION_TOOL =
-      "Rhythmyx Language Tool";
+      "Percussion Language Tool";
 
    /**
     * Default value of the required attribute {@link #ATTR_CREATION_TOOL_VERSION}

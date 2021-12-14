@@ -1,3 +1,4 @@
+**/node_modules
 # os
 **/.DS_Store
 
@@ -106,3 +107,4 @@ fabric.properties
 # CodeStream plugin
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
+/war/jslib/profiles/3x/jquery/plugins/jquery-fancytree/node_modules/

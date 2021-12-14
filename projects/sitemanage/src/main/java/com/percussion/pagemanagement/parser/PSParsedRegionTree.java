@@ -17,18 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.parser;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.percussion.pagemanagement.data.PSAbstractRegion;
 import com.percussion.pagemanagement.data.PSRegionCode;
 import com.percussion.pagemanagement.parser.IPSRegionParser.IPSRegionParserRegionFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An Abstract Syntax Tree of Regions parsed from an unexpanded HTML template 
@@ -44,7 +44,7 @@ public class PSParsedRegionTree<REGION extends PSAbstractRegion, CODE extends PS
 {
     private REGION rootNode;
 
-    private Map<String, REGION> regions = new HashMap<String, REGION>();
+    private Map<String, REGION> regions = new HashMap<>();
 
     private static final String ROOT_NODE_ID = "percRoot";
 

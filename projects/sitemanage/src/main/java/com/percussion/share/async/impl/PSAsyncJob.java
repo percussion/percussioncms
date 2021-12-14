@@ -17,26 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.async.impl;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.server.PSRequest;
 import com.percussion.share.async.IPSAsyncJob;
 import com.percussion.share.async.IPSAsyncJobListener;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.thread.PSThreadUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author JaySeletz
@@ -57,16 +56,15 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      * 
      * @param config The configuration object, never <code>null</code>.
      */
-    protected abstract void doInit(Object config);
+    protected abstract void doInit(Object config) throws IPSFolderService.PSWorkflowNotFoundException;
     
-    private static final Log log = LogFactory.getLog(PSAsyncJob.class);
+    private static final Logger log = LogManager.getLogger(PSAsyncJob.class);
 
     /**
      * Required implementation for jobs running within the server that need to access the current request info.  
      * Derived classes should implement {@link #doInit(Object)}.
      */
-    public void init(Object config)
-    {
+    public void init(Object config) throws IPSFolderService.PSWorkflowNotFoundException {
         m_requestInfoMap = PSRequestInfo.copyRequestInfoMap();
         PSRequest request = (PSRequest) m_requestInfoMap.get(PSRequestInfo.KEY_PSREQUEST);
         m_requestInfoMap.put(PSRequestInfo.KEY_PSREQUEST, request.cloneRequest());
@@ -91,8 +89,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      */
     protected void setStatus(int status)
     {
-        if ((status < 1 || status > 100) && status != ABORT_STATUS)
+        if ((status < 1 || status > 100) && status != ABORT_STATUS) {
             throw new IllegalArgumentException("invalid status: " + status);
+        }
 
         m_status = status;
     }
@@ -132,8 +131,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public long getId()
     {
-        if (m_id == -1)
+        if (m_id == -1) {
             throw new IllegalStateException("setId() has not been called.");
+        }
 
         return m_id;
     }
@@ -154,8 +154,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public void addJobListener(IPSAsyncJobListener listener)
     {
-        if (listener == null)
+        if (listener == null) {
             throw new IllegalArgumentException("listener may not be null");
+        }
 
         m_listeners.add(listener);
     }
@@ -163,8 +164,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public void removeJobListener(IPSAsyncJobListener listener)
     {
-        if (listener == null)
+        if (listener == null) {
             throw new IllegalArgumentException("listener may not be null");
+        }
 
         m_listeners.remove(listener);
     }
@@ -180,8 +182,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      */
     protected void setStatusMessage(String msg)
     {
-        if (msg == null || msg.trim().length() == 0)
+        if (msg == null || msg.trim().length() == 0) {
             throw new IllegalArgumentException("msg may not be null or empty");
+        }
 
         m_statusMessage = msg;
     }
@@ -196,7 +199,7 @@ public abstract class PSAsyncJob implements IPSAsyncJob
      * Override the Thread.run() from Runnable. Derived classes should not override this
      * method, and instead implement {@link #doRun()}.
      * 
-     * @throws IllegalStateException if {@link #setId()} has not already been called. 
+     * @throws IllegalStateException if {@link #setId(long)} has not already been called.
      */
     @Override
     public void run()
@@ -220,7 +223,8 @@ public abstract class PSAsyncJob implements IPSAsyncJob
         }
         catch (Exception e) 
         {
-            log.error("Error running async job", e);
+            log.error("Error running async job, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         finally
         {
@@ -242,8 +246,9 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     @Override
     public Object getResult()
     {
-        if (isCompleted())
+        if (isCompleted()) {
             m_isDiscarded.set(true);
+        }
         return m_result;
     }
 
@@ -281,7 +286,8 @@ public abstract class PSAsyncJob implements IPSAsyncJob
         }
         catch (Exception e)
         {
-            log.error("Unable to interrupt async job", e);
+            log.error("Unable to interrupt async job, Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     
@@ -332,7 +338,7 @@ public abstract class PSAsyncJob implements IPSAsyncJob
     /**
      * List of job listeners, never <code>null</code>, may be empty.
      */
-    private CopyOnWriteArrayList<IPSAsyncJobListener> m_listeners = new CopyOnWriteArrayList<IPSAsyncJobListener>();
+    private CopyOnWriteArrayList<IPSAsyncJobListener> m_listeners = new CopyOnWriteArrayList<>();
 
     /**
      * The actual request that will result in spawning a thread.

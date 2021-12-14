@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,12 +25,11 @@ package com.percussion.rx.audit;
 
 import com.percussion.services.audit.IPSDesignObjectAuditConfig;
 import com.percussion.services.audit.IPSDesignObjectAuditService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Automatically deletes old audit log entries on a daily basis as configured by
@@ -120,6 +119,7 @@ public class PSAuditLogReaper extends Thread
       catch (InterruptedException e)
       {
          ms_log.info("Interrupted, shutting down");
+         Thread.currentThread().interrupt();
       }
       catch (Throwable t)
       {
@@ -215,7 +215,7 @@ public class PSAuditLogReaper extends Thread
    /**
     * Logger for the reaper, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory.getLog(PSAuditLogReaper.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAuditLogReaper.class);
    
    /**
     * Object for locking synchronized blocks.

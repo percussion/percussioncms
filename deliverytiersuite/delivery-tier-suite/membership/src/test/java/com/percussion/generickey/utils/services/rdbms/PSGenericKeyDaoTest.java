@@ -19,7 +19,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
@@ -31,7 +31,6 @@ import com.percussion.generickey.services.IPSGenericKeyDao;
 import com.percussion.generickey.utils.data.rdbms.impl.PSGenericKey;
 import junit.framework.TestCase;
 import org.apache.commons.lang.time.DateUtils;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -57,10 +57,24 @@
         this.setView = setView;
 
         // choose column or list view
-        var chooseColumnView = $("#perc-finder-choose-columnview").click(setViewColumn);
-        var chooseListView = $("#perc-finder-choose-listview").click(setViewList);
-        var chooseSearchView = $("#perc-finder-search-submit").click(setViewSearch);
-        var chooseMyPagesView = $("#perc-finder-choose-mypagesview").click(setMyPagesView);
+        var chooseColumnView = $("#perc-finder-choose-columnview").on("click",
+            function(evt){
+                setViewColumn(evt);
+            });
+
+        var chooseListView = $("#perc-finder-choose-listview").on("click",
+            function(evt){
+                setViewList(evt);
+            });
+        var chooseSearchView = $("#perc-finder-search-submit").on("click",
+            function(evt){
+                setViewSearch(evt);
+            });
+        var chooseMyPagesView = $("#perc-finder-choose-mypagesview").on("click",
+            function(evt){
+                setMyPagesView(evt);
+            });
+
         setColumnViewButtonOn();
 
         // singleton to keep track of dirty state across various types of resources such as pages, templates and assets
@@ -97,14 +111,16 @@
             {
                 $("#perc-finder-item-search").attr('disabled', true);
                 $("#perc-finder-item-search").val("");
-                chooseSearchView.unbind("click");
+                chooseSearchView.off("click");
             }
             else
             {
-                $("#perc-finder-item-search").removeAttr('disabled');
-                chooseSearchView.click(setViewSearch);
+                $("#perc-finder-item-search").prop('disabled',false);
+                chooseSearchView.on("click",function(evt){
+                    setViewSearch(evt);
+                });
             }
-        }
+        };
 
         /**
          * Helper function to enable or disable the List View button of the finder. This method is exposed to be used by perc_finder.js
@@ -114,13 +130,15 @@
         {
             if (disable)
             {
-                chooseListView.unbind("click");
+                chooseListView.off("click");
             }
             else
             {
-                chooseListView.click(setViewList);
+                chooseListView.on("click",function(evt){
+                    setViewList(evt);
+                });
             }
-        }
+        };
 
         var currentFinderView = PERC_FINDER_VIEW_COLUMN;
         // Expose the current view properties
@@ -135,22 +153,22 @@
         var pagingBar = "";
 
         // Bind the Enter key and Esc key on Input search field
-        $("#perc-finder-item-search").focus(function()
+        $("#perc-finder-item-search").on("focus",function(evt)
         {
             $(this).css('color', '#FFFFFF').css('background-color', '#5a5d69');
-        }).bind('keyup', function(evt)
+        }).on('keyup', function(evt)
         {
-            if (evt.keyCode == 13)
+            if (evt.keyCode === 13)
             {
-                $("#perc-finder-item-search").blur();
+                $("#perc-finder-item-search").trigger("blur");
                 performSearch();
-                $("#perc-finder-item-search").focus();
+                $("#perc-finder-item-search").trigger("focus");
                 evt.preventDefault();
                 evt.stopPropagation();
             }
-            if (evt.keyCode == 27 || evt.keyCode == 9)
+            if (evt.keyCode === 27 || evt.keyCode === 9)
             {
-                $("#perc-finder-item-search").css('color', '#CCCCCC').css('background-color', '#41434F').blur();
+                $("#perc-finder-item-search").css('color', '#CCCCCC').css('background-color', '#41434F').trigger("blur");
                 evt.preventDefault();
                 evt.stopPropagation();
             }
@@ -158,7 +176,7 @@
         });
 
         //Set the newStartIndex and refresh the view
-        function pagePrevious()
+        function pagePrevious(event)
         {
             percFinderListviewContainer = $(".perc-finder").find('#perc-finder-listview');
             percFinderListviewContainer.data('startIndex', percFinderListviewContainer.data('startIndex') - MAX_RESULTS);
@@ -167,7 +185,7 @@
         }
 
         //Set the newStartIndex and refresh the view
-        function pageNext(newStartIndex)
+        function pageNext(event)
         {
             var percFinderListviewContainer = $(".perc-finder").find('#perc-finder-listview');
             percFinderListviewContainer.data('startIndex', percFinderListviewContainer.data('startIndex') + MAX_RESULTS);
@@ -201,7 +219,7 @@
             if (currentFinderView === PERC_FINDER_VIEW_LIST)
             {
                 config.path = percFinderListviewContainer.data('path');
-                ;
+
                 fillListView(config, function()
                 {
                     expandTableBorders(true);
@@ -258,7 +276,7 @@
             var totalResult = dir.data('totalResult');
             var endIndex = ((startIndex - 1 + MAX_RESULTS > totalResult) ? totalResult : (startIndex - 1 + MAX_RESULTS));
             var itemText = "0 Items";
-            if (totalResult != 0)
+            if (totalResult !== 0)
                 itemText = startIndex + " - " + endIndex + " of " + totalResult + " Total";
 
             //Fill text info.
@@ -267,25 +285,32 @@
             //Enable/disable navigation buttons
             //Check if have next items
             if ((totalResult - (startIndex - 1 + MAX_RESULTS)) > 0)
-                pagingBar.find('.perc-pagingbar-next').removeClass('perc-disabled-navigator').unbind('click').click(pageNext);
+                pagingBar.find('.perc-pagingbar-next').removeClass('perc-disabled-navigator').off('click').on("click",
+                    function(evt){
+                        pageNext(evt);
+                    });
             else
-                pagingBar.find('.perc-pagingbar-next').addClass('perc-disabled-navigator').unbind('click');
+                pagingBar.find('.perc-pagingbar-next').addClass('perc-disabled-navigator').off('click');
 
             //Check if have previous items
             if (startIndex > MAX_RESULTS)
-                pagingBar.find('.perc-pagingbar-previous').removeClass('perc-disabled-navigator').unbind('click').click(pagePrevious);
+                pagingBar.find('.perc-pagingbar-previous').removeClass('perc-disabled-navigator').off('click').on("click",
+                    function(evt){
+                        pagePrevious(evt);
+                    });
             else
-                pagingBar.find('.perc-pagingbar-previous').addClass('perc-disabled-navigator').unbind('click');
+                pagingBar.find('.perc-pagingbar-previous').addClass('perc-disabled-navigator').off('click');
         }
 
         //Attach the paging bar
         function showPagingBar(dir)
         {
-            if (currentFinderView === PERC_FINDER_VIEW_LIST || currentFinderView == PERC_FINDER_SEARCH_RESULTS)
+            if (currentFinderView === PERC_FINDER_VIEW_LIST || currentFinderView === PERC_FINDER_SEARCH_RESULTS)
             {
                 var finderDiv = $(".perc-finder");
                 //Generate the HTML Bar
-                pagingBar = $('<div class="perc-pagingbar-finder"/>').append($('<div class="perc-pagingbar-navigator" />').append($('<a class="perc-pagingbar-previous" />').attr('title', 'Previous')).append($('<a class="perc-pagingbar-next"/>').attr('title', 'Next'))).append($('<span class="perc-pagingbar-items" />'))
+                pagingBar = $('<div class="perc-pagingbar-finder"/>').append($('<div class="perc-pagingbar-navigator" />').append($('<a class="perc-pagingbar-previous" />').attr('title', 'Previous')).append($('<a class="perc-pagingbar-next"/>').attr('title', 'Next'))).append($('<span class="perc-pagingbar-items" />')
+                );
 
                 fillPagingBar(dir);
                 var newHeight = finderDiv.height();
@@ -295,7 +320,7 @@
             }
             // Update the lower part of Navigation/User page.
             var currentView = $.PercNavigationManager.getView();
-            if (currentView == $.PercNavigationManager.VIEW_SITE_ARCH || currentView == $.PercNavigationManager.VIEW_USERS)
+            if (currentView === $.PercNavigationManager.VIEW_SITE_ARCH || currentView === $.PercNavigationManager.VIEW_USERS)
             {
                 fixIframeHeight();
                 fixBottomHeight();
@@ -312,7 +337,7 @@
         //Update an existing paging bar
         function updatePagingBar(dir)
         {
-            if (currentFinderView === PERC_FINDER_VIEW_LIST || currentFinderView == PERC_FINDER_SEARCH_RESULTS)
+            if (currentFinderView === PERC_FINDER_VIEW_LIST || currentFinderView === PERC_FINDER_SEARCH_RESULTS)
             {
                 fillPagingBar(dir);
             }
@@ -329,7 +354,7 @@
             var newColumn = $.perc_finderInstance.insertAfter(lastColumn); //Add a new column to contains the List View or Result
             newColumn.css("width", "100%");
             var newColumnContent = newColumn.find(".mcol-direc-wrapper");
-            newColumnContent.find(".ui-resizable-handle").remove() //Remove the div for resize width
+            newColumnContent.find(".ui-resizable-handle").remove(); //Remove the div for resize width
 
             //Add List View container
             percFinderListviewContainer = $("<div id='perc-finder-listview'>");
@@ -355,12 +380,12 @@
                     if (status)
                     {
                         percFinderListviewContainer.PercFinderListView(config, content);
-                        var newPath = $.trim($("#mcol-path-summary").val());
+                        var newPath = $("#mcol-path-summary").val().trim();
                         $.PercPathService.getPathItemForPath(newPath, function(status, content)
                         {
-                            if (content.PathItem.type == "Folder" || content.PathItem.type == "FSFolder")
+                            if (content.PathItem.type === "Folder" || content.PathItem.type === "FSFolder")
                             {
-                                $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').unbind('click');
+                                $(".perc-finder-menu #perc-finder-delete").removeClass('ui-enabled').addClass('ui-disabled').off('click');
                                 if (callback)
                                     callback();
                                 return;
@@ -371,9 +396,9 @@
                             {
                                 var self = $(this);
                                 var selectedText = self.find('span').text();
-                                if (newPath == selectedText)
+                                if (newPath === selectedText)
                                 {
-                                    self.parent().click();
+                                    self.parent().trigger("click");
                                     finder.scrollIntoView(self);
                                 }
                             });
@@ -433,7 +458,7 @@
             if (currentFinderView === PERC_FINDER_SEARCH_RESULTS)
             {
                 // URL-encode the text to avoid jQuery bug:
-                var encodedSearchText = encodeURIComponent($.trim($("#perc-finder-item-search").val()));
+                var encodedSearchText = encodeURIComponent($("#perc-finder-item-search").val().trim());
                 var percFinderListviewContainer = $(".perc-finder").find('#perc-finder-listview');
                 percFinderListviewContainer.data('searchQuery', encodedSearchText);
                 percFinderListviewContainer.data('startIndex', 1);
@@ -465,7 +490,7 @@
          * Calls the setView method to set the finder in Column mode.
          * It is generally bound to click events on buttons that switch views.
          */
-        function setViewColumn()
+        function setViewColumn(event)
         {
             setView(PERC_FINDER_VIEW_COLUMN);
         }
@@ -474,7 +499,7 @@
          * Calls the setView method to set the finder in List mode.
          * It is generally bound to click events on buttons that switch views.
          */
-        function setViewList()
+        function setViewList(event)
         {
             setView(PERC_FINDER_VIEW_LIST);
         }
@@ -483,12 +508,12 @@
          * Calls the setView method to set the finder in Search results mode.
          * It is generally bound to click events on buttons that switch views.
          */
-        function setViewSearch()
+        function setViewSearch(event)
         {
             performSearch();
         }
 
-        function setMyPagesView()
+        function setMyPagesView(event)
         {
             setView(PERC_FINDER_SEARCH_TYPE_MYPAGES, true);
         }
@@ -549,7 +574,7 @@
                 pagingBar = null;
                 // Update the lower part of Navigation/User page.
                 var currentView = $.PercNavigationManager.getView();
-                if (currentView == $.PercNavigationManager.VIEW_SITE_ARCH || currentView == $.PercNavigationManager.VIEW_USERS)
+                if (currentView === $.PercNavigationManager.VIEW_SITE_ARCH || currentView === $.PercNavigationManager.VIEW_USERS)
                 {
                     fixIframeHeight();
                     fixBottomHeight();
@@ -575,7 +600,7 @@
                 percFinderListviewContainer = addListViewContainer();
                 var contentPath = lastColumn.data('path');
                 //if the column doesn't have path data is a summary column
-                if (typeof(contentPath) == "undefined")
+                if (typeof(contentPath) === 'undefined')
                 {
                     lastColumn = lastColumn.prev();
                     contentPath = lastColumn.data('path').join("/");
@@ -594,8 +619,8 @@
                 $("#perc-finder-listing-Search").addClass('mcol-opened');
 
                 var percFinderListviewContainer = addListViewContainer();
-                var searchQuery = encodeURIComponent($.trim($("#perc-finder-item-search").val()));
-                if (searchQuery == null)
+                var searchQuery = encodeURIComponent($("#perc-finder-item-search").val().trim());
+                if (searchQuery === null)
                 {
                     // The original code appends the following message "unformatted (it lacks the
                     // columns of the search list view) and hardcoded":
@@ -604,7 +629,7 @@
 
                     // Instead we can make an "empty string search", that shows the same result as
                     // searching for an emtpy string in the search list view
-                    searchQuery == "";
+                    searchQuery = "";
                 }
                 percFinderListviewContainer.data('searchQuery', searchQuery);
                 percFinderListviewContainer.data('startIndex', 1);
@@ -697,17 +722,17 @@
             var handler = isEditMode ? $.PercAssetController.getAssetEditorForAssetId : $.PercAssetController.getAssetViewForAssetId;
             handler(assetId, function(status, assetEditorUrl)
             {
-                if (status == $.PercServiceUtils.STATUS_SUCCESS)
+                if (status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
                     $.PercIFrameView.renderAssetEditor(finder, null, assetEditorUrl, null, null, false);
                     addTransitionButtons("percAsset");
-                    $("#perc-revisions-button").unbind().perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").click(function()
+                    $("#perc-revisions-button").off("click").perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").on("click",function()
                     {
-                        var isEditMode = $.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT;
+                        var isEditMode = $.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT;
                         _openRevisions(assetId, aName, isEditMode);
                     });
 
-                    $("#perc-pubhistory-button").unbind().perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").click(function()
+                    $("#perc-pubhistory-button").off("click").perc_button().removeClass("ui-meta-pre-disabled").addClass("ui-meta-pre-enabled").on("click",function()
                     {
                         _openPublishingHistory(assetId, aName);
                     });
@@ -715,56 +740,56 @@
                     // Add Publishing dropdown
                     //if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
                     //{
-                        $.PercItemPublisherService.getPublishActions(assetId, function(status, result)
+                    $.PercItemPublisherService.getPublishActions(assetId, function(status, result)
+                    {
+                        if (status)
                         {
-                            if (status)
+                            var pubActions = eval("(" + result + ")").PSPublishingActionList;
+                            if (pubActions.length > 0)
                             {
-                                var pubActions = eval("(" + result + ")").PSPublishingActionList;
-                                if (pubActions.length > 0)
+                                var actionNames = ["Publishing"];
+                                var disableAction = [false];
+                                $.each(pubActions, function()
                                 {
-                                    var actionNames = ["Publishing"];
-                                    var disableAction = [false]
-                                    $.each(pubActions, function()
-                                    {
-                                        actionNames.push(this.name);
-                                        disableAction.push(this.enabled);
+                                    actionNames.push(this.name);
+                                    disableAction.push(this.enabled);
 
-                                    });
-                                    //Add Publishing dropdown menu in toolbar
-                                    var publishNowDropdown = $("#perc-dropdown-publish-now");
-                                    publishNowDropdown.PercDropdown({
-                                        percDropdownRootClass: "perc-dropdown-publish-now",
-                                        percDropdownOptionLabels: actionNames,
-                                        percDropdownCallbacks: [function()
-                                        {
-                                        },
-                                            _publishItem, _openSchedule, _publishItem, _publishItem, _publishItem],
-                                        percDropdownCallbackData: ["Publishing", {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Publish")
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Take Down")
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Stage")
-                                        }, {
-                                            assetId: assetId,
-                                            aName: aName,
-                                            trName: I18N.message("perc.ui.finder.view@Remove From Staging")
-                                        },
-                                            assetId],
-                                        percDropdownDisabledFlag: disableAction
-                                    });
-                                }
+                                });
+                                //Add Publishing dropdown menu in toolbar
+                                var publishNowDropdown = $("#perc-dropdown-publish-now");
+                                publishNowDropdown.PercDropdown({
+                                    percDropdownRootClass: "perc-dropdown-publish-now",
+                                    percDropdownOptionLabels: actionNames,
+                                    percDropdownCallbacks: [function()
+                                    {
+                                    },
+                                        _publishItem, _openSchedule, _publishItem, _publishItem, _publishItem],
+                                    percDropdownCallbackData: ["Publishing", {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Publish")
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Take Down")
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Stage")
+                                    }, {
+                                        assetId: assetId,
+                                        aName: aName,
+                                        trName: I18N.message("perc.ui.finder.view@Remove From Staging")
+                                    },
+                                        assetId],
+                                    percDropdownDisabledFlag: disableAction
+                                });
                             }
-                        });
+                        }
+                    });
                     //}
 
                 }
@@ -773,12 +798,12 @@
                     // could not open the asset editor
                     var dlgTitle = I18N.message("perc.ui.publish.title@Error");
                     var dlgContent = assetEditorUrl;
-                    if (assetEditorUrl.indexOf("must be checked out by the current user") != -1)
+                    if (assetEditorUrl.indexOf("must be checked out by the current user") !== -1)
                     {
                         dlgTitle = I18N.message("perc.ui.webmgt.contentbrowser.warning.title@Open Asset");
                         dlgContent = I18N.message("perc.ui.webmgt.contentbrowser.warning@Asset Overridden", [contentName]);
                     }
-                    else if (assetEditorUrl.indexOf("Item not found") != -1)
+                    else if (assetEditorUrl.indexOf("Item not found") !== -1)
                     {
                         dlgTitle = I18N.message("perc.ui.webmgt.contentbrowser.warning.title@Open Asset");
                         dlgContent = I18N.message("perc.ui.webmgt.contentbrowser.warning@Asset Deleted", [contentName]);
@@ -824,7 +849,7 @@
             if (newId != null)
             {
                 var type = "percPage";
-                if (pathType == $.PercNavigationManager.PATH_TYPE_ASSET)
+                if (pathType === $.PercNavigationManager.PATH_TYPE_ASSET)
                     type = "percAsset";
                 $.PercWorkflowController().checkOut(type, newId, function(status)
                 {
@@ -832,7 +857,7 @@
                     {
                         //We have successfully checked out the new page
                         //Check in the current page if exists
-                        if (contentId && (newId != contentId))
+                        if (contentId && (newId !== contentId))
                         {
                             $.PercWorkflowController().checkIn(contentId, function(status)
                             {
@@ -913,7 +938,7 @@
          */
         function save(type, callback)
         {
-            if (type == "asset")
+            if (type === "asset")
             {
                 var newAsset = true;
                 if ($.PercNavigationManager.getId())
@@ -923,9 +948,9 @@
                 $.PercIFrameView.saveContent(newAsset);
                 callback();
             }
-            else if (type == "page" || type == "template")
+            else if (type === "page" || type === "template")
             {
-                if (layoutModel != undefined && layoutModel != null)
+                if (typeof layoutModel !== 'undefined' && layoutModel != null)
                 {
                     $.PercBlockUI();
                     layoutModel.save(function()
@@ -952,12 +977,12 @@
             function addSaveAndCloseButtons()
             {
                 //Add save button if it is asset view
-                if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT &&
-                    view == $.PercNavigationManager.VIEW_EDIT_ASSET)
+                if ($.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT &&
+                    view === $.PercNavigationManager.VIEW_EDIT_ASSET)
                 {
                     var saveButton = '<button style="float: right;" name="perc_wizard_save" title="Save" class="btn btn-primary" id="perc-save-content">Save</button>';
                     $("#perc-content-menu").append($(saveButton));
-                    $("#perc-save-content").click(function()
+                    $("#perc-save-content").on("click",function()
                     {
                         var newAsset = !contentId || contentId == null;
                         if (!newAsset)
@@ -998,7 +1023,7 @@
                     });
                 }
                 //Add edit button if this is readonly mode
-                if ($.PercNavigationManager.getMode() != $.PercNavigationManager.MODE_EDIT)
+                if ($.PercNavigationManager.getMode() !== $.PercNavigationManager.MODE_EDIT)
                 {
                     var editButton = '<button name="perc_page_edit" class="btn btn-primary" id="perc-page-edit">' +I18N.message("perc.ui.finder.view@Edit") + '</button>';
                     $("#perc-content-menu").append($(editButton));
@@ -1006,16 +1031,29 @@
                     $.PercPathService.getPathItemForPath(currentContentPath, function(message, item)
                     {
                         var currentItem = item.PathItem;
-                        $("#perc-page-edit").data("currentItem", currentItem).click(function()
+                        $("#perc-page-edit").data("currentItem", currentItem).on("click",function()
                         {
                             var item = $(this).data("currentItem");
-                            if ($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDITOR)
+                            if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDITOR)
                             {
                                 $.PercNavigationManager.handleOpenPage(item, true);
                             }
-                            else if ($.PercNavigationManager.getView() == $.PercNavigationManager.VIEW_EDIT_ASSET)
+                            else if ($.PercNavigationManager.getView() === $.PercNavigationManager.VIEW_EDIT_ASSET)
                             {
-                                $.PercNavigationManager.handleOpenAsset(item, true);
+                                //We are in AssetEditor but finder is having site selected, so need to find Asset
+                                if(item.name === "Sites"){
+                                    $.PercPathService.getPathItemById(contentId, function(status, data){
+                                        if(status === $.PercServiceUtils.STATUS_SUCCESS) {
+                                            $.PercNavigationManager.handleOpenAsset(data.PathItem, true);
+                                        } else {
+                                            $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: data});
+
+                                        }
+                                    });
+                                }else{
+                                    //CMS-8107 : item.name always returned the asset name.
+                                    $.PercNavigationManager.handleOpenAsset(item, true);
+                                }
                             }
                             else
                             {
@@ -1033,7 +1071,7 @@
                 //Add close button, this will close the editor and switch to the dashboard
                 var closeButton = "<button class='btn btn-primary' id='perc-page-close'>" +I18N.message("perc.ui.change.pw@Close") + "</button>";
                 $("#perc-content-menu").append($(closeButton));
-                $("#perc-page-close").click(function()
+                $("#perc-page-close").on("click",function()
                 {
                     if (contentId)
                     {
@@ -1044,7 +1082,7 @@
                                 confirm_if_dirty(function()
                                 {
                                     $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
-                                    if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT)
+                                    if ($.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT)
                                     {
                                         $.PercWorkflowController().checkIn(contentId, function(status)
                                         {
@@ -1078,7 +1116,7 @@
              */
             function addCommentsIcon(){
                 $.PercRevisionService.getLastComment(contentId, function(status, result){
-                    if(status == $.PercServiceUtils.STATUS_SUCCESS){
+                    if(status === $.PercServiceUtils.STATUS_SUCCESS){
                         if(result.data && result.data.length > 0){
                             var commentIcon = $("<a style='float: right;' tooltip='" + result.data + "' class='perc-last-comment-menubar'><span class='perc-font-icon icon-comment'/></a>");
                             commentIcon.tooltip({
@@ -1103,7 +1141,7 @@
             }
 
             //get the transition actions and add them.
-            if ($.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_EDIT &&
+            if ($.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_EDIT &&
                 contentId)
             {
                 $.PercWorkflowController().getTransitions(contentId, function(status, results)
@@ -1131,13 +1169,13 @@
                             var regImageFilename = baseImageName + imageExt;
                             var overImageFilename = baseImageName + "Over" + imageExt;
 
-                            if (index == 0)
+                            if (index === 0)
                             {
                                 defaultButtonImage = regImageFilename;
                                 defaultButtonImageOver = overImageFilename;
                                 dropdownButtonImage = '/cm/images/images/splitButtonArrow.gif';
                                 dropdownButtonImageOver = '/cm/images/images/splitButtonArrowOn.gif';
-                                name
+
                             }
                             var param = {
                                 name: trName,
@@ -1160,10 +1198,12 @@
                             percDropdownTitleImage: dropdownButtonImage,
                             percDropdownTitleImageOver: dropdownButtonImageOver,
                             percDropdownShowExpandIcon: false,
+                            autoArrows:false,
+                            cssArrows: false,
                             percDropdownResizeToElement: "#perc-dropdown-page-workflow"
                         });
-                        pageWorkflowDropdown.find('.perc-dropdown-title').unbind('click');
-                        pageWorkflowDropdown.children('a, button').click(function()
+                        pageWorkflowDropdown.find('.perc-dropdown-title').off('click');
+                        pageWorkflowDropdown.children('a, button').on("click",function()
                         {
                             dropdownActions[0](dropdownParams[0]);
                         });
@@ -1202,10 +1242,10 @@
             // if we should continue and actually do the location change.
 
             var newId = params.id;
-            var modeSwitch = $.PercNavigationManager.getMode() == $.PercNavigationManager.MODE_READONLY &&
-                params.mode == $.PercNavigationManager.MODE_EDIT;
+            var modeSwitch = $.PercNavigationManager.getMode() === $.PercNavigationManager.MODE_READONLY &&
+                params.mode === $.PercNavigationManager.MODE_EDIT;
             //Alert the user if he tries to open the same page/asset.
-            if (!modeSwitch && !$.PercNavigationManager.isReopenAllowed() && contentId && contentId == newId)
+            if (!modeSwitch && !$.PercNavigationManager.isReopenAllowed() && contentId && contentId === newId)
             {
                 var options = {
                     title: I18N.message("perc.ui.finder.view@Open") + type,
@@ -1217,7 +1257,7 @@
             }
 
             //Check out the new page before opening it.
-            var ok = false;
+
 
             // get dirty state from the singleton where the page, template, and/or asset have updated the status
             // if they have become dirty
@@ -1227,7 +1267,7 @@
                 // confirm
                 confirm_if_dirty(function()
                 {
-                    if (params.mode == $.PercNavigationManager.MODE_EDIT && contentId != null)
+                    if (params.mode === $.PercNavigationManager.MODE_EDIT && contentId != null)
                     {
                         checkOutCheckInPage(newId, id, notifyComplete, params.pathType);
                     }
@@ -1242,7 +1282,7 @@
             }
             else
             {
-                if (params.mode == $.PercNavigationManager.MODE_EDIT && contentId != null)
+                if (params.mode === $.PercNavigationManager.MODE_EDIT && contentId != null)
                 {
                     checkOutCheckInPage(newId, id, notifyComplete, params.pathType);
                 }
@@ -1259,8 +1299,10 @@
         // resize the width/height of the finder implemented in perc_finder.js
         finder.on('resize', function (event, ui) {
             //Refresh the arch view
-            if ($("#perc_site_map").length > 0) {
+            try {
                 $("#perc_site_map").perc_site_map('layoutAll');
+            }catch(error){
+                //Gettign Initialization error in case site not selected... needs to be ignored
             }
         });
 
@@ -1293,10 +1335,10 @@
             }
             $.PercPageService.checkForEmptyMigrationWidgets(contentId, onPageHasEmptyMigrationWidgets);
         }
-        if (type == $.PercNavigationManager.PATH_TYPE_PAGE && contentId && contentName)
+        if (type === $.PercNavigationManager.PATH_TYPE_PAGE && contentId && contentName)
         {
             //Make sure to check out the page, if not able to check out do not proceed further
-            if (pageMode == $.PercNavigationManager.MODE_EDIT)
+            if (pageMode === $.PercNavigationManager.MODE_EDIT)
             {
                 $.PercWorkflowController().checkOut("percPage", contentId, function(status)
                 {
@@ -1326,7 +1368,7 @@
                 addTransitionButtons("percPage");
             }
         }
-        else if (view == $.PercNavigationManager.VIEW_EDIT_ASSET && contentId)
+        else if (view === $.PercNavigationManager.VIEW_EDIT_ASSET && contentId)
         {
             var assetId = contentId;
             // set the name of the asset label
@@ -1334,7 +1376,7 @@
             //$("#perc-pageEditor-menu-name").html(assetName);
             $("#perc-page-button").html('Asset:').append("<span id='perc-pageEditor-menu-name' title = " + contentName + "> " + contentName + "</span>");
             // render asset editor
-            if (pageMode == $.PercNavigationManager.MODE_EDIT)
+            if (pageMode === $.PercNavigationManager.MODE_EDIT)
             {
                 //Make sure to check out the asset before opening it.
                 $.PercWorkflowController().checkOut("percAsset", assetId, function(status)
@@ -1351,9 +1393,9 @@
             }
 
         }
-        else if (view == $.PercNavigationManager.VIEW_EDIT_ASSET && !contentId)
+        else if (view === $.PercNavigationManager.VIEW_EDIT_ASSET && !contentId)
         {
-            var memento = $j.PercNavigationManager.getMemento();
+            var memento = $.PercNavigationManager.getMemento();
             if (memento.widgetId) {
                 $.PercNewAssetDialog.openViewer(memento.folderPath, memento.widgetId);
             }
@@ -1380,6 +1422,9 @@
 
         function handlePageWorkflowDropdownAction(params)
         {
+            if(params.type === 'click'){
+                params = params.data;
+            }
 
             var contentId = params.contentId;
             var itemType = params.itemType;
@@ -1387,7 +1432,7 @@
 
             confirm_if_dirty(function()
             {
-                var type = view == $.PercNavigationManager.VIEW_EDIT_ASSET ? "asset" : "page";
+                var type = view === $.PercNavigationManager.VIEW_EDIT_ASSET ? "asset" : "page";
                 doIfItemExists(params.contentId, function()
                 {
                     doIfCheckedOutToCurrentUser(contentId, function()
@@ -1441,7 +1486,7 @@
                 },
                 id: "perc-workflow-comment-ok"
             };
-            buttons["Cancel"] = {
+            buttons.Cancel = {
                 click: function()
                 {
 
@@ -1474,7 +1519,7 @@
                 {
                     contentId = null;
                     $.unblockUI();
-                    if(type == "page" && trName == "Archive"){
+                    if(type === "page" && trName === "Archive"){
                         $.PercRedirectHandler.createRedirect($.PercNavigationManager.getPath(), "", "page")
                             .fail(function(errMsg){
                                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.finder.view@Redirect Creation Error"), content: errMsg, okCallBack: function(){
@@ -1499,15 +1544,15 @@
         }
 
         function checkIfLinkedPage(pageId,itemType,type,trName) {
-            if(type == "page" && trName == "Archive" ){
+            if(type === "page" && trName === "Archive" ){
 
 
                 var findLinkedItemsUrl = $.perc_paths.ITEM_LINKED_TO_ITEM + "/" + pageId;
                 var takeDownUrl =  $.perc_paths.PAGE_TAKEDOWN ;
                 takeDownUrl+="/" + pageId;
 
-                $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, true, function(status, result) {
-                    if (status == $.PercServiceUtils.STATUS_ERROR) {
+                $.PercServiceUtils.makeJsonRequest(findLinkedItemsUrl, $.PercServiceUtils.TYPE_GET, false, function(status, result) {
+                    if (status === $.PercServiceUtils.STATUS_ERROR) {
                         var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result);
                         console.error(defaultMsg);
                         showCommentsDialog(pageId,itemType,trName);
@@ -1536,7 +1581,7 @@
                 question: createDialogQuestion(data),
                 cancel: function()
                 {
-                    return;
+
                 },
                 success: function()
                 {
@@ -1563,24 +1608,19 @@
          */
         function _openSchedule(callbackData)
         {
+            if(callbackData.class === jQuery.Event.class){
+                callbackData = callbackData.data;
+            }
+
             var itemId = callbackData.assetId;
             var assetName = callbackData.aName;
-            if (dialogFlag)
-            {
-                $.PercScheduleDialog.open(itemId, assetName);
-                $(".ui-datepicker-trigger").click();
-                $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
-                $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
-                $("#perc-schedule-dialog-cancel").click();
-                $.PercScheduleDialog.open(itemId, assetName);
-                dialogFlag = false;
-            }
-            else
-            {
-                $("#ui-datepicker-div").css('z-index', 100000);
-                $("#ui-timepicker-div").css('z-index', 100000);
-                $.PercScheduleDialog.open(itemId, assetName);
-            }
+
+            $.PercScheduleDialog.open(itemId, assetName);
+            $(".ui-datepicker-trigger").trigger("click");
+            $("#ui-datepicker-div").css('z-index', 9501).css('display', 'none');
+            $("#ui-timepicker-div").css('z-index', 9501).css('display', 'none');
+            $("#perc-schedule-dialog-cancel").trigger("click");
+
         }
         /**
          * Check if Publish date is set for item before doing immediate publishing.
@@ -1588,9 +1628,9 @@
         function _confirmPublish(scheduleDates)
         {
             var startDate = scheduleDates.startDate;
-            var itemType = view == $.PercNavigationManager.VIEW_EDIT_ASSET ? "Asset" : "Page";
-            var itemId = scheduleDates.itemId
-            if (startDate != "")
+            var itemType = view === $.PercNavigationManager.VIEW_EDIT_ASSET ? "Asset" : "Page";
+            var itemId = scheduleDates.itemId;
+            if (startDate !== "")
             {
                 var settings = {
                     id: "perc-confirm-publish-dialog",
@@ -1619,51 +1659,56 @@
          */
         function _publishItem(callbackData)
         {
+
+            if(callbackData.class === jQuery.Event.class){
+                callbackData = callbackData.data;
+            }
+
             var itemId = callbackData.assetId;
             var trName = callbackData.trName;
             var view = $.PercNavigationManager.getView();
-            var itemType = view == $.PercNavigationManager.VIEW_EDIT_ASSET ? "Asset" : "Page";
+            var itemType = view === $.PercNavigationManager.VIEW_EDIT_ASSET ? "Asset" : "Page";
             confirm_if_dirty(function()
             {
                 doIfItemExists(itemId, function()
                 {
                     /*doIfCheckedOutToCurrentUser(itemId, function()
                     {*/
-                        if (trName == I18N.message("perc.ui.navMenu.publish@Publish"))
+                    if (trName === I18N.message("perc.ui.navMenu.publish@Publish"))
+                    {
+                        $.PercItemPublisherService.getScheduleDates(itemId, function(status, result)
                         {
-                            $.PercItemPublisherService.getScheduleDates(itemId, function(status, result)
+                            if (status)
                             {
-                                if (status)
-                                {
-                                    var scheduleDates = eval("(" + result + ")").ItemDates;
-                                    _confirmPublish(scheduleDates);
-                                }
-                                else
-                                {
-                                    $.perc_utils.alert_dialog({
-                                        content: I18N.message("perc.ui.finder.view@Get Saved Schedule"),
-                                        title: I18N.message("perc.ui.publish.title@Error")
-                                    });
-                                    return false;
-                                }
+                                var scheduleDates = eval("(" + result + ")").ItemDates;
+                                _confirmPublish(scheduleDates);
+                            }
+                            else
+                            {
+                                $.perc_utils.alert_dialog({
+                                    content: I18N.message("perc.ui.finder.view@Get Saved Schedule"),
+                                    title: I18N.message("perc.ui.publish.title@Error")
+                                });
+                                return false;
+                            }
 
-                            });
-                        }
-                        else if (trName == I18N.message("perc.ui.page.menu@Take Down"))
-                        {
-                            $.PercBlockUI();
-                            $.PercItemPublisherService.takeDownItem(itemId, itemType, _afterPublish);
-                        }
-                        else if(trName == I18N.message("perc.ui.page.menu@Stage"))
-                        {
-                            $.PercBlockUI();
-                            $.PercItemPublisherService.publishToStaging(itemId, itemType, _afterPublish);
-                        }
-                        else if(trName == I18N.message("perc.ui.page.menu@Remove from Staging"))
-                        {
-                            $.PercBlockUI();
-                            $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
-                        }
+                        });
+                    }
+                    else if (trName === I18N.message("perc.ui.page.menu@Take Down"))
+                    {
+                        $.PercBlockUI();
+                        $.PercItemPublisherService.takeDownItem(itemId, itemType, _afterPublish);
+                    }
+                    else if(trName === I18N.message("perc.ui.page.menu@Stage"))
+                    {
+                        $.PercBlockUI();
+                        $.PercItemPublisherService.publishToStaging(itemId, itemType, _afterPublish);
+                    }
+                    else if(trName === I18N.message("perc.ui.page.menu@Remove from Staging"))
+                    {
+                        $.PercBlockUI();
+                        $.PercItemPublisherService.removeFromStaging(itemId, itemType, _afterPublish);
+                    }
 
                     /*}, function()
                     {
@@ -1729,7 +1774,7 @@
                             content: I18N.message("perc.ui.finder.view@No Staging Servers Available")
                         });
                 }
-                else if (typeof(SitePublishResponse.warningMessage) != "undefined" && SitePublishResponse.warningMessage != "")
+                else if (typeof(SitePublishResponse.warningMessage) != "undefined" && SitePublishResponse.warningMessage !== "")
                 {
                     $.perc_utils.alert_dialog({
                         title: I18N.message("perc.ui.page.general@Warning"),
@@ -1749,3 +1794,4 @@
     };
 
 })(jQuery, jQuery.Percussion);
+

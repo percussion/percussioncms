@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,6 @@
 package com.percussion.server;
 
 import com.percussion.util.IOTools;
-import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -215,16 +214,16 @@ public class PSCustomControlManagerTest
    private static final String CONTROL_IMPORTS_CONTENT =
       "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
       "<!DOCTYPE xsl:stylesheet [\n" +
-         "<!ENTITY % HTMLlat1 SYSTEM \"/Rhythmyx/DTD/HTMLlat1x.ent\">\n" +
+         "<!ENTITY % HTMLlat1 SYSTEM \"./../../DTD/HTMLlat1x.ent\">\n" +
             "%HTMLlat1;\n" +
-         "<!ENTITY % HTMLsymbol SYSTEM \"/Rhythmyx/DTD/HTMLsymbolx.ent\">\n" +
+         "<!ENTITY % HTMLsymbol SYSTEM \"./../../DTD/HTMLsymbolx.ent\">\n" +
             "%HTMLsymbol;\n" +
-         "<!ENTITY % HTMLspecial SYSTEM \"/Rhythmyx/DTD/HTMLspecialx.ent\">\n" +
+         "<!ENTITY % HTMLspecial SYSTEM \"./../../DTD/HTMLspecialx.ent\">\n" +
             "%HTMLspecial;\n" +
       "]>\n" +
       "<xsl:stylesheet version=\"1.1\" " +
       "xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\" " +
-      "xmlns:psxctl=\"URN:percussion.com/control\" " +
+      "xmlns:psxctl=\"urn:percussion.com/control\" " +
       "xmlns=\"http://www.w3.org/1999/xhtml\" " +
       "exclude-result-prefixes=\"psxi18n\" " +
       "xmlns:psxi18n=\"urn:www.percussion.com/i18n\" >\n" +

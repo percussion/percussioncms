@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -56,9 +56,101 @@
      */
     var TYPE_PUT = "PUT";
 
+    var TYPE_OPTIONS = "OPTIONS";
+
+    var TYPE_HEAD="HEAD";
+
+    var CSRF_HEADER="X-CSRF-HEADER";
+
+    var CSRF_METADATA_PATH="/perc-metadata-services/metadata/csrf";
+    var CSRF_FORMS_PATH="/perc-form-processor/forms/csrf";
+    var CSRF_POLLS_PATH="/perc-polls-services/polls/csrf";
+    var CSRF_INTEGRATION_PATH="/perc-integrations/integrations/csrf";
+    var CSRF_COMMENTS_PATH="/perc-comments-services/comment/csrf";
+    var CSRF_MEMBERSHIP_PATH="/perc-membership-services/membership/csrf";
+    var CSRF_FEEDS_PATH="/feeds/rss/csrf";
+
     $.ajaxSetup({
         timeout: 300000
     });
+
+
+
+    function csrfGetURLFromServiceCall(url){
+        if(typeof url === "undefined" || url == null)
+            return null;
+        //Create a new link with the url as its href:
+        var ret;
+        var a = $('<a>', {
+            href: url
+        });
+        var path = url;
+        if(path.includes("/perc-metadata-services/"))
+            path = CSRF_METADATA_PATH;
+        else if(path.includes("/perc-form-processor/"))
+            path = CSRF_FORMS_PATH;
+        else if(path.includes("/perc-polls-services"))
+            path = CSRF_POLLS_PATH;
+        else if(path.includes("/perc-comments-services/"))
+            path = CSRF_COMMENTS_PATH;
+        else if(path.includes("/perc-membership-services/"))
+            path = CSRF_MEMBERSHIP_PATH;
+        else if(path.includes("/feeds/"))
+            path = CSRF_FEEDS_PATH;
+        else
+            path = null;
+
+        if(path!= null){
+            return  path;
+        }else{
+            return null;
+        }
+
+    }
+
+    function csrfGetToken(url,callback){
+        let csrfToken;
+        if(typeof url != "undefined" && url != null){
+            if(!url.endsWith("/csrf")){
+                url = csrfGetURLFromServiceCall(url);
+            }
+            if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
+                var servicebase = jQuery.getDeliveryServiceBase();
+                if(servicebase !== null && typeof servicebase !== 'undefined') {
+                    if(!url.startsWith(servicebase) && !url.startsWith("http")){
+                        url = joinURL(servicebase,url);
+                    }
+                }
+            }
+        }
+        let init = {
+            url:url,
+            async: "false",
+            method: TYPE_HEAD, // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'omit', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                "Accept": "text/plain"
+            },
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'origin-when-cross-origin',
+            success: function(data, textstatus,response){
+                               callback(response);
+            },
+            error: function(request, textstatus, error){
+                console.debug(textstatus + ":" + error);
+            }
+        };
+
+        $.ajax( url, init);
+
+    }
 
     function joinURL(firstPart, secondPart){
         if("undefined" !== typeof (firstPart)){
@@ -81,18 +173,18 @@
     }
 
     function toJSON(payload){
-     if("" === payload){
-         payload ={};
-     }
-     if("undefined" !== typeof(payload)){
-         if(Array.isArray(payload) || "string" === typeof(payload)){
-             return JSON.parse(payload);
-         }else{
-             return payload;
-         }
-     }else{
-         return payload;
-     }
+        if("" === payload){
+            payload ={};
+        }
+        if("undefined" !== typeof(payload)){
+            if(Array.isArray(payload) || "string" === typeof(payload)){
+                return JSON.parse(payload);
+            }else{
+                return payload;
+            }
+        }else{
+            return payload;
+        }
 
     }
     /**
@@ -125,20 +217,24 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeJsonRequest(url, type, sync, callback, dataObject, abortCallback, timeout) {
+    function makeJsonRequest(url, type, sync=false, callback, dataObject, abortCallback, timeout) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
         var ajaxTimeout = $.perc_utils.percParseInt(timeout);
         var args = {
             dataType: 'json',
             async: !sync,
             contentType: 'application/json',
+            method: type,
             type: type,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             url: url,
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
-                var result = {
+                let result = {
                     data: data,
                     textstatus: textstatus
                 };
@@ -146,8 +242,8 @@
             },
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
-                if (request.status == 204 || request.status == 1223) {
-                    var result = {
+                if (request.status === 204 || request.status === 1223) {
+                    let result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -155,14 +251,14 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    var result = {
+                    let result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -173,18 +269,40 @@
         if (ajaxTimeout) {
             $.extend(args, {timeout: ajaxTimeout});
         }
-        return $.ajax(args);
+        makeAjaxRequest(args);
+    }
+    function makeAjaxRequest(args){
+        if(!csrfSafeMethod(args.method)) {
+            let u = csrfGetURLFromServiceCall(args.url);
+            if (u != null) {
+                csrfGetToken(u, function (response) {
+                    if (typeof response !== 'undefined' && response != null)
+                        var tokenHeader = response.getResponseHeader(CSRF_HEADER);
+                    if (typeof tokenHeader !== "undefined" && tokenHeader != null) {
+                        var token = response.getResponseHeader("X-CSRF-TOKEN");
+                        if (tokenHeader != null && token != null) {
+                            args.headers[tokenHeader] = token;
+                        }
+                    }
+                    $.ajax(args);
+                });
+            } else {
+                $.ajax(args);
+            }
+        }else{
+            $.ajax(args);
+        }
+
     }
 
     /**
      *  Makes generic request
      *  TODO: Write the other requests in terms of this one
      */
-    function makeRequest(url, type, sync, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
+    function makeRequest(url, type, sync=false, callback, dataObject, contentType, dataType, noEscape, abortCallback) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
-        if (dataType == null || typeof dataType == "undefined") {
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
+        if (dataType === null || typeof dataType === "undefined") {
             dataType = "text";
 
         }
@@ -199,12 +317,17 @@
                 json: "application/json, text/javascript"
             },
             async: !sync,
+            method:type,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             contentType: contentType,
             type: type,
             url: (noEscape) ? url : escape(url),
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
-                var result = {
+                let result = {
                     data: data,
                     textstatus: textstatus
                 };
@@ -212,8 +335,8 @@
             },
             error: function (request, textstatus, error) {
                 // look for status 204 which should not be an error
-                if (request.status == 204 || request.status == 1223) {
-                    var result = {
+                if (request.status === 204 || request.status === 1223) {
+                    let result = {
                         data: {},
                         textstatus: request.statusText
                     };
@@ -221,14 +344,14 @@
                     return;
                 }
                 else if (request.status > 0) {
-                    var result = {
+                    let result = {
                         request: request,
                         textstatus: textstatus,
                         error: error
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -236,7 +359,8 @@
         if (dataObject) {
             $.extend(args, {data: JSON.stringify(dataObject)});
         }
-        $.ajax(args);
+        makeAjaxRequest(args);
+
     }
 
     /**
@@ -264,10 +388,9 @@
      * </pre>
      * @param dataObject JSON payload object for request, may be null.
      */
-    async function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
+    function makeXdmXmlRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        let tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        let version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        let version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         if (null === callback || 'undefined' === typeof (callback)) {
             alert("Callback cannot be null or undefined");
@@ -277,7 +400,7 @@
             alert("Invalid type specified, must be GET or POST.");
             return;
         }
-        if (null == servicebase || 'undefined' == typeof (servicebase)) {
+        if (null === servicebase || 'undefined' === typeof (servicebase)) {
             // Let's see if jQuery.getDeliveryServiceBase exists and 
             // if so use it to get the service base
             if ('function' === typeof (jQuery.getDeliveryServiceBase)) {
@@ -291,46 +414,54 @@
         if(!url.startsWith(servicebase) && !url.startsWith("http")){
             url = joinURL(servicebase,url);
         }
+        var body;
+        // Add payload object if it exists
+        if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
+            body = JSON.stringify(dataObject);
+        }
         let init = {
+            url:url,
+            async: true,
+            dataType: "text",
             method: type, // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'omit', // include, *same-origin, omit
+            contentType: "application/json",
+            accept:"application/xml",
+            data:body,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             headers: {
                 'Content-Type': 'application/json',
                 "Accept": "application/xml",
-                "perc-tid": tenantId,
                 "perc-version": version
             },
             redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin-when-cross-origin'
-        };
-
-        // Add payload object if it exists
-        if (null != dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
-            init.body = JSON.stringify(dataObject);
-        }
-
-        const response = await fetch(url, init);
-
-        response.text().then(data => {
-            if(response.ok) {
-
+            referrerPolicy: 'origin-when-cross-origin',
+            success: function(data, textstatus){
                 let resp = {
                     data: data,
-                    status: response.status
+                    status: textstatus
                 };
-                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
-            }else{
+                callback(self.STATUS_SUCCESS,resp);
+            },
+            error: function(request, textstatus, error){
                 let resp = {
-                    message: response.message,
-                    status: response.status
+                    message: error,
+                    status: textstatus
                 };
                 callback(self.STATUS_ERROR, resp);
             }
-        });
+        };
+        makeAjaxRequest(init);
 
     }
+
+
+
 
     /**
      * Make a cross domain JSON ajax request to the delivery sevices. The request content type will be
@@ -357,81 +488,87 @@
      * </pre>
      * @param dataObject JSON payload object for request, may be null.
      */
-    async function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
+     function makeXdmJsonRequest(servicebase, url, type, callback, dataObject) {
         let self = this;
-        const tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        const version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
-
         if(null === callback || 'undefined' === typeof (callback))
-		{
-		    alert("Callback cannot be null or undefined");
-		    return;
-		}
+        {
+            console.error("Callback cannot be null or undefined");
+            return;
+        }
 
-		if(!(type === self.TYPE_GET || type === self.TYPE_POST))
-		{
-		    alert("Invalid type specified, must be GET or POST.");
-		    return;		    
-		}
+        if(null === servicebase || 'undefined' === typeof (servicebase)){
+            // Let's see if jQuery.getDeliveryServiceBase exists and
+            // if so use it to get the service base
+            if('function' === typeof (jQuery.getDeliveryServiceBase))
+            {
+                servicebase = jQuery.getDeliveryServiceBase();
+            }
+            else
+            {
+                console.error("Servicebase not defined, cannot make ajax call.");
+                return;
+            }
+        }
 
-		if(null === servicebase || 'undefined' === typeof (servicebase)){
-		    // Let's see if jQuery.getDeliveryServiceBase exists and 
-			// if so use it to get the service base
-			if('function' === typeof (jQuery.getDeliveryServiceBase))
-			{
-			    servicebase = jQuery.getDeliveryServiceBase();	
-			}
-			else
-			{
-				console.error("Servicebase not defined, cannot make ajax call.");
-			    return;
-			}
-		}
-
-		if(!url.startsWith(servicebase) && !url.startsWith("http")){
+        if(!url.startsWith(servicebase) && !url.startsWith("http")){
             url = joinURL(servicebase,url);
         }
 
-		let init = {
-            method: type, // *GET, POST, PUT, DELETE, etc.
+        var body;
+        // Add payload object if it exists
+        if (null !== dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
+            body = JSON.stringify(dataObject);
+        }
+        const version = typeof $.getCMSVersion ==="function" ? $.getCMSVersion() : "";
+        var header =   {
+            'Content-Type': 'application/json',
+            "Accept": "application/json,text/plain",
+            "perc-version": version
+        };
+        let init = {
+            url: url,
+            dataType: "text",
+            contentType: "application/json",
+            type: type,
+            method:type,
+            async: true,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:body,
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'omit', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                "Accept": "application/json,text/plain",
-                "perc-tid": tenantId,
-                "perc-version": version
-            },
+            headers : header,
             redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'origin-when-cross-origin'
-        };
-
-        // Add payload object if it exists
-        if (null !== dataObject && '' !== dataObject && 'undefined' !== typeof (dataObject)) {
-            init.body = JSON.stringify(dataObject);
-        }
-
-        const response = await fetch(url, init);
-
-        response.text().then(data => {
-            if(response.ok) {
-
+            referrerPolicy: 'origin-when-cross-origin',
+            success: function(data, textstatus){
                 let resp = {
                     data: data,
-                    status: response.status
+                    status: textstatus
                 };
-                callback(self.STATUS_SUCCESS,resp); // JSON data parsed by `data.json()` call
-            }else{
+                callback(self.STATUS_SUCCESS,resp);
+            },
+            error: function(request, textstatus, error){
                 let resp = {
-                    message: response.message,
-                    status: response.status
+                    message: error,
+                    status: textstatus
                 };
                 callback(self.STATUS_ERROR, resp);
             }
-        });
-
+        };
+        makeAjaxRequest(init);
     }
+
+    function csrfSafeMethod(method) {
+         if(typeof method === 'undefined' || method === null){
+             return true;
+         }
+        // these HTTP methods do not require CSRF protection
+        return !(['post','put','delete'].includes(method.toLowerCase()));
+    }
+
 
     /**
      *  Makes a request to a specified url, returning status and results
@@ -462,18 +599,22 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeXmlRequest(url, type, sync, callback, dataString, abortCallback) {
+    function makeXmlRequest(url, type, sync=false, callback, dataString, abortCallback) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         var args = {
             dataType: 'xml',
             async: !sync,
             contentType: 'application/xml',
+            method:type,
             type: type,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
             url: url,
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -490,7 +631,7 @@
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -498,7 +639,7 @@
         if (dataString) {
             $.extend(args, {data: dataString});
         }
-        $.ajax(args);
+        makeAjaxRequest(args);
     }
 
     /**
@@ -526,18 +667,18 @@
      *  @param abortCallback {function} the callback function to which return if error
      *  request status <= 0 (no status recieved from server)
      */
-    function makeDeleteRequest(url, sync, callback, dataString, abortCallback) {
+    function makeDeleteRequest(url, sync=false, callback, dataString, abortCallback) {
         var self = this;
-        var tenantId = $.isFunction($.getCm1License) ? $.getCm1License() : "";
-        var version = $.isFunction($.getCm1Version) ? $.getCm1Version() : "";
+        var version = typeof $.getCMSVersion === "function" ? $.getCMSVersion() : "";
 
         var args = {
             dataType: 'text',
             async: !sync,
             contentType: 'application/xml',
+            method: self.TYPE_DELETE,
             type: self.TYPE_DELETE,
             url: url,
-            headers: {"perc-tid": tenantId, "perc-version": version},
+            headers: {"perc-version": version},
             success: function (data, textstatus) {
                 var result = {
                     data: data,
@@ -554,7 +695,7 @@
                     };
                     callback(self.STATUS_ERROR, result);
                 }
-                else if ($.isFunction(abortCallback)) {
+                else if (typeof abortCallback === "function") {
                     abortCallback(self.STATUS_ABORT);
                 }
             }
@@ -562,7 +703,7 @@
         if (dataString) {
             $.extend(args, {data: dataString});
         }
-        $.ajax(args);
+        makeAjaxRequest(args);
     }
 
 
@@ -577,13 +718,13 @@
      */
     function extractDefaultErrorMessage(request) {
         var buff = "";
-        if (request == null || typeof(request) == 'undefined')
+        if (request === null || typeof(request) === 'undefined')
             return "";
         //Handle responses from cross domain requests
-        if (typeof(request.responseText) == 'undefined' && typeof(request.message) != 'undefined') {
-            request["responseText"] = request.message;
+        if (typeof(request.responseText) === 'undefined' && typeof(request.message) !== 'undefined') {
+            request.responseText = request.message;
         }
-        if (request.responseText == null || request.responseText.length == 0) {
+        if (request.responseText === null || request.responseText.length === 0) {
             if (request.statusText && request.statusText !== '') {
                 return request.statusText;
             }
@@ -599,28 +740,28 @@
                 msie: /msie/.test(ua) && !/opera/.test(ua)
             };
             //IE handles this differently from all other browsers, of course
-            if (b.msie && !error && typeof(request.responseText) == 'string' && request.responseText.length > 0) {
+            if (b.msie && !error && typeof(request.responseText) === 'string' && request.responseText.length > 0) {
                 return request.responseText;
             }
         }
         catch (e) {
         }
 
-        if (error != null && error.ValidationErrors != undefined) {
+        if (error !== null && error.ValidationErrors !== undefined) {
             var verrors = error.ValidationErrors;
-            if (verrors.fieldErrors != undefined ) {
+            if (verrors.fieldErrors !== undefined ) {
                 buff += objectErrorToString(verrors.fieldErrors);
             }
-            else if (verrors.globalErrors != undefined) {
+            else if (verrors.globalErrors !== undefined) {
                 buff += objectErrorToString(verrors.globalErrors);
             }
-            else if (verrors.globalError != undefined) {
+            else if (verrors.globalError !== undefined) {
                 buff += objectErrorToString(verrors.globalError);
             }
         }
         else if (error != null) {
             if (typeof(error.defaultMessage) != 'undefined' && error.Errors)
-                error = error.Errors
+                error = error.Errors;
 
             var def = "";
             if (typeof(error.defaultMessage) != 'undefined') {
@@ -636,7 +777,7 @@
                 def = error.localizedMessage;
             }
             else if (error.Errors && typeof(error.globalError.code) != 'undefined') {
-                var prefix = request.status == 500 ? "Server Error: " : "";
+                var prefix = request.status === 500 ? "Server Error: " : "";
                 def = prefix + error.Errors.globalError.code;
             }
             buff += def;
@@ -644,24 +785,24 @@
 
         //XML section. for the moment just parse validation errors
         var xmlResponse;
-        if (typeof(request.responseText) != 'undefined' && request.responseText.indexOf('<?xml') != -1) {
+        if (typeof(request.responseText) != 'undefined' && request.responseText.indexOf('<?xml') !== -1) {
             xmlResponse = $(request.responseText);
         }
-        else if (typeof(request) == 'string' && request.indexOf('<?xml') != -1) {
+        else if (typeof(request) === 'string' && request.indexOf('<?xml') !== -1) {
             xmlResponse = $(request);
         }
         if (typeof(xmlResponse) != 'undefined' && xmlResponse.is('ValidationErrors')) {
-            if (xmlResponse.find('globalErrors').find('defaultMessage').text() != "") {
+            if (xmlResponse.find('globalErrors').find('defaultMessage').text() !== "") {
                 buff += xmlResponse.find('globalErrors').find('defaultMessage').text();
             }
-            else if (xmlResponse.find('globalError').find('defaultMessage').text() != "") {
-                buff += xmlResponse.find('globalError').find('defaultMessage').text() != "";
+            else if (xmlResponse.find('globalError').find('defaultMessage').text() !== "") {
+                buff += xmlResponse.find('globalError').find('defaultMessage').text() !== "";
             }
             else if (xmlResponse.next('defaultMessage')) {
                 buff += xmlResponse.next('defaultMessage')[0].nextSibling.nodeValue;
             }
         }
-        if (buff == "") {
+        if (buff === "") {
             buff = request.responseText;
         }
         return buff;
@@ -712,11 +853,11 @@
      */
     function extractFieldErrorCode(request) {
         var error = JSON.parse(request.responseText);
-        if (error.ValidationErrors == undefined)
+        if (error.ValidationErrors === undefined)
             return "";
 
         var verrors = error.ValidationErrors;
-        if (verrors.fieldErrors != undefined)
+        if (verrors.fieldErrors !== undefined)
             return verrors.fieldErrors.code;
 
         return "";
@@ -750,7 +891,7 @@
      */
     function convertMapToArray(mapEntries) {
         var tempArray = [];
-        if ($.isArray(mapEntries.entry))
+        if (Array.isArray(mapEntries.entry))
             tempArray = mapEntries.entry;
         else if (mapEntries.entry)
             tempArray.push(mapEntries.entry);
@@ -769,7 +910,9 @@
         TYPE_GET: TYPE_GET,
         TYPE_POST: TYPE_POST,
         TYPE_PUT: TYPE_PUT,
+        csrfGetToken: csrfGetToken,
         makeJsonRequest: makeJsonRequest,
+        makeAjaxRequest:makeAjaxRequest,
         makeXmlRequest: makeXmlRequest,
         makeRequest: makeRequest,
         makeXdmJsonRequest: makeXdmJsonRequest,

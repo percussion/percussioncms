@@ -17,17 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.container.adapters;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.PSJettyConnectorsTest;
 import com.percussion.utils.container.config.model.impl.BaseContainerUtils;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -81,8 +83,12 @@ public class JettyDatasourceConfigurationAdapterTest {
 
         JettyDatasourceConfigurationAdapter adapter = new JettyDatasourceConfigurationAdapter();
 
-        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
-        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, PSLegacyEncrypter.getPartTwoKey());
+        PSLegacyEncrypter legacy = PSLegacyEncrypter.getInstance(
+                PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                        PSEncryptor.SECURE_DIR)
+        );
+        DefaultConfigurationContextImpl fromCtx = new DefaultConfigurationContextImpl(root, legacy.getPartTwoKey());
+        DefaultConfigurationContextImpl toCtx = new DefaultConfigurationContextImpl(root, legacy.getPartTwoKey());
         adapter.load(fromCtx);
 
         BaseContainerUtils fromConfig = fromCtx.getConfig();

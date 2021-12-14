@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-   <!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-   %HTMLlat1;
-   <!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-   %HTMLsymbol;
-   <!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-   %HTMLspecial;
+        <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+        %HTMLlat1;
+        <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+        %HTMLsymbol;
+        <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+        %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
    <xsl:template match="VariantList" mode="previewbar">
       <xsl:comment>Start of Preview Bar</xsl:comment>
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -21,7 +23,7 @@
          </tr>
          <tr>
             <td width="100%" height="1" class="backgroundcolor">
-               <img src="../sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/>
+               <img src="/sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/>
             </td>
          </tr>
          <tr>
@@ -46,7 +48,7 @@
    </xsl:template>
    <xsl:template match="Variant" mode="columns">
       <td align="left" class="headercell2">&#160;&#160;
-         <img src="../sys_resources/images/preview.gif" width="20" height="20" border="0" alt="Click on link for preview">
+         <img src="/sys_resources/images/preview.gif" width="20" height="20" border="0" alt="Click on link for preview">
             <xsl:attribute name="alt"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.contenteditor.previewbar.alt@Click on link for preview'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
          </img>
          &#160;

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,8 +28,8 @@ import com.percussion.error.PSException;
 import com.percussion.soln.linkback.utils.ItemSummaryFinder;
 import com.percussion.util.IPSHtmlParameters;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -44,7 +44,7 @@ import java.util.Map;
  */
 public class ActiveAssemblyLinkbackController extends GenericLinkbackController {
 
-    private static final Log log = LogFactory.getLog(ActiveAssemblyLinkbackController.class);
+    private static final Logger log = LogManager.getLogger(ActiveAssemblyLinkbackController.class);
 
     private static final String REDIRECT_PATH = "/assembler/render";
 
@@ -89,7 +89,7 @@ public class ActiveAssemblyLinkbackController extends GenericLinkbackController 
         }
 
         // build new map
-        Map<String, String> nmap = new HashMap<String, String>();
+        Map<String, String> nmap = new HashMap<>();
         nmap.put(IPSHtmlParameters.SYS_CONTENTID, sys_contentid);
         nmap.put(IPSHtmlParameters.SYS_FOLDERID, sys_folderid);
         nmap.put(IPSHtmlParameters.SYS_SITEID, sys_siteid);

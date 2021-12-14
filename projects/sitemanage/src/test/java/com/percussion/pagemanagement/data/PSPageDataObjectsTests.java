@@ -17,27 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.data;
 
-import static java.util.Arrays.*;
-import static org.junit.Assert.*;
+import com.percussion.pagemanagement.data.PSWidgetProperties.PSWidgetProperty;
+import com.percussion.share.data.PSDataObjectTestCase;
+import com.percussion.share.test.PSDataObjectTestUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
-
-import com.percussion.pagemanagement.data.PSWidgetProperties.PSWidgetProperty;
-import com.percussion.share.data.PSDataObjectTestCase;
-import com.percussion.share.test.PSDataObjectTestUtils;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 
 public class PSPageDataObjectsTests
 {
@@ -217,6 +216,6 @@ public class PSPageDataObjectsTests
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSPageDataObjectsTests.class);
+    private static final Logger log = LogManager.getLogger(PSPageDataObjectsTests.class);
 
 }

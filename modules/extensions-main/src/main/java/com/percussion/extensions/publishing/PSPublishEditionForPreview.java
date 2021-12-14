@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.publishing;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -31,6 +32,11 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,12 +48,6 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 /**
  * This class publishes a manual edition for preview purposes. This is also
  * known as just in time publishing.
@@ -57,6 +57,9 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
          IPSRequestPreProcessor,
          IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSPublishEditionForPreview.class);
+
    /**
     * Inner class to implement a work thread to check on publishing status
     */
@@ -89,7 +92,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       {
          if (reader != null)
          {
-            StringBuffer returnValue = new StringBuffer();
+            StringBuilder returnValue = new StringBuilder();
             String nextLine = null;
             try
             {
@@ -121,46 +124,40 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
        */
       public void run()
       {
-         InputStream content = null;
-         InputStreamReader inputReader = null;
          Logger l = LogManager.getLogger(getClass());
 
-         try
-         {
+
             int count = 0;
             String stat = null;
             while (true)
             {
                count++;
-               content = mi_requestPath.openStream();
-               //possible performance hit, returns an InputStream
+               try(InputStream content = mi_requestPath.openStream()) {
+                  //possible performance hit, returns an InputStream
 
-               // JDS - the following MAY be more efficient then PSCopyStream to
-               // read the info.
-               inputReader = new InputStreamReader(content);
-               BufferedReader reader = new BufferedReader(inputReader);
-               String tmpStatus = toString(reader);
-               reader.close();
+                  // JDS - the following MAY be more efficient then PSCopyStream to
+                  // read the info.
+                  try (InputStreamReader inputReader = new InputStreamReader(content)) {
+                     try(BufferedReader reader = new BufferedReader(inputReader)) {
+                        String tmpStatus = toString(reader);
+                        reader.close();
 
-               stat = tmpStatus;
-               content.close();
-
-               content = null;
-               
-               // TODO: Ideally this code should check for the edition
-               // being in an in process state and continue rather than 
-               // counting down.
-               if (stat != null && stat.indexOf("notInProgress") >= 0)
-                  break;
-               Thread.sleep(1000);
-               if (count > 10)
-                  break;
+                        stat = tmpStatus;
+                        content.close();
+                        // TODO: Ideally this code should check for the edition
+                        // being in an in process state and continue rather than
+                        // counting down.
+                        if (stat != null && stat.indexOf("notInProgress") >= 0)
+                           break;
+                        Thread.sleep(1000);
+                        if (count > 10)
+                           break;
+                     }
+                  }
+               } catch (IOException | InterruptedException e) {
+                  l.error("Error while reading status from publisher", e);
+               }
             }
-         }
-         catch (Exception e)
-         {
-            l.error("Error while reading status from publisher", e);
-         }
          return;
       }
    }
@@ -198,11 +195,11 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
    public void preProcessRequest(Object[] params, IPSRequestContext request)
          throws PSExtensionProcessingException
    {
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
 
       if (params.length < 3)
       {
-         l.error("Insufficient parameters specified: " + params.length);
+         l.error("Insufficient parameters specified: {}", params.length);
          throw new IllegalArgumentException("The first three parameters"
                + " are required, see log for details");
       }
@@ -235,21 +232,16 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       // get session id for the puburl
       String userSession = request.getUserSessionId();
       request.printTraceMessage("usersession " + userSession);
-      //System.out.println("usersession " + userSession );
 
       //Compare the previewvariantid and the sys_variantid in the request
       //if they are equal continue. If not then the user clicked on the wrong
       // variant
       request.printTraceMessage("previewvariant  " + previewVariantId
             + " and sys_variant " + variantId);
-      //System.out.println("previewvariant "+ previewVariantId +" and
-      // sys_variant " + variantId );
       if (previewVariantId != null)
       {
          if (!(previewVariantId.trim().equalsIgnoreCase(variantId)))
          {
-            //System.out.println("previewvariant does not equal "+
-            // previewVariantId +" and sys_variant " + variantId );
             request.printTraceMessage("previewvariant does not equal "
                   + previewVariantId + " and sys_variant " + variantId);
 
@@ -283,7 +275,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
             }
 
             String appName = "Rhythmyx/sys_pubHandler/publisher.htm";
-            StringBuffer pubUrl = getAppURL(host, port, appName);
+            StringBuilder pubUrl = getAppURL(host, port, appName);
             pubUrl.append("?editionid=");
             pubUrl.append(editionId);
             pubUrl.append("&PUBAction=publish");
@@ -321,7 +313,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
 
             // Parse status to determine when publishing is done
             appName = "Rhythmyx/sys_pubHandler/publisher.xml";
-            StringBuffer pubStatusUrl = getAppURL(host, port, appName);
+            StringBuilder pubStatusUrl = getAppURL(host, port, appName);
 
             pubStatusUrl.append("?editionid=");
             pubStatusUrl.append(editionId);
@@ -331,9 +323,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
 
             CheckPub cp = new CheckPub(pubStatusUrl.toString());
             Thread th = new Thread(cp);
-            th.run();
-            //Control will return from this thread after the edition has
-            // finished publishing.
+            th.start();
+
 
             request
                   .printTraceMessage("About to remove Preview page from the RXEDITIONITEM table");
@@ -388,7 +379,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
     * @return a string buffer, never <code>null</code>, which allows further
     *         manipulation by the caller.
     */
-   protected StringBuffer getAppURL(String host, String port, String appName)
+   protected StringBuilder getAppURL(String host, String port, String appName)
    {
       if (host == null || host.trim().length() == 0)
       {
@@ -402,7 +393,7 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       {
          throw new IllegalArgumentException("appName may not be null or empty");
       }
-      StringBuffer appURL = new StringBuffer();
+      StringBuilder appURL = new StringBuilder();
       appName = "Rhythmyx/sys_pubHandler/publisher.xml";
       appURL.append("http://");
       appURL.append(host);
@@ -461,7 +452,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
          }
          catch (Exception e) //exception
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
          finally
          {
@@ -511,7 +503,8 @@ public class PSPublishEditionForPreview extends PSDefaultExtension
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {

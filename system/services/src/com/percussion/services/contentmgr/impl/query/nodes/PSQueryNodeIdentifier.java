@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,10 +25,9 @@ package com.percussion.services.contentmgr.impl.query.nodes;
 
 import com.percussion.services.contentmgr.impl.query.visitors.PSQueryNodeVisitor;
 import com.percussion.utils.jsr170.PSStringEncoder;
+import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.query.InvalidQueryException;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Represents a single query identifier

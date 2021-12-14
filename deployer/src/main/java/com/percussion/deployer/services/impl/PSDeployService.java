@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -241,7 +241,7 @@ public class PSDeployService
          if ( !isNew )
          {
             fName = filter.getName();
-            List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            List<IPSGuid> ids = new ArrayList<>();
             ids.add(filter.getGUID());
             IPSFilterService filterSvc = 
                PSFilterServiceLocator.getFilterService();
@@ -310,7 +310,7 @@ public class PSDeployService
          t = th.generateTemplateFromFile(archive, depFile, t, ctx);
          t = dh.doTransforms(t, ctx, dep);
          PSTemplateDefDependencyHandler.saveTemplate(t, ver,
-               new HashMap<Long, Integer>());
+               new HashMap<>());
       }
       catch (PSDeployException e)
       {
@@ -349,7 +349,7 @@ public class PSDeployService
       {
          service.doInstallDependencyFiles(tok, archive, dep, ctx);
       }
-      catch (PSDeployException e)
+      catch (PSDeployException | PSNotFoundException e)
       {
          throw new PSDeployServiceException(e);
       }

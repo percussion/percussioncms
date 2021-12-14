@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,6 +33,7 @@ import com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions;
 import com.percussion.delivery.client.PSDeliveryClient;
 import com.percussion.delivery.data.PSDeliveryInfo;
 import com.percussion.delivery.service.IPSDeliveryInfoService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.integritymanagement.data.PSIntegrityTask.TaskStatus;
 import com.percussion.utils.types.PSPair;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,24 +96,26 @@ public class PSDTSStatusProvider
      */
     public Map<String, PSPair<TaskStatus, String>> getDTSStatusReport()
     {
-        Map<String, PSPair<TaskStatus, String>> statusReport = new HashMap<String, PSPair<TaskStatus, String>>();
+        Map<String, PSPair<TaskStatus, String>> statusReport = new HashMap<>();
         
         //Check the status of the DTS - if down return status of dts else continue checking services
         PSPair<Boolean, String> dtsPair = getExternalTomcatServiceStatus(serverRoot);
         if (!dtsPair.getFirst())
         {
-            statusReport.put("dts", new PSPair<TaskStatus, String>(TaskStatus.FAILED, dtsPair.getSecond()));
+            statusReport.put("dts", new PSPair<>(TaskStatus.FAILED, dtsPair.getSecond()));
             return statusReport;
         }
-        statusReport.put("dts", new PSPair<TaskStatus, String>(TaskStatus.SUCCESS, dtsPair.getSecond()));
+        statusReport.put("dts", new PSPair<>(TaskStatus.SUCCESS, dtsPair.getSecond()));
         
         //check the external services and add the status to the report
         for(Map.Entry<String, String> externalService : externalServices.entrySet())
         {
-            if (!getExternalTomcatServiceStatus(serverRoot + externalService.getValue()).getFirst())
-                statusReport.put(externalService.getKey(), new PSPair<TaskStatus, String>(TaskStatus.FAILED, dtsPair.getSecond()));
-            else
-                statusReport.put(externalService.getKey(), new PSPair<TaskStatus, String>(TaskStatus.SUCCESS, dtsPair.getSecond()));
+            if (!getExternalTomcatServiceStatus(serverRoot + externalService.getValue()).getFirst()) {
+                statusReport.put(externalService.getKey(), new PSPair<>(TaskStatus.FAILED, dtsPair.getSecond()));
+            }
+            else {
+                statusReport.put(externalService.getKey(), new PSPair<>(TaskStatus.SUCCESS, dtsPair.getSecond()));
+            }
         }
         
         for (Map.Entry<String, String> entry : services.entrySet())
@@ -137,11 +140,11 @@ public class PSDTSStatusProvider
             PSDeliveryInfo server = deliveryService.findByService(service);
             String message = deliveryClient.getString(new PSDeliveryActionOptions(server, serviceURL,
                     HttpMethodType.GET, false));
-            return new PSPair<TaskStatus, String>(TaskStatus.SUCCESS, message);
+            return new PSPair<>(TaskStatus.SUCCESS, message);
         }
         catch (RuntimeException | IPSDeliveryClient.PSDeliveryClientException e)
         {
-            return new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
+            return new PSPair<>(TaskStatus.FAILED, PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -163,8 +166,9 @@ public class PSDTSStatusProvider
                 conn.setRequestProperty("Content-Type", "*/*");
     
                 response = conn.getResponseMessage();
-                if(response.contains("OK"))
+                if(response.contains("OK")) {
                     alive = true;
+                }
             }
             else{
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -172,19 +176,20 @@ public class PSDTSStatusProvider
                 conn.setRequestProperty("Content-Type", "*/*");
     
                 response = conn.getResponseMessage();
-                if(response.contains("OK"))
+                if(response.contains("OK")) {
                     alive = true;
+                }
                 
             }
-            return new PSPair<Boolean, String>(alive, response);    
+            return new PSPair<>(alive, response);
         }
         catch (ConnectException e)
         {
-            return new PSPair<Boolean, String>(false, e.getMessage());
+            return new PSPair<>(false,PSExceptionUtils.getMessageForLog(e));
         }
         catch (IOException e)
         {
-            return new PSPair<Boolean, String>(false, e.getMessage());
+            return new PSPair<>(false,PSExceptionUtils.getMessageForLog(e));
         }
     }
 }

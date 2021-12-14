@@ -17,13 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.rx;
 
-import static org.apache.commons.lang.Validate.notNull;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.server.IPSRequestContext;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,10 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.collections.CollectionUtils;
-
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.server.IPSRequestContext;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -104,7 +103,7 @@ public class PSLegacyExtensionUtils
     public static List<String> getParameterNames(IPSRequestContext request) {
         notNull(request);
         Iterator<Entry<String, ?>> iterator = request.getParametersIterator();
-        List<String> parameterNames = new ArrayList<String>();
+        List<String> parameterNames = new ArrayList<>();
         while(iterator.hasNext()) {
             String p = iterator.next().getKey();
             parameterNames.add(p);
@@ -120,7 +119,7 @@ public class PSLegacyExtensionUtils
     @SuppressWarnings("unchecked")
     public static List<String> getParameterNames(IPSExtensionDef extensionDef) {
         notNull(extensionDef);
-        List<String> rvalue = new ArrayList<String>();
+        List<String> rvalue = new ArrayList<>();
         Iterator<String> it = extensionDef.getRuntimeParameterNames();
         CollectionUtils.addAll(rvalue, it);
         return rvalue;

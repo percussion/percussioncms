@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,8 +30,8 @@ import com.percussion.delivery.services.IPSRestService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -76,7 +76,7 @@ public interface IPSFeedsRestService extends IPSRestService {
 	@Path("/readExternalFeed")
 	@Produces(MediaType.APPLICATION_XML)
 	public abstract String readExternalFeed(
-            PSFeedDTO psFeedDTO, @HeaderParam("perc-tid") String percId);
+            PSFeedDTO psFeedDTO);
 
 	/**
 	 * Saves the feed descriptors and connection info for meta data service. It
@@ -117,7 +117,8 @@ public interface IPSFeedsRestService extends IPSRestService {
 	@PUT
 	@Path("/rotateKey")
 	@RolesAllowed("deliverymanager")
-	public abstract void rotateKey(byte[] key);
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_PLAIN})
+	public abstract void rotateKey(String key);
 
 	// Property key constants
 	public static final String PROP_DESCRIPTION = "dcterms:abstract";

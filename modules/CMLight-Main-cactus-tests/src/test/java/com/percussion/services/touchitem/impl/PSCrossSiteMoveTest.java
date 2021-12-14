@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,20 +25,20 @@
 package com.percussion.services.touchitem.impl;
 
 
-import static java.util.Arrays.asList;
-
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.PSErrorException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.junit.experimental.categories.Category;
+import static java.util.Arrays.asList;
 
 /**
  * <h1>MOVE MATRIX</h1>
@@ -352,6 +352,6 @@ public class PSCrossSiteMoveTest extends PSCrossSiteTestCase
       }
    }
    
-   private static final Logger log = Logger.getLogger(PSCrossSiteMoveTest.class);
+   private static final Logger log = LogManager.getLogger(PSCrossSiteMoveTest.class);
 
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,44 +31,24 @@ import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.sitemgr.IPSPublishingContext;
-
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.xml.IPSXmlErrors;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.utils.xml.PSXmlUtils;
-
 import com.percussion.xml.PSXmlDocumentBuilder;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
 import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Serializable;
-import java.io.StringReader;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -80,6 +60,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -148,7 +139,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
     @JoinColumn(name = "SCHEMEID", nullable = false)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "PSLocationScheme_Parameters")
     @Fetch(FetchMode.SUBSELECT)
-    Set<PSLocationSchemeParameter> parameters = new HashSet<PSLocationSchemeParameter>();
+    Set<PSLocationSchemeParameter> parameters = new HashSet<>();
 
     /**
      * Provide backward compatible. See {@link #getContext()}.
@@ -407,7 +398,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
     public List<String> getParameterNames() {
         List<PSLocationSchemeParameter> sorted = getSortedParameters();
 
-        List<String> rval = new ArrayList<String>();
+        List<String> rval = new ArrayList<>();
 
         for (PSLocationSchemeParameter p : sorted) {
             rval.add(p.getName());
@@ -427,7 +418,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
             return Collections.EMPTY_LIST;
         }
 
-        List<PSLocationSchemeParameter> sorted = new ArrayList<PSLocationSchemeParameter>();
+        List<PSLocationSchemeParameter> sorted = new ArrayList<>();
         sorted.addAll(parameters);
 
         if (sorted.size() == 1) {
@@ -587,7 +578,7 @@ public class PSLocationScheme implements IPSCatalogItem, IPSLocationScheme,
     @Override
     public Object clone() throws CloneNotSupportedException {
         PSLocationScheme copy = (PSLocationScheme) super.clone();
-        copy.parameters = new HashSet<PSLocationSchemeParameter>(parameters);
+        copy.parameters = new HashSet<>(parameters);
         copy.m_isCloned = true;
 
         return copy;

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -56,13 +56,13 @@
 
    function decorate_generic( el, visible, actions, pageId, add, rem ) {
       rem( el );
-      el.unbind( '.decorate' );
+      el.off( '.decorate' );
       if( visible ) {
          add( el, actions, pageId );
       }
       else {
-         el.bind('mouseenter.decorate', function(){ add( el, actions, pageId ); });
-         el.bind('mouseleave.decorate', function(){ rem( el ); });
+         el.on('mouseenter.decorate', function(){ add( el, actions, pageId ); });
+         el.on('mouseleave.decorate', function(){ rem( el ); });
       }
    }
 
@@ -74,7 +74,7 @@
       el.removeClass('perc-widget-visible-grid perc-widget-puff');
       el.find( '.perc-widget-menubar' ).remove();
    }
-   function add_region_dec( el, actions, pageId ) { 
+   function add_region_dec( el) {
       el.addClass('perc-region-visible-grid');
       //el.sortable();
    }
@@ -89,7 +89,7 @@
 		  var icon = this.icon(),
 		  action = this.action;
 		  ul.append($("<li/>").append(icon));
-		  icon.bind("click.decorate",function(){ 
+		  icon.on("click.decorate",function(){
                                action(widget.attr('assetid'), widget.attr('widgetid'), widget.attr('widgetdefid'), pageId); }); 
               } );
       return bar;

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,10 +26,6 @@ package com.percussion.rest.test.apibridge;
 
 import com.percussion.rest.locationscheme.ILocationSchemeAdaptor;
 import com.percussion.rest.locationscheme.LocationScheme;
-import com.percussion.services.sitemgr.IPSLocationScheme;
-import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteManagerLocator;
-import com.percussion.util.PSSiteManageBean;
 import org.springframework.stereotype.Component;
 
 @Component

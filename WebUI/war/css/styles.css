@@ -415,7 +415,7 @@ div.perc-template-background
     vertical-align:middle;
 }
 
-#perc-pageEditor-tabs .ui-widget-header li.ui-tabs-selected,#tabs .ui-widget-header li.ui-tabs-selected
+#perc-pageEditor-tabs .ui-widget-header li.ui-tabs-active,#tabs .ui-widget-header li.ui-tabs-active
 {
     background:none repeat scroll 0 0 transparent;
     padding:0;
@@ -833,7 +833,6 @@ a#perc-page-close.perc-close,#perc-page-edit.perc-edit-button
     background-repeat:no-repeat;
     float:left;
     vertical-align:bottom;
-    width:100px;
 }
 
 .perc-template-thumbnail-container
@@ -1264,7 +1263,6 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
 #tabs-4 #perc-styleTabs .ui-tabs-nav
 {
     background:none repeat scroll 0 0 #E6E6E9;
-    height:54px;
     padding:0 0 0 16px;
 }
 
@@ -1333,7 +1331,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
     cursor:pointer;
 }
 
-#perc-styleTabs ul.ui-tabs-nav li.ui-tabs-selected
+#perc-styleTabs ul.ui-tabs-nav li.ui-tabs-active
 {
     background-color:#FFFFFF;
     background-image:url("../images/images/buttonBlueMinus.png");
@@ -1348,7 +1346,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
     outline: 5px auto -webkit-focus-ring-color;
 }
 
-#perc-styleTabs ul.ui-tabs-nav li.ui-tabs-selected:hover
+#perc-styleTabs ul.ui-tabs-nav li.ui-tabs-active:hover
 {
     background-image:url("../images/images/buttonBlueMinusOver.png");
     cursor:pointer;
@@ -1360,7 +1358,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item.perc-templat
     padding:12px 10px 16px 5px;
 }
 
-#perc-styleTabs ul.ui-tabs-nav li.ui-tabs-selected a
+#perc-styleTabs ul.ui-tabs-nav li.ui-tabs-active a
 {
     background-color:#FFFFFF;
     height:18px;
@@ -1753,7 +1751,7 @@ td.perc-table-cell-indented > input
     padding:10px;
 }
 
-#perc-region-library .perc-region-selected
+#perc-region-library .perc-region-active
 {
     background-color:#E6E6E9;
     border:medium none;
@@ -2510,7 +2508,7 @@ div.perc-scrollable-templates div.perc-items div.perc-template-item:hover
 }
 
 /* Editor Tabs Styles */
-li.ui-tabs-selected #perc-tab-configure,#perc-tab-configure:hover,#perc-tab-configure,li.ui-state-disabled #perc-tab-configure:hover,li.ui-tabs-selected #perc-tab-content,#perc-tab-content:hover,#perc-tab-content,li.ui-state-disabled #perc-tab-content:hover,li.ui-tabs-selected #perc-tab-layout,#perc-tab-layout:hover,#perc-tab-layout,li.ui-state-disabled #perc-tab-layout:hover,li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover,#perc-tab-style,li.ui-state-disabled #perc-tab-style:hover
+li.ui-tabs-active #perc-tab-configure,#perc-tab-configure:hover,#perc-tab-configure,li.ui-state-disabled #perc-tab-configure:hover,li.ui-tabs-active #perc-tab-content,#perc-tab-content:hover,#perc-tab-content,li.ui-state-disabled #perc-tab-content:hover,li.ui-tabs-active #perc-tab-layout,#perc-tab-layout:hover,#perc-tab-layout,li.ui-state-disabled #perc-tab-layout:hover,li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#perc-tab-style,li.ui-state-disabled #perc-tab-style:hover
 {
     /* background:url("../images/text/editorTabs.png");*/
     display: block;
@@ -2529,7 +2527,7 @@ li.ui-tabs-selected #perc-tab-configure,#perc-tab-configure:hover,#perc-tab-conf
     letter-spacing: 1px;
 }
 
-li.ui-tabs-selected #perc-tab-configure,#perc-tab-configure:hover
+li.ui-tabs-active #perc-tab-configure,#perc-tab-configure:hover
 {
     background-position:0 -294px;
 }
@@ -2539,14 +2537,13 @@ li.ui-tabs-selected #perc-tab-configure,#perc-tab-configure:hover
     background-position:0 -252px;
 }
 
-li.ui-tabs-selected #perc-tab-content,#perc-tab-content:hover
+li.ui-tabs-active #perc-tab-content,#perc-tab-content:hover,#ui-state-active
 {
     background-position:0 -42px;
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 
@@ -2555,14 +2552,13 @@ li.ui-tabs-selected #perc-tab-content,#perc-tab-content:hover
     background-position:0 0;
 }
 
-li.ui-tabs-selected #perc-tab-layout,#perc-tab-layout:hover
+li.ui-tabs-active #perc-tab-layout,#perc-tab-layout:hover,#ui-state-active
 {
     background-position:0 -126px;
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 
@@ -2571,14 +2567,13 @@ li.ui-tabs-selected #perc-tab-layout,#perc-tab-layout:hover
     background-position:0 -84px;
 }
 
-li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover
+li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#ui-state-active
 {
     background-position:0 -210px;
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 
@@ -3566,8 +3561,8 @@ li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover
 .ui-default .perc-font-icon {
     zoom: 1;
     display: inline-block;
-/*    width: 25px;
-    height: 20px; */
+    /*    width: 25px;
+        height: 20px; */
     cursor: pointer;
     color: #000;
     font-size: 14pt;
@@ -3622,7 +3617,7 @@ li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover
 /* .ui-disabled:hover state */
 .ui-disabled.perc-font-icon:hover,
 .ui-disabled .perc-font-icon:hover {
-    text-shadow: 0px 1px silver;
+    text-shadow: 0 1px silver;
 }
 /* fixes for specific icons */
 .perc-font-icon.icon-sitemap {
@@ -3633,7 +3628,7 @@ li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover
 .perc-font-icon .icon-caret-down {
     /* secondary indicators */
     font-size: 0.5em;
-    text-decoration: super;
+    text-decoration: inherit;
 }
 /*These styles are font awesome styles*/
 .perc-font.perc-font-button, .perc-font-button a {
@@ -3709,11 +3704,11 @@ li.ui-tabs-selected #perc-tab-style,#perc-tab-style:hover
 .ui-tabs li.ui-state-default {
     top: 3px;
 }
-.ui-tabs li.ui-tabs-selected,
-.ui-tabs li.ui-tabs-selected a {
+.ui-tabs li.ui-tabs-active,
+.ui-tabs li.ui-tabs-active a {
     height: 32px;
 }
-.ui-tabs li.ui-tabs-selected {
+.ui-tabs li.ui-tabs-active {
     top: 1px;
 }
 #perc-workflow-comment{
@@ -3794,3 +3789,8 @@ input, select, textarea {
 }
 
 select[name*="_up_"] { font-family: 'Open Sans',sans-serif !important; }
+
+#perc-gadget-comments-viewComments-frame-container {
+    min-height : 500px !important;
+    overflow-y : unset !important;
+}

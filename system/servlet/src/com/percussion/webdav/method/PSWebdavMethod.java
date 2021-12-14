@@ -17,34 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.webdav.method;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Enumeration;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -53,6 +31,7 @@ import com.percussion.cms.objectstore.client.IPSRemoteErrors;
 import com.percussion.cms.objectstore.client.PSRemoteAgent;
 import com.percussion.cms.objectstore.client.PSRemoteException;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.tools.PSCopyStream;
 import com.percussion.util.IPSRemoteRequester;
 import com.percussion.util.PSCharSets;
@@ -66,6 +45,26 @@ import com.percussion.webdav.error.IPSWebdavErrors;
 import com.percussion.webdav.error.PSWebdavException;
 import com.percussion.webdav.objectstore.PSWebdavConfig;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 /**
  * This is the base class for all WebDAV methods. It provides convenient methods
@@ -75,6 +74,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 public abstract class PSWebdavMethod
    implements IPSWebdavConstants
 {
+
+   private static final Logger log = LogManager.getLogger(PSWebdavMethod.class);
 
    /**
     * Constructs an instance from the given parameters.
@@ -122,7 +123,9 @@ public abstract class PSWebdavMethod
       }
       catch (Exception ex)
       {
-         ms_logger.error("Caught exception: ", ex);          
+         log.error("Caught exception: {}", ex.getMessage());
+         log.error(ex.getMessage());
+         log.debug(ex.getMessage(), ex);
          throw new ServletException(ex);
       }
    }
@@ -134,24 +137,23 @@ public abstract class PSWebdavMethod
     */
    private void logRequestInfo() throws IOException
    {
-      if (! ms_logger.isDebugEnabled())
+      if (! log.isDebugEnabled())
          return;
       
         
-      ms_logger.debug(""); 
-      ms_logger.debug("RECEIVED REQUEST: =============== BEGIN ============="); 
-      ms_logger.debug("REQUEST METHOD: <<<<<<<<<<" + m_request.getMethod() 
-                     + ">>>>>>>>>>");
-      ms_logger.debug("URL: " + m_request.getRequestURL());
-      ms_logger.debug("QUERY STRING: " + m_request.getQueryString());
-      ms_logger.debug("REMOTE USER: " + m_request.getRemoteUser());
-      ms_logger.debug("CONTENT TYPE: " + m_request.getContentType());
-      ms_logger.debug("CONTENT LENGTH: " + m_request.getContentLength());
+      log.debug("");
+      log.debug("RECEIVED REQUEST: =============== BEGIN =============");
+      log.debug("REQUEST METHOD: <<<<<<<<<< {} >>>>>>>>>>", m_request.getMethod());
+      log.debug("URL: {}", m_request.getRequestURL());
+      log.debug("QUERY STRING: {}", m_request.getQueryString());
+      log.debug("REMOTE USER: {}", m_request.getRemoteUser());
+      log.debug("CONTENT TYPE: {}", m_request.getContentType());
+      log.debug("CONTENT LENGTH: {}", m_request.getContentLength());
       Enumeration names = m_request.getHeaderNames();
       while (names.hasMoreElements())
       {
          String name = (String)names.nextElement();
-         ms_logger.debug("HEADER: " + name + "=" + m_request.getHeader(name));
+         log.debug("HEADER: {} = {}", name, m_request.getHeader(name));
       }
       String bodyString = null;
       if (m_request.getContentLength() > 0)
@@ -168,8 +170,8 @@ public abstract class PSWebdavMethod
          }
       }
       if (bodyString != null)
-         ms_logger.debug("BODY:\n" + bodyString + "\n");
-      ms_logger.debug("RECEIVED REQUEST: =============== END =============\n"); 
+         log.debug("BODY:\n" + bodyString + "\n");
+         log.debug("RECEIVED REQUEST: =============== END =============\n");
    }
 
    /**
@@ -195,24 +197,24 @@ public abstract class PSWebdavMethod
       int status)
       throws IOException
    {
-      if (! ms_logger.isDebugEnabled())
+      if (! log.isDebugEnabled())
          return;
 
-      ms_logger.debug("");
-      ms_logger.debug("RESPONSE: =============== BEGIN =============");
+      log.debug("");
+      log.debug("RESPONSE: =============== BEGIN =============");
       if (body != null && body.length > 0)
       {
          if (mimetype.toLowerCase().startsWith("text"))
          {
             if (enc == null)
-               ms_logger.debug("RESPONSE BODY: \n" + new String(body) + "\n");
+               log.debug("RESPONSE BODY: \n" + new String(body) + "\n");
             else
-               ms_logger.debug(
+               log.debug(
                   "RESPONSE BODY: \n" + new String(body, enc) + "\n");
          }
          else
          {
-            ms_logger.debug(
+            log.debug(
                "RESPONSE BODY: ...binary content, "
                   + body.length
                   + " bytes...\n");
@@ -221,11 +223,11 @@ public abstract class PSWebdavMethod
       
       if (status >= 0)
       {      
-         ms_logger.debug("RESPONSE STATUS: " + status + " ("
+         log.debug("RESPONSE STATUS: " + status + " ("
                + PSWebdavStatus.getStatusText(status) + ")");
       }
 
-      ms_logger.debug("RESPONSE: =============== END =============\n"); 
+      log.debug("RESPONSE: =============== END =============\n");
    }      
    
    /**
@@ -325,25 +327,11 @@ public abstract class PSWebdavMethod
          }
          else
          {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            try
-            {
+           try(ByteArrayOutputStream os = new ByteArrayOutputStream()){
+
                PSCopyStream.copyStream(m_request.getInputStream(), os);
+              m_contentInByte = os.toByteArray();
             }
-            finally
-            {
-               try
-               {
-                  os.flush();
-                  os.close();
-               }
-               catch (IOException e)
-               {
-                  // ignore, at least we tried
-               }
-            }
-      
-            m_contentInByte = os.toByteArray();
          }
       }
       
@@ -374,17 +362,21 @@ public abstract class PSWebdavMethod
          {
             try
             {
-               InputStream in = null;
+
                if (m_contentInByte == null)
-                  in = m_request.getInputStream();
+                  try(InputStream in = m_request.getInputStream()){
+                     m_requestDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+                  }
                else
-                  in = new ByteArrayInputStream(m_contentInByte);
-               
-               m_requestDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+                  try(InputStream in = new ByteArrayInputStream(m_contentInByte)){
+                     m_requestDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
+                  }
+
             }
-            catch (Throwable e)
+            catch (Exception e)
             {
-               e.printStackTrace();
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                
                throw new PSWebdavException(
                   IPSWebdavErrors.XML_FAILED_CREATE_DOC_FROM_CONTENT,
@@ -710,9 +702,10 @@ public abstract class PSWebdavMethod
       response.setContentLength(content.length);
       setResponseStatus(status, false);
 
-      ServletOutputStream out = response.getOutputStream();
-      out.write(content);
-      out.flush();
+      try(ServletOutputStream out = response.getOutputStream()) {
+         out.write(content);
+         out.flush();
+      }
    }
 
 
@@ -1025,7 +1018,7 @@ public abstract class PSWebdavMethod
       if (checkoutUser != null && checkoutUser.trim().length() > 0
             && (!checkoutUser.equalsIgnoreCase(getRequest().getRemoteUser())))
       {
-         ms_logger.debug("\"" + comp.getName()
+         log.debug("\"" + comp.getName()
                + "\" has been checked out by another user, " + checkoutUser
                + ". Stop current execution.");
 
@@ -1067,7 +1060,7 @@ public abstract class PSWebdavMethod
          if (parent == null)
             throw new IllegalArgumentException("parent may not be null");
          
-         ArrayList<PSLocator> children = new ArrayList<PSLocator>();
+         ArrayList<PSLocator> children = new ArrayList<>();
          children.add((PSLocator)target.getLocator());
          agent.removeComponentsFromFolder(parent.getLocator(),
                children);
@@ -1177,8 +1170,6 @@ public abstract class PSWebdavMethod
     * The default depth.
     */
    public static final int INFINITY = Integer.MAX_VALUE;
-
-   private Logger ms_logger = Logger.getLogger(PSWebdavMethod.class);
 }
 
 

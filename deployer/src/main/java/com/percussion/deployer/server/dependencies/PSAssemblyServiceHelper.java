@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@ package com.percussion.deployer.server.dependencies;
 
 import com.percussion.deployer.error.IPSDeploymentErrors;
 import com.percussion.deployer.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -38,12 +39,14 @@ import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.RepositoryException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -58,6 +61,8 @@ import java.util.Set;
  */
 public class PSAssemblyServiceHelper
 {
+
+   private static final Logger log = LogManager.getLogger(PSAssemblyServiceHelper.class);
    
    /**
     * CTOR
@@ -105,13 +110,13 @@ public class PSAssemblyServiceHelper
          m_slots = null;
       }
          
-      m_namedTemplatesMap = new HashMap<String, IPSAssemblyTemplate>();
-      m_guidTemplatesMap  = new HashMap<IPSGuid, IPSAssemblyTemplate>();
-      m_legacyTemplatesMap= new HashMap<String, IPSAssemblyTemplate>();
-      m_templateSlotMap   = new HashMap<String, Set<IPSTemplateSlot>>();
-      m_slotContentTypeMap= new HashMap<IPSGuid, Set<IPSNodeDefinition>>();
-      m_slotTemplatesMap  = new HashMap<IPSGuid, Set<IPSAssemblyTemplate>>();  
-      m_slots             = new ArrayList<IPSTemplateSlot>();
+      m_namedTemplatesMap = new HashMap<>();
+      m_guidTemplatesMap  = new HashMap<>();
+      m_legacyTemplatesMap= new HashMap<>();
+      m_templateSlotMap   = new HashMap<>();
+      m_slotContentTypeMap= new HashMap<>();
+      m_slotTemplatesMap  = new HashMap<>();
+      m_slots             = new ArrayList<>();
    }
 
    
@@ -193,7 +198,7 @@ public class PSAssemblyServiceHelper
     */
    public List<IPSGuid> getContentTypesByTemplate(IPSAssemblyTemplate t)
    {
-      List<IPSGuid> cTypes = new ArrayList<IPSGuid>();
+      List<IPSGuid> cTypes = new ArrayList<>();
       try
       {
          List<IPSNodeDefinition> nodeDefs = m_contentMgr
@@ -207,7 +212,8 @@ public class PSAssemblyServiceHelper
       }
       catch (RepositoryException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return cTypes;
    }
@@ -305,13 +311,13 @@ public class PSAssemblyServiceHelper
       if (m_namedTemplatesMap != null )
       {
          m_namedTemplatesMap.clear();
-         m_namedTemplatesMap = new HashMap<String, IPSAssemblyTemplate>();
+         m_namedTemplatesMap = new HashMap<>();
       }
       
       if ( m_guidTemplatesMap != null )
       {
          m_guidTemplatesMap.clear();
-         m_guidTemplatesMap  = new HashMap<IPSGuid, IPSAssemblyTemplate>();
+         m_guidTemplatesMap  = new HashMap<>();
       }
       catalogTemplatesMap();
       return m_namedTemplatesMap;
@@ -337,7 +343,7 @@ public class PSAssemblyServiceHelper
    {
       m_legacyTemplatesMap.clear();
       m_legacyTemplatesMap = null;
-      m_legacyTemplatesMap = new HashMap<String, IPSAssemblyTemplate>();
+      m_legacyTemplatesMap = new HashMap<>();
       catalogLegacyTemplatesMap();
       return m_legacyTemplatesMap;
    }
@@ -352,9 +358,9 @@ public class PSAssemblyServiceHelper
          sumList = m_assemblySvc.getSummaries(PSTypeEnum.SLOT);
          if ( sumList != null && sumList.size() != 0)
          {
-            m_slots = new ArrayList<IPSTemplateSlot>();
+            m_slots = new ArrayList<>();
             Iterator<IPSCatalogSummary> it = sumList.iterator();
-            List<IPSGuid> slotGuids = new ArrayList<IPSGuid>();
+            List<IPSGuid> slotGuids = new ArrayList<>();
             while(it.hasNext())
             {
                IPSCatalogSummary slot = it.next();
@@ -367,12 +373,13 @@ public class PSAssemblyServiceHelper
             }
         }
       }
-      catch (PSCatalogException e)
+      catch (PSCatalogException | PSNotFoundException | PSAssemblyException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       // sort the collection
-      Collections.sort(m_slots, new SlotsComparer());
+      m_slots.sort(new SlotsComparer());
    }
    
    /**
@@ -392,7 +399,7 @@ public class PSAssemblyServiceHelper
    {
       m_slots.clear();
       m_slots = null;
-      m_slots  = new ArrayList<IPSTemplateSlot>();
+      m_slots  = new ArrayList<>();
       catalogSlots();
       return m_slots;
    }

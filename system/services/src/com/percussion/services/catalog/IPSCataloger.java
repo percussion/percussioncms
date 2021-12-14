@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.catalog;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.guid.IPSGuid;
 
 import java.util.List;
@@ -65,7 +66,7 @@ public interface IPSCataloger
     *            data
     */
    List<IPSCatalogSummary> getSummaries(PSTypeEnum type)
-         throws PSCatalogException;
+           throws PSCatalogException, PSNotFoundException;
 
    /**
     * Load the item specified by the given document and store into persistent

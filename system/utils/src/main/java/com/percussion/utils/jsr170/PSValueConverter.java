@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,21 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.jsr170;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import javax.jcr.ValueFormatException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import javax.jcr.ValueFormatException;
 
 /**
  * Utility to convert values from one type to another
@@ -40,8 +40,7 @@ import javax.jcr.ValueFormatException;
  */
 public class PSValueConverter
 {
-   static final SimpleDateFormat ms_sdf = new SimpleDateFormat(
-         "yyyy-MM-dd HH:mm:ss");
+   static final FastDateFormat ms_sdf = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
 
    /**
     * An array of pre-set date pattern string to be used to determine whether a
@@ -53,30 +52,30 @@ public class PSValueConverter
     * recognized recognized respectively as March 30, 1999 AD and March 30, 99
     * AD. But in daily life, people tend to regard both expression as the same.
     */
-   private static SimpleDateFormat[] ms_datePatternArray =
+   private static FastDateFormat[] ms_datePatternArray =
    {
    // Accurate ones should be listed first
-         new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"),
-         new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"),
-         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"),
-         new SimpleDateFormat("yyyy-MMMM-dd 'at' hh:mm:ss aaa"),
-         new SimpleDateFormat("yyyy-MMMM-dd HH:mm:ss"),
-         new SimpleDateFormat("yyyy.MMMM.dd 'at' hh:mm:ss aaa"),
-         new SimpleDateFormat("yyyy.MMMM.dd HH:mm:ss"),
-         new SimpleDateFormat("yyyy.MMMM.dd 'at' hh:mm aaa"),
-         new SimpleDateFormat("yyyy-MM-dd G 'at' HH:mm:ss"),
-         new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss"),
-         new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS"),
-         new SimpleDateFormat("yyyy.MM.dd HH:mm:ss"),
-         new SimpleDateFormat("yyyy/MM/dd G 'at' HH:mm:ss"),
-         new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS"),
-         new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"),
-         new SimpleDateFormat("yyyy/MM/dd HH:mm"),
-         new SimpleDateFormat("yyyy-MM-dd"),
-         new SimpleDateFormat("yyyy.MM.dd"),
-         new SimpleDateFormat("yyyy/MM/dd"),
-         new SimpleDateFormat("yyyy-MMMM-dd"),
-         new SimpleDateFormat("yyyy.MMMM.dd"), new SimpleDateFormat("yyyy")};
+         FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss.SSS"),
+         FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy-MMMM-dd 'at' hh:mm:ss aaa"),
+         FastDateFormat.getInstance("yyyy-MMMM-dd HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy.MMMM.dd 'at' hh:mm:ss aaa"),
+         FastDateFormat.getInstance("yyyy.MMMM.dd HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy.MMMM.dd 'at' hh:mm aaa"),
+         FastDateFormat.getInstance("yyyy-MM-dd G 'at' HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy.MM.dd G 'at' HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy.MM.dd HH:mm:ss.SSS"),
+         FastDateFormat.getInstance("yyyy.MM.dd HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy/MM/dd G 'at' HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy/MM/dd HH:mm:ss.SSS"),
+         FastDateFormat.getInstance("yyyy/MM/dd HH:mm:ss"),
+         FastDateFormat.getInstance("yyyy/MM/dd HH:mm"),
+         FastDateFormat.getInstance("yyyy-MM-dd"),
+         FastDateFormat.getInstance("yyyy.MM.dd"),
+         FastDateFormat.getInstance("yyyy/MM/dd"),
+         FastDateFormat.getInstance("yyyy-MMMM-dd"),
+         FastDateFormat.getInstance("yyyy.MMMM.dd"), FastDateFormat.getInstance("yyyy")};
 
    /**
     * Correctly convert calendar value.
@@ -93,7 +92,7 @@ public class PSValueConverter
    {
       Date d = null;
       
-      for(SimpleDateFormat fmt : ms_datePatternArray)
+      for(FastDateFormat fmt : ms_datePatternArray)
       {
          try
          {
@@ -121,7 +120,7 @@ public class PSValueConverter
     * @param millis number of millis
     * @return a calendar object, never <code>null</code>
     */
-   public static Calendar convertToCalendar(long millis)
+   public static synchronized Calendar convertToCalendar(long millis)
    {
       Calendar cal = new GregorianCalendar();
       cal.setTimeInMillis(millis);
@@ -155,6 +154,6 @@ public class PSValueConverter
       {
          throw new IllegalArgumentException("val may not be null");
       }
-      return new ByteArrayInputStream(val.getBytes());
+      return new ByteArrayInputStream(val.getBytes(StandardCharsets.UTF_8));
    }
 }

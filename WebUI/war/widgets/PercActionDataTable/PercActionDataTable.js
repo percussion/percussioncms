@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -42,7 +42,7 @@
         var menu = "";
         $.each(rows, function(index, row){
             // add the menu at the end
-			var rowMenu = $.isArray(config.percMenus)?config.percMenus[index]:config.percMenus;
+			var rowMenu = Array.isArray(config.percMenus)?config.percMenus[index]:config.percMenus;
             var menu = getActionMenu(rowMenu, config.percData[index].rowData);
             row.rowContent.push([{ "content": menu }]);
 			
@@ -79,7 +79,7 @@
 		tableRedrawCallback(dataTable);
 		
 		return dataTable;
-    }
+    };
 
     function getActionMenu(menu, rowData) {
         if(menu == undefined)
@@ -90,6 +90,7 @@
             $(this).attr("href", percJQuery.perc_paths.ASSET_FORMS_EXPORT +"/"+rowData.formSummary.site  + "/" + rowData.formSummary.name + ".csv");
             $(this).attr("target", "_blank");
             $(this).addClass("perc-datatable-form-tracker-export-action");
+            $(this).attr("rel", "noopener noreferrer");
         });
         
         if(rowData)
@@ -105,7 +106,7 @@
         } else {
             
         }
-    }
+    };
     
     $.PercOpenAsset = function(event) {
         var data = event.data;
@@ -116,7 +117,7 @@
             var jQuery = window.parent.jQuery;
             jQuery.PercNavigationManager.openAsset(assetObj);
         }
-    }
+    };
 
     $.PercPreviewAsset = function (event) {
         var data = event.data;
@@ -126,7 +127,7 @@
             var jQuery = window.parent.jQuery;
             jQuery.perc_finder().launchAssetPreview(data.assetId);
         }
-    }
+    };
 
     $.PercPreviewPage = function (event) {
         var data = event.data;
@@ -138,7 +139,7 @@
         } else {
             
         }
-    }
+    };
     
     $.PercPageActions = { title : "", menuItemsAlign : "left", stayInsideOf : ".dataTables_wrapper",
             items : [
@@ -147,7 +148,14 @@
     ]};
 
     function tableRedrawCallback(dataTable) {
-		dataTable.find("td:last-child").attr("align", "right").attr("text-align", null).dblclick(function(e){e.stopPropagation()});
+		dataTable.find("td:last-child").attr("align", "right").attr("text-align", null)
+            .on("dblclick", function(e){
+                e.stopPropagation();
+            });
+		dataTable.find("td:last-child").attr("align", "right").attr("text-align", null)
+            .on("dblclick", function(e){
+                e.stopPropagation();
+            });
 		dataTable.find("td.perc-actions div").css("overflow","visible");
     }
 

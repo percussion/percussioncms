@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,11 +28,10 @@ import com.percussion.extension.PSExtensionParams;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.util.PSDataTypeConverter;
+import org.apache.commons.lang.StringUtils;
 
 import java.text.ParseException;
 import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * The PSSimpleJavaUdf_dateFormatEx class formats a date according to a user

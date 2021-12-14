@@ -17,30 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl.nav;
 
+import com.percussion.cms.PSCmsException;
 import com.percussion.security.PSThreadRequestUtils;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSProxyNode;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
-import com.percussion.services.guidmgr.data.PSLegacyGuid;
+import com.percussion.services.filter.PSFilterException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSStopwatch;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.List;
-
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.junit.experimental.categories.Category;
+
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
+import java.util.List;
 
 /**
  *  Test managed nav support code
@@ -101,12 +101,9 @@ public class PSNavUnitTest extends ServletTestCase
    }
 
    /**
-    * Test {@link PSNavHelper.IPSProxyNode#getAncestors()}.
-    * 
-    * @throws Exception
+     *
     */
-   public void testGetAncestors() throws Exception
-   {
+   public void testGetAncestors() throws PSAssemblyException, RepositoryException, PSCmsException, PSFilterException {
       PSThreadRequestUtils.initServerThreadRequest();
       
       IPSAssemblyItem item = creteWorkItem(309, 487);

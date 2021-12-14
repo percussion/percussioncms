@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -54,8 +54,7 @@ public class PSWebResourcesPathItemService extends PSFileSystemPathItemService
      * @see com.percussion.pathmanagement.service.impl.PSFileSystemPathItemService#getFullFolderPath(java.lang.String)
      */
     @Override
-    protected String getFullFolderPath(String path)
-    {
+    protected String getFullFolderPath(String path) throws PSPathNotFoundServiceException {
         PSPathUtils.validatePath(path);
         
         String fullFolderPath = WEB_RESOURCES_ROOT;
@@ -75,8 +74,7 @@ public class PSWebResourcesPathItemService extends PSFileSystemPathItemService
      * #findRoot()
      */
     @Override
-    protected PSPathItem findRoot()
-    {
+    protected PSPathItem findRoot() throws PSPathNotFoundServiceException {
         PSPathItem rootItem = findItem("/");
         
         rootItem.setName(rootName);
@@ -88,7 +86,7 @@ public class PSWebResourcesPathItemService extends PSFileSystemPathItemService
         // it's handled.
         rootItem.setFolderPaths(Arrays.asList("//Design"));
         
-        Map<String, String> displayProperties = new HashMap<String, String>();
+        Map<String, String> displayProperties = new HashMap<>();
         displayProperties.put(IPSListViewHelper.TITLE_NAME, rootName);
         rootItem.setDisplayProperties(displayProperties);
         

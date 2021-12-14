@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -135,20 +135,20 @@
                     } else if(self.stepTitleNavigation){
                         $(this)
                             .css("cursor","pointer")
-                            .click(function(event){self.gotoStep(event, self);});
+                            .on("click",function(event){self.gotoStep(event, self);});
                     }
                 });
                 
                 // activate current step title and make other steps clickable
                 $(".perc-wizard-step-title").each(function(index, stepDom){
-                    if(index == step){
+                    if(index === step){
                         $(this)
                             .addClass("perc-wizard-step-active")
                             .removeClass("perc-wizard-step-inactive");
                     } else if(self.stepTitleNavigation){
                         $(this)
                             .css("cursor","pointer")
-                            .click(function(event){
+                            .on("click",function(event){
                                 self.gotoStep(event, self);
                             });
                     }

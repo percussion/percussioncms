@@ -17,17 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.spring;
 
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.*;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.junit.experimental.categories.Category;
+
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.injectDependencies;
 
 @Category(IntegrationTest.class)
 public class PSSpringWebApplicationContextUtilsTest extends ServletTestCase

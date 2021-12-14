@@ -17,20 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.data;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.IPSCatalogItem;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSRuntimeException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.utils.xml.PSXmlSerializationHelper;
 import com.percussion.util.PSXMLDomUtil;
@@ -40,7 +43,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -121,12 +125,12 @@ public class PSAssemblyTemplate
          Serializable
 {
 
-    private static PSExecutionOrderComparator bindingComparator = new PSExecutionOrderComparator();
+    private static final PSExecutionOrderComparator bindingComparator = new PSExecutionOrderComparator();
 
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSAssemblyTemplate.class);
+   private static final Logger log = LogManager.getLogger(PSAssemblyTemplate.class);
 
    /**
     * 
@@ -271,6 +275,7 @@ public class PSAssemblyTemplate
     * Ctor
     */
    public PSAssemblyTemplate() {
+      //Default constructor
    }
 
    /*
@@ -380,11 +385,12 @@ public class PSAssemblyTemplate
          String xml = this.toXML();
          cloneTemplate.fromXML(xml);
          return cloneTemplate;
+      } catch (SAXException | IOException e) {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new PSRuntimeException(e);
       }
-      catch (Exception e)
-   {
-         throw new RuntimeException("Failed to clone template", e);
-      }
+
    }
 
    /*
@@ -428,7 +434,7 @@ public class PSAssemblyTemplate
       }
 
       if (id!=newguid.getUUID())
-       ms_log.debug("Template guid being changed from "+id+ " to "+newguid.getUUID(), new Throwable());
+       log.debug("Template guid being changed from {} to {}", id,newguid.getUUID());
 
       id = newguid.getUUID();
 
@@ -668,8 +674,7 @@ public class PSAssemblyTemplate
     * These accessors for serialization only
     * @param slotid the slot ID to add
     */
-   public void addTemplateSlotId(Long slotid)
-   {
+   public void addTemplateSlotId(Long slotid) throws PSAssemblyException {
       if (slotid == null)
          throw new IllegalArgumentException("slotid may not be null.");
       

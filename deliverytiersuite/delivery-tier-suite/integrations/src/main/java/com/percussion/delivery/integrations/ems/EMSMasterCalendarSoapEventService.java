@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,39 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.integrations.ems;
-
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.rpc.ServiceException;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import com.percussion.delivery.integrations.ems.model.MCCalendar;
 import com.percussion.delivery.integrations.ems.model.MCCalendarEntry;
@@ -57,9 +30,36 @@ import com.percussion.delivery.integrations.ems.model.MCEventDetail;
 import com.percussion.delivery.integrations.ems.model.MCEventType;
 import com.percussion.delivery.integrations.ems.model.MCGrouping;
 import com.percussion.delivery.integrations.ems.model.MCLocation;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import service.web.api.ems.dea.MCAPIServiceLocator;
 import service.web.api.ems.dea.MCAPIServiceSoap;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.rpc.ServiceException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarService {
 
@@ -68,7 +68,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	private String mcPassword;
 	private String mcEndpoint;
 	
-	private static Log log = LogFactory.getLog(EMSMasterCalendarSoapEventService.class);
+	private static final Logger log = LogManager.getLogger(EMSMasterCalendarSoapEventService.class);
 	
 	public EMSMasterCalendarSoapEventService(String mcUserName, String mcPassword, String mcEndpoint){
 		this.mcUserName = mcUserName;
@@ -81,33 +81,37 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		try {
 			this.soap = locator.getMCAPIServiceSoap(new URL(this.mcEndpoint));
 		} catch (MalformedURLException | ServiceException e) {
-			log.error("Error connecting to remote Master Calendar API.", e);
+			log.error("Error connecting to remote Master Calendar API. Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}		
 	}
 	
 	@Override
 	public List<MCEventDetail> getMasterCalendarEvents(PSEventQuery query) {
-		List<MCEventDetail> ret  = new ArrayList<MCEventDetail>();
+		List<MCEventDetail> ret  = new ArrayList<>();
 		String eventName = null;
 		String location = null;
 		int[] eventTypes = null;
 		int[] calendars = null;
 		
 		try {
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			//FastDateFormat to convert string date (query.getStartDate() & query.getEndDate()) to java.util date was giving parse exception.
+			String[] dateFormatArray = { "yyyy-MM-dd HH:mm:ss"};
 			Date date = null;
 			try {
-				date = format.parse(query.getStartDate());
+				date = DateUtils.parseDate(query.getStartDate(), dateFormatArray);
 			} catch (ParseException e) {
-				log.error(String.format("Error processing start date: {0}",query.getStartDate()), e);
+				log.error("Error processing start date: {}, Error: {}",query.getStartDate(),PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 			Calendar startDate = Calendar.getInstance();
 			startDate.setTime(date);
 			
 			try {
-				date = format.parse(query.getEndDate());
+				date = DateUtils.parseDate(query.getEndDate(), dateFormatArray);
 			} catch (ParseException e) {
-				log.error(String.format("Error processing end date: {0}",query.getEndDate()), e);
+				log.error("Error processing end date: {}, Error: {}",query.getEndDate(),PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 			Calendar endDate = Calendar.getInstance();
 			endDate.setTime(date);
@@ -130,14 +134,15 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			
 			String xml = soap.getEvents(mcUserName, mcPassword, startDate, endDate,eventName, location,calendars,eventTypes, null);
 			if(checkForErrors(xml)){
-				log.error("getEvents Service returned the following errors:" + xml);
+				log.error("getEvents Service returned the following errors:{}", xml);
 			}else{
 				ret = parseEventDetailXML(xml);
 			}
 			
 			
 		} catch (RemoteException e) {
-			log.error("An error occurred connecting to the Master Calendar API", e);
+			log.error("An error occurred connecting to the Master Calendar API Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return ret;
 		}
 		
@@ -153,16 +158,26 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	}
 
 	private List<MCEventDetail> parseEventDetailXML(String xml) {
-		List<MCEventDetail> ret = new ArrayList<MCEventDetail>();
+		List<MCEventDetail> ret = new ArrayList<>();
 		
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+				new PSXmlSecurityOptions(
+						true,
+						true,
+						true,
+						false,
+						true,
+						false
+				)
+		);
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
 		DocumentBuilder db = null;
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing MCEventDetail:" +xml, e1);
+			log.error("Error parsing MCEventDetail:{}, Error: {}",xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -255,9 +270,11 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		
 		return ret;
@@ -265,27 +282,33 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 
 	@Override
 	public List<MCEventDetail> getMasterCalendarFeaturedEvents(PSFeaturedEventsQuery query) {
-		List<MCEventDetail> ret  = new ArrayList<MCEventDetail>();
+		List<MCEventDetail> ret  = new ArrayList<>();
 		String eventName = null;
 		String location = null;
 		int[] eventTypes = null;
 		int[] calendars = null;
 		
 		try {
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			FastDateFormat format =  FastDateFormat.getInstance("yyyy-MM-dd hh:mm:ss");
 			Date date = null;
 			try {
-				date = format.parse(query.getStartDate());
+				date = (Date)format.parseObject(query.getStartDate());
 			} catch (ParseException e) {
-				log.error(String.format("Error processing start date: {0}",query.getStartDate()), e);
+				log.error("Error processing start date: {} Error: {}",
+						query.getStartDate(),
+						e.getMessage());
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 			Calendar startDate = Calendar.getInstance();
 			startDate.setTime(date);
 			
 			try {
-				date = format.parse(query.getEndDate());
+				date = (Date)format.parseObject(query.getEndDate());
 			} catch (ParseException e) {
-				log.error(String.format("Error processing end date: {0}",query.getEndDate()), e);
+				log.error("Error processing end date: {} Error: {}",
+						query.getEndDate(),
+						e.getMessage());
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			}
 			Calendar endDate = Calendar.getInstance();
 			endDate.setTime(date);
@@ -310,7 +333,8 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			
 			ret = parseEventDetailXML(xml);
 		}catch(Exception e){
-			log.error("Error while processing Featured Events", e);
+			log.error("Error while processing Featured Events, Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		
 		return ret;
@@ -318,25 +342,26 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 
 	@Override
 	public List<MCEventType> getMasterCalendarEventTypes() {
-		List<MCEventType> ret = new ArrayList<MCEventType>();
+		List<MCEventType> ret = new ArrayList<>();
 		
 		try {
 			String xml = soap.getEventTypes(mcUserName, mcPassword);
 			if(!checkForErrors(xml) ){
 				ret = parseEventTypesXML(xml);
 			}else{
-				log.error("An error was returned when getting EventTypes:" + xml);
+				log.error("An error was returned when getting EventTypes:{}", xml);
 			}
 			
 		} catch (RemoteException e) {
-			log.error("An error occurred pulling remote Event Types",e);
+			log.error("An error occurred pulling remote Event Types, Error: {}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		
 		return ret;
 	}
 
 	private List<MCEventType> parseEventTypesXML(String xml) {
-		List<MCEventType> ret = new ArrayList<MCEventType>();
+		List<MCEventType> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -344,7 +369,8 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing MCEventType:" +xml, e1);
+			log.error("Error parsing MCEventType:{}, Error: {}",xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -370,26 +396,29 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		return ret;
 	}
 
 	@Override
 	public List<MCLocation> getMasterCalendarLocations() {
-		List<MCLocation> ret = new ArrayList<MCLocation>();
+		List<MCLocation> ret = new ArrayList<>();
 		
 		try {
 			String xml = soap.getLocations(mcUserName, mcPassword);
 			if(!checkForErrors(xml)){
 				ret = parseLocationsXML(xml);
 			}else{
-				log.error("An error was returned when getting Locations:" + xml);
+				log.error("An error was returned when getting Locations:{}", xml);
 			}
 		} catch (RemoteException e) {
-			log.error("An error occurred pulling remote Locations",e);
+			log.error("An error occurred pulling remote Locations {}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		
 		
@@ -397,7 +426,7 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 	}
 
 	private List<MCLocation> parseLocationsXML(String xml) {
-		List<MCLocation> ret = new ArrayList<MCLocation>();
+		List<MCLocation> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -405,7 +434,8 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing MCLocation:" +xml, e1);
+			log.error("Error parsing MCLocation:{}, Error: {}",xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -431,16 +461,18 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		return ret;
 	}
 
 	@Override
 	public List<MCCalendar> getMasterCalendarCalendars() {
-		List<MCCalendar> ret = new ArrayList<MCCalendar>();
+		List<MCCalendar> ret = new ArrayList<>();
 		
 		try {
 			String xml = soap.getCalendars(mcUserName, mcPassword);
@@ -452,15 +484,16 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 						MCCalendar c = parseCalendarXML(xml);
 						ret.add(c);
 					}else{
-						log.error("An error was returned when getting Calendar:" + e.getCalendarName() + ":" + xml);
+						log.error("An error was returned when getting Calendar:{} : {}",e.getCalendarName(), xml);
 					}
 				}
 			}else{
-				log.error("An error was returned when getting Calendars:" + xml);
+				log.error("An error was returned when getting Calendars:{}", xml);
 			}
 			
 		} catch (RemoteException e) {
-			log.error("An error occurred connecting to the Master Calendar API", e);
+			log.error("An error occurred connecting to the Master Calendar API {}",PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return ret;
 		}
 		
@@ -479,7 +512,8 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing MCCalendar:" +xml, e1);
+			log.error("Error parsing MCCalendar: {}, Error: {}",xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -535,16 +569,18 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {} Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		
 		return ret;
 	}
 	
 	private List<MCCalendarEntry> parseCalendarListXML(String xml) {
-		List<MCCalendarEntry> ret = new ArrayList<MCCalendarEntry>();
+		List<MCCalendarEntry> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -552,7 +588,8 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing MCCalendars:" +xml, e1);
+			log.error("Error parsing MCCalendars: {}, Error: {}",xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -576,16 +613,18 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		return ret;
 	}
 
 	public List<MCGrouping>getMasterCalendarGroupings(){
 		
-		List<MCGrouping> ret = new ArrayList<MCGrouping>();
+		List<MCGrouping> ret = new ArrayList<>();
 		
 		String xml;
 		try {
@@ -596,17 +635,18 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 				ret = parseGroupingsXML(xml);
 				
 			}else{
-				log.error("An error was returned when getting Groupings:" + xml);
+				log.error("An error was returned when getting Groupings:{}", xml);
 			}
 			
 		} catch (RemoteException e) {
-			log.error("An unexpected error was returned by the remote server.", e);
+			log.error("An unexpected error was returned by the remote server. Error: {}", PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		return ret;
 	}
 
 	private List<MCGrouping> parseGroupingsXML(String xml) {
-		List<MCGrouping> ret = new ArrayList<MCGrouping>();
+		List<MCGrouping> ret = new ArrayList<>();
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(false);
 		dbf.setValidating(false);
@@ -614,7 +654,8 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 		try {
 			db = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e1) {
-			log.error("Error parsing MCGrouping:" +xml, e1);
+			log.error("Error parsing MCGrouping: {}, Error: {}",xml, e1.getMessage());
+			log.debug(e1.getMessage(), e1);
 		} 
 		try {
 			Document doc = db.newDocument();
@@ -638,9 +679,11 @@ public class EMSMasterCalendarSoapEventService implements IPSEMSMasterCalendarSe
 			}
 			
 		} catch (SAXException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		} catch (IOException e) {
-			log.error("Error parsing response: " + xml,e);
+			log.error("Error parsing response: {}, Error: {}", xml,e.getMessage());
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 		}
 		return ret;
 	}

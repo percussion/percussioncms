@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,8 +27,8 @@ import com.percussion.utils.timing.PSStopwatchStack;
 import org.apache.commons.jexl3.JexlException;
 import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +40,8 @@ import java.util.Map;
  * evaluated. Before evaluation the {@link #bind(String, Object)} may be called
  * as needed to bind initial values into the context for use in expressions.
  * After a number of expressions are evaluated using
- * {@link #evaluate(String, JexlExpression)}, the results can be extracted by
- * calling {@link #getContext()}.
+ * {@link #evaluate(String, IPSScript)} , the results can be extracted by
+ * calling {@link #getVars()}.
  * 
  * @author dougrand
  */
@@ -51,7 +51,7 @@ public class PSJexlEvaluator
    /**
     * Commons logger for evaluator
     */
-   private static Log ms_log = LogFactory.getLog(PSJexlEvaluator.class);
+   private static final Logger log = LogManager.getLogger(PSJexlEvaluator.class);
 
    
    /**
@@ -68,7 +68,7 @@ public class PSJexlEvaluator
     * Internal context which is modified after each call to
     * {@link #evaluate(String, JexlExpression)}
     */
-   private Map<String,Object> m_vars =  new HashMap<String,Object>();
+   private Map<String,Object> m_vars =  new HashMap<>();
 
    /**
     * Create an evaluator with no prebound values
@@ -545,7 +545,7 @@ public class PSJexlEvaluator
       }
       catch (Exception e)
       {
-         ms_log.error(e);
+         log.error(e);
          return null;
       }
    }
@@ -565,7 +565,7 @@ public class PSJexlEvaluator
        }
       catch (Exception e)
       {
-         ms_log.error(e);
+         log.error(e);
          return null;
       }
    }

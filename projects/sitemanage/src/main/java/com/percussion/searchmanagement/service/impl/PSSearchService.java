@@ -17,12 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.searchmanagement.service.impl;
 
+import com.percussion.design.objectstore.PSField;
+import com.percussion.design.objectstore.PSFieldSet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSWorkflowHelper;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
@@ -34,15 +37,19 @@ import com.percussion.search.objectstore.PSWSSearchRequest;
 import com.percussion.searchmanagement.data.PSSearchCriteria;
 import com.percussion.searchmanagement.error.PSSearchServiceException;
 import com.percussion.searchmanagement.service.IPSSearchService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSRequest;
+import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSSearchHandler;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
-import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import com.percussion.services.system.IPSSystemService;
+import com.percussion.services.system.PSSystemServiceLocator;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
@@ -51,7 +58,9 @@ import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSPagedItemList;
 import com.percussion.share.data.PSPagedItemPropertiesList;
 import com.percussion.share.data.PSPagedObjectList;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.data.PSDisplayPropertiesCriteria;
 import com.percussion.ui.data.PSSimpleDisplayFormat;
 import com.percussion.ui.service.IPSListViewHelper;
@@ -60,14 +69,20 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.PSWebserviceUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static com.percussion.webservices.PSWebserviceUtils.getWorkflow;
 import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
@@ -81,13 +96,19 @@ import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 @Component("searchService")
 public class PSSearchService implements IPSSearchService
 {
+    /**
+     * TODO:  This service needs refactored to not use the Web Services API for calling the backend search
+     * it should just be calling the spring service instead.  The way it is coded now it is interacting with the
+     * backend search over the wire which is not smart as it is running in the same web app.
+     */
+
 
     @Autowired
     IPSPageDaoHelper ipsPageDaoHelper;
 
     @Autowired
     public PSSearchService(IPSFolderHelper folderHelper, IPSIdMapper idMapper,
-            IPSItemWorkflowService itemWorkflowService,  @Qualifier("cm1SearchListViewHelper") IPSListViewHelper listViewHelper, IPSUiService uiService,IPSRecycleService recycleService)
+            IPSItemWorkflowService itemWorkflowService,  @Qualifier("cm1SearchListViewHelper") IPSListViewHelper listViewHelper, IPSUiService uiService,IPSRecycleService recycleService, IPSSystemService systemService)
     {
         this.folderHelper = folderHelper;
         this.idMapper = idMapper;
@@ -96,6 +117,11 @@ public class PSSearchService implements IPSSearchService
         this.workflowService = PSWorkflowServiceLocator.getWorkflowService();
         this.uiService = uiService;
         this.recycleService=recycleService;
+        if(systemService != null) {
+            this.systemService = systemService;
+        }else{
+            this.systemService = PSSystemServiceLocator.getSystemService();
+        }
     }
 
     /*
@@ -106,8 +132,7 @@ public class PSSearchService implements IPSSearchService
      * lang.String)
      */
     @Override
-    public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException
-    {
+    public PSPagedItemList search(PSSearchCriteria criteria) throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
         List<Integer> contentIdList = searchForIds(criteria);
         return search(criteria, contentIdList);
     }
@@ -162,15 +187,16 @@ public class PSSearchService implements IPSSearchService
         }
         catch (NumberFormatException nfe)
         {
-            String errorMessage = "Error occurred while trying to parse the sys_contentid";
-            log.error(errorMessage, nfe);
-            throw new PSSearchServiceException(errorMessage, nfe);
+
+            log.error("Error occurred while trying to parse the sys_contentid: {}", nfe.getMessage());
+            log.debug(nfe);
+            throw new PSSearchServiceException(nfe);
         }
         catch (Exception e)
         {
-            String errorMessage = "Error occurred while trying to perform a full text search";
-            log.error(errorMessage, e);
-            throw new PSSearchServiceException(errorMessage, e);
+            log.error("Error occurred while trying to perform a full text search: {}",PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSSearchServiceException(e);
         }
     }
 
@@ -189,39 +215,39 @@ public class PSSearchService implements IPSSearchService
         List<IPSItemEntry> pagedItemEntries = result.getChildrenInPage();
         resultingStartIndex = result.getStartIndex();
         
-        List<Integer> pagedContentIdList = new ArrayList<Integer>();
-        List<PSItemProperties> itemsInPage = new ArrayList<PSItemProperties>();
+        List<Integer> pagedContentIdList = new ArrayList<>();
+        List<PSItemProperties> itemsInPage = new ArrayList<>();
         for (IPSItemEntry itemEntry : pagedItemEntries)
         {
+            try
+            {
             IPSGuid myGuid = PSGuidUtils.makeGuid(itemEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
             if (folderHelper.getParentFolderId(myGuid, false) == null)
             {
-                log.debug("Item (id = " + itemEntry.getContentId() + ") is not in a folder.  It will not be "
-                        + "included in the search results.");
+                log.debug("Item (id = {}) is not in a folder.  It will not be included in the search results.",itemEntry.getContentId());
                 continue;
             }
             
             PSItemProperties itemProps;
-            try
-            {
+
                 itemProps = folderHelper.findItemPropertiesById(idMapper.getString(myGuid));
-            }
-            catch (Exception e)
-            {
-                log.debug(e);
-                continue;
-            }
+
    
             itemsInPage.add(itemProps);
             pagedContentIdList.add(itemEntry.getContentId());
+            }
+            catch (Exception e)
+            {
+                log.warn(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
         }
         
         return new PSPagedItemPropertiesList(itemsInPage, allItemEntries.size(), resultingStartIndex);
     }
     
     public PSPagedItemList search(PSSearchCriteria criteria, List<Integer> contentIdList)
-            throws PSSearchServiceException
-    {
+            throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
         if (criteria.getFormatId() == null)
             throw new IllegalArgumentException("format Id cannot be blank.");
         List<IPSItemEntry> allItemEntries = getSortedEntries(criteria, contentIdList);
@@ -231,16 +257,13 @@ public class PSSearchService implements IPSSearchService
 
     @Override
     public PSPagedItemList searchByStatus(PSSearchCriteria criteria, List<Integer> contentIdList)
-            throws PSSearchServiceException
-    {
+            throws PSSearchServiceException, PSValidationException, PSNotFoundException, IPSDataService.DataServiceLoadException {
         if (criteria.getFormatId() == null)
             throw new IllegalArgumentException("format Id cannot be blank.");
-        List<Integer> finalContentIdList = (List<Integer>) ipsPageDaoHelper.findContentIdsByTemplateAndImportedPageIds(criteria, contentIdList);
+        List<Integer> finalContentIdList = (List<Integer>) ipsPageDaoHelper.getContentIdsForFetchingByStatus(criteria, contentIdList);
         List<IPSItemEntry> allItemEntries = getSortedEntries(criteria, finalContentIdList);
         return formatResults(criteria, allItemEntries);
     }
-
-
 
     private List<Integer> searchForIds(PSSearchCriteria criteria)
     {
@@ -257,7 +280,7 @@ public class PSSearchService implements IPSSearchService
             Map<String, String> searchFields = criteria.getSearchFields();
             if (searchFields != null && !searchFields.isEmpty())
             {
-                List<PSWSSearchField> wsSearchFields = new ArrayList<PSWSSearchField>();
+                List<PSWSSearchField> wsSearchFields = new ArrayList<>();
                 for (Map.Entry<String, String> entry : searchFields.entrySet())
                 {
                     wsSearchFields.add(new PSWSSearchField(entry.getKey(), "=", entry.getValue(), PSWSSearchField.CONN_ATTR_AND));
@@ -294,22 +317,21 @@ public class PSSearchService implements IPSSearchService
             for(Integer contentID:contentIdList){
 
                 if(!recycleService.isInRecycler(contentID.toString()))
-                newContentIdList.add(contentID);
-                                                 }
+                    newContentIdList.add(contentID);
+            }
 
             return newContentIdList;
         }
         catch (NumberFormatException nfe)
         {
-            String errorMessage = "Error occurred while trying to parse the sys_contentid"; 
-            log.error(errorMessage, nfe);
-            throw new PSSearchServiceException(errorMessage, nfe);
+            log.error("Error occurred while trying to parse the sys_contentid: {}", nfe.getMessage());
+            log.debug(nfe);
+            throw new PSSearchServiceException(nfe);
         }
         catch (Exception e)
         {
-            String errorMessage = "Error occurred while trying to perform a full text search";
-            log.error(errorMessage, e);
-            throw new PSSearchServiceException(errorMessage, e);
+            log.error("Error occurred while trying to perform a full text search: {}",PSExceptionUtils.getMessageForLog(e));
+            throw new PSSearchServiceException( e);
         }
         
     }
@@ -321,8 +343,7 @@ public class PSSearchService implements IPSSearchService
      * 
      * @return The paged item list, not <code>null</code>.
      */
-    private PSPagedItemList formatResults(PSSearchCriteria criteria, List<IPSItemEntry> allItemEntries)
-    {
+    private PSPagedItemList formatResults(PSSearchCriteria criteria, List<IPSItemEntry> allItemEntries) throws PSValidationException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         Integer resultingStartIndex = 1;
         Integer startIndex = criteria.getStartIndex() == null ? 1 : criteria.getStartIndex();
         
@@ -333,8 +354,8 @@ public class PSSearchService implements IPSSearchService
         resultingStartIndex = result.getStartIndex();
         
         // PSItemEntry -> PSPathItem
-        List<Integer> pagedContentIdList = new ArrayList<Integer>();
-        List<PSPathItem> itemsInPage = new ArrayList<PSPathItem>();
+        List<Integer> pagedContentIdList = new ArrayList<>();
+        List<PSPathItem> itemsInPage = new ArrayList<>();
         for (IPSItemEntry itemEntry : pagedItemEntries)
         {
             IPSGuid myGuid = PSGuidUtils.makeGuid(itemEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
@@ -374,8 +395,7 @@ public class PSSearchService implements IPSSearchService
         if (criteria.getSortColumn() != null && criteria.getSortOrder() != null)
             compare = new CompareItemEntry(criteria.getSortColumn(), criteria.getSortOrder());
         
-        List<IPSItemEntry> allItemEntries = cmsObjectMgr.findItemEntries(contentIdList, compare);
-        return allItemEntries;
+       return cmsObjectMgr.findItemEntries(contentIdList, compare);
     }
 
     private class CompareItemEntry implements Comparator<IPSItemEntry>
@@ -497,7 +517,7 @@ public class PSSearchService implements IPSSearchService
         int id = -1;
         
         if (displayFormatId != null)
-            id = displayFormatId.intValue();
+            id = displayFormatId;
         
         return uiService.getDisplayFormat(id);
     }
@@ -534,8 +554,7 @@ public class PSSearchService implements IPSSearchService
      * @return The query possibly modified to add an exclude clause, may be <code>null<code/> or empty if
      * the supplied query was and if the params include the workflow id field.
      */
-    private String excludeLocalWorkflow(String query, PSWSSearchParams searchParams)
-    {
+    private String excludeLocalWorkflow(String query, PSWSSearchParams searchParams) throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException {
         int localId = getLocalContentWfId();
         // if we have a query, just add NOT condition
         if (!StringUtils.isBlank(query))
@@ -588,8 +607,7 @@ public class PSSearchService implements IPSSearchService
      * 
      * @return the id.
      */
-    private int getLocalContentWfId()
-    {
+    private int getLocalContentWfId() throws PSValidationException, IPSItemWorkflowService.PSItemWorkflowServiceException {
         if (localContentWfId == -1)
         {
             localContentWfId = itemWorkflowService.getWorkflowId(PSWorkflowHelper.LOCAL_WORKFLOW_NAME);
@@ -598,9 +616,8 @@ public class PSSearchService implements IPSSearchService
         return localContentWfId;
     }
     
-    private List<Integer> getSearchableWorkflowIds()
-    {
-        List<Integer> wfIds = new ArrayList<Integer>();
+    private List<Integer> getSearchableWorkflowIds() throws IPSItemWorkflowService.PSItemWorkflowServiceException, PSValidationException {
+        List<Integer> wfIds = new ArrayList<>();
         int localWorkflowId = getLocalContentWfId();
         
         List<PSObjectSummary> workflowSums = workflowService.findWorkflowSummariesByName(null);
@@ -639,6 +656,8 @@ public class PSSearchService implements IPSSearchService
     private IPSWorkflowService workflowService;
 
     private IPSRecycleService recycleService;
+
+    private IPSSystemService systemService = PSSystemServiceLocator.getSystemService();
     
     /**
      * The id of the workflow used for local content, set in {@link #getLocalContentWfId()}.
@@ -651,7 +670,7 @@ public class PSSearchService implements IPSSearchService
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSearchService.class);
+    private static final Logger log = LogManager.getLogger(PSSearchService.class);
     
     private static final String CONTENT_CREATEDBY_NAME = "sys_contentcreatedby";
     private static final String CONTENT_CREATEDDATE_NAME = "sys_contentcreateddate";
@@ -672,5 +691,103 @@ public class PSSearchService implements IPSSearchService
      * Query to include shared workflows using ranges, {0} should be localWFId - 1, {1} localWFId + 1, {2} max value possible
      */
     private static final String SHARED_WORKFLOW_RANGE = "(" + WORKFLOW_ID + ":[0 TO {0}] OR " + WORKFLOW_ID + ":[{1} TO {2}])";
+
+    @Override
+    public PSSearchCriteria validateSearchCriteria(PSSearchCriteria criteria) {
+
+        SecureStringUtils.DatabaseType type=null;
+
+        if(systemService.isMySQL())
+            type = SecureStringUtils.DatabaseType.MYSQL;
+        else if(systemService.isOracle())
+            type = SecureStringUtils.DatabaseType.ORACLE;
+        else if(systemService.isDB2())
+            type = SecureStringUtils.DatabaseType.DB2;
+        else if(systemService.isMsSQL())
+            type = SecureStringUtils.DatabaseType.MSSQL;
+        else if(systemService.isDerby()){
+            type = SecureStringUtils.DatabaseType.DERBY;
+        }
+
+        if(criteria.getQuery() !=null && !criteria.getQuery().trim().isEmpty()){
+            criteria.setQuery(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getQuery(), type));
+        }
+
+        if(criteria.getSearchType() != null && !criteria.getSearchType().trim().isEmpty()){
+            criteria.setSearchType(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSearchType(), type));
+        }
+
+        if(criteria.getStartIndex() != null){
+            if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getStartIndex().toString())) {
+                throw new IllegalArgumentException(criteria.getStartIndex() + " must have a numeric value for search");
+            }
+        }
+
+        if(criteria.getMaxResults() != null){
+            if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getMaxResults().toString())) {
+                throw new IllegalArgumentException(criteria.getMaxResults() + " must have a numeric value for search");
+            }
+        }
+
+        if(criteria.getSortColumn() != null && !criteria.getSortColumn().trim().isEmpty()){
+            criteria.setSortColumn(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortColumn(), type));
+        }
+
+        if(criteria.getSortOrder() != null && !criteria.getSortOrder().trim().isEmpty()){
+            criteria.setSortOrder(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getSortOrder(), type));
+        }
+
+        if(criteria.getFolderPath() != null && !criteria.getFolderPath().trim().isEmpty()){
+            criteria.setFolderPath(SecureStringUtils.sanitizeStringForSQLStatement(criteria.getFolderPath(), type));
+        }
+
+        if(criteria.getFormatId() != null && -1 !=criteria.getFormatId()){
+            if (!org.apache.commons.lang3.StringUtils.isNumeric(criteria.getFormatId().toString())) {
+                throw new IllegalArgumentException(criteria.getFormatId() + " must have a numeric value for search");
+            }
+        }
+
+        Map<String,String> fields = criteria.getSearchFields();
+        if(fields != null){
+            PSFieldSet systemFieldSet =
+                    PSServer.getContentEditorSystemDef().getFieldSet();
+
+            for(Map.Entry<String,String> field : fields.entrySet()){
+
+                PSField f = systemFieldSet.findFieldByName(field.getKey(), false);
+                if(f!= null) {
+                    if (f.getDataType().equalsIgnoreCase(PSField.DT_INTEGER) || f.getDataType().equalsIgnoreCase(PSField.DT_FLOAT)) {
+                        if (!org.apache.commons.lang3.StringUtils.isNumeric(field.getValue())) {
+                            throw new IllegalArgumentException(field.getKey() + " must have a numeric value for search");
+                        }
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_BOOLEAN)) {
+                        Boolean b = BooleanUtils.toBoolean(field.getValue());
+                        if (b == null) {
+                            throw new IllegalArgumentException(field.getKey() + " requires a boolean value.");
+                        }
+
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_DATE)) {
+                        if (!SecureStringUtils.isValidDate(field.getValue())) {
+                            throw new IllegalArgumentException(field.getKey() + " must be a valid date.");
+                        }
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_TIME)) {
+                        if (!SecureStringUtils.isValidTime((field.getValue()))) {
+                            throw new IllegalArgumentException(field.getKey() + " must be a valid time.");
+                        }
+                    } else if (f.getDataType().equalsIgnoreCase(PSField.DT_BINARY) || f.getDataType().equalsIgnoreCase(PSField.DT_IMAGE)) {
+                        throw new IllegalArgumentException("Can't use Binary fields in Search criteria.");
+                    } else {
+                        //Unsure on data type so just make sure there is no SQL injection possible DT_TEXT is covered here.
+                        field.setValue(SecureStringUtils.sanitizeStringForSQLStatement(field.getValue(), type));
+                    }
+                }else{
+                    field.setValue(SecureStringUtils.sanitizeStringForSQLStatement(field.getValue(), type));
+                }
+            }
+            //Update the criteria with any sanitized inputs
+            criteria.setSearchFields(fields);
+        }
+        return criteria;
+    }
 
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -48,7 +48,7 @@ public abstract class PSDeployJob extends PSJobRunner implements IPSJobHandle
     * security token from the request to use for subsequent operations during 
     * the run method.
     * @param id The id used to identify this job. Must be used to then call
-    * {@link #setId(int)} to set the job id.
+    *  to set the job id.
     * @param req The request used to determine the current user's security 
     * permissions.  May not be <code>null</code>.
     * @param initParams Set of name value pairs that this job may require, may 

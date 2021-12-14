@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,7 @@ import com.percussion.cms.objectstore.PSComponentProcessorProxy;
 import com.percussion.cms.objectstore.PSDisplayFormat;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSSearch;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.PSMissingBeanConfigurationException;
 import com.percussion.services.assembly.IPSAssemblyService;
@@ -36,6 +37,7 @@ import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.system.IPSSystemService;
 import com.percussion.services.system.PSSystemServiceLocator;
 import com.percussion.services.system.data.PSDependency;
@@ -43,6 +45,9 @@ import com.percussion.services.system.data.PSDependent;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,9 +57,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-
 /**
  * Util class for design models. Consists of static methods.
  * @author bjoginipally
@@ -62,6 +64,8 @@ import org.apache.commons.lang.Validate;
  */
 public class PSDesignModelUtils
 {
+
+   private static final Logger log = LogManager.getLogger(PSDesignModelUtils.class);
    
    /**
     * Helper method to convert a given list of objects to list of strings if the
@@ -77,7 +81,7 @@ public class PSDesignModelUtils
    {
       if (list == null)
          throw new IllegalArgumentException("list must not be null");
-      List<String> temp = new ArrayList<String>();
+      List<String> temp = new ArrayList<>();
       for (Object object : list)
       {
          if(object instanceof String)
@@ -146,7 +150,8 @@ public class PSDesignModelUtils
       catch (PSCmsException e)
       {
          // this is not possible
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException(
                "Failed to create PSComponentProcessorProxy.", e);
       }
@@ -232,8 +237,7 @@ public class PSDesignModelUtils
     * @return The design object name.  May be <code>null</code> if a design
     * model is not available for the object. 
     */
-   public static String getName(IPSGuid guid)
-   {
+   public static String getName(IPSGuid guid) throws PSNotFoundException {
       String name = null;
       
       IPSDesignModel model = getDesignModel(PSTypeEnum.valueOf(guid.getType()));
@@ -312,7 +316,7 @@ public class PSDesignModelUtils
    public static String checkDependencies(IPSGuid id)
    {
       IPSSystemService sysService = PSSystemServiceLocator.getSystemService();
-      List<IPSGuid> depIds = new ArrayList<IPSGuid>(1);
+      List<IPSGuid> depIds = new ArrayList<>(1);
       depIds.add(id);
       
       List<PSDependency> deps = sysService.findDependencies(
@@ -343,7 +347,7 @@ public class PSDesignModelUtils
             "children may not be null or empty");
       
       IPSSystemService sysService = PSSystemServiceLocator.getSystemService();
-      List<IPSGuid[]> compIds = new ArrayList<IPSGuid[]>(children.size());
+      List<IPSGuid[]> compIds = new ArrayList<>(children.size());
       for (IPSGuid childId : children)
       {
          IPSGuid[] compid = new IPSGuid[2];
@@ -355,8 +359,8 @@ public class PSDesignModelUtils
       List<PSDependency> deps = sysService.findCompositeDependencies(
          compIds);
       
-      Set<PSDependent> depSet = new HashSet<PSDependent>();
-      List<String> depIdList = new ArrayList<String>();
+      Set<PSDependent> depSet = new HashSet<>();
+      List<String> depIdList = new ArrayList<>();
       for (PSDependency dep : deps)
       {
          if (dep.getDependents().isEmpty())
@@ -375,7 +379,7 @@ public class PSDesignModelUtils
          
          depTypes += dependent.getDisplayType();
       }
-      PSPair<List<String>,String> pair = new PSPair<List<String>, String>();
+      PSPair<List<String>,String> pair = new PSPair<>();
       pair.setFirst(depIdList);
       pair.setSecond(depTypes);
       return pair;
@@ -390,11 +394,6 @@ public class PSDesignModelUtils
     * @param id The guid to check for associations to. If it specifies a content
     * type or template to which a slot has any associations, the slot will be
     * modified to remove the association. May not be <code>null</code>.
-    * @param session The session used for locking purposes, may not be
-    * <code>null</code> or empty.
-    * @param user The user name to use for locking purposes, may not be
-    * <code>null</code> or empty.
-    * 
     * @throws PSAssemblyException If there are any errors saving a modified
     * slot.
     */
@@ -407,7 +406,7 @@ public class PSDesignModelUtils
       IPSAssemblyService service = PSAssemblyServiceLocator
             .getAssemblyService();
       List<IPSTemplateSlot> allSlots = service.findSlotsByName(null);
-      List<IPSTemplateSlot> modSlots = new ArrayList<IPSTemplateSlot>();
+      List<IPSTemplateSlot> modSlots = new ArrayList<>();
       for (IPSTemplateSlot slot : allSlots)
       {
          Collection<PSPair<IPSGuid, IPSGuid>> slotAssociations = slot

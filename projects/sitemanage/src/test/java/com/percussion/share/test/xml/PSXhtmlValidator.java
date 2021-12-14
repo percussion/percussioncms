@@ -17,32 +17,35 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.test.xml;
 
-import static java.util.Collections.unmodifiableCollection;
-import static org.apache.commons.lang.Validate.notNull;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.share.test.PSMatchers;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import static java.util.Collections.unmodifiableCollection;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Validates XHTML
@@ -59,6 +62,9 @@ import org.xml.sax.SAXParseException;
  * @see PSMatchers#validXhtml()
  */
 public class PSXhtmlValidator {
+
+    private static final Logger log = LogManager.getLogger(PSXhtmlValidator.class);
+
     private DocumentBuilder parser;
     private PSXhtmlErrorHandler handler = new PSXhtmlErrorHandler();
 
@@ -93,13 +99,23 @@ public class PSXhtmlValidator {
 
     private void initializeParser() {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    )
+            );
             factory.setValidating(true);
             parser = factory.newDocumentBuilder();
             parser.setEntityResolver(new PSXhtmlEntityResolver());
             parser.setErrorHandler(handler);
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
     

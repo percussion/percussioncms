@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -73,9 +73,9 @@
  *  (*) Dependencies
  *  /css/PercDropdown.css - overrides superfish's default styling to implement style guide
  *  /css/superfish.css
- *  /jslib/superfish.js
+ *  /jslib/profiles/3x/jquery/plugins/jquery-superfish/js/superfish.js
  *  /jslib/hoverIntent.js
- *  /jslib/PSJSUtils.js
+ *  /jslib/profiles/3x/jquery/plugins/jquery-percutils/jquery.percutils.js
  *
  *  (*) Styling
  *  To style declare percDropdownRootClass in config and then use in your own CSS.
@@ -149,7 +149,6 @@
         if(config.percDropdownResizeToElement) {
             config.onBeforeShow = resizeDropdown;
         }
-
         var callbacks = config.percDropdownCallbacks;
         var callbackData = config.percDropdownCallbackData;
         var labels = config.percDropdownOptionLabels;
@@ -157,6 +156,8 @@
         var listImage = config.percDropdownItemImage;
         var disabledListImage = config.percDropdownDisabledItemImage;
         var title = dropdown.find(".perc-dropdown-title");
+
+
         if(config.percDropdownTitleImage == null) {
             title
                 .css("cursor","default")
@@ -168,12 +169,11 @@
                 .css("cursor","pointer")
                 .addClass(arrowClass)
                 .addClass('btn btn-primary perc-workflow-split-button-right')
-                .hover(
+                .on("hover",
                     function(){
                         $(this)
                             .css("overflow","visible");
-                    },
-                    function(){
+                    }, function(){
                         $(this)
                             .css("overflow","visible");
                     });
@@ -182,16 +182,24 @@
             var optionsList = dropdown.find(".perc-dropdown-option-list");
             optionsList.css("margin", "4px 0 0 0");
         }
+
+        if(typeof config.percAppendDropdownButton !== 'undefined' && config.percAppendDropdownButton === true) {
+
+            title.append($("<span class='sf-sub-indicator' />"));
+        }
+
         title
             .addClass("perc-dropdown-title-"+labels[0])
             .data("callback", callbacks[0])
             .data("callbackData", callbackData[0])
-            .click(clickDropdown);
+            .on("click",function(evt){
+                clickDropdown(evt);
+            });
 
         var dropdownOptionList = dropdown.find(".perc-dropdown-option-list");
         var dropdownOptionItemTemplate = dropdown.find(".perc-dropdown-option-item-template");
-        var k = 0;
-        for(l=1; l<labels.length; l++){
+        let k = 0;
+        for(let l=1; l<labels.length; l++){
             k = l;
             var dropdownOptionLabel = labels[l];
             var dropdownOptionItem = dropdownOptionItemTemplate.clone();
@@ -232,10 +240,9 @@
             }
 
             dropdownOptionList.append(dropdownOptionItem);
-            dropdownOptionItem
-                .data("callback", callbacks[k])
-                .data("callbackData", callbackData[k])
-                .click(clickDropdown);
+
+            dropdownOptionItem.on("click",null,callbackData[k], callbacks[k]);
+
         }
         dropdownOptionItemTemplate.remove();
         dropdown.superfish(config);
@@ -248,11 +255,11 @@
 
         this.append(dropdown);
 
-        if(config.percDropdownRootClass == "perc-dropdown-template-pages-items-dropdown"){
+        if(config.percDropdownRootClass === "perc-dropdown-template-pages-items-dropdown"){
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('max-height', '66px');
             $('ul.perc-dropdown-template-pages-items-dropdown > li > ul.perc-dropdown-option-list').css('overflow-y', 'auto');
         }
-    }
+    };
 
 
     /**
@@ -261,7 +268,11 @@
     function clickDropdown(event) {
         var callback = $(this).data("callback");
         var callbackData = $(this).data("callbackData");
-        callback(callbackData);
+
+        if(typeof callback === "function") {
+            callback(callbackData);
+        }
+
     }
 
     /**

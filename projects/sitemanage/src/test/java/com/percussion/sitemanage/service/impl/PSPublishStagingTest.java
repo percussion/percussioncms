@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,16 +26,11 @@ package com.percussion.sitemanage.service.impl;
 
 import com.percussion.metadata.data.PSMetadata;
 import com.percussion.metadata.service.IPSMetadataService;
+import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.Collection;
 import java.util.HashMap;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
-import org.junit.Test;
-
-import junit.framework.TestCase;
 
 public class PSPublishStagingTest extends TestCase {
 

@@ -17,15 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filestorage.extensions;
-
-import static org.apache.commons.lang.StringUtils.endsWith;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.PSItemDefinition;
@@ -47,16 +43,19 @@ import com.percussion.services.filestorage.IPSFileStorageService;
 import com.percussion.services.filestorage.PSFileStorageServiceLocator;
 import com.percussion.services.filestorage.data.PSFakeBlob;
 import com.percussion.utils.jsr170.PSValueFactory;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.ValueFormatException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.util.Iterator;
 
-import javax.jcr.ValueFormatException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.StringUtils.endsWith;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Tools for String manipulation. Just basics for now
@@ -72,7 +71,7 @@ public class PSFileStorageTools extends PSJexlUtilBase
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSFileStorageTools.class);
+   private static final Logger log = LogManager.getLogger(PSFileStorageTools.class);
 
    /**
     * Default constructor.
@@ -91,26 +90,25 @@ public class PSFileStorageTools extends PSJexlUtilBase
                 return prop;
         Object ret = null;
         IPSFileStorageService fss = PSFileStorageServiceLocator.getFileStorageService();
-        InputStream is = fss.getStream(hash);
-        if (is != null)
-        {
-            Blob blob = new PSFakeBlob(is);
-            try
-            {
-                ret = PSValueFactory.createValue(blob);
+        try(InputStream is = fss.getStream(hash)) {
+            if (is != null) {
+                Blob blob = new PSFakeBlob(is);
+                try {
+                    ret = PSValueFactory.createValue(blob);
+                } catch (ValueFormatException e) {
+                    log.error("Error getting hashed binary stream:", e);
+                    throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_ERROR, "PSFileStorageTools",
+                            e.getLocalizedMessage());
+                }
+            } else {
+                ret = prop;
             }
-            catch (ValueFormatException e)
-            {
-                log.error("Error getting hashed binary stream:", e);
-                throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_ERROR, "PSFileStorageTools",
-                        e.getLocalizedMessage());
-            }
+            return ret;
+        } catch (IOException e) {
+            log.error("Error getting hashed binary stream:", e);
+            throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_ERROR, "PSFileStorageTools",
+                    e.getLocalizedMessage());
         }
-        else
-        {
-            ret = prop;
-        }
-        return ret;
     }
 
     @IPSJexlMethod(description = "Looks up the binary to stream based upon a digest hash lookup", params =
@@ -121,26 +119,25 @@ public class PSFileStorageTools extends PSJexlUtilBase
             throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_NO_HASH, new Object[] {});
         Object ret = null;
         IPSFileStorageService fss = PSFileStorageServiceLocator.getFileStorageService();
-        InputStream is = fss.getStream(hash);
-        if (is != null)
-        {
-            Blob blob = new PSFakeBlob(is);
-            try
-            {
-                ret = PSValueFactory.createValue(blob);
+        try(InputStream is = fss.getStream(hash)) {
+            if (is != null) {
+                Blob blob = new PSFakeBlob(is);
+                try {
+                    ret = PSValueFactory.createValue(blob);
+                } catch (ValueFormatException e) {
+                    log.error("Error getting hashed binary stream:", e);
+                    throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_ERROR, "PSFileStorageTools",
+                            e.getLocalizedMessage());
+                }
+            } else {
+                throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_NOT_FOUND, new Object[]{hash});
             }
-            catch (ValueFormatException e)
-            {
-                log.error("Error getting hashed binary stream:", e);
-                throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_ERROR, "PSFileStorageTools",
-                        e.getLocalizedMessage());
-            }
+            return ret;
+        } catch (IOException e) {
+            log.error("Error getting hashed binary stream:", e);
+            throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_ERROR, "PSFileStorageTools",
+                    e.getLocalizedMessage());
         }
-        else
-        {
-            throw new PSAssemblyException(IPSAssemblyErrors.HASHED_BINARY_NOT_FOUND, new Object[] {hash});
-        }
-        return ret;
     }
    
    @IPSJexlMethod(description = "Gets metadata properties for a file based upon a digest hash", params =

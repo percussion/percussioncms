@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,10 +34,9 @@ import com.percussion.sitemanage.data.PSSiteSection;
 import com.percussion.sitemanage.data.PSSiteSection.PSSectionTypeEnum;
 import com.percussion.sitemanage.web.service.PSSiteRestClient;
 import com.percussion.sitemanage.web.service.PSSiteSectionRestClient;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 public class PSSiteGenerator extends PSGenerator<PSSiteRestClient>
 {

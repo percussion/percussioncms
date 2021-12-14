@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,33 +25,32 @@
 package com.percussion.rest.preferences;
 
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="UserPreference")
-@ApiModel(value="UserPreference")
+@Schema(description="UserPreference")
 public class UserPreference {
 
-    @ApiModelProperty(value="Property Name", required = true)
+    @Schema(description="Property Name", required = true)
     private String name;
 
-    @ApiModelProperty(value="Property Value", required=true)
+    @Schema(description="Property Value", required=true)
     private String value;
 
-    @ApiModelProperty(value="The category type, which is an arbitrary string used to group related\n" +
+    @Schema(description="The category type, which is an arbitrary string used to group related\n" +
             "properties together. All categories beginning with sys_ are reserved by\n" +
             "the system. The category for session variables is sys_session.")
     private String category;
 
-    @ApiModelProperty(value="The context to which the property belongs. May be null or empty. system or private")
+    @Schema(description="The context to which the property belongs. May be null or empty. system or private")
     private String context;
 
-    @ApiModelProperty(value="Extra Parameter / Action")
+    @Schema(description="Extra Parameter / Action")
     private String extraParam;
 
-    @ApiModelProperty(value="The user name of the user to who this property belongs.", required=true)
+    @Schema(description="The user name of the user to who this property belongs.", required=true)
     private String userName;
 
     public UserPreference(){}

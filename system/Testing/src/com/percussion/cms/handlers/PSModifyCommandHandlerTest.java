@@ -17,16 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.cms.handlers;
-
-import static com.percussion.cms.handlers.PSModifyCommandHandler.getAction;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 import com.percussion.cms.PSEditorChangeEvent;
 import com.percussion.cms.PSModifyPlan;
@@ -34,6 +29,11 @@ import com.percussion.server.PSRequest;
 import com.percussion.utils.testing.UnitTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import static com.percussion.cms.handlers.PSModifyCommandHandler.getAction;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 
 /**

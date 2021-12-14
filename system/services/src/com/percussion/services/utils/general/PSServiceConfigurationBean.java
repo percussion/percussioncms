@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.utils.general;
 
-import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Properties;
 
 /**
  * This java bean contains properties to be used by the various service beans
@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSServiceConfigurationBean
 {
-   static Log ms_log = LogFactory.getLog("PSServiceConfigurationBean");
+    private static final Logger ms_log = LogManager.getLogger("PSServiceConfigurationBean");
 
    /**
     * This property is used by the assembly service to decide if a content node

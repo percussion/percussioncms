@@ -17,19 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.contentmgr;
 
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  * This configuration object controls the content manager's behavior. It is
@@ -47,7 +46,7 @@ public class PSContentMgrConfig
     * The options to the content manager control various aspects of retrieving
     * content
     */
-   private Set<PSContentMgrOption> m_options = new HashSet<PSContentMgrOption>();
+   private Set<PSContentMgrOption> m_options = new HashSet<>();
 
    /**
     * if specified, this filters all access to body fields

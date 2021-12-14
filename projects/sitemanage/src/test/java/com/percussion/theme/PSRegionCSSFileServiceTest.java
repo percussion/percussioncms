@@ -17,28 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.theme;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import com.percussion.pagemanagement.data.PSRegionTree;
 import com.percussion.pagemanagement.data.PSRegionTreeTest;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.theme.data.PSRegionCSS;
-import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.data.PSRegionCSS.Property;
+import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.impl.PSRegionCSSFileService;
 import com.percussion.theme.service.impl.PSThemeService;
 import com.percussion.util.PSPurgableTempFile;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -51,6 +46,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class PSRegionCSSFileServiceTest
 {
@@ -234,22 +235,19 @@ public class PSRegionCSSFileServiceTest
         return regionCSS;
     }
     
-    private List<PSRegionCSS> readFromSampleFile()
-    {
+    private List<PSRegionCSS> readFromSampleFile() throws IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSValidationException {
         List<PSRegionCSS> regions = cssService.read(getSampleFilePath());
         return regions;
     }
 
-    private String getSampleFilePath()
-    {
+    private String getSampleFilePath() throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         PSThemeSummary summary = themeService.find("test");
         assertNotNull("Region CSS file", summary.getRegionCssFilePath());
         
         return getRegionCssFile(summary);
     }
 
-    private List<PSRegionCSS> writeToTempFileThenRead(List<PSRegionCSS> regions) throws IOException
-    {
+    private List<PSRegionCSS> writeToTempFileThenRead(List<PSRegionCSS> regions) throws IOException, IPSDataService.PSThemeNotFoundException {
         PSPurgableTempFile tempCss = new PSPurgableTempFile("temp", "css", null);
         try
         {
@@ -262,8 +260,7 @@ public class PSRegionCSSFileServiceTest
         }
     }
 
-    private PSPurgableTempFile copySampleToTempFile() throws IOException
-    {
+    private PSPurgableTempFile copySampleToTempFile() throws IOException, IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         PSPurgableTempFile tempCss = createTempCssFile();
         List<PSRegionCSS> regions = readFromSampleFile();
         cssService.write(tempCss.getAbsolutePath(), regions);

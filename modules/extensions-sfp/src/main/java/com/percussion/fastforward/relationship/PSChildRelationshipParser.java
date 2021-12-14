@@ -17,21 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.fastforward.relationship;
-
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
 
 /**
  * Uses the assembly service and relationship api to query relationships.

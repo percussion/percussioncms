@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -57,7 +57,8 @@ import com.percussion.util.PSPurgableTempFile;
 import com.percussion.util.PSUrlUtils;
 import com.percussion.workflow.PSWorkFlowUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -68,6 +69,7 @@ import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -1067,7 +1069,7 @@ public class PSAddAssemblerInfo implements IPSResultDocumentProcessor
          TransformerConfigurationException
    {
       String destXsl = buildEditFilePath(sourceXsl);
-      Logger l = Logger.getLogger(getClass());
+      Logger l = LogManager.getLogger(getClass());
       
       File fileTransform = null;
       File fileSrc = null;
@@ -1160,7 +1162,7 @@ public class PSAddAssemblerInfo implements IPSResultDocumentProcessor
 
          // Create a transform factory instance.
          TransformerFactory tfactory = TransformerFactory.newInstance();
-
+         tfactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
          // Create a transformer for the stylesheet.
          Transformer transformer =
                tfactory.newTransformer(new StreamSource(fileTransform));
@@ -1666,5 +1668,5 @@ public class PSAddAssemblerInfo implements IPSResultDocumentProcessor
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSAddAssemblerInfo.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAddAssemblerInfo.class);
 }

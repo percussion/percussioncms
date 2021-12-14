@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,19 +32,18 @@ import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * Gets the icon path for the items and sets it as iconPath attribute of item
@@ -99,7 +98,7 @@ public class PSGetAadItemTypeIconPaths implements IPSResultDocumentProcessor
     */
    private List<PSLocator> buildLocators(NodeList nl, String userName)
    {
-      List<PSLocator> locs = new ArrayList<PSLocator>();
+      List<PSLocator> locs = new ArrayList<>();
       String uname = StringUtils.defaultString(userName);
       for (int i = 0; i < nl.getLength(); i++)
       {
@@ -128,7 +127,7 @@ public class PSGetAadItemTypeIconPaths implements IPSResultDocumentProcessor
     */
    private Map<String, String> getIconPaths(List<PSLocator> locs)
    {
-      Map<String, String> result = new HashMap<String, String>();
+      Map<String, String> result = new HashMap<>();
       PSItemDefManager defMgr = PSItemDefManager.getInstance();
       Map<PSLocator, String> icmap = defMgr.getContentTypeIconPaths(locs);
       for (PSLocator loc : icmap.keySet())
@@ -162,7 +161,6 @@ public class PSGetAadItemTypeIconPaths implements IPSResultDocumentProcessor
    /**
     * Logger to use, never <code>null</code>.
     */
-   private static Log ms_log = LogFactory
-         .getLog(PSGetAadItemTypeIconPaths.class);
+   private static final Logger log = LogManager.getLogger(PSGetAadItemTypeIconPaths.class);
 
 }

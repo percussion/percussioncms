@@ -17,28 +17,33 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.cas;
 
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.text.MessageFormat;
 import java.util.StringTokenizer;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Creates a properties element as used in portal publisher assemblers.
  */
 public class PSAddPortalProperties extends PSSimpleJavaUdfExtension
 {
+
+   private static final Logger log = LogManager.getLogger(PSAddPortalProperties.class);
+
    /**
     * Creates the <code>Properties</code> element as specified in the 
     * sys_PortalPublisher.dtd for the supplied parameters.
@@ -246,11 +251,12 @@ public class PSAddPortalProperties extends PSSimpleJavaUdfExtension
       try
       {
          Element properties = (Element) test.processUdf(params, null);
-         System.out.println(PSXmlDocumentBuilder.toString(properties));
+         log.info(PSXmlDocumentBuilder.toString(properties));
       }
-      catch (Throwable e)
+      catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

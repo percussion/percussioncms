@@ -17,21 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.general;
-import java.sql.Types;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 import com.percussion.cms.PSInlineLinkField;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
@@ -52,6 +42,7 @@ import com.percussion.design.objectstore.PSFieldSet;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipSet;
 import com.percussion.design.objectstore.PSUISet;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -66,6 +57,18 @@ import com.percussion.tablefactory.PSJdbcTableData;
 import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.sql.Types;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class is a Rhythmyx ResultDocumentProcessor extension.
@@ -85,6 +88,7 @@ public class PSInlineLinkCleanup
    extends PSDefaultExtension
    implements IPSResultDocumentProcessor
 {
+   private static final Logger log = LogManager.getLogger(PSInlineLinkCleanup.class);
    /**
     *
     * @param request the current request context
@@ -157,7 +161,8 @@ public class PSInlineLinkCleanup
       catch (Exception e)
       {
          traceMessage(request, e);
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       
       args[0] = new Long((System.currentTimeMillis()-startTime)/1000);
@@ -276,7 +281,7 @@ public class PSInlineLinkCleanup
          }
          catch (PSDeployException e)
          {
-            throw new RuntimeException(e.getLocalizedMessage());
+            throw new RuntimeException(e);
          }
          ms_tableSchemas.put(table, schema);
       }
@@ -568,7 +573,8 @@ public class PSInlineLinkCleanup
                catch (Exception e)
                {
                   traceMessage(request, e);
-                  e.printStackTrace();
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   
                   Object[] args1 =
                      {
@@ -587,7 +593,8 @@ public class PSInlineLinkCleanup
          catch (Exception e)
          {
             traceMessage(request, e);
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       

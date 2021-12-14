@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,7 +36,6 @@ import com.percussion.extension.PSParameterMismatchException;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
-import com.percussion.util.PSBaseHttpUtils;
 import com.percussion.util.PSHttpUtils;
 import com.percussion.util.PSPurgableTempFile;
 
@@ -365,7 +364,7 @@ public class PSFileInfo extends PSDefaultExtension implements
       }
       else
       {
-         final List<String> list = new ArrayList<String>();
+         final List<String> list = new ArrayList<>();
          while(st.hasMoreTokens())
             list.add(st.nextToken());
          obj = list;
@@ -398,7 +397,7 @@ public class PSFileInfo extends PSDefaultExtension implements
     * extension types.
     */
    private static final Map<String, String> ms_wellKnownExts =
-         new HashMap<String, String>(2);   
+         new HashMap<>(2);
    static
    {
       ms_wellKnownExts.put("htm", "text/html");

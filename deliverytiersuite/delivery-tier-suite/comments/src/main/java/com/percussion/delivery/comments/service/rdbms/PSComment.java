@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,19 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -91,7 +103,7 @@ public class PSComment implements IPSComment, Serializable
            orphanRemoval=true, mappedBy="comment" , targetEntity = PSCommentTag.class)
    @Fetch(FetchMode.SUBSELECT)
    @OnDelete(action = OnDeleteAction.CASCADE)
-   private Set<PSCommentTag> commentTags = new HashSet<PSCommentTag>();
+   private Set<PSCommentTag> commentTags = new HashSet<>();
    
    @Basic 
    private boolean moderated;
@@ -191,7 +203,7 @@ public class PSComment implements IPSComment, Serializable
     */
    public Set<String> getTags()
    {
-      Set<String> tagsAsString = new HashSet<String>();
+      Set<String> tagsAsString = new HashSet<>();
       
       for (PSCommentTag tag : this.commentTags)
           tagsAsString.add(tag.getName());

@@ -1,26 +1,33 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
+		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
 		%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
+		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
 		%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
+		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
 		%HTMLspecial;
-]>
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
+		]>
 
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 
 <xsl:variable name="indent_level">&nbsp;&nbsp;&nbsp;</xsl:variable>
 
 <xsl:template match="filetree" mode="ftree">
 	<table summary="File List goes here" width="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr class="headercell2">
-		  <td width="30%" class="headercell2font" align="center">Filename<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
-		  <td width="30%" class="headercell2font" align="left">Operation<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
-		  <td width="30%" class="headercell2font" align="left">Status<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
-        <td width="30%" class="headercell2font" align="left">CMS&nbsp;Link<img src="../sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+		  <td width="30%" class="headercell2font" align="center">Filename<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+		  <td width="30%" class="headercell2font" align="left">Operation<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+		  <td width="30%" class="headercell2font" align="left">Status<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
+        <td width="30%" class="headercell2font" align="left">CMS&nbsp;Link<img src="/sys_resources/images/invis.gif" width="60" height="1" alt="" border="0" /></td>
 		</tr>
-		<tr><td colspan="4" widtn="100%" class="bordercolor"><img src="../sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/></td></tr>
+		<tr><td colspan="4" widtn="100%" class="bordercolor"><img src="/sys_resources/images/invis.gif" width="1" height="1" border="0" alt=""/></td></tr>
 		<xsl:for-each select="./path">
 			<xsl:apply-templates select="." mode="path" />      
 		</xsl:for-each> 

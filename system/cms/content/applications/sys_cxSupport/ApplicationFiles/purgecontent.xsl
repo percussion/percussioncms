@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-	<!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-	%HTMLlat1;
-	<!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-	%HTMLsymbol;
-	<!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-	%HTMLspecial;
-]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n" >
+		<!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+		%HTMLlat1;
+		<!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+		%HTMLsymbol;
+		<!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+		%HTMLspecial;
+		<!ENTITY % w3centities-f PUBLIC
+				"-//W3C//ENTITIES Combined Set//EN//XML"
+				"http://www.w3.org/2003/entities/2007/w3centities-f.ent"
+				>
+		%w3centities-f;
+		]>
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
-	<xsl:variable name="lang" select="//@xml:lang"/>
+	<xsl:variable name="lang">
+		<xsl:choose>
+			<xsl:when test="//@xml:lang"><xsl:value-of select="//@xml:lang"/></xsl:when>
+			<xsl:otherwise><xsl:text>en-us</xsl:text></xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="rximagepath">
 		<xsl:choose>
 			<xsl:when test="$lang and $lang!=''">
-				<xsl:text>../rx_resources/images/en-us/</xsl:text>
+				<xsl:value-of select="concat('/rx_resources/images/',$lang,'/')"/>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat('../rx_resources/images/',$lang,'/')"/>
+				<xsl:text>/rx_resources/images/en-us/</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
@@ -29,8 +41,8 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link rel="stylesheet" type="text/css" href="../sys_resources/css/templates.css"/>
-				<script language="javascript">
+				<link rel="stylesheet" type="text/css" href="/sys_resources/css/templates.css"/>
+				<script>
 				   function Continue_onclick()
 				   {
 				      purgeurl = "<xsl:value-of select="//@purgeurl"/>";
@@ -55,7 +67,7 @@
 											<table width="100%" border="0" cellspacing="0" cellpadding="0" height="75" background="{concat($rximagepath,'banner_bg_noline.gif')}">
 												<tr>
 													<td align="left" valign="bottom">
-														<img src="../sys_resources/images/spacer.gif"/>
+														<img src="/sys_resources/images/spacer.gif"/>
 													</td>
 												</tr>
 											</table>

@@ -18,12 +18,14 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/securityDesign" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:secs="urn:www.percussion.com/6.0.0/securityServices" xmlns:secd="urn:www.percussion.com/6.0.0/securityDesign" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/securityDesign" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:secs="urn:www.percussion.com/6.0.0/securityServices"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
    <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
    <xsd:import namespace="urn:www.percussion.com/6.0.0/securityServices" schemaLocation="securityServices.xsd"/>
    <xsd:element name="IsValidRhythmyxUserRequest">

@@ -17,39 +17,39 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 /**
-* Schedules Dialog
-*/
+ * Schedules Dialog
+ */
 (function($){
     $.PercScheduleDialog = {
-            open: openDialog
+        open: openDialog
     };
     /**
      * Opens the schedule dialog.
      * @param itemId(String), assumed to be a valid guid of the item (Page or Asset)
      */
-    function openDialog(itemId) 
+    function openDialog(itemId)
     {
-	      var itemId = itemId;
+        var itemId = itemId;
         //Makes a service call and gets the dates
         $.PercItemPublisherService.getScheduleDates(itemId,function(status, result){
-		   var scheduleDates = eval("(" + result + ")").ItemDates;
-		   createDialog("OK", {'publishDate':scheduleDates.startDate, 'removalDate':scheduleDates.endDate});
-		});
-        
+            var scheduleDates = eval("(" + result + ")").ItemDates;
+            createDialog("OK", {'publishDate':scheduleDates.startDate, 'removalDate':scheduleDates.endDate});
+        });
+
 
         var dialog;
         function createDialog(status,result)
         {
             var self = this;
-            
-            if(status == $.PercServiceUtils.STATUS_ERROR)
-            { 
+
+            if(status === $.PercServiceUtils.STATUS_ERROR)
+            {
                 var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: defaultMsg});
                 callback(false);
@@ -63,26 +63,24 @@
                 modal: true,
                 closeOnEscape : true,
                 percButtons:{
-                        "Save":{
+                    "Save":{
                         click: function(){
-							    var startDate = $("#perc_publish_date").val();
-								var endDate = $("#perc_removal_date").val();								
-								var sendDates = {"ItemDates":{"itemId":itemId,"startDate":startDate,"endDate":endDate}};
-                                $.PercItemPublisherService.setScheduleDates(sendDates, function(status, results){
-									if(!status)
-                                    { 
-                                        $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: results});
-                                    }else
-                                    {
-                                        dialog.remove();
-                                    }
-								});
+
+                            var startDate = $("#perc_publish_date_input").val();
+                            var endDate = $("#perc_removal_date").val();
+
+                            $.datepicker._hideDatepicker();
+                            dialog.remove();
+                            showCommentsDialog(itemId,startDate,endDate);
+
+
 
                         },
                         id: "perc-schedule-dialog-save"
                     },
                     "Cancel":{
-                       click: function(){
+                        click: function(){
+                            $.datepicker._hideDatepicker();
                             dialog.remove();
                         },
                         id: "perc-schedule-dialog-cancel"
@@ -100,70 +98,72 @@
             $("#ui-datepicker-div").wrap('<div class="perc-schedule" />');
             $("#ui-timepicker-div").wrap('<div class="perc-schedule" />');
         }
-        
+
         function createSchedule(result)
         {
             var labelPublish =  $('<div id = "perc-publish-label"/>').
-                                    append(
-                                        $('<label/>').
-                                        attr('for', 'publish_date')
-                                        .text('Publish date:')
-                                    );
+            append(
+                $('<label/>').
+                attr('for', 'publish_date')
+                    .text('Publish date:')
+            );
             var inputPublish =  $('<div/>').css('position', 'relative').
-                                    append(
-                                        $('<input/>').
-                                        attr('type', 'text').
-                                        css('width', '130px').
-                                        attr('readonly', 'readonly').
-                                        addClass('perc-datetime-picker').
-                                        attr('id', 'perc_publish_date').
-                                        attr('name', 'publish_date').
-                                        val(result.publishDate)
-                                    );
+            append(
+                $('<input/>').
+                attr('type', 'text').
+                css('width', '130px').
+                css('height', '20px').
+                attr('readonly', 'readonly').
+                addClass('perc-datetime-picker').
+                attr('id', 'perc_publish_date_input').
+                attr('name', 'publish_date').
+                val(result.publishDate)
+            );
             var labelRemoval =   $('<div id = "perc-removal-label"/>').
-                                    append(
-                                        $('<label/>').
-                                        attr('for', 'removal_date').
-                                        text('Removal date:')
-                                    );
+            append(
+                $('<label/>').
+                attr('for', 'removal_date').
+                text('Removal date:')
+            );
             var inputRemoval =  $('<div/>').css('position', 'relative').
-                                    append(
-                                        $('<input/>').
-                                        attr('type', 'text').
-                                        css('width', '130px').
-                                        attr('readonly', 'readonly').
-                                        addClass('perc-datetime-picker').
-                                        attr('id', 'perc_removal_date').
-                                        attr('name', 'removal_date').
-                                        val(result.removalDate)
-                                    );
+            append(
+                $('<input/>').
+                attr('type', 'text').
+                css('width', '130px').
+                css('height', '15px').
+                attr('readonly', 'readonly').
+                addClass('perc-datetime-picker').
+                attr('id', 'perc_removal_date').
+                attr('name', 'removal_date').
+                val(result.removalDate)
+            );
             var $dialogHtml = $('<div/>').addClass('perc-schedule').
-                                append(labelPublish).
-                                append(inputPublish).
-                                append(labelRemoval).
-                                append(inputRemoval).
-                                append($('<script/>')
-                                );
+            append(labelPublish).
+            append(inputPublish).
+            append(labelRemoval).
+            append(inputRemoval).
+            append($('<script/>')
+            );
             return $dialogHtml;
         }
-        
+
         /*
         Validate controls fields
         */
         function validateFields()
         {
-            var publishDate = parseDateTime($('#perc_publish_date').val());
+            var publishDate = parseDateTime($('#perc_publish_date_input').val());
             var removalDate = parseDateTime($('#perc_removal_date').val());
             var serverTime = new Date();//parseDateTime($.PercServiceUtils.getServerDatetime());
-            if (publishDate != "" && removalDate !=""){
+            if (publishDate !== "" && removalDate !==""){
                 //with -0 convert the time to milliseconds
-                if (publishDate-0 == removalDate-0)
+                if (publishDate-0 === removalDate-0)
                 {
                     $.perc_utils.alert_dialog({content:I18N.message("perc.ui.schedule.dialog@Dates Cannot Be Same"), title:I18N.message("perc.ui.publish.title@Error")});
                     return false;
                 }
                 if (publishDate-0 > removalDate-0)
-                {  
+                {
                     $.perc_utils.alert_dialog({content:I18N.messsage("perc.ui.schedule.dialog@Enter Valid Date Range"), title:I18N.message("perc.ui.publish.title@Error")});
                     return false;
                 }
@@ -180,9 +180,9 @@
             }*/
             return true;
         }
-        
+
         function parseDateTime(strDateTime){
-            if (strDateTime != "")
+            if (strDateTime !== "")
             {
                 var date = strDateTime.split(" ")[0].split("/");
                 var time = strDateTime.split(" ")[1].split(":");
@@ -191,7 +191,7 @@
             }
             return "";
         }
-        
+
         //Attach a Jquery Datepicker  to Date field
         function attachFormDatepicker(){
             var dates = $('.perc-datetime-picker').each(function(){
@@ -202,44 +202,88 @@
                     showOn: "button",
                     buttonImage: "../images/images/buttonCalendar.gif",
                     duration: '',
-                    dateFormat: "mm/dd/yy", 
-                    buttonImageOnly: true,    
-                    showTime: true,  
-                    constrainInput: true,  
-                    stepMinutes: 10,  
-                    stepHours: 1,  
-                    altTimeField: '',  
+                    dateFormat: "mm/dd/yy",
+                    buttonImageOnly: true,
+                    showTime: true,
+                    constrainInput: true,
+                    stepMinutes: 10,
+                    stepHours: 1,
+                    altTimeField: '',
                     time24h: false,
                     minDate: new Date(),
                     changeMonth: true,
                     changeYear: true,
-					buttonText: '',
+                    buttonText: '',
                     // hook called when date is selected
                     // mark asset as dirty when date is selected
                     onSelect : function(dateText, inst) {
                         // if the top most jquery is defined
-                        if($.topFrameJQuery != undefined)
+                        if($.topFrameJQuery !== undefined)
                             // mark the asset as dirty
                             $.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
                     }
                 })
-                .bind('paste', function(evt){evt.preventDefault();})
-                .bind('keypress keydown', function(evt){
-                    if(evt.keyCode == 46 || evt.keyCode == 8 )
-                    {
-                        var field = evt.target;
-                        field.value = "";
-                        //made below change to clean up removal date and schedule date
-                        $.datepicker._curInst="";
+                    .on('paste', function(evt){evt.preventDefault();})
+                    .on('keypress keydown', function(evt){
+                        if(evt.keyCode === 46 || evt.keyCode === 8 )
+                        {
+                            var field = evt.target;
+                            field.value = "";
+                            //made below change to clean up removal date and schedule date
+                            $.datepicker._curInst="";
+                            evt.preventDefault();
+                            return;
+                        }
+                        if(evt.charCode === 0 || typeof(evt.charCode) == 'undefined')
+                            return;
                         evt.preventDefault();
-                        return;
-                    }
-                    if(evt.charCode == 0 || typeof(evt.charCode) == 'undefined')
-                        return;                                     
-                    evt.preventDefault();
-                });
+                    });
             });
-        }		
-        
-    }// End open dialog      
+        }
+
+    }// End open dialog
+
+    function showCommentsDialog(itemId,startDate,endDate){
+        var buttons = {};
+        buttons["Save"] = {
+            click: function()
+            {
+                userComment = $("#perc-workflow-comment").val();
+                commentDialog.remove();
+                var sendDates = {"ItemDates":{"itemId":itemId,"startDate":startDate,"endDate":endDate,"comments":userComment}};
+                commentDialog.remove();
+
+                $.PercItemPublisherService.setScheduleDates(sendDates, function(status, results){
+                    if(!status)
+                    {
+                        $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: results});
+                    }else
+                    {
+                        commentDialog.remove();
+                    }
+                });
+            },
+            id: "perc-workflow-comment-ok"
+        };
+        buttons.Cancel = {
+            click: function()
+            {
+
+                commentDialog.remove();
+            },
+            id: "perc-workflow-comment-cancel"
+        };
+        var userComment = "";
+        var commentDialog = $("<div><div class='perc-workflow-comment-label' data='" + "Approve" + "'>" +I18N.message("perc.ui.finder.view@Enter Comments Limit") + "</div><textarea id=\"perc-workflow-comment\" name=\"perc-workflow-comment\" maxlength=\"500\"></textarea></div>")
+            .perc_dialog(
+                {
+                    dialogClass: 'perc-workflow-comment-dialog',
+                    title: I18N.message("perc.ui.finder.view@Enter Comments"),
+                    modal: true,
+                    resizable: false,
+                    "percButtons" : buttons,
+                    width:400,
+                    id: "perc-workflow-comment-dialog"
+                });
+    }
 })(jQuery);

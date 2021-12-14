@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,13 +32,13 @@
 
 package com.percussion.share.service.impl.jaxb;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -242,7 +242,7 @@ public class Property {
          */
         public List<String> getPvalue() {
             if (pvalue == null) {
-                pvalue = new ArrayList<String>();
+                pvalue = new ArrayList<>();
             }
             return this.pvalue;
         }
@@ -271,7 +271,7 @@ public class Property {
          */
         public List<Pair> getPair() {
             if (pair == null) {
-                pair = new ArrayList<Pair>();
+                pair = new ArrayList<>();
             }
             return this.pair;
         }

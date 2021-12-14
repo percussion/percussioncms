@@ -1,0 +1,5 @@
+#macro(soln_list_slot $header $before $after $footer)
+#set($_list = $user.soln_list.getListBuilderItem($sys.assemblyItem))##
+$!user.soln_list.resolveQuery($_list)##
+#slot($_list.slot $header $before $after $footer $user.soln_list.getSlotParameters($_list))
+#end

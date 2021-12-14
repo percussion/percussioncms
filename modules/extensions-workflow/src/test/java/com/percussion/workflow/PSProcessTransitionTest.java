@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,8 @@ package com.percussion.workflow;
 
 import com.percussion.server.PSRequestContext;
 import com.percussion.utils.testing.IntegrationTest;
-import org.junit.experimental.categories.Categories;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -40,6 +41,8 @@ import java.util.Calendar;
 @Category(IntegrationTest.class)
 public class PSProcessTransitionTest extends PSAbstractWorkflowTest 
 {
+
+   private static final Logger log = LogManager.getLogger(PSProcessTransitionTest.class);
 
    /**
     * Constructor specifying command line arguments
@@ -59,7 +62,7 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
    {
       if (m_bIsVerbose) 
       {
-         System.out.println("\nExecuting test of processTransition\n");
+         log.info("\nExecuting test of processTransition\n");
       }
       
       Exception except = null;
@@ -76,13 +79,13 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
       
       try
       {
-         System.out.println("contentID = " + m_nContentID);
+         log.info("contentID = {}", m_nContentID);
 
          // use the option to reset the start in state only if a next
          // transition is specified
          if (0 != transitionID) 
          {
-            System.out.println("initial transitionID = " + transitionID);
+            log.info("initial transitionID = {}", transitionID);
             startInState(m_nContentID,
                          m_nStateID,
                          transitionID,
@@ -104,13 +107,12 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
          
          if (m_bIsVerbose) 
          {
-            System.out.println("Initial State:");
-            System.out.println(csc.toString(true));
+            log.info("Initial State:");
+            log.info(csc.toString(true));
          }
-         System.out.println("next aging transition = " + transitionID);
-         System.out.println("polling interval = " + m_nPollingInterval);
-         System.out.println("Simulated start time is " +
-                                  PSWorkFlowUtils.DateString(m_now));
+         log.info("next aging transition = {}", transitionID);
+         log.info("polling interval = {}", m_nPollingInterval);
+         log.info("Simulated start time is {}", PSWorkFlowUtils.DateString(m_now));
          int count = 0;
 
          /*
@@ -137,8 +139,7 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
             {
                if (m_bPrintPollingTime && count > 0) 
                {
-                  System.out.println("Simulated time is now " +
-                                     PSWorkFlowUtils.DateString(m_now));
+                  log.info("Simulated time is now {}", PSWorkFlowUtils.DateString(m_now));
                }
                
                // Only perform transition if it is time eligible
@@ -160,7 +161,7 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
                {
                   if (!m_bPrintPollingTime) 
                   {
-                     System.out.println("");
+                     log.info("");
                   }
                }
                
@@ -186,8 +187,7 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
                  */
                if (m_bIsVerbose) 
                {
-                  System.out.println("transition " +  transitionID +
-                                     " performed = " + transitionPerformed);
+                  log.info("transition {} performed = {}", transitionID, transitionPerformed);
                }
             }
             
@@ -197,11 +197,11 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
 
             if (m_bIsVerbose) 
             {
-               System.out.println(csc.toString(true));
+               log.info(csc.toString(true));
             }
             
             transitionID = csc.getNextAgingTransition();
-            System.out.println("next aging transition = " + transitionID);
+            log.info("next aging transition = {}", transitionID);
             count++;
             m_now = PSWorkFlowUtils.incrementDate(m_now, m_nPollingInterval);
             nextAgingDate = csc.getNextAgingDate();      
@@ -223,7 +223,7 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
       {
          if (m_bIsVerbose) 
          {
-            System.out.println("\nEnd test of " +
+            log.info("\nEnd test of " +
                                "PSExitPerformTransition.processTransition\n");
          }
          
@@ -299,7 +299,7 @@ public class PSProcessTransitionTest extends PSAbstractWorkflowTest
 
    public String HelpMessage()
    {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       buf.append("Options are:");
       buf.append("   -w, -workflowid        workflow ID");
       buf.append("   -c, -contentid         content ID");

@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.jsf.nodes;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionManager;
 import com.percussion.extension.PSExtensionRef;
@@ -32,27 +33,26 @@ import com.percussion.rx.ui.jsf.beans.PSHelpTopicMapping;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSNodeDefinition;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.services.utils.jsf.validators.PSBaseValidator;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.myfaces.trinidad.component.core.input.CoreSelectOneChoice;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.trinidad.component.core.input.CoreSelectOneChoice;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The backing bean for Location Scheme Editor.
@@ -102,7 +102,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    
    /**
     * The node definition of the {@link #m_clonedScheme}. It is set
-    * by {@link #getNodeDef()} if has not been set yet.
+    * by  if has not been set yet.
     */
    private IPSNodeDefinition m_nodeDef;
    
@@ -113,7 +113,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    
    /**
     * The place holder for adding a parameter. Created/Initialized by 
-    * {@link #addParameter()}.
+    * .
     */
    private SchemeParam m_createdParam;
    
@@ -141,7 +141,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     * @param scheme the to be edited Location Scheme wrapper, never 
     *    <code>null</code>.
     * @param isCreated <code>true</code> if the Location Scheme is created
-    *    and has not be added into {@link PSContextNode#m_schemes} yet.
+    *    and has not be added into  yet.
     */
    public PSLocationSchemeEditor(PSContextNode cxtNode,
          PSLocationSchemeWrapper scheme, boolean isCreated)
@@ -161,15 +161,15 @@ public class PSLocationSchemeEditor extends PSBaseValidator
       }
       catch (CloneNotSupportedException e)
       {
-         // should never happen here.
-         e.printStackTrace();
-         ms_log.error("Failed to clone IPSLocationScheme", e);
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error("Failed to clone IPSLocationScheme {}",PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to clone IPSLocationScheme"
                + e.getLocalizedMessage());
       }
       
       // init parameters
-      m_parameters = new ArrayList<SchemeParam>();
+      m_parameters = new ArrayList<>();
       for (String pname : m_clonedScheme.getParameterNames())
       {
          String type = m_clonedScheme.getParameterType(pname);
@@ -444,10 +444,9 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     * @return the outcome of the parameter editor, never <code>null</code> 
     *    or empty.
     */
-   public String createParameter()
-   {
+   public String createParameter() throws PSNotFoundException {
       // get a unique parameter name
-      List<String> names = new ArrayList<String>();
+      List<String> names = new ArrayList<>();
       for (SchemeParam p : m_parameters)
       {
          names.add(p.getName());
@@ -541,7 +540,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    }
 
    /**
-    * See {@link IPSLocationScheme#getDescription(String)} for detail. 
+    * See  for detail.
     */
    public void setDescription(String name)
    {
@@ -586,7 +585,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     */
    public SelectItem[] getContentTypes()
    {
-      List<SelectItem> ctNames = new ArrayList<SelectItem>();
+      List<SelectItem> ctNames = new ArrayList<>();
       Map<IPSGuid, String> cts = m_ctxNode.catalogContentTypes();
       for (String ctName : cts.values())
       {
@@ -749,7 +748,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
       
       IPSNodeDefinition ct = getCachedNodeDef();
       
-      List<String> tpNames = new ArrayList<String>();
+      List<String> tpNames = new ArrayList<>();
       if (ct == null)
          return Collections.EMPTY_LIST;
       
@@ -779,7 +778,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
     */
    private List<IPSGuid> getUsedTemplateIds(Long ctId)
    {
-      List<IPSGuid> tpIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> tpIds = new ArrayList<>();
       for (PSLocationSchemeWrapper wrapper : m_ctxNode.getLocationSchemes())
       {
          if (wrapper != m_srcScheme &&
@@ -832,7 +831,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
          
       }
 
-      List<SelectItem> extNames = new ArrayList<SelectItem>();
+      List<SelectItem> extNames = new ArrayList<>();
       while (iterator.hasNext())
       {
          PSExtensionRef exit = (PSExtensionRef) iterator.next();
@@ -957,7 +956,7 @@ public class PSLocationSchemeEditor extends PSBaseValidator
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSLocationSchemeEditor.class);
+   private final static Logger log = LogManager.getLogger(PSLocationSchemeEditor.class);
    
 }
 

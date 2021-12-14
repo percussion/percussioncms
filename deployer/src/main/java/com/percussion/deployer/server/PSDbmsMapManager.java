@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,7 +34,6 @@ import org.w3c.dom.Element;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.StringTokenizer;
 
 /**
@@ -104,11 +103,8 @@ public class PSDbmsMapManager
    {      
       File mapFile = getFileFromServerName(serverName);
 
-      FileInputStream in = null;
       Document resultDoc = null;
-      try
-      {
-         in = new FileInputStream(mapFile);
+      try(FileInputStream in = new FileInputStream(mapFile)){
          resultDoc = PSXmlDocumentBuilder.createXmlDocument(in, false);
       }
       catch (Exception e)
@@ -116,11 +112,7 @@ public class PSDbmsMapManager
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
-      finally
-      {
-         if (in != null)
-            try {in.close();} catch(IOException ex){}
-      }
+
       return resultDoc;
    }
 
@@ -139,9 +131,7 @@ public class PSDbmsMapManager
       if ( map == null )
          throw new IllegalArgumentException("map may not be null");
 
-      FileOutputStream out = null;
-      try
-      {
+
          Document doc = PSXmlDocumentBuilder.createXmlDocument();
          Element mapEl = map.toXml(doc);
          PSXmlDocumentBuilder.replaceRoot(doc, mapEl);
@@ -149,19 +139,15 @@ public class PSDbmsMapManager
          PSDeploymentHandler.DBMSMAP_DIR.mkdirs();         
          File mapFile = getFileFromServerName(map.getSourceServer());
 
-         out = new FileOutputStream(mapFile);
-         PSXmlDocumentBuilder.write(doc, out);
-      }
-      catch (Exception e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (out != null)
-            try {out.close();} catch(IOException ex){}
-      }
+         try(FileOutputStream out = new FileOutputStream(mapFile)){
+            PSXmlDocumentBuilder.write(doc, out);
+         }
+         catch (Exception e)
+         {
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+               e.getLocalizedMessage());
+         }
+
    }
    
    /**
@@ -180,7 +166,7 @@ public class PSDbmsMapManager
    static private File getFileFromServerName(String serverName)
    {
       StringTokenizer toks = new StringTokenizer(serverName, ":");
-      StringBuffer fileName = new StringBuffer();
+      StringBuilder fileName = new StringBuilder();
       while (toks.hasMoreTokens()) 
       {
          if (fileName.length() > 0)

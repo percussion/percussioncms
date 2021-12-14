@@ -17,11 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.test;
+
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +43,7 @@ import java.util.StringTokenizer;
  */
 public class PSFakeDataGenerator {
 
+    private static final Logger log = LogManager.getLogger(PSFakeDataGenerator.class);
     public static final int Number = 0;
     public static final int Gender = 1;
     public static final int GivenName = 2;
@@ -81,7 +86,7 @@ public class PSFakeDataGenerator {
      * @return A list of FakeRegistrants
      */
     public static List<FakeRegistrant> getFakeRegistrations(int count) {
-        ArrayList<FakeRegistrant> ret = new ArrayList<FakeRegistrant>();
+        ArrayList<FakeRegistrant> ret = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(PSFakeDataGenerator.class.getResourceAsStream("/FakeData.csv")));
         StringTokenizer st = null;
@@ -227,9 +232,8 @@ public class PSFakeDataGenerator {
             }
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return ret;

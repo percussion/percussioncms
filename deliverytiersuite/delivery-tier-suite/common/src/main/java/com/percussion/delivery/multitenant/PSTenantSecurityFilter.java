@@ -17,14 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.multitenant;
 
-import java.io.IOException;
-import java.util.Date;
+import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -34,12 +37,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
+import java.io.IOException;
+import java.util.Date;
 
 
 /**
@@ -51,13 +50,14 @@ import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
  * @author erikserating
  *
  */
+@Deprecated
 public class PSTenantSecurityFilter implements Filter
 {
 
 	  /**
      * Log for this class.
      */
-    private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LogManager.getLogger(PSTenantSecurityFilter.class);
     
 
     /**
@@ -122,14 +122,14 @@ public class PSTenantSecurityFilter implements Filter
         	if(tenantid==null)
         		tenantid="not-specified";
         	
-        	if(log.isDebugEnabled())
-        		log.debug("Applying filter to tenant " + tenantid + "...");
+
+        	log.debug("Applying filter to tenant {}",tenantid);
         	
         	//Skip processing for NetSuite services
         	boolean netsuite = false;
         	if(((HttpServletRequest)req).getPathInfo()!=null)
         	{
-        		if(((HttpServletRequest)req).getPathInfo().contains("/netsuite/") | tenantid.equals("1"))
+        		if(((HttpServletRequest)req).getPathInfo().contains("/netsuite/") || tenantid.equals("1"))
         			netsuite=true;
         	}else if(tenantid.equals("1"))
         		netsuite = true;
@@ -141,13 +141,13 @@ public class PSTenantSecurityFilter implements Filter
 		        	if(t==null){
 		        		
 		        		if(log.isDebugEnabled())
-		        			log.debug("Authorizing tenant " + tenantid);
+		        			log.debug("Authorizing tenant {}", tenantid);
 		        		
 		        		PSLicenseStatus ret = tenantAuth.authorize(tenantid, 1, req);
 			            if(ret.getStatusCode()  == Status.SUCCESS || ret.getStatusCode() == Status.UNEXPECTED_ERROR)
 			            {
 			            	if(log.isDebugEnabled())
-			            		log.debug("Authorized tenant " + tenantid);
+			            		log.debug("Authorized tenant {}" , tenantid);
 			            	
 			            	if(ret.getStatusCode() == Status.SUCCESS){
 				            	//Setup the tenant info for the cache so we get a hit next time
@@ -160,12 +160,12 @@ public class PSTenantSecurityFilter implements Filter
 				            	t.setLicenseStatus(ret); 	
 				            	
 				            	if(log.isDebugEnabled())
-				            		log.debug("Caching tenant authorization for tenant " + tenantid);
+				            		log.debug("Caching tenant authorization for tenant {}" , tenantid);
 				            	cache.put(t);
 			            	}
 			            
 			            	if(log.isDebugEnabled())
-			            		log.debug("Setting tenant context to " + tenantid);
+			            		log.debug("Setting tenant context to {}" , tenantid);
 					        
 			            	//Add the tenant id to the requests thread.
 			                PSThreadLocalTenantContext.setTenantId(tenantid);
@@ -173,7 +173,7 @@ public class PSTenantSecurityFilter implements Filter
 			            else
 			            {
 			            	if(log.isDebugEnabled())
-			            		log.debug("Authorization failed for tenant " + tenantid + " Status is " + ret.getLicenseStatus());
+			            		log.debug("Authorization failed for tenant {} Status is {}",  tenantid, ret.getLicenseStatus());
 					        
 			                if(resp instanceof HttpServletResponse)
 			                {
@@ -191,17 +191,15 @@ public class PSTenantSecurityFilter implements Filter
 		        		PSThreadLocalTenantContext.setTenantId(tenantid);
 		        		
 		        		if(log.isDebugEnabled())
-		        			log.debug("Setting Tenant Context to " + tenantid);
+		        			log.debug("Setting Tenant Context to {}" , tenantid);
 		        	}
         	
         		}else{
-        			if(log.isDebugEnabled())
-        				log.debug("Skipping authorization for Percussion Tenant or NetSuite Service for tenant " + tenantid + ".");
+        				log.debug("Skipping authorization for Percussion Tenant or NetSuite Service for tenant {}", tenantid);
         			//This is the netsuite service - ignore auth on this one.
 	        		PSThreadLocalTenantContext.setTenantId(tenantid);
-	        		
-	        		if(log.isDebugEnabled())
-	        			log.debug("Tenant Context set to " + tenantid + ".");
+
+	        			log.debug("Tenant Context set to {}",  tenantid);
         		}
         }
         else
@@ -248,16 +246,17 @@ public class PSTenantSecurityFilter implements Filter
     }
     
     public static boolean isNumeric(String str)  
-    {  
-      try  
-      {  
-        @SuppressWarnings("unused")
-		double d = Double.parseDouble(str);  
-      }  
-      catch(NumberFormatException nfe)  
-      {  
-        return false;  
-      }  
+    {
+		double d;
+		try
+      	{
+        	d = Double.parseDouble(str);
+      	}
+      	catch(NumberFormatException nfe)
+      	{
+        	return false;
+      	}
+      	log.debug("It's a number {}", d);
       return true;  
     }  
     
@@ -287,8 +286,7 @@ public class PSTenantSecurityFilter implements Filter
 	    	
 	    	}
     	}catch(Exception e){
-    		if(log.isDebugEnabled())
-    			log.debug("Error logging metrics",e);
+    		log.debug("Error logging metrics: {}", PSExceptionUtils.getMessageForLog(e));
     	}
     }
 

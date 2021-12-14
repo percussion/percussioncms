@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,16 +35,14 @@ import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.publisher.data.PSEditionType;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.lang.StringUtils;
 
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Provides a set of getters to populate browser UIs. Each method is named for
@@ -123,7 +121,7 @@ public class PSPublisherUI
    {
       IPSFilterService fsvc = PSFilterServiceLocator.getFilterService();
       List<IPSItemFilter> filters = fsvc.findAllFilters();
-      SortedSet<String> names = new TreeSet<String>();
+      SortedSet<String> names = new TreeSet<>();
       for (IPSItemFilter filter : filters)
       {
          names.add(filter.getName());
@@ -171,7 +169,7 @@ public class PSPublisherUI
       {
          Iterator<PSExtensionRef> refiter = mgr.getExtensionNames(null, null,
                iface, null);
-         List<String> rval = new ArrayList<String>();
+         List<String> rval = new ArrayList<>();
          while (refiter.hasNext())
          {
             PSExtensionRef ref = refiter.next();
@@ -200,7 +198,7 @@ public class PSPublisherUI
       IPSExtensionManager mgr = PSServer.getExtensionManager(null);
       try
       {
-         ArrayList<PSPair<String, String>> params = new ArrayList<PSPair<String, String>>();
+         ArrayList<PSPair<String, String>> params = new ArrayList<>();
          PSExtensionRef ref = new PSExtensionRef(extensionName);
          IPSExtensionDef def = mgr.getExtensionDef(ref);
          Iterator<String> pnames = def.getRuntimeParameterNames();
@@ -209,7 +207,7 @@ public class PSPublisherUI
             String pname = pnames.next();
             IPSExtensionParamDef pdef = def.getRuntimeParameter(pname);
             params
-                  .add(new PSPair<String, String>(pname, pdef.getDescription()));
+                  .add(new PSPair<>(pname, pdef.getDescription()));
          }
 
          PSPair<String, String> rval[] = new PSPair[params.size()];

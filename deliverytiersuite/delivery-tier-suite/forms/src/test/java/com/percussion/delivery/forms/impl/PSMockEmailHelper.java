@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,12 +26,11 @@ package com.percussion.delivery.forms.impl;
 import com.percussion.delivery.email.data.IPSEmailRequest;
 import com.percussion.delivery.utils.IPSEmailHelper;
 import com.percussion.delivery.utils.PSEmailServiceNotInitializedException;
+import org.apache.commons.lang.Validate;
+import org.apache.commons.mail.EmailException;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.mail.EmailException;
 
 /**
  * Mock email helper for testing services that send email.  Should be wired into services in the test/beans.xml.

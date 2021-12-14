@@ -17,15 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.util;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ListIterator;
 import java.util.function.Consumer;
@@ -33,7 +34,7 @@ import java.util.function.Consumer;
 public class PSConcurrentListIterator<T>  implements ListIterator<T> {
 
     private final ListIterator iterator;
-    private static Logger log = LogManager.getLogger(PSConcurrentListIterator.class);
+    private static final Logger log = LogManager.getLogger(PSConcurrentListIterator.class);
 
     public PSConcurrentListIterator( ListIterator<T> iterator )
     {
@@ -147,7 +148,8 @@ public class PSConcurrentListIterator<T>  implements ListIterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentListIterator does not support remove");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.remove().  Please correct the implementation to remove from the source collection itself.", e);
+            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.remove().  Please correct the implementation to remove from the source collection itself. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
         }
     }
@@ -197,7 +199,8 @@ public class PSConcurrentListIterator<T>  implements ListIterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentListIterator does not support set");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.set().  Please correct the implementation to update the source collection itself.", e);
+            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.set().  Please correct the implementation to update the source collection itself. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
         }
     }
@@ -227,7 +230,9 @@ public class PSConcurrentListIterator<T>  implements ListIterator<T> {
         try{
             throw new UnsupportedOperationException("PSConcurrentListIterator does not support add");
         }catch(UnsupportedOperationException e){
-            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.add().  Please correct the implementation to add to the source collection itself.", e);
+            log.error("Detected potential thread safety problem, call to PSConcurrentListIterator.add().  Please correct the implementation to add to the source collection itself. Error: {}",
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw(e);
         }
     }

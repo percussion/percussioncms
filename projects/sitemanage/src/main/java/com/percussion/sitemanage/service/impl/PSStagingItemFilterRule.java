@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,14 +30,13 @@ import com.percussion.services.filter.IPSFilterItem;
 import com.percussion.services.filter.IPSItemFilterRule;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * This is a staging filter rule that extends public asset item filter rule. This rule while getting the
@@ -55,7 +54,7 @@ public class PSStagingItemFilterRule extends PSPublicAssetItemFilterRule impleme
         boolean ignoreUnModAssets = StringUtils.equals(ignoreAssets, "true");
         Long serverId = pubServer==null?null:pubServer.getServerId();
         WorkflowItemWorker worker = getWorker(params);
-        List<IPSFilterItem> rvalue = new ArrayList<IPSFilterItem>();
+        List<IPSFilterItem> rvalue = new ArrayList<>();
         IPSContentChangeService contentChangeService = PSContentChangeServiceLocator.getContentChangeService();
         List<Integer> changedIds;
         Set<Integer> changedIdsSet = null;

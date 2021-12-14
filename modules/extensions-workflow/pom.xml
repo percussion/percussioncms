@@ -18,7 +18,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
@@ -27,7 +27,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.2.10</version>
+        <version>8.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -35,6 +35,16 @@
     <artifactId>extensions-workflow</artifactId>
 
    <dependencies>
+       <dependency>
+           <groupId>com.percussion</groupId>
+           <artifactId>perc-security-utils</artifactId>
+           <version>${project.parent.version}</version>
+       </dependency>
+       <dependency>
+           <groupId>com.percussion</groupId>
+           <artifactId>perc-legacy</artifactId>
+           <version>${project.parent.version}</version>
+       </dependency>
        <dependency>
            <groupId>com.percussion</groupId>
            <artifactId>perc-system</artifactId>
@@ -54,11 +64,6 @@
            <groupId>org.jmock</groupId>
            <artifactId>jmock-junit4</artifactId>
            <scope>test</scope>
-       </dependency>
-       <dependency>
-           <groupId>org.apache.velocity</groupId>
-           <artifactId>velocity</artifactId>
-           <scope>provided</scope>
        </dependency>
        <dependency>
            <groupId>junit</groupId>
@@ -84,7 +89,7 @@
        <dependency>
            <groupId>com.percussion</groupId>
            <artifactId>rxutils</artifactId>
-           <version>8.0.2.10</version>
+           <version>8.0.3</version>
            <type>test-jar</type>
            <scope>test</scope>
        </dependency>
@@ -116,18 +121,6 @@
        <dependency>
            <groupId>xml-apis</groupId>
            <artifactId>xml-apis</artifactId>
-           <scope>provided</scope>
-       </dependency>
-       <dependency>
-           <groupId>org.apache.velocity</groupId>
-           <artifactId>velocity</artifactId>
-           <version>1.7</version>
-           <scope>provided</scope>
-       </dependency>
-       <dependency>
-           <groupId>velocity-tools</groupId>
-           <artifactId>velocity-tools</artifactId>
-           <version>1.4</version>
            <scope>provided</scope>
        </dependency>
    </dependencies>

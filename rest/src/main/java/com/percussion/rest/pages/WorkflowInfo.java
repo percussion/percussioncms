@@ -17,29 +17,28 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.pages;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
 @XmlRootElement(name = "WorkflowInfo")
-@ApiModel(value="WorkflowInfo",description="Represents information on the workflow.")
+@Schema(name="WorkflowInfo",description="Represents information on the workflow.")
 public class WorkflowInfo
 {
-    @ApiModelProperty(value="name", notes="Name of the workflow.")
+    @Schema(name="name", description="Name of the workflow.")
     private String name;
-    @ApiModelProperty(value="state", notes="State within the workflow.")
+    @Schema(name="state", description="State within the workflow.")
     private String state;
-    @ApiModelProperty(value="checkedOut", notes="Flag if the item is checked out.")
+    @Schema(name="checkedOut", description="Flag if the item is checked out.")
     private Boolean checkedOut;
-    @ApiModelProperty(value="checkedOutUser", notes="User that has the item checked out.")
+    @Schema(name="checkedOutUser", description="User that has the item checked out.")
     private String checkedOutUser;
 
     public String getName()

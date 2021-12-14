@@ -17,29 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.ui.impl;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
-import static org.apache.commons.lang.Validate.notEmpty;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.transaction.annotation.Transactional;
-import org.w3c.dom.Element;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.IPSDbComponent;
@@ -52,6 +34,7 @@ import com.percussion.cms.objectstore.PSVersionableDbComponent;
 import com.percussion.data.PSIdGenerator;
 import com.percussion.data.PSTableChangeEvent;
 import com.percussion.data.utils.PSTableUpdateHandlerBase;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.PSNavConfig;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.server.PSRequest;
@@ -84,6 +67,23 @@ import com.percussion.webservices.PSWebserviceErrors;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.data.ActionType;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Element;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.apache.commons.lang.Validate.notEmpty;
 
 /**
  * The private ui design webservice implementations.
@@ -92,9 +92,9 @@ import com.percussion.webservices.ui.data.ActionType;
 public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 {
    // Added to optimize hierarchy nodes
-   private static volatile Map<PSHierarchyNode.NodeType, Map<IPSGuid, String>> nodeIdToPathMap = null;
+   private ConcurrentHashMap<PSHierarchyNode.NodeType, ConcurrentHashMap<IPSGuid, String>> nodeIdToPathMap = null;
 
-   private static volatile Map<IPSGuid, IPSGuid> objectIdToNodeIdMap = null;
+   private ConcurrentHashMap<IPSGuid, IPSGuid> objectIdToNodeIdMap = null;
 
    private static volatile boolean initializing = false;
 
@@ -118,7 +118,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 
       validateComponentNames(names, FIND_ACTIONS, PSAction.XML_NODE_NAME, PSTypeEnum.ACTION, PSAction.class);
 
-      List<PSAction> actions = new ArrayList<PSAction>();
+      List<PSAction> actions = new ArrayList<>();
       for (int i = 0; i < names.size(); i++)
       {
          PSAction action = createAction(names.get(i), types.get(i));
@@ -142,10 +142,9 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       validateComponentNames(names, FIND_DISPLAY_FORMAT, "PSXDisplayFormat", PSTypeEnum.DISPLAY_FORMAT,
             PSDisplayFormat.class);
 
-      List<PSDisplayFormat> results = new ArrayList<PSDisplayFormat>();
-      for (int i = 0; i < names.size(); i++)
-      {
-         PSDisplayFormat displayFormat = createDisplayFormat(names.get(i));
+      List<PSDisplayFormat> results = new ArrayList<>();
+      for (String name : names) {
+         PSDisplayFormat displayFormat = createDisplayFormat(name);
          PSWebserviceUtils.createLock(displayFormat.getGUID(), session, user, null);
          results.add(displayFormat);
       }
@@ -253,10 +252,9 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 
       validateComponentNames(names, FIND_SEARCHES, PSSearch.XML_NODE_NAME, PSTypeEnum.SEARCH_DEF, PSSearch.class);
 
-      List<PSSearch> searches = new ArrayList<PSSearch>();
-      for (int i = 0; i < names.size(); i++)
-      {
-         PSSearch s = createSearch(names.get(i), PSSearch.TYPE_VIEW);
+      List<PSSearch> searches = new ArrayList<>();
+      for (String name : names) {
+         PSSearch s = createSearch(name, PSSearch.TYPE_VIEW);
          PSWebserviceUtils.createLock(s.getGUID(), session, user, null);
          searches.add(s);
       }
@@ -394,7 +392,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       if (types == null || types.isEmpty())
          return getSummaries(actions);
 
-      List<IPSDbComponent> result = new ArrayList<IPSDbComponent>();
+      List<IPSDbComponent> result = new ArrayList<>();
       PSAction action;
       for (IPSDbComponent comp : actions)
       {
@@ -433,9 +431,9 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    public List<IPSCatalogSummary> findHierarchyNodes(String path, PSHierarchyNode.NodeType type)
    {
 
-      List<IPSGuid> nodeIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> nodeIds = new ArrayList<>();
       String tempPath = null;
-      Map<IPSGuid, String> nodePathMap = new ConcurrentHashMap<IPSGuid, String>();
+      Map<IPSGuid, String> nodePathMap = new ConcurrentHashMap<>();
       Iterator nodePathIt = null;
 
       PSTimer timer = new PSTimer(ms_log);
@@ -510,7 +508,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
          }
          catch (PSUiException e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
       }
 
@@ -548,16 +546,16 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @return The initialized map
     */
-   private Map<PSHierarchyNode.NodeType, Map<IPSGuid, String>> initializeHierarchyNodes()
+   private ConcurrentHashMap<PSHierarchyNode.NodeType, ConcurrentHashMap<IPSGuid, String>> initializeHierarchyNodes()
    {
 
       IPSUiService service = PSUiServiceLocator.getUiService();
-      ConcurrentHashMap<PSHierarchyNode.NodeType, Map<IPSGuid, String>> nodeMap = new ConcurrentHashMap<PSHierarchyNode.NodeType, Map<IPSGuid, String>>();
-      Map<IPSGuid, String> folderNodeMap = new ConcurrentHashMap<IPSGuid, String>();
-      Map<IPSGuid, String> placeHolderNodeMap = new ConcurrentHashMap<IPSGuid, String>();
+      ConcurrentHashMap<PSHierarchyNode.NodeType, ConcurrentHashMap<IPSGuid, String>> nodeMap = new ConcurrentHashMap<>();
+      ConcurrentHashMap<IPSGuid, String> folderNodeMap = new ConcurrentHashMap<>();
+      ConcurrentHashMap<IPSGuid, String> placeHolderNodeMap = new ConcurrentHashMap<>();
 
-      nodeMap.put(PSHierarchyNode.NodeType.FOLDER, new ConcurrentHashMap<IPSGuid, String>());
-      nodeMap.put(PSHierarchyNode.NodeType.PLACEHOLDER, new ConcurrentHashMap<IPSGuid, String>());
+      nodeMap.put(PSHierarchyNode.NodeType.FOLDER, new ConcurrentHashMap<>());
+      nodeMap.put(PSHierarchyNode.NodeType.PLACEHOLDER, new ConcurrentHashMap<>());
 
       List<PSHierarchyNode> nodes = service.getAllHierarchyNodes();
 
@@ -619,7 +617,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
             getNodePath(parentNode, nodes);
          else
             //throw new IllegalArgumentException("Parent Node for the recursive call cannot be null");
-            ms_log.error("Parent Node for the recursive call cannot be null. " + nodePath.toString());
+            ms_log.error("Parent Node for the recursive call cannot be null. {}" , nodePath);
       }
 
       return nodePath.toString();
@@ -631,12 +629,12 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @return Map of object guid and node guid.
     */
-   private HashMap<IPSGuid, IPSGuid> getAllHierarchyNodesGuidProperties()
+   private ConcurrentHashMap<IPSGuid, IPSGuid> getAllHierarchyNodesGuidProperties()
    {
 
       IPSUiService service = PSUiServiceLocator.getUiService();
-      HashMap<IPSGuid, IPSGuid> objectNodeMap = new HashMap<IPSGuid, IPSGuid>();
-      HashMap<IPSGuid, String> allNodeTypeMap = getNodesPathMapForAllTypes();
+      ConcurrentHashMap<IPSGuid, IPSGuid> objectNodeMap = new ConcurrentHashMap<>();
+      ConcurrentHashMap<IPSGuid, String> allNodeTypeMap = getNodesPathMapForAllTypes();
 
       List<PSHierarchyNodeProperty> guidProps = service.getAllHierarchyNodesGuidProperties();
 
@@ -659,10 +657,10 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @return The combined map.
     */
-   private HashMap<IPSGuid, String> getNodesPathMapForAllTypes()
+   private ConcurrentHashMap<IPSGuid, String> getNodesPathMapForAllTypes()
    {
 
-      HashMap<IPSGuid, String> nodeMap = new HashMap<IPSGuid, String>();
+      ConcurrentHashMap<IPSGuid, String> nodeMap = new ConcurrentHashMap<>();
 
       initializeHierarchyNodeMaps();
       
@@ -680,11 +678,11 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * operations - delete, save, move children and remove children to be sure
     * that the static maps are up to date always.
     */
-   private synchronized void recreateStaticMaps()
+   private void recreateStaticMaps()
    {
 
-      Map<PSHierarchyNode.NodeType, Map<IPSGuid, String>> newNodeIdToPathMap = initializeHierarchyNodes();
-      Map<IPSGuid, IPSGuid> newObjectIdToNodeIdMap = getAllHierarchyNodesGuidProperties();
+      ConcurrentHashMap<PSHierarchyNode.NodeType, ConcurrentHashMap<IPSGuid, String>> newNodeIdToPathMap = initializeHierarchyNodes();
+      ConcurrentHashMap<IPSGuid, IPSGuid> newObjectIdToNodeIdMap = getAllHierarchyNodesGuidProperties();
 
       nodeIdToPathMap = newNodeIdToPathMap;
       objectIdToNodeIdMap = newObjectIdToNodeIdMap;
@@ -822,9 +820,8 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       notEmpty(name);
 
       // load from repository
-      PSDisplayFormat dispFormat = loadDisplayFormat(name);
+      return loadDisplayFormat(name);
 
-      return dispFormat;
    }
 
    /**
@@ -865,7 +862,8 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSErrorResultsException e)
       {
-         ms_log.error("Failed to load display format with id = " + id.toString(), e);
+         ms_log.error("Failed to load display format with id = {}. Error: {}" , id,
+                 PSExceptionUtils.getMessageForLog(e));
          return null;
       }
    }
@@ -973,7 +971,6 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * 
     * @see IPSUiDesignWs#pathsToIds(List)
     */
-   @SuppressWarnings("unchecked")
    public List<List<IPSGuid>> pathsToIds(List<String> paths) throws PSErrorException
    {
       if (paths == null || paths.isEmpty())
@@ -1139,12 +1136,12 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    {
       PSWebserviceUtils.validateParameters(searches, "searches", true, session, user);
 
-      List<IPSDbComponent> components = new ArrayList<IPSDbComponent>();
+      List<IPSDbComponent> components = new ArrayList<>();
       // Clean the community property from the components before saving
       for (PSSearch s : searches)
       {
          s = (PSSearch) s.cloneFull();
-         String values[] = s.getPropertyValues("sys_community");
+         String[] values = s.getPropertyValues("sys_community");
          if (values != null)
          {
             for (String comm : values)
@@ -1327,8 +1324,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         // not possible
-         e.printStackTrace();
+        log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to create displayformat object.", e);
       }
 
@@ -1357,7 +1353,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     *           assumed not <code>null</code> or empty.
     * @param nodeName the XML node name of the component, assumed not
     *           <code>null</code> or empty.
-    * @pram type the type of the component; assumed not <code>null</code>. It
+    * @param type the type of the component; assumed not <code>null</code>. It
     *       must be one of the {@link PSTypeEnum#ACTION},
     *       {@link PSTypeEnum#SEARCH_DEF} or {@link PSTypeEnum#DISPLAY_FORMAT}.
     * @param objClass the class of the component, assumed not <code>null</code>.
@@ -1373,7 +1369,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    {
       // catalog the names of all component objects
       List<IPSDbComponent> comps = findComponentsByNameLabel(null, null, resourcePath, nodeName, objClass);
-      List<String> existNames = new ArrayList<String>();
+      List<String> existNames = new ArrayList<>();
       for (IPSDbComponent comp : comps)
       {
          String name = null;
@@ -1437,7 +1433,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed creating PSSearch with \"" + name + "\" and \"" + type
                + "\" type, due to exception: " + e);
       }
@@ -1517,8 +1513,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (SQLException e)
       {
-         // this is not possible
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
          throw new RuntimeException("Failed to get next id for \"" + key + "\", due to exception.", e);
       }
    }
@@ -1624,7 +1619,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
                }
                else
                {
-                  version = new Integer(1);
+                  version = 1;
                }
 
                lockService.createLock(id, session, user, version, overrideLock);
@@ -1632,11 +1627,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 
             results.addResult(id, component);
          }
-         catch (PSErrorException e)
-         {
-            results.addError(id, e);
-         }
-         catch (PSLockException e)
+         catch (PSErrorException | PSLockException e)
          {
             results.addError(id, e);
          }
@@ -1704,7 +1695,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       IPSObjectLockService lockService = PSObjectLockServiceLocator.getLockingService();
 
       PSErrorsException results = new PSErrorsException();
-      List<IPSGuid> releasedIds = new ArrayList<IPSGuid>();
+      List<IPSGuid> releasedIds = new ArrayList<>();
       for (IPSDbComponent component : components)
       {
          IPSCatalogSummary summary = (IPSCatalogSummary) component;
@@ -1726,7 +1717,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
                   }
                   else
                   {
-                     version = new Integer(1);
+                     version = 1;
                   }
 
                   PSWebserviceUtils.extendLock(id, cz, session, user, version, results);
@@ -1778,7 +1769,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    {
       try
       {
-         Integer saveVersion;
+         int saveVersion;
          if (version != null)
          {
             // delete the original component first, then save the updated object
@@ -1790,7 +1781,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
          }
          else
          {
-            saveVersion = new Integer(0);
+            saveVersion = 0;
          }
 
          if (comp instanceof PSVersionableDbComponent)
@@ -1803,11 +1794,15 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
-         int code = IPSWebserviceErrors.SAVE_FAILED;
+         log.error(PSExceptionUtils.getMessageForLog(e));
+
          PSDesignGuid guid = new PSDesignGuid(id);
-         PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code, cz.getName(),
-               guid.longValue(), e.getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
+         PSErrorException error = new PSErrorException(IPSWebserviceErrors.SAVE_FAILED,
+                 PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.SAVE_FAILED,
+                         cz.getName(),
+               guid.longValue(),
+                         PSExceptionUtils.getMessageForLog(e)),
+                 PSExceptionUtils.getDebugMessageForLog(e));
          results.addError(guid, error);
          return false;
       }
@@ -1841,9 +1836,9 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
          if (elem.length == 0) // if failed to load the object (not exist)
          {
             int code = IPSWebserviceErrors.OBJECT_NOT_FOUND;
-            PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code,
+            throw new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code,
                   objClass.getName(), guid.longValue()), ExceptionUtils.getFullStackTrace(new Exception()));
-            throw error;
+
          }
 
          return createComponent(elem[0], objClass);
@@ -1851,9 +1846,9 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       catch (PSCmsException e)
       {
          int code = IPSWebserviceErrors.LOAD_FAILED;
-         PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code,
+         throw new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code,
                objClass.getName(), guid.longValue()), ExceptionUtils.getFullStackTrace(e));
-         throw error;
+
       }
    }
 
@@ -1923,9 +1918,10 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       if (tree == null)
          throw new IllegalArgumentException("tree cannot be null");
 
-      StringBuffer path = new StringBuffer();
-      for (PSHierarchyNode node : tree)
-         path.append("/" + node.getName());
+      StringBuilder path = new StringBuilder();
+      for (PSHierarchyNode node : tree) {
+         path.append("/").append(node.getName());
+      }
 
       return path.toString();
    }
@@ -1947,7 +1943,7 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
 
       IPSUiService service = PSUiServiceLocator.getUiService();
 
-      List<PSHierarchyNode> tree = new ArrayList<PSHierarchyNode>();
+      List<PSHierarchyNode> tree = new ArrayList<>();
       IPSGuid parentId = null;
       String[] names = StringUtils.split(path, '/');
       for (String name : names)
@@ -1960,9 +1956,9 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
                parent = parentId.toString();
 
             int code = IPSWebserviceErrors.MISSING_HIERARCHY_NODE_FOR_PARENT;
-            PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code, name,
+            throw new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code, name,
                   parent), ExceptionUtils.getFullStackTrace(new Exception()));
-            throw error;
+
          }
          if (nodes.size() > 1)
          {
@@ -1971,9 +1967,8 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
                parent = parentId.toString();
 
             int code = IPSWebserviceErrors.DUPLICATE_HIERARCHY_NODE_FOR_PARENT;
-            PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code, name,
+            throw new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code, name,
                   parent), ExceptionUtils.getFullStackTrace(new Exception()));
-            throw error;
          }
 
          PSHierarchyNode node = nodes.get(0);
@@ -2011,16 +2006,17 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         e.printStackTrace();
+         PSExceptionUtils.getMessageForLog(e);
          if (results == null)
          {
             throw e;
          }
          else
          {
-            int code = IPSWebserviceErrors.DELETE_FAILED;
-            PSErrorException error = new PSErrorException(code, PSWebserviceErrors.createErrorMessage(code,
-                  cz.getName(), id.longValue(), e.getLocalizedMessage()), ExceptionUtils.getFullStackTrace(e));
+            PSErrorException error = new PSErrorException(IPSWebserviceErrors.DELETE_FAILED,
+                    PSWebserviceErrors.createErrorMessage(IPSWebserviceErrors.DELETE_FAILED,
+                  cz.getName(), id.longValue(), PSExceptionUtils.getMessageForLog(e)),
+                    PSExceptionUtils.getDebugMessageForLog(e));
             results.addError(id, error);
          }
       }
@@ -2039,8 +2035,8 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
       }
       catch (PSCmsException e)
       {
-         // this is not possible
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+
          throw new RuntimeException("Failed to create PSComponentProcessorProxy.");
       }
    }
@@ -2049,13 +2045,12 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
     * This listener responds to table change notices by removing the cached
     * cllection of all searches.
     */
-   @SuppressWarnings("unchecked")
    public static class EvictionListener extends PSTableUpdateHandlerBase
    {
       /**
        * Search tables
        */
-      static String msi_tables[] =
+      static String[] msi_tables =
       {"PSX_SEARCHES", "PSX_SEARCHFIELDS", "PSX_SEARCHPROPERTIES"};
 
       /**
@@ -2134,6 +2129,6 @@ public class PSUiDesignWs extends PSUiBaseWs implements IPSUiDesignWs
    /**
     * Commons logger
     */
-   static Log ms_log = LogFactory.getLog(PSUiDesignWs.class);
+    private static final Logger ms_log = LogManager.getLogger(PSUiDesignWs.class);
 
 }

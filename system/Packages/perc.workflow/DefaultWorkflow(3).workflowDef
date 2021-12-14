@@ -481,5 +481,24 @@
          <column encoding="text" name="SYSTEMFIELD"/>
          <column encoding="text" name="DEFAULTTRANSITION">n</column>
       </row>
+      <row action="n" onTableCreateOnly="no">
+               <column encoding="text" name="TRANSITIONID">21</column>
+               <column encoding="text" name="TRANSITIONTYPE">0</column>
+               <column encoding="text" name="TRANSITIONLABEL">Archive</column>
+               <column encoding="text" name="TRANSITIONPROMPT"/>
+               <column encoding="text" name="TRANSITIONFROMSTATEID">5</column>
+               <column encoding="text" name="TRANSITIONTOSTATEID">7</column>
+               <column encoding="text" name="TRANSITIONACTIONTRIGGER">Archive</column>
+               <column encoding="text" name="TRANSITIONAPPROVALSREQUIRED">1</column>
+               <column encoding="text" name="TRANSITIONDESC">Archive content from Live State</column>
+               <column encoding="text" name="WORKFLOWAPPID">6</column>
+               <column encoding="text" name="TRANSITIONACTIONS"/>
+               <column encoding="text" name="TRANSITIONROLES">*Specified*</column>
+               <column encoding="text" name="TRANSITIONCOMMENTREQUIRED">n</column>
+               <column encoding="text" name="AGINGTYPE"/>
+               <column encoding="text" name="AGINGINTERVAL"/>
+               <column encoding="text" name="SYSTEMFIELD"/>
+               <column encoding="text" name="DEFAULTTRANSITION">n</column>
+            </row>
    </table>
 </PSXDependencyData>

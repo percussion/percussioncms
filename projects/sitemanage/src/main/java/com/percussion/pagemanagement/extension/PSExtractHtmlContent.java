@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,7 @@ import com.percussion.cms.IPSConstants;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.pagemanagement.service.IPSRenderService;
 import com.percussion.search.lucene.textconverter.PSTextConverterHtml;
 import com.percussion.server.IPSRequestContext;
@@ -41,15 +42,14 @@ import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.webservices.PSWebserviceUtils;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.publishing.IPSPublishingWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This exit assembles a page in the preview context and then extracts the html content.
@@ -77,62 +77,44 @@ public class PSExtractHtmlContent implements IPSUdfProcessor
         Object objIsLoadForSearch = request.getPrivateObject(IPSConstants.LOAD_FOR_SEARCH_INDEX);
         boolean isLoadForSearch = (objIsLoadForSearch instanceof Boolean)
                 && ((Boolean) objIsLoadForSearch).booleanValue();
-        if (!isLoadForSearch)
+        if (!isLoadForSearch) {
             return "";
+        }
 
     	// We need at least the content id
         if (null == params || params.length == 0 || null == params[0] || StringUtils.isEmpty(params[0].toString()))
         {
             return "";
         }
-        
         String cTypeIdStr = params[0].toString();
         IPSGuid guid = guidMgr.makeGuid(cTypeIdStr, PSTypeEnum.LEGACY_CONTENT);
-        
+
         if (publishingWs.getItemSites(guid).isEmpty())
         {
             // page is not associated with a site, cannot be assembled
             return "";
         }
-        
-        InputStream is = null;
-        try
+
+        PSWebserviceUtils.setUserName(request.getOriginalSubject().getName());
+
+        // assemble the page
+        String renderedPage = renderService.renderPage(idMapper.getString(guid));
+        if (renderedPage.contains("<html"))
         {
-            PSWebserviceUtils.setUserName(request.getOriginalSubject().getName());
-            
-            // assemble the page
-            String renderedPage = renderService.renderPage(idMapper.getString(guid));
-            if (renderedPage.contains("<html"))
-            {
-                // remove everything before the start of the html tag to allow for proper extraction
-                renderedPage = renderedPage.substring(renderedPage.indexOf("<html"));
-            }
-            
-            // extract the html content
+            // remove everything before the start of the html tag to allow for proper extraction
+            renderedPage = renderedPage.substring(renderedPage.indexOf("<html"));
+        }
+
+        // extract the html content
+
+        try(InputStream bis = new ByteArrayInputStream(renderedPage.getBytes(IPSUtilsConstants.RX_JAVA_ENC)) ){
             PSTextConverterHtml converter = new PSTextConverterHtml();
-            is = new ByteArrayInputStream(renderedPage.getBytes(IPSUtilsConstants.RX_JAVA_ENC));
-                        
-            return converter.getConvertedText(is, "");
+            return converter.getConvertedText(bis,"");
+
+        } catch (IOException | PSExtensionProcessingException  e) {
+            PSConsole.printMsg(this.getClass().getName(), e.getLocalizedMessage());
         }
-        catch (Exception e)
-        {
-            PSConsole.printMsg(this.getClass().getName(), e.getLocalizedMessage());            
-        }
-        finally
-        {
-            if (is != null)
-            {
-                try
-                {
-                    is.close();
-                }
-                catch (IOException e)
-                {
-                    
-                }
-            }
-        }
-        
+
         return "";
     }  
     
@@ -189,5 +171,5 @@ public class PSExtractHtmlContent implements IPSUdfProcessor
     /**
      * Logger for this exit.
      */
-    public static Log log = LogFactory.getLog(PSExtractHtmlContent.class);
+    public static final Logger log = LogManager.getLogger(PSExtractHtmlContent.class);
 }

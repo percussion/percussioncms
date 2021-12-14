@@ -17,33 +17,35 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.extensions.general;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
-
 import com.percussion.data.PSConversionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSSimpleJavaUdfExtension;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
-import com.percussion.services.guidmgr.impl.PSGuidManager;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PSPageLinkText extends PSSimpleJavaUdfExtension
 implements IPSUdfProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSPageLinkText.class);
 
    /**
     * Executes the UDF with the specified parameters and request context.
@@ -69,7 +71,7 @@ implements IPSUdfProcessor
          return "";
       }
       String pageLinkText = "";
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       IPSGuid guid = PSGuidManagerLocator.getGuidMgr().makeGuid(pageId);
       ids.add(guid);
       IPSContentDesignWs service = 
@@ -80,14 +82,10 @@ implements IPSUdfProcessor
       try
       {
          pageLinkText = node.getProperty("rx:resource_link_title").getString();
-      }
-      catch (PathNotFoundException e)
+      } catch (RepositoryException e)
       {
-         e.printStackTrace();
-      }
-      catch (RepositoryException e)
-      {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       return pageLinkText;
    }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,6 @@ package com.percussion.services.memory;
 
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.timing.PSStopwatch;
-import junit.framework.TestCase;
 import net.sf.ehcache.CacheManager;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.junit.BeforeClass;
@@ -34,9 +33,9 @@ import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -154,7 +153,7 @@ public class PSCacheAccessTest
        */
       public TestClass()
       {
-         Random r = new Random();
+         SecureRandom r = new SecureRandom();
          
          a = r.nextInt();
          b = r.nextInt();
@@ -180,7 +179,7 @@ public class PSCacheAccessTest
        */
       private String makeRandomString(int seed)
       {
-         Random r = new Random(seed);
+         SecureRandom r = new SecureRandom();
          int len = r.nextInt(500) + 100;
          StringBuilder str = new StringBuilder(len);
          for(int x = 0; x < len; x++)

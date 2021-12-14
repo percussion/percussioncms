@@ -17,15 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tablefactory;
 
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -40,6 +43,9 @@ import java.util.StringTokenizer;
 */
 public class RxTableInstallLogic
 {
+
+   private static final Logger log = LogManager.getLogger(RxTableInstallLogic.class);
+
    /**
    * Role delimiter (in role list)
    */
@@ -258,14 +264,10 @@ public class RxTableInstallLogic
       try
       {
          properties.load(new FileInputStream(FILE_PROPERTIES));
-      }
-      catch(FileNotFoundException e)
+      } catch(IOException e)
       {
-         e.printStackTrace();
-      }
-      catch(IOException e)
-      {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
       String temp = properties.getProperty("DEBUG", "false");

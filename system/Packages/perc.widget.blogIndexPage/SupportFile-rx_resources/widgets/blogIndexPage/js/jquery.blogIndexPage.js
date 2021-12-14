@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -70,7 +70,7 @@
         // If its check the meta-data field will be eidtable and if unchecked
         // meta-data field will become disabled.
         });
-        $("#perc-enable-feed").live('click', function () {
+        $(document).on("click","#perc-enable-feed", function () {
             var metaFields = $("#perc-feed-name, #perc-feed-title, #perc-feed-description");
             metaFields.toggleClass('perc-rss-disabled');
             if($("#perc-feed-name").hasClass('perc-rss-disabled')){                

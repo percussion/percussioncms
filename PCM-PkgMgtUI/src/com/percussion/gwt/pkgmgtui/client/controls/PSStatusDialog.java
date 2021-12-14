@@ -17,21 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.gwt.pkgmgtui.client.controls;
 
 import com.google.gwt.user.client.Window;
-import com.percussion.gwt.pkgmgtui.client.IPSConstants;
+import com.percussion.gwt.pkgmgtui.client.PSConstants;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Dialog;
 import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -58,7 +56,7 @@ public class PSStatusDialog extends Dialog
       setIsModal(true);
       setCanDragReposition(true);
       setCanDragResize(true);
-      setResizeFrom(IPSConstants.DIALOG_RESIZE_OPTIONS);
+      setResizeFrom(PSConstants.getDialogResizeOptions());
       setAutoCenter(true);
       setShowToolbar(true);
       HLayout hlLabel = new HLayout();

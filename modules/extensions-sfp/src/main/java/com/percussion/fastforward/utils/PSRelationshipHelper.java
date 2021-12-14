@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -48,15 +48,15 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Element;
 
 /**
  * The PSRelationshipHelper contains a series of functions that are commonly
@@ -834,6 +834,6 @@ public class PSRelationshipHelper
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private Logger m_log = Logger.getLogger(getClass());
+   private static final Logger m_log = LogManager.getLogger(PSRelationshipHelper.class);
 
 }

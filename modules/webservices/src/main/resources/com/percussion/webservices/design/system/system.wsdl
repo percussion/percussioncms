@@ -18,12 +18,15 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
-<wsdl:definitions xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn:www.percussion.com/6.0.0/uiServices" xmlns:ns2="urn:www.percussion.com/6.0.0/securityServices" xmlns:ns4="urn:www.percussion.com/6.0.0/assemblyServices" targetNamespace="urn:www.percussion.com/6.0.0/system" name="system">
+<wsdl:definitions xmlns:sys="urn:www.percussion.com/6.0.0/system" xmlns:com="urn:www.percussion.com/6.0.0/common"
+                  xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  targetNamespace="urn:www.percussion.com/6.0.0/system" name="system">
 	<wsdl:types>
 		<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 			<xsd:import namespace="urn:www.percussion.com/6.0.0/faults" schemaLocation="../faults.xsd">

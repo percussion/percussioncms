@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,15 +25,14 @@ package com.percussion.extension;
 
 import com.percussion.design.objectstore.PSExtensionParamDef;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import junit.framework.TestCase;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
-
-import junit.framework.TestCase;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Unit tests for the PSExtensionDefFactory class. All tests follow the same
@@ -42,6 +41,7 @@ import org.w3c.dom.Element;
  * serialized. The original and the de-serialized versions are compared for
  * equality.
  */
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class PSExtensionDefFactoryTest extends TestCase
 {
    /**

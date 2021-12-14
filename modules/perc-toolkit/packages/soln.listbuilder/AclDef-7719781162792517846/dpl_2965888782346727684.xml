@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>  <acl-impl id="1">
+    <guid>7021100-17-214</guid>
+    <description/>
+    <entries>
+      <entry id="2">
+        <acl-id>7719781162792517846</acl-id>
+        <community>true</community>
+        <group>false</group>
+        <id>-4221655159194768950</id>
+        <name>Enterprise_Investments</name>
+        <negative>false</negative>
+        <owner>false</owner>
+        <ps-permissions>
+          <ps-permission id="3">
+            <acl-entry-id>-4221655159194768950</acl-entry-id>
+            <id>-4221655159194768949</id>
+            <permission>RUNTIME_VISIBLE</permission>
+          </ps-permission>
+        </ps-permissions>
+        <role>false</role>
+        <system-community>false</system-community>
+        <system-entry>false</system-entry>
+        <type>COMMUNITY</type>
+        <typed-principal id="4">
+          <community>true</community>
+          <group>false</group>
+          <name>Enterprise_Investments</name>
+          <principal-type>COMMUNITY</principal-type>
+          <role>false</role>
+          <subject>false</subject>
+          <system-community>false</system-community>
+          <system-entry>false</system-entry>
+          <user>false</user>
+        </typed-principal>
+        <user>false</user>
+      </entry>
+      <entry id="5">
+        <acl-id>7719781162792517846</acl-id>
+        <community>true</community>
+        <group>false</group>
+        <id>-4221655159194768948</id>
+        <name>Enterprise_Investments_Admin</name>
+        <negative>false</negative>
+        <owner>false</owner>
+        <ps-permissions>
+          <ps-permission id="6">
+            <acl-entry-id>-4221655159194768948</acl-entry-id>
+            <id>-4221655159194768947</id>
+            <permission>RUNTIME_VISIBLE</permission>
+          </ps-permission>
+        </ps-permissions>
+        <role>false</role>
+        <system-community>false</system-community>
+        <system-entry>false</system-entry>
+        <type>COMMUNITY</type>
+        <typed-principal id="7">
+          <community>true</community>
+          <group>false</group>
+          <name>Enterprise_Investments_Admin</name>
+          <principal-type>COMMUNITY</principal-type>
+          <role>false</role>
+          <subject>false</subject>
+          <system-community>false</system-community>
+          <system-entry>false</system-entry>
+          <user>false</user>
+        </typed-principal>
+        <user>false</user>
+      </entry>
+      <entry id="8">
+        <acl-id>7719781162792517846</acl-id>
+        <community>true</community>
+        <group>false</group>
+        <id>-4221655159194768952</id>
+        <name>Conservia</name>
+        <negative>false</negative>
+        <owner>false</owner>
+        <ps-permissions>
+          <ps-permission id="9">
+            <acl-entry-id>-4221655159194768952</acl-entry-id>
+            <id>-4221655159194768951</id>
+            <permission>RUNTIME_VISIBLE</permission>
+          </ps-permission>
+        </ps-permissions>
+        <role>false</role>
+        <system-community>false</system-community>
+        <system-entry>false</system-entry>
+        <type>COMMUNITY</type>
+        <typed-principal id="10">
+          <community>true</community>
+          <group>false</group>
+          <name>Conservia</name>
+          <principal-type>COMMUNITY</principal-type>
+          <role>false</role>
+          <subject>false</subject>
+          <system-community>false</system-community>
+          <system-entry>false</system-entry>
+          <user>false</user>
+        </typed-principal>
+        <user>false</user>
+      </entry>
+      <entry id="11">
+        <acl-id>7719781162792517846</acl-id>
+        <community>false</community>
+        <group>false</group>
+        <id>7719781089778084407</id>
+        <name>Default</name>
+        <negative>false</negative>
+        <owner>true</owner>
+        <ps-permissions>
+          <ps-permission id="12">
+            <acl-entry-id>7719781089778084407</acl-entry-id>
+            <id>7719781089778084409</id>
+            <permission>DELETE</permission>
+          </ps-permission>
+          <ps-permission id="13">
+            <acl-entry-id>7719781089778084407</acl-entry-id>
+            <id>7719781089778084410</id>
+            <permission>OWNER</permission>
+          </ps-permission>
+          <ps-permission id="14">
+            <acl-entry-id>7719781089778084407</acl-entry-id>
+            <id>7719781089778084408</id>
+            <permission>UPDATE</permission>
+          </ps-permission>
+          <ps-permission id="15">
+            <acl-entry-id>7719781089778084407</acl-entry-id>
+            <id>7719781089778084411</id>
+            <permission>READ</permission>
+          </ps-permission>
+        </ps-permissions>
+        <role>false</role>
+        <system-community>false</system-community>
+        <system-entry>true</system-entry>
+        <type>USER</type>
+        <typed-principal id="16">
+          <community>false</community>
+          <group>false</group>
+          <name>Default</name>
+          <principal-type>USER</principal-type>
+          <role>false</role>
+          <subject>false</subject>
+          <system-community>false</system-community>
+          <system-entry>true</system-entry>
+          <user>true</user>
+        </typed-principal>
+        <user>true</user>
+      </entry>
+    </entries>
+    <first-owner idref="16"/>
+    <label>temp</label>
+    <name>temp</name>
+    <object-guid>0-4-567</object-guid>
+    <object-id>567</object-id>
+    <object-type>4</object-type>
+    <version>4</version>
+  </acl-impl>

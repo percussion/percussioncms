@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
+import com.percussion.share.service.exception.PSDataServiceException;
+
 import java.io.Serializable;
 import java.util.List;
-
-import com.percussion.share.service.exception.PSDataServiceException;
 
 /**
  * Generic DAO (Data Access Object) with common methods to CRUD POJOs.
@@ -47,9 +47,9 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * same as lookup up all rows in a table.
      * 
      * @return List of populated objects
-     * @throws LoadException 
+     * @throws PSDataServiceException
      */
-    List<T> findAll() throws LoadException;
+    List<T> findAll() throws PSDataServiceException;
 
     /**
      * Generic method to get an object based on class and identifier. An
@@ -61,7 +61,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @throws LoadException 
      * @see org.springframework.orm.ObjectRetrievalFailureException
      */
-    T find(PK id) throws LoadException;
+    T find(PK id) throws PSDataServiceException;
 
     /**
      * Generic method to save an object - handles both update and insert.
@@ -70,7 +70,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @return the persisted object
      * @throws SaveException 
      */
-    T save(T object) throws SaveException;
+    T save(T object) throws PSDataServiceException;
 
     /**
      * Generic method to delete an object based on class and id
@@ -78,7 +78,7 @@ public interface IPSGenericDao<T, PK extends Serializable>
      * @param id the identifier (primary key) of the object to remove
      * @throws DeleteException 
      */
-    void delete(PK id) throws DeleteException;
+    void delete(PK id) throws PSDataServiceException;
 
     /**
      * DataServiceSaveException is thrown when a site cannot be saved

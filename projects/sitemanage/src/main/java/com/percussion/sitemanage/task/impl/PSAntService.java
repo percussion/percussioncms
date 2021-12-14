@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,8 +25,8 @@ package com.percussion.sitemanage.task.impl;
 
 
 import com.percussion.sitemanage.task.IPSAntService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.BuildListener;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
@@ -39,7 +39,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import static org.apache.commons.lang.Validate.*;
+import static org.apache.commons.lang.Validate.noNullElements;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
@@ -49,19 +51,20 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Component("antService")
 public class PSAntService implements IPSAntService {
 
-    private  Vector<String> runningFiles = new Vector<String>();
+    private  Vector<String> runningFiles = new Vector<>();
     
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    public static final Log log = LogFactory.getLog(PSAntService.class);
+    public static final Logger log = LogManager.getLogger(PSAntService.class);
+
     
     
     /**
      * {@inheritDoc}
      */
     public boolean isRunning(String file) {
-        log.debug("runningFiles: " + runningFiles);
+        log.debug("RunningFiles: {}", runningFiles);
         return runningFiles.contains(new File(file).getAbsolutePath());
     }
     
@@ -79,14 +82,14 @@ public class PSAntService implements IPSAntService {
         
         notEmpty(file);
         if (targets == null) {
-            targets = new ArrayList<String>();
+            targets = new ArrayList<>();
         }
         else {
             noNullElements(targets);
         }
         
         if (listeners == null) {
-            listeners = new ArrayList<BuildListener>();
+            listeners = new ArrayList<>();
         }
         else {
             noNullElements(listeners);
@@ -104,7 +107,7 @@ public class PSAntService implements IPSAntService {
         String defaultTarget = project.getDefaultTarget();
         if (targets.isEmpty())
             targets.add(defaultTarget);
-        final Vector<String> targetList = new Vector<String>(targets);
+        final Vector<String> targetList = new Vector<>(targets);
         
         for (BuildListener bl : listeners) {
             project.addBuildListener(bl);

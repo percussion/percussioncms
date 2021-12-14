@@ -18,7 +18,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,6 +33,8 @@
 var strJSON;
 var pageResult;
 var baseURL;
+var isEditMode;
+var isPreviewMode;
 (function($)
 {
     $(document).ready(function(){
@@ -61,10 +63,11 @@ var baseURL;
             //set the tree pre-expanded level for Collapsible option or the row number to show for the Expanded hierarchy
             let maxCat = queryString.max_categories;
             delete queryString.max_categories;
-            let isEditMode = queryString.isEditMode;
+            isEditMode = queryString.isEditMode;
+            isPreviewMode = queryString.isPreviewMode;
             //Set the base URL to create the href for each item then
             baseURL = "";
-            if(isEditMode==="true"){
+            if(isEditMode==="true" || isPreviewMode == "true"){
                 let paths = window.location.pathname.split("/");
                 baseURL = "/" + paths[1] + "/" + paths[2];
             }else{
@@ -96,7 +99,7 @@ var baseURL;
                             onActivate : function(node){
                                 var href = $(node.data.title).attr("href");
                                 var count = $(node.data.title).attr("data-count");
-                                if(0 < count) {
+                                if(0 < count && isEditMode !== "true") {
                                     window.location.href = href;
                                 }
                             }
@@ -174,16 +177,19 @@ var baseURL;
     }
 
     //Create the LI node from a Category.
-    function parseNode(node){
-        let countTotal = node.count.first + node.count.second;
-        let nodeStr = node.category + " (" + countTotal + ")";
-
+    function parseNode(node) {
+        let countTotal = node.count.first;
+        let nodeStr = node.category;
+        if (countTotal > 0)
+            nodeStr = node.category + " (" + countTotal + ")";
         let query = JSON.parse(strJSON );
         query.criteria.push("perc:category LIKE '" + node.path + "%'");
         let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
 
         let href = "#";
-        if ("undefined" !== typeof (pageResult) && "" !== pageResult) {
+        if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult ){
+            href = "#";
+        }else{
             href = baseURL + pageResult + "?filter=" + node.category + encodedQuery;
         }
 

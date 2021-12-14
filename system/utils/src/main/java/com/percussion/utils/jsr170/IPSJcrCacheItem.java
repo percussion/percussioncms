@@ -17,11 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.jsr170;
+
+import javax.jcr.RepositoryException;
 
 /**
  * Interface to be implemented by jcr objects that need to report a size to
@@ -42,5 +44,5 @@ public interface IPSJcrCacheItem
     * 
     * @return the size in bytes, might be <code>0</code>
     */
-   long getSizeInBytes();
+   long getSizeInBytes() throws RepositoryException;
 }

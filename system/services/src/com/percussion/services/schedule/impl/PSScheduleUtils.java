@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.schedule.impl;
 
 import com.percussion.services.schedule.data.PSScheduledTask;
+import org.quartz.JobDataMap;
+import org.quartz.JobDetail;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
 
 /**
  * Utility class for storing and retrieving {@link PSScheduledTask} object from
@@ -88,7 +87,7 @@ public class PSScheduleUtils
       if (params == null)
          throw new IllegalArgumentException("params may not be null.");
       
-      Map<String,Object> vars = new HashMap<String, Object>();
+      Map<String,Object> vars = new HashMap<>();
       for (Map.Entry<String, String> entry : params.entrySet())
       {
          if (entry.getKey().startsWith("$"))

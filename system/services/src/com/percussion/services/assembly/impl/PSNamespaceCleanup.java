@@ -17,14 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl;
 
 import com.percussion.data.PSStylesheetCleanupFilter;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -32,20 +36,18 @@ import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
 import com.percussion.utils.xml.PSSaxCopier;
 import com.percussion.utils.xml.PSSaxHelper;
+import org.apache.commons.lang.StringUtils;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.apache.commons.lang.StringUtils;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 
 /**
  * Cleanup namespaces declarations that are not configured for the site (if
@@ -59,7 +61,16 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
    /**
     * Parser factory
     */
-   static final SAXParserFactory ms_fact = SAXParserFactory.newInstance();
+   static final SAXParserFactory ms_fact = PSSecureXMLUtils.getSecuredSaxParserFactory(
+           new PSXmlSecurityOptions(
+                   true,
+                   true,
+                   true,
+                   false,
+                   true,
+                   false
+           )
+   );
 
    /**
     * Copier handler that strips namespaces for all but the topmost element. The
@@ -74,7 +85,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
        * A map that connects namespace prefixes with namespace URIs. The default
        * namespace is stored under the empty string key.
        */
-      private Map<String, String> mi_namespaces = new HashMap<String, String>();
+      private Map<String, String> mi_namespaces = new HashMap<>();
 
       /**
        * Track the level in the hierarchy, which allows us to add namespaces to
@@ -90,7 +101,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
        */
       public ContentHandler(XMLStreamWriter writer,
             Map<String, String> namespaces) {
-         super(writer, new HashMap<String, String>(), true);
+         super(writer, new HashMap<>(), true);
 
          mi_namespaces = namespaces;
       }
@@ -110,7 +121,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
          {
             resetCharCount();
             m_writer.writeStartElement(qName);
-            Set<String> nsattrs = new HashSet<String>();
+            Set<String> nsattrs = new HashSet<>();
             for (int i = 0; i < attributes.getLength(); i++)
             {
                String name = attributes.getQName(i);
@@ -170,7 +181,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
     * A map that connects namespace prefixes with namespace URIs. The default
     * namespace is stored under the empty string key.
     */
-   private Map<String, String> m_namespaces = new HashMap<String, String>();
+   private Map<String, String> m_namespaces = new HashMap<>();
 
    /**
     * Create a namespace cleanup interceptor. Does nothing if supplied siteid
@@ -178,7 +189,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
     * 
     * @param siteid the site, may be <code>null</code>.
     */
-   public PSNamespaceCleanup(Integer siteid) {
+   public PSNamespaceCleanup(Integer siteid) throws PSNotFoundException {
       Set<String> pset = null;
       PSStylesheetCleanupFilter filter = PSStylesheetCleanupFilter
             .getInstance();
@@ -192,7 +203,7 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
          if (!StringUtils.isBlank(namespaces))
          {
             String tokens[] = namespaces.split(",");
-            pset = new HashSet<String>();
+            pset = new HashSet<>();
             for (String p : tokens)
             {
                pset.add(p);
@@ -217,9 +228,12 @@ public class PSNamespaceCleanup implements IPSPropertyInterceptor
 
    public Object translate(Object originalValue)
    {
-      if (originalValue instanceof String)
+      if (originalValue instanceof String )
       {
-         if (StringUtils.isBlank((String) originalValue))
+         if (StringUtils.isBlank((String) originalValue)
+                 ||
+                 !(SecureStringUtils.isXML((String)originalValue)
+                         ||SecureStringUtils.isHTML((String)originalValue)))
          {
             return originalValue;
          }

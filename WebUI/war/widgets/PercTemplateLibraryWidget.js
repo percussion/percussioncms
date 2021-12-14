@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,7 +37,7 @@
  *
  * [W] - widget is rendered as an HTML TABLE
  * [T] - template is rendered as an HTML DIV inside an HTML TD
- *      Custom attribute percBaseTemplateName maintains the name of the original base template
+ *      Custom attribute data-base-template maintains the name of the original base template
  *
  * Gestures handled by this widget
  * [Site Filter |V]
@@ -63,7 +63,7 @@
 
             // Bind the behavior to the Site Silter:
             // Whenever the Site Filter changes load the correponding templates
-            $('#perc-templates-filter').change(function()
+            $('#perc-templates-filter').on("change",function()
             {
                 self._loadTemplates();
             });
@@ -73,9 +73,9 @@
             // When we got all the sites data, update the Sites Filter and unblock UI
             //self.controller.load(function()
             //{
-                self.controller.getSites(false, function(sites)
+                self.controller.getSites(false, function(percSiteTemplatesController, sites)
                 {
-                    self._updateTemplatesFilter(sites);
+                    self._updateTemplatesFilter(percSiteTemplatesController, sites);
                     self._loadTemplates();
                     $.unblockUI();
                 });
@@ -167,7 +167,7 @@
 				{
 					template = loadTemplatesContext.templates[t];
 					lastTemp = template;
-					buff += '<td><div percBaseTemplateName="' + template.getTemplateName() + '" id="perc-template-' + template.getTemplateId() + '" class="template" style="display:table-cell; ">\n';
+					buff += '<td><div data-base-template="' + template.getTemplateName() + '" id="perc-template-' + template.getTemplateId() + '" class="template" style="display:table-cell; ">\n';
 					buff += '<img style="border:1px solid #E6E6E9" src="' + template.getImageUrl() + '" class="perc-template-thumbnail"/>\n';
 					var theName = template.getTemplateName().replace("perc.base.", "");
 					theName = theName.replace("perc.resp.", "");
@@ -183,7 +183,7 @@
 	            // Append the selection behavior to each of the template listings
 				// THIS ENABLES TEMPLATES UNDER THE ADD TEMPLATES DIALOG TO BE SELECTED
 	            // TODO: make a more specific selector (the parent should be the base element)
-				var templates = $(".template").click('singleclick', function()
+				var templates = $(".template").on("click",function()
 				{
 					// unselect selected div and then select the new div
 					$("#perc-template-lib .perc-selected").removeClass("perc-selected");
@@ -200,7 +200,7 @@
          * Updates the combo box listing all the sites
          * @param Array(String) sites contains all the sites created in the system
          */
-        _updateTemplatesFilter: function(sites)
+        _updateTemplatesFilter: function(percSiteTemplatesController, sites)
         {
             $('#perc-templates-filter').html('<option value="base">Base</option><option value="resp">Responsive</option>');
             if (sites)
@@ -214,7 +214,7 @@
 
         destroy: function()
         {
-            $.widget.prototype.apply(this, arguments);
+			this._destroy();
         }
     });
 

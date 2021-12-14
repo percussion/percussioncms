@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,23 +25,27 @@ package com.percussion.services.relationship.impl;
 
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
-
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipPropertyData;
-
 import com.percussion.services.relationship.data.PSRelationshipData;
-import static com.percussion.util.PSSqlHelper.qualifyTableName;
-
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import static com.percussion.util.PSSqlHelper.qualifyTableName;
 
 /**
  * A helper class used for building (JDBC) SQL from a given relationship filter.
@@ -66,7 +70,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * The logger for this class.
      */
     @SuppressWarnings("unused")
-    private static Logger ms_logger = Logger.getLogger("RelationshipService");
+    private static final Logger ms_logger = LogManager.getLogger("RelationshipService");
 
     /**
      * A list of field names for PSRelationshipData class.
@@ -129,13 +133,13 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * The query string buffer, used to create HQL, never <code>null</code>,
      * may be empty.
      */
-    private StringBuffer m_qryBuffer = new StringBuffer();
+    private StringBuilder m_qryBuffer = new StringBuilder();
 
     /**
      * The parameter values list, used to record the values of the above
      * parameter names. Never <code>null</code>, may be empty.
      */
-    private List<Object> m_paramValues = new ArrayList<Object>();
+    private List<Object> m_paramValues = new ArrayList<>();
 
     /**
      * Determines whether to append a {@link #AND} before add further
@@ -195,8 +199,8 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
         // separate pre-defined user properties and custom properties
         if (m_filter.getProperties().size() > 0) {
             Collection<String> pduPropNames = PSRelationshipConfig.getPreDefinedUserPropertyNames();
-            m_pduProps = new ArrayList<Map.Entry<String, String>>();
-            m_customProps = new ArrayList<Map.Entry<String, String>>();
+            m_pduProps = new ArrayList<>();
+            m_customProps = new ArrayList<>();
 
             // separate pre-defined and customer properties
             Set<Map.Entry<String, String>> props = m_filter.getProperties()
@@ -575,7 +579,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
 
             rs = stmt.list().iterator();
 
-            List<PSRelationshipData> dataList = new ArrayList<PSRelationshipData>();
+            List<PSRelationshipData> dataList = new ArrayList<>();
             PSRelationshipData rdata;
 
             // retrieve the list of relationships
@@ -653,7 +657,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      *    not <code>null</code>.
      * @throws SQLException
      */
-    private void appendSelectJoinOwnerId(StringBuffer qryBuffer)
+    private void appendSelectJoinOwnerId(StringBuilder qryBuffer)
         throws SQLException {
         qryBuffer.append(selectFromRandC());
 
@@ -676,7 +680,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      *    not <code>null</code>.
      * @throws SQLException
      */
-    private void appendSelectJoinDependentId(StringBuffer qryBuffer)
+    private void appendSelectJoinDependentId(StringBuilder qryBuffer)
         throws SQLException {
         qryBuffer.append(selectFromRandC());
 
@@ -854,7 +858,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
             return (Set<Integer>) Collections.EMPTY_SET;
         }
 
-        HashSet<Integer> ids = new HashSet<Integer>();
+        HashSet<Integer> ids = new HashSet<>();
         Integer id;
 
         // get the names first
@@ -914,7 +918,7 @@ class PSJDBCQueryHelper implements IPSQueryHelper {
      * @return the config ids, may be empty, but never <code>null</code>.
      */
     private Set<Integer> getConfigIdsFromType(String type) {
-        Set<Integer> ids = new HashSet<Integer>();
+        Set<Integer> ids = new HashSet<>();
 
         Collection<PSRelationshipConfig> configs = m_configMap.values();
 

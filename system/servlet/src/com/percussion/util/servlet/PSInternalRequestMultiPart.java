@@ -17,15 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.util.servlet;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.util.PSCharSets;
 import com.percussion.util.PSStringOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -52,6 +55,9 @@ class PSInternalRequestMultiPart
    extends PSInternalRequest
    implements HttpServletRequest
 {
+
+   private static final Logger log = LogManager.getLogger(PSInternalRequestMultiPart.class);
+
    /**
     * Constructs an instance from a given servlet request.
     *
@@ -87,47 +93,48 @@ class PSInternalRequestMultiPart
       try
       {
          boolean hasContent = false;
-         m_bos = new ByteArrayOutputStream();
-         httpWriter = new PSMultipartWriter(m_bos, getBodyEncoding());
+         try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            m_bos = bos;
+            httpWriter = new PSMultipartWriter(m_bos, getBodyEncoding());
 
-         Enumeration pNames = this.getParameterNames();
-         if (pNames.hasMoreElements())
-            hasContent = true;
-         while (pNames.hasMoreElements())
-         {
-            String pName = (String) pNames.nextElement();
-            ArrayList pValues =
-               new ArrayList(Arrays.asList(this.getParameterValues(pName)));
-            Iterator pIter = pValues.iterator();
-            while (pIter.hasNext())
-            {
-               String pValue = (String) pIter.next();
-               httpWriter.addField(pName, pValue);
+            Enumeration pNames = this.getParameterNames();
+            if (pNames.hasMoreElements())
+               hasContent = true;
+            while (pNames.hasMoreElements()) {
+               String pName = (String) pNames.nextElement();
+               ArrayList pValues =
+                       new ArrayList(Arrays.asList(this.getParameterValues(pName)));
+               Iterator pIter = pValues.iterator();
+               while (pIter.hasNext()) {
+                  String pValue = (String) pIter.next();
+                  httpWriter.addField(pName, pValue);
+               }
             }
+            Iterator bodyParts = m_bodyParts.iterator();
+            if (bodyParts.hasNext())
+               hasContent = true;
+            while (bodyParts.hasNext()) {
+               PSHttpBodyPart bPart = (PSHttpBodyPart) bodyParts.next();
+               httpWriter.addBytes(
+                       bPart.getFieldName(),
+                       bPart.getFileName(),
+                       bPart.getMimeType(),
+                       bPart.getEncoding(),
+                       bPart.getBytes());
+            }
+            if (hasContent)
+               httpWriter.addEndMarker();
          }
-         Iterator bodyParts = m_bodyParts.iterator();
-         if (bodyParts.hasNext())
-            hasContent = true;
-         while (bodyParts.hasNext())
-         {
-            PSHttpBodyPart bPart = (PSHttpBodyPart) bodyParts.next();
-            httpWriter.addBytes(
-               bPart.getFieldName(),
-               bPart.getFileName(),
-               bPart.getMimeType(),
-               bPart.getEncoding(),
-               bPart.getBytes());
-         }
-         if (hasContent)
-            httpWriter.addEndMarker();
       }
       catch (UnsupportedEncodingException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       catch (IOException ioe)
       {
-         ioe.printStackTrace();
+         log.error(ioe.getMessage());
+         log.debug(ioe.getMessage(), ioe);
       }
       m_prepared = true;
       // set header for "Content-Type" and "content-length"
@@ -153,10 +160,13 @@ class PSInternalRequestMultiPart
          throw new IllegalStateException();
       }
       m_stream = true;
-      ServletInputStream res =
-         (ServletInputStream) new InternalInputStream(new ByteArrayInputStream(m_bos
-            .toByteArray()));
-      return res;
+        try(ServletInputStream res =
+            (ServletInputStream) new InternalInputStream(new ByteArrayInputStream(m_bos
+               .toByteArray()))){
+         return res;
+      } catch (IOException e) {
+           throw new IllegalStateException();
+        }
    }
 
    /**
@@ -236,7 +246,7 @@ class PSInternalRequestMultiPart
    }
 
    // see javax.servlet.ServletRequest#getReader()
-   public BufferedReader getReader() throws UnsupportedEncodingException
+   public BufferedReader getReader() throws IOException
    {
       if (!m_prepared)
       {
@@ -247,11 +257,12 @@ class PSInternalRequestMultiPart
          throw new IllegalStateException("It is operated in stream mode, not in text mode");
       }
       m_reader = true;
-      InputStream is = new ByteArrayInputStream(m_bos.toByteArray());
-      InputStreamReader ir =
-         new InputStreamReader(is, getBodyEncoding());
-      BufferedReader br = new BufferedReader(ir);
-      return br;
+      try(InputStream is = new ByteArrayInputStream(m_bos.toByteArray())) {
+         InputStreamReader ir =
+                 new InputStreamReader(is, getBodyEncoding());
+         BufferedReader br = new BufferedReader(ir);
+         return br;
+      }
    }
 
    /**

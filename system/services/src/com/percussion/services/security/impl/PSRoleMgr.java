@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,9 +27,17 @@ package com.percussion.services.security.impl;
 import com.percussion.design.objectstore.PSConditional;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.IPSDirectoryCataloger;
 import com.percussion.security.IPSGroupProvider;
 import com.percussion.security.IPSInternalRoleCataloger;
+import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSSubjectCataloger;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.security.PSSecurityProviderPool;
 import com.percussion.services.security.IPSRoleMgr;
 import com.percussion.services.security.PSJaasUtils;
@@ -38,20 +46,23 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSCatalogerConfig;
 import com.percussion.services.security.data.PSCatalogerConfigurations;
 import com.percussion.util.PSBaseBean;
-import com.percussion.utils.security.*;
-import com.percussion.utils.security.IPSPrincipalAttribute.PrincipalAttributes;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import javax.security.auth.Subject;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of the {@link IPSRoleMgr} service.  Additionally provides
@@ -60,6 +71,8 @@ import java.util.*;
 @PSBaseBean("sys_roleMgr")
 public class PSRoleMgr implements IPSRoleMgr
 {
+   private static final Logger log = LogManager.getLogger(PSRoleMgr.class);
+
    public List<Subject> findUsers(List<String> names) 
       throws PSSecurityCatalogException
    {
@@ -84,8 +97,8 @@ public class PSRoleMgr implements IPSRoleMgr
       String type, Set<PrincipalAttributes> supportedTypes, boolean throwCatalogerExceptions) 
          throws PSSecurityCatalogException
    {
-      Set<Subject> userSet = new HashSet<Subject>();
-      List<Subject> userList = new ArrayList<Subject>();
+      Set<Subject> userSet = new HashSet<>();
+      List<Subject> userList = new ArrayList<>();
       
       boolean specifiedName = !StringUtils.isBlank(catalogerName);
       if (specifiedName && StringUtils.isBlank(type))
@@ -153,7 +166,7 @@ public class PSRoleMgr implements IPSRoleMgr
 
          try
          {
-         Collection<Object> psSubs = new ArrayList<Object>();
+         Collection<Object> psSubs = new ArrayList<>();
          
          boolean isSupported = true;
          if (supportedTypes != null)
@@ -207,7 +220,8 @@ public class PSRoleMgr implements IPSRoleMgr
          }
          catch (Exception e)
          {
-            LogFactory.getLog(PSRoleMgr.class).error("Error finding users: " + e.getLocalizedMessage(),e);
+            log.error("Error finding users: {}" , PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             if(throwCatalogerExceptions)
                throw new PSSecurityCatalogException(e);
          }         
@@ -233,7 +247,7 @@ public class PSRoleMgr implements IPSRoleMgr
          throw new IllegalArgumentException(
             "roleName may not be null or empty");
       
-      Set<IPSTypedPrincipal> members = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> members = new HashSet<>();
       
       // query external catalogers
       for (IPSRoleCataloger cataloger : m_roleCatalogers)
@@ -263,7 +277,7 @@ public class PSRoleMgr implements IPSRoleMgr
       else
          throw new IllegalArgumentException("Invalid type");
       
-      Set<IPSTypedPrincipal> members = new HashSet<IPSTypedPrincipal>();
+      Set<IPSTypedPrincipal> members = new HashSet<>();
       
       // query external catalogers
       for (IPSRoleCataloger cataloger : m_roleCatalogers)
@@ -293,8 +307,8 @@ public class PSRoleMgr implements IPSRoleMgr
    private Set<IPSTypedPrincipal> catalogInternalRoleMembers(String roleName, 
       int subType)
    {
-      Set<IPSTypedPrincipal> members = new HashSet<IPSTypedPrincipal>();
-      Set<Object> subSet = new HashSet<Object>();
+      Set<IPSTypedPrincipal> members = new HashSet<>();
+      Set<Object> subSet = new HashSet<>();
       
       for (IPSInternalRoleCataloger roleCat : 
          PSSecurityProviderPool.getAllRoleCatalogers())
@@ -316,7 +330,7 @@ public class PSRoleMgr implements IPSRoleMgr
    public Set<String> getUserRoles(IPSTypedPrincipal user)
       throws PSSecurityCatalogException
    {
-      Set<String> roles = new HashSet<String>();
+      Set<String> roles = new HashSet<>();
       
       if (user == null)
       {
@@ -351,7 +365,7 @@ public class PSRoleMgr implements IPSRoleMgr
    public Set<String> getDefaultUserRoles(IPSTypedPrincipal user)
       throws PSSecurityCatalogException
    {
-      Set<String> roles = new HashSet<String>();
+      Set<String> roles = new HashSet<>();
       IPSInternalRoleCataloger roleCat = 
          PSSecurityProviderPool.getDefaultRoleCataloger();
       roles.addAll(roleCat.getRoles(user.getName(), 0));
@@ -365,7 +379,7 @@ public class PSRoleMgr implements IPSRoleMgr
       if (user == null)
          throw new IllegalArgumentException("user may not be null");
       
-      Set<Principal> groups = new HashSet<Principal>();
+      Set<Principal> groups = new HashSet<>();
       
       // query external catalogers 
       for (IPSSubjectCataloger cataloger : m_subjectCatalogers)
@@ -397,7 +411,7 @@ public class PSRoleMgr implements IPSRoleMgr
    public List<Principal> findGroups(String pattern, String catalogerName,
       String type) throws PSSecurityCatalogException
    {
-      List<Principal> groups = new ArrayList<Principal>();
+      List<Principal> groups = new ArrayList<>();
       
       boolean specifiedName = !StringUtils.isBlank(catalogerName);
       boolean matchedName = false;
@@ -453,10 +467,8 @@ public class PSRoleMgr implements IPSRoleMgr
          while (groupProviders.hasNext())
          {
             IPSGroupProvider gp = groupProviders.next();
-            Iterator<String> groupNames = gp.getGroups(groupFilter).iterator();
-            while (groupNames.hasNext())
-            {
-               groups.add(PSTypedPrincipal.createGroup(groupNames.next()));
+            for (String s : gp.getGroups(groupFilter)) {
+               groups.add(PSTypedPrincipal.createGroup(s));
             }
          }
          
@@ -503,7 +515,7 @@ public class PSRoleMgr implements IPSRoleMgr
    // see IPSRoleMgr interface
    public List<IPSSubjectCataloger> getSubjectCatalogers()
    {
-      return new ArrayList<IPSSubjectCataloger>(m_subjectCatalogers);
+      return new ArrayList<>(m_subjectCatalogers);
    }
 
    // see IPSRoleMgr interface
@@ -564,7 +576,7 @@ public class PSRoleMgr implements IPSRoleMgr
    // see IPSRoleMgr interface
    public List<String> getDefinedRoles()
    {
-      List<String> roles = new ArrayList<String>();
+      List<String> roles = new ArrayList<>();
       roles.addAll(PSRoleMgrLocator.getBackEndRoleManager().getRhythmyxRoles());
       
       return roles;
@@ -577,7 +589,7 @@ public class PSRoleMgr implements IPSRoleMgr
       if (groups == null)
          throw new IllegalArgumentException("groups may not be null");
       
-      List<IPSTypedPrincipal> members = new ArrayList<IPSTypedPrincipal>();
+      List<IPSTypedPrincipal> members = new ArrayList<>();
       
       if (groups.isEmpty())
          return members;
@@ -654,12 +666,12 @@ public class PSRoleMgr implements IPSRoleMgr
     * empty, modified by {@link #setSubjectCatalogers(List)}.
     */
    private Collection<IPSSubjectCataloger> m_subjectCatalogers = 
-      new ArrayList<IPSSubjectCataloger>(0);
+      new ArrayList<>(0);
    
    /**
     * Collection of role catalogers, never <code>null</code>, initially 
     * empty, modified by {@link #setRoleCatalogers(List)}.
     */
    private Collection<IPSRoleCataloger> m_roleCatalogers = 
-      new ArrayList<IPSRoleCataloger>(0);
+      new ArrayList<>(0);
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -153,7 +153,7 @@ public class PSConfigValidation
     * Sets the package name that was used to validate against with the
     * current package. 
     * 
-    * @param pkgName the other package name, not <code>null</code> or empty.
+    * @param otherPkgName the other package name, not <code>null</code> or empty.
     */
    public void setOtherPkgName(String otherPkgName)
    {

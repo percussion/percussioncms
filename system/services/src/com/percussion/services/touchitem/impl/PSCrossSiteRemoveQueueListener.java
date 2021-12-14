@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,8 +27,8 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderRemoveActionData;
 import com.percussion.server.webservices.crosssite.PSCrossSiteFolderRemoveActionProcessor;
 import com.percussion.services.notification.PSMessageQueueListenerAdapter;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Listens for Cross Site Remove Item operations.
@@ -67,6 +67,6 @@ public class PSCrossSiteRemoveQueueListener extends PSMessageQueueListenerAdapte
       return PSCrossSiteFolderRemoveActionData.class;
    }
    
-   private static final Logger ms_logger = Logger.getLogger(PSCrossSiteRemoveQueueListener.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSCrossSiteRemoveQueueListener.class);
 
 }

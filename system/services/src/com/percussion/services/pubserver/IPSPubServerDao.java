@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,12 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.pubserver;
 
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.ToDoVulnerability;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -59,9 +61,15 @@ public interface IPSPubServerDao
    public static final String PUBLISH_AS3_BUCKET_PROPERTY = "bucketlocation";
    public static final String PUBLISH_AS3_SECURITYKEY_PROPERTY = "securitykey";
    public static final String PUBLISH_AS3_ACCESSKEY_PROPERTY = "accesskey";
+   public static final String PUBLISH_AS3_USE_ASSUME_ROLE = "useAssumeRole";
+   public static final String PUBLISH_AS3_ARN_ROLE = "ARNRole";
    public static final String PUBLISH_RELATED_PROPERTY = "publishRelatedItems";
-   public static final String encryptionKey = "p3$Y&ND8#Zdefghl";
-    public static final String PUBLISH_SECURE_SITE_CONF = "publishSecureSiteConfigOnExactPath";
+
+   @ToDoVulnerability
+   @Deprecated
+   public static final String encryptionKey = PSLegacyEncrypter.PUBSERVER_ENCRYPTION_KEY;
+
+   public static final String PUBLISH_SECURE_SITE_CONF = "publishSecureSiteConfigOnExactPath";
    
    /**
     * Create a publish server for the given site.
@@ -74,7 +82,7 @@ public interface IPSPubServerDao
 
    /**
     * Load a server object from the cache, it may not be modified and saved
-    * through {@link #savePubServer(IPSServer)}.
+    * through {@link #savePubServer(PSPubServer)}.
     * 
     * @param serverId the server ID, never <code>null</code>
     * 
@@ -97,7 +105,7 @@ public interface IPSPubServerDao
 
    /**
     * Load a server object from the cache, it may not be modified and saved
-    * through {@link #savePubServer(IPSServer)}.
+    * through {@link #savePubServer(PSPubServer)}.
     * 
     * @param serverId the server ID, never <code>null</code>
     * 
@@ -138,7 +146,7 @@ public interface IPSPubServerDao
    /**
     * Delete the publishing servers from the database for the given site
     * 
-    * @param site the site, never <code>null</code>
+    * @param pubServer the pub server, never <code>null</code>
     */
    void deletePubServer(PSPubServer pubServer);
 }

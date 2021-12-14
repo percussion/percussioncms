@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -40,8 +40,8 @@ import com.percussion.services.filestorage.PSFileStorageServiceLocator;
 import com.percussion.services.filestorage.data.PSMeta;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,7 +51,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.endsWith;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.removeEnd;
 import static org.apache.commons.lang.Validate.isTrue;
 
 /**
@@ -75,7 +77,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
    /**
     * Logger for this class
     */
-   private static final Log log = LogFactory.getLog(PSChecksumFileInfo.class);
+   private static final Logger log = LogManager.getLogger(PSChecksumFileInfo.class);
 
    /**
     * This method handles the pre-exit request.
@@ -97,7 +99,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
       if (command == null || !command.equals("modify"))
            return;
       // make a copy to avoid ConcurrentModificationException
-      Set<?> paramKeys = new HashSet<Object>(request.getParameters().keySet());
+      Set<?> paramKeys = new HashSet<>(request.getParameters().keySet());
       Iterator<?> iter = paramKeys.iterator();
       String wifxFlag = request.getParameter("webimagefxupload");
       
@@ -449,7 +451,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
       }
       else
       {
-         final List<String> list = new ArrayList<String>();
+         final List<String> list = new ArrayList<>();
          while (st.hasMoreTokens())
             list.add(st.nextToken());
          obj = list;

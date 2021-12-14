@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,6 +52,7 @@ import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSFeatureSet;
 import com.percussion.design.objectstore.PSUnknownDocTypeException;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSServerLockException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.codec.PSXmlEncoder;
@@ -59,6 +60,8 @@ import com.percussion.utils.collections.PSMultiValueHashMap;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -84,6 +87,7 @@ import java.util.ResourceBundle;
 public class PSDeploymentManager
 {
 
+   private static final Logger log = LogManager.getLogger(PSDeploymentManager.class);
    /**
     * Creates a deployment manager using the supplied connection.
     *
@@ -260,6 +264,8 @@ public class PSDeploymentManager
       }
       catch (Exception e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(
             IPSDeploymentErrors.UNEXPECTED_ERROR, e.toString());
       }
@@ -354,7 +360,7 @@ public class PSDeploymentManager
 
       try
       {
-         List<Map<String, String>> results = new ArrayList<Map<String, String>>();
+         List<Map<String, String>> results = new ArrayList<>();
          // Create a dummy request doc as it is required.
          Document reqDoc = PSXmlDocumentBuilder.createXmlDocument();
          PSXmlDocumentBuilder.createRoot(reqDoc, "PSXDummy");
@@ -367,7 +373,7 @@ public class PSDeploymentManager
          for (int i = 0; i < len; i++)
          {
             Element current = (Element) nl.item(i);
-            Map<String, String> entry = new HashMap<String, String>();
+            Map<String, String> entry = new HashMap<>();
             entry.put("dependencyId", current.getAttribute("dependencyId"));
             entry.put("objectType", current.getAttribute("objectType"));
             entry.put("package", current.getAttribute("package"));
@@ -1059,7 +1065,7 @@ public class PSDeploymentManager
          Document respDoc = m_conn.execute(reqType, reqDoc);
          PSXmlTreeWalker tree = new PSXmlTreeWalker(respDoc);
          Element el = null;
-         List<String> errors = new ArrayList<String>();
+         List<String> errors = new ArrayList<>();
          while((el = tree.getNextElement("error")) != null)
          {
             errors.add(PSXmlTreeWalker.getElementData(el));
@@ -1108,7 +1114,7 @@ public class PSDeploymentManager
       String reqType = getDeployReqType("validateArchive");
       
       PSMultiValueHashMap<String, String> validationMap = 
-         new PSMultiValueHashMap<String, String>();
+         new PSMultiValueHashMap<>();
 
       try
       {
@@ -1419,12 +1425,15 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
             {
                // record OutOfMemoryError on job control
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
                ctl.setErrorMessage(t.toString());
             }
          }
@@ -1483,12 +1492,15 @@ public class PSDeploymentManager
             }
             catch (Exception e)
             {
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                ctl.setErrorMessage(e.getLocalizedMessage());
             }
             catch (Throwable t)
             {
                // record OutOfMemoryError on job control
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
                ctl.setErrorMessage(t.toString());
             }
          }
@@ -1546,6 +1558,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1618,6 +1632,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1660,7 +1676,8 @@ public class PSDeploymentManager
       }
       catch (IOException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       finally
       {
@@ -1670,7 +1687,8 @@ public class PSDeploymentManager
          }
          catch (IOException e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 
@@ -1804,6 +1822,8 @@ public class PSDeploymentManager
                }
                catch (Exception e)
                {
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   ctl.setErrorMessage(e.getLocalizedMessage());
                }
             }
@@ -1966,7 +1986,9 @@ public class PSDeploymentManager
       catch (PSServerLockException e) 
       {
          // this is not expected, but helper method throws it
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
             e.getLocalizedMessage());
       }
    }
@@ -2055,7 +2077,7 @@ public class PSDeploymentManager
     * <code>null</code>.
     * @throws PSDeployException if there is an error retrieving the status.
     */
-   int getJobStatus(int jobId, StringBuffer messageBuffer)
+   int getJobStatus(int jobId, StringBuilder messageBuffer)
       throws PSDeployException
    {
       if (messageBuffer == null)

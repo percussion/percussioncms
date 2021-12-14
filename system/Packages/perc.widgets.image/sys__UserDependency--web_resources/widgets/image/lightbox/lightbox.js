@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -209,7 +209,9 @@
     var self    = this;
     var $window = $(window);
 
-    $window.on('resize', $.proxy(this.sizeOverlay, this));
+    $window.on('resize', function(evt){
+        $.proxy(this.sizeOverlay, this);
+    });
 
     $('select, object, embed').css({
       visibility: 'hidden'
@@ -480,7 +482,9 @@
   };
 
   Lightbox.prototype.enableKeyboardNav = function() {
-    $(document).on('keyup.keyboard', $.proxy(this.keyboardAction, this));
+    $(document).on('keyup.keyboard', function(evt){
+        $.proxy(this.keyboardAction, this);
+    });
   };
 
   Lightbox.prototype.disableKeyboardNav = function() {

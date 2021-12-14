@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.linkmanagement.service.impl;
 import com.percussion.cms.PSSingleValueBuilder;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.IPSWorkflowHelper;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
 import com.percussion.pagemanagement.assembler.PSRenderAsset;
@@ -51,8 +52,11 @@ import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.IPSLinkableItem;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.PSJsoupPreserver;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
@@ -60,8 +64,8 @@ import com.phloc.commons.url.URLValidator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -85,6 +89,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
 import static org.apache.commons.lang.Validate.notEmpty;
@@ -104,7 +109,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      */
     public static final int UNASSIGNED_PARENT_ID = -1;
 
-    private static final Log log = LogFactory.getLog(PSManagedLinkService.class);
+	private static final Logger log = LogManager.getLogger(PSManagedLinkService.class);
 
     private IPSManagedLinkDao dao;
 
@@ -122,7 +127,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     
     private IPSPageCatalogService pageCatalogService;
     
-    private ThreadLocal<List<Long>> newLinkIds = new ThreadLocal<List<Long>>();
+    private ThreadLocal<List<Long>> newLinkIds = new ThreadLocal<>();
     
     @Autowired
     public PSManagedLinkService(IPSManagedLinkDao dao, IPSIdMapper idMapper, IPSContentWs contentWs,
@@ -221,7 +226,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     public String renderLinks(PSRenderLinkContext linkContext, String source, Boolean isStaging, Integer parentId)
     {
         String returnHTML = source;
-        ArrayList<Element> managedLinks = new ArrayList<Element>();
+        ArrayList<Element> managedLinks = new ArrayList<>();
         
         if(parentId == null || parentId == 0){
             log.warn("Rendering managed links for parent item with an invalid contentid");
@@ -281,19 +286,21 @@ public class PSManagedLinkService implements IPSManagedLinkService
 	     
 	        try {
 	        	 if(log.isDebugEnabled())
-	             	log.debug("Parsing JSON Payload" + jsonPayload);
+	             	log.debug("Parsing JSON Payload: {}" , jsonPayload);
 	        	object = new JSONObject(jsonPayload);
 
-	        	log.debug("Done parsing payload, parsing " + PERC_CONFIG + " array.");
+	        	log.debug("Done parsing payload, parsing {} array.",  PERC_CONFIG );
 
                 try {
                     objectArray = object.getJSONArray(PERC_CONFIG);
 		            log.debug("Done parsing payload array");
-                }catch(JSONException e){
+                }catch(JSONException js){
                     //Unable to get the array so log an error that it is missing
-                    log.error(e.getMessage());
-                    log.debug(e);
+                    log.error("An error occurred while trying to manage links in a JSONPayload field. Error: {}",
+                            PSExceptionUtils.getMessageForLog(js));
+                    log.debug("An error occurred while trying to manage links in a JSONPayload field.", js);
                     return null;
+
                 }
 
 
@@ -301,7 +308,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		        
 		        for (int i = 0; i < objectArray.length(); i++) {
 		        	PSManagedLink mLink = null;
-                    log.debug("Processing payload entry " + i);
+                    log.debug("Processing payload entry {}" , i);
                     JSONObject entry = objectArray.getJSONObject(i);
 
 
@@ -310,17 +317,19 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		            	if(entry.has(PERC_IMAGEPATH_LINKID)){
 		            		if(!StringUtils.isBlank(entry.getString(PERC_IMAGEPATH_LINKID))){
 		            			if(log.isDebugEnabled())
-		            				log.debug("Getting updated path for Image entry: " + entry.getString(PERC_IMAGEPATH_LINKID) + 
-		            						" with current path of " + entry.get(PERC_IMAGEPATH));
+		            				log.debug("Getting updated path for Image entry: {} with current path of {}" ,
+                                            entry.getString(PERC_IMAGEPATH_LINKID),
+                                            entry.get(PERC_IMAGEPATH));
 		            			mLink = dao.findLinkByLinkId(Integer.parseInt(entry.getString(PERC_IMAGEPATH_LINKID)));
 		            			newPath = renderHref(mLink,linkContext, isStaging);
 		            			if(log.isDebugEnabled())
-		            				log.debug("Updating payload for Image entry: " + entry.getString(PERC_IMAGEPATH_LINKID) + " with new path of " + newPath);
+		            				log.debug("Updating payload for Image entry: {} with new path of {}",
+                                             entry.getString(PERC_IMAGEPATH_LINKID) , newPath);
 		            			
 		            			entry.put(PERC_IMAGEPATH, newPath);
 			            		objectArray.put(i,entry);
 			            		if(log.isDebugEnabled())
-			            			log.debug("Done updating.");
+			            			log.debug("Done updating links.");
 		            		}
 		            	}
 		            }
@@ -330,17 +339,20 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		            	if(entry.has(PERC_FILEPATH_LINKID)){
 		            		if(!StringUtils.isBlank(entry.getString(PERC_FILEPATH_LINKID))){
 		            			if(log.isDebugEnabled())
-		            				log.debug("Getting updated path for File entry: " + entry.getString(PERC_FILEPATH_LINKID) + 
-		            						" with current path of " + entry.get(PERC_FILEPATH));
+		            				log.debug("Getting updated path for File entry: {} with current path of {}" ,
+                                            entry.getString(PERC_FILEPATH_LINKID),
+                                            entry.get(PERC_FILEPATH));
 		            			mLink = dao.findLinkByLinkId(Integer.parseInt(entry.getString(PERC_FILEPATH_LINKID)));
 		            			newPath = renderHref(mLink,linkContext, isStaging);
 			            		if(log.isDebugEnabled())
-		            				log.debug("Updating payload for File entry: " + entry.getString(PERC_FILEPATH_LINKID) + " with new path of " + newPath);
+		            				log.debug("Updating payload for File entry: {} with new path of {}",
+                                            entry.getString(PERC_FILEPATH_LINKID),
+                                            newPath);
 		            			
 			              		entry.put(PERC_FILEPATH, newPath);
 			            		objectArray.put(i,entry);
 			            		if(log.isDebugEnabled())
-			            			log.debug("Done updating.");
+			            			log.debug("Done updating links.");
 		            		}
 		            	}
 		            }
@@ -350,12 +362,15 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		            	if(entry.has(PERC_PAGEPATH_LINKID)){
 		            		if(!StringUtils.isBlank(entry.getString(PERC_PAGEPATH_LINKID))){
 		            			if(log.isDebugEnabled())
-		            				log.debug("Getting updated path for Page entry: " + entry.getString(PERC_PAGEPATH_LINKID) + 
-		            						" with current path of " + entry.get(PERC_PAGEPATH));
+		            				log.debug("Getting updated path for Page entry: {} with current path of {}" ,
+                                            entry.getString(PERC_PAGEPATH_LINKID),
+                                            entry.get(PERC_PAGEPATH));
 		            			mLink = dao.findLinkByLinkId(Integer.parseInt(entry.getString(PERC_PAGEPATH_LINKID)));
 		            			newPath = renderHref(mLink,linkContext, isStaging);
 			            		if(log.isDebugEnabled())
-		            				log.debug("Updating payload for Page entry: " + entry.getString(PERC_PAGEPATH_LINKID) + " with new path of " + newPath);
+		            				log.debug("Updating payload for Page entry: {} with new path of {}" ,
+                                            entry.getString(PERC_PAGEPATH_LINKID) ,
+                                            newPath);
 			            		entry.put(PERC_PAGEPATH, newPath);
 			            		objectArray.put(i,entry);
 			            		if(log.isDebugEnabled())
@@ -373,13 +388,14 @@ public class PSManagedLinkService implements IPSManagedLinkService
                     jsonPayload = "";
                 }
 
-	            log.error("An error occurred while trying to manage links in a JSONPayload field. Payload was: " + jsonPayload + " Error was: " + ex.getMessage());
+	            log.error("An error occurred while trying to manage links in a JSONPayload field. Payload was: {} Error was: {}",
+                        jsonPayload, PSExceptionUtils.getMessageForLog(ex));
 
-				log.debug("Error occurred.  Returning original payload: " + jsonPayload, ex);
+				log.debug("Error occurred.  Returning original payload: {}" , jsonPayload, ex);
 				return jsonPayload;
 			}
 
-	        log.debug("Returning updated payload with any managed path updates: " + object.toString());
+	        log.debug("Returning updated payload with any managed path updates: {}" , object);
 	        return object.toString();
 	}
     
@@ -413,7 +429,8 @@ public class PSManagedLinkService implements IPSManagedLinkService
     		el.attr("class",currentValue.trim());
     	}
     }
-    
+
+
     private static void removeAttribute(Element el, String className)
     {
     	String currentValue = StringUtils.defaultString(el.attr("class"));
@@ -437,7 +454,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         Validate.notNull(source);
         
         // set up new link id list
-        newLinkIds.set(new ArrayList<Long>());
+        newLinkIds.set(new ArrayList<>());
         return manageLinks(getNewItemParentId(), source);
     }
 
@@ -445,7 +462,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     public void initNewItemLinks()
     {
         // set up new link id list
-        newLinkIds.set(new ArrayList<Long>());
+        newLinkIds.set(new ArrayList<>());
     }
     
     @Override
@@ -455,12 +472,12 @@ public class PSManagedLinkService implements IPSManagedLinkService
         List<Long> linkIds = newLinkIds.get();
         if (linkIds == null)
         {
-            log.warn("newLInkIds not initialized for current thread, no links will be updated for parent Id: " + parentId);
+            log.warn("newLInkIds not initialized for current thread, no links will be updated for parent Id: {}" , parentId);
             return;
         }
         
         // clear the new item link cache
-        newLinkIds.set(null);
+        newLinkIds.remove();
         
         for (Long linkId : linkIds)
         {
@@ -476,7 +493,8 @@ public class PSManagedLinkService implements IPSManagedLinkService
                 }
                 catch (Exception e)
                 {
-                    log.error("Unable to update manage link: " + link.toString() + " for parent id: " + parentId + " - "+ e.getLocalizedMessage(), e);
+                    log.error("Unable to update manage link: {} for parent id: {}. Error: {}",
+                            link, parentId, PSExceptionUtils.getMessageForLog(e));
                 }
             }
         }
@@ -541,7 +559,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     }
     private Map<Integer, Integer> convertGuidToIntegerMap(Map<String, String> guidMap)
     {
-        Map<Integer, Integer> integerMap = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> integerMap = new HashMap<>();
         for (Map.Entry<String, String> entry : guidMap.entrySet())
         {
             int intKey = idMapper.getContentId(entry.getKey());
@@ -556,32 +574,29 @@ public class PSManagedLinkService implements IPSManagedLinkService
         List<PSManagedLink> links = dao.findLinksByParentId(assetId);
         for (PSManagedLink link : links)
         {
-            updateCopyAssetLink(link, origSiteRoot, copySiteRoot, assetIdMap);
+            try {
+                updateCopyAssetLink(link, origSiteRoot, copySiteRoot, assetIdMap);
+            } catch (IPSGenericDao.SaveException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                //Continue processing
+            }
         }
     }
     
-    private void updateCopyAssetLink(PSManagedLink link, String origSiteRoot, String copySiteRoot, Map<Integer, Integer> assetIdMap)
-    {
+    private void updateCopyAssetLink(PSManagedLink link, String origSiteRoot, String copySiteRoot, Map<Integer, Integer> assetIdMap) throws IPSGenericDao.SaveException {
         // handle a cloned asset
         Integer copiedAssetId = assetIdMap.get(link.getChildId());
         if (copiedAssetId != null)
         {
-            link.setChildId(copiedAssetId.intValue());
+            link.setChildId(copiedAssetId);
             dao.saveLink(link);
             return;
         }
         
         // handle a cloned page
         String relativePath = null;
-        try {
-            relativePath = getRelativePath(origSiteRoot, link.getChildId());
-        } catch (PSNotFoundException e)
-        {
-            log.error("Managed Cannot find child item "+link.getChildId() 
-                    +" for managed link with parent "+link.getParentId()
-                    + " revision "+ link.getParentRevision() + " and linkid ="+link.getLinkId());
-
-        }
+        relativePath = getRelativePath(origSiteRoot, link.getChildId());
         if (relativePath == null)
             return;
         
@@ -589,9 +604,11 @@ public class PSManagedLinkService implements IPSManagedLinkService
         IPSGuid guid = contentWs.getIdByPath(path);
         if (guid == null)
         {
-            log.warn("Found a page from original site (" + origSiteRoot + relativePath
-                    + "), but cannot find the copied page (" + path + "). Skip updating managed link: "
-                    + link.toString());
+            log.warn("Found a page from original site ( {}{} ), but cannot find the copied page ( {} ). Skip updating managed link: {}",
+                    origSiteRoot ,
+                    relativePath,
+                    path
+                    , link);
             return;
         }
         int childId = idMapper.getContentId(guid);
@@ -680,7 +697,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.error("Unable to render managed link: " + link.toString() + ": " + e.getLocalizedMessage(), e);
+            log.error("Unable to render managed link: {} Error: {}",
+                     link,
+                    PSExceptionUtils.getMessageForLog(e));
             if (isDeliveryContext)
                 isBrokenLink = true;
         }
@@ -692,6 +711,22 @@ public class PSManagedLinkService implements IPSManagedLinkService
     {
     	return path.startsWith("/Sites/") || path.startsWith("/Assets/") || path.startsWith("//Sites/") || path.startsWith("//Assets/"); 	
     }
+
+
+    /**
+     * Given a link element, checks to see if the target is blank and if it is, updates the link to include the
+     * @param link
+     */
+    protected void addReferrerIfMissing(Element link){
+        String s = link.attr("target");
+        if("_blank".equalsIgnoreCase(s)){
+            String rel = link.attr("rel");
+            if(!rel.trim().equalsIgnoreCase("noopener noreferrer")){
+                link.attr("rel","noopener noreferrer");
+            }
+        }
+    }
+
 	private void addBrokenClasses(Element link, PSManagedLink mLink,boolean brokenLink) {
 		if(mLink==null || brokenLink)
 		{
@@ -763,9 +798,12 @@ public class PSManagedLinkService implements IPSManagedLinkService
 
             Node assetNode=null;
             try {
-                assetNode = getAssetNode(mLink.getChildId(), linkContext, isStaging, "rx:alttext");
+                if(mLink!=null)
+                    assetNode = getAssetNode(mLink.getChildId(), linkContext, isStaging, "rx:alttext");
             }catch(Exception e){
-                log.debug("Exception getting Asset Node for link:" + link + ": link is likely broken");
+                log.warn("Exception getting Asset Node for link: {}. The link is likely broken. Error: {}",
+                        link,
+                        PSExceptionUtils.getMessageForLog(e));
             }
 
             if (assetNode != null) {
@@ -799,11 +837,15 @@ public class PSManagedLinkService implements IPSManagedLinkService
             else {
                 result = false;
             }
+
+            //If the link target is _blank, make sure rel is added.
+            addReferrerIfMissing(link);
+
             if (isDeliveryContext)
             {
                 removeManagedAttributes(link);
                 //In case Link is broken, then needs to be replaced with user preferred value for href
-                if(result == false) {
+                if(!result) {
                     String overrideValue = AssemblerInfoUtils.getBrokenLinkOverrideValue(src);
                     link.attr(SRC_ATTR, overrideValue);
                 }
@@ -815,7 +857,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.debug("Unable to render managed link: " + link.toString() + ": " + e.getLocalizedMessage(), e);
+            log.debug("Unable to render managed link: {} Error: {}",
+                    link,
+                    PSExceptionUtils.getDebugMessageForLog(e));
             result = false;
         }
 
@@ -830,12 +874,15 @@ public class PSManagedLinkService implements IPSManagedLinkService
             int dependentId = getDependentId(path);
             if (dependentId != -1)
             {
-                log.debug("Fixed link for path "+path + " to id "+dependentId);
+                log.debug("Fixed link for path {} to id {}",
+                        path,
+                        dependentId);
                 String anchor = PSReplacementFilter.getAnchor(link.attr(HREF_ATTR));
                 mLink = dao.createLink(-1, -1, dependentId, anchor);
             } 
             {
-                log.debug("Cannot find item for internal path "+path);
+                log.debug("Cannot find item for internal path {}",
+                        path);
             }
         }
         return mLink;
@@ -869,7 +916,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.debug("Unable to render href for managed link with ID " + link.getLinkId() + ": " + e.getLocalizedMessage(), e);
+            log.debug("Unable to render href for managed link with ID {} Error: {}",
+                    link.getLinkId(),
+                          PSExceptionUtils.getMessageForLog(e));
         }
 
         return href;
@@ -899,7 +948,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 	 * @return Our completed url to our link.
 	 */
 	private String createHref(PSManagedLink link,
-			PSRenderLinkContext linkContext, Boolean isStaging, String href) {
+			PSRenderLinkContext linkContext, Boolean isStaging, String href) throws PSDataServiceException, PSNotFoundException {
 		IPSLinkableItem linkItem = getLinkItem(linkContext, link.getChildId(), isStaging);
 		//  Add orphaned manage link cleanup somewhere.  catch errors when child does not exist
 		if (linkItem != null)
@@ -926,11 +975,17 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		    			}
 		    		}
 		    	} catch (PathNotFoundException e) {
-		    		log.error("Failed to retrieve property for Asset: " + myasset.getId() + ". Exception is " + e);
+		    		log.error("Failed to retrieve property for Asset: {}. Error: {}",
+                            myasset.getId() ,
+                            PSExceptionUtils.getMessageForLog(e));
 		    	} catch (RepositoryException e) {
-		    		log.error("Failed to find property in object's repository for Asset: " + myasset.getId() + ". Exception is " + e);
+		    		log.error("Failed to find property in object's repository for Asset: {} Error: {}",
+                            myasset.getId() ,
+                            PSExceptionUtils.getMessageForLog(e));
 		    	} catch (UnsupportedEncodingException e) {
-		    		log.error("Failed to encode url: " + href + ". Exception is " + e);
+		    		log.error("Failed to encode url: {}. Error: {}" ,
+                            href,
+                            PSExceptionUtils.getMessageForLog(e));
 				}
 		    }
 		}
@@ -951,7 +1006,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
 		if(URLValidator.isValid("http://localhost" + href + analyticsId)){
 			href += analyticsId;
 		} else{
-			log.warn("The link to asset: " + href + " with encoded analytics id of " + analyticsId + " failed to form a valid URL.");
+			log.warn("The link to asset: {} with encoded analytics id of {} failed to form a valid URL.",
+                    href,analyticsId
+                    );
 		}
 		
 		return href;
@@ -1032,7 +1089,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.error("Unable to manage link: " + link.toString() + ": " + e.getLocalizedMessage(), e);
+            log.error("Unable to manage link: {} Error: {}",
+                    link,
+                    PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1056,7 +1115,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.error("Unable to unmanage link: " + link.toString() + ": " + e.getLocalizedMessage(), e);
+            log.error("Unable to unmanage link: {} Error: {}",
+                    link,
+                    PSExceptionUtils.getMessageForLog(e));
         }
     }
     
@@ -1071,6 +1132,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
     {
         try
         {
+            //always check for the referrer
+            addReferrerIfMissing(link);
+
             // see if already managed
             long linkId = getLinkId(link);
             if (linkId != -1 && linkId!=0)
@@ -1104,7 +1168,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.error("Unable to manage link: " + link.toString() + ": " + e.getLocalizedMessage(), e);
+            log.error("Unable to manage link: {} Error: {}",
+                    link,
+                    PSExceptionUtils.getMessageForLog(e));
         }
     }
 
@@ -1132,7 +1198,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
                 isValid = true;
                 
                 String anchor = PSReplacementFilter.getAnchor(linkEl.attr(HREF_ATTR));
-                if (link.getAnchor() != anchor)
+                if (!Objects.equals(link.getAnchor(), anchor))
                 {
                 	link.setAnchor(anchor);
                 	dao.saveLink(link);
@@ -1284,8 +1350,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      * @return The link id of the newly created link.
      *
      */
-    private long createLink(String parentId, int dependentId, String anchor)
-    {
+    private long createLink(String parentId, int dependentId, String anchor) throws IPSGenericDao.SaveException {
         int cid;
         int rev;
         List<Long> newIds = newLinkIds.get();
@@ -1389,7 +1454,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         	linkIdVal = linkIdOld;
         	link.removeAttr(PERC_MANAGED_OLD_ATTR);
         	link.attr(PERC_MANAGED_ATTR, "true");
-        	link.attr(PERC_LINKID_ATTR, String.valueOf(linkIdVal));
+        	link.attr(PERC_LINKID_ATTR, linkIdVal);
         } else if(!link.attr(PERC_MANAGED_OLD_ATTR).equals("") || !link.attr(PERC_MANAGED_ATTR).equals("") ) {
         	linkIdVal = link.attr(PERC_LINKID_ATTR);
         	link.removeAttr(PERC_MANAGED_OLD_ATTR);
@@ -1436,7 +1501,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
             }
             catch (Exception e)
             {
-                log.error("Unable to delete manage link: " + link.toString() + ": " + e.getLocalizedMessage(), e);
+                log.error("Unable to delete manage link: {} Error: {}",
+                        link,
+                        PSExceptionUtils.getMessageForLog(e));
             }
         }
     }
@@ -1456,7 +1523,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     
     public void cleanupDeletedLinks(List<Element> validLinks, Integer parentId) {
         List<PSManagedLink> currentLinks = dao.findLinksByParentId(parentId);
-        Collection<PSManagedLink> linksToDelete = new ArrayList<PSManagedLink>();
+        Collection<PSManagedLink> linksToDelete = new ArrayList<>();
         
         for (PSManagedLink currentLink : currentLinks) {
             boolean linkMatched = false;
@@ -1469,12 +1536,13 @@ public class PSManagedLinkService implements IPSManagedLinkService
                 }
             }
             if (!linkMatched) {
-                log.debug("Adding link id " + currentLink.getLinkId() + " to list of managed links to delete.");
+                log.debug("Adding link id {} to list of managed links to delete.",
+                        currentLink.getLinkId() );
                 linksToDelete.add(currentLink);
             }
         }
         
-        if (linksToDelete.size() > 0) {
+        if (!linksToDelete.isEmpty()) {
             try {
                 dao.deleteLinksInNewTransaction(linksToDelete);
             }
@@ -1489,7 +1557,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     {
         notNull(parentIds);
 
-        List<Integer> convertedParentIds = new ArrayList<Integer>();
+        List<Integer> convertedParentIds = new ArrayList<>();
         for (String parentId : parentIds)
         {
             IPSGuid guid = guidMgr.makeGuid(parentId);
@@ -1497,7 +1565,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         List<PSManagedLink> links = dao.findLinksByParentIds(convertedParentIds);
         
-        List<String> linkIds = new ArrayList<String>();
+        List<String> linkIds = new ArrayList<>();
         for(PSManagedLink link : links)
         {
             PSLegacyGuid guid = new PSLegacyGuid(link.getChildId());
@@ -1539,7 +1607,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.error("Unable to manage path: " + path + ": " + e.getLocalizedMessage(), e);
+            log.error("Unable to manage path: {} Error: {}",
+                    path,
+                    PSExceptionUtils.getMessageForLog(e));
         }
         
         return null;
@@ -1569,7 +1639,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (Exception e)
         {
-            log.error("Unable to render managed link for linkId: " + linkId + ": " + e.getLocalizedMessage(), e);
+            log.error("Unable to render managed link for linkId: {} Error: {}",
+                    linkId,
+                    PSExceptionUtils.getMessageForLog(e));
         }
         
         return href;
@@ -1610,8 +1682,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
      * 
      * @return The link item for the current revision, <code>null</code> if no page or asset found for the supplied id.
      */
-    private IPSLinkableItem getLinkItem(PSRenderLinkContext linkContext, int childId, Boolean isStaging)
-    {
+    private IPSLinkableItem getLinkItem(PSRenderLinkContext linkContext, int childId, Boolean isStaging) throws PSValidationException, PSNotFoundException {
         IPSLinkableItem item = null;
         
         // get correct revision
@@ -1635,7 +1706,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
             catch (Exception e)
             {
                 // no asset found, so allow to return null
-                log.error("Unable to locate asset with id " + id + ": " + e.getLocalizedMessage());
+                log.error("Unable to locate asset with id {} Error: {}",
+                        id,
+                        PSExceptionUtils.getMessageForLog(e));
             }
         }
         
@@ -1652,7 +1725,9 @@ public class PSManagedLinkService implements IPSManagedLinkService
         catch (Exception e)
         {
             // no sum found, so return null
-            log.warn("Unable to locate dependent item with id " + id + ", possible broken link: " + e.getLocalizedMessage());
+            log.warn("Unable to locate dependent item with id {}, possible broken link. Error: {}",
+                    id ,
+                    PSExceptionUtils.getMessageForLog(e));
 
             try
             {
@@ -1660,7 +1735,8 @@ public class PSManagedLinkService implements IPSManagedLinkService
             }
             catch (Exception ex)
             {
-                log.error("Cannot cleanup orphan links", ex);
+                log.error("Cannot cleanup orphan links. Error: {}",
+                        PSExceptionUtils.getMessageForLog(ex));
             }
 
             return null;
@@ -1705,7 +1781,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     private Node getAssetNode(int childId, PSRenderLinkContext linkContext, Boolean isStaging, String value) {
         IPSContentMgr mgr = PSContentMgrLocator.getContentMgr();
         IPSGuid guid = getCorrectRevisionGuid(childId, linkContext, isStaging);
-        List<IPSGuid> guidList = new ArrayList<IPSGuid>();
+        List<IPSGuid> guidList = new ArrayList<>();
         List<Node> nodeList;
         guidList.add(guid);
         try
@@ -1721,10 +1797,13 @@ public class PSManagedLinkService implements IPSManagedLinkService
         }
         catch (RepositoryException e)
         {
-            log.error("Unable to get node for alt and title text with ID: " + childId +
-                    " and error message:"+ e.getMessage());
-            log.debug(e);
+            log.error("Unable to get node for alt and title text with ID: {} and error message: {}",
+                    childId,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
         return null;
     }
+
+
 }

@@ -17,14 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.itemmanagement.service;
-
-import static java.util.Arrays.asList;
 
 import com.percussion.assetmanagement.service.IPSAssetService;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
@@ -32,8 +30,8 @@ import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.pagemanagement.data.PSRegionBranches;
-import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.data.PSRegionNode.PSRegionOwnerType;
+import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
@@ -50,6 +48,8 @@ import com.percussion.webservices.system.IPSSystemWs;
 import org.junit.experimental.categories.Category;
 
 import java.util.Collections;
+
+import static java.util.Arrays.asList;
 
 @Category(IntegrationTest.class)
 public class PSItemWorkflowServiceTestBase extends PSServletTestCase

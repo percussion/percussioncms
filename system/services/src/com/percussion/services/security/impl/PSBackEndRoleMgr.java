@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,10 +25,16 @@ package com.percussion.services.security.impl;
 
 import com.percussion.cms.objectstore.PSActionVisibilityContext;
 import com.percussion.data.utils.PSHibernateEvictionTableUpdateHandler;
-import com.percussion.design.objectstore.*;
+import com.percussion.design.objectstore.PSAttribute;
+import com.percussion.design.objectstore.PSAttributeList;
+import com.percussion.design.objectstore.PSRelativeSubject;
+import com.percussion.design.objectstore.PSRole;
+import com.percussion.design.objectstore.PSRoleConfiguration;
+import com.percussion.design.objectstore.PSSubject;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.design.objectstore.server.PSXmlObjectStoreLockerId;
 import com.percussion.error.PSException;
+import com.percussion.security.IPSPrincipalAttribute;
 import com.percussion.security.PSBackendCataloger;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
@@ -52,11 +58,14 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
 import com.percussion.utils.request.PSRequestInfo;
-import com.percussion.utils.security.IPSPrincipalAttribute;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +74,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.naming.NamingException;
 import javax.security.auth.Subject;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -78,7 +93,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
     /**
      * Used for logging of all messages, never <code>null</code>.
      */
-    private static Log ms_log = LogFactory.getLog(PSBackEndRoleMgr.class);
+    private static final Logger ms_log = LogManager.getLogger(PSBackEndRoleMgr.class);
 
     /**
      * Used to set/get email on the subject
@@ -114,7 +129,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
 
     // see IPSBackendRoleMgr interface
     public List<String> getRhythmyxRoles() {
-        List<String> roleList = new ArrayList<String>();
+        List<String> roleList = new ArrayList<>();
 
         Iterator roles = loadRoleList(null).iterator();
 
@@ -128,7 +143,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
 
     // see IPSBackendRoleMgr interface
     public List<String> getRhythmyxRoles(String subjectName, int subjectType) {
-        List<String> roleNames = new ArrayList<String>();
+        List<String> roleNames = new ArrayList<>();
 
         Session session = getSessionFactory().getCurrentSession();
 
@@ -412,7 +427,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
                 "roleName may not be null or empty");
         }
 
-        Set<IPSPrincipalAttribute> attrSet = new HashSet<IPSPrincipalAttribute>();
+        Set<IPSPrincipalAttribute> attrSet = new HashSet<>();
 
         Iterator attrs = PSBackendCataloger.getRoleAttributes(roleName)
                                            .iterator();
@@ -433,7 +448,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
                 "roleName may not be null or empty");
         }
 
-        Set<Subject> subSet = new HashSet<Subject>();
+        Set<Subject> subSet = new HashSet<>();
 
         Iterator subs = PSBackendCataloger.getSubjectRoleAttributes(subjectNameFilter,
                 0, roleName, null).iterator();
@@ -449,7 +464,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
     // see IPSBackendRoleMgr interface
     public Set<Subject> getGlobalSubjectAttributes(String subjectNameFilter,
         String attributeNameFilter, boolean includeEmptySubjects) {
-        Set<Subject> subSet = new HashSet<Subject>();
+        Set<Subject> subSet = new HashSet<>();
 
         Iterator subs = PSBackendCataloger.getSubjectGlobalAttributes(subjectNameFilter,
                 0, null, attributeNameFilter, includeEmptySubjects).iterator();
@@ -464,7 +479,7 @@ public class PSBackEndRoleMgr implements IPSBackEndRoleMgr {
 
     // see IPSBackendRoleMgr interface
     public List<String> getCommunityRoles(int communityId) {
-        List<String> roleNames = new ArrayList<String>();
+        List<String> roleNames = new ArrayList<>();
 
         PSGuid guid = new PSGuid(PSTypeEnum.COMMUNITY_DEF, communityId);
         PSCommunity[] comms = loadCommunities(new IPSGuid[] { guid });

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<table allowSchemaChanges="y" alter="n" create="y" delolddata="n" isView="n" name="CT_SOLN_LIST_CT_SET">
+   <row>
+      <column action="c" limitSizeForIndex="n" name="CONTENTID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="REVISIONID">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>no</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SORTRANK">
+         <jdbctype>INTEGER</jdbctype>
+         <allowsnull>yes</allowsnull>
+      </column>
+      <column action="c" limitSizeForIndex="n" name="SOLN_LIST_CONTENTTYPES">
+         <jdbctype>VARCHAR</jdbctype>
+         <size>50</size>
+         <allowsnull>yes</allowsnull>
+      </column>
+   </row>
+</table>

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,8 +41,8 @@ import com.percussion.deployer.services.PSDeployServiceException;
 import com.percussion.deployer.services.PSDeployServiceLocator;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSEdition;
@@ -63,6 +63,7 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -104,11 +105,9 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    private String fixContextsInXmlSite(PSImportCtx ctx, String siteStr)
          throws PSDeployException
    {
-      ByteArrayInputStream bis = new ByteArrayInputStream(siteStr.getBytes());
-
       Document doc = null;
-      try
-      {
+
+      try(ByteArrayInputStream bis = new ByteArrayInputStream(siteStr.getBytes(StandardCharsets.UTF_8))){
          String xmlElemName = "context-id";
          doc = PSXmlDocumentBuilder.createXmlDocument(bis, false);
          if (doc == null)
@@ -143,17 +142,11 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
             }
          }
       }
-      catch (SAXException e)
+      catch (SAXException | IOException e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e,
                "could not parse serialized Site data, due to :"
-                     + e.getLocalizedMessage());
-      }
-      catch (IOException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e,
-               "could not parse serialized Site data, due to :"
-                     + e.getLocalizedMessage());
+                     + e.getMessage());
       }
       return PSXmlDocumentBuilder.toString(doc);
    }
@@ -171,12 +164,12 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       if (m_namedSites != null)
          m_namedSites.clear();
       else
-         m_namedSites = new HashMap<String, IPSSite>();
+         m_namedSites = new HashMap<>();
       
       if (m_guidSites != null)
          m_namedSites.clear();
       else
-         m_guidSites  = new HashMap<IPSGuid, IPSSite>();
+         m_guidSites  = new HashMap<>();
  
       List<IPSSite> sites = m_siteMgr.findAllSites();
     
@@ -234,19 +227,16 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Returns a mixed list of templates and legacy templates aka VARIANTS
     * @param tok the security token, assumed not <code>null</code>.
-    * @param dep the site dependency, assumed not <code>null</code> and of the
-    * correct type.
     * @param site the actual site loaded, assumed not <code>null</code>.
     * @return child template/variant dependencies as a list, never
     * <code>null</code> may be empty.
     * @throws PSDeployException
     */
    private List<PSDependency> getTemplateDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
-         throws PSDeployException
-   {
+         PSSecurityToken tok, IPSSite site)
+           throws PSDeployException, PSNotFoundException {
             
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       Iterator<IPSAssemblyTemplate> it = 
          ((PSSite) site).getAssociatedTemplates().iterator();
 
@@ -276,18 +266,15 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Iterate through site properties and get context dependencies if any
     * @param tok the security token, assumed not <code>null</code>.
-    * @param dep the site dependency, assumed not <code>null</code> and of the
-    * correct type.
     * @param site the actual site loaded, assumed not <code>null</code>.
     * @return child context deps dependencies as a list, never <code>null</code>
     * may be empty.
     * @throws PSDeployException
     */
    private Set<PSDependency> getContextDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
-         throws PSDeployException
-   {
-      Set<PSDependency> deps = new HashSet<PSDependency>();
+         PSSecurityToken tok, IPSSite site)
+           throws PSDeployException, PSNotFoundException {
+      Set<PSDependency> deps = new HashSet<>();
       PSDependencyHandler  ctxHandler = getDependencyHandler(
             PSContextDefDependencyHandler.DEPENDENCY_TYPE);
       Set<PSSiteProperty> props = ((PSSite)site).getProperties();
@@ -312,18 +299,15 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    /**
     * Retrieves the edition child dependencies for a given site.
     * @param tok the security token, assumed not <code>null</code>.
-    * @param dep the site dependency, assumed not <code>null</code> and of the
-    * correct type.
     * @param site the actual site loaded, assumed not <code>null</code>.
     * @return child edition dependencies as a list, never <code>null</code>,
     * may be empty.
     * @throws PSDeployException
     */
    private List<PSDependency> getEditionDependencies(
-         PSSecurityToken tok, PSDependency dep, IPSSite site) 
-         throws PSDeployException
-   {
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+         PSSecurityToken tok, IPSSite site)
+           throws PSDeployException, PSNotFoundException {
+      List<PSDependency> deps = new ArrayList<>();
       PSDependencyHandler  edtnHandler = getDependencyHandler(
             PSEditionDefDependencyHandler.DEPENDENCY_TYPE);
       
@@ -349,8 +333,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
    // see base class
    @Override
    public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok,
-         PSDependency dep) throws PSDeployException
-   {
+         PSDependency dep) throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
 
@@ -365,12 +348,12 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       IPSSite s = findSiteByDependencyID(siteId);
       
       // get edition def child dependencies
-      List<PSDependency> childDeps = getEditionDependencies(tok, dep, s);      
+      List<PSDependency> childDeps = getEditionDependencies(tok,s);
       
-      List<PSDependency> tvDeps = getTemplateDependencies(tok,dep,s);
+      List<PSDependency> tvDeps = getTemplateDependencies(tok,s);
       childDeps.addAll(tvDeps);
       
-      Set<PSDependency> ctxDeps = getContextDependencies(tok, dep, s);
+      Set<PSDependency> ctxDeps = getContextDependencies(tok,s);
       childDeps.addAll(ctxDeps);
       
       //Acl deps
@@ -390,7 +373,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       Set<String> siteNames = m_namedSites.keySet();
       Iterator<String> it = siteNames.iterator();
       
-      List<PSDependency> deps = new ArrayList<PSDependency>();
+      List<PSDependency> deps = new ArrayList<>();
       while (it.hasNext())
       {
          String sName = it.next();
@@ -521,7 +504,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       if (!dep.getObjectType().equals(DEPENDENCY_TYPE))
          throw new IllegalArgumentException("dep wrong type");
 
-      List<PSDependencyFile> files = new ArrayList<PSDependencyFile>();
+      List<PSDependencyFile> files = new ArrayList<>();
       IPSSite site = findSiteByDependencyID(dep.getDependencyId());
       if (site == null)
       {
@@ -574,7 +557,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
          Set<IPSGuid> tmpGuids = PSSite.getTemplateIdsFromSite(tmpStr);
          // Transform the templates of this site.
          // Templates not found on the target system will be dropped.
-         Set<IPSGuid> newGuids = new HashSet<IPSGuid>();
+         Set<IPSGuid> newGuids = new HashSet<>();
          for (IPSGuid g : tmpGuids)
          {
             PSIdMapping tmpMap = getTemplateOrVariantMapping(tok, ctx, 
@@ -690,7 +673,12 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
       Integer ver = null;
       if (!isNew)
       {
-         site = m_siteMgr.loadSite(site.getGUID());
+         try {
+            site = m_siteMgr.loadSite(site.getGUID());
+         } catch (PSNotFoundException e) {
+            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+                    "Site Not Found: "+ site.toString() + e.getLocalizedMessage());
+         }
          ver = ((PSSite) site).getVersion();
          ((PSSite) site).setVersion(null);
          // keep the slots out of SITE, they are not needed for template 
@@ -700,7 +688,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
          while ( tmpIt.hasNext() )
          {
             IPSAssemblyTemplate t = tmpIt.next();
-            t.setSlots(new HashSet<IPSTemplateSlot>());
+            t.setSlots(new HashSet<>());
          }
       }   
       IPSDeployService depSvc = PSDeployServiceLocator.getDeployService();
@@ -865,7 +853,7 @@ public class PSSiteDefDependencyHandler extends PSDataObjectDependencyHandler
     * List of child types supported by this handler, it will never be
     * <code>null</code> or empty.
     */
-   private static List<String> ms_childTypes = new ArrayList<String>();
+   private static List<String> ms_childTypes = new ArrayList<>();
 
    /**
     * Get the site manager

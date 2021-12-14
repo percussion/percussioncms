@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,11 +44,10 @@ import com.percussion.server.PSInternalRequest;
 import com.percussion.server.PSServer;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
-import com.percussion.services.system.data.PSContentStatusHistory;
 import com.percussion.utils.exceptions.PSORMException;
-import com.percussion.utils.jdbc.PSConnectionHelper;
-import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.sql.Connection;
@@ -59,8 +58,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 /**
  * Updates the status history context for this transition or checkout or
  * checkin action.
@@ -70,12 +67,12 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
    /**
     * The fully qualified name of this extension.
     */
-   static private String m_fullExtensionName = "";
+   private String m_fullExtensionName = "";
 
-   static private String  ms_actionTriggerName = "";
+   private String  ms_actionTriggerName = "";
 
    /* Set the parameter count to not initialized */
-   static private int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
+   private int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
 
    /**************  IPSExtension Interface Implementation ************* */
    public void init(IPSExtensionDef extensionDef, File file)
@@ -161,7 +158,7 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
       PSConnectionMgr connectionMgr = null;
       PSWorkflowRoleInfo wfRoleInfo = null;
       PSWorkFlowContext wfContext = null;
-      HashMap htmlParams = null;
+      Map<String,Object> htmlParams;
       int nParamCount = 0;
       String sActionTrigger = "";
       int nContentID = 0;
@@ -253,21 +250,13 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
             userName = params[1].toString();
             userName = PSWorkFlowUtils.filterUserName(userName);
          }
-         catch(PSInvalidNumberOfParametersException ne)
+         catch(PSInvalidNumberOfParametersException | PSInvalidParameterTypeException ne)
          {
             String language = ne.getLanguageString();
             if (language == null)
                language = lang;
             throw new PSExtensionProcessingException(language,
              m_fullExtensionName, ne);
-         }
-         catch(PSInvalidParameterTypeException te)
-         {
-            String language = te.getLanguageString();
-            if (language == null)
-               language = lang;
-            throw new PSExtensionProcessingException(language,
-             m_fullExtensionName, te);
          }
 
          wfContext = (PSWorkFlowContext) request.getPrivateObject
@@ -337,18 +326,12 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
                   "No status history was written.");
             }
 
-         }
-         catch(SQLException e)
-         {
-            except = e;
-         }
-         catch(PSEntryNotFoundException e)
+         } catch(PSEntryNotFoundException e)
          {
             if (e.getLanguageString() == null)
                e.setLanguageString(lang);
             except = e;
-         }
-                  catch (Exception e)
+         } catch(Exception e)
          {
             except = e;
          }
@@ -438,7 +421,7 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
                              IPSRequestContext request,
                              Connection connection)
       throws SQLException, PSEntryNotFoundException,
-      PSExtensionProcessingException, PSORMException
+      PSExtensionProcessingException
    {
       PSWorkFlowUtils.printWorkflowMessage(request,"  Entering updateHistory");
       Integer temp = null;
@@ -509,7 +492,7 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
       }
 
       temp = PSExitNextNumber.getNextNumber("CONTENTSTATUSHISTORY");
-      contentstatushistoryid = temp.intValue();
+      contentstatushistoryid = temp;
 
       try
       {
@@ -561,7 +544,7 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
          return;
       }
       
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       params.put(PSApplicationBuilder.REQUEST_TYPE_HTML_PARAMNAME,
             PSApplicationBuilder.REQUEST_TYPE_VALUE_UPDATE);
 
@@ -605,5 +588,5 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
    /**
     * The resource used to update the CONTENTSTATUS.LAST_PUBLIC_REVISION colum
     */
-   private final static String PUT_LASTPUBREV_RSC = "sys_ceSupport/putLastPublicRev"; 
+   private  static final String PUT_LASTPUBREV_RSC = "sys_ceSupport/putLastPublicRev";
 }

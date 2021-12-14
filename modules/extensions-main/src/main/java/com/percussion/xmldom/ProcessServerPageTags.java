@@ -17,30 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.xmldom;
 
 import com.percussion.server.PSServer;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
-
-import javax.xml.parsers.DocumentBuilder;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class provides all functionality to handle server page code for the
@@ -59,6 +59,9 @@ import org.xml.sax.SAXException;
  */
 public class ProcessServerPageTags extends Object
 {
+
+    private static final Logger log = LogManager.getLogger(ProcessServerPageTags.class);
+
    /**
     * Constructs and initializes the state machine.
     *
@@ -98,7 +101,7 @@ public class ProcessServerPageTags extends Object
       while (m_htmlSource.indexOf(m_keyPrefix) != -1)
          m_keyPrefix += counter;
 
-      m_htmlTarget = new StringBuffer(m_htmlSource.length());
+      m_htmlTarget = new StringBuilder(m_htmlSource.length());
 
       m_current = 0;
       m_lastClose = 0;
@@ -122,78 +125,13 @@ public class ProcessServerPageTags extends Object
    /**
     * This goes through the map created in the pre process and replaces the
     * XSpLit markups with its original server page code.
-    * Every <xsl:... top element found in this map will be moved right after
-    * the <xsl:stylsheet...
-    *
-    * @param source the source XSL node
-    * @return the processed XSL document
-    */
-   /* todo: use DOM parser!?
-   public Document postProcess(Document source)
-   {
-      if (source != null)
-         processNode(source.getElementsByTagName("xsl:stylesheet").item(0));
-
-      return source;
-   }
-
-   private void processNode(Node node)
-   {
-      if (node != null)
-      {
-         NodeList nodes = node.getChildNodes();
-         for (int i=0; i<nodes.getLength(); i++)
-         {
-            Node child = nodes.item(i);
-            if (child.getNodeType() == Node.COMMENT_NODE)
-            {
-               String strComment = ((Comment) child).getData();
-               if (strComment.trim().startsWith(m_keyPrefix))
-               {
-                  System.out.println("...comment= " + strComment);
-               }
-            }
-
-            NamedNodeMap attrs = child.getAttributes();
-            if (attrs != null)
-            {
-               for (int j=0; j<attrs.getLength(); j++)
-               {
-                  Node attr = attrs.item(j);
-                  if (attr.getNodeType() != Node.ATTRIBUTE_NODE)
-                     continue;
-
-                  Attr attribute = (Attr) attr;
-                  if (attribute != null)
-                  {
-                     String strAttr = attribute.getValue();
-                     if (strAttr.trim().startsWith(m_keyPrefix))
-                     {
-                        System.out.println("...attr= " + strAttr);
-                     }
-                     else
-                        System.out.println("...attr???= " + strAttr);
-                  }
-               }
-            }
-
-            if (child.hasChildNodes())
-               processNode(child);
-         }
-      }
-   }
-   */
-
-   /**
-    * This goes through the map created in the pre process and replaces the
-    * XSpLit markups with its original server page code.
     *
     * @param xslSource the source XSL string
     * @return the processed XSL string
     */
    public String postProcess(String xslSource)
    {
-      StringBuffer xslTarget = new StringBuffer(xslSource);
+      StringBuilder xslTarget = new StringBuilder(xslSource);
       Vector topElements = new Vector();
 
       String key = "";
@@ -225,7 +163,7 @@ public class ProcessServerPageTags extends Object
             if (pos != -1)
                xslTarget.replace(pos, pos+key.length(), serverPageBlock);
             else
-               System.out.println("ERROR - postProcess: missing XSpLit markup key!" + key);
+               log.info("ERROR - postProcess: missing XSpLit markup key! {}", key);
          }
       }
 
@@ -272,7 +210,7 @@ public class ProcessServerPageTags extends Object
             return ms_strXslTextBegin + temp + ms_strXslTextEnd;
       }
 
-      StringBuffer escapedBlock = new StringBuffer(codeBlock);
+      StringBuilder escapedBlock = new StringBuilder(codeBlock);
       escapedBlock.replace(0, 1, "&lt;");
       int length = escapedBlock.length();
       escapedBlock.replace(length-1, length, "&gt;");
@@ -311,7 +249,7 @@ public class ProcessServerPageTags extends Object
       {
          // skip this and report error
          m_current = m_nextOpen+strOpeningTag.length();
-         System.out.println("ERROR - scriptIt: illegal source HTML! Missing closing tag.");
+         log.info("ERROR - scriptIt: illegal source HTML! Missing closing tag.");
       }
 
       while (nextOpening != -1 && (nextClosing > nextOpening || nextClosing == -1))
@@ -338,7 +276,7 @@ public class ProcessServerPageTags extends Object
       {
          // make sure we skip this and report error
          m_current = m_nextOpen+strOpeningTag.length();
-         System.out.println("ERROR - scriptIt: illegal source HTML! Unbalanced closing tags.");
+         log.info("ERROR - scriptIt: illegal source HTML! Unbalanced closing tags.");
       }
    }
 
@@ -418,7 +356,7 @@ public class ProcessServerPageTags extends Object
          m_htmlTarget.append(m_htmlSource.substring(oldCurrent, m_current));
       }
       else
-         System.out.println("ERROR - skipIt: illegal state!");
+         log.info("ERROR - skipIt: illegal state!");
    }
 
    /**
@@ -621,12 +559,12 @@ public class ProcessServerPageTags extends Object
     * This is the hash table which will be used to store the removed server
     * page code.
     */
-   private Hashtable m_codeMap = new Hashtable();
+   private ConcurrentHashMap m_codeMap = new ConcurrentHashMap();
    /**
     * This is the hash table which will be used to store the enable/disable
     * escape information. The keys correspond to the keys in the code map.
     */
-   private Hashtable m_escapeMap = new Hashtable();
+   private ConcurrentHashMap m_escapeMap = new ConcurrentHashMap();
    /**
     * The key prefix used to mark removed server page code.
     */
@@ -658,7 +596,7 @@ public class ProcessServerPageTags extends Object
    /**
     * The target HTML string to which we build the result to.
     */
-   private StringBuffer m_htmlTarget = null;
+   private StringBuilder m_htmlTarget = null;
    /**
     * The current index of the state machine.
     */

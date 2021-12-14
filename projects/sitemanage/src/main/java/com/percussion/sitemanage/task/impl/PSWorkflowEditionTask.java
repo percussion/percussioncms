@@ -17,25 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.task.impl;
 
 import com.percussion.itemmanagement.service.impl.PSAbstractWorkflowExtension;
-import com.percussion.itemmanagement.service.impl.PSAbstractWorkflowExtension.WorkflowItem;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
-import com.percussion.security.PSSecurityProvider;
-import com.percussion.server.PSRequest;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.publisher.IPSSiteItem.Operation;
 import com.percussion.services.publisher.IPSSiteItem.Status;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -96,8 +92,8 @@ public class PSWorkflowEditionTask extends PSAbstractWorkflowExtension implement
         if (pubServerId != null && pubServerId.equals(getPubServerService().getDefaultPubServer(site.getGUID()).getGUID()))
             isDefaultPubServer = true;
         
-        Set<Integer> pubIds = new HashSet<Integer>();
-        Set<Integer> unpubIds = new HashSet<Integer>();
+        Set<Integer> pubIds = new HashSet<>();
+        Set<Integer> unpubIds = new HashSet<>();
         for(IPSPubItemStatus item : items) {
         	try
         	{

@@ -11,9 +11,14 @@
     import="com.percussion.cms.PSCmsException, com.percussion.webservices.PSErrorResultsException"
     import="com.percussion.cms.objectstore.PSObjectAclEntry, com.percussion.cms.objectstore.IPSDbComponent, com.percussion.cms.objectstore.PSObjectAcl, com.percussion.cms.objectstore.PSFolder"
     import="java.util.Map, java.util.Set, java.util.Collections, java.util.Map.Entry, java.util.Iterator, java.util.HashMap, java.util.Arrays, java.util.ArrayList, java.util.List, org.apache.commons.lang.StringUtils, javax.servlet.jsp.JspWriter"
-    import="org.apache.log4j.Logger"
-    
+    import="org.apache.logging.log4j.Logger"
+    import="com.percussion.services.utils.jspel.PSRoleUtilities"
+    import="com.percussion.server.PSServer"
     %>
+<%@ page import="org.apache.logging.log4j.LogManager" %>
+<%@ page import="com.percussion.security.SecureStringUtils" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -33,11 +38,25 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
+<%
+    String isEnabled = PSServer.getServerProps().getProperty("enableDebugTools");
 
+    if(isEnabled == null)
+        isEnabled="false";
+
+    if(isEnabled.equalsIgnoreCase("false")){
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
+    String fullrolestr = PSRoleUtilities.getUserRoles();
+
+    if (!fullrolestr.contains("Admin"))
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -59,7 +78,7 @@
    PSServerFolderProcessor folderProcessor = getFolderProcessor(); 
    IPSSecurityWs securityWs = PSSecurityWsLocator.getSecurityWebservice();
    Map pmap = new HashMap(); 
-   Logger logger = Logger.getLogger("UpdateFolderSecurity");
+   Logger logger = LogManager.getLogger("UpdateFolderSecurity");
 %>
 <%! 
 	/**
@@ -72,13 +91,13 @@
 		outputFolderPermission(folderIds, virtualPerm, rolePerms, out);
 		int communityId = getCommunityId(communityIdString, out);
 		
-		logger.info("Updating " + folderIds.length + " Folders ...");
+		logger.info("Updating {} Folders ...",folderIds.length);
 		for (int i=0; i < folderIds.length; i++)
 		{
 		   PSLocator id = folderIds[i];
 		   setFolderPermission(id, communityId, virtualPerm, rolePerms, out);
 		   
-		   logger.info("Updated Folder[" + i + "] ID: " + id.getId());
+		   logger.info("Updated Folder[{}] ID: {}",i,  id.getId());
 		}
 	}
 
@@ -221,30 +240,62 @@
 <p>
 Use this page to update community and security of a folder and its descendant folders
 </p>
-<form method="POST"> 
+<csrf:form method="POST" action="/test/updateFolderSecurity.jsp">
 
 <%
+    //Checking for vulnerability
+    String str = request.getQueryString();
+    if(str != null && str != ""){
+        response.sendError(response.SC_FORBIDDEN, "Invalid QueryString!");
+    }
     String[] allNames = expandParam(request.getParameterValues("qname"), 6);
-         String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
+    String[] allValues = expandParam(request.getParameterValues("qvalue"), 6);
+    for (int i = 0; i < allNames.length; i++)
+    {
+        String pNameLoop = allNames[i];
+        String pValLoop = allValues[i];
+        //Checking for vulnerability
+        if(!SecureStringUtils.isValidString(pNameLoop)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid pNameLoop!");
+        }
+        //Checking for vulnerability
+        if(!SecureStringUtils.isValidString(pValLoop)){
+            response.sendError(response.SC_FORBIDDEN, "Invalid pValLoop!");
+        }
 
-		 String lastCommunityId = request.getParameter("CommunityId");
-         if (StringUtils.isBlank(lastCommunityId))
-         {
-            lastCommunityId = "-1";
-         }
-         
-		 String lastVirtualPerm = request.getParameter("VirtualPerm");
-         if (StringUtils.isBlank(lastVirtualPerm))
-         {
-            lastVirtualPerm = "";
-         }
-		 
-         String lastquery = request.getParameter("folderpath");
-         if (StringUtils.isBlank(lastquery))
-         {
-            lastquery = "//Folders/Folder1";
-         }
-         
+    }
+    String lastCommunityId = request.getParameter("CommunityId");
+    if (StringUtils.isBlank(lastCommunityId))
+    {
+        lastCommunityId = "-1";
+    }
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidPercId(lastCommunityId)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid lastCommunityId!");
+    }
+
+    String lastVirtualPerm = request.getParameter("VirtualPerm");
+    if (StringUtils.isBlank(lastVirtualPerm))
+    {
+        lastVirtualPerm = "";
+    }
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(lastVirtualPerm)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid lastVirtualPerm!");
+    }
+
+    String lastquery = request.getParameter("folderpath");
+    if (StringUtils.isBlank(lastquery))
+    {
+        lastquery = "//Folders/Folder1";
+    }
+
+    //Checking for vulnerability
+    if(!SecureStringUtils.isValidString(lastquery)){
+        response.sendError(response.SC_FORBIDDEN, "Invalid lastQuery!");
+    }
+
+
 %>
 
 Community ID
@@ -298,7 +349,7 @@ Role Permissions
 </textarea>
 <br/>
 <input type="submit" name="execute" value="execute" label="Execute" /> 
-</form>
+</csrf:form>
 <p>
 <%if (request.getMethod().equals("POST")
                && request.getParameter("execute").equals("execute"))

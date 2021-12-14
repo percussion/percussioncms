@@ -17,17 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.data;
 
-import com.percussion.services.guidmgr.data.PSGuid;
+import com.percussion.services.security.IPSAcl;
 import com.percussion.services.security.IPSAclEntry;
 import com.percussion.services.security.PSPermissions;
-import com.percussion.services.security.IPSAcl;
-import com.percussion.utils.guid.IPSGuid;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -70,7 +68,7 @@ public class PSSecurityUtils
       if (objAcl == null)
          return commNames;
 
-      List<String> retComm = new ArrayList<String>();
+      List<String> retComm = new ArrayList<>();
       Collection<IPSAclEntry> allAclEntries = ((PSAclImpl) objAcl)
          .getEntries();
 
@@ -78,7 +76,7 @@ public class PSSecurityUtils
          return retComm;
 
       IPSAclEntry anyCommAcl = null;
-      List<IPSAclEntry> otherCommAcls = new ArrayList<IPSAclEntry>();
+      List<IPSAclEntry> otherCommAcls = new ArrayList<>();
 
       for (IPSAclEntry aclEntry : allAclEntries)
       {

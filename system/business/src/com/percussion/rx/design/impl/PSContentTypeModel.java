@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,8 +30,8 @@ import com.percussion.design.objectstore.PSContentTypeHelper;
 import com.percussion.design.objectstore.PSWorkflowInfo;
 import com.percussion.design.objectstore.server.PSServerXmlObjectStore;
 import com.percussion.rx.design.IPSAssociationSet;
-import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.rx.design.IPSAssociationSet.AssociationType;
+import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -44,13 +44,13 @@ import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 public class PSContentTypeModel extends PSDesignModel
 {
@@ -154,7 +154,7 @@ public class PSContentTypeModel extends PSDesignModel
     */
    private List<IPSGuid> getTemplateGuids(List templates)
    {
-      List<IPSGuid> templateGuids = new ArrayList<IPSGuid>();
+      List<IPSGuid> templateGuids = new ArrayList<>();
       IPSAssemblyService asmSrvc = PSAssemblyServiceLocator
             .getAssemblyService();
       for (Object object : templates)
@@ -195,7 +195,7 @@ public class PSContentTypeModel extends PSDesignModel
     */
    private void updateWorkflowInfo(PSItemDefinition itemDef, List wfs)
    {
-      List<Integer> workFlows = new ArrayList<Integer>();
+      List<Integer> workFlows = new ArrayList<>();
       IPSWorkflowService wfSrvc = PSWorkflowServiceLocator
             .getWorkflowService();
       for (Object object : wfs)
@@ -265,7 +265,7 @@ public class PSContentTypeModel extends PSDesignModel
    @Override
    public List<IPSAssociationSet> getAssociationSets()
    {
-      List<IPSAssociationSet> asets = new ArrayList<IPSAssociationSet>();
+      List<IPSAssociationSet> asets = new ArrayList<>();
       asets.add(new PSAssociationSet(AssociationType.CONTENTTYPE_WORKFLOW));
       asets.add(new PSAssociationSet(AssociationType.CONTENTTYPE_TEMPLATE));
       return asets;
@@ -334,6 +334,6 @@ public class PSContentTypeModel extends PSDesignModel
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger("PSContentTypeModel");
+   private static final Logger ms_logger = LogManager.getLogger("PSContentTypeModel");
 
 }

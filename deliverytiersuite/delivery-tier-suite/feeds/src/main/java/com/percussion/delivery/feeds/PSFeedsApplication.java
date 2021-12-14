@@ -17,13 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.feeds;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.percussion.delivery.exceptions.PSJsonMappingErrorResponse;
+import com.percussion.delivery.exceptions.PSUncaughtError;
 import com.percussion.delivery.feeds.services.PSFeedService;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -49,6 +52,9 @@ public class PSFeedsApplication extends ResourceConfig {
         register(PSFeedService.class);
         register(LoggingFeature.class);
         register(RolesAllowedDynamicFeature.class);
+        register(PSJsonMappingErrorResponse.class);
+        register(PSUncaughtError.class);
+        register(JacksonJaxbJsonProvider.class);
     }
 
 

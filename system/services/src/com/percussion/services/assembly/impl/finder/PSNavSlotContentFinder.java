@@ -17,24 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.impl.finder;
 
-import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
-
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 
+import javax.jcr.RepositoryException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.jcr.RepositoryException;
+import static com.percussion.services.assembly.impl.finder.PSContentFinderUtils.getValue;
 
 /**
  * The nav slot content finder returns a single item to use for managed

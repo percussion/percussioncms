@@ -17,19 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.ImageListControl;
 
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Insets;
-import java.awt.Rectangle;
-
-import javax.swing.JList;
+import javax.swing.*;
+import java.awt.*;
 
 /** A List that has a different Scrollable interface implementation for
   * horizontal display.

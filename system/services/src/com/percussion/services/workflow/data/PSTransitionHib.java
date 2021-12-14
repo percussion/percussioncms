@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,7 +34,17 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.xml.sax.SAXException;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +158,7 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
       @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
       @JoinColumn(name = "TRANSITIONID", referencedColumnName = "TRANSITIONID", insertable = false, updatable = false)
    })
-   private List<PSNotification> notifications = new ArrayList<PSNotification>();
+   private List<PSNotification> notifications = new ArrayList<>();
    
    @Basic
    @Column(name="TRANSITIONTYPE", nullable = false)   
@@ -179,7 +189,7 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
       @JoinColumn(name = "WORKFLOWAPPID", referencedColumnName = "WORKFLOWAPPID", insertable = false, updatable = false),
       @JoinColumn(name = "TRANSITIONID", referencedColumnName = "TRANSITIONID", insertable = false, updatable = false)
    })
-   private List<PSTransitionRole> roles = new ArrayList<PSTransitionRole>();
+   private List<PSTransitionRole> roles = new ArrayList<>();
 
    // Aging specific properties 
    @Basic
@@ -364,7 +374,7 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
    public void setNotifications(List<PSNotification> notificationList)
    {
       if (notificationList == null)
-         notificationList = new ArrayList<PSNotification>();
+         notificationList = new ArrayList<>();
       
       this.notifications.clear();
       this.notifications.addAll(notificationList);
@@ -480,7 +490,7 @@ public class PSTransitionHib implements IPSTransition, IPSAgingTransition
    public void setTransitionRoles(List<PSTransitionRole> roleList)
    {
       if (roleList == null)
-         roleList = new ArrayList<PSTransitionRole>();
+         roleList = new ArrayList<>();
       
       roles.clear();
       roles.addAll(roleList);

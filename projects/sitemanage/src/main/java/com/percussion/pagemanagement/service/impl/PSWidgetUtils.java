@@ -17,33 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service.impl;
 
-import static java.text.MessageFormat.format;
-
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-
 import com.percussion.pagemanagement.data.PSWidgetDefinition;
-import com.percussion.pagemanagement.data.PSWidgetItem;
-import com.percussion.pagemanagement.data.PSWidgetPropertyDataType;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref;
+import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref.EnumValue;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.CssPref;
 import com.percussion.pagemanagement.data.PSWidgetDefinition.UserPref;
-import com.percussion.pagemanagement.data.PSWidgetDefinition.AbstractUserPref.EnumValue;
+import com.percussion.pagemanagement.data.PSWidgetItem;
+import com.percussion.pagemanagement.data.PSWidgetPropertyDataType;
 import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.data.PSCollectionUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.math.NumberUtils;
+import static java.text.MessageFormat.format;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 /**
@@ -107,7 +105,7 @@ public class PSWidgetUtils
     public static Set<Object> getEnums(AbstractUserPref userPref) {
         notNull(userPref, "userPref");
         List<EnumValue> ev = userPref.getEnumValue();
-        Set<Object> enums = new HashSet<Object>();
+        Set<Object> enums = new HashSet<>();
         if (ev != null) {
             for(EnumValue e : ev) {
                 Object validValue = PSSerializerUtils.getObjectFromJson(e.getValue());

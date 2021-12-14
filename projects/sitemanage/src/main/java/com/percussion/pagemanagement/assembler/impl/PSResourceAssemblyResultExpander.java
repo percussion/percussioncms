@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -84,7 +84,7 @@ public class PSResourceAssemblyResultExpander extends PSAbstractAssemblyResultEx
     @Override
     public List<IPSAssemblyItem> expand(IPSAssemblyResult result) throws Exception
     {
-        List<PSAssetResource> resources = new ArrayList<PSAssetResource>(getAssemblyItemBridge().getResourceDefinitions(result));
+        List<PSAssetResource> resources = new ArrayList<>(getAssemblyItemBridge().getResourceDefinitions(result));
 
         // AssetResource list is backed by a HashSet need to order in consistent way to get
         // page numbers correct.  Primary resource should always be page 1.
@@ -100,7 +100,7 @@ public class PSResourceAssemblyResultExpander extends PSAbstractAssemblyResultEx
         
         Collections.sort(resources, resourceComparator);
         
-        List<IPSAssemblyItem> assemblyItems = new ArrayList<IPSAssemblyItem>();
+        List<IPSAssemblyItem> assemblyItems = new ArrayList<>();
         boolean isPaginated = resources.size() > 1;
         int i = 1;
         

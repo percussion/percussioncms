@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,12 +27,16 @@ import com.percussion.dashboardmanagement.data.PSUserProfile;
 import com.percussion.dashboardmanagement.service.IPSUserProfileService;
 import com.percussion.dashboardmanagement.service.IPSUserProfileService.PSUserProfileNotFoundException;
 import com.percussion.dashboardmanagement.service.IPSUserProfileService.PSUserProfileServiceException;
-
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 
 @Path("/userprofile")

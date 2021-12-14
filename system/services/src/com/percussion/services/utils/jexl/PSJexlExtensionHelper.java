@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,6 +31,8 @@ import com.percussion.extension.PSExtensionMethod;
 import com.percussion.extension.PSExtensionMethodParam;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.server.PSServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -39,9 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * This class provides convenient methods to catalog the definitions of 
  * utilities ($tools...) and RX extensions ($rx...), which implements JEXL 
@@ -49,7 +48,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class PSJexlExtensionHelper
 {
-   protected static Log ms_log = LogFactory.getLog(PSJexlExtensionHelper.class);
+   protected static Logger ms_log = LogManager.getLogger(PSJexlExtensionHelper.class);
 
    /**
     * Catalog all JEXL extensions from the extension manager.
@@ -60,7 +59,7 @@ public class PSJexlExtensionHelper
    @SuppressWarnings("unchecked")
    public static Collection<IPSExtensionDef> getJexlExtensionDefs()
    {
-      List<IPSExtensionDef> defs = new ArrayList<IPSExtensionDef>();
+      List<IPSExtensionDef> defs = new ArrayList<>();
       IPSExtensionManager emgr = PSServer.getExtensionManager(null);
       try
       {
@@ -91,11 +90,11 @@ public class PSJexlExtensionHelper
    @SuppressWarnings("unchecked")
    public static List<IPSExtensionDef> getVelocityTools()
    {
-      List<IPSExtensionDef> rval = new ArrayList<IPSExtensionDef>();
+      List<IPSExtensionDef> rval = new ArrayList<>();
       PSServiceJexlEvaluatorBase jexl = new PSServiceJexlEvaluatorBase(true);
       // Grab the $tools
       Map<String, Object> tools = (Map<String, Object>) jexl.getVars().get("$tools");
-      List<String> xfaces = new ArrayList<String>();
+      List<String> xfaces = new ArrayList<>();
       xfaces.add(PSServiceJexlEvaluatorBase.IPSJEXL_EXPRESSION);
       for (String key : tools.keySet())
       {

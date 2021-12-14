@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.services.deployer;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSPkgInfoServiceLocator;
 import com.percussion.services.pkginfo.data.PSPkgInfo;
@@ -45,8 +46,7 @@ public class PSConvertToSourceTest
 {
 
    @Test
-   public void testConvert()
-   {
+   public void testConvert() throws PSNotFoundException {
       PSPair<Boolean, String> results = new PSPair<Boolean, String>();
       PSConvertToSource converter = new PSConvertToSource();
       

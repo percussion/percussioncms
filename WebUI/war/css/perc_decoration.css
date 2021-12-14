@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -97,7 +97,7 @@
 .perc-region-puff {border : 1px dashed #33C9ED; padding : 20px; position: relative;}
 .perc-widget-puff {border : 1px solid #E6E6E9; position: relative; z-index:1000;} /* Makign widget puff border zero to fix the split column issue. */
 
-.perc-widget-selected, .perc-region-selected {
+.perc-widget-active, .perc-region-active {
     background-color : #E6E6E9; 
     border:1px solid #CAF589;
 	z-index:1000;
@@ -631,5 +631,5 @@ img.perc-notpubliclink {
     background-image: url(/cm/images/images/iconAlert.gif);
 }
 body * {
-    font-family: 'Open Sans', sans-serif, 'FontAwesome', 'Font Awesome\ 5 Free' !important;
+    font-family: 'Open Sans', sans-serif, 'FontAwesome', 'Font Awesome\ 5 Free';
 }

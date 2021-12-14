@@ -17,14 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.workflow.data;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.services.catalog.IPSCatalogIdentifier;
 import com.percussion.utils.guid.IPSGuid;
@@ -32,6 +30,8 @@ import com.percussion.utils.guid.IPSGuid;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * The list copier is used to copy a list of one type of objects to another list of different type of objects.
@@ -81,7 +81,7 @@ abstract class PSListCopier<S extends IPSCatalogIdentifier, T extends IPSCatalog
       notNull(srcList);
       notNull(tgtList);
       
-      List<S> src = new ArrayList<S>();
+      List<S> src = new ArrayList<>();
       src.addAll(srcList);
       
       Iterator<T> itTgt = tgtList.iterator();

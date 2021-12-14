@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,6 +32,7 @@ import com.percussion.rx.design.IPSDesignModel;
 import com.percussion.rx.design.IPSDesignModelFactory;
 import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.experimental.categories.Category;
 
@@ -77,8 +78,7 @@ public class PSRelationshipConfigSetterTest extends PSConfigurationTest
    }
 
    @SuppressWarnings("unchecked")
-   private void validateDefaultConfiguration()
-   {
+   private void validateDefaultConfiguration() throws PSNotFoundException {
       PSRelationshipConfig cfg = getRelationshipConfig();
       List<PSCloneOverrideField> cloneFields = cfg.getCloneOverrideFieldList();
       assertTrue(cloneFields.size() == 3);
@@ -116,8 +116,7 @@ public class PSRelationshipConfigSetterTest extends PSConfigurationTest
    }
 
    @SuppressWarnings("unchecked")
-   private void validateLocalConfiguration()
-   {
+   private void validateLocalConfiguration() throws PSNotFoundException {
       PSRelationshipConfig config = getRelationshipConfig();
       List<PSCloneOverrideField> cloneFields = config
             .getCloneOverrideFieldList();
@@ -156,8 +155,7 @@ public class PSRelationshipConfigSetterTest extends PSConfigurationTest
       assertNotNull(effect);
    }
 
-   private PSRelationshipConfig getRelationshipConfig()
-   {
+   private PSRelationshipConfig getRelationshipConfig() throws PSNotFoundException {
       IPSDesignModelFactory dm = PSDesignModelFactoryLocator
             .getDesignModelFactory();
       IPSDesignModel model = dm

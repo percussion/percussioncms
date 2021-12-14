@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.aop.security;
 
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
@@ -31,13 +32,18 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.locking.IPSObjectLockService;
 import com.percussion.services.locking.PSObjectLockServiceLocator;
 import com.percussion.services.locking.data.PSObjectLock;
-import com.percussion.services.security.*;
+import com.percussion.services.security.IPSAcl;
+import com.percussion.services.security.IPSAclEntry;
+import com.percussion.services.security.IPSAclService;
+import com.percussion.services.security.PSAclServiceLocator;
+import com.percussion.services.security.PSAclServiceTest;
+import com.percussion.services.security.PSPermissions;
+import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.IPSWebserviceErrors;
 import com.percussion.webservices.PSErrorException;

@@ -17,17 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.aaclient;
 
+import org.json.simple.ItemList;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.json.simple.ItemList;
 
 /**
  * @author FangYidong<fangyidong@yahoo.com.cn>
@@ -46,7 +46,7 @@ public class JSONObject extends LinkedHashMap{
     }
     
     public static String toString(String key,Object value){
-        StringBuffer sb=new StringBuffer();
+        StringBuilder sb=new StringBuilder();
         
         sb.append("\"");
         sb.append(escape(key));
@@ -74,7 +74,7 @@ public class JSONObject extends LinkedHashMap{
     public static String escape(String s){
         if(s==null)
             return null;
-        StringBuffer sb=new StringBuffer();
+        StringBuilder sb=new StringBuilder();
         for(int i=0;i<s.length();i++){
             char ch=s.charAt(i);
             switch(ch){

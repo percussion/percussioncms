@@ -17,14 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security;
 
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.services.catalog.PSTypeEnum;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 
 import java.security.acl.NotOwnerException;
 import java.security.acl.Permission;
@@ -95,11 +95,7 @@ public class PSAclUtils
             {
                target.addEntry(source.getFirstOwner(), newEntry);
             }
-            catch (SecurityException e)
-            {
-               // Should not happen
-            }
-            catch (NotOwnerException e)
+            catch (SecurityException | NotOwnerException e)
             {
                // Should not happen
             }
@@ -117,7 +113,7 @@ public class PSAclUtils
    {
       if (acl == null)
          throw new IllegalArgumentException("acl cannot be null.");
-      List<IPSAclEntry> removeList = new ArrayList<IPSAclEntry>();
+      List<IPSAclEntry> removeList = new ArrayList<>();
       Enumeration enumEntries = acl.entries();
       while (enumEntries.hasMoreElements())
       {
@@ -221,7 +217,7 @@ public class PSAclUtils
    
    /**
     * Determine if the specified type may have an associated acl with an entry
-    * with {@link IPSAccessLevel.PERMISSION#RUNTIME_VISIBLE}. 
+    * with
     * 
     * @param type The type to check, may not be <code>null</code>.
     * 
@@ -239,14 +235,14 @@ public class PSAclUtils
    /**
     * Set of types that support acls, never <code>null</code>, or modified.
     */
-   private static Set<PSTypeEnum> ms_aclTypes = new HashSet<PSTypeEnum>();
+   private static Set<PSTypeEnum> ms_aclTypes = new HashSet<>();
    
    /**
     * Set of types that support acls with an entry with 
-    * {@link IPSAccessLevel.PERMISSION#RUNTIME_VISIBLE}, never 
+    *  never
     * <code>null</code>, or modified.
     */
-   private static Set<PSTypeEnum> ms_runtimeTypes = new HashSet<PSTypeEnum>();
+   private static Set<PSTypeEnum> ms_runtimeTypes = new HashSet<>();
    
    static
    {

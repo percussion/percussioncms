@@ -17,26 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service.impl;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.dao.IPSTemplateDao;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplate;
+import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSPageTemplateService;
-
-import java.util.List;
-
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.isTrue;
 
 /**
  * @author JaySeletz
@@ -57,8 +58,7 @@ public class PSPageTemplateService implements IPSPageTemplateService
     }
     
     @Override
-    public void changeTemplate(String pageId, String templateId)
-    {
+    public void changeTemplate(String pageId, String templateId) throws PSDataServiceException {
         isTrue(isNotBlank(pageId), "pageId may not be blank");
         isTrue(isNotBlank(templateId), "templateId may not be blank");
         
@@ -67,12 +67,12 @@ public class PSPageTemplateService implements IPSPageTemplateService
 
         if(page == null)
         {
-            throw new RuntimeException("The page you have selected doesn't exist in the system. Please refresh and try again."); 
+            throw new PSDataServiceException("The page you have selected doesn't exist in the system. Please refresh and try again.");
         }
         
         if(template == null)
         {
-            throw new RuntimeException("The template you have selected doesn't exist in the system. Please refresh and try again."); 
+            throw new PSDataServiceException("The template you have selected doesn't exist in the system. Please refresh and try again.");
         }
         page.setTemplateId(templateId);
         page.setTemplateContentMigrationVersion(template.getContentMigrationVersion());
@@ -80,8 +80,7 @@ public class PSPageTemplateService implements IPSPageTemplateService
     }
 
     @Override
-    public List<Integer> findPageIdsByTemplate(String templateId)
-    {
+    public List<Integer> findPageIdsByTemplate(String templateId) throws IPSPageService.PSPageException {
         List<Integer> pageIds = pageDao.getPageIdsByFieldNameAndValue(FIELD_NAME_TEMPLATE_ID, templateId);
         return pageIds;
     }

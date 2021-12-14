@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
 	<xsl:output method="xml" omit-xml-declaration="yes"/>
 	<xsl:include href="file:sys_resources/stylesheets/assemblers/sys_popmenu.xsl"/>
 	<xsl:include href="file:rx_resources/stylesheets/assemblers/rx_popmenu.xsl"/>
@@ -35,7 +37,7 @@
 			<xsl:with-param name="portal">yes</xsl:with-param>
 		</xsl:apply-templates>
 		<xsl:if test="$omitlink = ''">
-			<a class="Menu" href="javascript:void(0)" onclick="return true" onmousedown="PSEnterTopItem('{$actionsetid}',event)" onmouseout="PSExitTopItem('{$actionsetid}')">
+			<a class="Menu" href="javascript:void(0)" onclick="return true;" onmousedown="PSEnterTopItem('{$actionsetid}',event)" onmouseout="PSExitTopItem('{$actionsetid}')">
 				<img src="{$imagepath}/rxactionmenu.gif" border="0" align="absmiddle" alt="Action Menu"/>
 			</a>
 		</xsl:if>

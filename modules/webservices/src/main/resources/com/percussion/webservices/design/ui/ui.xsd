@@ -18,13 +18,15 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   -->
 
 <!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by Paul Howard (Percussion Software) -->
-<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/ui" xmlns:ui="urn:www.percussion.com/6.0.0/ui" xmlns:uis="urn:www.percussion.com/6.0.0/uiServices" xmlns:com="urn:www.percussion.com/6.0.0/common" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xsd:schema targetNamespace="urn:www.percussion.com/6.0.0/ui" xmlns:uis="urn:www.percussion.com/6.0.0/uiServices"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
    <xsd:import namespace="urn:www.percussion.com/6.0.0/common" schemaLocation="../common.xsd"/>
    <xsd:import namespace="urn:www.percussion.com/6.0.0/uiServices" schemaLocation="uiServices.xsd"/>
    <xsd:element name="LoadActionsRequest">

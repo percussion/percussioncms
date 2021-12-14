@@ -1,0 +1,628 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDefData appName="psx_cesoln_list_List_ct" isHidden="false" objectType="1">
+   <PSXItemDefSummary editorUrl="../psx_cesoln_list_List_ct/soln_list_List_ct.html" id="318" label="List" name="soln_list_List_ct" typeId="318"/>
+   <PSXContentEditor contentType="318" enableRelatedContent="yes" iconSource="1" iconValue="list.gif" objectType="1" workflowId="6">
+      <PSXDataSet id="768">
+         <name>soln_list_List_ct</name>
+         <description>default template</description>
+         <transactionType>none</transactionType>
+         <PSXContentEditorPipe id="0">
+            <name>cePipe</name>
+            <description>This is the ContentEditorLocaDef for Default ContentType</description>
+            <InputDataExits>
+               <PSXExtensionCallSet id="0">
+                  <PSXExtensionCall id="10186">
+                     <name>Java/global/percussion/xmldom/sys_xdTextCleanup</name>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>callout</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2Ktidy.properties</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>rxW2KserverPageTags.xml</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                     <PSXExtensionParamValue id="0">
+                        <value>
+                           <PSXTextLiteral id="0">
+                              <text>yes</text>
+                           </PSXTextLiteral>
+                        </value>
+                     </PSXExtensionParamValue>
+                  </PSXExtensionCall>
+               </PSXExtensionCallSet>
+            </InputDataExits>
+            <PSXContainerLocator>
+               <PSXTableSet>
+                  <PSXTableLocator>
+                     <PSXBackEndCredential id="0">
+                        <alias>Cred1</alias>
+                        <comment/>
+                        <datasource/>
+                     </PSXBackEndCredential>
+                  </PSXTableLocator>
+                  <PSXTableRef alias="CT_SOLN_LIST_LIST_CT" name="CT_SOLN_LIST_LIST_CT"/>
+                  <PSXTableRef alias="CT_SOLN_LIST_CT_SET" name="CT_SOLN_LIST_CT_SET"/>
+               </PSXTableSet>
+            </PSXContainerLocator>
+            <PSXContentEditorMapper>
+               <SystemFieldExcludes>
+                  <FieldRef>sys_contentexpirydate</FieldRef>
+                  <FieldRef>sys_contentstartdate</FieldRef>
+                  <FieldRef>sys_pathname</FieldRef>
+                  <FieldRef>sys_pubdate</FieldRef>
+                  <FieldRef>sys_reminderdate</FieldRef>
+                  <FieldRef>sys_suffix</FieldRef>
+               </SystemFieldExcludes>
+               <PSXFieldSet name="CT_soln_list_List_ct" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="callout" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>CALLOUT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">yes</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="displaytitle" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>DISPLAYTITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_childSnippet" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>SOLN_LIST_CHILDSNIPPET</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXFieldSet name="soln_list_contentTypes_set" repeatability="zeroOrMore" supportsSequencing="yes" type="simpleChild" userSearchable="yes">
+                     <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_contentTypes" showInPreview="yes" showInSummary="no" type="local">
+                        <DataLocator>
+                           <PSXBackEndColumn id="0">
+                              <tableAlias>CT_SOLN_LIST_CT_SET</tableAlias>
+                              <column>SOLN_LIST_CONTENTTYPES</column>
+                              <columnAlias/>
+                           </PSXBackEndColumn>
+                        </DataLocator>
+                        <DataType>text</DataType>
+                        <DataFormat>50</DataFormat>
+                        <DefaultValue>
+                           <DataLocator>
+                              <PSXTextLiteral id="0">
+                                 <text/>
+                              </PSXTextLiteral>
+                           </DataLocator>
+                        </DefaultValue>
+                        <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                        <PSXPropertySet>
+                           <PSXProperty locked="no" name="allowActiveTags">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="cleanupNamespaces">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="no" name="mayContainIDs">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                           <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                              <Value type="Boolean">no</Value>
+                           </PSXProperty>
+                        </PSXPropertySet>
+                        <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                     </PSXField>
+                  </PSXFieldSet>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_count" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>PERC_LIST_COUNT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>integer</DataType>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text>0</text>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_dateRangeEnd" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>PERC_LIST_DATE_RANGE_END</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>date</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_dateRangeStart" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>PERC_LIST_DATE_RANGE_START</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>date</DataType>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_folderPaths" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>SOLN_LIST_FOLDERPATHS</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>2048</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_jcrQuery" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>PERC_LIST_QUERY</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>max</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_js" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>SOLN_LIST_JS</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>50</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_slot" showInPreview="yes" showInSummary="no" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>SOLN_LIST_SLOT</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>255</DataFormat>
+                     <DefaultValue>
+                        <DataLocator>
+                           <PSXTextLiteral id="0">
+                              <text/>
+                           </PSXTextLiteral>
+                        </DataLocator>
+                     </DefaultValue>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXPropertySet>
+                        <PSXProperty locked="no" name="allowActiveTags">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="cleanupBrokenInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="cleanupNamespaces">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="no" name="mayContainIDs">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                        <PSXProperty locked="yes" name="mayHaveInlineLinks">
+                           <Value type="Boolean">no</Value>
+                        </PSXProperty>
+                     </PSXPropertySet>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+                  <PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="soln_list_titleContains" showInPreview="yes" showInSummary="yes" type="local">
+                     <DataLocator>
+                        <PSXBackEndColumn id="0">
+                           <tableAlias>CT_SOLN_LIST_LIST_CT</tableAlias>
+                           <column>PERC_LIST_TITLE</column>
+                           <columnAlias/>
+                        </PSXBackEndColumn>
+                     </DataLocator>
+                     <DataType>text</DataType>
+                     <DataFormat>512</DataFormat>
+                     <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
+                     <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+                  </PSXField>
+               </PSXFieldSet>
+               <PSXUIDefinition>
+                  <PSXDisplayMapper fieldSetRef="CT_soln_list_List_ct" id="0">
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_title</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_communityid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_lang</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_currentview</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_workflowid</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>sys_hibernateVersion</FieldRef>
+                        <PSXUISet/>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>displaytitle</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Title:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10021" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>50</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Title:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_slot</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>List Type:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10033" name="sys_DropDownSingle">
+                              <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>soln_list_slot_select</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>List Type:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="global">
+                              <Key>403</Key>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_childSnippet</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Child Snippet:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10037" name="sys_DropDownSingle"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Child Snippet:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="user" type="global">
+                              <Key>404</Key>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_titleContains</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Title Contains:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10025" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>512</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Title Contains:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_contentTypes_set</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Content Types:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10046" name="sys_DropDownMultiple"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Content Types:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="global">
+                              <Key>401</Key>
+                           </PSXChoices>
+                        </PSXUISet>
+                        <PSXDisplayMapper fieldSetRef="soln_list_contentTypes_set" id="1">
+                           <PSXDisplayMapping>
+                              <FieldRef>soln_list_contentTypes</FieldRef>
+                              <PSXUISet/>
+                           </PSXDisplayMapping>
+                        </PSXDisplayMapper>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_folderPaths</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Folder Path:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10042" name="sys_DropDownSingle"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Folder Path:</PSXDisplayText>
+                           </ErrorLabel>
+                           <PSXChoices sortOrder="ascending" type="global">
+                              <Key>402</Key>
+                           </PSXChoices>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_dateRangeStart</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Date Range Start:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10029" name="sys_CalendarSimple"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Date Range Start:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_dateRangeEnd</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Date Range End:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10030" name="sys_CalendarSimple"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Date Range End:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_count</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Max Results:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10026" name="sys_EditBox">
+                              <PSXParam name="maxlength">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                                       <text>10</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                           </PSXControlRef>
+                           <ErrorLabel>
+                              <PSXDisplayText>Max Results:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>callout</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Callout:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10050" name="sys_EditLive"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Callout:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_jcrQuery</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Query:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10039" name="sys_TextArea"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Query:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                     <PSXDisplayMapping>
+                        <FieldRef>soln_list_js</FieldRef>
+                        <PSXUISet>
+                           <Label>
+                              <PSXDisplayText>Javascript:</PSXDisplayText>
+                           </Label>
+                           <PSXControlRef id="10189" name="soln_list_JavaScript"/>
+                           <ErrorLabel>
+                              <PSXDisplayText>Javascript:</PSXDisplayText>
+                           </ErrorLabel>
+                        </PSXUISet>
+                     </PSXDisplayMapping>
+                  </PSXDisplayMapper>
+               </PSXUIDefinition>
+            </PSXContentEditorMapper>
+            <userProperties>
+               <userProperty name="Control10050_DependencyIds">10186</userProperty>
+               <userProperty name="Control10050_Dependency10186">sys_xdTextCleanup</userProperty>
+            </userProperties>
+         </PSXContentEditorPipe>
+         <PSXRequestor directDataStream="no" id="0">
+            <requestPage>soln_list_List_ct</requestPage>
+            <SelectionParams/>
+            <ValidationRules/>
+            <characterEncoding>UTF-8</characterEncoding>
+            <MimeProperties>
+               <html>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </html>
+               <htm>
+                  <PSXTextLiteral id="0">
+                     <text>text/html</text>
+                  </PSXTextLiteral>
+               </htm>
+            </MimeProperties>
+         </PSXRequestor>
+      </PSXDataSet>
+      <PSXValidationRules maxErrorsToStop="10"/>
+      <PSXInputTranslations/>
+      <PSXOutputTranslations/>
+      <PSXWorkflowInfo type="inclusionary" values="6"/>
+   </PSXContentEditor>
+</ItemDefData>

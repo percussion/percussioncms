@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,15 +26,14 @@ package com.percussion.services.filestorage.impl;
 import com.percussion.services.PSBaseServiceLocator;
 import com.percussion.services.filestorage.IPSFileDigestService;
 import com.percussion.util.PSPurgableTempFile;
-
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.experimental.categories.Category;
+
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 @Category(IntegrationTest.class)
 public class PSFileDigestServiceTest extends ServletTestCase

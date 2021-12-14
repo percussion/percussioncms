@@ -17,20 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.transformation.converter;
 
+import com.percussion.cms.IPSConstants;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.beanutils.Converter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.beanutils.Converter;
 
 /**
  * The base converter class provides functionality useful for all converters
@@ -68,19 +71,7 @@ public class PSConverter implements Converter
          
          return convertedValue;
       }
-      catch (IllegalAccessException e)
-      {
-         throw new ConversionException(value.toString(), e);
-      }
-      catch (InvocationTargetException e)
-      {
-         throw new ConversionException(value.toString(), e);
-      }
-      catch (InstantiationException e)
-      {
-         throw new ConversionException(value.toString(), e);
-      }
-      catch (NoSuchMethodException e)
+      catch (IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException e)
       {
          throw new ConversionException(value.toString(), e);
       }
@@ -106,23 +97,21 @@ public class PSConverter implements Converter
       if (origin == null)
          throw new IllegalArgumentException("origin cannot be null");
 
-      PropertyDescriptor origDescriptors[] = 
+      PropertyDescriptor[] origDescriptors =
          getBeanUtils().getPropertyUtils().getPropertyDescriptors(origin);
-      for (int i=0; i<origDescriptors.length; i++)
-      {
-         String name = origDescriptors[i].getName();
+      for (PropertyDescriptor origDescriptor : origDescriptors) {
+         String name = origDescriptor.getName();
          if ("class".equals(name))
             continue;
-         
+
          if (m_specialProperties.contains(name))
             continue;
 
-         if (getBeanUtils().getPropertyUtils().isReadable(origin, name) && 
-            getBeanUtils().getPropertyUtils().isWriteable(dest, name))
-         {
-            Object value = 
-               getBeanUtils().getPropertyUtils().getSimpleProperty(origin,
-                  name);
+         if (getBeanUtils().getPropertyUtils().isReadable(origin, name) &&
+                 getBeanUtils().getPropertyUtils().isWriteable(dest, name)) {
+            Object value =
+                    getBeanUtils().getPropertyUtils().getSimpleProperty(origin,
+                            name);
             getBeanUtils().copyProperty(dest, name, value);
          }
       }
@@ -181,7 +170,12 @@ public class PSConverter implements Converter
     * A set of property names that will be handled special within the 
     * implementing converter, never <code>null</code>, may be empty.
     */
-   protected Set<String> m_specialProperties = new HashSet<String>();
+   protected Set<String> m_specialProperties = new HashSet<>();
+
+   /**
+    * Base logger
+    */
+   protected static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
    
    /**
     * The bean utils instance to use for all conversions. Initialized in 

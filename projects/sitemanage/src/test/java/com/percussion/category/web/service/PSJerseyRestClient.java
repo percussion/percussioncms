@@ -17,27 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.category.web.service;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.removeEnd;
-import static org.apache.commons.lang.StringUtils.removeStart;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-
 import com.percussion.category.data.PSCategory;
 import com.percussion.share.test.PSRestTestCase;
 import com.percussion.util.IPSHtmlParameters;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -48,13 +39,20 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.removeEnd;
+import static org.apache.commons.lang.StringUtils.removeStart;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
 
 public class PSJerseyRestClient {
 	
-	private static Log log = LogFactory.getLog(PSJerseyRestClient.class);
+	private static final Logger log = LogManager.getLogger(PSJerseyRestClient.class);
 	//private String contextUrl = "http://localhost:9992/Rhythmyx";
 	private static String baseUrl;
 	
@@ -134,11 +132,7 @@ public class PSJerseyRestClient {
 
 	    private String getBasicAuthentication() {
 	        String token = this.user + ":" + this.password;
-	        try {
-	            return "BASIC " + DatatypeConverter.printBase64Binary(token.getBytes("UTF-8"));
-	        } catch (UnsupportedEncodingException ex) {
-	            throw new IllegalStateException("Cannot encode with UTF-8", ex);
-	        }
+	            return "BASIC " + DatatypeConverter.printBase64Binary(token.getBytes(StandardCharsets.UTF_8));
 	    }
 	}
 

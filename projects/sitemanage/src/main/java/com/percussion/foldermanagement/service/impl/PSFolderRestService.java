@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.foldermanagement.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.foldermanagement.data.PSFolderItem;
 import com.percussion.foldermanagement.data.PSGetAssignedFoldersJobStatus;
 import com.percussion.foldermanagement.data.PSWorkflowAssignment;
@@ -32,8 +33,13 @@ import com.percussion.foldermanagement.service.IPSFolderService.PSWorkflowNotFou
 import com.percussion.pathmanagement.service.IPSPathService.PSPathNotFoundServiceException;
 import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.data.PSLightWeightObject;
-
-import java.util.List;
+import com.percussion.share.data.PSLightWeightObjectList;
+import com.percussion.share.service.exception.PSValidationException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -43,17 +49,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import com.percussion.share.data.PSLightWeightObjectList;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.List;
 
 /**
  * Exposes the services provided by {@link PSFolderService} through a REST API,
@@ -66,7 +67,7 @@ import org.springframework.stereotype.Component;
 @Component("folderRestService")
 public class PSFolderRestService
 {
-    private static final Log log = LogFactory.getLog(PSFolderRestService.class);
+    private static final Logger log = LogManager.getLogger(PSFolderRestService.class);
     
     private IPSFolderService folderService;
     
@@ -91,7 +92,11 @@ public class PSFolderRestService
             @PathParam("path") String path,
             @QueryParam("includeFoldersWithDifferentWorkflow") @DefaultValue("false") Boolean includeFoldersWithDifferentWorkflow)
     {
-        return folderService.startGetAssignedFoldersJob(workflowName, path, includeFoldersWithDifferentWorkflow);
+        try {
+            return folderService.startGetAssignedFoldersJob(workflowName, path, includeFoldersWithDifferentWorkflow);
+        } catch (PSWorkflowNotFoundException e) {
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
     /**
@@ -145,30 +150,27 @@ public class PSFolderRestService
         }
         catch(PSWorkflowNotFoundException e)
         {
-            log.error(message, e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.NOT_FOUND).entity(message + e.getMessage()).build();
         }
         catch(IllegalArgumentException e)
         {   
             // This means that either the workflow name or the path are empty.
-            log.error(message, e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.BAD_REQUEST).entity(message + e.getLocalizedMessage()).build();
         }
-        catch(PSPathNotFoundServiceException e)
+        catch(PSPathNotFoundServiceException | LoadException e)
         {
             // This means that the required path could not be found.
-            log.error(message, e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.NOT_FOUND).entity(message + e.getLocalizedMessage()).build();
-        }
-        catch(LoadException e)
+        } catch (Exception e)
         {
-            // This means that the required path could not be found.
-            log.error(message, e);
-            return Response.status(Status.NOT_FOUND).entity(message + e.getLocalizedMessage()).build();
-        }
-        catch (Exception e)
-        {
-            log.error(message, e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.serverError().entity(message + e.getLocalizedMessage()).build();
         }
     }
@@ -194,24 +196,28 @@ public class PSFolderRestService
             return Response.noContent().build();
         }
         catch(PSWorkflowNotFoundException e)
-        {   
-            log.error(message, e);
+        {
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.NOT_FOUND).entity(message + e.getMessage()).build();
         }
         catch (PSWorkflowAssignmentInProgressException e)
         {
-           log.error(message, e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.CONFLICT).entity(e.getLocalizedMessage()).build();
         }
         catch(IllegalArgumentException e)
         {   
             // This means that is empty or does not exists.
-            log.error(message, e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.status(Status.BAD_REQUEST).entity(message + e.getLocalizedMessage()).build();
         }
         catch (Exception e)
         {
-            log.error(message, e);
+            log.error("{}, Error: {}", message,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             return Response.serverError().entity(message + e.getLocalizedMessage()).build();
         }
     }
@@ -220,7 +226,13 @@ public class PSFolderRestService
     @Path("/folderpages/id/{id}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public List<PSLightWeightObject> getFolderPagesById(@PathParam("id") String id){
-    	return new PSLightWeightObjectList(folderService.getPagesFromFolder(id));
+        try {
+            return new PSLightWeightObjectList(folderService.getPagesFromFolder(id));
+        } catch (IPSFolderService.PSFolderNotFoundException | IPSFolderService.PSPagesNotFoundException | PSValidationException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e.getMessage());
+        }
     }
     
 }

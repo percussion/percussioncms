@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -228,10 +228,10 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
    /**
     * The fully qualified name of this extension.
     */
-   static private String m_fullExtensionName = "";
+   private  String m_fullExtensionName = "";
 
    /* Set the parameter count to not initialized */
-   static private int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
+   private  int ms_correctParamCount = IPSExtension.NOT_INITIALIZED;
 
 
    /**************  IPSExtension Interface Implementation ************* */
@@ -251,6 +251,8 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
 
          m_fullExtensionName = extensionDef.getRef().toString();
       }
+
+
    }
 
    /* *******  IPSRequestPreProcessor Interface Implementation ******* */
@@ -350,7 +352,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
          request, "\nPerform Transition: enter preProcessRequest");
 
       PSConnectionMgr connectionMgr = null;
-      HashMap htmlParams = null;
+      Map<String, Object> htmlParams = null;
       int nParamCount = 0;
       Params localParams = new Params();
       String sRoleNameList = "";
@@ -414,7 +416,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
                return; //no contentid means do nothing
             }
             localParams.m_contentID =
-                  new Integer(params[0].toString()).intValue();
+                   Integer.parseInt(params[0].toString());
             if(null == params[1] || 0 ==
                params[1].toString().trim().length())
             {
@@ -870,10 +872,10 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
       {
          Object[] args =
             {
-               new Integer(localParams.m_contentID),
-               new Integer(localParams.m_workflowAppID),
-               new Integer(localParams.m_transitionFromStateID),
-               localParams.m_actionTrigger
+                    localParams.m_contentID,
+                    localParams.m_workflowAppID,
+                    localParams.m_transitionFromStateID,
+                    localParams.m_actionTrigger
             };
          throw new PSTransitionException(lang,
             IPSExtensionErrors.MISSING_TRANSITION, args);
@@ -884,10 +886,10 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
       {
          Object[] args =
             {
-               new Integer(localParams.m_contentID),
-               new Integer(localParams.m_workflowAppID),
-               new Integer(localParams.m_transitionFromStateID),
-               new Integer(tc.getTransitionFromStateID()),
+                    localParams.m_contentID,
+                    localParams.m_workflowAppID,
+                    localParams.m_transitionFromStateID,
+                    tc.getTransitionFromStateID(),
                localParams.m_actionTrigger
             };
          throw new PSTransitionException(lang,
@@ -929,7 +931,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
       {
          transitionRequiredRoles = tc.getTransitionRoles();
          if (null != transitionRequiredRoles &&
-             transitionRequiredRoles.size() > 0)
+             !transitionRequiredRoles.isEmpty())
          {
             if (!PSWorkFlowUtils.compareRoleList(transitionRequiredRoles,
                                                  userRoleList))
@@ -1951,7 +1953,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
                  workingVarCal.before(maximumAgingCal)))
             {
                maximumAgingCal = (Calendar)workingVarCal.clone();
-               nextAgingTransition = candidateTC.getTransitionID();;
+               nextAgingTransition = candidateTC.getTransitionID();
             }
          }
          while(candidateTC.moveNext()); //End loop over all candidatetransitions
@@ -1996,7 +1998,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
     *          <li>checkout - revision requested for check out</li>
     *          </ul>
     */
-   private static int getRevisionFromHTMLParams(HashMap htmlParams)
+   private static int getRevisionFromHTMLParams(Map<String,Object> htmlParams)
    {
       int revision = IPSConstants.NO_CORRESPONDING_REVISION_VALUE;
       String sRevision = (String)
@@ -2026,7 +2028,7 @@ public class PSExitPerformTransition implements IPSRequestPreProcessor
     *           <li>for transitions - 0 - do nothing </li>
     *           <li>for checkin - revision checked in</li></ul>
     */
-   private static void setRevisionFromHTMLParams(HashMap htmlParams,
+   private static void setRevisionFromHTMLParams(Map<String,Object> htmlParams,
                                                  int revision)
    {
       if (0 == revision )

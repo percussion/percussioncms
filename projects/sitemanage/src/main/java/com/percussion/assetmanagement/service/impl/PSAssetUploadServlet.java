@@ -17,17 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.assetmanagement.service.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.util.List;
+import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.share.service.exception.PSExtractHTMLException;
+import com.percussion.sitemanage.importer.theme.PSAssetCreator;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -36,14 +41,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONObject;
-
-import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.share.service.exception.PSExtractHTMLException;
-import com.percussion.sitemanage.importer.theme.PSAssetCreator;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet responsible for uploading a file and creating an asset from it.
@@ -57,14 +56,13 @@ import com.percussion.sitemanage.importer.theme.PSAssetCreator;
 public class PSAssetUploadServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
-    private static final String UPLOAD_DIR="perc-uploads";
 
     /**
      * Utility method to get file name from HTTP header content-disposition
      */
     private String getFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
-        System.out.println("content-disposition header= "+contentDisp);
+        logger.debug("content-disposition header={}",contentDisp);
         String[] tokens = contentDisp.split(";");
         for (String token : tokens) {
             if (token.trim().startsWith("filename")) {
@@ -74,6 +72,7 @@ public class PSAssetUploadServlet extends HttpServlet
         return "";
     }
 
+    @SuppressFBWarnings("XSS_SERVLET")
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException
@@ -86,11 +85,9 @@ public class PSAssetUploadServlet extends HttpServlet
             assetType = "file";
         String selector = request.getParameter("cssSelector");
         String includeElement = request.getParameter("includeElement");
-        boolean includeOuterHtml = (includeElement != null && includeElement.equals("outerhtml")) ? true : false;
+        boolean includeOuterHtml = includeElement != null && includeElement.equals("outerhtml");
         String approve = request.getParameter("approveOnUpload");
-        boolean approveOnUpload = (approve != null && approve.equalsIgnoreCase("true"))? true :false;
-
-        String uploadFilePath = System.getProperty("java.io.tmpdir") + File.pathSeparator + UPLOAD_DIR;
+        boolean approveOnUpload = approve != null && approve.equalsIgnoreCase("true");
 
         PrintWriter out = null;
         try
@@ -100,8 +97,8 @@ public class PSAssetUploadServlet extends HttpServlet
             PSAsset newAsset = null;
             for (Part part : request.getParts()) {
 
-                fileName = getFileName(part);
-                if(fileName != "") {
+                fileName = SecureStringUtils.sanitizeForJson(getFileName(part));
+                if(!StringUtils.isEmpty(fileName)) {
                     newAsset = assetCreator.createAsset(folderpath, PSAssetCreator.getAssetType(assetType), part.getInputStream(), fileName, selector, includeOuterHtml, approveOnUpload);
                 }
             }
@@ -126,7 +123,7 @@ public class PSAssetUploadServlet extends HttpServlet
         }
         catch (Exception e)
         {
-            throw new ServletException(e);
+            response.setStatus(500);
         }
     }
 
@@ -136,37 +133,24 @@ public class PSAssetUploadServlet extends HttpServlet
      * @param e the extraction error / exception, assumed not <code>null</code>.
      * @param response the HTTP response, assumed not <code>null</code>.
      *
-     * @throws IOException if there is an error occurs during set error and response on the HTTP response object.
      */
-    private void handleExtractionError(PSExtractHTMLException e, HttpServletResponse response) throws IOException
+    private void handleExtractionError(PSExtractHTMLException e, HttpServletResponse response)
     {
-        String errorMsg = e.getMessage();
 
-        if (StringUtils.isBlank(errorMsg) && e.getCause() != null)
-        {
-            errorMsg = e.getCause().getMessage();
-        }
-        else if (StringUtils.isNotBlank(errorMsg) && e.getCause() != null)
-        {
-            errorMsg = errorMsg + " The underlying error is: " + e.getCause().getMessage();
-        }
-        ms_logger.error(errorMsg);
+        logger.error(PSExceptionUtils.getMessageForLog(e));
+        logger.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
-        if (ms_logger.isDebugEnabled())
-        {
-            if (e.getCause() != null)
-                ms_logger.error("Got extraction error.", e.getCause());
-            else
-                ms_logger.error("Got extraction error.", e);
+        try {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (IOException ex) {
+            response.setStatus(500);
         }
-
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, errorMsg);
     }
 
     /**
      * The logger
      */
-    private static Logger ms_logger = Logger.getLogger("PSAssetUploadServlet");
+    private static final Logger logger = LogManager.getLogger("PSAssetUploadServlet");
 
     /**
      * The asset creator

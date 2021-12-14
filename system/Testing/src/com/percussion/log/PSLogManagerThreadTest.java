@@ -17,25 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.log;
 
-import com.percussion.server.PSRequest;
 import com.percussion.testing.IPSServerBasedJunitTest;
 import com.percussion.testing.PSConfigHelperTestCase;
-import com.percussion.testing.PSRequestHandlerTestSuite;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.experimental.categories.Category;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Properties;
-
-import com.percussion.utils.testing.IntegrationTest;
-import junit.framework.TestSuite;
-import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.assertEquals;
 
@@ -94,7 +91,7 @@ public class PSLogManagerThreadTest extends PSConfigHelperTestCase
          super(group, name);
          m_waitLimitMs = waitLimitMs;
          m_runForMs = runForMs;
-         m_rand = new java.util.Random(this.activeCount());
+         m_rand = new SecureRandom();
       }
 
       public void run() {
@@ -138,11 +135,12 @@ public class PSLogManagerThreadTest extends PSConfigHelperTestCase
          }
          catch (InterruptedException e) {
             flushPrint("*** \tLog testing thread cleaning up.");
+            Thread.currentThread().interrupt();
          }
       }
       private long m_waitLimitMs;
       private long m_runForMs;
-      java.util.Random m_rand;
+      SecureRandom m_rand;
    }
 
 

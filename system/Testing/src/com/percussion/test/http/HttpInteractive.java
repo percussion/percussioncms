@@ -17,16 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.test.http;
 
 import com.percussion.test.io.IOTools;
-import com.percussion.test.io.IOTools;
 import com.percussion.test.io.LogSink;
 import com.percussion.util.PSURLEncoder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -44,8 +47,11 @@ import java.io.OutputStream;
  * GET and POST requests to an HTTP server, allowing you to set individual
  * header values and whatnot.
  */
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class HttpInteractive implements LogSink
 {
+
+   private static final Logger log = LogManager.getLogger(HttpInteractive.class);
    /**
     * The main entry point.
     */
@@ -66,13 +72,15 @@ public class HttpInteractive implements LogSink
             }
             catch (Throwable t)
             {
-               t.printStackTrace();
+               log.error(t.getMessage());
+               log.debug(t.getMessage(), t);
             }
          } while (again);
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
       System.err.println("Finished");
    }
@@ -250,7 +258,7 @@ public class HttpInteractive implements LogSink
 
          if (!m_isFile)
          {
-            StringBuffer buff = new StringBuffer();
+            StringBuilder buff = new StringBuilder();
             System.err.println("Type the content below. End with a line containing only a .");
             while (true)
             {

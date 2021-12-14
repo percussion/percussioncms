@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,10 +35,9 @@ import com.percussion.linkmanagement.service.IPSManagedLinkService;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Field output transformer to update the managed item paths on edit. This is a thin wrapper, calls the managedlink service to do the actual work.
@@ -61,11 +60,13 @@ public class PSManagedItemPathOutputTransformer extends PSDefaultExtension imple
         String path = ep.getStringParam(0, null, true);
         String linkIdField = ep.getStringParam(1, null, false);
         
-        if(StringUtils.isBlank(linkIdField))
+        if(StringUtils.isBlank(linkIdField)) {
             return path;
+        }
         String linkId = (String) PSContentEditorWalker.getDisplayFieldValue(request.getInputDocument(), linkIdField);
-        if(StringUtils.isBlank(linkIdField))
+        if(StringUtils.isBlank(linkIdField)) {
             return path;
+        }
         
         
         String cid = request.getParameter(IPSHtmlParameters.SYS_CONTENTID);

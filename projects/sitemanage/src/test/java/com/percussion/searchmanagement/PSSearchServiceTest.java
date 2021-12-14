@@ -17,12 +17,39 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.searchmanagement;
+
+import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.assetmanagement.web.service.PSAssetServiceRestClient;
+import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
+import com.percussion.pathmanagement.data.PSPathItem;
+import com.percussion.pathmanagement.service.impl.PSPathUtils;
+import com.percussion.pathmanagement.web.service.PSPathServiceRestClient;
+import com.percussion.searchmanagement.data.PSSearchCriteria;
+import com.percussion.share.data.PSPagedItemList;
+import com.percussion.share.test.PSObjectRestClient.DataRestClientException;
+import com.percussion.share.test.PSRestClient.RestClientException;
+import com.percussion.share.test.PSRestTestCase;
+import com.percussion.share.test.PSTestDataCleaner;
+import com.percussion.ui.service.IPSListViewHelper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -30,40 +57,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.assetmanagement.web.service.PSAssetServiceRestClient;
-import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
-import com.percussion.share.data.PSPagedItemList;
-import com.percussion.pathmanagement.data.PSPathItem;
-import com.percussion.pathmanagement.service.impl.PSPathUtils;
-import com.percussion.pathmanagement.web.service.PSPathServiceRestClient;
-import com.percussion.searchmanagement.data.PSSearchCriteria;
-import com.percussion.share.test.PSObjectRestClient.DataRestClientException;
-import com.percussion.share.test.PSRestClient.RestClientException;
-import com.percussion.share.test.PSRestTestCase;
-import com.percussion.share.test.PSTestDataCleaner;
-import com.percussion.ui.service.IPSListViewHelper;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
 @Ignore public class PSSearchServiceTest extends PSRestTestCase<PSSearchServiceRestClient>
 {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSearchServiceTest.class);
+    private static final Logger log = LogManager.getLogger(PSSearchServiceTest.class);
     
     private static final String ASSET_ROOT = PSPathUtils.ASSETS_FINDER_ROOT.substring(1) + '/';
     

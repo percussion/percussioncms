@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,9 +25,7 @@ package com.percussion.rx.publisher.jsf.beans;
 
 
 import com.percussion.rx.jsf.PSCategoryNodeBase;
-import com.percussion.rx.jsf.PSEditableNode;
 import com.percussion.rx.jsf.PSLockableNavigation;
-import com.percussion.rx.jsf.PSNodeBase;
 import com.percussion.rx.jsf.PSTreeModel;
 import com.percussion.rx.publisher.jsf.nodes.PSContentListViewNode;
 import com.percussion.rx.publisher.jsf.nodes.PSContextContainerNode;

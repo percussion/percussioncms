@@ -1,27 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
 <Widget>
     <WidgetPrefs title="Navigation"
                  contenttype_name=""
@@ -64,10 +41,6 @@
               display_name="'Navigate to' Title Text"
               default_value="Navigate to"
               datatype="string" />
-    <UserPref name="ariaLabel"
-              display_name="Aria Label"
-              default_value="Main Navigation"
-              datatype="string" />
     <UserPref name="generateSkipLink"
               display_name="Generate Skip Link"
               default_value="false"
@@ -95,7 +68,6 @@
     $maxRootItems = $perc.widget.item.properties.get('maxRootItems');
     $maxSubItems = $perc.widget.item.properties.get('maxSubItems');
     $rootlevel = $tools.math.toNumber($perc.widget.item.properties.get('rootlevel'));
-    $ariaLabel = $perc.widget.item.properties.get('ariaLabel');
     $titleNavigateToText = $perc.widget.item.properties.get('titleNavigateToText');
     $generateSkipLink = $perc.widget.item.properties.get('generateSkipLink');
     $skipLinkRegionId = $perc.widget.item.properties.get('skipLinkRegionId');
@@ -141,13 +113,12 @@
     ]]>
     </Code>
     <Content type="velocity">
-        <![CDATA[<div role="navigation" aria-label="$!{ariaLabel}" class="$!{rootclass} perc-navbar"$!{sampleTooltip}>
+        <![CDATA[<div class="$!{rootclass} perc-navbar"$!{sampleTooltip}>
 #if("$generateSkipLink"=="true" && ! $perc.isEditMode())##
 <script >
 window.addEventListener('DOMContentLoaded', function() {
-$( document ).ready(function() {
 // bind a click event to the 'skip' link
-$(".perc-navigation-skiplink").click(function(event) {
+$(".perc-navigation-skiplink").on("click",function(event) {
 // strip the leading hash and declare
 // the content we're skipping to
 var skipTo="#"+this.href.split('#')[1];
@@ -157,29 +128,29 @@ $(skipTo).attr('tabindex', -1).on('blur focusout', function () {
 // when focus leaves this element,
 // remove the tabindex attribute
 $(this).removeAttr('tabindex');
-}).focus(); // focus on the content container
-});
+}).trigger("focus"); // focus on the content container
 });
 });
 </script>
 <a href="#$!{skipLinkRegionId}" class="perc-navigation-skiplink" tabindex="$!{tabindexValue}">$!{skipLinkText}</a>
 #end##
-<ul role="menubar" class="$!{layout}">
+<nav>
+<ul class="$!{layout}">
 #if($!{nav})##
 #perc_processNavigationNode($nav.getRoot(), 1, 1, $addTitleAttrs, $titleNavigateToText, $maxRootItems, $maxSubItems)##
 #elseif ($perc.isEditMode())##
-<li role="presentation" class="perc-navbar-current">
+<li class="perc-navbar-current">
 <a href="#a">Section 1</a>
 #if($maxlevels > 1)##
 <ul>
-<li role="presentation">
+<li>
 <a href="#">Section 2</a>
 #if($maxlevels > 2)##
 <ul>
-<li role="presentation">
+<li>
 <a href="#aa">menu item that is quite long</a>
 </li>
-<li class="perc-navbar-current" role="presentation">
+<li class="perc-navbar-current">
 <a href="#ab">menu item</a>
 #if($maxlevels > 3)##
 <ul>
@@ -294,6 +265,7 @@ $(this).removeAttr('tabindex');
 </li>
 #end##
 </ul>
+</nav>
 <div style="clear:both"></div>
 </div>]]>
     </Content>

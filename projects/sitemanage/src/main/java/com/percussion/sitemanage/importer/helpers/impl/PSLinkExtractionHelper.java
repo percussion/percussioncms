@@ -17,18 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.importer.helpers.impl;
-
-import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
-import static com.percussion.share.dao.PSFolderPathUtils.pathSeparator;
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.PAGE_CATALOG;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
 
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.dao.IPSPageDao;
@@ -41,7 +35,9 @@ import com.percussion.server.IPSHttpErrors;
 import com.percussion.services.assembly.impl.PSReplacementFilter;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.share.dao.IPSFolderHelper;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSPageContent;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
@@ -58,6 +54,11 @@ import com.percussion.sitemanage.importer.utils.PSHtmlRetriever;
 import com.percussion.sitemanage.importer.utils.PSLinkExtractor;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 import com.percussion.theme.service.IPSThemeService;
+import org.jsoup.Connection;
+import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -66,11 +67,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Connection;
-import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
+import static com.percussion.share.dao.PSFolderPathUtils.pathSeparator;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.PAGE_CATALOG;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
 
    
 @Component("linkExtractionHelper")
@@ -212,8 +213,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
      * page catalog service
      */
     @Override
-    public void process(final PSPageContent pageContent, final PSSiteImportCtx context) throws PSSiteImportException
-    {
+    public void process(final PSPageContent pageContent, final PSSiteImportCtx context) throws PSSiteImportException, IPSGenericDao.SaveException {
         startTimer();
         final IPSSiteImportLogger log = context.getLogger();
         
@@ -299,7 +299,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
                     link.getElement().attr(PERC_MANAGED_ATTR, "true");
                 }
             }
-            catch (IOException e)
+            catch (IOException | PSDataServiceException e)
             {
                 log.appendLogMessage(PSLogEntryType.ERROR, "Link Extractor", link.getAbsoluteLink()
                         + " could not be retrieved.");
@@ -365,8 +365,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
         return remoteUrl;
     }
 
-    protected String getPathForTargetItem(String siteName, PSLink link)
-    {
+    protected String getPathForTargetItem(String siteName, PSLink link) throws PSDataServiceException {
         // Determine the path
         String pathToTargetItem = getFinderPathForTargetItem(siteName, link.getRelativePathWithFileName());
 
@@ -378,13 +377,12 @@ public class PSLinkExtractionHelper extends PSImportHelper
         return pathToTargetItem;
     }
 
-    protected String getCatalogedItemPath(String siteName, String folderPath, String pageName)
-    {
+    protected String getCatalogedItemPath(String siteName, String folderPath, String pageName) throws PSDataServiceException {
         // find the site
         PSSiteSummary site = getSiteDao().findSummary(siteName);
         if (site == null)
         {
-            throw new RuntimeException("Unable to find cataloged pages, the specified site was not found: " + siteName);
+            throw new PSDataServiceException("Unable to find cataloged pages, the specified site was not found: " + siteName);
         }
 
         // determine paths

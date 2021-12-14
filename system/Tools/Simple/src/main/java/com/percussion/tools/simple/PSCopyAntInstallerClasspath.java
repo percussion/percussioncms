@@ -17,12 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.tools.simple;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,9 +36,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-
 /**
  * This class parses an eclipse external tools ant build file used for the ant
  * installer, reading in the classpath entries.  The required jar files are
@@ -41,6 +43,9 @@ import org.apache.commons.io.IOUtils;
  */
 public class PSCopyAntInstallerClasspath
 {
+
+   private static final Logger log = LogManager.getLogger(PSCopyAntInstallerClasspath.class);
+
    /**
     * Copies jars which appear on the classpath to a specified directory.
     *
@@ -187,7 +192,8 @@ public class PSCopyAntInstallerClasspath
       }
       catch(Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          System.exit(1);
       }
    }

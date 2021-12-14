@@ -17,26 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler.impl;
 
+import com.percussion.services.assembly.IPSAssemblyTemplate;
+import com.percussion.services.assembly.IPSTemplateSlot;
+import com.percussion.services.assembly.data.PSAssemblyTemplate;
+import com.percussion.services.assembly.data.PSTemplateBinding;
+import com.percussion.utils.guid.IPSGuid;
+import com.percussion.utils.xml.PSInvalidXmlException;
+import org.xml.sax.SAXException;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-
-import com.percussion.services.assembly.data.PSAssemblyTemplate;
-import com.percussion.services.assembly.data.PSTemplateBinding;
-import org.xml.sax.SAXException;
-
-import com.percussion.services.assembly.IPSAssemblyTemplate;
-import com.percussion.services.assembly.IPSTemplateBinding;
-import com.percussion.services.assembly.IPSTemplateSlot;
-import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.xml.PSInvalidXmlException;
 
 /**
  * 

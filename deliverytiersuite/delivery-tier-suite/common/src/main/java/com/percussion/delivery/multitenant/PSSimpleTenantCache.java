@@ -17,24 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.multitenant;
 
+import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.ServletRequest;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.ServletRequest;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.percussion.delivery.multitenant.IPSTenantAuthorization.Status;
 
 /**
  * Provides a very simple in memory cache for tenant information
@@ -49,7 +47,7 @@ public class PSSimpleTenantCache implements IPSTenantCache {
 	/***
 	 * Thread safe Hash map to hold the cache
 	 */
-	private ConcurrentHashMap<String, IPSTenantInfo> cache = new ConcurrentHashMap<String, IPSTenantInfo>();
+	private ConcurrentHashMap<String, IPSTenantInfo> cache = new ConcurrentHashMap<>();
 	
 	/***
 	 * Minutes cache entries have before needing re-authorization
@@ -59,7 +57,7 @@ public class PSSimpleTenantCache implements IPSTenantCache {
 	  /**
      * Log for this class.
      */
-    private Log log = LogFactory.getLog(getClass());
+    private static final Logger log = LogManager.getLogger(PSSimpleTenantCache.class);
     
     private boolean authorizeExpiredTTL;
     private IPSTenantAuthorization auth;

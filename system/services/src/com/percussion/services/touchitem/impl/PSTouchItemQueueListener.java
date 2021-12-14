@@ -17,16 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.services.touchitem.impl;
-
-import static com.percussion.relationship.IPSExecutionContext.RS_PRE_CONSTRUCTION;
-import static com.percussion.relationship.IPSExecutionContext.RS_PRE_DESTRUCTION;
-import static com.percussion.relationship.IPSExecutionContext.RS_PRE_UPDATE;
 
 import com.percussion.design.objectstore.PSRelationship;
 import com.percussion.server.IPSRequestContext;
@@ -36,8 +32,12 @@ import com.percussion.services.notification.PSMessageQueueListenerAdapter;
 import com.percussion.services.touchitem.IPSTouchItemService;
 import com.percussion.services.touchitem.PSTouchItemLocator;
 import com.percussion.services.touchitem.data.PSTouchItemData;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import static com.percussion.relationship.IPSExecutionContext.RS_PRE_CONSTRUCTION;
+import static com.percussion.relationship.IPSExecutionContext.RS_PRE_DESTRUCTION;
+import static com.percussion.relationship.IPSExecutionContext.RS_PRE_UPDATE;
 
 /**
  * Listens for Touching Messages.
@@ -110,6 +110,6 @@ public class PSTouchItemQueueListener extends PSMessageQueueListenerAdapter<PSTo
    /**
     * The logger for this class.
     */
-   private static Logger ms_logger = Logger.getLogger(PSTouchItemQueueListener.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTouchItemQueueListener.class);
 
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,10 +26,15 @@ package com.percussion.delivery.metadata.rdbms.impl;
 import com.percussion.delivery.metadata.IPSMetadataEntry;
 import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
-
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -39,12 +44,9 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.hibernate.annotations.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents metadata for a published page on the delivery server.
@@ -97,7 +99,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,
             orphanRemoval = true, mappedBy = "entry", targetEntity = PSDbMetadataProperty.class)
-    private Set<PSDbMetadataProperty> properties = new HashSet<PSDbMetadataProperty>();
+    private Set<PSDbMetadataProperty> properties = new HashSet<>();
 
     /**
      * HashCalculator instance used to get the hash of the metadata entry's
@@ -256,7 +258,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     {
         if(properties == null)
             return null;
-        Set<IPSMetadataProperty> results = new HashSet<IPSMetadataProperty>(properties.size());
+        Set<IPSMetadataProperty> results = new HashSet<>(properties.size());
         for(IPSMetadataProperty p : properties)
             results.add(p);
         return results;
@@ -269,7 +271,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     {
         if(properties == null)
             this.properties = null;
-        Set<PSDbMetadataProperty> dbprops = new HashSet<PSDbMetadataProperty>();
+        Set<PSDbMetadataProperty> dbprops = new HashSet<>();
         for(IPSMetadataProperty p : properties)
         {
             if(p instanceof PSDbMetadataProperty)

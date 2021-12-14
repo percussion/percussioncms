@@ -17,23 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webui;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.share.test.PSMatchers;
-import com.percussion.share.test.PSRestClient;
 import com.percussion.share.test.PSRestTestCase;
-
-import java.io.IOException;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.httpclient.HttpException;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -42,6 +35,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * The test methods in this class query the main pages from a running server and
@@ -137,7 +136,16 @@ import org.xml.sax.SAXException;
         
         src = fixupDoctype(src);
         
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                new PSXmlSecurityOptions(
+                        true,
+                        true,
+                        true,
+                        false,
+                        true,
+                        false
+                )
+        );
         factory.setValidating(false);
 
         DocumentBuilder parser = factory.newDocumentBuilder();

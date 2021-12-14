@@ -17,18 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.testing;
 
 import com.percussion.conn.PSServerException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.IPSLoadableRequestHandler;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSResponse;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import junit.framework.Test;
+import junit.framework.TestFailure;
+import junit.framework.TestResult;
+import junit.textui.TestRunner;
+import org.apache.log4j.AppenderSkeleton;
+import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -46,17 +58,6 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-
-import junit.framework.Test;
-import junit.framework.TestFailure;
-import junit.framework.TestResult;
-import junit.textui.TestRunner;
-
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * This loadable handler instantiantes a JUnit class and execute the test suite
@@ -90,7 +91,7 @@ import org.w3c.dom.Element;
  * dir=c:/e2/classes/com/percussion/cms/dg
  * </pre>
  */
-
+@SuppressFBWarnings("INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE")
 public class PSJunitRequestHandler implements IPSLoadableRequestHandler
 {
    /**
@@ -152,8 +153,7 @@ public class PSJunitRequestHandler implements IPSLoadableRequestHandler
       
       // Appender to craft xml node's to display in the
       // result doc.
-      Logger l = Logger.getRootLogger();
-      l.addAppender(new XmlDocAppender());
+      Logger l = LogManager.getLogger();
       
       try
       {                           
@@ -241,7 +241,7 @@ public class PSJunitRequestHandler implements IPSLoadableRequestHandler
       }
       catch (Exception e)
       {
-         PSConsole.printMsg(HANDLER, e.getMessage());
+         PSConsole.printMsg(HANDLER, PSExceptionUtils.getMessageForLog(e));
       }
    }
    
@@ -508,7 +508,7 @@ public class PSJunitRequestHandler implements IPSLoadableRequestHandler
             strMsg = bStream.toString();                        
             aLogEl = PSXmlDocumentBuilder.addElement(m_responseDoc, parent, 
                "LogMessageException", strMsg);                
-            aLogEl.setAttribute("message", e.getMessage());
+            aLogEl.setAttribute("message",PSExceptionUtils.getMessageForLog(e));
          }
          else
          {

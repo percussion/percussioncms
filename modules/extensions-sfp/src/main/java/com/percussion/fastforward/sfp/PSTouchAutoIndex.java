@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -42,14 +42,14 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
 
 /**
  * A Rhythmyx extension that touches the last modify date and last modifier for
@@ -182,7 +182,7 @@ public class PSTouchAutoIndex extends PSDefaultExtension
    private Set<IPSGuid> buildContentTypeSet(IPSRequestContext req)
          throws PSCmsException, PSUnknownNodeTypeException, PSCacheException
    {
-      Set<IPSGuid> ctSet = new HashSet<IPSGuid>();
+      Set<IPSGuid> ctSet = new HashSet<>();
 
       PSRelationshipHelper helper = new PSRelationshipHelper(req);
       Iterator variants = helper.getVariantSet().iterator();
@@ -208,6 +208,6 @@ public class PSTouchAutoIndex extends PSDefaultExtension
    /**
     * Handles log messages.
     */
-   Logger m_log = Logger.getLogger(this.getClass());
+   private static final Logger m_log = LogManager.getLogger(PSTouchAutoIndex.class);
 
 }

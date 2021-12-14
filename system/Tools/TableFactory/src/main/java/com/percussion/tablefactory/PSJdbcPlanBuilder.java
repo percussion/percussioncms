@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -168,7 +168,7 @@ public class PSJdbcPlanBuilder
             tableSchema);
 
          // if not alter, get diffs, otherwise use alter schema
-         StringBuffer schemaChangeBuffer = new StringBuffer();
+         StringBuilder schemaChangeBuffer = new StringBuilder();
          PSJdbcTableSchema tableChanges = tableSchema.isAlter() ?
             tableSchema :
             getTableChanges(curSchema, tableSchema, schemaChangeBuffer);
@@ -1333,7 +1333,7 @@ public class PSJdbcPlanBuilder
     */
    @SuppressWarnings("unchecked")
    private static PSJdbcTableSchema getTableChanges(PSJdbcTableSchema oldSchema,
-      PSJdbcTableSchema newSchema, StringBuffer buffer)
+      PSJdbcTableSchema newSchema, StringBuilder buffer)
       throws PSJdbcTableFactoryException
    {
       // First build list of column changes

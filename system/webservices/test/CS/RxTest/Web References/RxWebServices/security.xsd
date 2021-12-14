@@ -20,13 +20,15 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU General Public License
   ~     along with this program.  If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<xsd:schema xmlns:secs="urn:www.percussion.com/6.0.0/securityServices" xmlns:flt="urn:www.percussion.com/6.0.0/faults" xmlns:sec="urn:www.percussion.com/6.0.0/security" xmlns:com="urn:www.percussion.com/6.0.0/common" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="urn:www.percussion.com/6.0.0/security" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<xsd:schema xmlns:secs="urn:www.percussion.com/6.0.0/securityServices" xmlns:com="urn:www.percussion.com/6.0.0/common"
+            attributeFormDefault="unqualified" elementFormDefault="qualified"
+            targetNamespace="urn:www.percussion.com/6.0.0/security" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <xsd:import schemaLocation="../common.xsd" namespace="urn:www.percussion.com/6.0.0/common" />
   <xsd:import schemaLocation="securityServices.xsd" namespace="urn:www.percussion.com/6.0.0/securityServices" />
   <xsd:element name="LoginRequest">

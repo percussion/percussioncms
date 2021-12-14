@@ -34,7 +34,7 @@ $.fn.extend({
 		});
 	},
 	result: function(handler) {
-		return this.bind("result", handler);
+		return this.on("result", handler);
 	},
 	search: function(handler) {
 		return this.trigger("search", [handler]);
@@ -81,15 +81,15 @@ $.Autocompleter = function(input, options) {
 	var blockSubmit;
 	
 	// prevent form submit in opera when selecting with return key
-	$.browser.opera && $(input.form).bind("submit.autocomplete", function() {
-		if (blockSubmit) {
+	 $(input.form).on("submit.autocomplete", function() {
+		if ($.browser.opera && blockSubmit) {
 			blockSubmit = false;
 			return false;
 		}
 	});
 	
 	// only opera doesn't trigger keydown multiple times while pressed, others don't work with keypress at all
-	$input.bind(($.browser.opera ? "keypress" : "keydown") + ".autocomplete", function(event) {
+	$input.on(($.browser.opera ? "keypress" : "keydown") + ".autocomplete", function(event) {
 		// track last key pressed
 		lastKeyPressCode = event.keyCode;
 		switch(event.keyCode) {
@@ -131,7 +131,7 @@ $.Autocompleter = function(input, options) {
 				break;
 			
 			// matches also semicolon
-			case options.multiple && $.trim(options.multipleSeparator) == "," && KEY.COMMA:
+			case options.multiple && options.multipleSeparator.trim() === "," && KEY.COMMA:
 			case KEY.TAB:
 			case KEY.RETURN:
 				if( selectCurrent() ) {
@@ -151,21 +151,21 @@ $.Autocompleter = function(input, options) {
 				timeout = setTimeout(onChange, options.delay);
 				break;
 		}
-	}).focus(function(){
+	}).on("focus",function(){
 		// track whether the field has focus, we shouldn't process any
 		// results if the field no longer has focus
 		hasFocus++;
-	}).blur(function() {
+	}).on("blur",function(evt) {
 		hasFocus = 0;
 		if (!config.mouseDownOnSelect) {
 			hideResults();
 		}
-	}).click(function() {
+	}).on("click",function(evt) {
 		// show select when clicking in a focused field
 		if ( hasFocus++ > 1 && !select.visible() ) {
 			onChange(0, true);
 		}
-	}).bind("search", function() {
+	}).on("search", function(evt) {
 		// TODO why not just specifying both arguments?
 		var fn = (arguments.length > 1) ? arguments[1] : null;
 		function findValueCallback(q, data) {
@@ -184,17 +184,17 @@ $.Autocompleter = function(input, options) {
 		$.each(trimWords($input.val()), function(i, value) {
 			request(value, findValueCallback, findValueCallback);
 		});
-	}).bind("flushCache", function() {
+	}).on("flushCache", function() {
 		cache.flush();
-	}).bind("setOptions", function() {
+	}).on("setOptions", function() {
 		$.extend(options, arguments[1]);
 		// if we've updated the data, repopulate
 		if ( "data" in arguments[1] )
 			cache.populate();
-	}).bind("unautocomplete", function() {
-		select.unbind();
-		$input.unbind();
-		$(input.form).unbind(".autocomplete");
+	}).on("unautocomplete", function() {
+		select.off();
+		$input.off();
+		$(input.form).off(".autocomplete");
 	});
 	
 	
@@ -243,7 +243,7 @@ $.Autocompleter = function(input, options) {
 			stopLoading();
 			select.hide();
 		}
-	};
+	}
 	
 	function trimWords(value) {
 		if ( !value ) {
@@ -252,8 +252,8 @@ $.Autocompleter = function(input, options) {
 		var words = value.split( options.multipleSeparator );
 		var result = [];
 		$.each(words, function(i, value) {
-			if ( $.trim(value) )
-				result[i] = $.trim(value);
+			if ( value.trim() )
+				result[i] = value.trim();
 		});
 		return result;
 	}
@@ -277,13 +277,13 @@ $.Autocompleter = function(input, options) {
 			// select the portion of the value not typed by the user (so the next character will erase)
 			$.Autocompleter.Selection(input, previousValue.length, previousValue.length + sValue.length);
 		}
-	};
+	}
 
 	function hideResults() {
 		clearTimeout(timeout);
 		timeout = setTimeout(hideResultsNow, 200);
 
-	};
+	}
 
 	function hideResultsNow() {
 		var wasVisible = select.visible();
@@ -309,7 +309,7 @@ $.Autocompleter = function(input, options) {
 		if (wasVisible)
 			// position cursor at end of input field
 			$.Autocompleter.Selection(input, input.value.length, input.value.length);
-	};
+	}
 
 	function receiveData(q, data) {
 		if ( data && data.length && hasFocus ) {
@@ -320,7 +320,7 @@ $.Autocompleter = function(input, options) {
 		} else {
 			hideResultsNow();
 		}
-	};
+	}
 
 	function request(term, success, failure) {
 		if (!options.matchCase)
@@ -361,13 +361,13 @@ $.Autocompleter = function(input, options) {
 			select.emptyList();
 			failure(term);
 		}
-	};
+	}
 	
 	function parse(data) {
 		var parsed = [];
 		var rows = data.split("\n");
 		for (var i=0; i < rows.length; i++) {
-			var row = $.trim(rows[i]);
+			var row = rows[i].trim();
 			if (row) {
 				row = row.split("|");
 				parsed[parsed.length] = {
@@ -378,11 +378,11 @@ $.Autocompleter = function(input, options) {
 			}
 		}
 		return parsed;
-	};
+	}
 
 	function stopLoading() {
 		$input.removeClass(options.loadingClass);
-	};
+	}
 
 };
 
@@ -427,7 +427,7 @@ $.Autocompleter.Cache = function(options) {
 		}
 		if (i == -1) return false;
 		return i == 0 || options.matchContains;
-	};
+	}
 	
 	function add(q, value) {
 		if (length > options.cacheLength){
@@ -458,7 +458,7 @@ $.Autocompleter.Cache = function(options) {
 			rawValue = (typeof rawValue == "string") ? [rawValue] : rawValue;
 			
 			var value = options.formatMatch(rawValue, i+1, options.data.length);
-			if ( value === false )
+			if ( value === false || typeof value === 'undefined' )
 				continue;
 				
 			var firstChar = value.charAt(0).toLowerCase();
@@ -480,7 +480,7 @@ $.Autocompleter.Cache = function(options) {
 			if ( nullData++ < options.max ) {
 				stMatchSets[""].push(row);
 			}
-		};
+		}
 
 		// add the data items to the cache
 		$.each(stMatchSets, function(i, value) {
@@ -535,9 +535,9 @@ $.Autocompleter.Cache = function(options) {
 			} else
 			if (options.matchSubset) {
 				for (var i = q.length - 1; i >= options.minChars; i--) {
-					var c = data[q.substr(0, i)];
+					let c = data[q.substr(0, i)];
 					if (c) {
-						var csub = [];
+						let csub = [];
 						$.each(c, function(i, x) {
 							if (matchSubset(x.value, q)) {
 								csub[csub.length] = x;
@@ -574,21 +574,21 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		.addClass(options.resultsClass)
 		.css("position", "absolute")
 		.appendTo(document.body);
-	
-		list = $("<ul/>").appendTo(element).mouseover( function(event) {
+
+		list = $("<ul/>").appendTo(element).on("mouseover", function(event) {
 			if(target(event).nodeName && target(event).nodeName.toUpperCase() == 'LI') {
 	            active = $("li", list).removeClass(CLASSES.ACTIVE).index(target(event));
-			    $(target(event)).addClass(CLASSES.ACTIVE);            
+			    $(target(event)).addClass(CLASSES.ACTIVE);
 	        }
-		}).click(function(event) {
+		}).on("click", function(event) {
 			$(target(event)).addClass(CLASSES.ACTIVE);
 			select();
 			// TODO provide option to avoid setting focus again after selection? useful for cleanup-on-focus
 			input.focus();
 			return false;
-		}).mousedown(function() {
+		}).on("mousedown", function() {
 			config.mouseDownOnSelect = true;
-		}).mouseup(function() {
+		}).on("mouseup", function() {
 			config.mouseDownOnSelect = false;
 		});
 		
@@ -623,21 +623,21 @@ $.Autocompleter.Select = function (options, input, select, config) {
                 list.scrollTop(offset);
             }
         }
-	};
+	}
 	
 	function movePosition(step) {
 		active += step;
 		if (active < 0) {
-			active = listItems.size() - 1;
-		} else if (active >= listItems.size()) {
+			active = listItems.length- 1;
+		} else if (active >= listItems.length) {
 			active = 0;
 		}
 	}
 	
 	function limitNumberOfItems(available) {
-		return options.max && options.max < available
-			? options.max
-			: available;
+		return options.max && options.max < available ?
+			 options.max :
+			 available;
 	}
 	
 	function fillList() {
@@ -683,16 +683,20 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			}
 		},
 		pageDown: function() {
-			if (active != listItems.size() - 1 && active + 8 > listItems.size()) {
-				moveSelect( listItems.size() - 1 - active );
+			if (active != listItems.length - 1 && active + 8 > listItems.length) {
+				moveSelect( listItems.length - 1 - active );
 			} else {
 				moveSelect(8);
 			}
 		},
 		hide: function() {
-			element && element.hide();
-			listItems && listItems.removeClass(CLASSES.ACTIVE);
-			active = -1;
+			if(typeof element !== "undefined") {
+				element.hide();
+			}
+			if(typeof listItems !== "undefined") {
+				listItems.removeClass(CLASSES.ACTIVE);
+				active = -1;
+			}
 		},
 		visible : function() {
 			return element && element.is(":visible");
@@ -734,10 +738,13 @@ $.Autocompleter.Select = function (options, input, select, config) {
 			return selected && selected.length && $.data(selected[0], "ac_data");
 		},
 		emptyList: function (){
-			list && list.empty();
+			if( typeof list !== "undefined"){
+				list.empty();
+			}
 		},
-		unbind: function() {
-			element && element.remove();
+		off: function() {
+			if(typeof element !== "undefined")
+				element.remove();
 		}
 	};
 };

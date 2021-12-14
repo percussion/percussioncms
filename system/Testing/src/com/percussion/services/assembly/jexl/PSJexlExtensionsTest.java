@@ -17,17 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.assembly.jexl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
 import com.percussion.services.contentmgr.data.PSContentNode;
 import com.percussion.utils.jsr170.PSProperty;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
@@ -54,6 +57,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class PSJexlExtensionsTest
 {
+
+   private static final Logger log = LogManager.getLogger(PSJexlExtensionsTest.class);
    /**
     * Velocity engine eis initialized in the static block, never
     * <code>null</code> afterward
@@ -69,7 +74,8 @@ public class PSJexlExtensionsTest
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

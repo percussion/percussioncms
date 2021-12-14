@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,13 +32,11 @@ import com.percussion.services.system.data.PSUIComponent;
 import com.percussion.services.system.data.PSUIComponentProperty;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.string.PSStringUtils;
-
-import java.util.List;
-import java.util.Locale;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Various static methods called from el to determine a user's roles or role

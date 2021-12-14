@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,10 +25,9 @@ package com.percussion.services.catalog;
 
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.xml.PSInvalidXmlException;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
-
-import org.xml.sax.SAXException;
 
 /**
  * A single item that can be stored into or retrieved from a service. An item is

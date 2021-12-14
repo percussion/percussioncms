@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -47,19 +47,18 @@ import com.percussion.testing.PSClientTestCase;
 import com.percussion.util.PSRemoteRequester;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -70,7 +69,7 @@ import static org.junit.Assert.assertTrue;
 @Category(IntegrationTest.class)
 public class PSWsFolderProcessorTest extends PSClientTestCase
 {
-   private static Log ms_log = LogFactory.getLog(PSWsFolderProcessorTest.class);
+   private static final Logger ms_log = LogManager.getLogger(PSWsFolderProcessorTest.class);
 
    /**
     * Construct this unit test

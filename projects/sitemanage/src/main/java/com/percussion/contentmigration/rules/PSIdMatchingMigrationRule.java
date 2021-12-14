@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,12 +36,14 @@ public class PSIdMatchingMigrationRule extends PSBaseMatchingMigrationRule
     {
         String content = null;
         Element regionElem = findEnclosingRegionElement(widgetId, sourceDoc);
-        if(regionElem == null)
+        if(regionElem == null) {
             return null;
+        }
         String regionId = regionElem.id();
         Elements elems = targetDoc.select("#" + regionId);
-        if(elems.size()!=1)
+        if(elems.size()!=1) {
             return null;
+        }
         Element elem = elems.get(0);
         content = elem.html();
         return content;

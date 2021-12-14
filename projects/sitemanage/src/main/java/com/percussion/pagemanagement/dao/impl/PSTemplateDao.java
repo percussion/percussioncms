@@ -17,22 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.TEMPLATES;
-
-import static java.util.Arrays.asList;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.isNumeric;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSTemplateDao;
 import com.percussion.pagemanagement.dao.IPSWidgetItemIdGenerator;
 import com.percussion.pagemanagement.data.PSMetadataDocType;
@@ -42,6 +33,8 @@ import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.IPSTemplateService.PSTemplateException;
+import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
@@ -65,13 +58,24 @@ import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSContentItem;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.theme.data.PSThemeSummary;
 import com.percussion.theme.service.IPSThemeService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.service.impl.PSSiteConfigUtils;
 import com.percussion.webservices.assembly.IPSAssemblyDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,18 +86,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.annotation.PostConstruct;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.TEMPLATES;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.isNumeric;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -138,17 +137,17 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     /**
      * The fully qualified name of the page-assembler exit.
      */
-    public final static String PAGE_ASSEMBLER = "Java/global/percussion/assembly/pageAssembler";
+    public static final String PAGE_ASSEMBLER = "Java/global/percussion/assembly/pageAssembler";
 
-    private final static String SERVLET_ROOT = "/Rhythmyx/";
+    private static final String SERVLET_ROOT = "/Rhythmyx/";
 
-    private final static String TPL_IMAGES_DIR = "rx_resources/images/TemplateImages";
+    private static final String TPL_IMAGES_DIR = "rx_resources/images/TemplateImages";
 
     /**
      * The shared (site) name for all system templates. This is used to retrieve
      * image URLs of the system templates.
      */
-    private final static String ANY_SITE = "AnySite";
+    private static final String ANY_SITE = "AnySite";
 
     @Autowired
     public PSTemplateDao(IPSAssemblyDesignWs assemblyDesignWs, IPSAssemblyService assemblyService,
@@ -173,8 +172,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         m_imgFileExts.add(".png");
     }
 
-    public void delete(String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException
-    {
+    public void delete(String id) throws PSDataServiceException {
         PSTemplate template = find(id);
         contentItemDao.delete(id);
         PSNotificationEvent notifyEvent = new PSNotificationEvent(EventType.TEMPLATE_DELETE, id);
@@ -182,22 +180,26 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         srv.notifyEvent(notifyEvent);
     }
 
-    public PSTemplate find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
+    public PSTemplate find(String id) throws PSDataServiceException {
         notNull(id, "id");
 
         IPSGuid assemblyTemplateGuid = getAssemblyTemplateGuid(id);
         if (assemblyTemplateGuid != null)
         {
-            log.debug("Finding assembly template for id: " + id);
+            log.debug("Finding assembly template for id: {}" , id);
             PSTemplate t = new PSTemplate();
-            loadTemplateFromBaseTemplate(assemblyTemplateGuid, t);
+            try {
+                loadTemplateFromBaseTemplate(assemblyTemplateGuid, t);
+            } catch (PSTemplateException e) {
+               throw new LoadException(e.getMessage(),e);
+            }
             return t;
         }
 
         IPSContentItem contentItem = contentItemDao.find(id);
-        if (contentItem == null)
+        if (contentItem == null) {
             return null;
+        }
 
         if (!isTemplateType(contentItem))
         {
@@ -222,8 +224,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         template.setType((String) f.get("type"));
 
         String version = (String) f.get("content_migration_version");
-        if (isNumeric(version))
+        if (isNumeric(version)) {
             template.setContentMigrationVersion(version);
+        }
 
         PSHtmlMetadataUtils.fromMap(template, f);
 
@@ -239,8 +242,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
 
         if (isNotBlank(data))
         {
-            if (log.isTraceEnabled())
-                log.trace("Unmarshaling Region tree: " + data);
+            if (log.isTraceEnabled()) {
+                log.trace("Unmarshaling Region tree: {}", data);
+            }
             PSRegionTree tree = PSSerializerUtils.unmarshal(data, PSRegionTree.class);
             widgetItemIdGenerator.generateIds(tree);
             template.setRegionTree(tree);
@@ -254,8 +258,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @param contentItem
      */
-    private void validateType(IPSContentItem contentItem)
-    {
+    private void validateType(IPSContentItem contentItem) throws LoadException {
         notNull(contentItem, "contentItem");
         if (!isTemplateType(contentItem))
         {
@@ -269,10 +272,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         return TPL_CONTENT_TYPE.equals(contentItem.getType());
     }
 
-    public List<PSTemplate> findAll()
-    {
+    public List<PSTemplate> findAll() throws PSDataServiceException {
         Collection<Integer> ids = contentItemDao.findAllItemIdsByType(TPL_CONTENT_TYPE);
-        List<PSTemplate> results = new ArrayList<PSTemplate>();
+        List<PSTemplate> results = new ArrayList<>();
         for (Integer id : ids)
         {
             PSLegacyGuid guid = new PSLegacyGuid(id, -1);
@@ -282,9 +284,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         return results;
     }
 
-    public List<PSTemplateSummary> findAllSummaries() throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
-        List<PSTemplateSummary> templateSummaries = new ArrayList<PSTemplateSummary>();
+    public List<PSTemplateSummary> findAllSummaries() throws com.percussion.share.dao.IPSGenericDao.LoadException, PSTemplateException {
+        List<PSTemplateSummary> templateSummaries = new ArrayList<>();
         templateSummaries.addAll(findBaseTemplates("all"));
         templateSummaries.addAll(findAllUserTemplateSummariesByType(PSTemplateTypeEnum.NORMAL));
 
@@ -294,9 +295,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     }
 
     public List<PSTemplateSummary> findAllSummaries(String siteName)
-            throws com.percussion.share.dao.IPSGenericDao.LoadException
-    {
-        List<PSTemplateSummary> templateSummaries = new ArrayList<PSTemplateSummary>();
+            throws com.percussion.share.dao.IPSGenericDao.LoadException, PSTemplateException {
+        List<PSTemplateSummary> templateSummaries = new ArrayList<>();
         templateSummaries.addAll(findBaseTemplates("all"));
         if (!("unknown".equals(siteName)))
         {
@@ -308,16 +308,16 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         return templateSummaries;
     }
 
-    public PSTemplate save(PSTemplate template) throws com.percussion.share.dao.IPSGenericDao.SaveException
-    {
-        return save(template, null);
+    @Override
+    public PSTemplate save(PSTemplate template) throws PSDataServiceException {
+           return save(template, null);
     }
 
     public PSTemplate save(PSTemplate template, String siteId)
-            throws com.percussion.share.dao.IPSGenericDao.SaveException
-    {
-        if (log.isDebugEnabled())
+            throws PSDataServiceException {
+        if (log.isDebugEnabled()) {
             log.debug("Saving template: " + template);
+        }
 
         notNull(template, "template");
 
@@ -406,8 +406,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     /*
      * //see base interface method for details
      */
-    public PSTemplate createTemplate(String name, String srcId)
-    {
+    public PSTemplate createTemplate(String name, String srcId) throws PSDataServiceException {
         return createTemplateFromSrc(srcId, name);
     }
 
@@ -420,8 +419,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @return the core item, never <code>null</code>.
      */
-    private PSTemplate createTemplateFromSrc(String srcId, String name)
-    {
+    private PSTemplate createTemplateFromSrc(String srcId, String name) throws PSDataServiceException {
         PSTemplate template;
         IPSGuid templateGuid = getAssemblyTemplateGuid(srcId);
         if (templateGuid != null)
@@ -449,8 +447,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     private IPSGuid getAssemblyTemplateGuid(String templateId)
     {
         IPSGuid templateGuid = idMapper.getGuid(templateId);
-        if (templateGuid.getType() == PSTypeEnum.TEMPLATE.getOrdinal())
+        if (templateGuid.getType() == PSTypeEnum.TEMPLATE.getOrdinal()) {
             return templateGuid;
+        }
         return null;
     }
 
@@ -462,8 +461,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * @param templateName the name of the created template item, assumed not blank.
      * 
      */
-    private void loadTemplateFromBaseTemplate(IPSGuid srcId, PSTemplate templateName)
-    {
+    private void loadTemplateFromBaseTemplate(IPSGuid srcId, PSTemplate templateName) throws PSTemplateException {
 
         try
         {
@@ -507,8 +505,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     {
         for (IPSTemplateBinding binding : srcTemplate.getBindings())
         {
-            if (CSS_REGION_VARIABLE.equalsIgnoreCase(binding.getVariable()))
+            if (CSS_REGION_VARIABLE.equalsIgnoreCase(binding.getVariable())) {
                 return binding.getExpression();
+            }
         }
         return null;
     }
@@ -521,8 +520,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @return the created core item, never <code>null</code>.
      */
-    private PSTemplate createTemplateFromUserTemplate(String srcId, String name)
-    {
+    private PSTemplate createTemplateFromUserTemplate(String srcId, String name) throws PSDataServiceException {
         PSTemplate srcTpl = find(srcId);
         PSTemplate copy = srcTpl.clone();
         copy.setId(null);
@@ -533,10 +531,10 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     /*
      * //see base class method for details
      */
-    public IPSAssemblyTemplate loadBaseTemplateById(IPSGuid id)
-    {
-        if (id == null)
+    public IPSAssemblyTemplate loadBaseTemplateById(IPSGuid id) throws PSTemplateException {
+        if (id == null) {
             throw new IllegalArgumentException("id may not be null.");
+        }
 
         try
         {
@@ -551,8 +549,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     /*
      * //see base class method for details
      */
-    public PSAssemblyTemplate loadBaseTemplateByName(String name)
-    {
+    public PSAssemblyTemplate loadBaseTemplateByName(String name) throws PSTemplateException {
         try
         {
             PSAssemblyTemplate tpl = assemblyService.findTemplateByName(name);
@@ -571,7 +568,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     public List<IPSCatalogSummary> findBaseAssemblyTemplates(String type)
     {
 
-        List<IPSCatalogSummary> templates = new ArrayList<IPSCatalogSummary>();
+        List<IPSCatalogSummary> templates = new ArrayList<>();
         if (type.equalsIgnoreCase("base"))
         {
             templates.addAll(assemblyDesignWs.findAssemblyTemplates("perc.base.*", null, null, null, null, null,
@@ -595,10 +592,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
 
     public List<IPSCatalogSummary> findAssemblyTemplate(String name)
     {
-        List<IPSCatalogSummary> templates = assemblyDesignWs.findAssemblyTemplates(name, null, null, null, null, null,
+        return assemblyDesignWs.findAssemblyTemplates(name, null, null, null, null, null,
                 PAGE_ASSEMBLER);
-        return templates;
-
     }
 
     /**
@@ -611,7 +606,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      */
     private List<String> getThumbImgPath(List<String> names)
     {
-        List<String> imgs = new ArrayList<String>();
+        List<String> imgs = new ArrayList<>();
         for (String path : assemblyDesignWs.getTemplateThumbImages(names, ANY_SITE))
         {
             imgs.add(SERVLET_ROOT + path);
@@ -625,17 +620,18 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     public List<PSTemplateSummary> findBaseTemplates(String type)
     {
         List<IPSCatalogSummary> templates = findBaseAssemblyTemplates(type);
-        if (templates.isEmpty())
+        if (templates.isEmpty()) {
             return Collections.emptyList();
+        }
 
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (IPSCatalogSummary summary : templates)
         {
             names.add(summary.getName());
         }
         List<String> imgs = getThumbImgPath(names);
 
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+        List<PSTemplateSummary> results = new ArrayList<>();
         for (int i = 0; i < templates.size(); i++)
         {
             PSTemplateSummary result = new PSTemplateSummary();
@@ -651,9 +647,8 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     /*
      * //see base interface method for details
      */
-    public List<PSTemplateSummary> findAllUserTemplates()
-    {
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+    public List<PSTemplateSummary> findAllUserTemplates() throws PSTemplateException {
+        List<PSTemplateSummary> results = new ArrayList<>();
         List<IPSSite> allSites = siteMgr.findAllSites();
         for (IPSSite site : allSites)
         {
@@ -663,16 +658,16 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
             {
                 String id = idMapper.getString(item.getGUID());
                 PSTemplateSummary template = loadUserTemplateSummary(id, site.getName());
-                if (template != null)
+                if (template != null) {
                     results.add(template);
+                }
             }
         }
         return results;
     }
 
-    public List<PSTemplateSummary> findAllUserTemplates(String siteName)
-    {
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+    public List<PSTemplateSummary> findAllUserTemplates(String siteName) throws PSTemplateException {
+        List<PSTemplateSummary> results = new ArrayList<>();
 
         IPSSite site = siteMgr.findSite(siteName);
         String path = getSiteTemplateFolderPath(site);
@@ -681,8 +676,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         {
             String id = idMapper.getString(item.getGUID());
             PSTemplateSummary template = loadUserTemplateSummary(id, site.getName());
-            if (template != null)
+            if (template != null) {
                 results.add(template);
+            }
         }
         return results;
     }
@@ -694,44 +690,50 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * findAllUserTemplateSummariesByType
      * (com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum)
      */
-    public List<PSTemplateSummary> findAllUserTemplateSummariesByType(PSTemplateTypeEnum type)
-    {
+    public List<PSTemplateSummary> findAllUserTemplateSummariesByType(PSTemplateTypeEnum type) throws PSTemplateException {
         List<PSTemplateSummary> templateSummaries = findAllUserTemplates();
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+        List<PSTemplateSummary> results = new ArrayList<>();
         for (PSTemplateSummary item : templateSummaries)
         {
-            PSTemplate template = find(item.getId());
-            if (type == null || type.equals(PSTemplateTypeEnum.NORMAL))
-            {
-                if (template.getType() == null
-                        || PSTemplateTypeEnum.NORMAL.equals(PSTemplateTypeEnum.getEnum(template.getType())))
+            try {
+                PSTemplate template = find(item.getId());
+                if (type == null || type.equals(PSTemplateTypeEnum.NORMAL)) {
+                    if (template.getType() == null
+                            || PSTemplateTypeEnum.NORMAL.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
+                        results.add(item);
+                    }
+                } else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
                     results.add(item);
-            }
-            else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType())))
-            {
-                results.add(item);
+                }
+            } catch (PSDataServiceException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                //Allow loop to continue so that one bad item doesn't prevent all from being processed.
             }
         }
 
         return results;
     }
 
-    public List<PSTemplateSummary> findAllUserTemplateSummariesByType(PSTemplateTypeEnum type, String siteName)
-    {
+    public List<PSTemplateSummary> findAllUserTemplateSummariesByType(PSTemplateTypeEnum type, String siteName) throws PSTemplateException {
         List<PSTemplateSummary> templateSummaries = findAllUserTemplates(siteName);
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+        List<PSTemplateSummary> results = new ArrayList<>();
         for (PSTemplateSummary item : templateSummaries)
         {
-            PSTemplate template = find(item.getId());
-            if (type == null || type.equals(PSTemplateTypeEnum.NORMAL))
-            {
-                if (template.getType() == null
-                        || PSTemplateTypeEnum.NORMAL.equals(PSTemplateTypeEnum.getEnum(template.getType())))
+            try {
+                PSTemplate template = find(item.getId());
+                if (type == null || type.equals(PSTemplateTypeEnum.NORMAL)) {
+                    if (template.getType() == null
+                            || PSTemplateTypeEnum.NORMAL.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
+                        results.add(item);
+                    }
+                } else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
                     results.add(item);
-            }
-            else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType())))
-            {
-                results.add(item);
+                }
+            } catch (PSDataServiceException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                //Allow processing to continue.
             }
         }
 
@@ -745,22 +747,25 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * com.percussion.pagemanagement.dao.IPSTemplateDao#findUserTemplatesByType
      * (com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum)
      */
-    public List<PSTemplate> findUserTemplatesByType(PSTemplateTypeEnum type)
-    {
+    public List<PSTemplate> findUserTemplatesByType(PSTemplateTypeEnum type) throws PSTemplateException {
         List<PSTemplateSummary> templateSummaries = findAllUserTemplates();
-        List<PSTemplate> results = new ArrayList<PSTemplate>();
+        List<PSTemplate> results = new ArrayList<>();
         for (PSTemplateSummary item : templateSummaries)
         {
-            PSTemplate template = find(item.getId());
-            if (type == null || type.equals(PSTemplateTypeEnum.NORMAL))
-            {
-                if (template.getType() == null
-                        || PSTemplateTypeEnum.NORMAL.equals(PSTemplateTypeEnum.getEnum(template.getType())))
+            try {
+                PSTemplate template = find(item.getId());
+                if (type == null || type.equals(PSTemplateTypeEnum.NORMAL)) {
+                    if (template.getType() == null
+                            || PSTemplateTypeEnum.NORMAL.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
+                        results.add(template);
+                    }
+                } else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType()))) {
                     results.add(template);
-            }
-            else if (type.equals(PSTemplateTypeEnum.getEnum(template.getType())))
-            {
-                results.add(template);
+                }
+            } catch (PSDataServiceException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                //Continue
             }
         }
 
@@ -785,21 +790,17 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * used for different site. This is only used by unit test for now and
      * should be removed along with related unit test.
      */
-    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name)
-    {
+    public PSTemplate findUserTemplateByName_UsedByUnitTestOnly(String name) throws PSDataServiceException {
         for (PSTemplateSummary template : findAllUserTemplates())
         {
-            if (template.getName().equalsIgnoreCase(name))
+            if (template.getName().equalsIgnoreCase(name)) {
                 return find(template.getId());
+            }
         }
 
         return null;
     }
 
-    /**
-     * @deprecated This is used by unit test only. It cannot be used by
-     *             production code
-     */
     public IPSGuid findUserTemplateIdByName(String templateName, String siteName)
     {
         IPSSite site = siteMgr.findSite(siteName);
@@ -808,16 +809,16 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         return contentWs.getIdByPath(path);
     }
 
-    public List<PSTemplateSummary> loadUserTemplateSummaries(List<String> ids, String siteName)
-    {
+    public List<PSTemplateSummary> loadUserTemplateSummaries(List<String> ids, String siteName) throws PSTemplateException {
         notNull(ids);
 
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+        List<PSTemplateSummary> results = new ArrayList<>();
         for (String id : ids)
         {
             PSTemplateSummary summary = loadUserTemplateSummary(id, siteName);
-            if (summary != null)
+            if (summary != null) {
                 results.add(summary);
+            }
         }
         Collections.sort(results, tempSumComp);
         return results;
@@ -830,16 +831,18 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @return the specified template, never <code>null</code>.
      */
-    private PSTemplateSummary loadUserTemplateSummary(String id, String siteName)
-    {
-        PSTemplateSummary summary = find(id);
-        if (summary != null)
-        {
-            String imgPath = getTemplateThumbPath(summary, siteName);
+    private PSTemplateSummary loadUserTemplateSummary(String id, String siteName) throws PSTemplateException {
+       try {
+           PSTemplateSummary summary = find(id);
+           if (summary != null) {
+               String imgPath = getTemplateThumbPath(summary, siteName);
 
-            summary.setImageThumbPath(imgPath);
-        }
-        return summary;
+               summary.setImageThumbPath(imgPath);
+           }
+           return summary;
+       } catch (PSDataServiceException e) {
+           throw new PSTemplateException(e.getMessage(),e);
+       }
     }
 
     /**
@@ -925,10 +928,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @author leonardohildt
      */
-    public PSTemplate generateTemplateToExport(String id, String name)
-    {
+    public PSTemplate generateTemplateToExport(String id, String name) throws PSTemplateException {
         notNull(id, "id");
-        PSTemplate template = new PSTemplate();
+        PSTemplate template;
         // Set the server version
         String serverVersion = PSServer.getVersionString();
         // Strip out the build details
@@ -937,7 +939,13 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         {
             serverVersion = serverVersion.substring(0, indexBuild - 1);
         }
-        template = find(id);
+        try {
+            template = find(id);
+        } catch (PSDataServiceException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSTemplateException(e.getMessage(),e);
+        }
         template.setId(null);
         // Clean up the name if contains any extension
         int indexFilter = name.indexOf(".xml", 0);
@@ -961,10 +969,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      * 
      * @author leonardohildt
      */
-    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId)
-    {
-        if (log.isDebugEnabled())
-            log.debug("Saving template: " + template);
+    public PSTemplate generateTemplateFromSource(PSTemplate template, String siteId) throws PSTemplateException, IPSPathService.PSPathNotFoundServiceException {
+        if (log.isDebugEnabled()){
+            log.debug("Saving template: " + template);}
         notNull(template, "template");
 
         IPSGuid siteGuid = guidMgr.makeGuid(siteId, PSTypeEnum.SITE);
@@ -978,14 +985,16 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         // Set a valid theme
         setTheme(template);
 
-        // Try to save the template
-        PSTemplate importedTemplate = new PSTemplate();
-        importedTemplate = save(template, site.getName());
-        return importedTemplate;
+        try {
+            return save(template, site.getName());
+        } catch (PSDataServiceException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSTemplateException(e.getMessage(),e);
+        }
     }
 
-    private String generateTemplateName(String name, IPSSite site)
-    {
+    private String generateTemplateName(String name, IPSSite site) throws PSTemplateException, IPSPathService.PSPathNotFoundServiceException {
         String suggestedName = name;
         String appendSuffix = "";
         if (lastValueUsed == 0)
@@ -1004,7 +1013,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         this.lastValueUsed++;
         String templateName = suggestedName + appendSuffix;
         // Get the list of template for the given site
-        List<PSTemplateSummary> results = new ArrayList<PSTemplateSummary>();
+        List<PSTemplateSummary> results = new ArrayList<>();
 
         String path = getSiteTemplateFolderPath(site);
         List<PSItemSummary> items = contentWs.findFolderChildren(path, false);
@@ -1012,8 +1021,9 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
         {
             String id = idMapper.getString(item.getGUID());
             PSTemplateSummary template = loadUserTemplateSummary(id, site.getName());
-            if (template != null)
+            if (template != null) {
                 results.add(template);
+            }
         }
         // Validate the name against the names of the templates already exist in
         // the site
@@ -1024,34 +1034,45 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                 return this.generateTemplateName(templateName, site);
             }
         }
+
+        if (StringUtils.containsAny(templateName, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS)){
+            for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
+                // Replace any invalid characters present.
+                templateName = StringUtils.replace(templateName, String.valueOf(SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
+            }
+            if(templateName.substring(templateName.length()-1).equalsIgnoreCase("-")){
+                //the base name for copied template
+                templateName = templateName.substring(0, templateName.length()-3);
+            }
+            //Unique name using the base name in template folder for given site path
+            templateName = folderHelper.getUniqueNameInFolder(path, templateName, "", 2, false);
+        }
+
         return templateName;
     }
 
-    private void setTheme(PSTemplate object)
-    {
-        // set theme
-        List<PSThemeSummary> themes = themeService.findAll();
-        if (!themes.isEmpty())
-        {
-            if (object.getTheme() == null)
-            {
-                object.setTheme(themes.get(0).getName());
-            }
-            else
-            {
-                boolean existTheme = false;
-                for (PSThemeSummary theme : themes)
-                {
-                    if (theme.getName().equals(object.getTheme()))
-                    {
-                        existTheme = true;
+    private void setTheme(PSTemplate object) throws PSTemplateException {
+        try {
+            // set theme
+            List<PSThemeSummary> themes = themeService.findAll();
+            if (!themes.isEmpty()) {
+                if (object.getTheme() == null) {
+                    object.setTheme(themes.get(0).getName());
+                } else {
+                    boolean existTheme = false;
+                    for (PSThemeSummary theme : themes) {
+                        if (theme.getName().equals(object.getTheme())) {
+                            existTheme = true;
+                            break;
+                        }
+                    }
+                    if (!existTheme) {
+                        object.setTheme(themes.get(0).getName());
                     }
                 }
-                if (!existTheme)
-                {
-                    object.setTheme(themes.get(0).getName());
-                }
             }
+        } catch (PSDataServiceException e) {
+            throw new PSTemplateException(e.getMessage(),e);
         }
     }
 
@@ -1083,14 +1104,16 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     /**
      * Used for crawling through all available image extensions.
      */
-    private Set<String> m_imgFileExts = new TreeSet<String>();
+    private Set<String> m_imgFileExts = new TreeSet<>();
 
     private ApplicationContext applicationContext;
 
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSTemplateDao.class);
+
+    private static final Logger log = LogManager.getLogger(PSTemplateDao.class);
+
    
     // TODO Remove loop,  theme service constructor adds templateService, that adds templateDao, this class
    
@@ -1101,7 +1124,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
+    public void setApplicationContext(ApplicationContext applicationContext)
     {
         this.applicationContext = applicationContext;
         

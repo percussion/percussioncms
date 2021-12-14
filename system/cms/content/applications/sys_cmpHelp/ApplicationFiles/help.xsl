@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-   <!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
+   <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
    %HTMLlat1;
-   <!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
+   <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
    %HTMLsymbol;
-   <!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
+   <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
    %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
    <xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
    <xsl:variable name="lang" select="//@xml:lang"/>
    <xsl:output method="xml"/>
@@ -54,7 +56,7 @@
                   </xsl:otherwise>
                </xsl:choose>    
             </xsl:variable>
-            <xsl:variable name="helpIcon" select="concat('../rx_resources/images/',$lang,'/help_icon.gif')"/>
+            <xsl:variable name="helpIcon" select="concat('/rx_resources/images/',$lang,'/help_icon.gif')"/>
             <xsl:variable name="helpAlt">
                <xsl:call-template name="getLocaleString">
                   <xsl:with-param name="key" select="'psx.sys_cmpHelp.help.alt@Help'"/>
@@ -116,7 +118,7 @@
       </tr>
       <tr class="outerboxcellfont ">
          <td align="left" class="outerboxcellfont">
-            <img border="0" height="2" src="../sys_resources/images/invis.gif"/>
+            <img border="0" height="2" src="/sys_resources/images/invis.gif"/>
          </td>
       </tr>
    </xsl:template>

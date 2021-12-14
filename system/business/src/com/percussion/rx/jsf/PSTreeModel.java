@@ -17,24 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.jsf;
 
-import com.percussion.rx.jsf.PSCategoryNodeBase;
-import com.percussion.rx.jsf.PSNodeBase;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.myfaces.trinidad.model.MenuModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.trinidad.model.MenuModel;
 
 /**
  * The tree model provides a lazy loaded tree that is primarily managed by the
@@ -80,7 +79,7 @@ public class PSTreeModel extends MenuModel
    /**
     * The logger for the tree model.
     */
-   private static final Log ms_log = LogFactory.getLog(PSTreeModel.class);
+   private static final Logger ms_log = LogManager.getLogger(PSTreeModel.class);
    
    /**
     * The current container, never <code>null</code> after construction.
@@ -91,7 +90,7 @@ public class PSTreeModel extends MenuModel
     * Each added node is put in this map so it can be found, and removed
     * if the node is removed from its container.
     */
-   Map<String,PSNodeBase> m_rowmap = new HashMap<String, PSNodeBase>();
+   Map<String,PSNodeBase> m_rowmap = new HashMap<>();
 
    /**
     * The focus row key. 
@@ -211,18 +210,20 @@ public class PSTreeModel extends MenuModel
    @Override
    public int getRowCount()
    {
-      PSNodeBase container = getCurrentContainer();
-      
-      if (container == null || container.getChildren() == null)
-      {
-         ms_log.debug("Get row count: no container or no children");
+      try {
+         PSNodeBase container = getCurrentContainer();
+
+         if (container == null || container.getChildren() == null) {
+            ms_log.debug("Get row count: no container or no children");
+            return -1;
+         } else {
+            int count = container.getChildren().size();
+            ms_log.debug("Get row count: {}" , count);
+            return count;
+         }
+      } catch (PSNotFoundException e) {
+         ms_log.error(PSExceptionUtils.getMessageForLog(e));
          return -1;
-      }
-      else
-      {
-         int count = container.getChildren().size();
-         ms_log.debug("Get row count: " + count);
-         return count;
       }
    }
 
@@ -385,7 +386,7 @@ public class PSTreeModel extends MenuModel
    private List<String> createExternalKey(Object internalKey)
    {      
       PSNodeBase base = m_rowmap.get(internalKey);
-      List<String> rval = new ArrayList<String>();
+      List<String> rval = new ArrayList<>();
       while(base != null && base.getParent() != null)
       {
          rval.add(0, (String) base.getKey());

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,27 +29,25 @@ import com.percussion.services.contentmgr.IPSNodeDefinition;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.impl.query.IPSFolderExpander;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
+import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeFunction;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeLiteral;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
-import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.utils.orm.PSDataCollectionHelper;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.hibernate.Session;
 
 import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.query.InvalidQueryException;
-
-import org.hibernate.Session;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The query transformer traverses the nodes and modifies them according to
@@ -88,7 +86,7 @@ public class PSQueryTransformer extends PSQueryNodeVisitor
    /**
     * See {@link #getIdCollections()} for information.
     */
-   private List<Long> m_idCollections = new ArrayList<Long>();
+   private List<Long> m_idCollections = new ArrayList<>();
    
    /**
     * This counts the number of ids used for paths. This is used to decide when
@@ -120,7 +118,7 @@ public class PSQueryTransformer extends PSQueryNodeVisitor
       }
       if (parameters == null)
       {
-         m_parameters = new HashMap<String, Object>();
+         m_parameters = new HashMap<>();
       }
       m_folderExpander = folderExpander;
       m_cm = PSContentMgrLocator.getContentMgr();

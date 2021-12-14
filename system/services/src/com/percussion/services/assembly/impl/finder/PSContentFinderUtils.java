@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,7 @@ import com.percussion.services.assembly.impl.finder.PSContentFinderBase.ContentI
 import com.percussion.services.contentmgr.IPSContentMgr;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
@@ -35,20 +36,18 @@ import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.RowIterator;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * This class provides various helper methods for content finders.
@@ -177,7 +176,7 @@ public class PSContentFinderUtils
          QueryResult res = cmgr.executeQuery(q, -1, null, locale);
          RowIterator riter = res.getRows();
          Set<ContentItem> newset
-            = new TreeSet<ContentItem>(new PSQueryResultOrderComparator(riter));
+            = new TreeSet<>(new PSQueryResultOrderComparator(riter));
          newset.addAll(rval);
          int index = 0;
          for(ContentItem item : newset)
@@ -205,8 +204,7 @@ public class PSContentFinderUtils
     * @throws PSSiteManagerException
     */
    public static void setSiteFolderId(ContentItem slotItem, boolean isSetFolderID)
-         throws PSSiteManagerException
-   {
+           throws PSSiteManagerException, PSNotFoundException {
       if (slotItem == null)
          return;
       
@@ -228,5 +226,5 @@ public class PSContentFinderUtils
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSContentFinderUtils.class);
+   private static final Logger ms_log = LogManager.getLogger(PSContentFinderUtils.class);
 }

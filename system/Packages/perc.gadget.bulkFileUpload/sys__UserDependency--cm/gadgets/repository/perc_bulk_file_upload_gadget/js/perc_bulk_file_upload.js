@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,16 +31,17 @@ var IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg', 'tiff', 'gif'];
 var DID_UPLOAD_FAIL = false;
 var XHR_REQUESTS = [];
 
-$(document).ready(function () {
+$(function () {
     $('#perc-selector-wrapper').hide();
     $('#perc-html-selector').val('');
-    $('#perc-upload-start').attr('disabled', true);
-    $('#perc-upload-clear').attr('disabled', true);
-    $('#perc-upload-cancel').attr('disabled', true);
+    $('#perc-upload-start').prop('disabled', true).
+        on("click",function() {
+            triggerSubmit();
+        });
+    $('#perc-upload-clear').prop('disabled', true);
+    $('#perc-upload-cancel').prop('disabled', true);
 
-    $('#perc-upload-start').click(function() {
-        triggerSubmit();
-    });
+
 
     $('#fileupload').fileupload({
         url: '/Rhythmyx/uploadAssetFile?folder=/Assets/uploads/test',
@@ -52,20 +53,20 @@ $(document).ready(function () {
 
             var buttonHtml = generateButtonHTML(data);
             data.context = buttonHtml;
-            $('#perc-upload-trigger').click(function() {
-                $('#perc-upload-clear').attr('disabled', true);
-                $(this).unbind();
+            $('#perc-upload-trigger').on("click",function() {
+                $('#perc-upload-clear').prop('disabled', true);
+                $(this).off();
                 if (data.files.length > 0) {
-                    $('#perc-upload-cancel').attr('disabled', false);
-                    $('#perc-global-progress').removeClass('fade');
-                    $('#perc-global-progress').show();
+                    $('#perc-upload-cancel').prop('disabled', false);
+                    $('#perc-global-progress').removeClass('fade')
+                    .show();
                     gadgets.window.adjustHeight();
                     data.url = calculateUrl();
                     jqXHR = data.submit();
                     XHR_REQUESTS.push(jqXHR);
                 }
             });
-            $('#perc-upload-clear').click(function() {
+            $('#perc-upload-clear').on("click", function() {
                 DID_UPLOAD_FAIL = false;
                 if (data.files.length > 0) {
                     data.files = [];
@@ -73,9 +74,9 @@ $(document).ready(function () {
                     $('#perc-bulk-status').text(TOTAL_IN_QUEUE + MSG_QUEUED_FOR_UPLOAD);
                 }
                 $('#perc-added-files').fadeOut('slow', function() {
-                    $('#perc-upload-clear').attr('disabled', true);
+                    $('#perc-upload-clear').prop('disabled', true);
                     $(this).empty();
-                })
+                });
             });
         },
         done: function (e, data) {
@@ -110,9 +111,9 @@ $(document).ready(function () {
     });
 
     // Wire asset type select control
-    $('#perc-bulk-asset-type').change(function(){
+    $('#perc-bulk-asset-type').on("change", function(){
         var v = $('#perc-bulk-asset-type option:selected').val();
-        if(v == 'html' || v == 'richtext' || v == 'simpletext')
+        if(v === 'html' || v === 'richtext' || v === 'simpletext')
         {
             $('#perc-selector-wrapper').show();
         }
@@ -122,14 +123,14 @@ $(document).ready(function () {
         }
     });
 
-    $('#perc-files-upload').click(function() {
+    $('#perc-files-upload').on("click", function() {
         if (DID_UPLOAD_FAIL) {
-            $('#perc-upload-clear').click();
+            $('#perc-upload-clear').trigger("click");
             DID_UPLOAD_FAIL = false;
         }
     });
 
-    $('#perc-upload-cancel').click(function() {
+    $('#perc-upload-cancel').on("click", function() {
         cancelAllRequests();
     });
 
@@ -142,14 +143,14 @@ $(document).ready(function () {
  */
 generateButtonHTML = function(data) {
     var image = data.files[0];
-    var buttonHtml = $('<button class="btn perc-button" aria-label="remove item from queue">'
-        + '<span><i class="fa fa-times" aria-hidden="true"></i></span></button>')
-        .click(function () {
+    var buttonHtml = $('<button class="btn perc-button" aria-label="remove item from queue">' +
+         '<span><i class="fa fa-times" aria-hidden="true"></i></span></button>')
+        .on("click",function () {
             $(data.context).fadeOut('slow', function() {
                 data.context.remove();
                 TOTAL_IN_QUEUE--;
                 $('#perc-bulk-status').text(TOTAL_IN_QUEUE + MSG_QUEUED_FOR_UPLOAD);
-            })
+            });
             data.files.pop();
         });
 
@@ -158,18 +159,18 @@ generateButtonHTML = function(data) {
             .append($('<td/>').text(image.name))
             .append($('<td/>').text(image.size))
             .append($('<td/>').text(image.type))
-            .append($('<td/>').append(buttonHtml))
+            .append($('<td/>').append(buttonHtml));
 
     html.appendTo($('#perc-added-files'))
         .hide()
         .fadeIn('slow');
 
     return html;
-}
+};
 
 markCompleted = function() {
-    $('#perc-bulk-status').text('Successful Uploads: ' + NUM_COMPLETED
-        + ', Failed uploads: ' + NUM_FAILED);
+    $('#perc-bulk-status').text('Successful Uploads: ' + NUM_COMPLETED +
+         ', Failed uploads: ' + NUM_FAILED);
     $('#progress .bar').css(
         'width',
         0 + '%'
@@ -179,17 +180,16 @@ markCompleted = function() {
     NUM_FAILED = 0;
     XHR_REQUESTS = [];
 
-    $('#perc-global-progress').addClass('fade');
-    $('#perc-upload-start').attr('disabled', true);
+    $('#perc-upload-start').prop('disabled', true);
     if (!DID_UPLOAD_FAIL) {
         // should remain available to clear the failed uploads
-        $('#perc-upload-clear').attr('disabled', true);
+        $('#perc-upload-clear').prop('disabled', true);
     }
-    $('#perc-upload-cancel').attr('disabled', true);
+    $('#perc-upload-cancel').prop('disabled', true);
 
-    $('#perc-global-progress').addClass('fade');
-    $('#perc-global-progress').hide();
-}
+    $('#perc-global-progress').addClass('fade')
+    .hide();
+};
 
 calculateUrl = function() {
     var url = '/Rhythmyx/uploadAssetFile?';
@@ -227,7 +227,7 @@ calculateUrl = function() {
     url += '&approveOnUpload=' + approveOnUpload;
 
     return url;
-}
+};
 
 triggerSubmit = function() {
     if (shouldPromptForFileType()) {
@@ -241,14 +241,14 @@ triggerSubmit = function() {
             },
             success: function()
             {
-                $('#perc-upload-trigger').click();
+                $('#perc-upload-trigger').trigger("click");
             }
         };
         PERC_UTILS.confirm_dialog(options);
     } else {
-        $('#perc-upload-trigger').click();
+        $('#perc-upload-trigger').trigger("click");
     }
-}
+};
 
 shouldPromptForFileType = function() {
     var v = $('#perc-bulk-asset-type option:selected').val();
@@ -267,16 +267,16 @@ shouldPromptForFileType = function() {
         return true;
     }
     return false;
-}
+};
 
 getFileExtension = function(fileName) {
     return fileName.split('.').pop();
-}
+};
 
 cancelAllRequests = function() {
     console.log(XHR_REQUESTS);
-    for (var i = 0; i < XHR_REQUESTS.length; i++) {
+    for (let i = 0; i < XHR_REQUESTS.length; i++) {
         XHR_REQUESTS[i].abort();
     }
     XHR_REQUESTS = [];
-}
+};

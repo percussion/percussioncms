@@ -17,29 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.activity.service.impl;
 
-import static org.apache.commons.lang.Validate.notNull;
+import com.percussion.activity.data.PSContentTraffic;
+import com.percussion.activity.data.PSContentTrafficRequest;
+import com.percussion.activity.data.PSTrafficDetailsList;
+import com.percussion.activity.data.PSTrafficDetailsRequest;
+import com.percussion.activity.service.IPSTrafficService;
+import com.percussion.share.service.impl.PSXmlDataHandler;
+import com.percussion.share.service.impl.jaxb.Pair;
+import com.percussion.share.service.impl.jaxb.Property;
+import com.percussion.share.service.impl.jaxb.Property.Pvalues;
+import com.percussion.share.service.impl.jaxb.Response;
+import com.percussion.share.service.impl.jaxb.Result;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.percussion.activity.data.*;
-import org.apache.commons.lang.StringUtils;
-
-import com.percussion.activity.service.IPSTrafficService;
-import com.percussion.share.service.impl.PSXmlDataHandler;
-import com.percussion.share.service.impl.jaxb.Pair;
-import com.percussion.share.service.impl.jaxb.Property;
-import com.percussion.share.service.impl.jaxb.Response;
-import com.percussion.share.service.impl.jaxb.Result;
-import com.percussion.share.service.impl.jaxb.Property.Pvalues;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * This handler which provides sample effectiveness data from an xml file.
@@ -54,7 +56,7 @@ public class PSTrafficDataHandler extends PSXmlDataHandler implements IPSTraffic
         
         PSContentTraffic trafficResponse = new PSContentTraffic();
                 
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("path", request.getPath());
         props.put("granularity", request.getGranularity());
         props.put("startDate", request.getStartDate());
@@ -134,7 +136,7 @@ public class PSTrafficDataHandler extends PSXmlDataHandler implements IPSTraffic
         
         PSContentTraffic trafficResponse = new PSContentTraffic();
                 
-        Map<String, Object> props = new HashMap<String, Object>();
+        Map<String, Object> props = new HashMap<>();
         props.put("path", request.getPath());
         props.put("startDate", request.getStartDate());
         props.put("endDate", request.getEndDate());
@@ -168,8 +170,8 @@ public class PSTrafficDataHandler extends PSXmlDataHandler implements IPSTraffic
     
     private List<Integer> getIntList(Property prop)
     {
-        List<Integer> intVal = new ArrayList<Integer>();
-        List<String> stringVal = new ArrayList<String>();
+        List<Integer> intVal = new ArrayList<>();
+        List<String> stringVal = new ArrayList<>();
         stringVal = prop.getPvalues().getPvalue();
         for (int i = 0; i < stringVal.size(); i++)
         {

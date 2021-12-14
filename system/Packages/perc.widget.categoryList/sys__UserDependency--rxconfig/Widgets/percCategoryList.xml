@@ -1,27 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
 <Widget>
     <WidgetPrefs title="Categories"
                  contenttype_name="percCategoryList"
@@ -52,7 +29,8 @@
     <Code type="jexl">
         <![CDATA[
     $linkContext = $perc.linkContext;
-    $isEditMode = $perc.isEditMode() || $perc.isPreviewMode();
+    $isEditMode = $perc.isEditMode();
+    $isPreviewMode =  $perc.isPreviewMode();
     $assetItems = $rx.pageutils.widgetContents($sys.assemblyItem, $perc.widget, null, null);
     $perc.setWidgetContents($assetItems);
     $display = $perc.widget.item.properties.get('perc_display_option');
@@ -171,6 +149,7 @@
 
         $dynamicListData = $dynamicListData + ", &quot;deliveryurl&quot;:&quot;" + $dsUrl + "&quot;";
         $dynamicListData = $dynamicListData + ", &quot;isEditMode&quot;:&quot;" + $isEditMode + "&quot;";
+        $dynamicListData = $dynamicListData + ", &quot;isPreviewMode&quot;:&quot;" + $isPreviewMode + "&quot;";
         $dynamicListData = $dynamicListData + "}";
         ##Category list query ends
     }

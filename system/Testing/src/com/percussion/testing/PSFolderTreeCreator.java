@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,13 +32,13 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSErrorResultsException;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.lang.StringUtils;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Create a folder tree for test purposes. Inspired by
@@ -119,7 +119,7 @@ public class PSFolderTreeCreator
       paths[1] = destPath;
       List<PSFolder> folders = contentWs.loadFolders(paths);
 
-      Random r = new Random(System.currentTimeMillis());
+      SecureRandom r = new SecureRandom();
 
       int remaining = folderCount;
       while (remaining > 0)

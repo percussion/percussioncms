@@ -1,3 +1,6 @@
+<%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -17,7 +20,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -208,7 +211,7 @@
 
 <!-- This template contains the server properties form (v2 layout) -->
 <script id="templateServerPropertiesForm" type="text/x-handlebars-template">
-    <form id="percServerPropertiesForm">
+    <csrf:form id="percServerPropertiesForm" action="publishTemplates.jsp" method="post">
         <section id="percServerPropertiesCommonTarget"></section>
         <section id="percServerPropertiesFileFTPTarget"></section>
         <section id="percServerPropertiesFileFTPSTarget"></section>
@@ -220,7 +223,7 @@
         <section id="percServerPropertiesDatabaseMYSQLTarget"></section>
         <section id="percServerPropertiesDatabaseOracleTarget"></section>
         <section id="percServerPropertiesOptionalTarget"></section>
-    </form>
+    </csrf:form>
 </script>
 
 <!-- This template contains the common properties for each configuration -->
@@ -364,7 +367,7 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input aria-required="true" type="password" class="form-control" percServerDatabaseProp="password" id="perc-database-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}">
+                    <input autocomplete="off" aria-required="true" type="password" class="form-control" percServerDatabaseProp="password" id="perc-database-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}">
                 </div>
             </div>
         </div>
@@ -516,6 +519,34 @@
             <input aria-required="true" class="form-control" percServerFileProp="bucketlocation" id="perc-amazon-s3-bucket-location" name="bucketlocation" value="{{#filterByValue serverInfo.properties 'key' 'bucketlocation'}}{{/filterByValue}}">
         </div>
     </div>
+    <div class="form-group" id="assumeRole" >
+        <div class="form-row">
+            <div style="width:25%;">
+                <div class="form-check form-check-inline">
+                    <input
+                            id="useAssumeRole"
+                            class="form-check-input"
+                            type="checkbox"
+                            percServerFileProp="useAssumeRole"
+                            name="useAssumeRole"
+                            {{#if (filterByValue serverInfo.properties 'key' 'useAssumeRole')}} checked{{/if}}>
+                    <label for="useAssumeRole" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Use Assume Role"/></label>
+                </div>
+            </div>
+            <div style="width:75%;" >
+                <div  class="input-group">
+                    <label  style="margin-right: 10px;" for="ARNRole">* <i18n:message key="perc.ui.publish.servers.s3@Role ARN"/>:</label>
+                    <div   class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i aria-hidden class="fas fa-lock"></i>
+                        </div>
+                    </div>
+                    <input autocomplete="off" aria-required="true" class="form-control" percServerFileProp="ARNRole" id="ARNRole" name="ARNRole" value="{{#filterByValue serverInfo.properties 'key' 'ARNRole'}}{{/filterByValue}}">
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div class="form-group" id="s3accessSecurityKey" >
         <div class="form-row">
             <div class="col-md-6 col-sm-12 perc-stacked-form-input">
@@ -526,7 +557,7 @@
                             <i aria-hidden class="fas fa-key"></i>
                         </div>
                     </div>
-                    <input type="password" aria-required="true" class="form-control" percServerFileProp="accesskey" id="perc-access-key" name="accesskey" value="{{#filterByValue serverInfo.properties 'key' 'accesskey'}}{{/filterByValue}}">
+                    <input autocomplete="off" type="password" aria-required="true" class="form-control" percServerFileProp="accesskey" id="perc-access-key" name="accesskey" value="{{#filterByValue serverInfo.properties 'key' 'accesskey'}}{{/filterByValue}}">
                 </div>
             </div>
             <div class="col-md-6 col col-sm-12">
@@ -537,18 +568,17 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input aria-required="true" type="password" class="form-control" percServerFileProp="securitykey" id="perc-security-key" name="securitykey" value="{{#filterByValue serverInfo.properties 'key' 'securitykey'}}{{/filterByValue}}">
+                    <input autocomplete="off" aria-required="true" type="password" class="form-control" percServerFileProp="securitykey" id="perc-security-key" name="securitykey" value="{{#filterByValue serverInfo.properties 'key' 'securitykey'}}{{/filterByValue}}">
                 </div>
             </div>
         </div>
-        <div class="form-group" >
-            <label for="region">* <i18n:message key="perc.ui.publish.view@Region"/>:</label>
-            <select aria-required="true" class="form-control perc-region-group" percServerFileProp="region" id="region" name="region" value="{{#filterByValue serverInfo.properties 'key' 'region'}}{{/filterByValue}}">
-
-            </select>
-        </div>
     </div>
+    <div class="form-group" >
+        <label for="region">* <i18n:message key="perc.ui.publish.view@Region"/>:</label>
+        <select aria-required="true" class="form-control perc-region-group" percServerFileProp="region" id="region" name="region" value="{{#filterByValue serverInfo.properties 'key' 'region'}}{{/filterByValue}}">
+        </select>
 
+    </div>
     <hr>
 </script>
 
@@ -580,37 +610,37 @@
             </div>
         </div>
     </div>
-        <div role="radiogroup" aria-required="true" class="form-group" style="display:none">
-            <p id="percAuthenticationMethodLabel">* <i18n:message key="perc.ui.publish.servers.ftp@Authentication Method"/></p>
-            <div class="form-check form-check-inline">
-                <input type="radio"
-                       id="passwordFlag"
-                       class="form-check-input perc-password-key-flag"
-                       percServerFileProp="passwordFlag"
-                       name="passwordkey"
-                       {{#if (filterByValue serverInfo.properties 'key' 'passwordFlag')}} checked{{/if}}>
-                <label for="passwordFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Password"/></label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input type="radio"
-                       id="privateKeyFlag"
-                       class="form-check-input perc-password-key-flag"
-                       percServerFileProp="privateKeyFlag"
-                       name="passwordkey"
-                       {{#if (filterByValue serverInfo.properties 'key' 'privateKeyFlag')}} checked{{/if}}>
-                <label for="privateKeyFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/></label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input
-                        class="form-check-input"
-                        id="secureFTP"
-                        type="checkbox"
-                        percServerFileProp="secure"
-                        name="secureFTP"
-                        {{#if (filterByValue serverInfo.properties 'key' 'secure')}} checked{{/if}}>
-                <label for="secureFTP" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Secure FTP"/></label>
-            </div>
+    <div role="radiogroup" aria-required="true" class="form-group" style="display:none">
+        <p id="percAuthenticationMethodLabel">* <i18n:message key="perc.ui.publish.servers.ftp@Authentication Method"/></p>
+        <div class="form-check form-check-inline">
+            <input type="radio"
+                   id="passwordFlag"
+                   class="form-check-input perc-password-key-flag"
+                   percServerFileProp="passwordFlag"
+                   name="passwordkey"
+                   {{#if (filterByValue serverInfo.properties 'key' 'passwordFlag')}} checked{{/if}}>
+            <label for="passwordFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Password"/></label>
         </div>
+        <div class="form-check form-check-inline">
+            <input type="radio"
+                   id="privateKeyFlag"
+                   class="form-check-input perc-password-key-flag"
+                   percServerFileProp="privateKeyFlag"
+                   name="passwordkey"
+                   {{#if (filterByValue serverInfo.properties 'key' 'privateKeyFlag')}} checked{{/if}}>
+            <label for="privateKeyFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/></label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input
+                    class="form-check-input"
+                    id="secureFTP"
+                    type="checkbox"
+                    percServerFileProp="secure"
+                    name="secureFTP"
+                    {{#if (filterByValue serverInfo.properties 'key' 'secure')}} checked{{/if}}>
+            <label for="secureFTP" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Secure FTP"/></label>
+        </div>
+    </div>
     <div class="form-group">
         <div class="form-row">
             <div class="col-md-6 col-sm-12 perc-stacked-form-input">
@@ -632,22 +662,22 @@
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" percServerFileProp="password" id="perc-ftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
+                    <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-ftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
                 </div>
             </div>
         </div>
     </div>
-        <div class="form-group mb-4" style="display:none">
-            <label for="privateKeyList"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/>:</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <i aria-hidden class="fas fa-key"></i>
-                    </div>
+    <div class="form-group mb-4" style="display:none">
+        <label for="FTPprivateKeyList"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/>:</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i aria-hidden class="fas fa-key"></i>
                 </div>
-                <select class="form-control" id="privateKeyList" percServerFileProp="privateKey" name="privateKey"></select>
             </div>
+            <select class="form-control" id="FTPprivateKeyList" percServerFileProp="privateKey" name="privateKey"></select>
         </div>
+    </div>
     <hr>
 </script>
 
@@ -679,37 +709,37 @@
             </div>
         </div>
     </div>
-        <div role="radiogroup" aria-required="true" class="form-group" style="display:none">
-            <p id="percFTPSAuthenticationMethodLabel">* <i18n:message key="perc.ui.publish.servers.ftp@Authentication Method"/></p>
-            <div class="form-check form-check-inline">
-                <input type="radio"
-                       id="sftpPasswordFlag"
-                       class="form-check-input perc-password-key-flag"
-                       percServerFileProp="passwordFlag"
-                       name="passwordkey"
-                       {{#if (filterByValue serverInfo.properties 'key' 'passwordFlag')}} checked{{/if}}>
-                <label for="passwordFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Password"/></label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input type="radio"
-                       id="sftpPrivateKeyFlag"
-                       class="form-check-input perc-password-key-flag"
-                       percServerFileProp="privateKeyFlag"
-                       name="passwordkey"
-                       {{#if (filterByValue serverInfo.properties 'key' 'privateKeyFlag')}} checked{{/if}}>
-                <label for="privateKeyFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/></label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input
-                        class="form-check-input"
-                        id="secureSFTP"
-                        type="checkbox"
-                        percServerFileProp="secure"
-                        name="secureFTP"
-                        {{#if (filterByValue serverInfo.properties 'key' 'secure')}} checked{{/if}}>
-                <label for="secureFTP" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Secure FTP"/></label>
-            </div>
+    <div role="radiogroup" aria-required="true" class="form-group" style="display:none">
+        <p id="percFTPSAuthenticationMethodLabel">* <i18n:message key="perc.ui.publish.servers.ftp@Authentication Method"/></p>
+        <div class="form-check form-check-inline">
+            <input type="radio"
+                   id="ftpsPasswordFlag"
+                   class="form-check-input perc-password-key-flag"
+                   percServerFileProp="passwordFlag"
+                   name="passwordkey"
+                   {{#if (filterByValue serverInfo.properties 'key' 'passwordFlag')}} checked{{/if}}>
+            <label for="ftpsPasswordFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Password"/></label>
         </div>
+        <div class="form-check form-check-inline">
+            <input type="radio"
+                   id="ftpsPrivateKeyFlag"
+                   class="form-check-input perc-password-key-flag"
+                   percServerFileProp="privateKeyFlag"
+                   name="passwordkey"
+                   {{#if (filterByValue serverInfo.properties 'key' 'privateKeyFlag')}} checked{{/if}}>
+            <label for="ftpsPrivateKeyFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/></label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input
+                    class="form-check-input"
+                    id="secureSFTP"
+                    type="checkbox"
+                    percServerFileProp="secure"
+                    name="secureFTP"
+                    {{#if (filterByValue serverInfo.properties 'key' 'secure')}} checked{{/if}}>
+            <label for="secureFTP" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Secure FTP"/></label>
+        </div>
+    </div>
     <div class="form-group">
         <div class="form-row">
             <div class="col-md-6 col-sm-12 perc-stacked-form-input">
@@ -720,33 +750,33 @@
                             <i aria-hidden class="fas fa-user"></i>
                         </div>
                     </div>
-                    <input aria-required="true" class="form-control" percServerFileProp="userid" id="perc-sftp-user" name="userid" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'userid'}}{{/filterByValue}}{{/if}}">
+                    <input aria-required="true" class="form-control" percServerFileProp="userid" id="perc-ftps-user" name="userid" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'userid'}}{{/filterByValue}}{{/if}}">
                 </div>
             </div>
             <div class="col-md-6 col col-sm-12">
-                <label for="perc-ftp-password"><i18n:message key="perc.ui.publish.servers@Password"/>:</label>
+                <label for="perc-ftps-password"><i18n:message key="perc.ui.publish.servers@Password"/>:</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
+                    <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-ftps-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
                 </div>
             </div>
         </div>
     </div>
-        <div class="form-group mb-4" style="display:none">
-            <label for="privateKeyList"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/>:</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <i aria-hidden class="fas fa-key"></i>
-                    </div>
+    <div class="form-group mb-4" style="display:none">
+        <label for="sftpPrivateKeyList"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/>:</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">
+                    <i aria-hidden class="fas fa-key"></i>
                 </div>
-                <select class="form-control" id="sftpPrivateKeyList" percServerFileProp="privateKey" name="privateKey"></select>
             </div>
+            <select class="form-control" id="sftpPrivateKeyList" percServerFileProp="privateKey" name="privateKey"></select>
         </div>
+    </div>
     <hr>
 </script>
 
@@ -782,21 +812,21 @@
         <p id="percSFTPAuthenticationMethodLabel">* <i18n:message key="perc.ui.publish.servers.ftp@Authentication Method"/></p>
         <div class="form-check form-check-inline">
             <input type="radio"
-                   id="passwordFlag"
+                   id="SFTPpasswordFlag"
                    class="form-check-input perc-password-key-flag"
                    percServerFileProp="passwordFlag"
                    name="passwordkey"
                    {{#if (filterByValue serverInfo.properties 'key' 'passwordFlag')}} checked{{/if}}>
-            <label for="passwordFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Password"/></label>
+            <label for="SFTPpasswordFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers@Password"/></label>
         </div>
         <div class="form-check form-check-inline">
             <input type="radio"
-                   id="privateKeyFlag"
+                   id="SFTPprivateKeyFlag"
                    class="form-check-input perc-password-key-flag"
                    percServerFileProp="privateKeyFlag"
                    name="passwordkey"
                    {{#if (filterByValue serverInfo.properties 'key' 'privateKeyFlag')}} checked{{/if}}>
-            <label for="privateKeyFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/></label>
+            <label for="SFTPprivateKeyFlag" class="form-check-label"><i18n:message key="perc.ui.publish.servers.ftp@Private Key File"/></label>
         </div>
     </div>
     <div class="form-group">
@@ -813,14 +843,14 @@
                 </div>
             </div>
             <div class="col-md-6 col col-sm-12">
-                <label for="perc-ftp-password"><i18n:message key="perc.ui.publish.servers@Password"/>:</label>
+                <label for="perc-sftp-password"><i18n:message key="perc.ui.publish.servers@Password"/>:</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <i aria-hidden class="fas fa-lock"></i>
                         </div>
                     </div>
-                    <input type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
+                    <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
                 </div>
             </div>
         </div>

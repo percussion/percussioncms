@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,7 @@
 		var assetFolderPath = $('#perc_selected_path').text();
 		
         $.PercAssetService.getAssetEditor(assetType, assetFolderPath, function(status, result){
-            if(status == $.PercServiceUtils.STATUS_ERROR)
+            if(status === $.PercServiceUtils.STATUS_ERROR)
             {
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.create.new.asset.dialog@Error New Asset"), content: result});
             }
@@ -40,7 +40,7 @@
         	}
             $.PercCreateNewAssetDialogData.assetEditor = result.AssetEditor;
             createContentEditDialog();
-        })
+        });
         /**
          * Creats the content editor dialog. Sets the height and widths as per the criteria
          * Sets the src of the Iframe to the url from the criteria.
@@ -54,7 +54,7 @@
             
             var dlgHtml = "<div id='create-new-asset-content-dlg'>" +
                                 "<iframe name='create-new-asset-content-frame' id='create-new-asset-content-frame'" +
-                                "height='100%' FRAMEBORDER='0' width='100%' src='" + url +
+                                " height='100%' FRAMEBORDER='0' width='100%' src='" + url +
                                 "'></iframe>" +
                            "</div>";
             //Create dialog and set the preferred height and width from the criteria
@@ -82,7 +82,7 @@
                 id: 'perc-create-new-asset-dialog'
             });
         }
-    }
+    };
       /**
        * Submits the form content to the server by using the ajax form.
        * Sets the iframe option to true to submit it as multi part form data.
@@ -111,9 +111,12 @@
          }
          //We are done processing the handlers, as we are submitting the form, clear all handlers.
          $.PercContentPreSubmitHandlers.clearHandlers();
-         $("#create-new-asset-content-frame").contents().find("#perc-content-form").submit();
+         $("#create-new-asset-content-frame").contents().find("#perc-content-form").trigger("submit");
          //Unbind the function to avoid an acumulation of calls to the same function
-         $("#create-new-asset-content-frame").unbind('load', saveAssetResponse).load(saveAssetResponse)
+         //CMS-8127 : The saveAssetResponse function was not getting called if the load even was propagated with submit.
+         $("#create-new-asset-content-frame").off('load').on("load",function(evt) {
+             saveAssetResponse(evt);
+         });
       }
       
       /**
@@ -130,7 +133,7 @@
        * Makes an ajax call to relate the asset to the parent (page or template)
        * and add to asset library folder and page folder if it is a resource.
        */
-      function saveAssetResponse() {
+      function saveAssetResponse(event) {
             if ($("#create-new-asset-content-frame").contents().find("#perc-content-edit-errors").length > 0){
                 $.unblockUI();
                 return;
@@ -140,7 +143,7 @@
             $("#create-new-asset-content-dlg").remove();
             $.PercPathService.getPathItemById(assetid, function(status, result){
                 $.unblockUI();
-                if(status==$.PercServiceUtils.STATUS_ERROR)
+                if(status===$.PercServiceUtils.STATUS_ERROR)
                 {
                     //This should not happen as we just created the asset we should be able to get the asset path item.
                     $.perc_utils.alert_dialog({title: 'Error Selecting Asset', content: "The asset has been saved, but failed to select it."});
@@ -169,7 +172,7 @@
       function getFrameDocument() {
          var contentFrameDoc = null;
          for (i = 0; i < frames.length; i++) {
-            if (frames[i].name == "create-new-asset-content-frame") {
+            if (frames[i].name === "create-new-asset-content-frame") {
                contentFrameDoc = frames[i].document;
                break;
             }

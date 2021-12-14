@@ -286,7 +286,7 @@ public class RxUpdateUpgradeFlag extends RxIAAction
     * objects, never <code>null</code>, may be empty,
     * modified in the <code>execute()</code> method.
     */
-   public static SortedSet<String> ms_upgDirs = new TreeSet<String>();
+   public static SortedSet<String> ms_upgDirs = new TreeSet<>();
    
    /**
     * The variable name for the property name parameter passed in via the IDE.

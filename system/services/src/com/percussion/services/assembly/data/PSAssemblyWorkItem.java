@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,6 +44,7 @@ import com.percussion.services.contentmgr.IPSNode;
 import com.percussion.services.contentmgr.PSContentMgrConfig;
 import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.PSContentMgrOption;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSFilterServiceErrors;
 import com.percussion.services.filter.IPSItemFilter;
@@ -62,7 +63,17 @@ import com.percussion.utils.collections.PSCopier;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,18 +89,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Concrete implementation class for assembly items and results. Allows the
@@ -107,7 +106,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSAssemblyWorkItem.class);
+   private static final Logger ms_log = LogManager.getLogger(PSAssemblyWorkItem.class);
    /**
     * Small result data is stored in memory, but data larger than this size
     * in bytes will be stored in a temp file. Stored stream data is always
@@ -193,7 +192,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
     * The parameters from the original HTTP request. It is possible that this
     * will be empty, but it will never be <code>null</code>.
     */
-   public Map<String, String[]> m_parameters = new HashMap<String, String[]>();
+   public Map<String, String[]> m_parameters = new HashMap<>();
 
    /**
     * The site variables are loaded into this map. This is loaded using
@@ -265,7 +264,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
     * these initial values are set, the bindings on the particular template are
     * evaluated, and the results are rebound into this map as well.
     */
-   public Map<String, Object> m_bindings = new HashMap<String, Object>();
+   public Map<String, Object> m_bindings = new HashMap<>();
 
    /**
     * The node being assembled is stored here. This value is not set (initially)
@@ -419,26 +418,19 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
             throw new IllegalStateException("File contains too much data: " +
                   len + " bytes");
          }
-         ByteArrayOutputStream bos = new ByteArrayOutputStream((int) len);
-         InputStream io = null;
-         try
-         {
-            io = new FileInputStream(m_resultFile);
-            IOUtils.copy(io, bos);
-            m_resultData = bos.toByteArray();
-            m_resultFile.delete();
-            m_resultFile = null;
-            return m_resultData;
+         try(ByteArrayOutputStream bos = new ByteArrayOutputStream((int) len)){
+            try(InputStream io = new FileInputStream(m_resultFile)) {
+               IOUtils.copy(io, bos);
+               m_resultData = bos.toByteArray();
+               m_resultFile.delete();
+               m_resultFile = null;
+               return m_resultData;
+            }
          }
          catch (IOException e)
          {
             ms_log.error("Couldn't open temp file: " + m_resultFile, e);
             throw new RuntimeException(e);
-         }
-         finally
-         {
-            IOUtils.closeQuietly(io);
-            IOUtils.closeQuietly(bos);
          }
       }
       else
@@ -647,7 +639,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       if (m_bindings != null)
          return m_bindings;
       else
-         return new HashMap<String, Object>();
+         return new HashMap<>();
    }
 
    /*
@@ -734,7 +726,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    public void setParameters(Map<String, String[]> parameters)
    {
       if (parameters == null)
-         m_parameters = new HashMap<String, String[]>();
+         m_parameters = new HashMap<>();
       else
          m_parameters = parameters;
    }
@@ -842,25 +834,21 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       clearResults();
       if (resultData != null && resultData.length > THRESHOLD)
       {
-         OutputStream os = null;
-         InputStream is = null;
-         try
-         {
+         try {
             m_resultFile = new PSPurgableTempFile("result", ".tmp", m_tempDir);
-            os = new FileOutputStream(m_resultFile);
-            is = new ByteArrayInputStream(resultData); 
-            IOUtils.copy(is, os);
-            return;
+            try (FileOutputStream os = new FileOutputStream(m_resultFile)) {
+               try (ByteArrayInputStream is = new ByteArrayInputStream(resultData)) {
+                  IOUtils.copy(is, os);
+                  return;
+               }
+            }
          }
+
          catch (IOException e)
          {
             ms_log.error("Couldn't create temp file", e);
          }   
-         finally
-         {
-            IOUtils.closeQuietly(os);
-            IOUtils.closeQuietly(is);
-         }
+
       }
       m_resultData = resultData;
    }
@@ -888,16 +876,10 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       else
       {
          m_resultFile = new PSPurgableTempFile("result", ".tmp", null);
-         OutputStream os = null;
-         try
-         {
-            os = new FileOutputStream(m_resultFile);
+         try(OutputStream os = new FileOutputStream(m_resultFile)){
             IOUtils.copy(is, os);
          }
-         finally
-         {
-            IOUtils.closeQuietly(os);
-         }
+
       }
    }
    
@@ -950,7 +932,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
          }
 
          IPSContentMgr cmgr = PSContentMgrLocator.getContentMgr();
-         List<IPSGuid> iguids = new ArrayList<IPSGuid>();
+         List<IPSGuid> iguids = new ArrayList<>();
          iguids.add(m_id);
          PSContentMgrConfig config = new PSContentMgrConfig();
          config.addOption(PSContentMgrOption.LAZY_LOAD_CHILDREN);
@@ -1148,7 +1130,7 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
       try
       {
          PSAssemblyWorkItem copy = (PSAssemblyWorkItem) super.clone();
-         copy.setBindings(new HashMap<String, Object>());
+         copy.setBindings(new HashMap<>());
          copy.setParameters(PSCopier.deepCopy(getParameters()));
          copy.m_depth = m_depth + 1;
          if (copy.m_depth > 20)
@@ -1293,31 +1275,33 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    private void setPathFromFolderParam(int contentId, int revision)
          throws PSCmsException
    {
-      String folderidParam = getParameterValue(IPSHtmlParameters.SYS_FOLDERID,
-            null);
-      if (!StringUtils.isBlank(folderidParam) && !folderidParam.equals("0"))
-      {
-         PSRequest req = PSRequest.getContextForRequest();
-         m_folderId = Integer.parseInt(folderidParam);
-         PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
-         String paths[] = fproc.getItemPaths(new PSLocator(m_folderId));
-         String folderpath = paths[0] + "/";
-         String itempaths[] = fproc.getItemPaths(new PSLocator(contentId,
-               revision));
-         for (String ipath : itempaths)
-         {
-            if (ipath.startsWith(folderpath))
-            {
-               m_path = ipath;
-               break;
+      try {
+         String folderidParam = getParameterValue(IPSHtmlParameters.SYS_FOLDERID,
+                 null);
+         if (!StringUtils.isBlank(folderidParam) && !folderidParam.equals("0")) {
+            PSRequest req = PSRequest.getContextForRequest();
+            m_folderId = Integer.parseInt(folderidParam);
+            PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
+
+
+            String paths[] = fproc.getItemPaths(new PSLocator(m_folderId));
+            String folderpath = paths[0] + "/";
+            String itempaths[] = fproc.getItemPaths(new PSLocator(contentId,
+                    revision));
+            for (String ipath : itempaths) {
+               if (ipath.startsWith(folderpath)) {
+                  m_path = ipath;
+                  break;
+               }
             }
          }
-      }
-      if (m_path == null)
-      {
-         // assign pseudo path when either the folder wasn't right or
-         // no folder was supplied
-         m_path = "/" + contentId + "#" + revision;
+         if (m_path == null) {
+            // assign pseudo path when either the folder wasn't right or
+            // no folder was supplied
+            m_path = "/" + contentId + "#" + revision;
+         }
+      } catch (PSNotFoundException e) {
+         throw new PSCmsException(e);
       }
    }
 

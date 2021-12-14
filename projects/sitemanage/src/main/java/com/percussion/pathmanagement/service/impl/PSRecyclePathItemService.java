@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,15 +33,18 @@ import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.user.service.IPSUserService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -93,8 +96,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     }
 
     @Override
-    public PSItemProperties findItemProperties(String path)
-    {
+    public PSItemProperties findItemProperties(String path) throws PSPathNotFoundServiceException {
         notEmpty(path, "path");
         if (log.isDebugEnabled())
             log.debug("find item properties: " + path);
@@ -131,7 +133,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     }
 
     @Override
-    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException {
+    public int deleteFolder(PSDeleteFolderCriteria criteria) throws PSPathServiceException, PSValidationException, IPSDataService.DataServiceNotFoundException, IPSDataService.DataServiceLoadException, PSNotFoundException {
         PSPathItem folder = findItem(criteria.getPath());
         if (folder.getCategory() == IPSItemSummary.Category.SECTION_FOLDER)
         {
@@ -156,7 +158,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     }
 
     @Override
-    protected PSPathItem findItem(String path) {
+    protected PSPathItem findItem(String path) throws IPSDataService.DataServiceLoadException {
         String fullPath = getFullFolderPath(path);
         log.debug("findItem path: " + fullPath);
         IPSItemSummary summary = recycleService.findItem(fullPath);
@@ -244,7 +246,7 @@ public class PSRecyclePathItemService extends PSPathItemService {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRecyclePathItemService.class);
+    private static final Logger log = LogManager.getLogger(PSRecyclePathItemService.class);
 
     /**
      * Static constant to represent the {@link PSRelationshipConfig} constant for recycled content

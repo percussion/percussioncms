@@ -17,39 +17,41 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.util.servlet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import com.percussion.HTTPClient.PSBinaryFileData;
+import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.util.IPSHtmlParameters;
+import com.percussion.util.IPSRemoteRequesterEx;
+import com.percussion.util.PSCharSets;
+import com.percussion.util.PSXMLDomUtil;
+import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
-import com.percussion.HTTPClient.PSBinaryFileData;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.util.IPSHtmlParameters;
-import com.percussion.util.IPSRemoteRequesterEx;
-import com.percussion.util.PSCharSets;
-import com.percussion.util.PSXMLDomUtil;
-import com.percussion.xml.PSXmlDocumentBuilder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class handles the communication between a servlet and the
@@ -58,6 +60,9 @@ import com.percussion.xml.PSXmlDocumentBuilder;
  */
 public class PSServletRequester implements IPSRemoteRequesterEx
 {
+
+   private static final Logger log = LogManager.getLogger(PSServletRequester.class);
+
    /**
     * Creates an instance from the servlet parameters.
     *
@@ -145,8 +150,9 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new RuntimeException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 
@@ -201,14 +207,18 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       {
          PSInternalResponse irsp = new PSInternalResponse(m_response);
          sendRequest(resource, irq, irsp);
-         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-         PSHttpUtils.copyStream(irsp.getInputStream(), bos);
-         return bos.toByteArray();
+         try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+            try(InputStream is = irsp.getInputStream()) {
+               PSHttpUtils.copyStream(is, bos);
+               return bos.toByteArray();
+            }
+         }
       }
       catch (Exception e)
       {
-         e.printStackTrace();
-         throw new RuntimeException(e.getLocalizedMessage());
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         throw new RuntimeException(e);
       }
    }
 
@@ -267,22 +277,23 @@ public class PSServletRequester implements IPSRemoteRequesterEx
       {
          for(int i = 0; i < files.length; i++)
          {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bos.write(files[i].getData());
-            // Determine the content type
-            String contentType = files[i].getContentType() == null ?
-               CT.guessContentType(files[i].getFileName()) :
-               files[i].getContentType();
-            // Create the body part
-            PSHttpBodyPart part =
-               new PSHttpBodyPart(
-                  files[i].getFieldName(),
-                  files[i].getFileName(),
-                  contentType,
-                  PSCharSets.rxJavaEnc(),
-                  bos);
-            // add the body part
-            irq.addBodyPart(part);
+            try(ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+               bos.write(files[i].getData());
+               // Determine the content type
+               String contentType = files[i].getContentType() == null ?
+                       CT.guessContentType(files[i].getFileName()) :
+                       files[i].getContentType();
+               // Create the body part
+               PSHttpBodyPart part =
+                       new PSHttpBodyPart(
+                               files[i].getFieldName(),
+                               files[i].getFileName(),
+                               contentType,
+                               PSCharSets.rxJavaEnc(),
+                               bos);
+               // add the body part
+               irq.addBodyPart(part);
+            }
          }
       }
       irq.prepareBody(); // prepare body and set header accordingly
@@ -400,12 +411,13 @@ public class PSServletRequester implements IPSRemoteRequesterEx
          try
          {
             byte[] bytes = errorMsg.getBytes();
-            ByteArrayInputStream input = new ByteArrayInputStream(bytes);
-            Document doc = PSXmlDocumentBuilder.createXmlDocument(input, false);
-            Element root = doc.getDocumentElement();
-            Element errorElem = PSXMLDomUtil.getFirstElementChild(root,
-                     "DisplayError");
-            errorMsg = PSXmlDocumentBuilder.toString(errorElem);
+            try(ByteArrayInputStream input = new ByteArrayInputStream(bytes)) {
+               Document doc = PSXmlDocumentBuilder.createXmlDocument(input, false);
+               Element root = doc.getDocumentElement();
+               Element errorElem = PSXMLDomUtil.getFirstElementChild(root,
+                       "DisplayError");
+               errorMsg = PSXmlDocumentBuilder.toString(errorElem);
+            }
          }
          catch (Exception e)
          {

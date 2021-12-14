@@ -17,24 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.dao;
 
-import java.io.InputStream;
-import java.util.UUID;
-
+import com.percussion.share.service.exception.PSExtractHTMLException;
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.cactus.ServletTestCase;
 import org.apache.commons.lang.StringUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.junit.Test;
-
-import com.percussion.share.service.exception.PSExtractHTMLException;
 import org.junit.experimental.categories.Category;
+
+import java.io.InputStream;
+import java.util.UUID;
 
 /**
  * Testing {@link PSHtmlUtils}. This test has to be run within server environment

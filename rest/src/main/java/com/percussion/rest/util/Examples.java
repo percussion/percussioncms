@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,14 +34,23 @@ import com.percussion.rest.editions.Edition;
 import com.percussion.rest.folders.Folder;
 import com.percussion.rest.folders.SectionInfo;
 import com.percussion.rest.folders.SectionLinkRef;
-import com.percussion.rest.pages.*;
+import com.percussion.rest.pages.CalendarInfo;
+import com.percussion.rest.pages.CodeInfo;
+import com.percussion.rest.pages.Page;
+import com.percussion.rest.pages.Region;
+import com.percussion.rest.pages.SeoInfo;
+import com.percussion.rest.pages.Widget;
+import com.percussion.rest.pages.WorkflowInfo;
 import com.percussion.rest.roles.Role;
 import com.percussion.rest.users.User;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class provides example representations that can be used for wadl docs.<br>
@@ -71,7 +80,7 @@ public class Examples
 
         SAMPLE_FOLDER.setWorkflow("default");
         SAMPLE_FOLDER.setAccessLevel(Folder.ACCESS_LEVEL_READ);
-        SAMPLE_FOLDER.setEditUsers(new ArrayList<String>(Arrays.asList("User1", "User2")));
+        SAMPLE_FOLDER.setEditUsers(new ArrayList<>(Arrays.asList("User1", "User2")));
 
         SectionInfo info = new SectionInfo();
         info.setDisplayTitle("Section Display Title");
@@ -82,17 +91,17 @@ public class Examples
         info.setNavClass("navclass1");
         info.setTargetWindow("top");
         SAMPLE_FOLDER.setSectionInfo(info);
-        List<LinkRef> pages = new ArrayList<LinkRef>();
+        List<LinkRef> pages = new ArrayList<>();
         pages.add(landingPage);
         pages.add(new LinkRef("file1.html", "http://test.com/file1.html"));
         pages.add(new LinkRef("file2.html", "http://test.com/file2.html"));
-        List<LinkRef> subfolders = new ArrayList<LinkRef>();
+        List<LinkRef> subfolders = new ArrayList<>();
         subfolders.add(new LinkRef("sub1", "http://test.com/file1.html"));
         subfolders.add(new LinkRef("sub2", "http://test.com/file2.html"));
 
         SAMPLE_FOLDER.setSubfolders(subfolders);
 
-        List<SectionLinkRef> subsections = new ArrayList<SectionLinkRef>();
+        List<SectionLinkRef> subsections = new ArrayList<>();
         subsections.add(new SectionLinkRef("subsection1", "http://test.com/file1.html", SectionLinkRef.TYPE_EXTERNAL));
         subsections.add(new SectionLinkRef("subsection2", "http://test.com/file2.html", SectionLinkRef.TYPE_INTERNAL));
         subsections.add(new SectionLinkRef("subsection2", "http://test.com/file2.html", SectionLinkRef.TYPE_SUBFOLDER));
@@ -104,7 +113,7 @@ public class Examples
 
     static
     {
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        FastDateFormat dateFormat = FastDateFormat.getInstance("dd-MM-yyyy");
         Date date1 = null;
         Date date2 = null;
         try
@@ -126,7 +135,7 @@ public class Examples
         SAMPLE_PAGE.setSummary("Summary");
         SAMPLE_PAGE.setOverridePostDate(date1);
         CalendarInfo calendar = new CalendarInfo();
-        calendar.setCalendars(new ArrayList<String>(Arrays.asList(new String[]
+        calendar.setCalendars(new ArrayList<>(Arrays.asList(new String[]
         {"Caldendar1", "Calendar2"})));
         calendar.setStartDate(date1);
         calendar.setEndDate(date2);
@@ -169,8 +178,8 @@ public class Examples
         widget1.setType("widgetType");
         widget1.setAsset(asset1);
         widget1.setScope("local");
-        region.setWidgets(new ArrayList<Widget>(Arrays.asList(widget1)));
-        SAMPLE_PAGE.setBody(new ArrayList<Region>(Arrays.asList(region)));
+        region.setWidgets(new ArrayList<>(Arrays.asList(widget1)));
+        SAMPLE_PAGE.setBody(new ArrayList<>(Arrays.asList(region)));
 
         Guid guid = new Guid();
         guid.setUntypedString("100-100-100");

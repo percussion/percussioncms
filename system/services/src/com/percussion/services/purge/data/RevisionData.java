@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -136,7 +136,7 @@ public class RevisionData {
      * Returns string representation of this object
      */
     public String toString() {
-        StringBuffer sb = new StringBuffer(100);
+        StringBuilder sb = new StringBuilder(100);
         sb.append("keepMinNumberOfRevs=").append(keepMinNumberOfRevs).append("; ");
         sb.append("keepRevsYoungerThanDays=").append(keepRevsYoungerThanDays).append("; ");
         sb.append("deleteRevsAboveCount=").append(deleteRevsAboveCount).append("; ");

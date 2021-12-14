@@ -17,18 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.assembly;
 
 import com.percussion.webservices.PSBaseSOAPImpl;
-import com.percussion.webservices.assembly.Assembly;
-import com.percussion.webservices.assembly.IPSAssemblyWs;
-import com.percussion.webservices.assembly.LoadAssemblyTemplatesRequest;
-import com.percussion.webservices.assembly.LoadSlotsRequest;
-import com.percussion.webservices.assembly.PSAssemblyWsLocator;
 import com.percussion.webservices.assembly.data.PSAssemblyTemplate;
 import com.percussion.webservices.assembly.data.PSTemplateSlot;
 import com.percussion.webservices.faults.PSContractViolationFault;

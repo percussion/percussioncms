@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,11 @@ package com.percussion.delivery.utils.spring;
 
 
 import com.percussion.delivery.utils.security.PSSecureProperty;
+import com.percussion.error.PSExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,9 +37,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
-
-import org.springframework.beans.factory.config.PropertiesFactoryBean;
-import org.springframework.core.io.Resource;
 
 /**
  * Extended the Spring PropertiesFactoryBean to add the ability to automatically
@@ -85,8 +87,8 @@ import org.springframework.core.io.Resource;
  */
 public class PSPropertiesFactoryBean extends PropertiesFactoryBean
 {
-   
-   private final List<Resource> resList = new ArrayList<Resource>();
+   private static final Logger log = LogManager.getLogger(PSPropertiesFactoryBean.class);
+   private final List<Resource> resList = new ArrayList<>();
    private String[] securedProperties;
    private boolean autoSecure;
 
@@ -185,9 +187,9 @@ public class PSPropertiesFactoryBean extends PropertiesFactoryBean
    
    /**
     * Loops through all resources and secures the properties by encryption.
- * @param encrytionType
+ * @param encryptionType Type of encryption
     */
-   private void encryptProps(String  encrytionType)
+   private void encryptProps(String  encryptionType)
    {
       Collection<String> names = Arrays.asList(securedProperties);
       
@@ -197,11 +199,12 @@ public class PSPropertiesFactoryBean extends PropertiesFactoryBean
          {
             try
             {
-               PSSecureProperty.secureProperties(r.getFile(), names, key, encrytionType);
+               PSSecureProperty.secureProperties(r.getFile(), names, key, encryptionType);
             }
             catch (IOException e)
             {
-               e.printStackTrace();
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
          }
       }

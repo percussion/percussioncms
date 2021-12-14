@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.integritymanagement.service.impl;
 
-import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
-
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest;
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.data.PSBinaryAssetRequest;
 import com.percussion.assetmanagement.service.impl.PSAssetService;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.integritymanagement.data.PSIntegrityStatus;
 import com.percussion.integritymanagement.data.PSIntegrityStatus.Status;
 import com.percussion.integritymanagement.data.PSIntegrityTask;
@@ -46,6 +45,8 @@ import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.service.IPSSiteDataService.PublishType;
 import com.percussion.user.service.impl.PSUserService;
 import com.percussion.utils.PSDTSStatusProvider;
@@ -53,6 +54,10 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.service.impl.PSUtilityService;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -66,11 +71,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 
 @Service("integrityCheckerService")
 public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
@@ -101,8 +102,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     private PSPubServerService pubServerService;
     
     @Override
-    public synchronized String start(final IntegrityTaskType type)
-    {
+    public synchronized String start(final IntegrityTaskType type) throws PSDataServiceException {
         ms_log.info("Started integrity checker.");
         validateUsage();
         PSIntegrityStatus status = getRunningStatus();
@@ -136,13 +136,12 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         return status.getToken();
     }
 
-    private void runTasks(IntegrityTaskType type)
-    {
+    private void runTasks(IntegrityTaskType type) throws IPSGenericDao.SaveException {
         ms_log.info("Started running the tasks.");
         PSIntegrityStatus status = getRunningStatus();
         if (status != null)
         {
-            Set<PSIntegrityTask> tasks = new HashSet<PSIntegrityTask>();
+            Set<PSIntegrityTask> tasks = new HashSet<>();
             Status topSt = Status.SUCCESS;
             if (type.equals(IntegrityTaskType.all) || type.equals(IntegrityTaskType.cm1))
             {
@@ -185,7 +184,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
     
     private Set<PSIntegrityTask> getDtsTasks(String token){
-        Set<PSIntegrityTask> dtsTasks = new HashSet<PSIntegrityTask>();
+        Set<PSIntegrityTask> dtsTasks = new HashSet<>();
         Map<String,PSPair<TaskStatus, String>> dtsStatus = dtsStatusProvider.getDTSStatusReport();
         for (String name : dtsStatus.keySet())
         {
@@ -201,7 +200,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
     
     private Set<PSIntegrityTask> getCmsTasks(String token){
-        Set<PSIntegrityTask> cmsTasks = new HashSet<PSIntegrityTask>();
+        Set<PSIntegrityTask> cmsTasks = new HashSet<>();
         Map<String,PSPair<TaskStatus, String>> cm1Status = runImageTasks(token);
         for (String name : cm1Status.keySet())
         {
@@ -218,8 +217,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
 
     @Override
-    public void stop()
-    {
+    public void stop() throws PSDataServiceException {
         validateUsage();
         PSIntegrityStatus status = getRunningStatus();
         if(status != null){
@@ -229,7 +227,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         }
     }
     
-    private PSIntegrityStatus getRunningStatus(){
+    private PSIntegrityStatus getRunningStatus() throws IPSGenericDao.SaveException {
         PSIntegrityStatus result = null;
         List<PSIntegrityStatus> statuses = integrityDao.find(Status.RUNNING);
         if(statuses.size()==1){
@@ -247,29 +245,25 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     }
     
     @Override
-    public PSIntegrityStatus getStatus(String token)
-    {
+    public PSIntegrityStatus getStatus(String token) throws PSDataServiceException {
         validateUsage();
         return integrityDao.find(token);
     }
 
     @Override
-    public List<PSIntegrityStatus> getHistory()
-    {
+    public List<PSIntegrityStatus> getHistory() throws PSDataServiceException {
         validateUsage();
         return getHistory(null);
     }
 
     @Override
-    public List<PSIntegrityStatus> getHistory(Status status)
-    {
+    public List<PSIntegrityStatus> getHistory(Status status) throws PSDataServiceException {
         validateUsage();
         return integrityDao.find(status);
     }
 
     @Override
-    public void delete(String token)
-    {
+    public void delete(String token) throws PSDataServiceException {
         validateUsage();
         PSIntegrityStatus status = integrityDao.find(token);
         if(status != null){
@@ -283,38 +277,33 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
      * @return Map<String, PSPair<TaskStatus, String>> map of task name and pair of status and message.
      */
     private Map<String, PSPair<TaskStatus, String>> runImageTasks(String token) {
-        Map<String, PSPair<TaskStatus, String>> result = new HashMap<String, PSPair<TaskStatus,String>>();
+        Map<String, PSPair<TaskStatus, String>> result = new HashMap<>();
         PSAsset percussionImage = null;
-        InputStream in = null;
-        //Create Image Asset
-        try {
-            in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + PSAmazonS3DeliveryHandler.PERC_TEST_IMG_DIR
-                    + PSAmazonS3DeliveryHandler.PERC_TEST_IMG);
+        try(InputStream in = new FileInputStream(PSServer.getRxDir().getAbsolutePath() + PSAmazonS3DeliveryHandler.PERC_TEST_IMG_DIR
+                    + PSAmazonS3DeliveryHandler.PERC_TEST_IMG)){
             PSAbstractAssetRequest ar = new PSBinaryAssetRequest(PSAssetPathItemService.ASSET_ROOT + "/uploads",
                     AssetType.IMAGE, PSAmazonS3DeliveryHandler.generateTestImageKey(token), "image/jpeg",
                     in);
 
             percussionImage = assetService.createAsset(ar);
 
-            PSPair<TaskStatus, String> imgCreate = new PSPair<TaskStatus, String>(TaskStatus.SUCCESS,"");
+            PSPair<TaskStatus, String> imgCreate = new PSPair<>(TaskStatus.SUCCESS,"");
             result.put(IMAGE_CREATE_TASK, imgCreate);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgCreate = new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgCreate = new PSPair<>(TaskStatus.FAILED,PSExceptionUtils.getMessageForLog(e));
             result.put(IMAGE_CREATE_TASK, imgCreate);
             //Return the result here
             return result;
-        } finally {
-            IOUtils.closeQuietly(in);
         }
 
         //Approve Image Asset
         try {
             itemWorkflowService.performApproveTransition(percussionImage.getId(), false, "");
 
-            PSPair<TaskStatus, String> imgApprove = new PSPair<TaskStatus, String>(TaskStatus.SUCCESS,"");
+            PSPair<TaskStatus, String> imgApprove = new PSPair<>(TaskStatus.SUCCESS,"");
             result.put(IMAGE_APPROVE_TASK, imgApprove);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgApprove = new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgApprove = new PSPair<>(TaskStatus.FAILED, PSExceptionUtils.getMessageForLog(e));
             result.put(IMAGE_APPROVE_TASK, imgApprove);
         }
         
@@ -322,18 +311,17 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
         try {
             assetService.delete(percussionImage.getId());
             
-            PSPair<TaskStatus, String> imgDelete = new PSPair<TaskStatus, String>(TaskStatus.SUCCESS, "");
+            PSPair<TaskStatus, String> imgDelete = new PSPair<>(TaskStatus.SUCCESS, "");
             result.put(IMAGE_DELETE_TASK, imgDelete);
         } catch (Exception e) {
-            PSPair<TaskStatus, String> imgDelete = new PSPair<TaskStatus, String>(TaskStatus.FAILED, e.getMessage());
+            PSPair<TaskStatus, String> imgDelete = new PSPair<>(TaskStatus.FAILED,PSExceptionUtils.getMessageForLog(e));
             result.put(IMAGE_DELETE_TASK, imgDelete);
         }
 
         return result;
     }
     
-    private void validateUsage()
-    {
+    private void validateUsage() throws PSDataServiceException {
         if(!userService.isAdminUser(userService.getCurrentUser().getName())){
             throw new RuntimeException("You are not authorized to use " + PSIntegrityCheckerService.class.getName() + " API.");
         }
@@ -348,7 +336,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
      */
     private Set<PSIntegrityTask> runImagePublishTasks(String token)
     {
-        Set<PSIntegrityTask> result = new HashSet<PSIntegrityTask>();
+        Set<PSIntegrityTask> result = new HashSet<>();
         try
         {
             PSAmazonS3DeliveryHandler delHandler = new PSAmazonS3DeliveryHandler();
@@ -365,7 +353,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
                 || equalsIgnoreCase(pubType, PublishType.amazon_s3_only.toString()))){
                     continue;
                 }
-                Set<PSIntegrityTaskProperty> taskProps = new HashSet<PSIntegrityTaskProperty>();
+                Set<PSIntegrityTaskProperty> taskProps = new HashSet<>();
                 taskProps.add(new PSIntegrityTaskProperty("sitename", site.getName()));
                 try{
                     PSPair<Boolean, String> pub = delHandler.publishTestImage(pubServer, site, token);
@@ -409,7 +397,7 @@ public class PSIntegrityCheckerService implements IPSIntegrityCheckerService
     private static final String IMAGE_DELETE_TASK = "Image-Delete";
     private static final String IMAGE_APPROVE_TASK = "Image-Approve";
     private static final String IMAGE_PUBLISH_TASK = "Image-Publish";
-    static Log ms_log = LogFactory.getLog(PSIntegrityCheckerService.class);
+    private static final Logger ms_log = LogManager.getLogger(PSIntegrityCheckerService.class);
 
 
 }

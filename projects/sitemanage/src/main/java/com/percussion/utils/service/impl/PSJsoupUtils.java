@@ -17,21 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.service.impl;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class PSJsoupUtils
 {
@@ -82,7 +82,7 @@ public class PSJsoupUtils
         String classNames = elem.attr("class");
         classNames = classNames.replaceAll("\u00A0", " ");
         String[] names = classNames.split("\\s+");
-        Set<String> result = new LinkedHashSet<String>(Arrays.asList(names));
+        Set<String> result = new LinkedHashSet<>(Arrays.asList(names));
         return result;        
     }
 }

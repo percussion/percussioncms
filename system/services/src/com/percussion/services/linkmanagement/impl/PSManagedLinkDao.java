@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,8 +29,8 @@ import com.percussion.services.linkmanagement.data.PSManagedLink;
 import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSSiteManageBean;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -57,7 +57,7 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 @Transactional
 public class PSManagedLinkDao implements IPSManagedLinkDao
 {
-    private static final Log log = LogFactory.getLog(PSManagedLinkDao.class);
+    private static final Logger log = LogManager.getLogger(PSManagedLinkDao.class);
     
     /**
      * Constant for the key used to generate link id's.
@@ -94,8 +94,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
         return link;
     }
 
-    public void saveLink(PSManagedLink link)
-    {
+    public void saveLink(PSManagedLink link) throws IPSGenericDao.SaveException {
         Validate.notNull(link);
         if (link.getLinkId() == -1)
         {
@@ -119,16 +118,15 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
         }        
     }
 
-    @SuppressWarnings("unchecked")
     public PSManagedLink findLinkByLinkId(long linkId)
     {
         Session session = sessionFactory.getCurrentSession();
 
-            return (PSManagedLink) session.get(PSManagedLink.class,linkId);
+            return session.get(PSManagedLink.class,linkId);
 
     }
 
-    public void deleteLink(PSManagedLink link) throws Exception
+    public void deleteLink(PSManagedLink link)
     {
         Validate.notNull(link);
         Session session = sessionFactory.getCurrentSession();
@@ -214,7 +212,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
     {
        if(isEmpty(parentIds))
        {
-           return new ArrayList<PSManagedLink>();
+           return new ArrayList<>();
        }
        
        if (parentIds.size() < MAX_IDS)
@@ -224,10 +222,10 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
        else
        {
            // use pagination to avoid issues with some DB engines
-           List<PSManagedLink> results =  new ArrayList<PSManagedLink>();
+           List<PSManagedLink> results =  new ArrayList<>();
            for (int i = 0; i < parentIds.size(); i += MAX_IDS)
            {
-               int end = (i + MAX_IDS > parentIds.size()) ? parentIds.size() : i + MAX_IDS;
+               int end = Math.min(i + MAX_IDS, parentIds.size());
                // make the query
                results.addAll(findLinksByListOfParentIds(parentIds.subList(i, end)));
            }
@@ -241,7 +239,7 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
       Session session = sessionFactory.getCurrentSession();
 
          Query query = session
-               .createQuery("from PSManagedLink " + " where parentid in (" + join(parentIds, ",") + ") ");
+               .createQuery("from PSManagedLink where parentid in (" + join(parentIds, ",") + ") ");
          List<PSManagedLink> results = query.list();
          return results;
 
@@ -254,10 +252,9 @@ public class PSManagedLinkDao implements IPSManagedLinkDao
       Session session = sessionFactory.getCurrentSession();
 
      Query query = session
-           .createQuery("from PSManagedLink " + " where childId =  " + Integer.toString(childId));
-     List<PSManagedLink> results = query.list();
-     return results;
-
+           .createQuery("from PSManagedLink where childid = :childId ");
+     query.setParameter("childId", childId);
+     return  query.list();
    }
     
 }

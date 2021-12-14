@@ -1,5 +1,6 @@
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%--
   ~     Percussion CMS
@@ -20,7 +21,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -66,8 +67,10 @@
        get into the files used in production.
     --%>
     <!-- Themes never should be concatenated or packed -->
-    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
     <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale %>"></script>
+    <script src="/JavaScriptServlet"></script>
     <% if (isDebug) { %>
 
     <!-- CSS Includes -->
@@ -87,8 +90,8 @@
     <!-- JavaScript Includes (order matters) -->
     <%@include file="includes/common_js.jsp" %>
     <%-- Common Utilities --%>
-    <script src="../jslib/jquery.text-overflow.js"></script>
-    <script src="../jslib/printThis.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-print-this/printThis.js"></script>
 
     <%--  Services --%>
     <script src="../services/PercTemplateService.js"></script>
@@ -112,7 +115,7 @@
     <script src="../widgets/perc_template_layout_widget.js"></script>
     <script src="../plugins/perc_layout_controller.js"></script>
     <script src="../plugins/perc_template_manager.js"></script>
-    <script src="../jslib/jquery.xmldom-1.0.js"></script>
+    <script src="../jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.xmldom-1.0.js"></script>
     <script src="../plugins/perc_page_schema.js"></script>
     <script src="../plugins/perc_template_schema.js"></script>
     <script src="../plugins/perc_contentEditDecorate.js"></script>
@@ -153,30 +156,30 @@
     <!--[if gte IE 8]>
     <link rel="stylesheet" type="text/css" href="../css/IE8_styles.css"/><![endif]-->
 
-    <script  >
+    <script>
 
         var sGalleryThemeName = "";
         var selectedTemplate;
         var global_templates;
         var global_all_templates = new Array();
 
-        $j(document).ready(function () {
-            $j.Percussion.templateDesignView();
-            $j.Percussion.PercFinderView();
+        $(document).ready(function () {
+            $.Percussion.templateDesignView();
+            $.Percussion.PercFinderView();
         });
 
         function percTempLibMaximizer() {
-            var $ = $j;
+
             if ($("#tabs-1 #perc-temp-lib-expander").hasClass("expander-enabled")) {
                 if ($("#tabs-1 .perc-template-container").hasClass("perc-visible")) {
                     $("#tabs-1 .perc-template-container").removeClass("perc-visible").addClass("perc-hidden");
                     $("#tabs-1 #perc-temp-lib-expander").removeClass("perc-whitebg");
-                    $("#tabs-1 #perc-temp-lib-minimizer").replaceWith('<a id="perc-temp-lib-maximizer" style="float: left;" href="#"></a>');
+                    $("#tabs-1 #perc-temp-lib-minimizer").replaceWith('<a id="perc-temp-lib-maximizer" style="float: left;" href="#" aria-label="Expand templates view button" role="button"></a>');
                 }
                 else {
                     $("#tabs-1 .perc-template-container").removeClass("perc-hidden").addClass("perc-visible");
                     $("#tabs-1 #perc-temp-lib-expander").addClass("perc-whitebg");
-                    $("#tabs-1 #perc-temp-lib-maximizer").replaceWith('<a id="perc-temp-lib-minimizer" style="float: left;" href="#"></a>');
+                    $("#tabs-1 #perc-temp-lib-maximizer").replaceWith('<a id="perc-temp-lib-minimizer" style="float: left;" href="#" aria-label="Minimize templates view button" role="button"></a>');
                 }
                 // Fix the User Template Library area Height
                 fixTemplateHeight();
@@ -187,7 +190,7 @@
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box
@@ -217,14 +220,14 @@
                     </div>
                 </div>
             </ul>
-            <div id="tabs-1">
-                <jsp:include page="template_create.jsp" flush="true"/>
-            </div>
-            <div id="bottom"></div>
         </div>
     </div>
+    <div id="tabs-1">
+        <jsp:include page="template_create.jsp" flush="true"/>
+    </div>
+<div id="bottom"></div>
+<iframe id="frame" name="frame" title="<i18n:message key='perc.ui.design.title@Edit Template' />" style="width: 100%; border: 0" width="100%" class="perc-ui-component-ready"></iframe>
 </div>
 <%@include file='includes/siteimprove_integration.html'%>
-<iframe id="frame" name="frame" title="<i18n:message key='perc.ui.design.title@Edit Template' />" style="width: 100%; border: 0" width="100%" class="perc-ui-component-ready"></iframe>
 </body>
 </html>

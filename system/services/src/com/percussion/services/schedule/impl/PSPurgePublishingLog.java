@@ -17,23 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.schedule.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This is used to purge publishing log entries older than a specified date.
@@ -90,9 +90,9 @@ public class PSPurgePublishingLog extends PSPurgeExpiredLog
             }
             catch (Exception e)
             {
-               e.printStackTrace();
-               m_log.error("Failed to archive publishing log for job ID: "
-                     + jobId, e);
+               log.error(PSExceptionUtils.getMessageForLog(e));
+               log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+               log.error("Failed to archive publishing log for job ID: {} : {}", jobId,PSExceptionUtils.getMessageForLog(e));
             }
          }
          
@@ -103,5 +103,5 @@ public class PSPurgePublishingLog extends PSPurgeExpiredLog
    /**
     * logger for this class.
     */
-   private Log m_log = LogFactory.getLog(getClass());
+   private static final Logger log = LogManager.getLogger(PSPurgePublishingLog.class);
 }

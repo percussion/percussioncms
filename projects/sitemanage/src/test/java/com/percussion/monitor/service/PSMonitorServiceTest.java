@@ -17,24 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.monitor.service;
 
-import static org.junit.Assert.*;
-
+import com.percussion.share.data.PSMapWrapper;
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.Test;
-
-import com.percussion.monitor.service.IPSMonitor;
-import com.percussion.monitor.service.PSMonitorService;
-import com.percussion.share.data.PSMapWrapper;
 import org.junit.experimental.categories.Category;
 
 import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
 
 @Category(IntegrationTest.class)
 public class PSMonitorServiceTest {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,7 +30,6 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.ui.service.IPSUiService;
 import com.percussion.user.service.IPSUserService;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -48,8 +47,12 @@ public class PSDesignPathItemService extends PSDispatchingPathService
     private IPSRecycleService recycleService;
 
     /**
-     * @param pathRegistry
+     *
+     * @param folderHelper
      * @param uiService
+     * @param userService
+     * @param defaultListViewHelper
+     * @param recycleService
      */
     public PSDesignPathItemService(IPSFolderHelper folderHelper,
             IPSUiService uiService, IPSUserService userService,
@@ -72,8 +75,7 @@ public class PSDesignPathItemService extends PSDispatchingPathService
     }
 
     @Override
-    protected PSPathItem findRoot()
-    {
+    protected PSPathItem findRoot() throws PSPathNotFoundServiceException {
         PSPathItem root = new PSPathItem();
         root.setName(rootName);
         root.setPath("/");
@@ -83,8 +85,7 @@ public class PSDesignPathItemService extends PSDispatchingPathService
         return root;
     }
     
-    protected String getFullFolderPath(String path)
-    {
+    protected String getFullFolderPath(String path) throws PSPathNotFoundServiceException {
         PSPathUtils.validatePath(path);
         
         String fullFolderPath = getRootFolderPath();

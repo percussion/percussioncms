@@ -17,25 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer.helpers.impl;
-
-import static java.util.Arrays.asList;
 
 import com.percussion.pagemanagement.data.IPSHtmlMetadata;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSWidgetItem;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.impl.PSPageManagementUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.sitemanage.data.PSSiteImportCtx;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import static java.util.Arrays.asList;
 
 /**
  * @author LucasPiccoli
@@ -64,8 +64,7 @@ public class PSTemplateExtractorHelper extends PSGenericMetadataExtractorHelper
      * @see com.percussion.sitemanage.importer.helpers.impl.PSGenericMetadataExtractorHelper#getTargetItem(com.percussion.sitemanage.data.PSSiteImportCtx)
      */
     @Override
-    protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context)
-    {
+    protected IPSHtmlMetadata getTargetItem(PSSiteImportCtx context) throws PSDataServiceException {
         // Load site's home page template
         return templateService.load(context.getTemplateId());
     }
@@ -74,8 +73,7 @@ public class PSTemplateExtractorHelper extends PSGenericMetadataExtractorHelper
      * @see com.percussion.sitemanage.importer.helpers.impl.PSGenericMetadataExtractorHelper#addHtmlWidgetToTemplate(com.percussion.sitemanage.data.PSSiteImportCtx)
      */
     @Override
-    protected void addHtmlWidgetToTemplate(PSSiteImportCtx context)
-    {
+    protected void addHtmlWidgetToTemplate(PSSiteImportCtx context) throws PSDataServiceException {
         // Load site's home page template
         PSTemplate template = templateService.load(context.getTemplateId());
         
@@ -99,8 +97,7 @@ public class PSTemplateExtractorHelper extends PSGenericMetadataExtractorHelper
      * @see com.percussion.sitemanage.importer.helpers.impl.PSGenericMetadataExtractorHelper#saveTargetItem(com.percussion.pagemanagement.data.IPSHtmlMetadata)
      */
     @Override
-    protected void saveTargetItem(IPSHtmlMetadata targetItem)
-    {
+    protected void saveTargetItem(IPSHtmlMetadata targetItem) throws PSDataServiceException {
         // targetItem is a PSTemplate object here
         templateService.save((PSTemplate) targetItem);       
     }

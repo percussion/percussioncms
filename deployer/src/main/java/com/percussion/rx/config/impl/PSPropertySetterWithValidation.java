@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,8 +27,9 @@ import com.percussion.rx.config.IPSConfigHandler.ObjectState;
 import com.percussion.rx.config.IPSPropertySetter;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigValidation;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.services.error.PSNotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +59,7 @@ public class PSPropertySetterWithValidation extends PSSimplePropertySetter
       
       try
       {
-         List<PSConfigValidation> result = new ArrayList<PSConfigValidation>();
+         List<PSConfigValidation> result = new ArrayList<>();
          for (Map.Entry<String, Object> prop : properties.entrySet())
          {
             List<PSConfigValidation> subResult = validate(objName, state, prop
@@ -91,13 +92,12 @@ public class PSPropertySetterWithValidation extends PSSimplePropertySetter
     * <code>null</code> if there is no error or warning.
     */
    protected List<PSConfigValidation> validate(String objName, ObjectState state,
-         String propName, Object propValue, Object otherValue)
-   {
+         String propName, Object propValue, Object otherValue) throws PSNotFoundException {
       return Collections.emptyList();
    }
    
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSPropertySetterWithValidation");   
+   private static final Logger ms_log = LogManager.getLogger("PSPropertySetterWithValidation");
 }

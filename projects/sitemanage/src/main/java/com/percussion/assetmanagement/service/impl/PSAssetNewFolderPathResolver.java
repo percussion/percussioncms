@@ -17,17 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.assetmanagement.service.impl;
-
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.Collection;
-import java.util.List;
 
 import com.percussion.assetmanagement.service.impl.PSAssetNewFolderPathResolver.PSResolvedFolderPath.PSResolvedFolderPathType;
 import com.percussion.pagemanagement.data.PSPageSummary;
@@ -35,8 +29,16 @@ import com.percussion.pagemanagement.service.IPSPageService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.share.dao.PSFolderPathUtils;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Resolves what the folder path should be for an asset that is to be associated
@@ -67,7 +69,7 @@ public class PSAssetNewFolderPathResolver
      * @param asset The asset to be associated with the owner.
      * @return the resolved path.
      */
-    public PSResolvedFolderPath resolveFolderPath(IPSItemSummary owner, IPSItemSummary asset) {
+    public PSResolvedFolderPath resolveFolderPath(IPSItemSummary owner, IPSItemSummary asset) throws IPSDataService.DataServiceLoadException, PSValidationException, IPSDataService.DataServiceNotFoundException {
         List<String> assetPaths = asset.getFolderPaths();
         
         if (IPSTemplateService.TPL_CONTENT_TYPE.equals(owner.getType())) {

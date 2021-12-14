@@ -17,14 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.notification.filemonitor.impl;
-
-import java.lang.String;
-import java.lang.Thread;
 
 public abstract class PSIntervalThread implements Runnable {
 
@@ -107,7 +104,7 @@ public abstract class PSIntervalThread implements Runnable {
                 Thread.sleep(interval);
 
             } catch (InterruptedException e) {
-                //Ignore
+                Thread.currentThread().interrupt();
             }
         }
     }

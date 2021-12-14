@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,8 +32,8 @@ import org.apache.commons.imaging.common.bytesource.ByteSourceInputStream;
 import org.apache.commons.imaging.formats.jpeg.JpegImageParser;
 import org.apache.commons.imaging.formats.jpeg.segments.Segment;
 import org.apache.commons.imaging.formats.jpeg.segments.UnknownSegment;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.color.ColorSpace;
@@ -54,7 +54,7 @@ import java.util.List;
 @Deprecated
 public final class ImageReader
 {
-   private static final Log LOG = LogFactory.getLog(ImageReader.class);
+   private static final Logger LOG = LogManager.getLogger(ImageReader.class);
 
    public static final class ImageReaderException extends Exception
    {

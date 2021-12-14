@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -59,7 +59,7 @@
                         }
                         if("undefined" !== typeof (urlstring.query))
                         {
-                            this.settings.query = $.parseJSON(urlstring.query);
+                            this.settings.query = JSON.parse(urlstring.query);
                         }
                         if("undefined" !== typeof (options.orderBy) && "undefined" !== typeof (this.settings.query) && null !== this.settings.query)
                         {
@@ -133,7 +133,7 @@
                 }
                 el.append(createTitleHtml(this.settings, numEntries));
                 el.append($("<div/>").addClass("perc-result-divider"));
-                if(0 < this.results.length)
+                if(typeof this.results !== 'undefined' && this.results.length >0)
                 {
                     for(var c = 0; c < this.results.length; c++)
                     {
@@ -188,12 +188,13 @@
         var pageItem = $("<div/>").addClass('perc-result-page-item');
         var locale = settings.locale;
         //Page title
-        var title = ("undefined" === typeof (entry["linktext"])) ? "" : entry["linktext"];
+        var title = ("undefined" === typeof (entry.linktext)) ? "" : entry.linktext;
         pageItem.append($("<h3/>")
                         .addClass("perc-result-page-title")
                         .text(title)
                         .css("cursor", "pointer")
-                        .click(function(){window.location = pagePath})
+                        .on("click", function(){window.location = pagePath;
+                        })
         );
 
         //Page date
@@ -260,7 +261,7 @@
 				var data = $el.attr("data-query");
 				if('string' === typeof (data) && 0 < data.length)
 				{
-					var dataObj = $.parseJSON(data);
+					var dataObj = JSON.parse(data);
 				}
 				else
 				{

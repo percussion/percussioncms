@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -116,7 +116,7 @@
         function isResponsiveBaseTemplate()
         {
             if(templObj === undefined){
-               return false;
+                return false;
             }
             var srcTpl = templObj.Template.sourceTemplateName;
             return srcTpl.indexOf("perc.resp.") === 0;
@@ -197,10 +197,9 @@
                     }
 
                     callback();
-                });
 
+                });
                 $.PercNavigationManager.setTemplateModel(modelObject);
-                // } JGA
             });
         }
 
@@ -296,7 +295,7 @@
                 data.text = function()
                 {
                     return "No Theme has been selected.";
-                }
+                };
                 callback(false, data);
             }
         }
@@ -380,9 +379,9 @@
 
                         var memento = {'templateId' : gSelectTemp, 'pageId' : null};
                         // Use the PercNavigationManager to switch to the template editor
-                        var querystring = $j.deparam.querystring();
-                        $j.PercNavigationManager.goToLocation(
-                            $j.PercNavigationManager.VIEW_EDIT_TEMPLATE,
+                        var querystring = $.deparam.querystring();
+                        $.PercNavigationManager.goToLocation(
+                            $.PercNavigationManager.VIEW_EDIT_TEMPLATE,
                             querystring.site,
                             null,
                             null,
@@ -405,9 +404,12 @@
 
         function getWidgetContentTypes (widgetid)
         {
-            return widgetContentTypes[ widgetid ];
+            if(Array.isArray(widgetContentTypes[ widgetid ])){
+                return widgetContentTypes[ widgetid ][0];
+            }else{
+                return widgetContentTypes[ widgetid ];
+            }
         }
-
         function getWidgetPrefs (widgetDefId)
         {
             return widgetPrefs[ widgetDefId ];
@@ -443,7 +445,7 @@
                     });
                 }
 
-            }
+            };
             //If asset exists check it out.
             if(assetId)
             {
@@ -766,7 +768,7 @@
             $.PercBlockUI($.PercBlockUIMode.CURSORONLY);
             frame.contents().remove();
             frame.attr("src", renderPath);
-            frame.unbind().load(function()
+            frame.off().on("load",function()
             {
                 loadAssetDropCriteria(function(){
                     loadPageAssetDropCriteria(function(){
@@ -860,19 +862,19 @@
 
         // parse region height
         var height = openTag.match( /height[^:]*:([^;]*);/ );
-        height = height ? $.trim(height[1]) : "";
+        height = height ? height[1].trim() : "";
 
         // parse region width
         var width = openTag.match( /width[^:]*:([^;]*);/ );
-        width = width ? $.trim(width[1]) : "";
+        width = width ? width[1].trim() : "";
 
         // parse region padding
         var padding = openTag.match( /padding[^:]*:([^;]*);/ );
-        padding = padding? $.trim(padding[1]):"";
+        padding = padding? padding[1].trim():"";
 
         // parse region margin
         var margin = openTag.match( /margin[^:]*:([^;]*);/ );
-        margin = margin? $.trim(margin[1]):"";
+        margin = margin? margin[1].trim():"";
 
         // parse region noAutoResize - try the legacy invalid HTML attribute 1st
         var noAutoResize = $(openTag).attr("noAutoResize");
@@ -893,9 +895,9 @@
 
         // parse default styling
         var vspan = openTag.match( /vspan_[0-9]*/ );
-        vspan = vspan ? $.trim(vspan[0]):"";
+        vspan = vspan ? vspan[0].trim():"";
         var hspan = openTag.match( /hspan_[0-9]*/ );
-        hspan = hspan ? $.trim(hspan[0]):"";
+        hspan = hspan ? hspan[0].trim():"";
 
         // recursively parse child regions
         var subTrees = $.grep( tree.children, function(c){ return c._tagName == 'region'; } );
@@ -907,7 +909,7 @@
 
         return region;
 
-    }
+    };
     P.respRegionsFromTree = function(tree, regionWidgetAssociations, owner){
         // parse the widgets from the regionWidgetAssociation branch
         // so we can copy them over to the region's widget's property
@@ -930,18 +932,18 @@
 
         // parse number of columns
         var large = openTag.match( /large-[0-9]*/ );
-        large = large? $.trim(large[0]):"";
+        large = large? large[0].trim():"";
 
         // parse region padding
         var padding = openTag.match( /padding[^:]*:([^;]*);/ );
-        padding = padding? $.trim(padding[1]):"";
+        padding = padding? padding[1].trim():"";
 
         // parse region margin
         var margin = openTag.match( /margin[^:]*:([^;]*);/ );
-        margin = margin? $.trim(margin[1]):"";
+        margin = margin? margin[1].trim():"";
 
         // recursively parse child regions
-        var subTrees = $.grep( tree.children, function(c){ return c._tagName == 'region'; } );
+        var subTrees = $.grep( tree.children, function(c){ return c._tagName === 'region'; } );
         var subRegions = $.map( subTrees, function(r){ return P.respRegionsFromTree( r, regionWidgetAssociations, owner ); });
         subRegions = subRegions ? subRegions : [];
 
@@ -950,7 +952,7 @@
 
         return region;
 
-    }
+    };
     // At load time, parse widgetItem and its properties into widget model
     P.widgetFromWidgetItem = function( widgetItem ) {
         var properties = [];
@@ -1004,13 +1006,12 @@
                     region.width += "px";
                 startTag +='width:'+region.width+';';
             }
-            startTag += padding + margin
-                + '"'
+            startTag += padding + margin + '"';
         }
 
-        startTag += ' class="' + modelObject.encodeHtml(('perc-region'+leaf+noAutoResize+fixed+direction+hspan+vspan+cssClass).replace(/\s\s+/g, ' ')) +'" '
-            +  ' data-noautoresize="'+modelObject.encodeHtml(region.noAutoResize) + '" id="'+modelObject.encodeHtml(region.regionId)+'">'
-            +  ' <div class="'+modelObject.encodeHtml(direction)+'"';
+        startTag += ' class="' + modelObject.encodeHtml(('perc-region'+leaf+noAutoResize+fixed+direction+hspan+vspan+cssClass).replace(/\s\s+/g, ' ')) +'" ' +
+            ' data-noautoresize="'+modelObject.encodeHtml(region.noAutoResize) + '" id="'+modelObject.encodeHtml(region.regionId)+'">' +
+            ' <div class="'+modelObject.encodeHtml(direction)+'"';
 
         var treeAttributes = [];
         if( region.attributes ) {
@@ -1067,12 +1068,11 @@
         var startTag = '<div ';
         if(region.padding || region.margin) {
             startTag += 'style="';
-            startTag += padding + margin
-                + '"'
+            startTag += padding + margin  + '"';
         }
 
-        startTag += ' class="perc-region'+modelObject.encodeHtml(leaf+row+columns+large+cssClass)+'" '
-            + 'id="'+modelObject.encodeHtml(region.regionId)+'"';
+        startTag += ' class="perc-region'+modelObject.encodeHtml(leaf+row+columns+large+cssClass)+'" ' +
+            'id="'+modelObject.encodeHtml(region.regionId)+'"';
 
 
         var treeAttributes = [];
@@ -1167,6 +1167,6 @@
         this.afterBodyStartContent = afterBodyStartContent;
         this.protectedRegion = protectedRegion;
         this.protectedRegionText = protectedRegionText;
-    }
+    };
 
 })(jQuery, jQuery.Percussion);

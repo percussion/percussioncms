@@ -17,28 +17,27 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rxfix.dbfixes;
 
+import com.percussion.rxfix.IPSFix;
+import com.percussion.util.PSPreparedStatement;
+import com.percussion.utils.jdbc.PSConnectionHelper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import javax.naming.NamingException;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
-import com.percussion.rxfix.IPSFix;
-import com.percussion.util.PSPreparedStatement;
-import com.percussion.utils.jdbc.PSConnectionHelper;
 
 /***
  * Fix Allowed Sites folder properties that reference sites that do not exist on this system.  This is cleanup for bug:
@@ -57,7 +56,7 @@ public class PSFixAllowedSitePropertiesWithBadSites extends PSFixDBBase implemen
    /**
     * The log4j logger used for this class.
     */
-   private static Logger log = Logger.getLogger(PSFixAllowedSitePropertiesWithBadSites.class);
+   private static final Logger log = LogManager.getLogger(PSFixAllowedSitePropertiesWithBadSites.class);
 
    public PSFixAllowedSitePropertiesWithBadSites() throws NamingException, SQLException
    {
@@ -127,7 +126,7 @@ public class PSFixAllowedSitePropertiesWithBadSites extends PSFixDBBase implemen
             {
                correctCount++;
                masterCopy.remove(site);
-               log.warn("Allowed Site reference to invalid Site " + site + " detected.");
+               log.warn("Allowed Site reference to invalid Site {} detected.", site);
             }
          
             if(!preview){
@@ -138,7 +137,7 @@ public class PSFixAllowedSitePropertiesWithBadSites extends PSFixDBBase implemen
                update.setInt(5, sysId);
                
                update.executeUpdate();
-               log.info("Removed invalid Site references on Folder " + contentId);
+               log.info("Removed invalid Site references on Folder {}", contentId);
             }else{
                logPreview(Integer.toString(contentId),"Would remove invalid Site from folder.");
             }

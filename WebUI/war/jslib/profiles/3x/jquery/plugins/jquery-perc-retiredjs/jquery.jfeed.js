@@ -23,7 +23,7 @@ jQuery.getFeed = function(options) {
             dataType: 'xml',
             success: function(xml) {
                 var feed = new JFeed(xml);
-                if(jQuery.isFunction(options.success)) options.success(feed);
+                if(typeof options.success === "function") options.success(feed);
             }
         });
     }

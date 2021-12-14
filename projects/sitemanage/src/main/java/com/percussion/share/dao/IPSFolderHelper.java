@@ -17,21 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
-import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.pathmanagement.data.PSFolderPermission;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.data.PSPathItem;
+import com.percussion.pathmanagement.service.IPSPathService;
+import com.percussion.security.SecureStringUtils;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemProperties;
+import com.percussion.share.service.IPSDataService;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
 import com.percussion.webservices.PSErrorException;
@@ -173,9 +178,9 @@ public interface IPSFolderHelper {
      * 
      * @return the item, never <code>null</code>.
      */
-    public PSPathItem findItemById(String id);
+    public PSPathItem findItemById(String id) throws IPSDataService.DataServiceLoadException, PSValidationException, PSNotFoundException;
 
-    public PSPathItem findItemById(String id, String relationshipTypeName);
+    public PSPathItem findItemById(String id, String relationshipTypeName) throws IPSDataService.DataServiceLoadException, PSValidationException, PSNotFoundException;
     
     /**
      * Gets the parent folder ID for the specified item.
@@ -184,7 +189,7 @@ public interface IPSFolderHelper {
      * 
      * @return the folder ID, never <code>null</code>.
      */
-    public IPSGuid getParentFolderId(IPSGuid itemId);
+    public IPSGuid getParentFolderId(IPSGuid itemId) throws PSValidationException;
 
     /**
      * Gets the parent folder ID for the specified item.
@@ -197,7 +202,7 @@ public interface IPSFolderHelper {
      * and cannot find the parent folder; otherwise it can never be <code>null</code> if 
      * <code>isRequired</code> is <code>true</code>.
      */
-    public IPSGuid getParentFolderId(IPSGuid itemId, boolean isRequired);
+    public IPSGuid getParentFolderId(IPSGuid itemId, boolean isRequired) throws PSValidationException;
 
     /**
      * Sets the access level to the specified item. The ACL is calculated according 
@@ -209,7 +214,7 @@ public interface IPSFolderHelper {
      * @return the item which contains the access level for the current user, 
      * never <code>null</code>.
      */
-    public PSPathItem setFolderAccessLevel(PSPathItem item);
+    public PSPathItem setFolderAccessLevel(PSPathItem item) throws PSValidationException, PSNotFoundException;
 
     /**
      * Sets the access level for current user to the specified items (siblings).
@@ -227,7 +232,7 @@ public interface IPSFolderHelper {
      * @param path never <code>null</code> or empty.
      * @return never <code>null</code>.
      */
-    public PathTarget pathTarget(String path);
+    public PathTarget pathTarget(String path) throws IPSDataService.DataServiceNotFoundException;
 
     /**
      * {@link #pathTarget(String)}
@@ -238,12 +243,12 @@ public interface IPSFolderHelper {
      *                      type is used or not.
      * @return never <code>null</code>.
      */
-    public PathTarget pathTarget(String path, boolean shouldRecycle);
+    public PathTarget pathTarget(String path, boolean shouldRecycle) throws IPSDataService.DataServiceNotFoundException;
     
     
     /**
      * Provides a unique folder name for the given folder path and given base name.  The name is also valid for a
-     * folder, meaning any characters specified in {@link IPSConstants#INVALID_ITEM_NAME_CHARACTERS} will be removed.
+     * folder, meaning any characters specified in {@link SecureStringUtils#INVALID_ITEM_NAME_CHARACTERS} will be removed.
      * If any folder/item exists with the same base name under the supplied parent folder, returns supplied baseName-n
      * with n starting at 2.  The first name 'baseName-n' will be used with the first available n value >= 2. 
      * @param parentPath the full internal folder path, must not be blank, throws exception if it is not a valid folder 
@@ -251,7 +256,7 @@ public interface IPSFolderHelper {
      * @param baseName must not be blank and must contain at least one valid character.
      * @return String unique and valid name never blank.
      */
-    public String getUniqueFolderName(String parentPath, String baseName);
+    public String getUniqueFolderName(String parentPath, String baseName) throws IPSPathService.PSPathNotFoundServiceException;
     
        
     /**
@@ -266,7 +271,7 @@ public interface IPSFolderHelper {
      * @param skipFirstIndex whether the first index should be skipped
      * @return String  unique name never blank.
      */
-    public String getUniqueNameInFolder(String parentPath, String baseName, String suffix, int startingIndex, boolean skipFirstIndex);
+    public String getUniqueNameInFolder(String parentPath, String baseName, String suffix, int startingIndex, boolean skipFirstIndex) throws IPSPathService.PSPathNotFoundServiceException;
 
     /**
      * The target of a path.
@@ -320,10 +325,9 @@ public interface IPSFolderHelper {
          * @return never <code>null</code>.
          * @throws Exception if item does not exist.
          */
-        public IPSItemSummary getItem() throws Exception
-        {
+        public IPSItemSummary getItem() throws PSDataServiceException {
             if (item == null)
-                throw new RuntimeException("Item not found.");
+                throw new PSDataServiceException("Item not found.");
             return item;
         }
         
@@ -578,7 +582,7 @@ public interface IPSFolderHelper {
      * 
      * @return the access level, never <code>null</code>.
      */
-    public PSFolderPermission.Access getFolderAccessLevel(String id);
+    public PSFolderPermission.Access getFolderAccessLevel(String id) throws PSValidationException;
     
     /**
      * Gets the specified folder properties from its ID.
@@ -589,7 +593,7 @@ public interface IPSFolderHelper {
      * 
      * @throws PSErrorException If cannot be found the folder with the given path.
      */
-    public PSFolderProperties findFolderProperties(String id) throws PSErrorException;
+    public PSFolderProperties findFolderProperties(String id) throws PSErrorException, PSValidationException;
     
     /**
      * Saves the specified folder properties.
@@ -601,7 +605,7 @@ public interface IPSFolderHelper {
      * 
      * @param folder the folder properties, never <code>null</code>.
      */
-    public void saveFolderProperties(PSFolderProperties folder);
+    public void saveFolderProperties(PSFolderProperties folder) throws PSValidationException;
     
     /**
      * When trying to find a folder under Assets, the folders system path is

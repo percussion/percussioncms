@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,12 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.utils.xml;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.utils.guid.IPSGuid;
@@ -32,14 +35,18 @@ import org.apache.commons.betwixt.IntrospectionConfiguration;
 import org.apache.commons.betwixt.XMLIntrospector;
 import org.apache.commons.betwixt.io.BeanReader;
 import org.apache.commons.betwixt.io.BeanWriter;
-import org.apache.commons.betwixt.io.read.*;
+import org.apache.commons.betwixt.io.read.BeanCreationChain;
+import org.apache.commons.betwixt.io.read.BeanCreationList;
+import org.apache.commons.betwixt.io.read.ChainedBeanCreator;
+import org.apache.commons.betwixt.io.read.ElementMapping;
+import org.apache.commons.betwixt.io.read.ReadContext;
 import org.apache.commons.betwixt.strategy.HyphenatedNameMapper;
 import org.apache.commons.betwixt.strategy.NameMapper;
 import org.apache.commons.betwixt.strategy.PropertySuppressionStrategy;
 import org.apache.commons.betwixt.strategy.TypeBindingStrategy;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -47,7 +54,12 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.beans.IntrospectionException;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +77,7 @@ public class PSXmlSerializationHelper
    /**
     * Static for logging
     */
-   static Log ms_log = LogFactory.getLog(PSXmlSerializationHelper.class);
+   private static final Logger log = LogManager.getLogger(PSXmlSerializationHelper.class);
 
    /**
     * Static used for method lookup
@@ -371,7 +383,11 @@ public class PSXmlSerializationHelper
                   }
                   catch (Exception e)
                   {
-                     ms_log.error("Could not instantiate ", e);
+                     log.error("Could not instantiate, Error: {}",
+                             PSExceptionUtils.getMessageForLog(e));
+
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
                      throw new RuntimeException(e);
                   }
                }
@@ -516,7 +532,16 @@ public class PSXmlSerializationHelper
                "xmlsource may not be null or empty");
       }
       FindIdAttribute fia = new FindIdAttribute();
-      SAXParserFactory fact = SAXParserFactory.newInstance();
+      SAXParserFactory fact = PSSecureXMLUtils.getSecuredSaxParserFactory(
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              )
+      );
 
       try
       {
@@ -574,8 +599,9 @@ public class PSXmlSerializationHelper
       {
          // Find underlying cause Exception.
          if (e.getCause() != null) {
-            ms_log.error("Cause=",e.getCause());
+            log.error("Cause= {}, Error: {}",e.getCause(),PSExceptionUtils.getMessageForLog(e));
          }
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new RuntimeException("Error copying bean properties",e);
       }
    }

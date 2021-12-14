@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,17 +26,16 @@ package com.percussion.services.contentmgr.impl.query.visitors;
 import com.percussion.services.contentmgr.impl.PSContentUtils;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
+import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeConjunction;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
-import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.jcr.PropertyType;
 import javax.jcr.query.InvalidQueryException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class performs two functions. First, it finds properties that don't
@@ -78,7 +77,7 @@ public class PSQueryPropertyLimiter extends PSQueryNodeVisitor
          throw new IllegalArgumentException("config may not be null");
       }
       m_config = config;
-      m_props = new HashSet<String>();
+      m_props = new HashSet<>();
       m_props.addAll(m_config.getAllJSR170Properties());
    }
 

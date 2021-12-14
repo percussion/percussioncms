@@ -1,27 +1,3 @@
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
 <web-app metadata-complete="true" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
@@ -372,6 +348,20 @@
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
 
+    </filter-mapping>
+
+    <filter>
+        <filter-name>gadgetMetaParamFilter</filter-name>
+        <filter-class>com.percussion.webui.gadget.servlets.GadgetRequestCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>gadgetMetaParamFilter</filter-name>
+        <url-pattern>/cm/gadgets/metadata</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>gadgetMetaParamFilter</filter-name>
+        <url-pattern>/cm/gadgets/ifr</url-pattern>
     </filter-mapping>
 
     <listener>
@@ -1031,6 +1021,7 @@
         <url-pattern>/cm/gadgets/listing</url-pattern>
     </servlet-mapping>
 
+
     <!--
        - Axis servlet mappings
     -->
@@ -1066,4 +1057,15 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/ui/default-error.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/ui/default-error.html</location>
+    </error-page>
+
 </web-app>

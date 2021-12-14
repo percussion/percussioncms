@@ -17,12 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.testing;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -38,6 +41,9 @@ import java.util.StringTokenizer;
 
 public class TestErrorCoverage 
 {
+
+   private static final Logger log = LogManager.getLogger(TestErrorCoverage.class);
+
    /**
     * Entry point for the error coverage test program.
     * <p>
@@ -64,7 +70,8 @@ public class TestErrorCoverage
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
       }
    }
 

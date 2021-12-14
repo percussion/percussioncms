@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,6 +31,7 @@ import com.percussion.design.objectstore.PSExtensionParamValue;
 import com.percussion.design.objectstore.PSReplacementValueFactory;
 import com.percussion.design.objectstore.PSRule;
 import com.percussion.design.objectstore.PSTextLiteral;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.PSExtensionException;
@@ -61,8 +62,8 @@ import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
 import java.io.ByteArrayInputStream;
@@ -102,7 +103,6 @@ public class PSConfigUtils
     * document.
     * @return The resulting xml document. Never <code>null</code>.
     */
-   @SuppressWarnings("unchecked")
    public static Document getDocument(String url, Map extraParams,
          boolean applyStyleSheet)
    {
@@ -298,7 +298,7 @@ public class PSConfigUtils
          PSExtensionRef ref = new PSExtensionRef(extFQN);
          IPSExtensionManager emgr = PSServer.getExtensionManager(null);
          IPSExtensionDef def = emgr.getExtensionDef(ref);
-         List<String> paramNames = new ArrayList<String>();
+         List<String> paramNames = new ArrayList<>();
          CollectionUtils.addAll(paramNames, def.getRuntimeParameterNames());
          return paramNames;
       }
@@ -333,7 +333,7 @@ public class PSConfigUtils
       catch (Exception e)
       {
          String errMsg = "Failed to load: \"" + f.getAbsolutePath() + "\".";
-         ms_log.error(errMsg, e);
+         log.error(errMsg, e);
          throw new PSConfigException(errMsg, e);
       }
    }
@@ -357,7 +357,7 @@ public class PSConfigUtils
             {
                String errMsg = "Failed to create dir: \""
                      + parent.getAbsolutePath() + "\".";
-               ms_log.error(errMsg);
+               log.error(errMsg);
                throw new PSConfigException(errMsg);
             }
          }
@@ -376,7 +376,7 @@ public class PSConfigUtils
       {
          String errMsg = "Failed to save object to: \"" + f.getAbsolutePath()
                + "\".";
-         ms_log.error(errMsg, e);
+         log.error(errMsg, e);
          throw new PSConfigException(errMsg, e);
       }
    }
@@ -408,7 +408,7 @@ public class PSConfigUtils
    {
       if (conditionsIter == null)
          throw new IllegalArgumentException("conditionsIter must not be null");
-      List<Map<String, Object>> conds = new ArrayList<Map<String, Object>>();
+      List<Map<String, Object>> conds = new ArrayList<>();
       while(conditionsIter.hasNext())
       {
          conds.add(getRuleDef((PSRule)conditionsIter.next()));
@@ -485,7 +485,7 @@ public class PSConfigUtils
 
    private static Map<String, Object> getRuleDef(PSRule rule)
    {
-      Map<String, Object> map = new HashMap<String, Object>();
+      Map<String, Object> map = new HashMap<>();
       if(rule.isExtensionSetRule())
       {
          map.put(PROP_TYPE, TYPE_EXTENSION);
@@ -506,10 +506,10 @@ public class PSConfigUtils
    
    private static List<Map<String, String>> createConditionalRuleDef(Iterator rulesIter)
    {
-      List<Map<String, String>> rulesDef = new ArrayList<Map<String,String>>();
+      List<Map<String, String>> rulesDef = new ArrayList<>();
       while(rulesIter.hasNext())
       {
-         Map<String, String> map = new HashMap<String, String>();
+         Map<String, String> map = new HashMap<>();
          PSConditional condRule = (PSConditional) rulesIter.next();
          String var1 = condRule.getVariable().getValueDisplayText();
          String var2 = condRule.getValue().getValueDisplayText();
@@ -584,9 +584,9 @@ public class PSConfigUtils
    public static Map<String, Object> getExtensionCallDef(PSExtensionCall call,
          String propName)
    {
-      Map<String, Object> map = new HashMap<String, Object>();
+      Map<String, Object> map = new HashMap<>();
       map.put(propName, call.getExtensionRef().getFQN());
-      List<String> params = new ArrayList<String>();
+      List<String> params = new ArrayList<>();
       PSExtensionParamValue[] paramVals = call.getParamValues();
       for (PSExtensionParamValue value : paramVals)
       {
@@ -642,7 +642,8 @@ public class PSConfigUtils
       }
       catch (PSExtensionException e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       if (extRef == null)
       {
@@ -651,7 +652,7 @@ public class PSConfigUtils
          Object[] args = { name };
          throw new PSConfigException(MessageFormat.format(msg, args));
       }
-      List<PSExtensionParamValue> paramValues = new ArrayList<PSExtensionParamValue>();
+      List<PSExtensionParamValue> paramValues = new ArrayList<>();
       if (params != null)
       {
          for (String param : params)
@@ -711,7 +712,7 @@ public class PSConfigUtils
     */
    public static Map getReverseMap(Map<String,String> map)
    {
-      Map<String,String> revMap = new HashMap<String,String>();
+      Map<String,String> revMap = new HashMap<>();
       Iterator i = map.entrySet().iterator();
       while(i.hasNext())
       {
@@ -724,7 +725,7 @@ public class PSConfigUtils
    /**
     * The logger for this class
     */
-   static Log ms_log = LogFactory.getLog("PSConfigUtils");
+   private static final Logger log = LogManager.getLogger(PSConfigUtils.class);
 
    // Constants for property names
    public static final String PROP_NAME = "name";

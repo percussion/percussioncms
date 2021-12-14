@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,16 +30,22 @@ import com.percussion.HTTPClient.HTTPResponse;
 import com.percussion.HTTPClient.ModuleException;
 import com.percussion.HTTPClient.NVPair;
 import com.percussion.HTTPClient.ProtocolNotSuppException;
-
-import com.percussion.tools.Logger;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSCryptographer;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.tools.PSHttpRequest;
 import com.percussion.util.IOTools;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSCryptographer;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -48,6 +54,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,10 +70,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
-
 /**
  * When run as a program, this class takes a set of XML files and sends them to
  * as a POST to the Rhythmyx server. The user can specify the URL to use, the
@@ -75,6 +78,7 @@ import org.xml.sax.SAXException;
  *
  * <p>Note: currently, all updates are assumed to be inserts.
  */
+@Deprecated
 public class XmlUploader
 {
    /**
@@ -109,26 +113,23 @@ public class XmlUploader
          propsFilename = Utils.DEFAULT_PROPERTY_FILENAME;
       propsFilename = propsFilename.trim();
       File propsFile = new File(propsFilename);
-      ms_logger.logStreamMessage( "[Init] Using property file "
-         + propsFile.getAbsolutePath());
+      log.info( "[Init] Using property file {}", propsFile.getAbsolutePath());
 
       if (propsFile.isFile())
       {
-         try
-         {
-            m_properties.load( new BufferedInputStream( new FileInputStream(
-               propsFile )));
+        try(FileInputStream fis = new FileInputStream(propsFile ) ){
+           try(BufferedInputStream bis = new BufferedInputStream( fis)) {
+              m_properties.load(bis);
+           }
          }
          catch (IOException ioe)
          {
-            ms_logger.logMessage("Failed to load properties file \"" +
-               propsFile.getAbsolutePath() + "\". Using defaults.");
+            log.info("Failed to load properties file \"{}\". Using defaults.", propsFile.getAbsolutePath());
          }
       }
       else
       {
-         ms_logger.logMessage("Properties file \"" + propsFile.getAbsolutePath() +
-            "\" does not exist. Using defaults.");
+         log.info("Properties file \"{}\" does not exist. Using defaults.", propsFile.getAbsolutePath());
       }
 
       // set debugging state, presence of switch enables debugging output
@@ -146,13 +147,9 @@ public class XmlUploader
       if (args.containsKey(Utils.TIMEOUT_OPTION))
       {
          Integer timeout = new Integer((String) args.get(Utils.TIMEOUT_OPTION));
-         m_timeout = timeout.intValue() * 1000; // Convert to millis
+         m_timeout = timeout * 1000; // Convert to millis
       }
-
-      ms_logger.enableDebuggingOutput(m_debug);
-      if (m_debug)
-         ms_logger.logStreamMessage("Debugging output is enabled");
-
+      
       // get the log file
       String logFilename = (String) args.get( Utils.LOGFILE_OPTION );
       if ((logFilename == null) || (logFilename.trim().length() == 0))
@@ -165,17 +162,16 @@ public class XmlUploader
          File logFile = new File(logFilename);
          try
          {
-            if (!logFile.isFile())
+            if (!logFile.isFile()) {
                logFile.createNewFile();
-            ms_logger.setOutputFile(logFile);
-            ms_logger.logStreamMessage( "[Init] Logging to "
-               + logFile.getAbsolutePath());
+            }
+            
+            log.info( "[Init] Logging to {}", logFile.getAbsolutePath());
          }
          catch (IOException e)
          {
-            ms_logger.logStreamMessage( "Failed to open log file \""
-               + logFile.getAbsolutePath()
-               + "\". Messages will not be logged.");
+            log.info( "Failed to open log file \"{}\". Messages will not be logged.", logFile.getAbsolutePath());
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
 
@@ -194,7 +190,9 @@ public class XmlUploader
             m_rxPort = Integer.parseInt(port);
          }
          catch (NumberFormatException e)
+
          {
+
             throw new IllegalArgumentException( "Invalid port number: " + port );
          }
       }
@@ -230,18 +228,31 @@ public class XmlUploader
                   if (encrypted.trim().equalsIgnoreCase(String.valueOf(true)))
                   {
                      // need to decrypt the password
-                     try
-                     {
+                     try{
                         try {
-                           PSEncryptor.getInstance().decrypt(m_loginPwd);
-                        }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                           m_loginPwd = PSCryptographer.decrypt(
-                                   PSLegacyEncrypter.OLD_SECURITY_KEY(),
-                                   m_loginId, m_loginPwd);
+                           m_loginPwd = PSEncryptor.decryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propsFile.getAbsolutePath(), Utils.RX_PWD_KEY, m_loginPwd);
+                        }catch (PSEncryptionException pe) {
+                           try {
+                              m_loginPwd = PSEncryptor.decryptWithOldKey(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),m_loginPwd);
+                           } catch (PSEncryptionException | java.lang.IllegalArgumentException e) {
+                              m_loginPwd = PSCryptographer.decrypt(
+                                      PSLegacyEncrypter.getInstance(PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)).OLD_SECURITY_KEY(),
+                                      m_loginId, m_loginPwd);
+
+                           }
+                           try {
+                              //Try to encrypt password with new key, if fails set decoded password
+                              m_properties.setProperty("loginPw", PSEncryptor.encryptProperty(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),propsFile.getAbsolutePath(), "loginPw", m_loginPwd));
+                           } catch (PSEncryptionException psEncryptionException) {
+                              m_properties.setProperty("loginPw", m_loginPwd);
+                          }
+                           m_properties.store(new FileOutputStream(propsFile), null);
                         }
                      }
+
                      catch (Exception e)
                      {
+
                         throw new RuntimeException("Failed to decrypt password.");
                      }
                   }
@@ -321,7 +332,7 @@ public class XmlUploader
          Map args = Utils.parseCmdParams( params, true, filenames );
 
          if ( null == args || args.containsKey( Utils.HELP_OPTION ) ||
-            ( !args.containsKey( Utils.FILE_OPTION ) &&  filenames.size() < 1 ))
+            ( !args.containsKey( Utils.FILE_OPTION ) &&  filenames.isEmpty()))
          {
             usage();
             //Our launcher requires a pause
@@ -347,7 +358,7 @@ public class XmlUploader
               String urlLine = urlReader.readLine();
               while (urlLine != null)
               {
-                 ms_logger.logMessage("Processing URL: " + urlLine);
+                 log.info("Processing URL: {}", urlLine);
                  if(isHttpURL(urlLine))
                  {
                     list.add( uploader.new UrlContent( new URL(urlLine)));
@@ -371,7 +382,7 @@ public class XmlUploader
                String firstName = (String) filenames.get(0);
                if ( firstName.indexOf('*') >= 0 || firstName.indexOf('?') >= 0 )
                {
-                  ms_logger.logStreamMessage( "No files to process." );
+                  log.info( "No files to process." );
                   System.exit( Utils.SUCCESS );
                }
 
@@ -392,38 +403,39 @@ public class XmlUploader
 
          Date startTime = new Date();
          stats = uploader.process( sources );
-         stats.startTime = startTime;;
+         stats.startTime = startTime;
          stats.finishTime = new Date();
 
       }
-   catch ( FileNotFoundException e )
+      catch ( FileNotFoundException e )
       {
-         ms_logger.logMessage("[Main] " + e.getLocalizedMessage());
+         log.info("[Main] {}", e.getLocalizedMessage());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_CLASS_NOT_FOUND;
       }
       catch ( MalformedURLException e )
       {
-         ms_logger.logMessage( "[Main] Improperly formed URL: " +
-            e.getLocalizedMessage());
+         log.info( "[Main] Improperly formed URL: {}", e.getLocalizedMessage());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_IO;
       }
       catch ( IOException e )
       {
-         ms_logger.logStreamMessage( "[Main] An IO error occurred: " +
-            e.getLocalizedMessage());
+         log.info( "[Main] An IO error occurred: {}", e.getLocalizedMessage());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_IO;
       }
       catch ( IllegalArgumentException e )
       {
-         ms_logger.logStreamMessage( "[Main] An Illegal argument exception was thrown: " +
-            e.getLocalizedMessage());
+         log.info( "[Main] An Illegal argument exception was thrown: {}", e.getLocalizedMessage());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          status = Utils.ERROR_UNKNOWN; // a design flaw exists, so it's not really important to the batch program
       }
-      catch ( Throwable t )
+      catch ( Exception e )
       {
-         ms_logger.logMessage( "[Main] Unexpected exception: " +
-            t.getLocalizedMessage());
-         t.printStackTrace( ms_logger.getOutputStream());
+         log.info( "[Main] Unexpected exception: {}",PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
          status = Utils.ERROR_UNKNOWN;
       }
       finally
@@ -446,19 +458,19 @@ public class XmlUploader
     */
    public static void usage()
    {
-      ms_logger.logStreamMessage( "Usage: java com.percussion.uploader.XmlUploader" +
+      log.info( "Usage: java com.percussion.uploader.XmlUploader" +
          " options sources(s)" );
-      ms_logger.logStreamMessage( "Where the possible options are (optional ones in []):" );
-      ms_logger.logStreamMessage( "    [-" + Utils.PROPERTYFILE_OPTION + " propertyFile]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.LOGINID_OPTION + " loginid]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.LOGINPWD_OPTION + " password]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.COMMUNITYID_OPTION + " community id/name]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.LOGFILE_OPTION + " logFile]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.DEBUG_OPTION + "]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.FILE_OPTION + " URLListFile]" );
-      ms_logger.logStreamMessage( "    [-" + Utils.TIMEOUT_OPTION + " TimeInSeconds]");
-      ms_logger.logStreamMessage( "    -" + Utils.REQUESTURL_OPTION + " requestUrl (e.g. /Rhythmyx/application/resource.htm?...)" );
-      ms_logger.logStreamMessage( "source(s) is either a list of files or a list of http URLs" );
+      log.info( "Where the possible options are (optional ones in []):" );
+      log.info( "    [-{} propertyFile]", Utils.PROPERTYFILE_OPTION);
+      log.info( "    [-{} loginid]", Utils.LOGINID_OPTION);
+      log.info( "    [-{} password]", Utils.LOGINPWD_OPTION);
+      log.info( "    [-{} community id/name]", Utils.COMMUNITYID_OPTION);
+      log.info( "    [-{} logFile]", Utils.LOGFILE_OPTION);
+      log.info( "    [-{} debug]", Utils.DEBUG_OPTION);
+      log.info( "    [-{} URLListFile]", Utils.FILE_OPTION);
+      log.info( "    [-{} TimeInSeconds]", Utils.TIMEOUT_OPTION);
+      log.info( "    [-{} requestUrl] (e.g. /Rhythmyx/application/resource.htm?...)", Utils.REQUESTURL_OPTION);
+      log.info( "source(s) is either a list of files or a list of http URLs" );
 
    }
 
@@ -473,7 +485,7 @@ public class XmlUploader
     */
    private String getResourceUrl()
    {
-      StringBuffer urlBuf = new StringBuffer(m_requestUrl);
+      StringBuilder urlBuf = new StringBuilder(m_requestUrl);
 
       // add the html parameter "DBActionType" if not present in the URL
       String actionType = m_properties.getProperty( Utils.RX_ACTIONTYPE_KEY,
@@ -494,7 +506,7 @@ public class XmlUploader
                bAddActionType = false;
       }
 
-      StringBuffer appendBuf = new StringBuffer();
+      StringBuilder appendBuf = new StringBuilder();
       if (bAddActionType)
          appendBuf.append(htmlActionParam + "=" + actionType);
 
@@ -546,40 +558,39 @@ public class XmlUploader
          int status = resp.getStatusCode();
          if (status == Utils.HTTP_STATUS_OK)
          {
-            Document response = PSXmlDocumentBuilder.createXmlDocument(
-               resp.getInputStream(), false);
+            try(InputStream is = resp.getInputStream()) {
+               Document response = PSXmlDocumentBuilder.createXmlDocument(
+                       is, false);
 
-            // check the flag so we don't do the work unless we need to
-            if (m_debug)
-            {
-               StringWriter sw = new StringWriter();
-               PSXmlDocumentBuilder.write(response, sw);
-               ms_logger.logMessage(sw.toString());
-               ms_logger.logMessage("\n");
-            }
-
-            int firstFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN |
-               PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
-            int nextFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS |
-               PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
-
-            PSXmlTreeWalker walker = new PSXmlTreeWalker(response);
-            Element elCommunity = walker.getNextElement(
-               Utils.EL_COMMUNITY, firstFlags);
-
-
-            while (elCommunity != null)
-            {
-               String communityName = walker.getElementData(elCommunity);
-               String commId = elCommunity.getAttribute(Utils.ATTR_COMMID);
-               if ((m_communityId.equalsIgnoreCase(communityName)) ||
-                  (m_communityId.equalsIgnoreCase(commId)))
-               {
-                  communityId = Integer.parseInt(commId);
-                  return communityId;
+               // check the flag so we don't do the work unless we need to
+               if (m_debug) {
+                  StringWriter sw = new StringWriter();
+                  PSXmlDocumentBuilder.write(response, sw);
+                  log.info(sw.toString());
+                  log.info("\n");
                }
-               elCommunity = walker.getNextElement(Utils.EL_COMMUNITY,
-                  nextFlags);
+
+               int firstFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN |
+                       PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
+               int nextFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS |
+                       PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
+
+               PSXmlTreeWalker walker = new PSXmlTreeWalker(response);
+               Element elCommunity = walker.getNextElement(
+                       Utils.EL_COMMUNITY, firstFlags);
+
+
+               while (elCommunity != null) {
+                  String communityName = walker.getElementData(elCommunity);
+                  String commId = elCommunity.getAttribute(Utils.ATTR_COMMID);
+                  if ((m_communityId.equalsIgnoreCase(communityName)) ||
+                          (m_communityId.equalsIgnoreCase(commId))) {
+                     communityId = Integer.parseInt(commId);
+                     return communityId;
+                  }
+                  elCommunity = walker.getNextElement(Utils.EL_COMMUNITY,
+                          nextFlags);
+               }
             }
          }
          else
@@ -589,7 +600,8 @@ public class XmlUploader
       }
       catch (Exception e)
       {
-         ms_logger.logMessage("Exception : " + e.getLocalizedMessage());
+         log.info("Exception : {}", e.getLocalizedMessage());
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          communityId = -1;
       }
       if (communityId == 0)
@@ -599,7 +611,7 @@ public class XmlUploader
       }
       else
       {
-         ms_logger.logMessage("Failed to verify community id.");
+         log.info("Failed to verify community id.");
       }
       return -1;
    }
@@ -630,9 +642,9 @@ public class XmlUploader
 
       if (m_debug)
       {
-         ms_logger.logMessage("Using host: " + m_rxServer);
-         ms_logger.logMessage("Using port: " + m_rxPort);
-         ms_logger.logMessage("Using resource URL: " + urlText);
+         log.info("Using host: {}", m_rxServer);
+         log.info("Using port: {}", m_rxPort);
+         log.info("Using resource URL: {}", urlText);
       }
 
       // set up the connection
@@ -682,46 +694,43 @@ public class XmlUploader
             InputStream errResponse = null;
             stats.docsProcessed++;
 
-            ms_logger.logMessage("\nProcessing " + sources[i].getDisplayName()
-                        + "...\n");
+            log.info("\nProcessing {}...\n", sources[i].getDisplayName());
             // variables used outside try block
             boolean isResponseOk = false;
             Exception exc = null;
             int rowsInserted = 0;   // used in finally block
 
-            try
-            {
-               BufferedInputStream bis = new BufferedInputStream(
-                  sources[i].getContent());
+            try(BufferedInputStream bis = new BufferedInputStream(
+                  sources[i].getContent())){
                int bufLen = (int)sources[i].getContentLength();
                byte[] buf = new byte[bufLen];
                bis.read(buf, 0, bufLen);
                HTTPResponse resp = conn.Post(urlText, buf);
                int status = resp.getStatusCode();
-               if (status == Utils.HTTP_STATUS_OK)
-               {
+               if (status == Utils.HTTP_STATUS_OK) {
                   isResponseOk = true;
-                  Document response = PSXmlDocumentBuilder.createXmlDocument(
-                     resp.getInputStream(), false);
+                  try (InputStream is = resp.getInputStream()) {
+                     Document response = PSXmlDocumentBuilder.createXmlDocument(
+                             is, false);
 
-                  // check the flag so we don't do the work unless we need to
-                  if (m_debug)
-                  {
-                     StringWriter sw = new StringWriter();
-                     PSXmlDocumentBuilder.write(response, sw);
-                     ms_logger.logMessage(sw.toString());
-                     ms_logger.logDebugMessage("\n");
+                     // check the flag so we don't do the work unless we need to
+                     if (m_debug) {
+                        StringWriter sw = new StringWriter();
+                        PSXmlDocumentBuilder.write(response, sw);
+                        log.info(sw.toString());
+                        log.debug("\n");
+                     }
+
+                     PSXmlTreeWalker walker = new PSXmlTreeWalker(response);
+                     rowsInserted = Integer.parseInt(
+                             walker.getElementData("RowsInserted"));
+                     stats.rowsInserted += rowsInserted;
+                     stats.rowsSkipped += Integer.parseInt(
+                             walker.getElementData("RowsSkipped"));
+                     stats.rowsFailed += Integer.parseInt(
+                             walker.getElementData("RowsFailed"));
+                     log.info("Deleting file.");
                   }
-
-                  PSXmlTreeWalker walker = new PSXmlTreeWalker( response );
-                  rowsInserted = Integer.parseInt(
-                     walker.getElementData( "RowsInserted" ));
-                  stats.rowsInserted += rowsInserted;
-                  stats.rowsSkipped += Integer.parseInt(
-                     walker.getElementData( "RowsSkipped" ));
-                  stats.rowsFailed += Integer.parseInt(
-                     walker.getElementData( "RowsFailed" ));
-                  ms_logger.logMessage( "Deleting file." );
                }
                else
                {
@@ -729,101 +738,69 @@ public class XmlUploader
                   errResponse = resp.getInputStream();
                }
             }
-            catch (ModuleException e)
+            catch (ModuleException | IOException | SAXException e)
             {
                exc = e;
-            }
-            catch ( FileNotFoundException e )
-            {
-               /* This should only happen if a file gets deleted after we
-                  cataloged it. */
-               exc = e;
-            }
-            catch ( IOException e )
-            {
-               // Failed while writing the request or reading the response
-               exc = e;
-            }
-            catch ( SAXException e )
-            {
-               // failed while parsing the statistics document
-               exc = e;
-            }
-            catch ( NumberFormatException e )
-            {
-               // the text in the <RowsInserted> element was not a number
-               exc = e;
-            }
-            finally
-            {
-               try
-               {
-                  sources[i].close( !m_debug && rowsInserted > 0 );
-               }
-               catch ( Throwable t )
-               {
-                  ms_logger.logMessage( "An error occurred while trying to close the stream: " +
-                     t.getLocalizedMessage());
-               }
             }
 
-            String userMsg = null;
-            String pattern = null;
-            if ( isResponseOk && exc != null )
-            {
-               userMsg = "The request was successful, but an error occurred" +
-                  " while trying to process the response. Can't verify that" +
-                  " a row was inserted successfully. File not deleted.\r\n";
-               pattern = DEFAULT_WARNING;
-               stats.warnings++;
-            }
-            else if ( null != errResponse )
-            {
-               try
-               {
-                  stats.errors++;
-                  // read stream into String
-                  byte [] buf = new byte[1024]; // arbitrary size
-                  int bytesRead = 1; // to get into loop
-                  ByteArrayOutputStream byteStr = new ByteArrayOutputStream();
-                  while ( bytesRead > 0 )
-                  {
-                     bytesRead = errResponse.read( buf );
-                     if ( bytesRead > 0 )
-                        byteStr.write( buf, 0, bytesRead );
+            finally {
+               try {
+                  sources[i].close(!m_debug && rowsInserted > 0);
+               } catch (Exception e) {
+                  log.info("An error occurred while trying to close the stream: {}", e.getLocalizedMessage());
+                  log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+               }
+
+
+               String userMsg = null;
+               String pattern = null;
+               if (isResponseOk && exc != null) {
+                  userMsg = "The request was successful, but an error occurred" +
+                          " while trying to process the response. Can't verify that" +
+                          " a row was inserted successfully. File not deleted.\r\n";
+                  pattern = DEFAULT_WARNING;
+                  stats.warnings++;
+               } else if (null != errResponse) {
+                  try {
+                     stats.errors++;
+                     // read stream into String
+                     byte[] buf = new byte[1024]; // arbitrary size
+                     int bytesRead = 1; // to get into loop
+                     try(ByteArrayOutputStream byteStr = new ByteArrayOutputStream()){
+                        while (bytesRead > 0) {
+                           bytesRead = errResponse.read(buf);
+                           if (bytesRead > 0)
+                              byteStr.write(buf, 0, bytesRead);
+                        }
+                        userMsg = byteStr.toString(DEFAULT_RX_ENCODING);
+                     }
+                  } catch (UnsupportedEncodingException e) {
+                     // this should never happen since we picked a well know encoding
+                     userMsg = "Couldn't convert response from server, unknown encoding: " +
+                             DEFAULT_RX_ENCODING;
+                  } catch (IOException e) {
+                     userMsg = "Failed to read response document from Rhythmyx server.\r\n" +
+                             e.getLocalizedMessage();
+                     log.error("userMsg, Error: {}", PSExceptionUtils.getMessageForLog(e));
+                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                   }
-                  userMsg = byteStr.toString( DEFAULT_RX_ENCODING );
+                  IOUtils.closeQuietly(errResponse);
+                  pattern = DEFAULT_ERROR;
+               } else if (null != exc) {
+                  stats.errors++;
+                  pattern = DEFAULT_ERROR;
+                  userMsg = "";
+               } else {
+                  pattern = DEFAULT_SUCCESS;
+                  userMsg = "";
                }
-               catch ( UnsupportedEncodingException e )
-               {
-                  // this should never happen since we picked a well know encoding
-                  userMsg = "Couldn't convert response from server, unknown encoding: " +
-                     DEFAULT_RX_ENCODING;
-               }
-               catch ( IOException e )
-               {
-                  userMsg = "Failed to read response document from Rhythmyx server.\r\n" +
-                     e.getLocalizedMessage();
-               }
-               pattern = DEFAULT_ERROR;
-            }
-            else if ( null != exc )
-            {
-               stats.errors++;
-               pattern = DEFAULT_ERROR;
-               userMsg = "";
-            }
-            else
-            {
-               pattern = DEFAULT_SUCCESS;
-               userMsg = "";
-            }
 
-            ms_logger.logMessage( pattern,
-               new Object [] { sources[i].getDisplayName() });
-            String excText = null != exc ? exc.getLocalizedMessage() : "";
-            if ( excText.length() > 0 || userMsg.length() > 0 )
-               ms_logger.logMessage( userMsg + excText );
+               log.info("{} {}", pattern, new Object[]{sources[i].getDisplayName()});
+               String excText = null != exc ? exc.getLocalizedMessage() : "";
+               if (excText.length() > 0 || userMsg.length() > 0) {
+                  log.info("{} {}", userMsg, excText);
+               }
+            }
       }
       return stats;
    }
@@ -846,17 +823,17 @@ public class XmlUploader
 
       DateFormat formatter = DateFormat.getDateTimeInstance( DateFormat.LONG,
          DateFormat.LONG );
-      ms_logger.logMessage( "Started at    " + formatter.format( stats.startTime ));
-      ms_logger.logMessage( "Finished at   " + formatter.format( stats.finishTime ));
-      if ( stats.errors > 0 )
-         ms_logger.logMessage( "****************** Errors Encountered ******************" );
-      ms_logger.logMessage( "Error Count:               " + stats.errors );
-      ms_logger.logMessage( "Total Documents processed  " + stats.docsProcessed );
-      ms_logger.logMessage( "Total Rows Processed:      "
-         + stats.getRowsProcessed());
-      ms_logger.logMessage( "Rows Inserted:             " + stats.rowsInserted );
-      ms_logger.logMessage( "Rows Skipped:              " + stats.rowsSkipped );
-      ms_logger.logMessage( "Rows Failed:               " + stats.rowsFailed );
+      log.info( "Started at {}", formatter.format( stats.startTime ));
+      log.info( "Finished at {}", formatter.format( stats.finishTime ));
+      if ( stats.errors > 0 ) {
+         log.info("****************** Errors Encountered ******************");
+      }
+      log.info( "Error Count: {}", stats.errors );
+      log.info( "Total Documents processed {}", stats.docsProcessed );
+      log.info( "Total Rows Processed: {}", stats.getRowsProcessed());
+      log.info( "Rows Inserted: {}", stats.rowsInserted );
+      log.info( "Rows Skipped: {}", stats.rowsSkipped );
+      log.info( "Rows Failed: {}", stats.rowsFailed );
    }
 
 
@@ -866,8 +843,7 @@ public class XmlUploader
     */
    public void shutdown()
    {
-      ms_logger.logShutdown();
-      ms_logger = null;
+      //NOOP
    }
    /**
     * test if a given URL represents an HTTP URL or a file
@@ -878,7 +854,7 @@ public class XmlUploader
      try
         {
            URL url = new URL(urlString);
-           if ( url.getProtocol().toLowerCase().equals( "http" ))
+           if ( url.getProtocol().equalsIgnoreCase( "http" ))
               return true;
         }
      catch ( MalformedURLException e )
@@ -943,11 +919,13 @@ public class XmlUploader
    class FileContent implements IContentSource
    {
       public FileContent( String filename )
-         throws FileNotFoundException
+              throws IOException
       {
          m_file = new File( filename );
-         m_content = new BufferedInputStream( new FileInputStream( m_file ));
-         m_filename = m_file.getAbsolutePath();
+         try(FileInputStream fi = new FileInputStream( m_file ) ) {
+            m_content = new BufferedInputStream(fi);
+            m_filename = m_file.getAbsolutePath();
+         }
       }
 
       /**
@@ -1057,10 +1035,12 @@ public class XmlUploader
          int responseCode = req.getResponseCode();
          if ( Utils.HTTP_STATUS_OK != responseCode )
             throw new IOException( "Request failed. Returned code " + responseCode );
-         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-         IOTools.copyStream( req.getResponseContent(), buf );
-         m_content = new ByteArrayInputStream( buf.toByteArray());
-         m_displayName = url.toString();
+         try(ByteArrayOutputStream buf = new ByteArrayOutputStream()) {
+            IOTools.copyStream(req.getResponseContent(), buf);
+            try (ByteArrayInputStream m_content = new ByteArrayInputStream(buf.toByteArray())) {
+               m_displayName = url.toString();
+            }
+         }
       }
 
       /**
@@ -1121,7 +1101,7 @@ public class XmlUploader
     * The singleton instance of the logger. All methods use this guy to display
     * status and error messages.
     */
-   private static Logger ms_logger = Logger.getLogger();
+   private static final Logger log = LogManager.getLogger();
 
    /**
     * A debugging flag. If <code>true</code>, additional debugging information

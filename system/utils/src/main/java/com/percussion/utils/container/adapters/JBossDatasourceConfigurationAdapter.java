@@ -17,30 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.utils.container.adapters;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.DefaultConfigurationContextImpl;
 import com.percussion.utils.container.IPSConfigurationAdapter;
 import com.percussion.utils.container.IPSJndiDatasource;
 import com.percussion.utils.container.PSMissingApplicationPolicyException;
 import com.percussion.utils.container.PSSecureCredentials;
 import com.percussion.utils.container.jboss.PSJBossJndiDatasource;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
 import com.percussion.utils.jdbc.PSDatasourceResolver;
-import com.percussion.utils.security.PSEncryptionException;
-import com.percussion.utils.security.PSEncryptor;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.xml.PSInvalidXmlException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -62,7 +64,7 @@ import static com.percussion.utils.jdbc.PSDatasourceResolver.DATASOURCE_RESOLVER
 
 public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdapter<DefaultConfigurationContextImpl> {
 
-    public static Log ms_log = LogFactory.getLog(JBossDatasourceConfigurationAdapter.class);
+    public static Logger log = LogManager.getLogger(JBossDatasourceConfigurationAdapter.class);
 
 
     private Path appServer = Paths.get("AppServer","server","rx");
@@ -119,7 +121,7 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         Path loginConfig = root.resolve(loginConfigFile);
         if (!Files.exists(dsConfig) || !Files.exists(loginConfig))
         {
-            ms_log.debug("Debug cannot find jboss config skipping");
+            log.debug("Debug cannot find jboss config skipping");
             return true;
         }
         return false;
@@ -258,10 +260,13 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             ds.setUserId(creds.getUserId());
             String pw = "";
             try{
-                pw = PSEncryptor.getInstance().decrypt(creds.getPassword());
+                pw = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),creds.getPassword());
             }catch(PSEncryptionException | java.lang.IllegalArgumentException e){
-                pw = PSLegacyEncrypter.getInstance().decrypt(creds.getPassword(),
-                        secretKey);
+                pw = PSLegacyEncrypter.getInstance(
+                        PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                        PSEncryptor.SECURE_DIR)
+                ).decrypt(creds.getPassword(),
+                        secretKey,null);
             }
             ds.setPassword(pw);
 
@@ -326,10 +331,13 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
             {
                 String pw =  ds.getPassword();
                 try{
-                    pw = PSEncryptor.getInstance().encrypt(
-                            ds.getPassword());
+                     pw = PSEncryptor.encryptProperty(PathUtils.getRxPath().toAbsolutePath().toString().concat(
+                             PSEncryptor.SECURE_DIR),loginCfgFile.getAbsolutePath(),null,ds.getPassword());
+
                 } catch (PSEncryptionException e) {
-                    ms_log.error("Error encrypting password: " + e.getMessage(),e);
+                    log.error("Error encrypting password: " + PSExceptionUtils.getMessageForLog(e),e);
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
                 }
 
                 PSSecureCredentials cred = new PSSecureCredentials(
@@ -457,7 +465,8 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return dsResolver;
@@ -477,8 +486,8 @@ public class JBossDatasourceConfigurationAdapter implements IPSConfigurationAdap
         }
         catch (PSInvalidXmlException | IOException | SAXException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
     }

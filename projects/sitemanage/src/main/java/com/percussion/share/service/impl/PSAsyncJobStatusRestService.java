@@ -17,18 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.foldermanagement.service.IPSFolderService;
 import com.percussion.share.async.IPSAsyncJobService;
 import com.percussion.share.async.PSAsyncJobStatus;
 import com.percussion.share.service.IPSAsyncJobStatusRestService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -88,14 +91,20 @@ public class PSAsyncJobStatusRestService implements IPSAsyncJobStatusRestService
     @Produces(MediaType.TEXT_PLAIN)
     public Long startTestJob()
     {
-        long jobId = asyncJobService.startJob("asyncJobTest", 1);
-        log.info("Created dummy async job with id: " + jobId);
-        return jobId;
+        try {
+            long jobId = asyncJobService.startJob("asyncJobTest", 1);
+            log.info("Created dummy async job with id: " + jobId);
+            return jobId;
+        } catch (IPSFolderService.PSWorkflowNotFoundException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+           throw new WebApplicationException(e);
+        }
     }
     
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSAsyncJobStatusRestService.class);
+    public static final Logger log = LogManager.getLogger(PSAsyncJobStatusRestService.class);
 
 }

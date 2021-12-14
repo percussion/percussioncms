@@ -17,18 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.soln.linkback.assembly;
 
-import com.percussion.extension.*;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.extension.IPSJexlExpression;
+import com.percussion.extension.IPSJexlMethod;
+import com.percussion.extension.IPSJexlParam;
+import com.percussion.extension.PSExtensionException;
 import com.percussion.soln.linkback.codec.LinkbackTokenCodec;
 import com.percussion.soln.linkback.codec.impl.StringLinkBackTokenImpl;
 import com.percussion.soln.linkback.utils.LinkbackUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Map;
@@ -38,7 +42,7 @@ import java.util.Map;
  */
 public class LinkbackJexlTools implements IPSJexlExpression {
 
-    private static final Log log = LogFactory.getLog(LinkbackJexlTools.class);
+    private static final Logger log = LogManager.getLogger(LinkbackJexlTools.class);
 
     private LinkbackTokenCodec linkbackCodec = null;
 

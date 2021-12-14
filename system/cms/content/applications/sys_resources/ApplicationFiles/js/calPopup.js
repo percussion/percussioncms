@@ -225,7 +225,7 @@ function showCalendar(dateField,timevar,appendvar) {
 		rowWidth = 90;
 	calDocFrameset = 
         "<html><head><title>Rhythmyx Calendar Picker</title>\n" +
-		"<link type=\"text/css\" src=\"../sys_resources/css/templates.css\"></head>\n" +
+		"<link type=\"text/css\" src=\"/sys_resources/css/templates.css\"></head>\n" +
         "<frameset rows=\"" + rowWidth + ",*\" frameborder=\"0\">\n" +
         "  <frame name=\"topCalFrame\" src='javascript:parent.opener.calDocTop' scrolling=\"no\">\n" +
         "  <frame name=\"bottomCalFrame\" src='javascript:parent.opener.calDocBottom' scrolling=\"no\">\n" +
@@ -242,7 +242,7 @@ function showCalendar(dateField,timevar,appendvar) {
 
        calDoc = 
           "<html><head><title>Rhythmyx Calendar Picker</title>\n" +
-          "<link type=\"text/css\" src=\"../sys_resources/css/templates.css\">\n" +
+          "<link type=\"text/css\" src=\"/sys_resources/css/templates.css\">\n" +
           calStyleSheet + "</head>\n" +
           "<body bgcolor=\""+ topBackground +"\">\n" +
           "  <div id=\"calTop\" style=\"background-color:"+ topBackground +"\">" + buildTopCalFrame() + "<div>\n" 
@@ -842,12 +842,12 @@ function getMonthSelect() {
 
     // IF FRENCH
     if (selectedLanguage == "fr") {
-        monthArray = new Array('Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-                               'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Décembre');
+        monthArray = new Array('Janvier', 'Fï¿½vrier', 'Mars', 'Avril', 'Mai', 'Juin',
+                               'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Dï¿½cembre');
     }
     // IF GERMAN
     else if (selectedLanguage == "de") {
-        monthArray = new Array('Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+        monthArray = new Array('Januar', 'Februar', 'Mï¿½rz', 'April', 'Mai', 'Juni',
                                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember');
     }
     // IF SPANISH
@@ -925,7 +925,7 @@ function createWeekdayList() {
     }
     // IF SPANISH
     else if (selectedLanguage == "es") {
-        weekdayList  = new Array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado')
+        weekdayList  = new Array('Domingo', 'Lunes', 'Martes', 'Miï¿½rcoles', 'Jueves', 'Viernes', 'Sï¿½bado')
         weekdayArray = new Array('Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa');
     }
     else {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -50,7 +50,7 @@
  */
 (function($)
 {
-    $.perc_layout_controller = new function()
+    $.perc_layout_controller = function()
     {
         this.widget = null;
         this.widgetDefinitions = new Array();
@@ -67,12 +67,12 @@
         this.setHelper = function(helper)
         {
             this.helper = helper;
-        }
+        };
         
         this.getCurrentWidgetDefinition = function()
         {
             return this.currentWidgetDefinition;
-        }
+        };
         
         /**
          *  Invoked when user clicks on edit button on a widget
@@ -86,43 +86,21 @@
 
             // if we dont have a widget definition, get it from the REST service
             var self = this;
-            if(this.currentWidgetDefinition == null)
-            {
-                // use the REST client to retrieve the widget defintion for the widget type
-                // the client returns an object representing the widget definition
-                $.perc_widget_definition_client.restGetWidgetDefinition(widget.getWidgetDefinitionId(), function(restWidgetDefinition)
-                {
-                    if(restWidgetDefinition.getUserPrefDef() == null)
-                    {
-                        alert(I18N.message("perc.ui.layout.controller@Widget Properties"));
-                        return;
-                    }
-
-                    // the client parses the service response into a model
-                    self.widgetDefinitions[widget.getWidgetDefinitionId()] = restWidgetDefinition;
-                    self.currentWidgetDefinition = restWidgetDefinition;                    
-
-                    // override the default definition values with the widget values parsed when loading widgets from template or page object
-                    self.currentWidgetDefinition.setValuesFromWidgetProperties(widget.properties);
-                    // display dialog
-                    $('#perc-widget-edit').dialog('open');
-                });
-            }
-            else
+            if(this.currentWidgetDefinition != null)
             {
                 // override the default definition values with the widget values parsed when loading widgets from template or page object
                 self.currentWidgetDefinition.setValuesFromWidgetProperties(widget.properties);
                 // display dialog
                 $('#perc-widget-edit').dialog('open');
             }
-        }
+        };
         
         this.editWidgetClientValidate = function()
         {
             // TODO: validate on the client
             // return true if all ok, false otherwise with feedback
             return true;
-        }
+        };
         
         /**
          *  Invoked when user clicks on ok button on a widget
@@ -133,7 +111,7 @@
             
             // iterate over all the user preferences defined in the widget definition
             var userPrefs = this.currentWidgetDefinition.getUserPrefDef();
-            for(d in userPrefs)
+            for(var d in userPrefs)
             {
                 // use the name of the property to reference fields in the HTML dialog
                 var selector = '.perc-widget-property[name="'+d+'"]';
@@ -142,16 +120,16 @@
                 var value = $(selector).val();
 
                 // if property is of type bool, then see if checkbox is checked
-                if(userPrefs[d].datatype == 'bool')
+                if(userPrefs[d].datatype === 'bool')
                     value = $(selector).is(':checked');
 
                 // if property is of type list, get text from textarea
                 // and parse each line as a separate value
-                if(userPrefs[d].datatype == 'list')
+                if(userPrefs[d].datatype === 'list')
                 {
                     values = value.replace(/^\s+|\s+$/g,"") .split('\n');
                     value = new Array();
-                    for(v in values)
+                    for(var v in values)
                         value.push(values[v]);
                     value = JSON.stringify(value);
                 }
@@ -176,22 +154,22 @@
                 });
                 callback();
             });
-        }
+        };
         
         this.editWidgetCommit = function()
         {
             alert(I18N.message("perc.ui.layout.controller@Widget Commit"));
-        }
+        };
 
         this.getWidgetLibrary = function(callback)
         {
             $.perc_widget_library_client.restGetWidgetLibrary(callback);
-        }
+        };
 
         this.init = function()
         {
-        }
-    }
+        };
+    };
 })(jQuery);
 
 /**
@@ -208,7 +186,7 @@
      *	TODO: Move this into services/PercWidgetService.js
      */
 
-    $.perc_widget_library_client = new function()
+    $.perc_widget_library_client = function()
     {
         this.restGetWidgetLibrary = function(callback)
         {
@@ -231,8 +209,8 @@
                 }
             });
             
-        }
-    }
+        };
+    };
 
     /**
      *  Widget Definition Client
@@ -292,24 +270,24 @@
                 summary.init();
                 self.widgetSummaries.push(summary);
             });
-        }
+        };
         
         this.getWidgetSummaries = function()
         {
             return this.widgetSummaries;
-        }
+        };
         
         // TODO: refactor out of here into a view
         this.html = function()
         {
             var buff = '<div class="perc-header" style="float:none;"> ' + I18N.message("perc.ui.layout.controller@Drag and Drop Widgets") + ' </div>\n';
-            for(s in this.widgetSummaries)
+            for(var s in this.widgetSummaries)
             {
                 buff += this.widgetSummaries[s].html();
             }
             return buff;
-        }
-    },
+        };
+    };
     
     /**
      *  Widget Summary
@@ -330,12 +308,12 @@
             this.id     = this.$widgetSummaryXml.children('id').text();
             this.label  = this.$widgetSummaryXml.children('label').text();
             this.name   = this.$widgetSummaryXml.children('name').text();
-        }
+        };
         
         this.alert = function()
         {
             alert([this.icon, this.id, this.label, this.name, this.widgetSummaryXml]);
-        }
+        };
         
         // TODO: refactor out of here into a view
         this.html = function()
@@ -347,8 +325,8 @@
             buff += "       <div>"+this.label+"</div>\n";
             buff += "</div>\n";
             return buff;
-        }
-    }
+        };
+    };
 
     /**
      *  Widget Definition Model.
@@ -365,18 +343,18 @@
 
         this.setValuesFromWidgetProperties = function(widgetProperties)
         {
-            for(p in this.userPrefDef)
+            for(var p in this.userPrefDef)
             {
                 var propertyName = this.userPrefDef[p].name;
                 this.userPrefDef[p].realValue = widgetProperties[propertyName];
             }
-        }
+        };
         
         // getter for userPrefDef
         this.getUserPrefDef = function()
         {
             return this.userPrefDef;
-        }
+        };
 
         // initialize widget definition model
      	// TODO: consider moving parsing to controller or service instead. Leave just data here.
@@ -407,12 +385,12 @@
                     var enumValues = null;
     
                     // default datatype is string
-                    if(datatype == '' || datatype == null)
+                    if(datatype === '' || datatype == null)
                     {
                         datatype = 'string';
                     }
                     // if its enum get the Enum Values
-                    else if(datatype == 'enum')
+                    else if(datatype === 'enum')
                     {
                         enumValues = new Object();
 
@@ -436,8 +414,10 @@
                         enumValues
                     ));
                 });
+            }else{
+                this.userPrefDef = new Object();
             }
-        }
+        };
         
         // generates an HTML table with property names and input fields
         // for the user prefs depending on their datatype
@@ -445,14 +425,14 @@
         this.render = function()
         {
             var html = "<table>\n";
-            for(u in this.userPrefDef)
+            for(var u in this.userPrefDef)
             {
                 html += "\t"+this.userPrefDef[u].render();
-            };
+            }
             html += "</table>\n";
             return html;
-        }
-    }
+        };
+    };
 })(jQuery);
 
 /**
@@ -478,33 +458,33 @@
         {
             var buff = '<tr>\n';
             var datatype = this.datatype;
-            var value = (this.realValue == null || this.realValue == "") ? this.default_value : this.realValue;
+            var value = (this.realValue == null || this.realValue === "") ? this.default_value : this.realValue;
             
-            if(datatype == 'string' || datatype == 'number' )
+            if(datatype === 'string' || datatype === 'number' )
             {
                 buff += '   <td>' + this.display_name+': </td>\n';
                 buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="text" value="'+value+'"></td>\n';
             }
-            else if(datatype == 'bool' )
+            else if(datatype === 'bool' )
             {
-                var checked = (value=='true'||value=='on')?'CHECKED':'';
+                var checked = (value==='true'||value==='on')?'CHECKED':'';
                 buff += '   <td>' + this.display_name+': </td>\n';
                 buff += '   <td><input class="perc-widget-property" name="'+this.name+'" type="checkbox" '+checked+'></td>\n';
             }
-            else if(datatype == 'enum')
+            else if(datatype === 'enum')
             {
                 buff += '   <td>' + this.display_name+': </td>\n';
                 buff += '   <td>\n';
                 buff += '   <select class="perc-widget-property" name="'+this.name+'" value="'+value+'">\n';
-                for(v in enumValues)
+                for(var v in enumValues)
                 {
-                    var selected = (v == value) ? 'SELECTED' : '';
-                    buff += '       <option value="'+v+'" '+selected+'> '+enumValues[v]+'   </option>\n' 
+                    var selected = (v === value) ? 'SELECTED' : '';
+                    buff += '       <option value="'+v+'" '+selected+'> '+enumValues[v]+'   </option>\n';
                 }
                 buff += '   </select>\n';
                 buff += '</td>\n';
             }
-            else if(datatype == 'list')
+            else if(datatype === 'list')
             {
             //  var values = JSON.parse(value); // not sure why this does not work
                 var values = eval(value);
@@ -519,6 +499,6 @@
             }
             buff += '</tr>\n';
             return buff;
-        }
-    }
+        };
+    };
 })(jQuery);

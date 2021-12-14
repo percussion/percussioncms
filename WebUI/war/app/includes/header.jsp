@@ -5,41 +5,19 @@
 <%@page import="java.text.MessageFormat" %>
 <%@page import="java.util.Calendar" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
-<%--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  --%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 
 <%
-String locale= PSRoleUtilities.getUserCurrentLocale();
-String lang="en";
-if(locale==null){
-	locale="en-us";
-}else{
-	if(locale.contains("-"))
-		lang=locale.split("-")[0];
-	else
-		lang=locale;
-}
+    String locale= PSRoleUtilities.getUserCurrentLocale();
+    String lang="en";
+    if(locale==null){
+        locale="en-us";
+    }else{
+        if(locale.contains("-"))
+            lang=locale.split("-")[0];
+        else
+            lang=locale;
+    }
     PSUtilityService utilityService = (PSUtilityService) PSSpringBeanProvider.getBean("utilityService");
     boolean isSaaS = utilityService.isSaaSEnvironment();
 
@@ -61,11 +39,11 @@ if(locale==null){
     }
 
     final String versionAttrName = "CMS_ABOUT_MESSAGE";
-	Calendar cal = Calendar.getInstance();
-	int year = cal.get(Calendar.YEAR);
+    Calendar cal = Calendar.getInstance();
+    int year = cal.get(Calendar.YEAR);
     String aboutMsg = "<div class=\"perc-about\">"
             + "<div class=\"perc-logo\"></div>"
-            + "<p><a class=\"perc-company-link\" target=\"_blank\" href=\"http://www.percussion.com\">http://www.percussion.com</a></p>"
+            + "<p><a class=\"perc-company-link\" target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://www.percussion.com\">https://www.percussion.com</a></p>"
             + "<p>{0}</p>"
             + "<p>Copyright &copy; " + year + " by Percussion Software Inc.</p>"
             + "</div>";
@@ -79,22 +57,47 @@ if(locale==null){
     } else {
         aboutMsg = o.toString();
     }
+
+    String fullrolestr = PSRoleUtilities.getUserRoles();
 %>
-<script  >
-    var gIsSaaSEnvironment = <%=isSaaS%>;
-    $j(document).ready(function () {
-        $j('.perc-header #perc-help-about').click(function (e) {
-            $j.perc_utils.confirm_dialog({
-                title: "About Percussion CMS",
-                type: "OK",
-                width: 400,
-                question: '<%= aboutMsg %>'
+<script>
+        var gIsSaaSEnvironment = <%=isSaaS%>;
+        $(document).ready(function () {
+            $('.perc-header #perc-help-about').on("click",function (e) {
+                var qins = $;
+                if(typeof qins === 'undefined'){
+                    qins = globalThis.$j;
+                }
+                if(typeof qins === 'undefined'){
+                    return;
+                }
+                qins.perc_utils.confirm_dialog({
+                    title: "About Percussion CMS",
+                    type: "OK",
+                    width: 400,
+                    question: '<%= aboutMsg %>'
+                });
+            });
+            $('.perc-header #perc-changepw').on("click",function (e) {
+                var qins = $;
+                if(typeof qins === 'undefined'){
+                    qins = globalThis.$j;
+                }
+                if(typeof qins === 'undefined'){
+                    return;
+                }
+                qins.perc_ChangePwDialog.open();
             });
         });
-        $j('.perc-header #perc-changepw').click(function (e) {
-            $j.perc_ChangePwDialog.open();
-        });
-    });
+</script>
+<script>
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+                    var csrfToken = $("meta[name='_csrf']").attr("content");
+                    var headers = {};
+                    headers[csrfHeader] = csrfToken;
+    $.ajaxSetup({
+  headers: headers
+  });
 </script>
 <i18n:settings lang="<%=locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
 <div class="perc-header">
@@ -102,8 +105,10 @@ if(locale==null){
     <%-- logout must be after help because they both float and we want logout to left of help --%>
     <div class="perc-logout"><a href="javascript:void(0)" id="perc-changepw" title="<i18n:message key="perc.ui.change.pw@Change Password"/>"><i18n:message key="perc.ui.common.label@Welcome"/>
         <span><%= request.getAttribute("currentUserName") %></span></a> | <a href="https://help.percussion.com/"
-                                                                             target="_blank" title="<i18n:message key="perc.ui.common.label@Help"/>"><i18n:message key="perc.ui.common.label@Help"/></a> | <a href="/rest/api-docs?url=/rest/swagger.json" target="_blank" title="REST API Documentation">API</a> | <a
-            href="https://community.percussion.com/" target="_blank" title="<i18n:message key="perc.ui.common.label@Percussion Community"/>"><i18n:message key="perc.ui.common.label@Percussion Community"/></a> | <a
+                                                                             target="_blank" title="<i18n:message key="perc.ui.common.label@Help" />" rel="noopener noreferrer"><i18n:message key="perc.ui.common.label@Help"/></a> <%
+        if (fullrolestr.contains("Admin")){
+                                                                             %>| <a href="/rest/api-docs?url=/rest/openapi.json&docExpansion=none&deepLinking=true&filter=true&tagsSorter=alpha" target="_blank" rel="noopener noreferrer" title="REST API Documentation">API</a> <%}%>| <a
+            href="https://community.percussion.com/" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Percussion Community"/>"><i18n:message key="perc.ui.common.label@Percussion Community"/></a> | <a
             href="javascript:void(0)" id="perc-help-about" title="<i18n:message key="perc.ui.common.label@About"/>"><i18n:message key="perc.ui.common.label@About"/></a> | <a href="/Rhythmyx/logout" title="<i18n:message
             key="perc.ui.common.label@Log Out"/>"><i18n:message
             key="perc.ui.common.label@Log Out"/></a><span id="perc-ui-view-indicator" class="<%=className%>"></span>

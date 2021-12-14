@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,9 +27,6 @@ package com.percussion.recent.dao.impl;
 import com.percussion.recent.data.PSRecent;
 import com.percussion.recent.data.PSRecent.RecentType;
 import com.percussion.share.dao.IPSGenericDao.SaveException;
-
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -37,6 +34,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("recentDao")
 public class PSRecentDao
@@ -64,12 +63,15 @@ public class PSRecentDao
     {
         Session session = getSession();
         Criteria crit = session.createCriteria(PSRecent.class);
-        if (user!=null)
+        if (user!=null) {
             crit.add(Restrictions.eq("user", user));
-        if(siteName!=null)
+        }
+        if(siteName!=null) {
             crit.add(Restrictions.eq("siteName", siteName));
-        if(type!=null)
-            crit.add(Restrictions.eq("type", type)); 
+        }
+        if(type!=null) {
+            crit.add(Restrictions.eq("type", type));
+        }
         crit.addOrder(Order.asc("order"));
         return crit.list();
     }

@@ -17,17 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.jms.impl;
 
 import com.percussion.services.jms.IPSQueueSender;
-
-import java.io.Serializable;
-import java.util.Iterator;
-import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
@@ -37,8 +35,9 @@ import javax.jms.QueueConnectionFactory;
 import javax.jms.QueueSender;
 import javax.jms.QueueSession;
 import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * The implementation of the {@link IPSQueueSender} interface.
@@ -51,7 +50,7 @@ public class PSQueueSender implements IPSQueueSender
    /**
     * The logger for this class.
     */
-   private static Logger ms_log = Logger.getLogger(PSQueueSender.class);
+   private static final Logger ms_log = LogManager.getLogger(PSQueueSender.class);
 
    /**
     * The connection factory. It is set by Spring bean framework.

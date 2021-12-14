@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -582,7 +582,7 @@ public class PSAppTransformer
                // in this case, need to work on the target value as other params
                // in it may have been modified aleady, and these can be 
                // identified by their name.
-               StringBuffer base = new StringBuffer();
+               StringBuilder base = new StringBuilder();
                Map paramMap = PSDeployComponentUtils.parseParams(
                   tgtCol.getValue(), base);
                
@@ -2683,12 +2683,12 @@ public class PSAppTransformer
          if (ids.size() == 0)
             continue;
          
-         List<PSParam> paramList = new ArrayList<PSParam>(ids.size());
+         List<PSParam> paramList = new ArrayList<>(ids.size());
          // the occurence map, or histogram map, this will keep track of
          // the occurences of a value within this binding
          // Map holds this information: Map<"301", 3> to say id 301 occurs 3
          // times and build up a param list
-         Map<String, Integer> occurenceMap = new HashMap<String, Integer>();
+         Map<String, Integer> occurenceMap = new HashMap<>();
          if (ids.size() > 1)
          {
             Iterator<String> it = ids.iterator();
@@ -2944,7 +2944,7 @@ public class PSAppTransformer
          index = bVal.indexOf(oldVal, index);
          if (index > 0)
          {
-            StringBuffer newBindVal = new StringBuffer(bVal.length());
+            StringBuilder newBindVal = new StringBuilder(bVal.length());
             String before = bVal.substring(0, index);
             String after = bVal.substring(index + oldVal.length());
             newBindVal.append(before);

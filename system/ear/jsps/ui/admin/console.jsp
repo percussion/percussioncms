@@ -27,7 +27,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -58,7 +58,7 @@
          <tr:panelFormLayout inlineStyle="background-color:#bec5e7;">
             <tr:inputText id="command" labelAndAccessKey="&Command:"
                 columns="40"
-                onkeypress="if ((window.event && window.event.keyCode == 13) || (event && event.which == 13)) this.form.submit(); else return true;" 
+                onkeypress="if ((window.event && window.event.keyCode === 13) || (event && event.which === 13)) this.form.submit(); else return true;"
                 value="#{sys_admin_navigation.startingNode.command}"/>
             <tr:commandButton id="submitButton" action="success" text="Go"/>
             <tr:inputText id="dispResults" labelAndAccessKey="Command &Output:"

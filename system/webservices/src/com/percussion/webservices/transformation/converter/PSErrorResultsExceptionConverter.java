@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -58,14 +58,14 @@ import com.percussion.webservices.faults.PSErrorResultsFaultServiceCall;
 import com.percussion.webservices.faults.PSErrorResultsFaultServiceCallError;
 import com.percussion.webservices.faults.PSErrorResultsFaultServiceCallResult;
 import com.percussion.webservices.faults.PSLockFault;
-
-import java.util.Iterator;
-import java.util.Map;
-
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
 import org.apache.commons.beanutils.Converter;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Converts objects between the classes 
@@ -553,7 +553,7 @@ public class PSErrorResultsExceptionConverter extends PSConverter
    /**
     * the logger used by this class, never <code>null</code>.
     */
-   private static Logger m_log = Logger.getLogger(
+   private static final Logger m_log = LogManager.getLogger(
       PSErrorResultsExceptionConverter.class);
 }
 

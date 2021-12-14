@@ -17,25 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
-
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import junit.framework.TestCase;
-
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.w3c.dom.Document;
 
 import com.percussion.design.objectstore.PSAuthentication;
 import com.percussion.design.objectstore.PSDirectory;
@@ -48,6 +34,18 @@ import com.percussion.user.data.PSLdapConfig.PSLdapServer;
 import com.percussion.user.data.PSLdapConfig.PSLdapServer.CatalogType;
 import com.percussion.util.PSCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import junit.framework.TestCase;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
+import org.w3c.dom.Document;
+
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class PSServerConfigUpdaterTest extends TestCase
 {

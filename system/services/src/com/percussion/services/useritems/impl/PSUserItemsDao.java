@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,8 +31,8 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.util.PSBaseBean;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -47,7 +47,7 @@ import java.util.List;
 @Transactional
 public class PSUserItemsDao implements IPSUserItemsDao
 {
-   private static final Log log = LogFactory.getLog(PSUserItemsDao.class);
+   private static final Logger log = LogManager.getLogger(PSUserItemsDao.class);
 
     private SessionFactory sessionFactory;
 
@@ -94,8 +94,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
     * (non-Javadoc)
     * @see com.percussion.services.userpages.IPSUserItemsDao#save(com.percussion.services.userpages.data.PSUserItem)
     */
-   public void save(PSUserItem userItem)
-   {
+   public void save(PSUserItem userItem) throws IPSGenericDao.SaveException {
       Validate.notNull(userItem);
 
       if (userItem.getUserItemId() == -1)
@@ -127,7 +126,7 @@ public class PSUserItemsDao implements IPSUserItemsDao
    @SuppressWarnings("unchecked")
    public List<PSUserItem> find(String userName)
    {
-      List<PSUserItem> userItems = new ArrayList<PSUserItem>();
+      List<PSUserItem> userItems = new ArrayList<>();
       if(StringUtils.isBlank(userName))
          return userItems;
       Session session = sessionFactory.getCurrentSession();
@@ -147,13 +146,12 @@ public class PSUserItemsDao implements IPSUserItemsDao
    @SuppressWarnings("unchecked")
    public List<PSUserItem> find(int itemId)
    {
-      List<PSUserItem> userItems = new ArrayList<PSUserItem>();
+      List<PSUserItem> userItems;
       Session session = sessionFactory.getCurrentSession();
 
           Query query = session.createQuery("from PSUserItem where itemId = :itemId");
           query.setParameter("itemId", itemId);
-
-          userItems = query.list(); 
+          userItems = query.list();
           return userItems;
 
    }

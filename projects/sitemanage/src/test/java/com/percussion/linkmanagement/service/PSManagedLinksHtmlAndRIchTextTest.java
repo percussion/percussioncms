@@ -17,14 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.linkmanagement.service;
-
-import static java.util.Arrays.asList;
 
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest;
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
@@ -36,21 +34,21 @@ import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture;
 import com.percussion.pagemanagement.service.PSSiteDataServletTestCaseFixture.PSAssetCleaner;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
-import com.percussion.server.PSServer;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestUtils;
 import com.percussion.test.PSServletTestCase;
-
-import java.io.InputStream;
-import java.util.Properties;
-
 import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.experimental.categories.Category;
+
+import java.io.InputStream;
+
+import static java.util.Arrays.asList;
 
 /**
  * Tests whether a new style managed link/image in rich text asset is converted to old style link or not. 
@@ -363,8 +361,7 @@ public class PSManagedLinksHtmlAndRIchTextTest extends PSServletTestCase
     	return htmlAsset.getFields().get(HTML).toString();
     }
 
-    private PSAsset createFileAsset()
-    {
+    private PSAsset createFileAsset() throws PSDataServiceException {
         String fileName = "managed-link.txt";
         String file = PSTestUtils.resourceToBase64(PSManagedLinkServiceTest.class, fileName);
         
@@ -383,8 +380,7 @@ public class PSManagedLinksHtmlAndRIchTextTest extends PSServletTestCase
         return asset;
     }
 
-    private PSAsset createImgAsset()
-    {
+    private PSAsset createImgAsset() throws IPSAssetService.PSAssetServiceException, PSValidationException {
         
         String fileName = "managed-image.jpg";
         InputStream in = getClass().getResourceAsStream(fileName);

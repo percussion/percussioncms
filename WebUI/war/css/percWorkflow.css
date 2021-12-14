@@ -17,35 +17,35 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
-#perc-tab-users,li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover,#perc-tab-roles,li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover,#perc-tab-workflow,li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+#perc-tab-users,li.ui-tabs-active #perc-tab-users,#perc-tab-users:hover,#perc-tab-roles,li.ui-tabs-active #perc-tab-roles,#perc-tab-roles:hover,#perc-tab-workflow,li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 {
     /*width:115px;
    background:transparent url(../images/text/workflowTabs.png);*/
 }
 
-.ui-tabs-selected #perc-tab-category {
+#perc-assign-workflow-wrapper{
+    max-height : 350px !important;
+}
+
+.ui-tabs-active #perc-tab-category {
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
-.ui-tabs-selected #perc-tab-users{
+.ui-tabs-active #perc-tab-users{
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
-.ui-tabs-selected #perc-tab-roles{
+.ui-tabs-active #perc-tab-roles{
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
-.ui-tabs-selected #perc-tab-workflow{
+.ui-tabs-active #perc-tab-workflow{
     margin-top: 0px !important;
-    height: 31px;
     padding-top: 8px;
 }
 
@@ -116,28 +116,28 @@
     letter-spacing: 1px;
 }
 
-li.ui-tabs-selected #perc-tab-category,#perc-tab-category:hover
+li.ui-tabs-active #perc-tab-category,#perc-tab-category:hover
 {
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
 }
 
-li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 {
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
 }
 
-li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover
+li.ui-tabs-active #perc-tab-users,#perc-tab-users:hover
 {
     color:black;
     background-color:#E6E6E6;
     font-size:16px;
 }
 
-li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
+li.ui-tabs-active #perc-tab-roles,#perc-tab-roles:hover
 {
     color:black;
     background-color:#E6E6E6;
@@ -179,22 +179,22 @@ li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
     background-position:0 -208px;
 }
 
-li.ui-tabs-selected #perc-tab-category,#perc-tab-category:hover
+li.ui-tabs-active #perc-tab-category,#perc-tab-category:hover
 {
     background-position:0 -108px;
 }
 
-li.ui-tabs-selected #perc-tab-users,#perc-tab-users:hover
+li.ui-tabs-active #perc-tab-users,#perc-tab-users:hover
 {
     background-position:0 -157px;
 }
 
-li.ui-tabs-selected #perc-tab-roles,#perc-tab-roles:hover
+li.ui-tabs-active #perc-tab-roles,#perc-tab-roles:hover
 {
     background-position:0 -52px;
 }
 
-li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
+li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 {
     background-position:0 -260px;
 }
@@ -250,13 +250,13 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
     height:16px;
     float:right;
     margin-right:8px;
-    background-image:url(../images/images/buttonAddUser.gif);
+    background-image:url(../images/images/buttonAddUser.png);
     cursor:pointer;
 }
 
 #perc-users-add-user-button:hover
 {
-    background-image:url(../images/images/buttonAddUserOver.gif);
+    background-image:url(../images/images/buttonAddUserOver.png);
 }
 
 #perc-username-list
@@ -303,7 +303,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
 .perc-users-selected
 {
     color:#000;
-    font-size:normal;
+    font-size:inherit;
     background-color:#caf589;
 }
 
@@ -454,13 +454,8 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
     width:100px;
     float:right;
     margin-left:8px;
-    background-image:url(../images/images/blueButtonImport.png);
 }
 
-.perc-users-directory-users-import-button-enabled:hover
-{
-    background-image:url(../images/images/blueButtonImportOver.png);
-}
 
 .perc-users-directory-users-import-button-disabled
 {
@@ -468,7 +463,6 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
     width:100px;
     float:right;
     margin-left:8px;
-    background-image:url(../images/images/blueButtonImportDisabled.png);
 }
 
 #ui-dialog-title-perc-users-import-users-dialog
@@ -507,12 +501,10 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
     height:29px;
     width:78px;
     float:right;
-    background-image:url(../images/images/buttonCancel.gif);
 }
 
 #perc-users-directory-users-cancel-button:hover
 {
-    background-image:url(../images/images/buttonCancelOver.gif);
 }
 
 #perc-users-search-button
@@ -521,19 +513,18 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
     width:100px;
     float:right;
     margin-top:0;
-    background-image:url(../images/images/blueButtonSearch.png);
 }
 
 #perc-users-search-button:hover
 {
-    background-image:url(../images/images/blueButtonSearchOver.png);
 }
 
 #perc-users-directory-users-buttons
 {
-    position:absolute;
+    float:right;
     bottom:15px;
     right:20px;
+    display: contents;
 }
 
 #perc-roles-list,#perc-workflows-list,#perc-workflows-assigned-sites-folders,#perc-category-tree
@@ -641,7 +632,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
     width:20px;
 }
 
-.perc-roles-addusers-button,#perc-categories-add-child-category-button
+#perc-categories-add-child-category-button
 {
     cursor:pointer;
     float:right;
@@ -843,7 +834,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
 .perc-step-config-button
 {
     display:inline-block;
-    background:url(../images/images/buttonConfigurePage.gif);
+    background:url(../images/images/buttonConfigurePage.png);
     background-repeat:none;
     width:21px;
     height:22px;
@@ -903,7 +894,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
 
 .perc-step-delete-button
 {
-    background:url(../images/images/buttonDeletePage.gif);
+    background:url(../images/images/buttonDeletePage.png);
     background-repeat:none;
     width:20px;
     height:22px;
@@ -913,7 +904,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
 
 .perc-step-delete-button:hover
 {
-    background:url(../images/images/buttonDeletePageOver.gif);
+    background:url(../images/images/buttonDeletePageOver.png);
 }
 
 .perc-step-delete-disable,.perc-step-delete-disable:hover
@@ -1360,7 +1351,7 @@ li.ui-tabs-selected #perc-tab-workflow,#perc-tab-workflow:hover
 {
     margin-right:-10px;
     margin-top:3px;
-    text-align:right;
+    text-align:left;
     color:#900;
     font-family: 'Open Sans', sans-serif;
     font-size:11px;

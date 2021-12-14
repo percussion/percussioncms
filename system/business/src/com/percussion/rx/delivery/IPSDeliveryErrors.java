@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -215,4 +215,7 @@ public interface IPSDeliveryErrors
     * </table>
     */
    public static final int SOLR_COMMUNICATION_EXCEPTION = 11;
+
+
+   public static final int CANNOT_DELIVER_NO_DELIVERYTYPE=12;
 }

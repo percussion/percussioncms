@@ -17,18 +17,32 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rxverify.modules;
 
-import com.percussion.tablefactory.*;
+import com.percussion.tablefactory.IPSTableFactoryErrors;
+import com.percussion.tablefactory.PSJdbcDataTypeMap;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcForeignKey;
+import com.percussion.tablefactory.PSJdbcIndex;
+import com.percussion.tablefactory.PSJdbcPrimaryKey;
+import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
+import com.percussion.tablefactory.PSJdbcTableSchema;
+import com.percussion.tablefactory.PSJdbcTableSchemaCollection;
 import com.percussion.xml.PSXmlDocumentBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -61,7 +75,7 @@ public class PSJdbcTableCheck extends PSVerifyDatabaseBase
 
         PSJdbcDbmsDef dbmsDef = getDbmsDef( rxdir );
 
-        Logger l = Logger.getLogger( getClass() );
+        Logger l = LogManager.getLogger( getClass() );
 
         PSJdbcDataTypeMap dataMap = null;
 

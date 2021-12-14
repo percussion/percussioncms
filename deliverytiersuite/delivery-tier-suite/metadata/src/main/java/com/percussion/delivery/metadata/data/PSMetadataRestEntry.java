@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,16 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata.data;
 
 import com.percussion.delivery.metadata.IPSMetadataProperty;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ public class PSMetadataRestEntry
     /**
      * Date format used for string serialized date. 2011-01-21T09:36:05
      */
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    FastDateFormat dateFormat =  FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
     
     private String pagepath;
 
@@ -55,7 +54,7 @@ public class PSMetadataRestEntry
 
     private String site;
 
-    private HashMap<String, Object> properties = new HashMap<String, Object>();
+    private HashMap<String, Object> properties = new HashMap<>();
 
     public String getPagepath()
     {
@@ -160,7 +159,7 @@ public class PSMetadataRestEntry
     		Object value = this.properties.get(metadataProperty.getName());
     		if (value instanceof String)
     		{
-    			List<String> multiValued = new ArrayList<String>();
+    			List<String> multiValued = new ArrayList<>();
     			multiValued.add((String)value);
     			multiValued.add(newValue);
     			this.properties.put(metadataProperty.getName(), multiValued);

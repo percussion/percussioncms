@@ -17,14 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.delivery.multitenant;
 
+import com.percussion.error.PSExceptionUtils;
 import junit.framework.TestCase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -32,7 +35,7 @@ import java.util.List;
 
 public class ThreadLocalTenantContextTest extends TestCase 
 {
-	
+	private static final Logger log = LogManager.getLogger(ThreadLocalTenantContextTest.class);
 	@Test
 	public void testMultipleThreads()
 	{
@@ -45,14 +48,20 @@ public class ThreadLocalTenantContextTest extends TestCase
 			{
 				Thread.sleep(3);
 			} 
-			catch (InterruptedException e) {}			
+			catch (InterruptedException e) {
+				log.error(PSExceptionUtils.getMessageForLog(e));
+				log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+			}
 		}
 		
 		try 
 		{
 			Thread.sleep(4);
 		} 
-		catch (InterruptedException e) {}
+		catch (InterruptedException e) {
+			log.error(PSExceptionUtils.getMessageForLog(e));
+			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+		}
 		for(ThreadLocalRunner r : runners)
 			r.deactivate();
 	}
@@ -85,9 +94,13 @@ public class ThreadLocalTenantContextTest extends TestCase
 				try 
 				{
 					Thread.sleep(5 * 1000);
-					System.out.println("Thread #: " + num + " key: " + key);
+					log.info("Thread #: " + num + " key: " + key);
 				} 
-				catch (InterruptedException ignore){}
+				catch (InterruptedException ignore){
+					log.error(PSExceptionUtils.getMessageForLog(ignore));
+					log.debug(ignore);
+					Thread.currentThread().interrupt();
+				}
 			}
 		}
 		

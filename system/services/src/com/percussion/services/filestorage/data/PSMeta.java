@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,18 +25,10 @@ package com.percussion.services.filestorage.data;
 
 import com.percussion.services.filestorage.IPSFileMeta;
 import com.percussion.services.filestorage.PSBinaryServiceException;
-
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tika.metadata.ClimateForcast;
 import org.apache.tika.metadata.CreativeCommons;
 import org.apache.tika.metadata.DublinCore;
@@ -48,6 +40,12 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TIFF;
 import org.apache.tika.metadata.TikaMetadataKeys;
 import org.apache.tika.metadata.TikaMimeKeys;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * An adaptor class wrapping the Tika metadata object and providing
@@ -86,7 +84,7 @@ public class PSMeta
    /**
     * Logger for this class
     */
-   private transient static final Log log = LogFactory.getLog(PSMeta.class);
+   private transient static final Logger log = LogManager.getLogger(PSMeta.class);
 
    /*
     * A key to store in the metadata map the hash value for the item.
@@ -98,7 +96,7 @@ public class PSMeta
     */
    public static final String PARSE_ERROR = "PARSE_ERROR";
 
-   private TreeMap<String, String> properties = new TreeMap<String, String>((String.CASE_INSENSITIVE_ORDER));
+   private TreeMap<String, String> properties = new TreeMap<>((String.CASE_INSENSITIVE_ORDER));
 
    /**
     * Constructor creating the base metadata object from the main properties.
@@ -143,7 +141,7 @@ public class PSMeta
    {
       // some attributes come through with a different case. We want to match these. Also
       // Db Collation is case insensitive by default
-      this.properties = new TreeMap<String, String>((String.CASE_INSENSITIVE_ORDER));;
+      this.properties = new TreeMap<>((String.CASE_INSENSITIVE_ORDER));;
       for (String name : metadata.names())
       {
          String[] values = metadata.getValues(name);

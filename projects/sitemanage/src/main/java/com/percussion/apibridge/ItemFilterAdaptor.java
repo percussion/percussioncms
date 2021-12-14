@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,20 +29,27 @@ import com.percussion.rest.itemfilter.IItemFilterAdaptor;
 import com.percussion.rest.itemfilter.ItemFilter;
 import com.percussion.rest.itemfilter.ItemFilterRuleDefinition;
 import com.percussion.rest.itemfilter.ItemFilterRuleDefinitionParam;
-import com.percussion.services.filter.*;
+import com.percussion.services.error.PSNotFoundException;
+import com.percussion.services.filter.IPSFilterService;
+import com.percussion.services.filter.IPSItemFilter;
+import com.percussion.services.filter.IPSItemFilterRuleDef;
+import com.percussion.services.filter.PSFilterException;
+import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.util.PSSiteManageBean;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @PSSiteManageBean
 public class ItemFilterAdaptor implements IItemFilterAdaptor {
 
     private IPSFilterService filterService;
-    private Log log = LogFactory.getLog(ItemFilterAdaptor.class);
+    private static final Logger log = LogManager.getLogger(ItemFilterAdaptor.class);
 
     public ItemFilterAdaptor(){
         filterService = PSFilterServiceLocator.getFilterService();
@@ -55,7 +62,7 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
      */
     @Override
     public List<ItemFilter> getItemFilters() {
-        List<ItemFilter> ret = new ArrayList<ItemFilter>();
+        List<ItemFilter> ret = new ArrayList<>();
         List<IPSItemFilter> filters = filterService.findAllFilters();
 
         for(IPSItemFilter i : filters){
@@ -77,11 +84,12 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
         }
 
         Set<IPSItemFilterRuleDef> ruleDefs = filter.getRuleDefs();
-        Set<ItemFilterRuleDefinition> rules = new HashSet<ItemFilterRuleDefinition>();
+        Set<ItemFilterRuleDefinition> rules = new HashSet<>();
         for(IPSItemFilterRuleDef def : ruleDefs){
             ItemFilterRuleDefinition r = copyItemFilterRuleDef(def);
-            if(r != null)
+            if(r != null) {
                 rules.add(r);
+            }
         }
         ret.setRules(rules);
         return ret;
@@ -95,7 +103,7 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
             ret.setRuleId(ApiUtils.convertGuid(def.getGUID()));
 
             Map<String,String> params = def.getParams();
-            List<ItemFilterRuleDefinitionParam> retParams = new ArrayList<ItemFilterRuleDefinitionParam>();
+            List<ItemFilterRuleDefinitionParam> retParams = new ArrayList<>();
             for(Map.Entry<String,String> pair : params.entrySet()){
                 ItemFilterRuleDefinitionParam p = new ItemFilterRuleDefinitionParam();
                 p.setName(pair.getKey());
@@ -128,7 +136,7 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
      * @param itemFilterId A valid ItemFilter id.  Filter must not be associated with any ContentLists or it won't be deleted.
      */
     @Override
-    public void deleteItemFilter(Guid itemFilterId) {
+    public void deleteItemFilter(Guid itemFilterId) throws PSNotFoundException {
         IPSItemFilter filter = filterService.loadFilter(ApiUtils.convertGuid(itemFilterId));
 
         filterService.deleteFilter(filter);
@@ -140,7 +148,7 @@ public class ItemFilterAdaptor implements IItemFilterAdaptor {
      * @return The ItemFilter
      */
     @Override
-    public ItemFilter getItemFilter(Guid itemFilterId) {
+    public ItemFilter getItemFilter(Guid itemFilterId) throws PSNotFoundException {
         IPSItemFilter filter = filterService.loadFilter(ApiUtils.convertGuid(itemFilterId));
         return  copyFilter(filter);
     }

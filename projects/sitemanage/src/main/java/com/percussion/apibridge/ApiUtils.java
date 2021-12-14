@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,10 +25,32 @@
 package com.percussion.apibridge;
 
 import com.google.gdata.data.DateTime;
-import com.percussion.rest.*;
-import com.percussion.rest.acls.*;
-import com.percussion.rest.actions.*;
-import com.percussion.rest.communities.*;
+import com.percussion.rest.Guid;
+import com.percussion.rest.GuidList;
+import com.percussion.rest.ObjectLockSummary;
+import com.percussion.rest.ObjectSummary;
+import com.percussion.rest.ObjectSummaryList;
+import com.percussion.rest.ObjectTypeEnum;
+import com.percussion.rest.PermissionList;
+import com.percussion.rest.Permissions;
+import com.percussion.rest.acls.Acl;
+import com.percussion.rest.acls.AclEntry;
+import com.percussion.rest.acls.AclEntryList;
+import com.percussion.rest.acls.AclList;
+import com.percussion.rest.acls.TypedPrincipal;
+import com.percussion.rest.acls.UserAccessLevel;
+import com.percussion.rest.acls.UserAccessLevelList;
+import com.percussion.rest.actions.ActionMenu;
+import com.percussion.rest.actions.ActionMenuParameter;
+import com.percussion.rest.actions.ActionMenuProperty;
+import com.percussion.rest.actions.ActionMenuVisibilityContext;
+import com.percussion.rest.actions.UIContext;
+import com.percussion.rest.communities.Community;
+import com.percussion.rest.communities.CommunityList;
+import com.percussion.rest.communities.CommunityRole;
+import com.percussion.rest.communities.CommunityRoleList;
+import com.percussion.rest.communities.CommunityVisibility;
+import com.percussion.rest.communities.CommunityVisibilityList;
 import com.percussion.rest.contenttypes.ContentType;
 import com.percussion.rest.locationscheme.LocationScheme;
 import com.percussion.rest.locationscheme.LocationSchemeParameter;
@@ -37,6 +59,7 @@ import com.percussion.rest.preferences.UserPreference;
 import com.percussion.rest.preferences.UserPreferenceList;
 import com.percussion.rest.roles.Role;
 import com.percussion.role.data.PSRole;
+import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.server.PSPersistentProperty;
 import com.percussion.server.PSPersistentPropertyManager;
 import com.percussion.server.PSPersistentPropertyMeta;
@@ -46,18 +69,31 @@ import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.locking.data.PSObjectLockSummary;
-import com.percussion.services.menus.*;
+import com.percussion.services.menus.PSActionMenu;
+import com.percussion.services.menus.PSActionMenuParam;
+import com.percussion.services.menus.PSActionMenuProperty;
+import com.percussion.services.menus.PSActionMenuVisibility;
+import com.percussion.services.menus.PSUiContext;
 import com.percussion.services.security.IPSAcl;
 import com.percussion.services.security.IPSAclEntry;
 import com.percussion.services.security.PSPermissions;
 import com.percussion.services.security.PSTypedPrincipal;
-import com.percussion.services.security.data.*;
+import com.percussion.services.security.data.PSAccessLevelImpl;
+import com.percussion.services.security.data.PSAclEntryImpl;
+import com.percussion.services.security.data.PSAclImpl;
+import com.percussion.services.security.data.PSCommunity;
+import com.percussion.services.security.data.PSCommunityRoleAssociation;
+import com.percussion.services.security.data.PSCommunityVisibility;
+import com.percussion.services.security.data.PSUserAccessLevel;
 import com.percussion.services.sitemgr.IPSLocationScheme;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 public class ApiUtils {
 
@@ -82,8 +118,7 @@ public class ApiUtils {
 
     public static IPSGuid convertGuid(Guid guid){
 
-       IPSGuid ret = PSGuidManagerLocator.getGuidMgr().makeGuid(guid.getStringValue());
-       return ret;
+        return PSGuidManagerLocator.getGuidMgr().makeGuid(guid.getStringValue());
     }
 
     /***
@@ -94,11 +129,10 @@ public class ApiUtils {
     public static Community convertPSCommunity(PSCommunity c) {
         Community ret = new Community(c.getId(),convertGuid(c.getGUID()),c.getName(),c.getDescription(),c.getLabel());
 
-        ArrayList<CommunityRole> roles = new ArrayList<CommunityRole>();
-        Iterator it = c.getRoleAssociations().iterator();
-        while(it.hasNext()){
+        ArrayList<CommunityRole> roles = new ArrayList<>();
+        for (IPSGuid ipsGuid : c.getRoleAssociations()) {
             CommunityRole assoc = new CommunityRole();
-            IPSGuid roleGuid = (IPSGuid)it.next();
+            IPSGuid roleGuid = ipsGuid;
             assoc.setCommunityGuid(ret.getGuid());
             assoc.setCommunityid(ret.getGuid().getLongValue());
             assoc.setRoleId(roleGuid.longValue());
@@ -117,7 +151,7 @@ public class ApiUtils {
      */
     public static List<IPSGuid> convertGuids(GuidList ids) {
 
-        List<IPSGuid> ret = new ArrayList<IPSGuid>();
+        List<IPSGuid> ret = new ArrayList<>();
 
         for(Guid g : ids){
             PSGuid ps_g = new PSGuid();
@@ -137,7 +171,7 @@ public class ApiUtils {
      */
     public static CommunityList convertPSCommunities(List<PSCommunity> ps_communities) {
 
-        ArrayList<Community> communities = new ArrayList<Community>();
+        ArrayList<Community> communities = new ArrayList<>();
         for(PSCommunity p : ps_communities){
             communities.add(convertPSCommunity(p));
         }
@@ -151,7 +185,7 @@ public class ApiUtils {
      */
     public static List<PSCommunity> convertCommunityList(CommunityList communities) {
 
-        ArrayList<PSCommunity> ret = new ArrayList<PSCommunity>();
+        ArrayList<PSCommunity> ret = new ArrayList<>();
         for(Community c: communities){
             ret.add(convertCommunity(c));
         }
@@ -189,7 +223,7 @@ public class ApiUtils {
      */
     public static Collection<PSCommunityRoleAssociation> convertCommunityRoleList(CommunityRoleList roleList) {
 
-        ArrayList<PSCommunityRoleAssociation> ret = new ArrayList<PSCommunityRoleAssociation>();
+        ArrayList<PSCommunityRoleAssociation> ret = new ArrayList<>();
 
         for(CommunityRole r: roleList){
             PSCommunityRoleAssociation p_r = new PSCommunityRoleAssociation(
@@ -212,7 +246,7 @@ public class ApiUtils {
     public static Collection<? extends CommunityVisibility> convertPSCommunityVisibilities(List<PSCommunityVisibility> ps_visibilities) {
 
         CommunityVisibilityList ret = null;
-        ArrayList<CommunityVisibility> visibilities = new ArrayList<CommunityVisibility>();
+        ArrayList<CommunityVisibility> visibilities = new ArrayList<>();
         Iterator it = ps_visibilities.iterator();
         while(it.hasNext()){
             PSCommunityVisibility pv = (PSCommunityVisibility)it.next();
@@ -226,7 +260,7 @@ public class ApiUtils {
 
         CommunityVisibility ret = new CommunityVisibility(pv.getGUID().longValue(),convertGuid(pv.getGUID()));
 
-        ArrayList<ObjectSummary> visObjects = new ArrayList<ObjectSummary>();
+        ArrayList<ObjectSummary> visObjects = new ArrayList<>();
         for(PSObjectSummary s : pv.getVisibleObjects()){
             visObjects.add(convertPSObjectSummary(s));
         }
@@ -259,7 +293,7 @@ public class ApiUtils {
     public  static UserAccessLevel convertPSUserAccessLevel(PSUserAccessLevel permissions) {
         UserAccessLevel ret = new UserAccessLevel();
 
-        HashSet perms = new HashSet();
+        HashSet<Permissions> perms = new HashSet<>();
         for(PSPermissions p : permissions.getPermissions()){
             perms.add(convertPSPermissions(p));
         }
@@ -320,7 +354,7 @@ public class ApiUtils {
     if(scheme != null){
 
         List<String> p_params = scheme.getParameterNames();
-        ArrayList<LocationSchemeParameter> params = new ArrayList<LocationSchemeParameter>();
+        ArrayList<LocationSchemeParameter> params = new ArrayList<>();
         for(String s : p_params){
             LocationSchemeParameter p = new LocationSchemeParameter();
             p.setName(s);
@@ -348,8 +382,9 @@ public class ApiUtils {
             ret.setDescription(p_role.getDescription());
             ret.setHomePage(p_role.getHomepage());
             ret.setName(p_role.getName());
-            if(p_role.getUsers()!=null)
+            if(p_role.getUsers()!=null) {
                 ret.setUsers(p_role.getUsers());
+            }
         }
 
 
@@ -400,7 +435,7 @@ public class ApiUtils {
      */
     public static Collection<PSAclEntryImpl> convertAclEntries(AclEntryList aclEntries) {
 
-        HashSet<PSAclEntryImpl> ret = new HashSet<PSAclEntryImpl>();
+        HashSet<PSAclEntryImpl> ret = new HashSet<>();
 
         for(AclEntry entry:aclEntries){
             PSAclEntryImpl p_entry = new PSAclEntryImpl();
@@ -434,18 +469,17 @@ public class ApiUtils {
      * @return
      */
     public  static Principal convertPrincipal(com.percussion.rest.acls.Principal principal) {
-        Principal ret = new Principal() {
+
+        return new Principal() {
             @Override
             public String getName() {
                 return principal.getName();
             }
         };
-
-        return ret;
     }
 
     public static AclList convertAcls(List<IPSAcl> loadAcls) {
-        ArrayList<Acl> acls = new ArrayList<Acl>();
+        ArrayList<Acl> acls = new ArrayList<>();
         for(IPSAcl p_acl : loadAcls){
             acls.add(convertAcl((PSAclImpl)p_acl));
         }
@@ -476,7 +510,7 @@ public class ApiUtils {
      */
     public static AclEntryList convertAclEntries(Collection<IPSAclEntry> p_entries) {
 
-        ArrayList<AclEntry> entries = new ArrayList<AclEntry>();
+        ArrayList<AclEntry> entries = new ArrayList<>();
         for(IPSAclEntry p_e : p_entries){
             entries.add(convertAclEntry((PSAclEntryImpl)p_e));
         }
@@ -500,7 +534,7 @@ public class ApiUtils {
 
     public static UserAccessLevelList convertPermissions(Collection<PSAccessLevelImpl> permissions) {
 
-        ArrayList<UserAccessLevel> access = new ArrayList<UserAccessLevel>();
+        ArrayList<UserAccessLevel> access = new ArrayList<>();
         for(PSAccessLevelImpl p_a : permissions){
             UserAccessLevel u = new UserAccessLevel();
             u.setId(p_a.getId());
@@ -520,7 +554,7 @@ public class ApiUtils {
     }
 
     public static List<IPSAcl> convertAcls(AclList aclList) {
-        ArrayList<IPSAcl> p_acls = new ArrayList<IPSAcl>();
+        ArrayList<IPSAcl> p_acls = new ArrayList<>();
 
         for(Acl a : aclList){
             PSAclImpl p_a = new PSAclImpl();
@@ -538,7 +572,7 @@ public class ApiUtils {
 
     public static GuidList convertGuids(Collection<IPSGuid> p_guids) {
 
-        ArrayList<Guid> guids = new ArrayList<Guid>();
+        ArrayList<Guid> guids = new ArrayList<>();
 
         for(IPSGuid p_g : p_guids){
             Guid g = new Guid();
@@ -577,17 +611,17 @@ public class ApiUtils {
 
     public static UserPreferenceList convertUserProperties(Collection userProperties) {
 
-        Iterator properties = userProperties.iterator();
-        ArrayList<UserPreference> up = new ArrayList<UserPreference>();
+        Iterator<PSPersistentProperty> properties = userProperties.iterator();
+        ArrayList<UserPreference> up = new ArrayList<>();
         while(properties.hasNext()){
-            PSPersistentProperty prop = (PSPersistentProperty) properties.next();
+            PSPersistentProperty prop = properties.next();
             up.add(ApiUtils.convertPSPersistentProperty(prop));
         }
         return new UserPreferenceList(up);
     }
 
     public static Collection<PSPersistentProperty> convertUserPreferences(UserPreferenceList prefs){
-            ArrayList<PSPersistentProperty> ret = new ArrayList<PSPersistentProperty>();
+            ArrayList<PSPersistentProperty> ret = new ArrayList<>();
             for(UserPreference up : prefs){
                 ret.add(ApiUtils.convertUserPreference(up));
             }
@@ -619,15 +653,15 @@ public class ApiUtils {
     }
 
     public static List<ActionMenu> convertPSActionMenuList(List<PSActionMenu> actionMenus) {
-        ArrayList ret = new ArrayList<ActionMenu>();
-        for(PSActionMenu pa : actionMenus){
+        ArrayList<ActionMenu> ret = new ArrayList<>();
+        for(PSActionMenu pa : actionMenus) {
             ret.add(convertPSActionMenu(pa));
         }
 
         return ret;
     }
 
-    public static Object convertPSActionMenu(PSActionMenu pa) {
+    public static ActionMenu convertPSActionMenu(PSActionMenu pa) {
         ActionMenu ret = new ActionMenu();
 
         ret.setId(pa.getActionId());

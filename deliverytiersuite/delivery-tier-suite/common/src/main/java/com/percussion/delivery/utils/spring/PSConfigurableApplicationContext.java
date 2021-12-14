@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,12 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.utils.spring;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
@@ -31,8 +34,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -54,22 +59,43 @@ import java.util.Properties;
  *  # NOSQL - MongoDB Application Context
  *  #contextLocation=/WEB-INF/beans_mongodb.xml
  *  #############################################
- * @author natechadwick
  *
  */
 @Configuration
 public class PSConfigurableApplicationContext extends XmlWebApplicationContext
 {
 
-    private static String DEFAULT_CONTEXT_CONFIG = "/WEB-INF/beans.xml";
-    private static String PERC_CONTEXT_PROPS = "/WEB-INF/perc-context.properties";
-    private static String PERC_CONTEXT_PROPS_USER = "/conf/perc/perc-context.properties";
-    private static String PERC_CONTEXT_LOC = "contextLocation";
-    private static String CATALINA_BASE = "catalina.base";
+    private static final String DEFAULT_CONTEXT_CONFIG = "/WEB-INF/beans.xml";
+    private static final String PERC_CONTEXT_PROPS = "/WEB-INF/perc-context.properties";
+    private static final String PERC_CONTEXT_PROPS_USER = "/conf/perc/perc-context.properties";
+    private static final String PERC_CONTEXT_LOC = "contextLocation";
+    private static final String CATALINA_BASE = "catalina.base";
+
+    //Log4j2 may not be present when this is run - so use java basic logger
+    private static final Logger log = LogManager.getLogger(PSConfigurableApplicationContext.class);
 
     PSConfigurableApplicationContext(){
-
+        super();
     }
+
+    /**
+     * Initialize the bean definition reader used for loading the bean
+     * definitions of this context. Default implementation is empty.
+     * <p>Can be overridden in subclasses, e.g. for turning off XML validation
+     * or using a different XmlBeanDefinitionParser implementation.
+     *
+     * @param beanDefinitionReader the bean definition reader used by this context
+     * @see XmlBeanDefinitionReader#setValidationMode
+     * @see XmlBeanDefinitionReader#setDocumentReaderClass
+     */
+    @Override
+    protected void initBeanDefinitionReader(XmlBeanDefinitionReader beanDefinitionReader) {
+        beanDefinitionReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
+        beanDefinitionReader.setValidating(false);
+
+        super.initBeanDefinitionReader(beanDefinitionReader);
+    }
+
     /***
      * A convenience method for unit tests to use when testing multiple 
      * contexts.  This should be called prior to loading the context in 
@@ -82,11 +108,15 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
     public static void switchContextLocation(String location) throws IOException, URISyntaxException{
         
         Properties p = new Properties();
-        p.load(PSConfigurableApplicationContext.class.getResourceAsStream(PERC_CONTEXT_PROPS)); 
-        p.setProperty(PERC_CONTEXT_LOC, location);    
+        try (InputStream rs = PSConfigurableApplicationContext.class.getResourceAsStream(PERC_CONTEXT_PROPS)){
+            p.load(rs);
+            p.setProperty(PERC_CONTEXT_LOC, location);
+        }
     
         URL url = PSConfigurableApplicationContext.class.getResource(PERC_CONTEXT_PROPS);
-        p.store(new FileOutputStream(new File(url.toURI())), null);      
+        try (OutputStream fs = new FileOutputStream(new File(url.toURI()))) {
+            p.store(fs,null);
+        }
     }
 
     @Override
@@ -98,77 +128,42 @@ public class PSConfigurableApplicationContext extends XmlWebApplicationContext
     @Override
     protected String[] getDefaultConfigLocations() {
 
-
-        
         Properties props = new Properties();
-        InputStream in = null;
-        FileInputStream fs = null;
         String tomcatBase=null;
         String targetContext = null;
-        
-        
+
+        //Get the properties from the server perc/conf dir
+        tomcatBase = System.getProperty(CATALINA_BASE);
+
         //User configured properties
-        try{
-            
-            //Get the properties from the server perc/conf dir
-            tomcatBase = System.getProperty(CATALINA_BASE);
-            
+        try(FileInputStream fs = new FileInputStream(tomcatBase + PERC_CONTEXT_PROPS_USER)){
+
             if(tomcatBase != null){
-                fs = new FileInputStream(tomcatBase + PERC_CONTEXT_PROPS_USER);                
                 props.load(fs);
             }
                 
             targetContext = props.getProperty(PERC_CONTEXT_LOC, null);
-            // logger.info("Selected " + targetContext + " from " + tomcatBase + PERC_CONTEXT_PROPS_USER );
-        }catch(Exception e){
-            // logger.debug("Couldn't load " + tomcatBase + PERC_CONTEXT_PROPS_USER, e);
-        }finally{
-         
-            if(fs!=null)
-                try
-                {
-                    fs.close();
-                }
-                catch (IOException e)
-                {
-                    // logger.debug("Error releasing " + tomcatBase + PERC_CONTEXT_PROPS_USER, e);
-                }
+        } catch (IOException e) {
+            log.info(e.getMessage());
         }
-        
-        //WEB-IF properties
-        try
-        {
-            if(targetContext == null){
-                in = this.getServletContext().getResourceAsStream(PERC_CONTEXT_PROPS);
-                props.load(in);
-                targetContext = props.getProperty(PERC_CONTEXT_LOC,null);
-                // logger.info("Selected " + targetContext + " from " + PERC_CONTEXT_LOC );
-            }
-            
-        }catch(Exception ex){
-            // logger.debug("Problem loading context from " + PERC_CONTEXT_PROPS,ex);
-        }finally{
-            //Make sure the input stream is closed. 
-            try
+
+        if(targetContext == null){
+            //WEB-IF properties
+            try(InputStream in = Objects.requireNonNull(this.getServletContext()).getResourceAsStream(PERC_CONTEXT_PROPS))
             {
-                if(in!=null)
-                    in.close();
-            }
-            catch (IOException e)
-            {
-                // logger.debug("Error releasing "+ PERC_CONTEXT_PROPS, e);
+                    props.load(in);
+                    targetContext = props.getProperty(PERC_CONTEXT_LOC,null);
+                    log.info("Selected {} from {}",targetContext , PERC_CONTEXT_LOC );
+            } catch (IOException e) {
+                log.info(e.getMessage());
             }
         }
         
         //Fall back to defaults if none of the properties are found.
         if(targetContext == null || targetContext.equals("")){
-
-            //Make sure the file actually exists - if not revert to default.
-            if(!(new File(targetContext).isFile())){
-                    
-            // logger.info("Unable to find a configured ContextLocation - selecting default: " + DEFAULT_CONTEXT_CONFIG);
+            log.info("Unable to find a configured ContextLocation - selecting default: {}",
+                    DEFAULT_CONTEXT_CONFIG);
             targetContext = DEFAULT_CONTEXT_CONFIG;
-            }
         }
 
         return new String[]{targetContext};

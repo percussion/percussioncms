@@ -17,20 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rx.delivery.impl;
 
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -38,23 +34,25 @@ import com.amazonaws.services.s3.transfer.MultipleFileUpload;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.util.IOUtils;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
-import com.percussion.rx.delivery.IPSDeliveryErrors;
-import com.percussion.rx.delivery.PSDeliveryException;
+import com.percussion.legacy.security.deprecated.PSAesCBC;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
+import com.percussion.security.PSEncryptionException;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.pubserver.IPSPubServerDao;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
-import com.percussion.utils.security.deprecated.PSAesCBC;
 import com.percussion.utils.types.PSPair;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -86,12 +84,13 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private IPSPubServerDao pubServerDao;
     private String targetRegion = Regions.DEFAULT_REGION.getName();
 
-   private static Logger m_log = Logger.getLogger(PSAmazonS3EditionTask.class.getName());
+   private static final Logger log = LogManager.getLogger(PSAmazonS3EditionTask.class.getName());
 
+   @SuppressFBWarnings("PATH_TRAVERSAL_IN")
    @SuppressWarnings("unused")
    public void init(IPSExtensionDef def, File codeRoot) throws PSExtensionException
    {
-      webResFolder = new File(PSServer.getRxDir().getAbsolutePath() + "/" + WEB_RESOURCES);
+      webResFolder = new File(PSServer.getRxDir().getAbsolutePath() + File.separatorChar + WEB_RESOURCES);
       webResFolderPath = webResFolder.getAbsolutePath();
    }
 
@@ -106,9 +105,10 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       IPSPubServer pubServer = getPubServerDao().findPubServer(edition.getPubServerId());
       String bucketName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_BUCKET_PROPERTY, "");
       TransferManager tm = null;
+      AmazonS3 s3Client = null;
       try
       {
-         AmazonS3 s3Client = getAmazonS3Client(pubServer);
+         s3Client = PSAmazonS3DeliveryHandler.getAmazonS3Client(pubServer,getConfiguredAWSRegion());
          tm = TransferManagerBuilder.standard().withS3Client(s3Client).build();
          //Get list of files to be deleted and to be uploaded
          PSPair<List<File>, List<String>> fileList = getFileList(s3Client, bucketName);
@@ -125,70 +125,24 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       }
       catch (Exception e)
       {
-         m_log.error(
-               "Error occurred while copying the web_resources files to amazon s3 bucket for Site: " + site.getLabel(), e);
+         log.error(
+               "Error occurred while copying the web_resources files to amazon s3 bucket for Site: {} Error: {}" ,
+                 site.getLabel(),
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw e;
       }
       finally
       {
+
          if (tm != null)
             tm.shutdownNow();
+         if(s3Client != null)
+            s3Client.shutdown();
       }
 
    }
 
-   /**
-    * Creates amazon s3 client from the credentials.
-    * @param pubServer assumed not <code>null</code>
-    * @return AmazonS3 client.
-    * @throws Exception
-    */
-   private AmazonS3 getAmazonS3Client(IPSPubServer pubServer) throws Exception
-   {
-       AmazonS3 s3 = null;
-
-       if(PSAmazonS3DeliveryHandler.isEC2Instance()){
-           m_log.debug("EC2 Instance Running");
-           s3 = AmazonS3ClientBuilder.standard()
-                   .withCredentials(new InstanceProfileCredentialsProvider(false))
-                   .withRegion(Regions.getCurrentRegion().getName())
-                   .build();
-       }else {
-           m_log.debug("Using Access/Security Key");
-           PSAesCBC aes = new PSAesCBC();
-           String accessKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_ACCESSKEY_PROPERTY, "");
-           String secretKey = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_AS3_SECURITYKEY_PROPERTY, "");
-           String selectedRegionName = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_EC2_REGION, "");
-
-           try {
-               accessKey = aes.decrypt(accessKey, IPSPubServerDao.encryptionKey);
-               secretKey = aes.decrypt(secretKey, IPSPubServerDao.encryptionKey);
-           } catch (Exception e) {
-               m_log.error(e);
-               throw new PSDeliveryException(IPSDeliveryErrors.COULD_NOT_DECRYPT_CREDENTIALS, e, getExceptionMessage(e));
-           }
-           if(selectedRegionName == null || selectedRegionName.trim().equals("")){
-
-               //Default to EC2 regions
-               try {
-                   if (Regions.getCurrentRegion() != null){
-                       selectedRegionName = Regions.getCurrentRegion().getName();
-                   }
-               }catch(Exception e){
-                   //Do nothing
-               }
-               //Fallback to publisher-beans.xml
-               if(selectedRegionName == null || selectedRegionName.trim().equals("") ){
-                   selectedRegionName = getConfiguredAWSRegion().getName();
-               }
-           }
-
-           BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
-           s3 =  AmazonS3ClientBuilder.standard().withRegion(selectedRegionName).withCredentials(new AWSStaticCredentialsProvider(awsCreds)).build();
-       }
-       return s3;
-
-   }
     public String getTargetRegion()
     {
         return targetRegion;
@@ -205,9 +159,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     }
 
     private String getExceptionMessage(Exception e){
-        return (StringUtils.isBlank(e
-                .getLocalizedMessage()) ? e.getClass().getName() : e
-                .getLocalizedMessage());
+        return PSExceptionUtils.getMessageForLog(e);
     }
 
    /**
@@ -224,8 +176,8 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private PSPair<List<File>, List<String>> getFileList(AmazonS3 s3Client, String bucketName)
          throws FileNotFoundException, IOException
    {
-      List<File> modifiedFiles = new ArrayList<File>();
-      List<String> delKeys = new ArrayList<String>();
+      List<File> modifiedFiles = new ArrayList<>();
+      List<String> delKeys = new ArrayList<>();
       Map<String, PSPair<String, File>> localFilesMap = getLocalWebResFiles();
       Map<String, String> s3FilesMap = getAmazonS3FilesMap(s3Client, bucketName);
       // Prepare files to upload
@@ -246,7 +198,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
       delKeys.addAll(s3FilesMap.keySet());
       delKeys.removeAll(localFilesMap.keySet());
 
-      return new PSPair<List<File>, List<String>>(modifiedFiles, delKeys);
+      return new PSPair<>(modifiedFiles, delKeys);
    }
 
    /**
@@ -256,30 +208,23 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
     * @throws FileNotFoundException
     * @throws IOException
     */
-   private Map<String, PSPair<String, File>> getLocalWebResFiles() throws FileNotFoundException, IOException
-   {
-      Map<String, PSPair<String, File>> localFilesMap = new HashMap<String, PSPair<String, File>>();
+   private Map<String, PSPair<String, File>> getLocalWebResFiles() throws FileNotFoundException, IOException {
+      Map<String, PSPair<String, File>> localFilesMap = new HashMap<>();
       generateLocalFileMap(webResFolder, localFilesMap);
       return localFilesMap;
    }
 
    private void generateLocalFileMap(File dir, Map<String, PSPair<String, File>> localFilesMap)
-         throws FileNotFoundException, IOException
-   {
+           throws IOException {
+
       for (File file : dir.listFiles())
       {
          if (file.isFile() && !isIgnorableFile(file))
          {
             String key = generateKey(file);
-            InputStream is = null;
-            try
-            {
-               is = new FileInputStream(file);
+            try(InputStream is = new FileInputStream(file)){
                localFilesMap.put(key,
-                     new PSPair<String, File>(DigestUtils.md5Hex(IOUtils.toByteArray(is)), file));
-            }
-            finally{
-               org.apache.commons.io.IOUtils.closeQuietly(is);
+                     new PSPair<>(DigestUtils.sha256Hex(IOUtils.toByteArray(is)), file));
             }
          }
          else if (file.isDirectory())
@@ -319,7 +264,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    }
 
    /**
-    * Helper method that returns amazon s3 file keys along with md5hash.
+    * Helper method that returns amazon s3 file keys along with checksum.
     * @param client
     * @param bucketName
     * @return
@@ -327,7 +272,7 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
    private Map<String, String> getAmazonS3FilesMap(AmazonS3 client, String bucketName)
    {
       ObjectListing listing;
-      Map<String, String> filesMap = new TreeMap<String, String>();
+      Map<String, String> filesMap = new TreeMap<>();
 
       ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName(bucketName).withPrefix(WEB_RESOURCES);
 
@@ -362,5 +307,30 @@ public class PSAmazonS3EditionTask implements IPSEditionTask
 
       return pubServerDao;
    }
+
+    /**
+     * Decrypt the string.  Will attempt to decrypt using legacy algorithms to handle upgrade scenario.
+     * @param dstr base64 encoded encrypted string
+     * @return clear text version of the string.
+     */
+    private String decrypt(String dstr) {
+
+        try {
+
+            return PSEncryptor.decryptString(PSServer.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),dstr);
+        } catch (PSEncryptionException e) {
+            log.warn("Decryption failed: {}. Attempting to decrypt with legacy algorithm",PSExceptionUtils.getMessageForLog(e));
+            try {
+                PSAesCBC aes = new PSAesCBC();
+                return aes.decrypt(dstr, IPSPubServerDao.encryptionKey);
+            } catch (PSEncryptionException psEncryptionException) {
+                log.error("Unable to decrypt string. Error: {}",
+                        PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                return dstr;
+            }
+        }
+    }
+
 
 }

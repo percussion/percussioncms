@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filter;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.filter.data.PSFilterItem;
 import com.percussion.services.filter.data.PSItemFilter;
@@ -37,6 +38,12 @@ import com.percussion.services.publisher.data.PSContentListItem;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.utils.xml.PSInvalidXmlException;
+import org.apache.cactus.ServletTestCase;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.experimental.categories.Category;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,11 +53,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.cactus.ServletTestCase;
-import org.apache.commons.lang.StringUtils;
-import org.junit.experimental.categories.Category;
-import org.xml.sax.SAXException;
-
 /**
  * @author dougrand
  * 
@@ -58,6 +60,8 @@ import org.xml.sax.SAXException;
 @Category(IntegrationTest.class)
 public class PSFilterServiceTest extends ServletTestCase
 {
+   private static final Logger log = LogManager.getLogger(PSFilterServiceTest.class);
+
    /**
     * Fixed authtype
     */
@@ -185,7 +189,8 @@ public class PSFilterServiceTest extends ServletTestCase
          }
          catch (Exception e)
          {
-            e.printStackTrace();
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             assert (false);
          }
       }

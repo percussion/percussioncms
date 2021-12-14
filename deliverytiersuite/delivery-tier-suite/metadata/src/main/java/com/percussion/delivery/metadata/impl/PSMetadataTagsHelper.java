@@ -17,12 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata.impl;
 
+import com.percussion.delivery.metadata.IPSMetadataEntry;
+import com.percussion.delivery.metadata.IPSMetadataProperty;
+import com.percussion.delivery.metadata.impl.utils.PSPair;
+
+import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,13 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.servlet.ServletException;
-
-import com.percussion.delivery.metadata.IPSMetadataEntry;
-import com.percussion.delivery.metadata.IPSMetadataProperty;
-import com.percussion.delivery.metadata.impl.utils.PSPair;
-import com.percussion.delivery.metadata.rdbms.impl.PSDbMetadataEntry;
 
 /**
  * This class is responsible for process the tags list metadata and return
@@ -74,7 +72,7 @@ public class PSMetadataTagsHelper
         // Initialize array used for unduplicated tags
         List<ArrayList<String>> arrayPages = inicializeArray(results);
 
-        Map<String, Integer> tagsMap = new HashMap<String, Integer>();
+        Map<String, Integer> tagsMap = new HashMap<>();
         try
         {
             int i = 0;
@@ -90,10 +88,10 @@ public class PSMetadataTagsHelper
                 i++;
             }
 
-            List<PSPair<String, Integer>> tagResultList = new ArrayList<PSPair<String, Integer>>();
+            List<PSPair<String, Integer>> tagResultList = new ArrayList<>();
             for (Entry<String, Integer> tagEntry : tagsMap.entrySet())
             {
-                tagResultList.add(new PSPair<String, Integer>(tagEntry.getKey(), tagEntry.getValue()));
+                tagResultList.add(new PSPair<>(tagEntry.getKey(), tagEntry.getValue()));
             }
 
             // SORT BY ..
@@ -173,11 +171,11 @@ public class PSMetadataTagsHelper
      */
     private List<ArrayList<String>> inicializeArray(List<IPSMetadataEntry> results)
     {
-        List<ArrayList<String>> arrayPages = new ArrayList<ArrayList<String>>();
+        List<ArrayList<String>> arrayPages = new ArrayList<>();
 
         for (int j = 0; j < results.size(); j++)
         {
-            ArrayList<String> array = new ArrayList<String>();
+            ArrayList<String> array = new ArrayList<>();
             arrayPages.add(array);
         }
 

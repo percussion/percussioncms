@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -35,13 +35,13 @@
 		},
         validate:function(oldName){
             var errors = [];
-            var nameVal = $.trim(this.get("name")); 
+            var nameVal = this.get("name").trim();
             //is empty check
             if(nameVal.length < 1 || !WidgetBuilderApp.startsWithAlphaRegEx.test(nameVal) || nameVal.length < 2)
                 errors.push({name:"name",message:"This is a required field, must start with a letter and must contain at least two characters."});
-            else if($.inArray(nameVal.toUpperCase(),sqlWords) != -1)
+            else if($.inArray(nameVal.toUpperCase(),sqlWords) !== -1)
             {
-            	errors.push({name:"name",message: nameVal + " is a SQL Reserved Keyword. Please choose another value. See <a href='http://help.percussion.com/percussion-cm1/developers/widget-builder/widget-builder-reserved-field-names/index' title='Widget Builder Reserved Words' target='_blank'>the Help website</a> for a complete list of reserved keywords."});
+            	errors.push({name:"name",message: nameVal + " is a SQL Reserved Keyword. Please choose another value. See <a href='https://help.percussion.com/percussion-cm1/developers/widget-builder/widget-builder-reserved-field-names/index' title='Widget Builder Reserved Words' target='_blank' rel='noopener noreferrer'>the Help website</a> for a complete list of reserved keywords."});
             }
             else
             {
@@ -59,7 +59,7 @@
             if(isDupe)
                 errors.push({name:"name",message:"The field name must be unique."});
 
-            var labelVal = $.trim(this.get("label"));
+            var labelVal = this.get("label").trim();
             if(labelVal.length < 1)
                 errors.push({name:"label",message:"This is a required field."});
             return errors;

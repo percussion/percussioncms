@@ -17,24 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.data;
 
-import static java.util.Arrays.*;
-import static org.junit.Assert.*;
+import com.percussion.share.dao.PSSerializerUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.percussion.share.dao.PSSerializerUtils;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 public class PSRegionTreeSerializationTest
 {
@@ -98,6 +98,6 @@ public class PSRegionTreeSerializationTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSRegionTreeSerializationTest.class);
+    private static final Logger log = LogManager.getLogger(PSRegionTreeSerializationTest.class);
 
 }

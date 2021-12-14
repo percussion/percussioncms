@@ -17,21 +17,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.sitemanage.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import com.percussion.rx.publisher.IPSPublisherJobStatus;
 import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.publisher.IPSEdition;
@@ -45,15 +41,9 @@ import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.sitemanage.data.PSSitePublishItem;
 import com.percussion.sitemanage.data.PSSitePublishJob;
 import com.percussion.utils.guid.IPSGuid;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Before;
@@ -61,10 +51,20 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 @Category(IntegrationTest.class)
 public class PSSitePublishStatusServiceTest {
 
-	Log log = LogFactory.getLog(PSSitePublishStatusServiceTest.class);
+	private static final Logger log = LogManager.getLogger(PSSitePublishStatusServiceTest.class);
 	
 	Mockery context; 
 	
@@ -90,7 +90,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 	
 	@Test
-	public void testBuildCurrentJobs() {
+	public void testBuildCurrentJobs() throws PSNotFoundException {
 		final IPSPublisherJobStatus status = context.mock(IPSPublisherJobStatus.class);
 		final IPSGuid editionId = context.mock(IPSGuid.class,"editionId");
 		
@@ -133,7 +133,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 	
 	@Test
-    public void testBuildCurrentJobsByServerId() {
+    public void testBuildCurrentJobsByServerId() throws PSNotFoundException {
         final IPSPublisherJobStatus status = context.mock(IPSPublisherJobStatus.class);
         final IPSGuid editionId = context.mock(IPSGuid.class,"editionId");
         final IPSGuid siteId = context.mock(IPSGuid.class,"1");
@@ -177,8 +177,7 @@ public class PSSitePublishStatusServiceTest {
         context.assertIsSatisfied();
     }
 
-	protected void siteExpectations(final IPSGuid editionId)
-	{
+	protected void siteExpectations(final IPSGuid editionId) throws PSNotFoundException {
 		
 		final IPSEdition edition = context.mock(IPSEdition.class);
 		final IPSGuid siteId = context.mock(IPSGuid.class, "siteId");
@@ -204,7 +203,7 @@ public class PSSitePublishStatusServiceTest {
 		
 	}
 	@Ignore
-	public void testBuildLogs() {
+	public void testBuildLogs() throws PSNotFoundException {
 		final IPSPubStatus pubStatus = context.mock(IPSPubStatus.class);
 	    final IPSGuid editionId = context.mock(IPSGuid.class, "editionId"); 	
 		final Date startDate = new Date(); 
@@ -247,7 +246,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 	
 	@Ignore
-    public void testBuildLogsByServerId() {
+    public void testBuildLogsByServerId() throws PSNotFoundException {
         final IPSPubStatus pubStatus = context.mock(IPSPubStatus.class);
         final IPSGuid editionId = context.mock(IPSGuid.class, "editionId");     
         final Date startDate = new Date(); 
@@ -294,7 +293,7 @@ public class PSSitePublishStatusServiceTest {
 
 	@SuppressWarnings("serial")
     @Ignore
-	public void testBuildLogsFailuresOnly() {
+	public void testBuildLogsFailuresOnly() throws PSNotFoundException {
 		final IPSPubStatus pubStatusGood = context.mock(IPSPubStatus.class,"pubStatusGood");
 		final IPSPubStatus pubStatusBad = context.mock(IPSPubStatus.class,"pubStatusBad");
 
@@ -351,7 +350,7 @@ public class PSSitePublishStatusServiceTest {
 
 	@SuppressWarnings("serial")
     @Ignore
-	public void testBuildLogsSkip() {
+	public void testBuildLogsSkip() throws PSNotFoundException {
 		final IPSPubStatus pubStatusGood = context.mock(IPSPubStatus.class,"pubStatusGood");
 		final IPSPubStatus pubStatusBad = context.mock(IPSPubStatus.class,"pubStatusBad");
 
@@ -572,7 +571,7 @@ public class PSSitePublishStatusServiceTest {
 	}
 
 	@Test
-	public void testGetSiteNameLong() {
+	public void testGetSiteNameLong() throws PSNotFoundException {
 		
 		final IPSGuid editionGuid = new PSGuid(PSTypeEnum.EDITION, 42L );
 		final IPSEdition edition = context.mock(IPSEdition.class); 

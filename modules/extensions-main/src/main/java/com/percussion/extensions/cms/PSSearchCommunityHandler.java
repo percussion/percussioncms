@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,8 @@ package com.percussion.extensions.cms;
 
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.PSGuidHelper;
@@ -41,19 +43,16 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.services.security.data.PSCommunity;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * Walk the search properties in the request document. For sys_community, remove
@@ -79,8 +78,7 @@ import org.w3c.dom.NodeList;
  */
 public class PSSearchCommunityHandler implements IPSRequestPreProcessor
 {
-   protected static Log ms_log = LogFactory
-         .getLog(PSSearchCommunityHandler.class);
+   protected static Logger ms_log = LogManager.getLogger(PSSearchCommunityHandler.class);
 
    @SuppressWarnings("unused")
    public void preProcessRequest(Object[] params, IPSRequestContext request)
@@ -110,7 +108,7 @@ public class PSSearchCommunityHandler implements IPSRequestPreProcessor
 
       PSAclImpl object_acl = null;
 
-      List<Element> toremove = new ArrayList<Element>();
+      List<Element> toremove = new ArrayList<>();
 
       for (int i = 0; i < len; i++)
       {
@@ -183,7 +181,7 @@ public class PSSearchCommunityHandler implements IPSRequestPreProcessor
          
          if (object_acl != null)
          {
-            List<IPSAcl> acls = new ArrayList<IPSAcl>();
+            List<IPSAcl> acls = new ArrayList<>();
             acls.add(object_acl);
             asvc.saveAcls(acls);
          }

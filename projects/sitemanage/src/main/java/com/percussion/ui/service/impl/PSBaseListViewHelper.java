@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,15 +27,14 @@ import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.ui.data.PSDisplayPropertiesCriteria;
 import com.percussion.ui.service.IPSListViewHelper;
 import com.percussion.ui.service.IPSListViewProcessor;
+import org.apache.commons.lang.Validate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Base class for all {@link IPSListViewHelper} implementations. It validates
@@ -50,7 +49,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public abstract class PSBaseListViewHelper implements IPSListViewHelper
 {
-    protected static final Log log = LogFactory.getLog(PSBaseListViewHelper.class);
+    protected static final Logger log = LogManager.getLogger(PSBaseListViewHelper.class);
     
     protected List<IPSListViewProcessor> postProcessors = null;
 
@@ -115,18 +114,18 @@ public abstract class PSBaseListViewHelper implements IPSListViewHelper
         Map<String, String> currentDisplayProperties = pathItem.getDisplayProperties();
 
         if (currentDisplayProperties == null)
-            currentDisplayProperties = new HashMap<String, String>();
+            currentDisplayProperties = new HashMap<>();
+        //Null check to avoid 500 error (CMS-8526)
+        if(newDisplayProperties!=null) {
+            for (Entry<String, String> entry : newDisplayProperties.entrySet()) {
+                // If the field is already present in the old display properties,
+                // then it's not overwritten.
+                if (currentDisplayProperties.containsKey(entry.getKey()))
+                    continue;
 
-        for (Entry<String, String> entry : newDisplayProperties.entrySet())
-        {
-            // If the field is already present in the old display properties,
-            // then it's not overwritten.
-            if (currentDisplayProperties.containsKey(entry.getKey()))
-                continue;
-
-            currentDisplayProperties.put(entry.getKey(), entry.getValue());
+                currentDisplayProperties.put(entry.getKey(), entry.getValue());
+            }
         }
-
         pathItem.setDisplayProperties(currentDisplayProperties);
     }
 

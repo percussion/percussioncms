@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,20 +27,21 @@ import com.percussion.services.utils.general.PSServiceConfigurationBean;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.IPSDatasourceManager;
 import com.percussion.utils.jdbc.PSConnectionDetail;
-import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import javax.naming.NamingException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
+
+import javax.naming.NamingException;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Bean to create and configure a Quartz scheduler.
@@ -179,7 +180,7 @@ public class PSSchedulerBean implements FactoryBean, InitializingBean
     */
    private static Map<String, String> createDelegates()
    {
-      final Map<String, String> delegates = new HashMap<String, String>();
+      final Map<String, String> delegates = new HashMap<>();
       final String msSqlDelegate = "org.quartz.impl.jdbcjobstore.MSSQLDelegate";
       final String oracleDelegate = "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
       final String db2Delegate = "org.quartz.impl.jdbcjobstore.DB2v8Delegate";
@@ -299,5 +300,5 @@ public class PSSchedulerBean implements FactoryBean, InitializingBean
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSSchedulerBean.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSchedulerBean.class);
 }

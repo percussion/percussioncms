@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,24 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.server.agent;
 
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * Simple Utility class for storing static methods and variables.
@@ -44,12 +45,13 @@ public class PSUtils
    /**
     * Helper function that returns the W3C DOM Element value in the tree.
     *
-    * @param String - the element tag name, can be <code>null</code>.
+    * @param elem - the Element
+    * @param elemname  the element tag name, can be <code>null</code>.
     *
-    * @return Strign - the value of the element, can be <code>empty</code>.
+    * @return  the value of the element, can be <code>empty</code>.
     *
     */
-   static public String getElemValue(Element elem, String elemname)
+   public static String getElemValue(Element elem, String elemname)
    {
       String value = "";
 
@@ -94,11 +96,20 @@ public class PSUtils
     * @return DocumentBuilder object for parsing XML documents. Never
     * <code>null</code>
     */
-   static public DocumentBuilder getDocumentBuilder()
+   public static DocumentBuilder getDocumentBuilder()
    {
       try
       {
-         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+         DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                 new PSXmlSecurityOptions(
+                         true,
+                         true,
+                         true,
+                         false,
+                         true,
+                         false
+                 ));
+
          dbf.setNamespaceAware(true);
          dbf.setValidating(false);
          return dbf.newDocumentBuilder();
@@ -117,7 +128,7 @@ public class PSUtils
    /**
     * The namespace for agents
     */
-   static public final String NS_URI_PERCUSSION_AGENT =
+   public static  final String NS_URI_PERCUSSION_AGENT =
                            "urn:www.percussion.com/agent";
 
    /**

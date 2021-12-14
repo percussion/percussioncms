@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,6 +34,7 @@ import com.percussion.rx.design.PSDesignModelFactoryLocator;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.pkginfo.IPSIdNameService;
 import com.percussion.services.pkginfo.IPSPkgInfoService;
 import com.percussion.services.pkginfo.PSIdNameServiceLocator;
@@ -52,7 +53,6 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -72,8 +72,7 @@ public class PSPackageUninstaller
      * uninstall succeeds, otherwise one message for the failure of each package
      * element.
      */
-    public List<IPSUninstallResult> uninstallPackages(List<String> packageNames)
-    {
+    public List<IPSUninstallResult> uninstallPackages(List<String> packageNames) throws PSNotFoundException {
         return uninstallPackages(packageNames, false);
     }
 
@@ -88,14 +87,12 @@ public class PSPackageUninstaller
     * uninstall succeeds, otherwise one message for the failure of each package
     * element.
     */
-   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry)
-   {
+   public List<IPSUninstallResult> uninstallPackages(List<String> packageNames, boolean isRevertEntry) throws PSNotFoundException {
       if (packageNames == null)
          throw new IllegalArgumentException("packageNames must not be null");
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
-      PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> pkgPair = 
+      PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> pkgPair =
          loadPackages(packageNames);
-      messages.addAll(pkgPair.getSecond());
+      List<IPSUninstallResult> messages = new ArrayList<>(pkgPair.getSecond());
       List<PSPkgInfo> pkgInfos = pkgPair.getFirst();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
@@ -161,10 +158,10 @@ public class PSPackageUninstaller
    private PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> loadPackages(
          List<String> packageNames)
    {
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
-      List<PSPkgInfo> pkgInfos = new ArrayList<PSPkgInfo>();
+      List<IPSUninstallResult> messages = new ArrayList<>();
+      List<PSPkgInfo> pkgInfos = new ArrayList<>();
       PSPair<List<PSPkgInfo>, List<IPSUninstallResult>> result = 
-         new PSPair<List<PSPkgInfo>, List<IPSUninstallResult>>(
+         new PSPair<>(
             pkgInfos, messages);
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
@@ -176,7 +173,7 @@ public class PSPackageUninstaller
             String errMsg = "Skipped uninstalling of the supplied package as no"
                   + " package exists with the name: " + pkgname;
             PSUninstallResult msg = new PSUninstallResult(pkgname,
-                  PSUninstallResultType.ERROR);
+                  PSUninstallResultType.INFO);
             msg.setMessage(errMsg);
             messages.add(msg);
          }
@@ -205,14 +202,12 @@ public class PSPackageUninstaller
     * <code>null</code>. The message objects are filled in properly by
     * appropriate action.
     */
-   private List<IPSUninstallResult> uninstallPackage(PSPkgInfo pkgInfo)
-   {
+   private List<IPSUninstallResult> uninstallPackage(PSPkgInfo pkgInfo) throws PSNotFoundException {
       IPSConfigService cfgSrvc = PSConfigServiceLocator.getConfigService();
       cfgSrvc.deApplyConfiguration(pkgInfo.getPackageDescriptorName());
       boolean wasContentTypeDeleted = false;
-      
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
-      messages.addAll(deletePackageElements(pkgInfo));
+
+      List<IPSUninstallResult> messages = new ArrayList<>(deletePackageElements(pkgInfo));
       
       // 'skipped deletion' warnings were previously errors.  now being flagged
       // as warnings but need to be careful not to change behavior
@@ -245,19 +240,16 @@ public class PSPackageUninstaller
       if (pkgInfo == null)
          throw new IllegalArgumentException("pckInfo must not be null");
       
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
+      List<IPSUninstallResult> messages = new ArrayList<>();
       IPSConfigService cfgSrvc = PSConfigServiceLocator.getConfigService();
       String configName = pkgInfo.getPackageDescriptorName();
       Map<File, Exception> cfgErrors = cfgSrvc
             .uninstallConfiguration(configName);
-      Iterator<File> iter = cfgErrors.keySet().iterator();
-      while (iter.hasNext())
-      {
-         File file = iter.next();
+      for (File file : cfgErrors.keySet()) {
          PSUninstallResult res = new PSUninstallResult(configName,
-               PSUninstallResultType.WARN);
+                 PSUninstallResultType.WARN);
          res.setMessage("Failed to uninstall configuration file "
-               + file.getName());
+                 + file.getName());
          res.setException(cfgErrors.get(file));
       }
       return messages;
@@ -272,9 +264,8 @@ public class PSPackageUninstaller
     * @return List of IPSUninstallResult objects may be empty, never
     * <code>null</code>.
     */
-   private List<IPSUninstallResult> deletePackageElements(PSPkgInfo pkgInfo)
-   {
-      List<IPSUninstallResult> messages = new ArrayList<IPSUninstallResult>();
+   private List<IPSUninstallResult> deletePackageElements(PSPkgInfo pkgInfo) throws PSNotFoundException {
+      List<IPSUninstallResult> messages = new ArrayList<>();
       IPSPkgInfoService pkgService = PSPkgInfoServiceLocator
             .getPkgInfoService();
       List<IPSGuid> pkgElems = pkgService.findPkgElementGuids(pkgInfo
@@ -311,7 +302,7 @@ public class PSPackageUninstaller
           }
       }
       
-      if(messages.size() > 0)
+      if(!messages.isEmpty())
           return messages;
 
       for (IPSGuid guid : pkgElems)
@@ -384,7 +375,7 @@ public class PSPackageUninstaller
                   PSUninstallResultType.ERROR);
             er.setPackageGuid(pkgInfo.getGuid());
             er.setMessage("Failed to delete the element with guid "
-                  + objGuid.toString()
+                  + objGuid
                   + " failed to find a handler to delete the object.");
             er.setObjectGuid(objGuid);
 
@@ -505,8 +496,6 @@ public class PSPackageUninstaller
       PSDependencyManager dm = dh.getDependencyManager();
       List<String> ignoreTypes = dm.getUninstallIgnoreTypes();
       PSTypeEnum type = PSTypeEnum.valueOf(guid.getType());
-      if (type == null || ignoreTypes.contains(type.name()))
-         return true;
-      return false;
+      return type == null || ignoreTypes.contains(type.name());
    }
 }

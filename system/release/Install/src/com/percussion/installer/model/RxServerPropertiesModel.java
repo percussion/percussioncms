@@ -230,20 +230,21 @@ public class RxServerPropertiesModel extends RxIAModel
          RxLogger.logInfo("file does not exist : " + strPropFile);
          return true;
       }
-      try
-      {
+      try {
          Properties prop = new Properties();
-         prop.load(new FileInputStream(propFile));
-         String svcName = prop.getProperty(InstallUtil.RHYTHMYX_SVC_NAME);
-         if ((svcName == null) || (svcName.trim().length() == 0))
-            return true;
-         
-         //set the Service Name and Description
-         setRhythmyxSvcName(svcName);
-         String svcDesc = prop.getProperty(InstallUtil.RHYTHMYX_SVC_DESC);
-         if (!((svcDesc == null) || (svcDesc.trim().length() == 0)))
-            setRhythmyxSvcDesc(svcDesc);
+         try (FileInputStream fs = new FileInputStream(propFile)) {
+            prop.load(fs);
+            String svcName = prop.getProperty(InstallUtil.RHYTHMYX_SVC_NAME);
+            if ((svcName == null) || (svcName.trim().length() == 0))
+               return true;
 
+            //set the Service Name and Description
+            setRhythmyxSvcName(svcName);
+            String svcDesc = prop.getProperty(InstallUtil.RHYTHMYX_SVC_DESC);
+            if (!((svcDesc == null) || (svcDesc.trim().length() == 0)))
+               setRhythmyxSvcDesc(svcDesc);
+
+         }
       }
       catch (Exception e)
       {

@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.client;
 
 import com.percussion.delivery.data.PSDeliveryInfo;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.proxyconfig.data.PSProxyConfig;
 import com.percussion.proxyconfig.service.IPSProxyConfigService;
 import com.percussion.proxyconfig.service.PSProxyConfigServiceLocator;
@@ -35,6 +36,7 @@ import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
@@ -50,6 +52,7 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.PutMethod;
@@ -61,8 +64,8 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -71,6 +74,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -85,7 +89,6 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
 public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 {
 
-   public static final String PERC_TID_HEADER="perc-tid";
    public static final String PERC_VERSION_HEADER="perc-version";
    public static final String TOMCAT_USER="tomcat-user";
    public static final String TOMCAT_PASSWORD="tomcat-password";
@@ -95,12 +98,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     */
     private String licenseOverride="";
 
-    private static final String ENCODING_UTF8 = "UTF-8";
-
     /**
      * Logger for this service.
      */
-    public static Log log = LogFactory.getLog(PSDeliveryClient.class);
+    public static final Logger log = LogManager.getLogger(PSDeliveryClient.class);
 
     /**
      * The number of times a method will be retried.
@@ -168,7 +169,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * This HTTP codes are treated as successful when returned by the delivery
      * server.
      */
-    private static final List<Integer> successfullHttpStatusCodes = new ArrayList<Integer>()
+    private static final List<Integer> successfulHttpStatusCodes = new ArrayList<Integer>()
     {
         /**
          *
@@ -194,13 +195,13 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     private String responseMessageBodyContentType = MediaType.APPLICATION_JSON;
 
     // Make these set-able
-    private String requestMessageBodyEncoding = ENCODING_UTF8;
+    private final String requestMessageBodyEncoding = StandardCharsets.UTF_8.name();
 
     /**
      * The request message body content type is only used when the request body
      * is a String.
      */
-    private String requestMessageBodyContentType = MediaType.APPLICATION_JSON;
+    private static final String requestMessageBodyContentType = MediaType.APPLICATION_JSON;
 
     private IPSProxyConfigService proxyConfigService;
 
@@ -318,13 +319,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 
     /**
      * @return A JSON of the received data.
-     * @throws PSDeliveryClientException
      */
-    private JSON getJson() throws PSDeliveryClientException {
-        String response = pushOrGet(MediaType.APPLICATION_JSON);
-        JSON obj = net.sf.json.JSONSerializer.toJSON(response);
-
-        return obj;
+    private JSON getJson()
+    {
+        return net.sf.json.JSONSerializer.toJSON(pushOrGet(MediaType.APPLICATION_JSON));
     }
 
     /**
@@ -332,11 +330,12 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * HTTP method (according to <code>requestType</code> value), gets the response
      * and returns it.
      *
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string returned when the HTTP method is executed.
      */
-    private String pushOrGet(String requestMessageBodyContentType) throws PSDeliveryClientException {
-        String response = null;
+    private String pushOrGet(String requestMessageBodyContentType)
+    {
+        String response;
         this.responseMessageBodyContentType = MediaType.APPLICATION_JSON;
 
         switch (this.requestType)
@@ -374,12 +373,12 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @return A JSONObject of the response from the server. If there is no data
      *         returned, returns an empty JSONObject. Will never be
      *         <code>null</code>, may be empty.
-     * @throws URIException
      * @throws PSDeliveryClientException if the remote server did not return
      *             JSON of the expected type.
      *
      */
-    private JSONObject getJsonObject() throws PSDeliveryClientException {
+    private JSONObject getJsonObject()
+    {
         JSON obj;
         try
         {
@@ -387,7 +386,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
         catch (Exception ex)
         {
-            throw new PSDeliveryClientException(ex);
+            throw new PSDeliveryClientException("Error in executing the HTTP method: " + ex.getMessage());
         }
 
         if (obj instanceof JSONNull)
@@ -402,7 +401,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonObject(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions)
      */
-    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
+    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions)
+    {
         prepare(actionOptions, null);
         return getJsonObject();
     }
@@ -411,7 +411,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonObject(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions, java.lang.Object)
      */
-    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
+    public JSONObject getJsonObject(PSDeliveryActionOptions actionOptions,Object requestMessageBody)
+    {
         prepare(actionOptions, requestMessageBody);
         return getJsonObject();
     }
@@ -423,12 +424,12 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @return A JSONArray of the response from the server. If there is no data
      *         returned, returns an empty JSONArray. Will never be
      *         <code>null</code>, may be empty.
-     * @throws URIException
      * @throws PSDeliveryClientException if the remote server did not return
      *             JSON of the expected type.
      *
      */
-    private JSONArray getJsonArray() throws PSDeliveryClientException {
+    private JSONArray getJsonArray()
+    {
         JSON obj;
         try
         {
@@ -436,7 +437,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
         catch (Exception ex)
         {
-            throw new PSDeliveryClientException(ex);
+            throw new PSDeliveryClientException("Error in executing the HTTP method: " + ex.getMessage());
         }
 
         if (obj instanceof JSONNull)
@@ -451,7 +452,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonArray(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions)
      */
-    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
+    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions)
+    {
         prepare(actionOptions, null);
         return getJsonArray();
     }
@@ -460,7 +462,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getJsonArray(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions, java.lang.Object)
      */
-    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
+    public JSONArray getJsonArray(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
+    {
         prepare(actionOptions, requestMessageBody);
         return getJsonArray();
     }
@@ -470,7 +473,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @see com.percussion.delivery.client.IPSDeliveryClient#push(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions, java.lang.String, java.lang.Object)
      */
     public void push(PSDeliveryActionOptions actionOptions, String requestMessageBodyContentType,
-            Object requestMessageBody) throws PSDeliveryClientException {
+            Object requestMessageBody)
+    {
         prepare(actionOptions, requestMessageBody);
 
         String mediaType = StringUtils.isNotBlank(requestMessageBodyContentType) ? requestMessageBodyContentType :
@@ -479,7 +483,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         pushOrGet(mediaType);
     }
 
-    public void push(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
+    public void push(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
+    {
        push(actionOptions, null, requestMessageBody);
     }
 
@@ -488,10 +493,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * (non-Javadoc)
      * @see com.percussion.delivery.client.IPSDeliveryClient#getString(com.percussion.delivery.client.IPSDeliveryClient.PSDeliveryActionOptions)
      */
-	public String getString(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
+	public String getString(PSDeliveryActionOptions actionOptions) {
         prepare(actionOptions, null);
-        String response = pushOrGet(MediaType.APPLICATION_JSON);
-        return response;
+       return pushOrGet(MediaType.APPLICATION_JSON);
 	}
 
     /**
@@ -503,11 +507,13 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @param actionOptions The PSDeliveryActionOptions object.
      * @param requestMessageBody The request message body
      */
-	private void prepare(PSDeliveryActionOptions actionOptions, Object requestMessageBody) throws PSDeliveryClientException {
+	private void prepare(PSDeliveryActionOptions actionOptions, Object requestMessageBody)
+    {
        if(actionOptions.getDeliveryInfo() == null)
        {
-          log.error("Error getting info from delivery config file");
-          throw new PSDeliveryClientException("Error getting info from delivery config file");
+           String error = "Error getting info from delivery config file";
+          log.error(error);
+          throw new PSDeliveryClientException(error);
        }
 
         ProtocolSocketFactory socketFactory = null;
@@ -519,14 +525,15 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
            {
                socketFactory = new EasySSLProtocolSocketFactory();
            }
-           else //Not using self signed so setup SSL accordingly
+           else //Not using self-signed so setup SSL accordingly
            {
               socketFactory = new TLSProtocolSocketFactory();
            }
         }
         PSDeliveryInfo server = actionOptions.getDeliveryInfo();
         URI uri;
-        String protocol, port;
+        String protocol;
+        String port;
 
         try
         {
@@ -540,7 +547,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         catch (URIException e)
         {
             log.error("Error getting info from delivery config file");
-            throw new PSDeliveryClientException(e);
+            throw new PSDeliveryClientException("Error getting info from delivery config file", e);
         }
 
         protocol = uri.getScheme();
@@ -548,17 +555,17 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         if (sslEnabled)
         {
            port = (uri.getPort() <= 0) ? "443" : Integer.toString(uri.getPort());
+           if("-1".equalsIgnoreCase(port))
+               port = "443";
            Protocol.registerProtocol(protocol, new Protocol(protocol, socketFactory, Integer.parseInt(port)));
-        }else{
-           port = (uri.getPort() <= 0) ? "80" : Integer.toString(uri.getPort());
         }
 
         this.requestType = actionOptions.getHttpMethod();
         this.requestMessageBody = requestMessageBody;
 
         if (actionOptions.getSuccessfullHttpStatusCodes() != null &&
-                actionOptions.getSuccessfullHttpStatusCodes().size() > 0)
-            successfullHttpStatusCodes.addAll(actionOptions.getSuccessfullHttpStatusCodes());
+                !actionOptions.getSuccessfullHttpStatusCodes().isEmpty())
+            successfulHttpStatusCodes.addAll(actionOptions.getSuccessfullHttpStatusCodes());
 
         // Request information
         if (this.requestType.equals(HttpMethodType.GET) && requestMessageBody != null)
@@ -580,7 +587,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             try {
                 authScope = new AuthScope(uri.getHost(), uri.getPort(),server.getRealm());
             } catch (URIException e) {
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
             this.getState().setCredentials(authScope, new UsernamePasswordCredentials(userName, password));
         }
@@ -597,7 +605,112 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
 
     }
-    
+    public Header[] getCsrfToken(PSDeliveryActionOptions actionOptions) throws IOException {
+        if(actionOptions.getDeliveryInfo() == null)
+        {
+            String error = "Error getting info from delivery config file";
+            log.error(error);
+            throw new PSDeliveryClientException(error);
+        }
+
+        ProtocolSocketFactory socketFactory = null;
+        boolean sslEnabled = isSslEnabled(actionOptions);
+
+        if(sslEnabled){
+            if (actionOptions.getDeliveryInfo().getAllowSelfSignedCertificate() != null &&
+                    actionOptions.getDeliveryInfo().getAllowSelfSignedCertificate())
+            {
+                socketFactory = new EasySSLProtocolSocketFactory();
+            }
+            else //Not using self-signed so setup SSL accordingly
+            {
+                socketFactory = new TLSProtocolSocketFactory();
+            }
+        }
+        PSDeliveryInfo server = actionOptions.getDeliveryInfo();
+        URI uri;
+        String protocol;
+        String port;
+
+        try
+        {
+            uri = new URI(server.getAdminUrl(), false);
+            if (!sslEnabled)
+            {
+                // Parse delivery server url to get the protocol and port
+                uri = new URI(server.getUrl(), false);
+            }
+        }
+        catch (URIException e)
+        {
+            log.error("Error getting info from delivery config file");
+            throw new PSDeliveryClientException("Error getting info from delivery config file", e);
+        }
+
+        protocol = uri.getScheme();
+
+        if (sslEnabled)
+        {
+            port = (uri.getPort() <= 0) ? "443" : Integer.toString(uri.getPort());
+            Protocol.registerProtocol(protocol, new Protocol(protocol, socketFactory, Integer.parseInt(port)));
+        }else{
+            port = (uri.getPort() <= 0) ? "80" : Integer.toString(uri.getPort());
+        }
+
+        this.requestType = actionOptions.getHttpMethod();
+        this.requestMessageBody = requestMessageBody;
+
+        if (actionOptions.getSuccessfullHttpStatusCodes() != null &&
+                !actionOptions.getSuccessfullHttpStatusCodes().isEmpty())
+            successfulHttpStatusCodes.addAll(actionOptions.getSuccessfullHttpStatusCodes());
+
+        // Request information
+        if (this.requestType.equals(HttpMethodType.GET) && requestMessageBody != null)
+            throw new IllegalArgumentException("Attempting to execute GET method with message body.  Body is: " + requestMessageBody);
+
+        this.requestUrl = processUrl(actionOptions);
+
+        // Authentication information
+        String userName = actionOptions.getDeliveryInfo().getUsername();
+        String password = actionOptions.getDeliveryInfo().getPassword();
+        this.userName = userName;
+        this.password = password;
+
+        if (isNotBlank(userName) && isBlank(password))
+            log.warn("Executing HTTP request with username but blank password.  This is probably not what you intended.");
+
+        if (StringUtils.isNotEmpty(userName)) {
+            AuthScope authScope = AuthScope.ANY;
+            try {
+                authScope = new AuthScope(uri.getHost(), uri.getPort(),server.getRealm());
+            } catch (URIException e) {
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            }
+            this.getState().setCredentials(authScope, new UsernamePasswordCredentials(userName, password));
+        }
+
+        if (proxyConfig == null)
+        {
+            if (this.proxyConfigService == null)
+                this.proxyConfigService = getProxyConfigService();
+            if (this.proxyConfigService != null)
+                this.proxyConfig = proxyConfigService
+                        .findByProtocol(protocol);
+            else
+                this.proxyConfig = new PSProxyConfig();
+        }
+
+        HeadMethod headMethod = new HeadMethod(this.requestUrl);
+        headMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, this.responseMessageBodyContentType);
+
+
+        this.executeMethod(headMethod);
+       return headMethod.getResponseHeaders();
+
+
+    }
+
 	/**
 	 * Process the delivery server host URL, and returns the appropriate
 	 * one according to the type of service (admin or non-admin) in the
@@ -606,7 +719,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
 	 * @param actionOptions The PSDeliveryActionOptions object
 	 * @return The processed URL of the delivery service.
 	 */
-    private String processUrl(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
+    private String processUrl(PSDeliveryActionOptions actionOptions)
+    {
         PSDeliveryInfo server = actionOptions.getDeliveryInfo();
         
         String actionUrl = actionOptions.getActionUrl();
@@ -616,7 +730,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         
         try
         {
-            String protocol, deliveryHost, port;            
+            String protocol;
+            String deliveryHost;
+            String port;
             
             if (actionOptions.isAdminOperation())
             {
@@ -631,9 +747,11 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             deliveryHost = uri.getHost();
             protocol = uri.getScheme();
             port = uri.getPort() <= 0 ? "" : Integer.toString(uri.getPort());
-                      
+            if("-1".equalsIgnoreCase(port))
+                port = "";
+
             //Add the slash for the port
-            port = (port == null || port.length() == 0) ? "" : ":" + port;
+            port = port.length() == 0 ? "" : ":" + port;
             
             // Make final URL
             finalUrl =
@@ -646,8 +764,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
         catch (URIException e)
         {
-            log.error("Error parsing URL: " + finalUrl);
-            throw new PSDeliveryClientException(e);
+            log.error("Error parsing URL: {}" , finalUrl);
+            throw new PSDeliveryClientException("Error parsing URL: " + finalUrl, e);
         }
         
         return uri.getEscapedURI();
@@ -659,7 +777,6 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
-     * @throws URIException 
      */
     private String executeGetMethod()
     {
@@ -676,10 +793,12 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     {
         if (isBlank(this.responseMessageBodyContentType))
             this.responseMessageBodyContentType = MediaType.APPLICATION_JSON;
-        
+
+
         DeleteMethod deleteMethod = new DeleteMethod(this.requestUrl);
+
         
-        if (requestMessageBody != null && requestMessageBody instanceof NameValuePair[])
+        if (requestMessageBody instanceof NameValuePair[])
             deleteMethod.setQueryString((NameValuePair[]) requestMessageBody);
 
         return this.executeHttpMethod(deleteMethod);
@@ -688,11 +807,10 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     /**
      * Executes a PUT method against the given URL using authentication.
      * 
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
-     * @throws IOException 
      */
     private String executePutMethod(String requestMessageBodyContentType)
     {
@@ -703,20 +821,17 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
     /**
      * Executes a POST request against the given URL using authentication.
      * 
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
-     * @throws URIException 
      */
     @SuppressWarnings("unchecked")
     private String executePostMethod(String requestMessageBodyContentType)
     {
          PostMethod postMethod = new PostMethod(this.requestUrl);
-        
-        // FIXME This code should not be here, but in executeEntityEnclosingMethod.
-        // The current version of Apache HttpClient used has some limitations that
-        // I couldn't workaround.
+
+
         if (this.requestMessageBody instanceof Collection<?>)
         {
             try
@@ -731,19 +846,14 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                 String errorMessage = "Error in trying to set the request body for the POST method";
                 
                 log.error(errorMessage);
-                throw new RuntimeException(errorMessage);
+                throw new PSDeliveryClientException(errorMessage);
             }
         } else {
-           try
-         {
-            postMethod.setRequestEntity(new StringRequestEntity(this.requestMessageBody.toString(),"application/json","UTF-8"));
-         }
-         catch (UnsupportedEncodingException e)
-         {
-             // UTF-8 allways supported
-              log.error("Unsupported Exception for UTF-8?");
-        
-         }
+            try {
+                postMethod.setRequestEntity(new StringRequestEntity(this.requestMessageBody.toString(),"application/json", StandardCharsets.UTF_8.name()));
+            } catch (UnsupportedEncodingException e) {
+                throw new PSDeliveryClientException(e.getMessage());
+            }
         }
         
         return this.executeEntityEnclosingMethod(postMethod, requestMessageBodyContentType);
@@ -754,7 +864,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
      * the shared logic between POST and PUT.
      * 
      * @param httpMethod The HTTP method object to execute.
-     * @param requestMessageBodyContentType
+     * @param requestMessageBodyContentType Content Type
      * @return A string containing the entire contents of the body of the
      *         response. May return <code>null</code> if there is an error
      *         processing the given url.
@@ -791,7 +901,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             String errorMessage = "Error in trying to set the request body for the HTTP method";
             
             log.error(errorMessage, e);
-            throw new RuntimeException(errorMessage);
+            throw new PSDeliveryClientException(errorMessage);
         }
         
         return this.executeHttpMethod(httpMethod);
@@ -815,11 +925,9 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         // By default, the content type is APPLICATION_JSON.
         if (httpMethod.getRequestHeader(HttpHeaders.CONTENT_TYPE) != null &&
                 isBlank(httpMethod.getRequestHeader(HttpHeaders.CONTENT_TYPE).getValue()))
-            httpMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, this.requestMessageBodyContentType);
+            httpMethod.setRequestHeader(HttpHeaders.CONTENT_TYPE, requestMessageBodyContentType);
 
-        if (proxyConfig != null)
-        {
-           if (proxyConfig.getHost() != null && proxyConfig.getPort() != null)
+           if (proxyConfig != null && proxyConfig.getHost() != null && proxyConfig.getPort() != null)
            {
               HostConfiguration config = this.getHostConfiguration();
               config.setProxy(proxyConfig.getHost(),
@@ -836,7 +944,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                  this.getState().setProxyCredentials(authScope, credentials);              
               }
            }
-        }
+
 
         httpMethod.setRequestHeader(PERC_VERSION_HEADER, PSServer.getVersion());
         httpMethod.setRequestHeader(TOMCAT_USER, this.userName);
@@ -844,52 +952,43 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         httpMethod.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
                 new DefaultHttpMethodRetryHandler(retryCount, true));
 
-        try
-        {
+        try {
+
             int statusCode = this.executeMethod(httpMethod);
 
-            InputStream responseDataStream = httpMethod.getResponseBodyAsStream();
+            try (InputStream responseDataStream = httpMethod.getResponseBodyAsStream()) {
 
-            String responseData = responseDataStream==null ? "" : IOUtils.toString(responseDataStream);
-            if (!successfullHttpStatusCodes.contains(statusCode))
-            {
-               failureCount = 0;
-               offline=false;
-               if (statusCode == HttpStatus.SC_UNAUTHORIZED)
-                {
-                    log.error("Authentication error. Check user and " +
-                            "password for this delivery server: "
-                            + httpMethod.getStatusLine());
-                    throw new RuntimeException("Authentication error. Check user and " +
-                            "password for this delivery server: " +
-                            httpMethod.getStatusLine());
+                String responseData = responseDataStream == null ? "" : IOUtils.toString(responseDataStream,StandardCharsets.UTF_8);
+                if (!successfulHttpStatusCodes.contains(statusCode)) {
+                    failureCount = 0;
+                    offline = false;
+                    String msg;
+                    if (statusCode == HttpStatus.SC_UNAUTHORIZED) {
+                        msg = String.format("Authentication error. Check user and password for this delivery server: %s",
+                                httpMethod.getStatusLine());
+                    } else {
+                        msg = String.format("Error when executing method : %s : %s" , httpMethod.getStatusLine() , responseData);
+                    }
+                    log.error(msg);
+                    throw new PSDeliveryClientException(msg);
+
+                } else {
+                    if (statusCode == HttpStatus.SC_NO_CONTENT)
+                        return "";
+                    else
+                        return responseData;
                 }
-                else
-                {
-                    log.error("Error when executing method : " + httpMethod.getStatusLine() + " : " + responseData);
-                    throw new RuntimeException("Error when executing method: " + httpMethod.getStatusLine());
-                }
-
             }
-            else
-            {
-                // TODO ensure correct character encoding
-            	if (statusCode == HttpStatus.SC_NO_CONTENT)
-            		return "";
-            	else
-            		return responseData;
-            }
-
         }
         catch (IOException ex)
         {
            failureCount++;
            if(failureCount > MAX_FAILURES){
               offline = true;
-              log.info("Delivery Services are unavailble.  Supressing further messages.");
+              log.info("Delivery Services are unavailable.  Suppressing further messages.");
            }
            if(!offline)
-              log.error("Fatal transport error: " + ex.getLocalizedMessage());
+              log.error("Fatal transport error: {}" , ex.getMessage());
             
            String reqUrl = this.requestUrl;
            try
@@ -903,7 +1002,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
                  log.error(e.getLocalizedMessage());
            }
            if(!offline)
-              throw new RuntimeException("Unable to connect to delivery server at: " + reqUrl + ".");
+              throw new PSDeliveryClientException("Unable to connect to delivery server at: {}." + reqUrl + ".");
          return null;
         }
         finally
@@ -912,7 +1011,8 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
         }
     }
     
-    private boolean isSslEnabled(PSDeliveryActionOptions actionOptions) throws PSDeliveryClientException {
+    private boolean isSslEnabled(PSDeliveryActionOptions actionOptions)
+    {
         boolean sslEnabled = false;
         
         PSDeliveryInfo server = actionOptions.getDeliveryInfo();
@@ -928,16 +1028,13 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
             {
                 sslEnabled = true;
             }
-            else
-            {
-                sslEnabled = false;
-            }
+
 
         }
         catch (URIException e)
         {
             log.error("Error getting info from delivery config file");
-            throw new PSDeliveryClientException(e);
+            throw new PSDeliveryClientException("Error getting info from delivery config file", e);
         }     
         return sslEnabled;
     }
@@ -946,9 +1043,7 @@ public class PSDeliveryClient extends HttpClient implements IPSDeliveryClient
    /**
     * When set, requests send to the delivery tier will use
     * the supplied license number instead of the primary 
-    * instance license id.  This is for remote calls that 
-    * use a dedicated tenant id, such as the remote authorization
-    * configuration service. 
+    * instance license id.
     * 
     * This property will be automatically cleared after method
     * execution to prevent accidental override. 

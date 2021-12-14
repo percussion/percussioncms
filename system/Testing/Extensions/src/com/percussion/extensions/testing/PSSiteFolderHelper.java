@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -440,7 +440,7 @@ public class PSSiteFolderHelper implements IPSRequestPreProcessor
    /**
     * The class specific logger.
     */
-   public static Logger logger = Logger.getLogger(PSSiteFolderHelper.class);
+   public static Logger logger = LogManager.getLogger(PSSiteFolderHelper.class);
    
    /**
     * The constant used to attach and retrieve the component proxy to a 

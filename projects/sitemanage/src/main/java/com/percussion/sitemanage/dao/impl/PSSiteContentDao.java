@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,6 +26,7 @@ package com.percussion.sitemanage.dao.impl;
 import com.percussion.cms.objectstore.PSCloningOptions;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.design.objectstore.PSLocator;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.fastforward.managednav.PSNavException;
 import com.percussion.pagemanagement.assembler.IPSRenderAssemblyBridge;
@@ -34,9 +35,7 @@ import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSTemplateService;
-import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSFolderPermission;
-import com.percussion.pathmanagement.service.impl.PSDispatchingPathService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.recycle.service.IPSRecycleService;
 import com.percussion.search.PSSearchIndexEventQueue;
@@ -46,14 +45,15 @@ import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.content.data.PSItemStatus;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
-import com.percussion.services.purge.IPSSqlPurgeHelper;
-import com.percussion.services.purge.PSSqlPurgeHelperLocator;
 import com.percussion.share.dao.IPSContentItemDao;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSGenericDao.DeleteException;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.sitemanage.data.PSSite;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
@@ -61,14 +61,13 @@ import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.PSUnknownContentTypeException;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import static java.util.Arrays.asList;
@@ -195,8 +194,9 @@ public class PSSiteContentDao
         // Create Home Page template
         try
         {
-            if(templateSummary == null)
+            if(templateSummary == null) {
                 templateSummary = createSiteTemplate(site);
+            }
 
             // Create Home Page
             PSPage page = new PSPage();
@@ -261,7 +261,8 @@ public class PSSiteContentDao
             PSCloningOptions options = new PSCloningOptions(PSCloningOptions.TYPE_SITE, srcName, destName, destName,
                     PSCloningOptions.COPY_ALL_CONTENT, PSCloningOptions.COPYCONTENT_AS_NEW_COPY, null);
             options.setUseSrcItemWorkflow(true);
-            fp.copyFolder(srcLoc, tgtLoc, options);
+
+            fp.copyFolder(srcLoc, tgtLoc, options,true,asmBridge.getDispatchTemplate());
         }
         catch (Exception e)
         {
@@ -278,15 +279,17 @@ public class PSSiteContentDao
      *
      * @throws PSAssemblyException if failed to find the base template specified in the site object.
      */
-    private PSTemplateSummary createSiteTemplate(PSSite site) throws PSAssemblyException {
+    private PSTemplateSummary createSiteTemplate(PSSite site) throws PSAssemblyException, PSDataServiceException {
         IPSAssemblyTemplate baseTemplate = assemblyService.findTemplateByName(site.getBaseTemplateName());
         PSTemplateSummary templateSummary = null;
         IPSGuid tempId = null;
+
         try {
             tempId = templateService.findUserTemplateIdByName(site.getTemplateName(), site.getName());
-        } catch (Exception e) {
-
+        }catch (PSValidationException | IPSDataService.DataServiceLoadException e) {
+            //That means template doesn't exist and needs to be created below.
         }
+
         if (tempId == null){
             templateSummary = templateService.createTemplate(site.getTemplateName(),
                     idMapper.getString(baseTemplate.getGUID()),
@@ -312,8 +315,7 @@ public class PSSiteContentDao
      * @throws PSErrorException If error occurs creating the item.
      */
     protected String createItem(String contentType, Map<String, Object> fields, String path)
-            throws PSUnknownContentTypeException, PSErrorException
-    {
+            throws PSUnknownContentTypeException, PSErrorException, PSDataServiceException {
         notEmpty(contentType, "contentType");
         notNull(fields, "fields");
         notEmpty(path, "path");
@@ -331,8 +333,7 @@ public class PSSiteContentDao
      *
      * @param site The site, may not be <code>null</code>.
      */
-    protected void deleteRelatedItems(PSSiteSummary site)
-    {
+    protected void deleteRelatedItems(PSSiteSummary site) throws DeleteException {
         notNull(site, "site");
         PSSearchIndexEventQueue indexer = PSSearchIndexEventQueue.getInstance();
 
@@ -341,12 +342,13 @@ public class PSSiteContentDao
         // delete site folder
         try
         {
-            log.info("Deleting items for site in "+ site.getFolderPath());
+            log.info("Deleting items for site in {}", site.getFolderPath());
             deleteFolder(site.getFolderPath());
         }
         catch (Exception e)
         {
-            log.error("Error deleting site related items", e);
+            log.error("Error deleting site related items from folder: {}, Error: {}", site.getFolderPath(),PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new DeleteException("Failed to delete site folder: " + site.getFolderPath() + " while deleting site", e);
         }
         finally {
@@ -365,8 +367,7 @@ public class PSSiteContentDao
      *
      * @throws Exception if an error occurs finding the navigation tree.
      */
-    public PSPage getHomePage(PSSiteSummary site) throws PSNavException
-    {
+    public PSPage getHomePage(PSSiteSummary site) throws PSNavException, PSDataServiceException {
         notNull(site, "site");
 
         PSPage homePage = null;
@@ -395,8 +396,7 @@ public class PSSiteContentDao
      * @return the nav title, never <code>null</code>, may be empty.
      * @throws Exception if an error occurs finding the navigation tree for the site.
      */
-    public String getNavTitle(PSSiteSummary siteSummary) throws PSNavException
-    {
+    public String getNavTitle(PSSiteSummary siteSummary) throws PSNavException, PSDataServiceException {
         notNull(siteSummary, "siteSummary");
 
         String navTitle = "";
@@ -418,8 +418,7 @@ public class PSSiteContentDao
      * @return the nav tree content item, may be <code>null</code> if not found.
      * @throws Exception if an error occurs finding the item.
      */
-    private PSContentItem getNavTree(PSSiteSummary siteSummary) throws PSNavException
-    {
+    private PSContentItem getNavTree(PSSiteSummary siteSummary) throws PSNavException, PSDataServiceException {
 
         PSContentItem navTree = null;
 
@@ -433,15 +432,14 @@ public class PSSiteContentDao
         return navTree;
     }
 
-    public void loadTemplateInfo(PSSite site)
-    {
+    public void loadTemplateInfo(PSSite site) throws PSDataServiceException {
         if (site.getBaseTemplateName() != null) {
             PSTemplateSummary tempSummary = templateService.find(site.getBaseTemplateName());
             site.setBaseTemplateName(tempSummary.getSourceTemplateName());
             site.setTemplateName(tempSummary.getName());
         }
         else {
-            log.warn("Site: " + site.getName() + " does not have a base template.");
+            log.warn("Site: {}, does not have a base template.", site.getName());
         }
     }
 
@@ -485,7 +483,7 @@ public class PSSiteContentDao
 //        } catch (Exception e)
 //        {
 //            log.warn("Cannot find folder: " + folderPath + " to delete, may already be deleted.");
-//            log.debug(e);
+//            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 //        }
 
     }
@@ -499,6 +497,6 @@ public class PSSiteContentDao
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteContentDao.class);
+    private static final Logger log = LogManager.getLogger(PSSiteContentDao.class);
 
 }

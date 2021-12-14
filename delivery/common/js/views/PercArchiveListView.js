@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,7 @@
  */
 (function($)
 {
-    $(document).ready(function(){
+    $(function(){
         $.PercArchiveListView.updateArchiveList();
     });
     $.PercArchiveListView = {
@@ -63,7 +63,7 @@
 
             //Set the base URL to create the href for each item then
             var baseURL = "";
-            if(isEditMode==="true"){
+            if(isEditMode==="true" || isPreviewMode == "true"){
                 var paths = window.location.pathname.split("/");
                 baseURL = "/" + paths[1] + "/" + paths[2];
             }else{
@@ -114,6 +114,7 @@
                             let linkText = "";
                             let a ="";
                             let li = "";
+                            let href="";
 
                             // If year don't have any entry - skip the year
                             if(0 < row.yearCount)
@@ -124,21 +125,21 @@
                                 //Set the link for the item Year
                                 yearParam1 = row.year + "-01-01 00:00:00";
                                 yearParam2 = row.year + "-12-31 23:59:59";
-                                if (("undefined" !== typeof (pageResult) && "" !== pageResult && isEditMode !== "true" && isPreviewMode === "true") || (isEditMode === "false" && isPreviewMode === "false") )
-                                {
+                                if ("undefined" === typeof (pageResult) || "" === pageResult || isEditMode === "true"){
+                                    anchorYear = $("<a href='#'>")
+                                        .text(linkYearText);
+                                }else{
                                     query = JSON.parse( strJSON );
                                     query.criteria.push("dcterms:created >= '" + yearParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + yearParam2 + "'");
                                     encodedQuery =  "&query=" + encodeURIComponent(JSON.stringify(query));
+                                    href =  baseURL + pageResult + "?filter="+ encodeURIComponent(row.year) + encodedQuery;
                                     anchorYear = $("<a>")
-                                        .attr("href", baseURL + pageResult + "?filter="+  row.year + encodedQuery)
+                                        .attr("href",href)
                                         .text(linkYearText);
 
                                 }
-                                else{
-                                      anchorYear = $("<a href='#'>")
-                                        .text(linkYearText);
-                                }
+
                                  yearLi = $("<li>")
                                     .addClass("perc-archive-year")
                                     .append(anchorYear);
@@ -184,21 +185,20 @@
                                     }
 
                                     //Set the link for the item month
-                                    if (("undefined" !== typeof (pageResult) && "" !== pageResult && isEditMode !== "true" && isPreviewMode === "true" ) || (isEditMode === "false" && isPreviewMode === "false" ))
-                                    {
+                                    if(isEditMode === "true" || "undefined" === typeof (pageResult) || "" === pageResult ){
+                                        a = $("<a href='#'>")
+                                            .text(linkText);
+                                    }else{
                                         query = JSON.parse( strJSON );
                                         query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                         query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
                                         encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
+                                        href = baseURL + pageResult + "?filter="+  encodeURIComponent(row2.month + " " + row.year )+ encodedQuery;
                                         a = $("<a>")
-                                            .attr("href", baseURL + pageResult + "?filter="+  row2.month + " " + row.year + encodedQuery)
+                                            .attr("href",href )
                                             .text(linkText);
+                                    }
 
-                                    }
-                                    else{
-                                         a = $("<a href='#'>")
-                                            .text(linkText);
-                                    }
                                      li = $("<li>")
                                         .addClass("perc-archive-month")
                                         .append(a);
@@ -273,20 +273,20 @@
                                 }
 
                                 //Set the link for the item month
-                                if (typeof(pageResult) !== "undefined" && pageResult !== "")
-                                {
+                                if (typeof(pageResult) === "undefined" ||  pageResult === "" || isEditMode === "true" ){
+                                    a = $("<a href = '#'>")
+                                        .text(linkText);
+                                }else {
                                     let query = JSON.parse(strJSON );
                                     query.criteria.push("dcterms:created >= '" + dateParam1 + "'");
                                     query.criteria.push("dcterms:created <= '" + dateParam2 + "'");
                                     let encodedQuery = "&query=" + encodeURIComponent(JSON.stringify(query));
+                                    let href = baseURL + pageResult + "?filter="+ encodeURIComponent(row2.month +" "+ row.year) + encodedQuery;
                                     a = $("<a>")
-                                        .attr("href", baseURL + pageResult + "?filter="+ row2.month + " " + row.year + encodedQuery)
+                                        .attr("href", href)
                                         .text(linkText);
                                 }
-                                else{
-                                    a = $("<a href = '#'>")
-                                        .text(linkText);
-                                }
+
                                 let li = $("<li>")
                                     .addClass("perc-archive-month")
                                     .append(a);
@@ -310,11 +310,7 @@
                         currentArchiveList.find(".perc-archive-list-container").html("").append(ul);
                     }
                 }
-                else
-                {
-                    //Log the error and leave the original list entries as is
-                    console.error(err);
-                }
+
             });
 
         });

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,6 +29,7 @@ import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.cx.objectstore.PSMenuAction;
 import com.percussion.cx.objectstore.PSProperties;
 import com.percussion.data.PSDataExtractionException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -44,23 +45,21 @@ import com.percussion.webservices.PSErrorsException;
 import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.PSUiWsLocator;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class PSGenerateContentTypeList extends PSDefaultExtension implements IPSResultDocumentProcessor
 {
@@ -105,14 +104,14 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
          PSSecurityToken securityToken = new PSSecurityToken(userSessionId);
 
          // find all content type ids for community assigned to the session user
-         long contentTypeIds[] = PSItemDefManager.getInstance().getContentTypeIds(securityToken);
+         long[] contentTypeIds = PSItemDefManager.getInstance().getContentTypeIds(securityToken);
 
          // Map to store menu action String key is the path of the action in the
          // hierarchy node
          // and value is the menu action
-         Map<String, List<PSMenuAction>> folderActions = new HashMap<String, List<PSMenuAction>>();
+         Map<String, List<PSMenuAction>> folderActions = new HashMap<>();
 
-         List<PSItemDefSummary> summaryList = new ArrayList<PSItemDefSummary>();
+         List<PSItemDefSummary> summaryList = new ArrayList<>();
 
          PSItemDefManager defMgr = PSItemDefManager.getInstance();
 
@@ -125,7 +124,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
             summaryList.add((PSItemDefSummary) summary);
 
          // List to store structured actions based on the content type path
-         List<PSMenuAction> structuredActions = new ArrayList<PSMenuAction>();
+         List<PSMenuAction> structuredActions = new ArrayList<>();
 
          for (long contentTypeId : contentTypeIds)
          {
@@ -144,7 +143,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
                List<PSMenuAction> pathItems = folderActions.get(path);
                if (pathItems == null)
                {
-                  pathItems = new ArrayList<PSMenuAction>();
+                  pathItems = new ArrayList<>();
                   folderActions.put(path, pathItems);
                }
                pathItems.add(action);
@@ -157,7 +156,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
          // if no need for grouping of content types, sort the menu actions
          // alphabetically
          else
-            Collections.sort(structuredActions, actionComparator);
+            structuredActions.sort(actionComparator);
 
          // Add resultant menu actions to the xml document
          for (PSMenuAction action : structuredActions)
@@ -190,12 +189,14 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
       }
       catch (PSDataExtractionException e)
       {
-         ms_log.error("Exception occurred : " + e.getLocalizedMessage());
+         log.error("Exception occurred : {}",
+                 PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
       String contentTypeId = Integer.toString(itemDefSummary.getGUID().getUUID());
       List<String> list = Arrays.asList("psx.contenttype", contentTypeId, itemDefSummary.getLabel());
       String il8nLabel = PSI18nUtils.getString(PSI18nUtils.makeLookupKey(list), lang);
-      HashMap<String, String> paramMap = new HashMap<String, String>();
+      HashMap<String, String> paramMap = new HashMap<>();
       String sourceUrl = itemDefSummary.getEditorUrl();
       paramMap.put(IPSHtmlParameters.SYS_COMMAND, "edit");
       paramMap.put(IPSHtmlParameters.SYS_VIEW, "sys_All");
@@ -221,7 +222,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
 
    private String getPath(PSItemDefSummary itemDefSummary) throws PSExtensionProcessingException
    {
-      Map<IPSGuid, String> itemPaths = new HashMap<IPSGuid, String>();
+      Map<IPSGuid, String> itemPaths = new HashMap<>();
       String path = "";
       IPSGuid guid = null;
       try
@@ -265,16 +266,16 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
       String skipFolders = PSServer.getProperty(SERVER_PROP_SKIP_FOLDERS);
       if (skipFolders != null)
          alwaysShowSubmenu = skipFolders.trim().equalsIgnoreCase("false");
-      List<PSMenuAction> retList = new ArrayList<PSMenuAction>();
+      List<PSMenuAction> retList = new ArrayList<>();
       List<PSMenuAction> thisLevelActions = folderActions.get("");
       // add all without any further path
       if (thisLevelActions != null)
       {
          retList.addAll(thisLevelActions);
-         alwaysShowSubmenu = (thisLevelActions.size() > 0);
+         alwaysShowSubmenu = (!thisLevelActions.isEmpty());
       }
       // split out the first part of the path
-      Map<String, List<String>> pathSplit = new HashMap<String, List<String>>();
+      Map<String, List<String>> pathSplit = new HashMap<>();
       for (String path : folderActions.keySet())
       {
          if (path.length() > 0)
@@ -294,7 +295,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
             List<String> rights = pathSplit.get(left);
             if (rights == null)
             {
-               rights = new ArrayList<String>();
+               rights = new ArrayList<>();
                pathSplit.put(left, rights);
             }
             rights.add(right);
@@ -306,7 +307,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
 
       for (String folder : folders)
       {
-         Map<String, List<PSMenuAction>> submenuActions = new HashMap<String, List<PSMenuAction>>();
+         Map<String, List<PSMenuAction>> submenuActions = new HashMap<>();
          // create a modified action map stripping off the first part of the
          // path
          for (String right : pathSplit.get(folder))
@@ -336,7 +337,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
          }
       }
 
-      Collections.sort(retList, actionComparator);
+      retList.sort(actionComparator);
       return retList;
    }
 
@@ -350,14 +351,17 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
 
       public int compare(PSMenuAction action1, PSMenuAction action2)
       {
-         if (action1.getType() == PSMenuAction.TYPE_MENUITEM && action2.getType() == PSMenuAction.TYPE_MENUITEM
-               || (action1.getType() == PSMenuAction.TYPE_MENU && action2.getType() == PSMenuAction.TYPE_MENU))
+         if (action1.getType().equalsIgnoreCase(PSMenuAction.TYPE_MENUITEM)
+                 && action2.getType().equalsIgnoreCase(PSMenuAction.TYPE_MENUITEM)
+               || (action1.getType().equalsIgnoreCase(PSMenuAction.TYPE_MENU)
+                 && action2.getType().equalsIgnoreCase(PSMenuAction.TYPE_MENU)))
          {
             String actionName1 = action1.getLabel();
             String actionName2 = action2.getLabel();
             return actionName1.compareToIgnoreCase(actionName2);
          }
-         else if (action1.getType() == PSMenuAction.TYPE_MENUITEM && action2.getType() == PSMenuAction.TYPE_MENU)
+         else if (action1.getType().equalsIgnoreCase(PSMenuAction.TYPE_MENUITEM)
+                 && action2.getType().equalsIgnoreCase(PSMenuAction.TYPE_MENU))
          {
             return 1;
          }
@@ -367,7 +371,7 @@ public class PSGenerateContentTypeList extends PSDefaultExtension implements IPS
 
    };
 
-   private static Log ms_log = LogFactory.getLog(PSGenerateContentTypeList.class);
+   private static final Logger log = LogManager.getLogger(PSGenerateContentTypeList.class);
 
    public static final String SERVER_PROP_GROUP_CONTENTTYPES = "contentTypeGroupingInCX";
    

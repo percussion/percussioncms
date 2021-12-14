@@ -17,52 +17,45 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.thumbnail;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
+public class PSThumbnailImageUtils {
+    private static final Logger log = LogManager.getLogger(PSThumbnailImageUtils.class);
 
-public class PSThumbnailImageUtils
-{
-    private static final Log log = LogFactory.getLog(PSThumbnailImageUtils.class);
+    public static void resizeThumbnail(String thumbnailFilePath) throws InterruptedException {
 
-    public static void resizeThumbnail(String thumbnailFilePath)
-    {
-        try
-        {
-            File inImageFile = new File(thumbnailFilePath);
+        File inImageFile = new File(thumbnailFilePath);
 
-            int i = 0;
-            while ((!inImageFile.exists() || !inImageFile.canWrite()) && i < 120)
-            {
-                Thread.sleep(500);
-                i++;
-            }
+        int i = 0;
+        while ((!inImageFile.exists() || !inImageFile.canWrite()) && i < 120) {
+            Thread.sleep(500);
+            i++;
+        }
 
-            if (inImageFile.exists() && !inImageFile.canWrite())
-            {
-                File outImageFile = new File(thumbnailFilePath);
+        if (inImageFile.exists() && !inImageFile.canWrite()) {
+            File outImageFile = new File(thumbnailFilePath);
 
-                try (FileInputStream inputStream = new FileInputStream(inImageFile);
-                     FileOutputStream output = new FileOutputStream(outImageFile)) {
-
+            try (FileInputStream inputStream = new FileInputStream(inImageFile)) {
+                try (FileOutputStream output = new FileOutputStream(outImageFile)) {
 
                     BufferedImage sourceImage = ImageIO.read(inputStream);
                     Image thumbnail = sourceImage.getScaledInstance(290, 207, Image.SCALE_SMOOTH);
@@ -72,7 +65,7 @@ public class PSThumbnailImageUtils
                     bufferedThumbnail.getGraphics().drawImage(thumbnail, 0, 0, null);
 
 
-                    ImageWriter imageWriter = (ImageWriter) ImageIO.getImageWritersByFormatName("jpeg").next();
+                    ImageWriter imageWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
 
                     float quality = 1.0f;
                     JPEGImageWriteParam jpegParams = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
@@ -85,14 +78,14 @@ public class PSThumbnailImageUtils
                     imageWriter.write(null, outimage, jpegParams);
                     imageWriter.dispose();
                 }
+            } catch (Exception e) {
+                //FB: DMI_INVOKING_TOSTRING_ON_ARRAY NC 1-16-16
+                log.debug("Failed to resize thumbnail at: " + thumbnailFilePath, e);
             }
         }
-        catch (Exception e)
-        {
-            //FB: DMI_INVOKING_TOSTRING_ON_ARRAY NC 1-16-16
-            log.debug("Failed to resize thumbnail at: " + thumbnailFilePath, e);
-        }
+
     }
-
-
 }
+
+
+

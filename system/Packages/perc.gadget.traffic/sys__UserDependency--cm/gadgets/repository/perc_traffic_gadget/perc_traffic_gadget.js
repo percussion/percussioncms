@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -76,8 +76,8 @@
     var MAX_POINTS_SHOW_MARKER_RIGHT = 50;
     var MAX_POINTS_SHOW_MARKER_LEFT  = 25;
     var VISITS_SERIES=0, UPDATES_SERIES=1, LIVEPAGES_SERIES=2;
-    var INITIAL_FRAME_HEIGHT = 320;
-    var INITIAL_COLLAPSED_FRAME_HEIGHT = 340;
+    var INITIAL_FRAME_HEIGHT = 350;
+    var INITIAL_COLLAPSED_FRAME_HEIGHT = 360;
     var DETAILS_TABLE_ROW_HEIGHT = 47;
     var TOOLTIP_DATE_FORMAT = "MM d, yy";
     var TOOLTIP_DATE_FORMAT_DAY   = "DD, MM d, yy";
@@ -210,14 +210,14 @@
         trafficTitleError   = $("#perc-traffic-error-message");
         // gesture control for hiding and showing the details panel at the bottom
         hideDetailsLink = $("#perc-traffic-show-hide-details")
-            .hover(function(){
+            .on("mouseenter",function(){
                 if(isDetailsAvailable) {
                     $(this).css("cursor","pointer");
                 } else {
                     $(this).css("cursor","default");
                 }
             })
-            .click(function(){
+            .on("click", function(){
                 if(isDetailsVisible) {
                     hideDetailsPane();
                 } else {
@@ -584,7 +584,7 @@
      *  Called by jQplot when you click on the graph.
      */
     function startDrilldownSelection(ev, gridpos, datapos, neighbor, plot) {
-        if(startArray.length==0){
+        if(startArray.length===0){
             selectedStartDateDrill = new Date(datapos.xaxis);
             startArray.push(selectedStartDateDrill);
         }
@@ -762,15 +762,15 @@
             date = new Date(date);
             var toolTipDateString = "";
             
-            if(selectedGranularity == "DAY") {
+            if(selectedGranularity === "DAY") {
                 toolTipDateString = $.datepicker.formatDate(TOOLTIP_DATE_FORMAT_DAY, date);
-            } else if(selectedGranularity == "WEEK") {
+            } else if(selectedGranularity === "WEEK") {
                 toolTipDateString = $.datepicker.formatDate(TOOLTIP_DATE_FORMAT_WEEK, date);
                 var endOfWeek = getEndOfWeekDate(date);
                 toolTipDateString += " - " + $.datepicker.formatDate(TOOLTIP_DATE_FORMAT_WEEK, endOfWeek);
-            } else if(selectedGranularity == "MONTH") {
+            } else if(selectedGranularity === "MONTH") {
                 toolTipDateString = $.datepicker.formatDate(TOOLTIP_DATE_FORMAT_MONTH, date);
-            } else if(selectedGranularity == "YEAR") {
+            } else if(selectedGranularity === "YEAR") {
                 toolTipDateString = $.datepicker.formatDate(TOOLTIP_DATE_FORMAT_YEAR, date);
             }
             
@@ -782,7 +782,7 @@
                 .appendTo("body")
                 .css("position", "absolute")
                 .hide()
-                .hover(function(){$(this).hide();});
+                .on("mouseenter", function(){$(this).hide();});
 
             var tWidth  = tooltip.width();
             var tHeight = tooltip.height();

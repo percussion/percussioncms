@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,6 +31,8 @@ import com.percussion.share.dao.PSSerializerUtils;
 import com.percussion.widgetbuilder.utils.IPSWidgetFileTransformer;
 import com.percussion.widgetbuilder.utils.PSWidgetPackageBuilderException;
 import com.percussion.widgetbuilder.utils.PSWidgetPackageSpec;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.Reader;
@@ -39,9 +41,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Add resource entries for js and css files specified by the supplied package spec
@@ -60,7 +59,7 @@ public class PSResourceFileTransformer implements IPSWidgetFileTransformer
         {
             PSResourceDefinitionGroup group = PSSerializerUtils.unmarshal(IOUtils.toString(reader), PSResourceDefinitionGroup.class);
             List<PSFileResource> files = group.getFileResources();
-            Set<String> fileIds = new HashSet<String>();
+            Set<String> fileIds = new HashSet<>();
             String cssDepId = null;
             for (String path : packageSpec.getCssFiles())
             {
@@ -93,7 +92,7 @@ public class PSResourceFileTransformer implements IPSWidgetFileTransformer
         cssFile.setType(type);
         if(dependeeId != null)
         {
-            List<PSResourceDependency> deps = new ArrayList<PSResourceDependency>();
+            List<PSResourceDependency> deps = new ArrayList<>();
             PSResourceDependency dep = new PSResourceDependency();
             dep.setDependeeId(dependeeId);
             deps.add(dep);

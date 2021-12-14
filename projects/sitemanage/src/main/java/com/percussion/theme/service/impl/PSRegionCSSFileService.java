@@ -17,18 +17,12 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.theme.service.impl;
-
-import static com.percussion.theme.data.PSRegionCSS.REGION_CLASS;
-import static com.percussion.utils.tools.IPSUtilsConstants.RX_STANDARD_ENC;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.pagemanagement.data.PSRegion;
 import com.percussion.pagemanagement.data.PSRegionTree;
@@ -44,7 +38,6 @@ import com.phloc.css.decl.ECSSSelectorCombinator;
 import com.phloc.css.decl.ICSSSelectorMember;
 import com.phloc.css.reader.CSSReader;
 import com.phloc.css.writer.CSSWriterSettings;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -55,9 +48,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.percussion.theme.data.PSRegionCSS.REGION_CLASS;
+import static com.percussion.utils.tools.IPSUtilsConstants.RX_STANDARD_ENC;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
 
 public class PSRegionCSSFileService
 {
@@ -68,8 +68,7 @@ public class PSRegionCSSFileService
      * @param filePath the file path, not blank.
      * @return the specified region CSS. It may be <code>null</code>.
      */
-    public PSRegionCSS findRegionCSS(String outerRegion, String region, String filePath)
-    {
+    public PSRegionCSS findRegionCSS(String outerRegion, String region, String filePath) throws PSThemeNotFoundException {
         notEmpty(outerRegion);
         notEmpty(region);
         notEmpty(filePath);
@@ -98,8 +97,7 @@ public class PSRegionCSSFileService
      * @param regionCSS the region CSS, never <code>null</code>.
      * @param filePath the file path, not blank.
      */
-    public void save(PSRegionCSS regionCSS, String filePath)
-    {
+    public void save(PSRegionCSS regionCSS, String filePath) throws PSThemeNotFoundException {
         notNull(regionCSS);
         notEmpty(filePath);
         
@@ -123,8 +121,7 @@ public class PSRegionCSSFileService
      * @param region the region name, not blank.
      * @param filePath the file path, not blank.
      */
-    public void delete(String outerRegion, String region, String filePath)
-    {
+    public void delete(String outerRegion, String region, String filePath) throws PSThemeNotFoundException {
         notEmpty(outerRegion);
         notEmpty(region);
         notEmpty(filePath);
@@ -143,32 +140,31 @@ public class PSRegionCSSFileService
      * @param filePath the file path, not blank.
      * @return the list of region CSS that contains in the file, never <code>null</code>, may be empty.
      */
-    public List<PSRegionCSS> read(String filePath) 
-    {
+    public List<PSRegionCSS> read(String filePath) throws PSThemeNotFoundException {
         notEmpty(filePath);
         
         String contents = getContentFromFile(filePath);
         if (contents == null)
-            return new ArrayList<PSRegionCSS>();
+            return new ArrayList<>();
 
         return readFromString(contents);
     }
 
     private List<PSRegionCSS> readFromString(String contents)
     {
-        List<PSRegionCSS> regions = new ArrayList<PSRegionCSS>();
+        List<PSRegionCSS> regions = new ArrayList<>();
         
         CascadingStyleSheet aCSS = CSSReader.readFromString (contents, RX_STANDARD_ENC, ECSSVersion.CSS30);
 
-        List<CSSStyleRule> rules = aCSS.getAllStyleRules();
-        for (CSSStyleRule rule : rules)
-        {
-            PSRegionCSS r = getRegionCSS(rule);
-            if (r != null)
-            {
-                regions.add(r);
+        if(aCSS !=null) {
+            List<CSSStyleRule> rules = aCSS.getAllStyleRules();
+                for (CSSStyleRule rule : rules) {
+                    PSRegionCSS r = getRegionCSS(rule);
+                    if (r != null) {
+                        regions.add(r);
+                    }
+                }
             }
-        }
         return regions;
     }
 
@@ -180,11 +176,10 @@ public class PSRegionCSSFileService
      * @param cssList the list of region CSS, not <code>null</code>, may be empty.
      */
     @SuppressWarnings("unchecked")
-    public void write(String filePath, List<PSRegionCSS> cssList)
-    {
+    public void write(String filePath, List<PSRegionCSS> cssList) throws PSThemeNotFoundException {
         Collections.sort(cssList);
         
-        StringBuffer buffer = new StringBuffer(); 
+        StringBuilder buffer = new StringBuilder();
         for (PSRegionCSS r : cssList)
         {
             buffer.append(r.getAsCSSString());
@@ -202,8 +197,7 @@ public class PSRegionCSSFileService
      * @param srcPath the source file, not blank.
      * @param targetPath the target file, not blank.
      */
-    public void mergeFile(PSRegionTree tree, String srcPath, String targetPath)
-    {
+    public void mergeFile(PSRegionTree tree, String srcPath, String targetPath) throws PSThemeNotFoundException {
         notNull(tree);
         notEmpty(srcPath);
         notEmpty(targetPath);
@@ -215,15 +209,14 @@ public class PSRegionCSSFileService
         mergeRegions(regions, targetPath);
     }
 
-    private void mergeRegions(List<PSRegionCSS> srcRegions, String targetPath)
-    {
+    private void mergeRegions(List<PSRegionCSS> srcRegions, String targetPath) throws PSThemeNotFoundException {
         // create the target file if not exist
         getTargetFile(targetPath);
 
         List<PSRegionCSS> targetRegions = read(targetPath);
         removeSourceFromTarget(srcRegions, targetRegions);
         
-        List<PSRegionCSS> result = new ArrayList<PSRegionCSS>();
+        List<PSRegionCSS> result = new ArrayList<>();
         result.addAll(srcRegions);
         result.addAll(targetRegions);
         
@@ -249,8 +242,7 @@ public class PSRegionCSSFileService
      * @return list of region css. It may be <code>null</code> if the region tree is empty
      * or the source file is empty (or not exist).
      */
-    private List<PSRegionCSS> getRegionCssFromTreeAndSource(PSRegionTree tree, String srcPath)
-    {
+    private List<PSRegionCSS> getRegionCssFromTreeAndSource(PSRegionTree tree, String srcPath) throws PSThemeNotFoundException {
         List<String> names = getRegionNames(tree);
         if (names.isEmpty())
             return null;
@@ -263,7 +255,7 @@ public class PSRegionCSSFileService
         if (regions.isEmpty())
             return null;
         
-        List<PSRegionCSS> results = new ArrayList<PSRegionCSS>();
+        List<PSRegionCSS> results = new ArrayList<>();
         for (PSRegionCSS r : regions)
         {
             if (matchRegionNames(r, names))
@@ -290,7 +282,7 @@ public class PSRegionCSSFileService
     
     private List<String> getRegionNames(PSRegionTree tree)
     {
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (PSRegion r : tree.getDescendentRegions())
         {
             names.add(r.getRegionId());
@@ -305,8 +297,7 @@ public class PSRegionCSSFileService
      * @param srcPath the path of the source file. It may be <code>null</code> if wants to create an empty target file.
      * @param targetPath the path of the target file. It may not be empty.
      */
-    public void copyFile(String srcPath, String targetPath)
-    {
+    public void copyFile(String srcPath, String targetPath) throws PSThemeNotFoundException {
         notEmpty(targetPath);
         
         File srcFile = getSourceFile(srcPath);
@@ -315,21 +306,22 @@ public class PSRegionCSSFileService
         copyFile(srcPath, targetPath, srcFile, target);
     }
 
-    private void copyFile(String srcPath, String targetPath, File srcFile, File target)
-    {
-        InputStream in = null;
-        OutputStream out = null;
-        try
+    private void copyFile(String srcPath, String targetPath, File srcFile, File target) throws PSThemeNotFoundException {
+
+        try(OutputStream out = new FileOutputStream(target))
         {
-            out = new FileOutputStream(target);
             if (srcFile != null)
             {
-                in = new FileInputStream(srcFile);
-                IOUtils.copy(in, out);
+                try(InputStream in = new FileInputStream(srcFile)) {
+                    IOUtils.copy(in, out);
+                }
             }
             else
             {
-                IOUtils.write(".percDummyRule{/* Dummy rule for correct HTML's LINK tag rendering during editing a template */}", out);
+                IOUtils.write(
+                        ".percDummyRule{/* Dummy rule for correct HTML's LINK tag rendering during editing a template */}",
+                        out,
+                        StandardCharsets.UTF_8);
                 
             }
         }
@@ -340,11 +332,7 @@ public class PSRegionCSSFileService
             else
                 throw new PSThemeNotFoundException("Failed to create empty region CSS file, '" + targetPath + "'.");
         }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-            IOUtils.closeQuietly(out);
-        }
+
     }
 
     private File getTargetFile(String targetPath)
@@ -358,8 +346,7 @@ public class PSRegionCSSFileService
         return target;
     }
 
-    private File getSourceFile(String srcPath)
-    {
+    private File getSourceFile(String srcPath) throws PSThemeNotFoundException {
         File srcFile = null;
         
         if (srcPath != null)
@@ -373,14 +360,12 @@ public class PSRegionCSSFileService
         return srcFile;
     }
     
-    private void writeContent(String filePath, String content)
-    {
-        OutputStream out = null;
+    private void writeContent(String filePath, String content) throws PSThemeNotFoundException {
+
         
-        try
+        try( OutputStream out = new FileOutputStream(filePath))
         {
-            out = new FileOutputStream(filePath);
-            IOUtils.write(content, out, RX_STANDARD_ENC);
+            IOUtils.write(content, out, StandardCharsets.UTF_8);
         }
         catch (FileNotFoundException fe)
         {
@@ -390,23 +375,19 @@ public class PSRegionCSSFileService
         {
             throw new PSThemeNotFoundException("Failed to write file: " + filePath, e);
         }
-        finally
-        {
-            IOUtils.closeQuietly(out);
-        }
     }
 
-    private String getContentFromFile(String filePath)
-    {
-        InputStream in = null;
-        try
+    private String getContentFromFile(String filePath) throws PSThemeNotFoundException {
+
+       try
         {
             File file = new File(filePath);
             if (!file.exists())
                 return null;
-            
-            in = new FileInputStream(file);
-            return IOUtils.toString(in, RX_STANDARD_ENC);
+
+            try(InputStream in  = new FileInputStream(file)) {
+               return IOUtils.toString(in, StandardCharsets.UTF_8);
+            }
         }
         catch (FileNotFoundException fe)
         {
@@ -416,10 +397,7 @@ public class PSRegionCSSFileService
         {
             throw new PSThemeNotFoundException("Failed to read file: " + filePath, e);
         }
-        finally
-        {
-            IOUtils.closeQuietly(in);
-        }
+
     }
     
     private PSRegionCSS getRegionCSS(CSSStyleRule rule)
@@ -435,7 +413,7 @@ public class PSRegionCSSFileService
     private void setProperties(List<CSSDeclaration> decs, PSRegionCSS css)
     {
         CSSWriterSettings wsettings = new CSSWriterSettings(ECSSVersion.CSS30, true);
-        List<PSRegionCSS.Property> props = new ArrayList<PSRegionCSS.Property>(); 
+        List<PSRegionCSS.Property> props = new ArrayList<>();
         
         for (CSSDeclaration dec : decs)
         {

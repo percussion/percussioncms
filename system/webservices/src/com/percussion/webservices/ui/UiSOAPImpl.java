@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.ui;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.webservices.PSBaseSOAPImpl;
 import com.percussion.webservices.PSErrorException;
 import com.percussion.webservices.faults.PSContractViolationFault;
@@ -70,7 +71,7 @@ public class UiSOAPImpl extends PSBaseSOAPImpl implements Ui
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return result;
@@ -104,7 +105,7 @@ public class UiSOAPImpl extends PSBaseSOAPImpl implements Ui
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return result;
@@ -137,7 +138,7 @@ public class UiSOAPImpl extends PSBaseSOAPImpl implements Ui
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return result;
@@ -170,7 +171,7 @@ public class UiSOAPImpl extends PSBaseSOAPImpl implements Ui
       catch (PSErrorException e)
       {
          // unknown error
-         throw new RemoteException(e.getLocalizedMessage());
+         throw new RemoteException(PSExceptionUtils.getMessageForLog(e));
       }
       
       return result;

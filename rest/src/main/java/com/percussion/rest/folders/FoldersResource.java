@@ -17,25 +17,28 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.rest.folders;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rest.MoveFolderItem;
 import com.percussion.rest.Status;
+import com.percussion.rest.errors.BackendException;
 import com.percussion.rest.errors.LocationMismatchException;
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.Consumes;
@@ -61,11 +64,11 @@ import java.util.regex.Pattern;
 @PSSiteManageBean(value="restFoldersResource")
 @Path("/folders")
 @XmlRootElement
-@Api(value = "/folders", description = "Folder and Section operations")
+@Tag(name = "Folders", description = "Folder and Section operations")
 public class FoldersResource
 {
     private Pattern p = Pattern.compile("^\\/?([^\\/]+)(\\/(.*?))??(\\/([^\\/]+))?$");
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private static final Logger log = LogManager.getLogger(FoldersResource.class);
 
     private IFolderAdaptor folderAdaptor;
 
@@ -81,10 +84,23 @@ public class FoldersResource
     @Path("/{guid}")
     @Produces(
     {MediaType.APPLICATION_JSON})
-    @ApiOperation(value="Get the specified folder by it's guid",response = Folder.class)
+    @Operation(summary="Get the specified folder by it's guid",
+            responses = {
+                    @ApiResponse(responseCode = "404", description = "Folder not found"),
+                    @ApiResponse(responseCode = "500", description = "Error"),
+                    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                            schema=@Schema(implementation = Folder.class)
+                    ))
+            })
     public Folder getFolderById(@PathParam("guid") String guid)
     {
-        return folderAdaptor.getFolder(uriInfo.getBaseUri(), guid);
+        try {
+            return folderAdaptor.getFolder(uriInfo.getBaseUri(), guid);
+        } catch (BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
+        }
     }
     
     
@@ -92,36 +108,40 @@ public class FoldersResource
     @Path("/by-path/{folderpath:.+}")
     @Produces(
     {MediaType.APPLICATION_JSON})
-    @ApiOperation(value = "Retrieve folder by Path", notes = "Get folder with site name path and folder name."
+    @Operation(summary = "Retrieve folder by Path", description = "Get folder with site name path and folder name."
             + "<br/> Simply send a GET request using the site name, path to the folder, and folder name in the URL."
             + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder ."
-            + "<br/> <p> To work with Asset folders, replace MySite with Assets in the path, for example: http://localhost:9992/Rhythmyx/rest/folders/by-path/Assets/uploads", response = Folder.class)
-    @ApiResponses(value = {
-      @ApiResponse(code = 404, message = "Folder not found") 
+            + "<br/> <p> To work with Asset folders, replace MySite with Assets in the path, for example: http://localhost:9992/Rhythmyx/rest/folders/by-path/Assets/uploads",
+            responses = {
+                    @ApiResponse(responseCode = "404", description = "Folder not found"),
+                    @ApiResponse(responseCode = "500", description = "Error"),
+                    @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                            schema=@Schema(implementation = Folder.class)
+                    ))
     })
-    public Folder getFolder(@ApiParam(value= "The path from the site to the folder." ,  name="folderpath" )@PathParam("folderpath")
+    public Folder getFolder(@Parameter(description= "The path from the site to the folder." ,  name="folderpath" )@PathParam("folderpath")
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
+
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            String apiPath = "";
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+            return folderAdaptor.getFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName);
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        String apiPath = "";
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            folderName = StringUtils.defaultString(m.group(5));
-        }
-        
-        return folderAdaptor.getFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName);
     }
 
     /**
@@ -136,93 +156,93 @@ public class FoldersResource
     @Path("/by-path/{folderpath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Create or update folder below root of site", notes = "Create or update folder using site name, path, and folder name."
+    @Operation(summary = "Create or update folder below root of site", description = "Create or update folder using site name, path, and folder name."
             + "<br/> Simply send a PUT request using the site name, the path to the folder, and folder name in the URL along with a JSON payload of the folder."
             + "<br/> <b>Note:</b> When sending a PUT request do not include the id field. "
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .", response = Folder.class)
-    @ApiResponses(value = {
-      @ApiResponse(code = 404, message = "Folder not found") 
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .",
+            responses = {
+                @ApiResponse(responseCode = "404", description = "Folder not found"),
+                @ApiResponse(responseCode = "500", description = "Error"),
+                @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                        schema=@Schema(implementation = Folder.class)
+                ))
     })
-    public Folder updateFolder(@ApiParam(value= "The body containing a JSON payload" ,  name="body" )Folder folder, 
-            @ApiParam(value= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
+    public Folder updateFolder(@Parameter(description= "The body containing a JSON payload" ,  name="body" )Folder folder,
+            @Parameter(description= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
     String path)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
+
+
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+
+            String objectName = folder.getName();
+            String objectPath = folder.getPath();
+            String objectSite = folder.getSiteName();
+
+
+            if (objectName != null && !objectName.equals(folderName)) {
+                throw new LocationMismatchException();
+            }
+
+            if (objectSite != null && !objectSite.equals(siteName)) {
+                throw new LocationMismatchException();
+            }
+            folder.setName(folderName);
+            folder.setPath(folder.getPath());
+            folder.setSiteName(siteName);
+
+            folder = folderAdaptor.updateFolder(uriInfo.getBaseUri(), folder);
+
+            return folder;
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
         }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            folderName = StringUtils.defaultString(m.group(5));
-        }
-        
-    
-
-        String objectName = folder.getName();
-        String objectPath = folder.getPath();
-        String objectSite = folder.getSiteName();
-
-
-        if (objectName != null && !objectName.equals(folderName))
-        {
-            throw new LocationMismatchException();
-        }
-
-        if (objectSite != null && !objectSite.equals(siteName))
-        {
-            throw new LocationMismatchException();
-        }
-        folder.setName(folderName);
-        folder.setPath(folder.getPath());
-        folder.setSiteName(siteName);
-
-        folder = folderAdaptor.updateFolder(uriInfo.getBaseUri(), folder);
-
-        return folder;
     }
 
     @DELETE
     @Path("/item/{itempath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Delete a folder item below root of site", notes = "Delete a folder item below the first level of the site."
+    @Operation(summary = "Delete a folder item below root of site", description = "Delete a folder item below the first level of the site."
             + "<br/> Simple send a DELETE request using the site name, path to the folder, and the folder name."
             + "<br/>"
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/item/MySite/FolderA/FolderB/MyFolder/myitem.html .", response = Status.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "Folder not found")
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/item/MySite/FolderA/FolderB/MyFolder/myitem.html .",
+          responses = {
+                @ApiResponse(responseCode = "404", description = "Folder not found"),
+                @ApiResponse(responseCode= "500", description = "Error"),
+                  @ApiResponse(responseCode = "200", description = "OK", content=@Content(
+                          schema=@Schema(implementation = Status.class)
+                  ))
     })
     public Status deleteFolderItem(@PathParam(value="itempath") String itempath){
         Status ret = new Status(500,"Error");
 
-        try
-        {
-            itempath = java.net.URLDecoder.decode(itempath, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-
         try {
+            itempath = java.net.URLDecoder.decode(itempath, "UTF-8");
+
             folderAdaptor.deleteFolderItem(uriInfo.getBaseUri(), itempath);
-        }catch(Exception e){
-            throw new WebApplicationException(e,500);
+
+            ret.setMessage("Ok");
+            ret.setStatusCode(200);
+
+            return ret;
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
         }
-
-        ret.setMessage("Ok");
-        ret.setStatusCode(200);
-
-        return ret;
     }
 
 
@@ -230,51 +250,62 @@ public class FoldersResource
     @Path("/by-path/{folderpath:.+}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Delete a folder below root of site", notes = "Delete a folder below the first level of the site."
+    @Operation(summary = "Delete a folder below root of site", description = "Delete a folder below the first level of the site."
             + "<br/> Simple send a DELETE request using the site name, path to the folder, and the folder name."
             + "<br/> <b>Note:</b> If the folder has subfolders then to delete the request must include the <b>\"includeSubFolders\" : \"True\"</b> header. "
-            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .", response = Status.class)
-    @ApiResponses(value = {
-      @ApiResponse(code = 404, message = "Folder not found") 
-    })
-    public Status deleteFolder(@ApiParam(value= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
-    String path,@ApiParam(value= "Boolean to delete subfolders along with the folder." ,  name="includeSubFolders" ) @DefaultValue("false") @QueryParam("includeSubFolders") boolean includeSubFolders)
+            + "<br/> Example URL: http://localhost:9992/Rhythmyx/rest/folders/by-path/MySite/FolderA/FolderB/MyFolder .",
+            responses = {
+                @ApiResponse(responseCode = "404", description = "Folder not found"),
+                @ApiResponse(responseCode = "500", description = "Error"),
+                @ApiResponse(responseCode = "200", description = "OK", content = @Content(
+                        schema=@Schema(implementation = Status.class)
+                ))
+     })
+    public Status deleteFolder(@Parameter(description= "The path from the site to the folder." ,  name="folderpath" ) @PathParam("folderpath")
+    String path,@Parameter(description= "Boolean to delete subfolders along with the folder." ,  name="includeSubFolders" ) @DefaultValue("false") @QueryParam("includeSubFolders") boolean includeSubFolders)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        String apiPath = "";
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            folderName = StringUtils.defaultString(m.group(5));
-        }
 
-        folderAdaptor.deleteFolder(uriInfo.getBaseUri(), siteName,apiPath,folderName, includeSubFolders);
-        return new Status("Deleted");
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            String apiPath = "";
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+            folderAdaptor.deleteFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, includeSubFolders);
+            return new Status("Deleted");
+        } catch (BackendException | UnsupportedEncodingException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
+        }
     }
     
     @POST
     @Path("/move/item")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Moves the specified item in the MoveFolderItem request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage", response = Status.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 404, message = "Item not found"), @ApiResponse(code = 200, message = "Moved OK")})
+    @Operation(summary = "Moves the specified item in the MoveFolderItem request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage",
+            responses= {
+                @ApiResponse(responseCode = "404", description = "Item not found"),
+                @ApiResponse(responseCode = "200", description = "Moved OK", content=@Content(
+                        schema=@Schema(implementation = Status.class)))})
     public Status moveFolderItem(MoveFolderItem moveRequest)
     {
-    	folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
-        return new Status("Moved OK");
+        try {
+            folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
+            return new Status("Moved OK");
+        } catch (BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
+        }
     }
 
 
@@ -282,32 +313,45 @@ public class FoldersResource
     @Path("/move/folder")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Moves the specified Folder in the MoveFolderItem request to the target path.  Path should include the full path to the source Folder and Target folder, for example /Sites/MySite/MyFolder/MySubFolder", response = Status.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 404, message = "Item not found"), @ApiResponse(code = 200, message = "Moved OK")})
+    @Operation(summary = "Moves the specified Folder in the MoveFolderItem request to the target path.  Path should include the full path to the source Folder and Target folder, for example /Sites/MySite/MyFolder/MySubFolder",
+            responses= {
+                @ApiResponse(responseCode = "404", description = "Item not found"),
+                @ApiResponse(responseCode = "200", description = "Moved OK", content=@Content(
+                        schema=@Schema(implementation = Status.class)
+                ))})
     public Status moveFolder(MoveFolderItem moveRequest)
     {
-    	folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
-        return new Status("Moved OK");
+        try {
+            folderAdaptor.moveFolderItem(uriInfo.getBaseUri(), moveRequest.getItemPath(), moveRequest.getTargetFolderPath());
+            return new Status("Moved OK");
+        } catch (BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
+        }
     }
 
     @POST
     @Path("/copy/item")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Copies the specified item in the CopyFolderItemRequest request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage", response = Status.class)
-    @ApiResponses(value =
-            {@ApiResponse(code = 404, message = "Item not found"),
-                    @ApiResponse(code = 200, message = "Copied OK"),
-            @ApiResponse(code=500, message="Error")})
+    @Operation(summary = "Copies the specified item in the CopyFolderItemRequest request to the target path.  Path should include the full path to the item and folder, for example /Sites/MySite/MyFolder/MyPage",
+            responses = {
+                @ApiResponse(responseCode = "404", description = "Item not found"),
+                @ApiResponse(responseCode = "200", description = "Copied OK", content=@Content(
+                        schema=@Schema(implementation = Status.class)
+                )),
+                @ApiResponse(responseCode= "500", description= "Error")
+    })
     public Status copyFolderItem(CopyFolderItemRequest request)
     {
         try {
             folderAdaptor.copyFolderItem(uriInfo.getBaseUri(), request.getItemPath(), request.getTargetFolderPath());
             return new Status(200,"Copied OK");
         }catch(Exception e){
-            log.error("REST: Error in copyFolderItem:" + e.getMessage(),e);
-            throw new WebApplicationException(e, 500);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
         }
     }
 
@@ -315,10 +359,14 @@ public class FoldersResource
     @Path("/copy/folder")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Moves the specified Folder in the CopyFolderItem request to the target path.  Path should include the full path to the folder, for example /Sites/MySite/MyFolder", response = Status.class)
-    @ApiResponses(value =
-            {@ApiResponse(code = 404, message = "Folder not found"), @ApiResponse(code = 200, message = "Copied OK"),
-            @ApiResponse(code=500,message="Error")})
+    @Operation(summary = "Moves the specified Folder in the CopyFolderItem request to the target path.  Path should include the full path to the folder, for example /Sites/MySite/MyFolder",
+            responses = {
+                @ApiResponse(responseCode = "404", description = "Folder not found"),
+                @ApiResponse(responseCode = "200", description = "Copied OK", content=@Content(
+                        schema = @Schema(implementation = Status.class)
+                )),
+                @ApiResponse(responseCode="500", description="Error")
+        })
     public Status copyFolder(CopyFolderItemRequest request)
     {
         try {
@@ -327,8 +375,9 @@ public class FoldersResource
         }catch(NotFoundException nfe){
             return new Status(404, "Not Found");
         }catch(Exception e){
-            log.error("REST: Error in copyFolder: " + e.getMessage(),e);
-            throw new WebApplicationException(e, 500);
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
         }
     }
 
@@ -336,33 +385,36 @@ public class FoldersResource
     @Path("/rename/{folderPath:.+}/{name}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @ApiOperation(value = "Rename the specified Folder.", notes = "Renames the Folder at the given path.", response = Folder.class)
-    @ApiResponses(value =
-    {@ApiResponse(code = 404, message = "Folder not found"), @ApiResponse(code = 200, message = "Update OK")})
+    @Operation(summary = "Rename the specified Folder.",
+            description = "Renames the Folder at the given path.",
+            responses= {
+                @ApiResponse(responseCode = "404", description = "Folder not found"),
+                @ApiResponse(responseCode = "200", description = "Update OK", content=@Content(
+                        schema=@Schema(implementation = Folder.class)
+                ))})
     public Folder renameFolder( @PathParam("folderPath") String path, @PathParam("name") String newName)
     {
         // Path param should be url decoded by default.  CXF jars interacting when running in cm1
-        try
-        {
+        try {
             path = java.net.URLDecoder.decode(path, "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            // UTF-8 always supported
-        }
-        
-        Matcher m = p.matcher(path);
-        String siteName = "";
-        String folderName = "";
-        String apiPath = "";
 
-        if(m.matches()) {
-            siteName = StringUtils.defaultString(m.group(1));
-            apiPath = StringUtils.defaultString(m.group(3));
-            folderName = StringUtils.defaultString(m.group(5));
+            Matcher m = p.matcher(path);
+            String siteName = "";
+            String folderName = "";
+            String apiPath = "";
+
+            if (m.matches()) {
+                siteName = StringUtils.defaultString(m.group(1));
+                apiPath = StringUtils.defaultString(m.group(3));
+                folderName = StringUtils.defaultString(m.group(5));
+            }
+
+
+            return folderAdaptor.renameFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, newName);
+        } catch (UnsupportedEncodingException | BackendException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new WebApplicationException(e);
         }
-        
-        
-        return folderAdaptor.renameFolder(uriInfo.getBaseUri(), siteName, apiPath, folderName, newName);
     }
 }

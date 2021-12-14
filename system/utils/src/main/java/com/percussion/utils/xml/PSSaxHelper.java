@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,12 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.xml;
 
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
@@ -39,10 +43,10 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -57,7 +61,16 @@ public class PSSaxHelper
    /**
     * Parser factory used in the static helper methods here. The
     */
-   static final SAXParserFactory ms_factory = SAXParserFactory.newInstance();
+   static final SAXParserFactory ms_factory = PSSecureXMLUtils.getSecuredSaxParserFactory(
+           new PSXmlSecurityOptions(
+                   true,
+                   true,
+                   true,
+                   false,
+                   true,
+                   false
+           )
+           );
 
    /**
     * This method instantiates the passed content handler with the arguments
@@ -108,10 +121,7 @@ public class PSSaxHelper
          cargs[0] = xmlwriter;
          if (args != null)
          {
-            for (int i = 0; i < args.length; i++)
-            {
-               cargs[i + 1] = args[i];
-            }
+            System.arraycopy(args, 0, cargs, 1, args.length);
          }
          Constructor c = null;
          for (Constructor constructor : handler.getConstructors())
@@ -130,7 +140,7 @@ public class PSSaxHelper
          }
          Object contenthandler = c.newInstance(cargs);
          SAXParser parser = newSAXParser(contenthandler);
-         InputSource is = new InputSource(new StringReader(source));
+         InputSource is = new InputSource(new BOMInputStream(IOUtils.toInputStream(source, StandardCharsets.UTF_8),false));
          parser.parse(is, (DefaultHandler) contenthandler);
          xmlwriter.close();
          writer.close();
@@ -138,23 +148,10 @@ public class PSSaxHelper
          result = StringUtils.replace(result, PSSaxCopier.RX_FILLER, "");
          return result;
       }
-      catch (SecurityException e)
+      catch (SecurityException | FactoryConfigurationError | InstantiationException | IllegalAccessException e)
       {
          throw new RuntimeException(e);
-      }
-      catch (FactoryConfigurationError e)
-      {
-         throw new RuntimeException(e);
-      }
-      catch (InstantiationException e)
-      {
-         throw new RuntimeException(e);
-      }
-      catch (IllegalAccessException e)
-      {
-         throw new RuntimeException(e);
-      }
-      catch (InvocationTargetException e)
+      } catch (InvocationTargetException e)
       {
          throw new RuntimeException(e.getTargetException());
       }

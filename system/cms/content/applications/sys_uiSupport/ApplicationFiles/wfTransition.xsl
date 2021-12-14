@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XML Spy v4.3 U (http://www.xmlspy.com) by matt boucher (home office) -->
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:psxi18n="urn:www.percussion.com/i18n" exclude-result-prefixes="psxi18n">
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:psxi18n="com.percussion.i18n" extension-element-prefixes="psxi18n"
+                exclude-result-prefixes="psxi18n">
 	<xsl:import href="file:sys_resources/stylesheets/sys_I18nUtils.xsl"/>
 	<xsl:variable name="lang" select="//@xml:lang"/>
 	<xsl:variable name="workflowfactions" select="document(//@workflowactionsurl)"/>
@@ -24,16 +26,16 @@
 						<xsl:with-param name="lang" select="$lang"/>
 					</xsl:call-template>
 				</title>
-				<link href="../sys_resources/css/templates.css" type="text/css" rel="stylesheet"/>
-				<link href="../rx_resources/css/templates.css" type="text/css" rel="stylesheet"/>
-				<link rel="stylesheet" type="text/css" href="{concat('../rx_resources/css/',$lang,'/templates.css')}"/>
+				<link href="/sys_resources/css/templates.css" type="text/css" rel="stylesheet"/>
+				<link href="/rx_resources/css/templates.css" type="text/css" rel="stylesheet"/>
+				<link rel="stylesheet" type="text/css" href="{concat('/rx_resources/css/',$lang,'/templates.css')}"/>
 				<script language="javascript" src="../sys_resources/js/browser.js">;</script>
 				<script src="../sys_resources/js/AddFormParameters.js" >;</script>
 				<script src="../sys_resources/js/formValidation.js" >;</script>
 				<script language="javascript" src="../sys_resources/js/globalErrorMessages.js">;</script>
 				<script language="javascript" src="../rx_resources/js/globalErrorMessages.js">;</script>
 				<script language="javascript" src="{concat('../rx_resources/js/',$lang,'/globalErrorMessages.js')}">;</script>
-				<script language="javascript">
+				<script>
 					function postDirectly()
 					{
 						document.wfcomment.submit();
@@ -117,7 +119,7 @@
 														<td align="center">
 															<a onclick="javascript:showUserSearch2(document.wfcomment.sys_wfAdhocUserList, 'UserSearchWindow')" href="javascript:void(0)">
 																<xsl:attribute name="accesskey"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_uiSupport.wfTransition.mnemonic.Search@S'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
-																<img border="0" alt="Click here to search for users" src="{concat('../rx_resources/images/',$lang,'/people_search.gif')}">
+																<img border="0" alt="Click here to search for users" src="{concat('/rx_resources/images/',$lang,'/people_search.gif')}">
 																	<xsl:attribute name="alt"><xsl:call-template name="getLocaleString"><xsl:with-param name="key" select="'psx.sys_uiSupport.wfTransition.alt@Click here to search for users'"/><xsl:with-param name="lang" select="$lang"/></xsl:call-template></xsl:attribute>
 																</img>
 															</a>
@@ -126,7 +128,7 @@
 												</table>
 												<br/>
 											</xsl:if>
-											<script language="javascript">
+											<script>
 											function save_onclick()
 											{
 												<xsl:if test="//commentRequired = 'yes'">

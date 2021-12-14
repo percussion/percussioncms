@@ -1,9 +1,9 @@
  jQuery(function($){
      
      //Remove white space (if any) from end of Name value    
-    $("#perc-content-edit-sys_title, #perc-content-edit-displaytitle").change( function() {
+    $("#perc-content-edit-sys_title, #perc-content-edit-displaytitle").on("change", function() {
         var updateTitleValue = $(this).val();
-        updateTitleValue = $.trim(updateTitleValue);
+        updateTitleValue = updateTitleValue.trim();
         $(this).val(updateTitleValue);
     });
 }); 
@@ -27,13 +27,13 @@ function findTopMostJQuery() {
 }
 
 function addKeyPressDirtyEvents() {
-    jQuery("input").keypress(function(){
+    jQuery("input").on("keypress",function(){
         jQuery.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
     });
-    jQuery("textarea").keypress(function(){
+    jQuery("textarea").on("keypress",function(){
         jQuery.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
     });
-    jQuery("select").keypress(function(){
+    jQuery("select").on("keypress",function(){
         jQuery.topFrameJQuery.PercDirtyController.setDirty(true, "asset");
     });
 }

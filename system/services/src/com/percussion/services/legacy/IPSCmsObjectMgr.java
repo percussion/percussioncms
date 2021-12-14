@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,7 +27,6 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
-import com.percussion.cx.PSUiMode;
 import com.percussion.design.objectstore.PSConfig;
 import com.percussion.design.objectstore.PSRole;
 import com.percussion.i18n.PSLocale;
@@ -37,8 +36,8 @@ import com.percussion.server.PSUserSession;
 import com.percussion.services.PSMissingBeanConfigurationException;
 import com.percussion.services.data.IPSIdentifiableItem;
 import com.percussion.services.menus.PSActionMenu;
-import com.percussion.services.menus.PSUiContext;
 import com.percussion.services.menus.PSUIMode;
+import com.percussion.services.menus.PSUiContext;
 import com.percussion.services.relationship.data.PSRelationshipConfigName;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
@@ -111,7 +110,6 @@ public interface IPSCmsObjectMgr extends IPSCmsContentSummaries
     * @param ids the content IDs, never <code>null</code>, may be empty.
     */
    void setPostDate(Collection<Integer> ids);
-
    /**
     * Find the first publishDate for teh given Item
     *
@@ -120,7 +118,6 @@ public interface IPSCmsObjectMgr extends IPSCmsContentSummaries
     * @return <code>null</code> if the publish date is not found
     */
    Date getFirstPublishDate(Integer contentId);
-   
    /**
     * Performs update operation to the given content id list.  It clears the
     * {@link PSComponentSummary#getContentStartDate()}.
@@ -146,7 +143,6 @@ public interface IPSCmsObjectMgr extends IPSCmsContentSummaries
     *    never <code>null</code>.
     */
    List<PSLocale> findLocaleByStatus(int status);
-
    
    /**
     * Find locales objects by the locale name and/or label.  

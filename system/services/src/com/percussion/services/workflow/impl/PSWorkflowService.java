@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.workflow.impl;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cx.objectstore.PSMenuAction;
 import com.percussion.data.PSTableChangeEvent;
@@ -35,16 +36,33 @@ import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.memory.IPSCacheAccess;
-import com.percussion.services.security.impl.PSAclService;
-import com.percussion.services.workflow.*;
-import com.percussion.services.workflow.data.*;
+import com.percussion.services.workflow.IPSWorkflowErrors;
+import com.percussion.services.workflow.IPSWorkflowService;
+import com.percussion.services.workflow.PSWorkflowActionsHelper;
+import com.percussion.services.workflow.PSWorkflowException;
+import com.percussion.services.workflow.PSWorkflowServiceLocator;
+import com.percussion.services.workflow.data.PSAdhocTypeEnum;
+import com.percussion.services.workflow.data.PSAgingTransition;
+import com.percussion.services.workflow.data.PSAssignedRole;
+import com.percussion.services.workflow.data.PSAssignmentTypeEnum;
+import com.percussion.services.workflow.data.PSContentAdhocUser;
+import com.percussion.services.workflow.data.PSContentApproval;
+import com.percussion.services.workflow.data.PSContentWorkflowState;
+import com.percussion.services.workflow.data.PSNotification;
+import com.percussion.services.workflow.data.PSNotificationDef;
+import com.percussion.services.workflow.data.PSState;
+import com.percussion.services.workflow.data.PSTransition;
+import com.percussion.services.workflow.data.PSTransitionBase;
+import com.percussion.services.workflow.data.PSTransitionRole;
+import com.percussion.services.workflow.data.PSWorkflow;
+import com.percussion.services.workflow.data.PSWorkflowRole;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.workflow.PSWorkFlowUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -56,8 +74,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Table;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
@@ -75,6 +96,10 @@ public class PSWorkflowService
 {
 
 
+   static final String LIVE_STATE = "Live";
+   static final String ARCHIVE_STATE = "Archive";
+   static final String TRANSITION_NAME_ARCHIVE = "Archive";
+   static final String TRANSITION_LIVE_TO_ARCHIVE_DESC = "Archive content from Live State";
 
    private SessionFactory sessionFactory;
 
@@ -89,7 +114,7 @@ public class PSWorkflowService
    /**
     * Commons logger
     */
-   static Log ms_log = LogFactory.getLog(PSWorkflowService.class);
+    private static final Logger ms_log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 
    /**
     * This listener responds to table change notices by removing the cached
@@ -117,7 +142,7 @@ public class PSWorkflowService
 
       static
       {
-         List<String> tables = new ArrayList<String>();
+         List<String> tables = new ArrayList<>();
          for (Class c : msi_involvedObjects)
          {
             Table t = (Table) c.getAnnotation(Table.class);
@@ -161,7 +186,7 @@ public class PSWorkflowService
                   + "empty");
          }
          
-         List<String> columns = new ArrayList<String>();
+         List<String> columns = new ArrayList<>();
          columns.add(WORKFLOW_ID_COLUMN);
          
          return columns.iterator();
@@ -253,7 +278,7 @@ public class PSWorkflowService
          .add(Projections.property("id")));
 
       List<Object> queryResults = c.list();
-      List<PSObjectSummary> sums = new ArrayList<PSObjectSummary>(queryResults.size());
+      List<PSObjectSummary> sums = new ArrayList<>(queryResults.size());
       for (Object o : queryResults)
       {
          Object[] oa = (Object[]) o;
@@ -304,9 +329,71 @@ public class PSWorkflowService
       if (rval != null)
       {
          forceLazyLoad(rval);
+         addArchiveTransitionToLiveState(rval);
          m_cache.save(id, rval, CACHE_REGION);
       }
       return rval;
+   }
+
+   private void addArchiveTransitionToLiveState(PSWorkflow rval){
+      for (PSState state : rval.getStates())
+      {
+         if(state.getName().equals(LIVE_STATE))
+         {
+            Boolean isArchiveTransitionPresent = false;
+
+            List<PSTransition> transitions = state.getTransitions();
+            for(PSTransition tr : transitions){
+               if(tr.getName().equals(TRANSITION_NAME_ARCHIVE)){
+                  isArchiveTransitionPresent = true;
+                  break;
+               }
+            }
+            if(!isArchiveTransitionPresent) {
+               IPSGuid workflowGuid = rval.getGUID();
+               PSTransition archivetransition = createTransition(workflowGuid, state.getGUID());
+               archivetransition.setAllowAllRoles(false);
+               archivetransition.setLabel(TRANSITION_NAME_ARCHIVE);
+               archivetransition.setDescription(TRANSITION_LIVE_TO_ARCHIVE_DESC);
+               archivetransition.setTrigger(TRANSITION_NAME_ARCHIVE);
+               archivetransition.setToState(getWorkflowStateByName(rval, ARCHIVE_STATE).getStateId());
+               long notificationId = 0;
+               notificationId = rval.getNotificationDefs().get(0).getGUID().getUUID();
+               PSNotification notification = createNotification(workflowGuid, archivetransition.getGUID());
+               notification.setNotificationId(notificationId);
+               List<PSNotification> notifications = archivetransition.getNotifications();
+               notifications.add(notification);
+               archivetransition.setNotifications(notifications);
+               List<PSTransitionRole> archiveTransitionRoles = new ArrayList<>();
+               List<PSTransitionRole> transitionRoles = transitions.get(0).getTransitionRoles();
+               for(PSTransitionRole tr : transitionRoles){
+                  PSTransitionRole archivetransRole = new PSTransitionRole();
+                  archivetransRole.setRoleId(tr.getRoleId());
+                  archivetransRole.setTransitionId(archivetransition.getGUID().getUUID());
+                  archivetransRole.setWorkflowId(rval.getGUID().getUUID());
+                  archiveTransitionRoles.add(archivetransRole);
+               }
+               archivetransition.setTransitionRoles(archiveTransitionRoles);
+               transitions.add(archivetransition);
+               state.setTransitions(transitions);
+               saveWorkflow(rval);
+            }
+         }
+      }
+   }
+
+   private PSState getWorkflowStateByName(PSWorkflow workflow, String stateName)
+   {
+      PSState stateFound = null;
+      for (PSState state : workflow.getStates())
+      {
+         if(state.getName().equals(stateName))
+         {
+            stateFound = state;
+            break;
+         }
+      }
+      return stateFound;
    }
    
    /*
@@ -615,7 +702,7 @@ public class PSWorkflowService
    @Transactional
    public List<PSWorkflow> findWorkflowsByName(String name)
    {
-      List<PSWorkflow> workflows = new ArrayList<PSWorkflow>();
+      List<PSWorkflow> workflows = new ArrayList<>();
       List<PSObjectSummary> sums = findWorkflowSummariesByName(name);
       for (PSObjectSummary sum : sums)
       {
@@ -877,9 +964,9 @@ public class PSWorkflowService
    {
       Session s = sessionFactory.getCurrentSession();
 
-         List<PSContentWorkflowState> rval = new ArrayList<PSContentWorkflowState>();
+         List<PSContentWorkflowState> rval = new ArrayList<>();
          // Extract content ids
-         Map<Integer, IPSGuid> cidToGuid = new HashMap<Integer, IPSGuid>();
+         Map<Integer, IPSGuid> cidToGuid = new HashMap<>();
          for (IPSGuid contentid : contentids)
          {
             PSLegacyGuid lg = (PSLegacyGuid) contentid;

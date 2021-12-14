@@ -17,16 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.widgetbuilder.utils.validate;
 
 import com.percussion.widgetbuilder.data.PSWidgetBuilderDefinitionData;
-import com.percussion.widgetbuilder.data.PSWidgetBuilderSummaryData;
 import com.percussion.widgetbuilder.data.PSWidgetBuilderValidationResult;
-import com.percussion.widgetbuilder.data.PSWidgetBuilderValidationResults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,7 @@ public class PSWidgetBuilderDefinitionValidator
 {
     public static List<PSWidgetBuilderValidationResult> validate(PSWidgetBuilderDefinitionData definition, List<PSWidgetBuilderDefinitionData> existing)
     {
-        List<PSWidgetBuilderValidationResult> results = new ArrayList<PSWidgetBuilderValidationResult>();
+        List<PSWidgetBuilderValidationResult> results = new ArrayList<>();
         
         results.addAll(PSWidgetBuilderGeneralValidator.validate(definition, existing));
         results.addAll(PSWidgetBuilderFieldsValidator.validate(definition.getFieldsList()));

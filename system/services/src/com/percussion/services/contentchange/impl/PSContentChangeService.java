@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,16 +36,18 @@ import com.percussion.services.contentchange.PSContentChangeServiceLocator;
 import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangePK;
 import com.percussion.services.contentchange.data.PSContentChangeType;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.notification.IPSNotificationListener;
 import com.percussion.services.notification.IPSNotificationService;
 import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSDataServiceException;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -61,7 +63,7 @@ import java.util.List;
  */
 public class PSContentChangeService implements IPSContentChangeService, IPSEditorChangeListener, IPSHandlerInitListener, IPSNotificationListener
 {
-   private static final Log log = LogFactory.getLog(PSContentChangeService.class);
+   private static final Logger log = LogManager.getLogger(PSContentChangeService.class);
    
   
 
@@ -72,7 +74,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    
    private IPSGuidManager m_guidMgr;
    
-   private List<IPSContentChangeHandler> changeHandlers = new ArrayList<IPSContentChangeHandler>();
+   private List<IPSContentChangeHandler> changeHandlers = new ArrayList<>();
    
    
    public PSContentChangeService()
@@ -82,8 +84,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    }
    
    @Transactional
-   public void contentChanged(PSContentChangeEvent changeEvent)
-   {
+   public void contentChanged(PSContentChangeEvent changeEvent) throws IPSGenericDao.SaveException {
       Validate.notNull(changeEvent);
       
       Session session = sessionFactory.getCurrentSession();
@@ -113,10 +114,9 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
       Query query = session.createQuery("from PSContentChangeEvent where changeType = :changeType and siteId = :siteId");
       query.setParameter("changeType", changeType.name());
       query.setParameter("siteId", siteId);
-      
 
       List<PSContentChangeEvent> results = query.list();
-      List<Integer> changedContentIds = new ArrayList<Integer>();
+      List<Integer> changedContentIds = new ArrayList<>();
       for (PSContentChangeEvent result : results)
       {
          changedContentIds.add(result.getContentId());
@@ -213,8 +213,7 @@ public class PSContentChangeService implements IPSContentChangeService, IPSEdito
    /* (non-Javadoc)
     * @see com.percussion.services.notification.IPSNotificationListener#notifyEvent(com.percussion.services.notification.PSNotificationEvent)
     */
-   public void notifyEvent(PSNotificationEvent notification)
-   {
+   public void notifyEvent(PSNotificationEvent notification) throws PSDataServiceException, PSNotFoundException {
       Object target = notification.getTarget();
       if (target instanceof PSRelationshipChangeEvent)
       {

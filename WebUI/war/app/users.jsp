@@ -3,6 +3,8 @@
 <%@ page import="com.percussion.utils.service.impl.PSUtilityService" %>
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -22,7 +24,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -69,9 +71,10 @@
     --%>
 
     <!-- Themes never should be concatenated or packed -->
-    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.7.2.custom.css"/>
-    <script
-            src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale %>"></script>
+    <link rel="stylesheet" type="text/css" href="../themes/smoothness/jquery-ui-1.8.9.custom.css"/>
+    <link rel="stylesheet" type="text/css" href="/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css"/>
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%=locale%>"></script>
+    <script src="/JavaScriptServlet"></script>
 
     <% if (isDebug) { %>
     <!-- CSS Includes -->
@@ -83,7 +86,7 @@
     <link type="text/css" href="../css/perc_mcol.css" rel="stylesheet"/>
     <link type="text/css" href="../css/perc_decoration.css" rel="stylesheet"/>
     <link type="text/css" href="../demos.css" rel="stylesheet"/>
-    <link type="text/css" href="../css/jquery.tooltip.css" rel="stylesheet"/>
+
     <!-- Stuff needed for finder to work like Editor -->
     <link rel="stylesheet" type="text/css" href="../css/perc_newsitedialog.css"/>
     <link rel="stylesheet" type="text/css" href="../css/perc_new_page_button.css"/>
@@ -105,7 +108,7 @@
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed
-        var dirtyController = $j.PercDirtyController;
+        var dirtyController = $.PercDirtyController;
         function navigationEvent() {
             // if template is not dirty, return nothing and allow navigation
             // otherwise return alert message and display confirmantion box
@@ -113,13 +116,13 @@
         }
 
         //Finder initialization code
-        $j(document).ready(function () {
+        $(document).ready(function () {
 
-            $j("#perc-manual-publish-widget").find(".perc-foldable").click();
-            $j.Percussion.PercFinderView();
-            $j.PercUserView();
+            $("#perc-manual-publish-widget").find(".perc-foldable").trigger("click");
+            $.Percussion.PercFinderView();
+            $.PercUserView();
 
-            $j("select").keypress(function () {
+            $("select").on("keypress",function () {
                 dirtyController.setDirty(true, "asset");
             });
 
@@ -140,7 +143,7 @@
 
         #perc-users-import-users-dialog-fixed div.ui-dialog-content {
             padding: 10px;
-            padding-bottom: 50px;
+            padding-bottom: 75px;
         }
 
         #perc-users-import-users-dialog-fixed input {
@@ -205,7 +208,7 @@
             </div>
             <div id="perc-users-details">
                 <div id="perc-users-info">
-                    <form autocomplete="off">
+                    <csrf:form autocomplete="off" action="users.jsp" method="post">
                         <div id="perc-users-edit-user-button" title=<i18n:message key = "perc.ui.users@Edit User Details"/>></div>
                         <div id="perc-users-username-label"><i18n:message key = "perc.ui.workflow@Name"/><br/>
                             <input id="perc-users-username-field" autocomplete="nope"/>
@@ -227,7 +230,7 @@
                         <div id="perc-users-email-label"><i18n:message key = "perc.ui.users@Email"/><br/>
                             <input id="perc-users-email-field" maxlength="250"/>
                         </div>
-                    </form>
+                    </csrf:form>
                 </div>
                 <div id="perc-users-roles-editor">
                     <div id="perc-users-available-roles">

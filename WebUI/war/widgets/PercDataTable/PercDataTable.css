@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,6 +38,20 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.perc-tooltip {
+    display: none;
+    position: absolute;
+    background-color: white;
+    text-align: center;
+    padding: 0.5em;
+    border-radius: 5px;
+    border: 0.5px solid black;
+}
+
+.perc-tooltip-container:hover .perc-tooltip {
+    display: block;
+}
+
 .dataTables_empty .perc-datatable-columnrow {
     text-align : center;
 }
@@ -107,10 +121,36 @@ table.perc-datatable tr.perc-datatable-row td.perc-datatable-column.perc-last {
 
 .paginate_active {
     font-weight : bold;
+    text-decoration:underline !important;
+}
+a.paginate_button.current{
+    font-weight : bold !important;
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration:none !important;
 }
 
-.paginete_active, .paginate_button {
+.paginate_active, .paginate_button {
+    font-weight : bold;
     color : #006B9D;
+    box-sizing: border-box;
+    display: inline-block;
+    min-width: 1.5em;
+    padding: 0.5em 1em;
+    margin-left: 2px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration:underline !important;
+}
+
+
+table.dataTable tbody tr.selected {
+    background-color: #B0BED9;
 }
 
 td.perc-datatable-column.perc-type-numeric, .perc-datatable-head-row th.perc-type-numeric.perc-datatable-head-column {

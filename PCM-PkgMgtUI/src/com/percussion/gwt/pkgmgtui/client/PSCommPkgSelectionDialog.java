@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,7 +52,7 @@ public class PSCommPkgSelectionDialog extends Dialog
       setIsModal(true);
       setCanDragReposition(true);
       setCanDragResize(true);
-      setResizeFrom(IPSConstants.DIALOG_RESIZE_OPTIONS);
+      setResizeFrom(PSConstants.getDialogResizeOptions());
       setAutoCenter(true);
       setShowToolbar(true);
       
@@ -63,18 +63,18 @@ public class PSCommPkgSelectionDialog extends Dialog
       btnLayout.setHeight100();
       btnLayout.setAlign(Alignment.RIGHT);
       
-      btnLayout.setMembersMargin(IPSConstants.MEMBERS_MARGIN);
+      btnLayout.setMembersMargin(PSConstants.getMembersMargin());
       btnLayout.setAlign(Alignment.RIGHT);
       btnLayout.setHeight(m_oKBtn.getHeight());
 
       HLayout sbLayout = new HLayout();
-      sbLayout.setMembersMargin(IPSConstants.MEMBERS_MARGIN);
+      sbLayout.setMembersMargin(PSConstants.getMembersMargin());
       sbLayout.addMember(m_slushBucket);
       sbLayout.setAlign(Alignment.CENTER);
       sbLayout.setWidth100();
       sbLayout.setHeight100();
       sbLayout.setOverflow(Overflow.AUTO);
-      sbLayout.setPadding(IPSConstants.MEMBERS_MARGIN);
+      sbLayout.setPadding(PSConstants.getMembersMargin());
       this.addItem(sbLayout);
 
       m_cancelBtn.addClickHandler(new ClickHandler()
@@ -92,6 +92,7 @@ public class PSCommPkgSelectionDialog extends Dialog
             onOk();
          }
       });
+
       addItem(btnLayout);
 
    }

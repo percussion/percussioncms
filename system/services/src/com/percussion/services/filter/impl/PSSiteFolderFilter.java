@@ -17,14 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.filter.impl;
 
 import com.percussion.cms.PSCmsException;
-import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
@@ -34,19 +33,17 @@ import com.percussion.services.guidmgr.data.PSGuid;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.services.sitemgr.IPSSiteManager;
-import com.percussion.services.sitemgr.PSSiteManagerException;
 import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.string.PSStringUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * A item filter that mimics the behavior of authtype 101 in part. This filter
@@ -60,8 +57,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
    /**
     * Site folder filter logger
     */
-   private final static Log ms_log = LogFactory
-         .getLog(PSSiteFolderFilter.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSiteFolderFilter.class);
 
    /** (non-Javadoc)
     * @see com.percussion.services.filter.impl.PSBaseFilter#filter(java.util.List, java.util.Map)
@@ -73,7 +69,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
       // Get default site id from parameters
       String siteidstr = params.get(IPSHtmlParameters.SYS_SITEID);
          
-      List<IPSFilterItem> removals = new ArrayList<IPSFilterItem>();
+      List<IPSFilterItem> removals = new ArrayList<>();
       PSServerFolderProcessor fproc = PSServerFolderProcessor.getInstance();
       IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
       
@@ -130,7 +126,7 @@ public class PSSiteFolderFilter extends PSBaseFilter
                continue;
             }
          }
-         catch (PSCmsException e)
+         catch (PSCmsException | PSNotFoundException e)
          {
             ms_log.warn("Problem getting paths for folder " + id.getFolderId()
                   + " removing item");

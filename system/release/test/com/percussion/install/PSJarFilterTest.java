@@ -17,26 +17,25 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.install;
 
-import java.io.BufferedReader;
+import junit.framework.TestCase;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
-
-import junit.framework.TestCase;
 
 /**
  * JUnit test for JarFilter
@@ -96,11 +95,12 @@ public class PSJarFilterTest extends TestCase
       throws IOException
    {
       final ZipEntry entry = file.getEntry(entryName);
-      final Reader is = new InputStreamReader(file.getInputStream(entry), "UTF8");
-      final char[] chars = new char[1000];
-      final int count = is.read(chars);
-      assert(count < chars.length && count > 0);
-      return new String(chars, 0, count);
+      try(final Reader is = new InputStreamReader(file.getInputStream(entry), StandardCharsets.UTF_8)) {
+         final char[] chars = new char[1000];
+         final int count = is.read(chars);
+         assert (count < chars.length && count > 0);
+         return new String(chars, 0, count);
+      }
    }
 
    /**

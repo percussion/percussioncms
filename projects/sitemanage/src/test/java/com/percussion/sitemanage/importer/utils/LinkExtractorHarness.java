@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,11 @@
 package com.percussion.sitemanage.importer.utils;
 
 import com.percussion.sitemanage.importer.PSLink;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,21 +38,13 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.LogFactory;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public final class LinkExtractorHarness {
 
 	private static final String COMMA = ",";
 	private static final String CR = "\n";
 	private static final String CRLF = "\r\n";
 
-	private static final Log log = LogFactory
-			.getLog(LinkExtractorHarness.class);
+	private static final Logger log = LogManager.getLogger(LinkExtractorHarness.class);
 
 	private LinkExtractorHarness() {
 	}

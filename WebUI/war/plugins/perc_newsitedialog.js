@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -61,7 +61,7 @@ var $perc_newSiteDialogLayout;
                         $.perc_filterField(templateNameField, $.perc_textFilters.URL);
 
                         // If the URL checkbox is unselected, disable the sitename field
-                        $('input[type=radio]').change(function(event)
+                        $('input[type=radio]').on("change",function()
                         {
                             // If the selected radio button is not the one for the
                             // URL option, make the URL field read only
@@ -94,8 +94,8 @@ var $perc_newSiteDialogLayout;
                             });
                         // We have to get the images for the perc_imageselect plugin
                         _loadTemplateList();
-                        $("#perc-select-template-type").change(function(){
-                            if($(this).val() == "base"){
+                        $("#perc-select-template-type").on("change",function(){
+                            if($(this).val() === "base"){
                                 $("#perc-base-template-lib").show();
                                 $("#perc-resp-template-lib").hide();
                             }
@@ -111,10 +111,10 @@ var $perc_newSiteDialogLayout;
                                 validClass: "perc_field_success",
                                 wrapper: "p",
                                 validateHiddenFields: false,
-                                debug: true,
+                                debug: false,
                                 rules: _getValidationRules(),
                                 messages: _getValidationMessages(),
-                                showErrors: function(errorMap, errorList) {
+                                showErrors: function() {
                                     if (this.pendingRequest < 1)
                                     {
                                         this.defaultShowErrors();
@@ -139,7 +139,7 @@ var $perc_newSiteDialogLayout;
                     /////////////////////////////////////////
 
                     // Clear & reset fields validation errors
-                    urlField.removeAttr('readonly').removeAttr('disabled');
+                    urlField.prop('readonly', false).prop('disabled', false);
                     clearValidationErrorMessage(siteNameField);
                     clearValidationErrorMessage(urlField);
 
@@ -210,7 +210,7 @@ var $perc_newSiteDialogLayout;
          */
         function siteImportCallback(status, siteData)
         {
-            if (status != $.PercServiceUtils.STATUS_SUCCESS)
+            if (status !== $.PercServiceUtils.STATUS_SUCCESS)
             {
                 errorCallbackFallback(siteData);
                 return;
@@ -235,7 +235,7 @@ var $perc_newSiteDialogLayout;
          */
         function getTemplateIdCallback(status, teamplatesData)
         {
-            if (status != $.PercServiceUtils.STATUS_SUCCESS)
+            if (status !== $.PercServiceUtils.STATUS_SUCCESS)
             {
                 errorCallbackFallback(teamplatesData);
                 return;
@@ -253,7 +253,7 @@ var $perc_newSiteDialogLayout;
          */
         function getPageIdCallback(status, foldersData)
         {
-            if (status != $.PercServiceUtils.STATUS_SUCCESS)
+            if (status !== $.PercServiceUtils.STATUS_SUCCESS)
             {
                 errorCallbackFallback(foldersData);
                 return;
@@ -262,7 +262,7 @@ var $perc_newSiteDialogLayout;
             var pathItem;
 
             for (var i = 0; i < foldersData.PathItem.length; i++) {
-                if (foldersData.PathItem[i].category == 'LANDING_PAGE')
+                if (foldersData.PathItem[i].category === 'LANDING_PAGE')
                 {
                     pathItem = foldersData.PathItem[i];
                     i = foldersData.PathItem.length;
@@ -273,9 +273,9 @@ var $perc_newSiteDialogLayout;
 
             // Finally we have all the things we want in the memento, retrieve the path (URL param)
             // and invoke the navigation manager
-            var querystring = $j.deparam.querystring();
-            $j.PercNavigationManager.goToLocation(
-                $j.PercNavigationManager.VIEW_DESIGN,
+            var querystring = $.deparam.querystring();
+            $.PercNavigationManager.goToLocation(
+                $.PercNavigationManager.VIEW_DESIGN,
                 fields.name,
                 null,
                 null,
@@ -293,8 +293,8 @@ var $perc_newSiteDialogLayout;
         if (dialog.find('input[type=radio]').filter(':checked').attr('id') === "type_url")
         {
             var fields = {
-                name: $.trim(siteNameField.val()),
-                baseUrl: $.trim(urlField.val())
+                name: siteNameField.val().trim(),
+                baseUrl: urlField.val().trim()
             };
 
             // If the URL entered lacks 'http(s)://' prefix, append 'http://'
@@ -306,7 +306,7 @@ var $perc_newSiteDialogLayout;
             continueToNextStep = false;
 
             // Close the dialog to simulate wizard
-            $(".ui-dialog-titlebar .ui-icon-closethick").click();
+            $(".ui-dialog-titlebar .ui-icon-closethick").trigger("click");
 
             // Open the Import Progress dialog
             $.PercImportProgressDialog({
@@ -342,8 +342,8 @@ var $perc_newSiteDialogLayout;
     function _onOK(cbh)
     {
         var fields = _getFieldValues();
-        fields.selectedtemplate = $("#perc-select-template-type").val()=="base"?fields.perc_selected_basetemplate:fields.perc_selected_resptemplate;
-        if (fields.selectedtemplate.length == 0)
+        fields.selectedtemplate = $("#perc-select-template-type").val()==="base"?fields.perc_selected_basetemplate:fields.perc_selected_resptemplate;
+        if (fields.selectedtemplate.length === 0)
         {
             $.perc_utils.alert_dialog(
                 {
@@ -353,7 +353,7 @@ var $perc_newSiteDialogLayout;
             return;
         }
 
-        if (fields.templatename == null || $.trim(fields.templatename) == '')
+        if (fields.templatename === null || fields.templatename.trim() === '')
         {
             $.perc_utils.alert_dialog(
                 {
@@ -372,13 +372,13 @@ var $perc_newSiteDialogLayout;
                 homePageTitle: I18N.message("perc.ui.new.site.dialog@Home Page"),
                 navigationTitle: I18N.message("perc.ui.new.site.dialog@Home Page"),
                 baseTemplateName: fields.selectedtemplate,
-                templateName: $.trim(fields.templatename)
+                templateName: fields.templatename.trim()
             }
         };
 
         $.PercBlockUI();
         // Force the dialog close while blocking the UI
-        $(".ui-dialog-titlebar .ui-icon-closethick").click();
+        $(".ui-dialog-titlebar .ui-icon-closethick").trigger("click");
 
         $.ajax(
             {
@@ -453,7 +453,7 @@ var $perc_newSiteDialogLayout;
         //we need to add an assertion 'framework' and check them here
         for (i = 0; i < response.SiteSummary.length; i++)
         {
-            if ((response.SiteSummary[i].name + "").toLowerCase() == value.toLowerCase())
+            if ((response.SiteSummary[i].name + "").toLowerCase() === value.toLowerCase())
             {
                 return false;
             }

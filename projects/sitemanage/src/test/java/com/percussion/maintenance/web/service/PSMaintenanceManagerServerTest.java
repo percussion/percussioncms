@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,18 +30,16 @@ import com.percussion.servlets.PSSecurityFilter;
 import com.percussion.share.test.PSRestClient.RestClientException;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.request.PSRequestInfo;
-
-import java.io.File;
-import java.io.IOException;
-
-import javax.ws.rs.core.Response.Status;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.junit.experimental.categories.Category;
+
+import javax.ws.rs.core.Response.Status;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Server-side testing of REST services and ANT calls so that we can control the state of the maintenance manager using

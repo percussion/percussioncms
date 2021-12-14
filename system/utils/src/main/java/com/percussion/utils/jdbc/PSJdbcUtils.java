@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -186,7 +186,9 @@ public class PSJdbcUtils
    public static final String MYSQL_DTS_DRIVER_LOCATION="/Deployment/Server/common/lib/mysql-connector.jar";
    public static final String MYSQL_STAGING_DTS_DRIVER_LOCATION="/Staging/Deployment/Server/common/lib/mysql-connector.jar";
 
-
+   public static final String DEFAULT_JDBC_DRIVER_LOCATION = "/jetty/base/lib/jdbc";
+   public static final String DEFAULT_DTS_DRIVER_LOCATION="/Deployment/Server/common/lib";
+   public static final String DEFAULT_STAGING_DTS_DRIVER_LOCATION="/Staging/Deployment/Server/common/lib";
    /**
     * Additional connection url parameters required to use unicode (UTF-8) with mysql. 
     */
@@ -401,7 +403,7 @@ public class PSJdbcUtils
          throw new
             IllegalArgumentException("serverName may not be null or empty");
       }
-      StringBuffer rval = new StringBuffer(40);
+      StringBuilder rval = new StringBuilder(40);
 
       rval.append("jdbc:");
 
@@ -439,7 +441,7 @@ public class PSJdbcUtils
          strDBBackend = DERBY_DB_BACKEND;
       else if (driver.equals(MYSQL_DRIVER))
           strDBBackend = MYSQL_DB_BACKEND;
-      else if (driver.equals(JTDS_DRIVER) || driver.equalsIgnoreCase(MICROSOFT_DRIVER))
+      else if (driver.equals(JTDS_DRIVER) || driver.equalsIgnoreCase(MICROSOFT_DRIVER) || driver.equalsIgnoreCase(MICROSOFT_DRIVER))
          strDBBackend = JTDS_DB_BACKEND;
       else
       {

@@ -17,21 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.contentmgr.data;
 
 import com.percussion.cms.objectstore.PSComponentSummary;
-import com.percussion.services.contentmgr.*;
+import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.contentmgr.IPSNode;
+import com.percussion.services.contentmgr.IPSNodeDefinition;
+import com.percussion.services.contentmgr.PSContentMgrConfig;
+import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.contentmgr.impl.IPSContentRepository;
 import com.percussion.services.contentmgr.impl.PSContentInternalLocator;
 import com.percussion.services.contentmgr.impl.legacy.PSContentPropertyLoader;
 import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.jsr170.*;
+import com.percussion.utils.jsr170.IPSJcrCacheItem;
+import com.percussion.utils.jsr170.IPSProperty;
+import com.percussion.utils.jsr170.PSNodeIterator;
+import com.percussion.utils.jsr170.PSPath;
+import com.percussion.utils.jsr170.PSPropertyIterator;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.lang.StringUtils;
@@ -39,7 +47,25 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import javax.jcr.*;
+import javax.jcr.AccessDeniedException;
+import javax.jcr.InvalidItemStateException;
+import javax.jcr.Item;
+import javax.jcr.ItemExistsException;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.ItemVisitor;
+import javax.jcr.MergeException;
+import javax.jcr.NoSuchWorkspaceException;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.Property;
+import javax.jcr.PropertyIterator;
+import javax.jcr.ReferentialIntegrityException;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.UnsupportedRepositoryOperationException;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
 import javax.jcr.lock.Lock;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
@@ -51,7 +77,14 @@ import javax.jcr.version.VersionException;
 import javax.jcr.version.VersionHistory;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation of the content node, which provides most of the functionality
@@ -71,7 +104,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
     * Interfaces to ignore when "figuring out" the body access class argument
     * classes
     */
-   private static Set<Class> ms_ignoredClasses = new HashSet<Class>();
+   private static Set<Class> ms_ignoredClasses = new HashSet<>();
 
    static
    {
@@ -82,7 +115,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
    /**
     * Holds properties
     */
-   private Map<String, Property> m_properties = new HashMap<String, Property>();
+   private Map<String, Property> m_properties = new HashMap<>();
 
    /**
     * Holds children. Children are held in named collections, implemented by the
@@ -484,7 +517,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
       {
          IPSContentRepository rep = PSContentInternalLocator
                .getLegacyRepository();
-         List<Node> nodes = new ArrayList<Node>();
+         List<Node> nodes = new ArrayList<>();
          nodes.add(this);
          rep.loadChildren(nodes, m_cmgrConfig);
       }
@@ -524,11 +557,11 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
    public List<String> getPropertyStringValues(String name) throws PathNotFoundException, RepositoryException
    {
       Property p = getProperty(name);
-      Set<String> result = new HashSet<String>();
+      Set<String> result = new HashSet<>();
       for (Value v : p.getValues())
          result.add(v.getString());
       
-      List<String> list = new ArrayList<String>(result);
+      List<String> list = new ArrayList<>(result);
       Collections.sort(list);
       return list;
    }
@@ -1238,8 +1271,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
       m_cmgrConfig = cmgrConfig;
    }
 
-   public long getSizeInBytes()
-   {
+   public long getSizeInBytes() throws RepositoryException {
       // We'll basically ignore this object's size as it is fairly insignificant
       // Instead we'll add up the properties on this and any child nodes. We
       // need to be careful that nothing we do forces the load of binary and

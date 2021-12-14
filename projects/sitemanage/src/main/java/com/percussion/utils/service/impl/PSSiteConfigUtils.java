@@ -17,13 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.service.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.publisher.PSRxPublisherServiceLocator;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.server.PSServer;
 import com.percussion.services.pubserver.IPSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
@@ -36,6 +39,8 @@ import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -78,6 +83,9 @@ import static org.springframework.util.CollectionUtils.isEmpty;
  */
 public class PSSiteConfigUtils
 {
+
+    private static final Logger log = LogManager.getLogger(PSSiteConfigUtils.class);
+
     /**
      * Flag file extension. If a file called ${sitename}.tch is found inside the
      * log folder, we know that we need to publish the configurations files.
@@ -740,8 +748,6 @@ public class PSSiteConfigUtils
      *
      * @param sitename the name of the site. Assumed not blank.
      * @param loginPage the login page set for the site. May be blank.
-     * @param loginErrorPage the error page for the login failure set for the
-     *            site. May be blank.
      * @param sectionNode the root node of the section tree. Assumed not
      *            <code>null</null>
      * @throws TransformerException if an error occurs when writing the file.
@@ -808,7 +814,6 @@ public class PSSiteConfigUtils
      *
      * @param sitename the name of the site. Assumed not blank.
      * @param loginPage the login page set for the site. May be blank.
-     * @param loginErrorPage the error page for the login failure. May be blank.
      * @param sectionNode the root node of the section tree for the site.
      *            Assumed not <code>null</code>
      * @param useHttpsForSecureSite if <code>true</code>
@@ -963,7 +968,16 @@ public class PSSiteConfigUtils
         try {
              File baseSecurityFile = getBaseSecureXmlFile(securityData.getSitename());
 
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    )
+            );
 
             DocumentBuilder documentBuilder = null;
 
@@ -977,13 +991,10 @@ public class PSSiteConfigUtils
             appendLogoutElement(securityData, document, http);
 
             writeToXmlFile(securityData, document);
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
@@ -1323,7 +1334,7 @@ public class PSSiteConfigUtils
         private String sitename;
         private String loginPage;
         private Map<String, Map<String, String>> secureAndMemberSectionsUrls;
-        private Set<String> secureAndMemberSectionsFilters = new TreeSet<String>();
+        private Set<String> secureAndMemberSectionsFilters = new TreeSet<>();
         private boolean useHttpsForSecureSite;
 
         public String getSitename()
@@ -1379,7 +1390,7 @@ public class PSSiteConfigUtils
         {
             if(secureAndMemberSectionsUrls == null)
             {
-                secureAndMemberSectionsUrls = new HashMap<String, Map<String, String>>();
+                secureAndMemberSectionsUrls = new HashMap<>();
             }
             secureAndMemberSectionsUrls.put(sectionUrl + "**", buildTagAttributes(allowAccessTo));
 
@@ -1402,7 +1413,7 @@ public class PSSiteConfigUtils
          */
         private Map<String, String> buildTagAttributes(String allowAccessTo)
         {
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
 
             if(isBlank(allowAccessTo))
             {

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,7 +26,7 @@ package com.percussion.rest.sites;
 
 
 import com.percussion.util.PSSiteManageBean;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Path("/sites")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-@Api(value = "/sites", description = "Site operations")
+@Tag(name = "Sites", description = "Site operations")
 @Lazy
 public class SitesResource {
 
@@ -50,6 +50,7 @@ public class SitesResource {
     public SitesResource(){};
 
     @GET
+    // TODO: Implement Me
     public SiteList listSites(){
         SiteList ret = null;
 

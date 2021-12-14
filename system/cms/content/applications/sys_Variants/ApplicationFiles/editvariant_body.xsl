@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xsl:stylesheet [
-   <!ENTITY % HTMLlat1 SYSTEM "/Rhythmyx/DTD/HTMLlat1x.ent">
-   %HTMLlat1;
-   <!ENTITY % HTMLsymbol SYSTEM "/Rhythmyx/DTD/HTMLsymbolx.ent">
-   %HTMLsymbol;
-   <!ENTITY % HTMLspecial SYSTEM "/Rhythmyx/DTD/HTMLspecialx.ent">
-   %HTMLspecial;
+        <!ENTITY % HTMLlat1 PUBLIC "-//W3C//ENTITIES_Latin_1_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLlat1x.ent">
+        %HTMLlat1;
+        <!ENTITY % HTMLsymbol PUBLIC "-//W3C//ENTITIES_Symbols_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLsymbolx.ent">
+        %HTMLsymbol;
+        <!ENTITY % HTMLspecial PUBLIC "-//W3C//ENTITIES_Special_for_XHTML//EN" "https://www.percussion.com/DTD/HTMLspecialx.ent">
+        %HTMLspecial;
 ]>
-<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="psxi18n" xmlns:psxi18n="urn:www.percussion.com/i18n" >
+<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns="http://www.w3.org/1999/xhtml"
+                extension-element-prefixes="psxi18n" exclude-result-prefixes="psxi18n">
    <xsl:template mode="editvariant_mainbody" match="*">
       <xsl:variable name="userroles" select="document(userrolesurl)/UserStatus"/>
       <xsl:variable name="componentcontext" select="document(contexturl)/componentcontext/context"/>
@@ -267,7 +269,7 @@
             <xsl:attribute name="class"><xsl:choose><xsl:when test="position() mod 2 = 1"><xsl:value-of select="'datacell1'"/></xsl:when><xsl:otherwise><xsl:value-of select="'datacell2'"/></xsl:otherwise></xsl:choose></xsl:attribute>
             <td align="center" width="5%" valign="middle">
                <a href="javascript:delConfirm('{slotdelete}');">
-                  <img height="21" alt="Delete" src="../sys_resources/images/delete.gif" width="21" border="0"/>
+                  <img height="21" alt="Delete" src="/sys_resources/images/delete.gif" width="21" border="0"/>
                </a>
             </td>
             <td align="left" width="95%" class="datacell1font">
@@ -281,7 +283,7 @@
             <xsl:attribute name="class"><xsl:choose><xsl:when test="position() mod 2 = 1"><xsl:value-of select="'datacell1'"/></xsl:when><xsl:otherwise><xsl:value-of select="'datacell2'"/></xsl:otherwise></xsl:choose></xsl:attribute>
             <td align="center" width="5%" valign="middle">
                <a href="javascript:delConfirm('{sitedelete}');">
-                  <img height="21" alt="Delete" src="../sys_resources/images/delete.gif" width="21" border="0"/>
+                  <img height="21" alt="Delete" src="/sys_resources/images/delete.gif" width="21" border="0"/>
                </a>
             </td>
             <td align="left" width="95%" class="datacell1font">

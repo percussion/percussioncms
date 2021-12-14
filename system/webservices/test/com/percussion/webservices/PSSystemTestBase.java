@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -54,21 +54,18 @@ import com.percussion.webservices.systemdesign.SaveItemFiltersRequest;
 import com.percussion.webservices.systemdesign.SaveRelationshipTypesRequest;
 import com.percussion.webservices.systemdesign.SaveSharedPropertiesRequest;
 import com.percussion.webservices.systemdesign.SystemDesignSOAPStub;
+import junit.framework.AssertionFailedError;
+import org.apache.commons.lang.StringUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.experimental.categories.Category;
 
+import javax.xml.rpc.ServiceException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.rpc.ServiceException;
-
-import junit.framework.AssertionFailedError;
-
-import org.apache.commons.lang.StringUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.experimental.categories.Category;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

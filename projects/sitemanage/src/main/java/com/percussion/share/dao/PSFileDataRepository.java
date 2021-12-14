@@ -17,16 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,7 +77,7 @@ public abstract class PSFileDataRepository<T>
 
     private String fileExt = "xml";
     
-    private AtomicReference<Data<T>> data = new AtomicReference<Data<T>>();
+    private AtomicReference<Data<T>> data = new AtomicReference<>();
     
     private boolean initialized = false;
     
@@ -184,17 +187,19 @@ public abstract class PSFileDataRepository<T>
      * Called to initialize the directory that represents the file repository
      * by polling the files for the first time.
      */
-    public void init()
-    {
+    public void init() throws PSDataServiceException {
         if (initialized == true) return;
         
         try
         {
             poll();
         }
-        catch (IOException e)
+        catch (IOException | PSValidationException | PSXmlFileDataRepository.PSXmlFileDataRepositoryException e)
         {
-            throw new RuntimeException(e);
+            log.error("{}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSDataServiceException(e);
+
         }
         
         initialized = true;
@@ -205,7 +210,7 @@ public abstract class PSFileDataRepository<T>
      * Retrieve the currently loaded repository data.
      * @return never <code>null</code>.
      */
-    public T getData() {
+    public T getData() throws PSDataServiceException {
         init();
         return data.get().data;
     }
@@ -214,8 +219,8 @@ public abstract class PSFileDataRepository<T>
         if (root != null) return root;
         root = new File(getRepositoryDirectory());
         if (!root.exists()) {
-            log.error("Repository directory: " + getRepositoryDirectory() + " does not exist.");
-            log.info("Creating directory: " + root);
+            log.error("Repository directory: {} does not exist.",getRepositoryDirectory());
+            log.info("Creating directory: {}",  root);
             FileUtils.forceMkdir(root);
         }
         
@@ -229,14 +234,14 @@ public abstract class PSFileDataRepository<T>
      * Poll should be called from quartz or some other scheduler.
      * @throws IOException 
      */
-    public synchronized void poll() throws IOException {
+    public synchronized void poll() throws IOException, PSValidationException, PSXmlFileDataRepository.PSXmlFileDataRepositoryException {
         if (log.isTraceEnabled()) {
             log.trace(format("Polling folder: {0} for file ext: {1}", getRoot(), getFileExt()));
         }
         
         Collection<File> files = getFiles();
         
-        Set<PSFileDataRepository.PSFileEntry> fileEntries = new HashSet<PSFileDataRepository.PSFileEntry>();
+        Set<PSFileDataRepository.PSFileEntry> fileEntries = new HashSet<>();
         
         for( File file : files) {
             PSFileDataRepository.PSFileEntry fileEntry = new PSFileDataRepository.PSFileEntry(toId(file.getName()), file.getAbsolutePath(), file.lastModified());
@@ -247,21 +252,21 @@ public abstract class PSFileDataRepository<T>
         if (data.get() != null)
             oldEntries = data.get().files;
         else
-            oldEntries = new HashSet<PSFileDataRepository.PSFileEntry>();
+            oldEntries = new HashSet<>();
         
         if ( ! oldEntries.equals(fileEntries)  || 
-                (fileEntries.isEmpty() && oldEntries.isEmpty())) {
+                (fileEntries.isEmpty())) {
             if (initialized) {
-                log.debug("Files have changed under: " + getRoot() + " reloading");
+                log.debug("Files have changed under: {} reloading",getRoot() );
             }
             else {
-                log.debug("Loading files from: " + getRoot());
+                log.debug("Loading files from: {}" ,getRoot());
             }
             T object = update(fileEntries);
-            data.set(new Data<T> (object, fileEntries));
+            data.set(new Data<> (object, fileEntries));
         }
         else {
-            log.trace("Files have not changed under: " + getRoot());
+            log.trace("Files have not changed under: {}",  getRoot());
         }
 
     }
@@ -292,7 +297,7 @@ public abstract class PSFileDataRepository<T>
      * 
      * @throws IOException
      */
-    protected abstract T update(Set<PSFileDataRepository.PSFileEntry> files) throws IOException;
+    protected abstract T update(Set<PSFileDataRepository.PSFileEntry> files) throws IOException, PSValidationException, PSXmlFileDataRepository.PSXmlFileDataRepositoryException;
 
     /**
      * Turns the filename into an id.
@@ -336,6 +341,6 @@ public abstract class PSFileDataRepository<T>
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final Logger log = LogManager.getLogger(getClass());
 
 }

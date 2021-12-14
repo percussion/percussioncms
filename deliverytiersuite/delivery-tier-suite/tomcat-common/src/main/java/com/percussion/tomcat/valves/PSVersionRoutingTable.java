@@ -19,17 +19,17 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.percussion.tomcat.valves;
 
-import java.util.HashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
+import java.util.HashMap;
 
 /**
  * Provides a basic data structure for indexing the routine table 
@@ -41,7 +41,7 @@ import org.apache.juli.logging.LogFactory;
 public class PSVersionRoutingTable {
 	
 	private HashMap<String, HashMap<String,String>> serviceContexts;
-	private static Log log = LogFactory.getLog(PSVersionRoutingTable.class);
+	private static final Logger log = LogManager.getLogger(PSVersionRoutingTable.class);
 	/**
 	 * @return the serviceContexts
 	 */
@@ -58,9 +58,9 @@ public class PSVersionRoutingTable {
 
 	public void addServiceContext(String context){
 		if(serviceContexts == null)
-			serviceContexts = new HashMap<String,HashMap<String,String>>();
+			serviceContexts = new HashMap<>();
 		if(!serviceContexts.containsKey(context)){
-			serviceContexts.put(context, new HashMap<String,String>());
+			serviceContexts.put(context, new HashMap<>());
 		}
 	}
 	

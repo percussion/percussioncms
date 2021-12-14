@@ -49,7 +49,7 @@ public class PSDeliveryTierProtocolModel extends RxIAModel
     */
    protected void initDriverOptions()
    {
-      List<String> driverList = new ArrayList<String>();
+      List<String> driverList = new ArrayList<>();
       
       driverList.add(RxInstallerProperties.getResources().getString("embedded.name"));
       driverList.add(RxInstallerProperties.getResources().getString("mysqlname"));

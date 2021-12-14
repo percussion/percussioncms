@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,27 +17,28 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.util.servlet;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import javax.servlet.http.HttpServletResponse;
-
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 /**
  * Extends {@link PSInternalResponse} to support requests that return
  * XML documents. This can be particularly useful if the target of
@@ -89,15 +90,15 @@ class PSInternalResponseXML
       if (isStreamUsed())
       {
          source = new InputSource(this.getInputStream());
-         m_logger.debug("using input stream");
+         log.debug("using input stream");
       }
       if (isWriterUsed())
       {
          Reader sr = new StringReader(this.getString());
          source = new InputSource(sr);
-         m_logger.debug("using string reader");
+         log.debug("using string reader");
       }
-      DocumentBuilder builder = getBuilder(m_logger);
+      DocumentBuilder builder = getBuilder(log);
       try
       {
          return builder.parse(source);
@@ -133,8 +134,9 @@ class PSInternalResponseXML
       }
       catch (ParserConfigurationException e)
       {
-         myLogger.error("Invalid XML Parser", e);
-         e.printStackTrace();
+         myLogger.error("Invalid XML Parser {}", PSExceptionUtils.getMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw (ParserConfigurationException) e.fillInStackTrace();
       }
    }
@@ -142,7 +144,7 @@ class PSInternalResponseXML
    /**
     * our private logger. Never <code>null</code>.
     */
-   private Logger m_logger = Logger.getLogger(this.getClass());
+   private static final Logger log = LogManager.getLogger(PSInternalResponseXML.class);
 
    /**
     * The factory instance for the XML parser. There is only one
@@ -154,7 +156,16 @@ class PSInternalResponseXML
     * retrieves the document builder factory instance.
     */
    static {
-      ms_dbf = DocumentBuilderFactory.newInstance();
+      ms_dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+              new PSXmlSecurityOptions(
+                      true,
+                      true,
+                      true,
+                      false,
+                      true,
+                      false
+              ));
+
       ms_dbf.setNamespaceAware(true);
       ms_dbf.setValidating(false);
    }

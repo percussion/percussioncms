@@ -17,44 +17,38 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.sitemanage.importer;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.percussion.pagemanagement.data.PSPage;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.data.PSTemplateSummary;
 import com.percussion.pagemanagement.service.IPSPageService;
-import com.percussion.pagemanagement.service.IPSPageService.PSPageException;
-import com.percussion.pagemanagement.service.impl.PSTemplateService;
 import com.percussion.pagemanagement.service.IPSTemplateService;
+import com.percussion.security.SecureStringUtils;
 import com.percussion.services.sitemgr.IPSSiteManager;
 import com.percussion.share.dao.IPSFolderHelper;
-import com.percussion.share.dao.IPSGenericDao.LoadException;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.sitemanage.dao.IPSiteDao;
-import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
 import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
 import com.percussion.sitemanage.importer.data.PSImportLogEntry;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Servlet that returns the content of a specific template's import log
@@ -74,128 +68,121 @@ public class PSSiteImportLogViewer extends HttpServlet  {
     /**
      * Gets the log entry for a specific template id and returns the information as a txt file
      * @author federicoromanelli
-     * @throws IOException
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-        throws IOException
-    {
-        String templateId   = request.getParameter("templateId");
-        String siteName     = request.getParameter("siteName");
-        boolean existsFlag   = ("true".equalsIgnoreCase(request.getParameter("exists"))? true : false);
-        
-                
-        PSSite site = null;
-        if (StringUtils.isBlank(templateId) && !StringUtils.isBlank(siteName))
-        {
-            try
-            {
-                site = siteDao.find(siteName);
-                if (site==null)
-                {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site: " + siteName);
-                    return;   
-                }
-                templateId = site.getBaseTemplateName();
-            }
-            catch (LoadException e)
-            {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site: " + siteName);
-                return;                
-            }
-        }
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        try {
+            String templateId = request.getParameter("templateId");
+            String siteName = request.getParameter("siteName");
+            boolean existsFlag = ("true".equalsIgnoreCase(request.getParameter("exists")));
 
-        List<PSImportLogEntry> logs = null;
-        String templateName = "";
-        if (!StringUtils.isBlank(templateId))
-        {
-            PSTemplateSummary sum = templateService.find(templateId);
-            if (sum != null)
-            {
-                templateName = sum.getName();
-                logs = logDao.findAll(templateId, PSLogObjectType.TEMPLATE.name());
-            }
-        }
-        
-        if (logs == null || logs.isEmpty())
-        {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't find import log");
-            return;
-        }
 
-        if (existsFlag)
-        {
-            response.sendError(HttpServletResponse.SC_OK, "Import log exists");
-            return;
-        }
-        
-        if (StringUtils.isBlank(siteName))
-        {
-            try
-            {
-                siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
-                site = siteDao.find(siteName);
-            }
-            catch (LoadException e)
-            {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load for template: " + templateName);
-                return; 
-            }
-        }
-
-        
-        PSImportLogEntry templateLogEntry = getLatestLogEntry(logs);
-        
-        // now see if template is home page template, if so, get all page import logs for the site
-        List<Long> pageLogIds = null;
-        if (templateName.equals(site.getTemplateName()))
-        {
-            try
-            {
-                List<String> itemIds = folderHelper.findItemIdsByPath(site.getFolderPath());
-                pageLogIds = logDao.findLogIdsForObjects(itemIds, PSLogObjectType.PAGE.name());
-            }
-            catch (Exception e)
-            {
-                log.error("Failed to load page import logs for Site: " + siteName); 
-            }
-        }
-        
-        // Get all pages in site (see search) - .25
-        // Get all logids for those pages, sort them ascending - .25
-        // For each, get and stream output - .25
-       
-        response.setContentType("text/plain");
-        response.setHeader("Content-Disposition", "attachment;filename=" + siteName + "-" + templateName + "-importlog.txt");
-        PrintWriter out = response.getWriter();        
-        if (templateLogEntry != null)
-        {
-            out.println(templateLogEntry.getLogData());
-        }
-        
-        // now write out each page's log
-        if (pageLogIds != null)
-        {
-            for (Long pageLogId : pageLogIds)
-            {
-                PSImportLogEntry pageLog = logDao.findLogEntryById(pageLogId);
-                if (pageLog != null)
-                {
-                    out.println(pageLog.getLogData());
+            PSSite site = null;
+            if (StringUtils.isBlank(templateId) && !StringUtils.isBlank(siteName)) {
+                try {
+                    site = siteDao.find(siteName);
+                    if (site == null) {
+                        log.error("Couldn't load site: {}", siteName);
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site.");
+                        return;
+                    }
+                    templateId = site.getBaseTemplateName();
+                } catch (PSDataServiceException e) {
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't load site.");
+                    return;
                 }
             }
+
+            List<PSImportLogEntry> logs = null;
+            String templateName = "";
+            if (!StringUtils.isBlank(templateId)) {
+                try {
+                    PSTemplateSummary sum = templateService.find(templateId);
+                    if (sum != null) {
+                        templateName = sum.getName();
+                        logs = logDao.findAll(templateId, PSLogObjectType.TEMPLATE.name());
+                    }
+                } catch (PSDataServiceException e) {
+                    log.error(PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server Error");
+                    return;
+                }
+            }
+
+            if (logs == null || logs.isEmpty()) {
+                response.sendError(HttpServletResponse.SC_NO_CONTENT, "Couldn't find import log");
+                return;
+            }
+
+            if (existsFlag) {
+                response.sendError(HttpServletResponse.SC_OK, "Import log exists");
+                return;
+            }
+
+            if (StringUtils.isBlank(siteName)) {
+                try {
+                    siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
+                    site = siteDao.find(siteName);
+                } catch (PSDataServiceException e) {
+                    log.error("Couldn't load template: {} Error: {}", templateName,
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load template.");
+                    return;
+                }
+            }
+
+
+            PSImportLogEntry templateLogEntry = getLatestLogEntry(logs);
+
+            // now see if template is home page template, if so, get all page import logs for the site
+            List<Long> pageLogIds = null;
+
+            if (site !=null && templateName.equals(site.getTemplateName())) {
+                try {
+                    List<String> itemIds = folderHelper.findItemIdsByPath(site.getFolderPath());
+                    pageLogIds = logDao.findLogIdsForObjects(itemIds, PSLogObjectType.PAGE.name());
+                } catch (Exception e) {
+                    log.error("Failed to load page import logs for Site: {}, Error: {}", siteName,
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                }
+            }
+
+            // Get all pages in site (see search) - .25
+            // Get all logids for those pages, sort them ascending - .25
+            // For each, get and stream output - .25
+
+            response.setContentType("text/plain");
+            response.setHeader("Content-Disposition", "attachment;filename=" + SecureStringUtils.stripAllLineBreaks(
+                    siteName) + "-" + SecureStringUtils.stripAllLineBreaks(templateName) + "-importlog.txt");
+            PrintWriter out = response.getWriter();
+            if (templateLogEntry != null) {
+                out.println(templateLogEntry.getLogData());
+            }
+
+            // now write out each page's log
+            if (pageLogIds != null) {
+                for (Long pageLogId : pageLogIds) {
+                    PSImportLogEntry pageLog = logDao.findLogEntryById(pageLogId);
+                    if (pageLog != null) {
+                        out.println(pageLog.getLogData());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new ServletException(e);
         }
     }
 
     private PSImportLogEntry getLatestLogEntry(List<PSImportLogEntry> logs)
     {
         PSImportLogEntry logEntry;
-        Collections.sort(logs, new Comparator<PSImportLogEntry>(){
-            @Override
-            public int compare(PSImportLogEntry log1, PSImportLogEntry log2)
-            {
-                return log1.getLogEntryDate().compareTo(log2.getLogEntryDate());
-            }
-        });
+        logs.sort((log1, log2) -> log1.getLogEntryDate().compareTo(log2.getLogEntryDate()));
         
         logEntry = logs.get(logs.size() - 1);
         return logEntry;
@@ -205,90 +192,90 @@ public class PSSiteImportLogViewer extends HttpServlet  {
      * Call doGet method
      * @author federicoromanelli
      * @throws IOException
-     */    
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
-        throws IOException
-    {
+     */
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException {
         doGet(req, resp);
     }
     
     /* Getters and Setters to inject spring dependencies */
-    private IPSImportLogDao logDao;
-    private IPSTemplateService templateService;
-    private IPSiteDao siteDao;
-    private IPSPageService pageService;
-    private IPSSiteManager siteMgr;
-    private IPSIdMapper idMapper;
-    private IPSFolderHelper folderHelper;
+    private static IPSImportLogDao logDao;
+    private static IPSTemplateService templateService;
+    private static IPSiteDao siteDao;
+    private static IPSPageService pageService;
+    private static IPSSiteManager siteMgr;
+    private static IPSIdMapper idMapper;
+    private static IPSFolderHelper folderHelper;
 
-    public IPSImportLogDao getLogDao()
+    public static IPSImportLogDao getLogDao()
     {
         return logDao;
     }
 
-    public void setLogDao(IPSImportLogDao logDao)
+    public static void setLogDao(IPSImportLogDao logDao)
     {
-        this.logDao = logDao;
+        PSSiteImportLogViewer.logDao = logDao;
     }
 
-    public IPSTemplateService getTemplateService()
+    public static IPSTemplateService getTemplateService()
     {
         return templateService;
     }
 
-    public void setTemplateService(IPSTemplateService templateService)
+    public static void setTemplateService(IPSTemplateService templateService)
     {
-        this.templateService = templateService;
+        PSSiteImportLogViewer.templateService = templateService;
     }
 
-    public IPSiteDao getSiteDao()
+    public static IPSiteDao getSiteDao()
     {
         return siteDao;
     }
 
-    public void setSiteDao(IPSiteDao siteDao)
+    public static void setSiteDao(IPSiteDao siteDao)
     {
-        this.siteDao = siteDao;
+        PSSiteImportLogViewer.siteDao = siteDao;
     }
 
-    public IPSPageService getPageService()
+    public static IPSPageService getPageService()
     {
         return pageService;
     }
 
-    public void setPageService(IPSPageService pageService)
+    public static void setPageService(IPSPageService pageService)
     {
-        this.pageService = pageService;
+        PSSiteImportLogViewer.pageService = pageService;
     }
 
-    public IPSSiteManager getSiteMgr()
+    public static IPSSiteManager getSiteMgr()
     {
         return siteMgr;
     }
 
-    public void setSiteMgr(IPSSiteManager siteMgr)
+    public static void setSiteMgr(IPSSiteManager siteMgr)
     {
-        this.siteMgr = siteMgr;
+        PSSiteImportLogViewer.siteMgr = siteMgr;
     }
 
-    public IPSIdMapper getIdMapper()
+    public static IPSIdMapper getIdMapper()
     {
         return idMapper;
     }
 
-    public void setIdMapper(IPSIdMapper idMapper)
+    public static void setIdMapper(IPSIdMapper idMapper)
     {
-        this.idMapper = idMapper;
+        PSSiteImportLogViewer.idMapper = idMapper;
     }
     
-    public void setFolderHelper(IPSFolderHelper folderHelper)
+    public static void setFolderHelper(IPSFolderHelper folderHelper)
     {
-        this.folderHelper = folderHelper;
+        PSSiteImportLogViewer.folderHelper = folderHelper;
     }
 
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteImportLogViewer.class);    
+    private static final Logger log = LogManager.getLogger(PSSiteImportLogViewer.class);
     
 }

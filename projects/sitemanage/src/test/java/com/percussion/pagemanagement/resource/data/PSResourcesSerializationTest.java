@@ -17,23 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.resource.data;
-
-import static java.util.Arrays.*;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
 
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFileResource;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSFolderResource;
 import com.percussion.share.dao.PSSerializerUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Test;
+
+import static java.util.Arrays.asList;
 
 public class PSResourcesSerializationTest
 {
@@ -63,6 +62,6 @@ public class PSResourcesSerializationTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSResourcesSerializationTest.class);
+    private static final Logger log = LogManager.getLogger(PSResourcesSerializationTest.class);
 
 }

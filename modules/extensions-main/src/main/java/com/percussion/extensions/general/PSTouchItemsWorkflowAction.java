@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.general;
-
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.extension.IPSWorkFlowContext;
 import com.percussion.extension.IPSWorkflowAction;
@@ -35,11 +33,13 @@ import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.touchitem.IPSTouchItemService;
 import com.percussion.services.touchitem.PSTouchItemLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Touches Active Assembly parent items and Managed Navigation items (navons)
@@ -52,7 +52,7 @@ import org.apache.log4j.Logger;
 public class PSTouchItemsWorkflowAction extends PSDefaultExtension implements IPSWorkflowAction
 {
 
-   private static Logger ms_logger = Logger.getLogger(PSTouchItemsWorkflowAction.class);
+   private static final Logger ms_logger = LogManager.getLogger(PSTouchItemsWorkflowAction.class);
    
    /**
     * perform the workflow action.
@@ -90,11 +90,11 @@ public class PSTouchItemsWorkflowAction extends PSDefaultExtension implements IP
       IPSRequestContext request) throws PSExtensionProcessingException
    {
       diagMessage(request,"Starting Workflow Action");
-      Integer contentId = new Integer(context.getContentID());
+      Integer contentId = context.getContentID();
 
       try
       {
-         Collection<Integer> cids = new ArrayList<Integer>();
+         Collection<Integer> cids = new ArrayList<>();
          cids.add(contentId);
          IPSPublisherService pub = PSPublisherServiceLocator.getPublisherService();
          pub.touchActiveAssemblyParents(cids);

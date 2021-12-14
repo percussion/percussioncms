@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,17 +26,15 @@ package com.percussion.sitemanage.importer.utils;
 
 import com.percussion.queue.impl.PSPageImportQueue;
 import com.percussion.server.PSRequest;
-import com.percussion.sitemanage.importer.utils.PSFileDownLoadJobRunner;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 
 
@@ -47,11 +45,11 @@ public class PSAsyncFileDownload
     // ================= Begin Main Class ==========================================
     private boolean m_complete = false;
 
-    private Log m_log = LogFactory.getLog(PSPageImportQueue.class);
+    private static final Logger m_log = LogManager.getLogger(PSPageImportQueue.class);
 
-    private List<PSPair<Boolean, String>> results = new ArrayList<PSPair<Boolean, String>>();
+    private List<PSPair<Boolean, String>> results = new ArrayList<>();
 
-    private List<PSFileDownloadJob> jobs = new ArrayList<PSFileDownloadJob>();
+    private List<PSFileDownloadJob> jobs = new ArrayList<>();
 
     private Integer MAX_THREADS = 6;
 
@@ -79,8 +77,8 @@ public class PSAsyncFileDownload
 
         this.setRequestInfo(this.m_requestMap);
         Iterator<PSFileDownloadJob> i = jobs.iterator();
-        ArrayList<PSFileDownLoadJobRunner> runningJobs = new ArrayList<PSFileDownLoadJobRunner>();
-        List<Thread> threads = new ArrayList<Thread>();
+        ArrayList<PSFileDownLoadJobRunner> runningJobs = new ArrayList<>();
+        List<Thread> threads = new ArrayList<>();
         while (i.hasNext())
         {
             if (runningJobs.size() < MAX_THREADS)
@@ -106,7 +104,7 @@ public class PSAsyncFileDownload
                         }
                         catch (InterruptedException e)
                         {
-                            
+                            Thread.currentThread().interrupt();
                         }
                     }
                     threads.clear();
@@ -124,7 +122,7 @@ public class PSAsyncFileDownload
             	try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
-					
+                    Thread.currentThread().interrupt();
 				}
             }
             

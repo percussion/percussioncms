@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,7 +38,8 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.util.PSStringTemplate;
 import com.percussion.utils.jdbc.PSConnectionDetail;
 import com.percussion.utils.jdbc.PSConnectionHelper;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import javax.naming.NamingException;
@@ -78,7 +79,7 @@ public class PSFixNavigation extends PSFixDBBase implements IPSFix
          "AND CONTENTID NOT IN (SELECT NAVID FROM {tablePrefix}.BROKEN_NAV_IDS_TEMP)");
          
          
-   static private Logger ms_log = Logger.getLogger(PSFixNavigation.class);
+    private static final Logger ms_log = LogManager.getLogger(PSFixNavigation.class);
 
    private final String BROKEN_NAV_IDS_TEMP = "BROKEN_NAV_IDS_TEMP";
    private PSStringTemplate ms_createTempTable = new PSStringTemplate("CREATE TABLE {tablePrefix}."+BROKEN_NAV_IDS_TEMP+" (navid int)");

@@ -152,7 +152,7 @@ public class RxSettingsModel extends RxIAModel
          
          //Get old connector ports for upgrade
          List<PSTomcatConnector> oldConnectors =
-            new ArrayList<PSTomcatConnector>();
+            new ArrayList<>();
          
          String rxNamingServicePort = findUniquePort();
          int rxNamingServicePortVal = 
@@ -379,5 +379,5 @@ public class RxSettingsModel extends RxIAModel
    /**
     * Occupied ports
     */
-   private TreeSet<Integer> m_occupiedPorts = new TreeSet<Integer>();
+   private TreeSet<Integer> m_occupiedPorts = new TreeSet<>();
 }

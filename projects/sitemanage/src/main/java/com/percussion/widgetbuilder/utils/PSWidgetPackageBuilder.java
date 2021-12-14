@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,6 +28,10 @@ import com.percussion.widgetbuilder.utils.xform.PSAclFileTransformer;
 import com.percussion.widgetbuilder.utils.xform.PSContentTypeFileTransformer;
 import com.percussion.widgetbuilder.utils.xform.PSControlManager;
 import com.percussion.widgetbuilder.utils.xform.PSResourceFileTransformer;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.Validate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,11 +45,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
-
 
 /**
  * Build a widget package from a supplied specification
@@ -58,7 +57,7 @@ public class PSWidgetPackageBuilder
     private static final String binExt = ".png";
     private static final String WIDGET_TEMPLATE_NAME = "percWidgetTemplate";
     
-    private List<IPSWidgetFileTransformer> xformList = new ArrayList<IPSWidgetFileTransformer>(); 
+    private List<IPSWidgetFileTransformer> xformList = new ArrayList<>();
     private File srcFile;
     private File tmpDir;
 

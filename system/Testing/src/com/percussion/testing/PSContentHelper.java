@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,7 +31,6 @@ import com.percussion.cms.objectstore.IPSFieldValue;
 import com.percussion.cms.objectstore.IPSRelationshipProcessor;
 import com.percussion.cms.objectstore.PSAaRelationship;
 import com.percussion.cms.objectstore.PSAaRelationshipList;
-import com.percussion.cms.objectstore.PSActiveAssemblyProcessorProxy;
 import com.percussion.cms.objectstore.PSComponentProcessorProxy;
 import com.percussion.cms.objectstore.PSComponentSummaries;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -44,7 +43,6 @@ import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.PSItemField;
 import com.percussion.cms.objectstore.PSKey;
 import com.percussion.cms.objectstore.PSProcessorProxy;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
 import com.percussion.cms.objectstore.PSSaveResults;
 import com.percussion.cms.objectstore.PSSlotType;
 import com.percussion.cms.objectstore.PSSlotTypeContentTypeVariant;
@@ -73,11 +71,15 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.webservices.PSContentDataHandler;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,11 +88,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Random;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * This class was created to provide functions that make it easy to create 
@@ -353,7 +350,7 @@ public class PSContentHelper implements IPSResultDocumentProcessor
          {
             //add items to folders randomly
             int folderCount = folders.size();
-            Random rgen = new Random();
+            SecureRandom rgen = new SecureRandom();
             Iterator items = dupeIds.iterator();
             while (items.hasNext())
             {
@@ -860,7 +857,7 @@ public class PSContentHelper implements IPSResultDocumentProcessor
    private static int[] randomizeFolderChildren(int parentCount, int childCount)
    {
       int[] results = new int[parentCount];
-      Random rgen = new Random();
+      SecureRandom rgen = new SecureRandom();
       for (int i=0; i < childCount; i++)
       {
          int val = rgen.nextInt(parentCount);

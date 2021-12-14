@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,17 +33,15 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.publisher.IPSContentListGenerator;
 import com.percussion.utils.jsr170.PSLongValue;
 import com.percussion.utils.types.PSPair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.jcr.Value;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.Value;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * The base generator class, used for more than one implementation.
@@ -55,7 +53,7 @@ public abstract class PSBaseGenerator implements IPSContentListGenerator
    /**
     * The logger
     */
-   protected static Log ms_log = LogFactory.getLog(PSBaseGenerator.class);
+   protected static Logger ms_log = LogManager.getLogger(PSBaseGenerator.class);
 
    /**
     * The cms service
@@ -77,8 +75,8 @@ public abstract class PSBaseGenerator implements IPSContentListGenerator
     */
    protected PSQueryResult createQueryResult()
    {
-      List<PSPair<String, Boolean>> fields = new ArrayList<PSPair<String, Boolean>>();
-      fields.add(new PSPair<String, Boolean>(
+      List<PSPair<String, Boolean>> fields = new ArrayList<>();
+      fields.add(new PSPair<>(
             IPSContentPropertyConstants.RX_SYS_CONTENTID, true));
       PSRowComparator comparator = new PSRowComparator(fields);
       String[] columns =
@@ -101,7 +99,7 @@ public abstract class PSBaseGenerator implements IPSContentListGenerator
    
    protected void addToResults(PSQueryResult qr, int contentid, int folderid)
    {
-      Map<String, Object> data = new HashMap<String, Object>();
+      Map<String, Object> data = new HashMap<>();
       Value idval = new PSLongValue(contentid);
       data.put(IPSContentPropertyConstants.RX_SYS_CONTENTID, idval);
       if (folderid != -1)

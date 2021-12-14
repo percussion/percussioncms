@@ -17,15 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.test.http;
 
-import com.percussion.util.PSInputStreamReader;
-import com.percussion.test.io.LogSink;
 import com.percussion.test.io.IOTools;
+import com.percussion.test.io.LogSink;
+import com.percussion.util.PSInputStreamReader;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -34,20 +34,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.Writer;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Encapsulates an HTTP GET or POST request and the results of the request.
@@ -402,7 +395,7 @@ public class HttpRequest
             }
             catch (InterruptedException ie)
             {
-               // ignore this and continue
+               Thread.currentThread().interrupt();
             }
          }
          catch (Throwable t)
@@ -487,7 +480,7 @@ public class HttpRequest
       m_sock = null;
    }
 
-   public void finalize() throws Throwable
+   protected void finalize() throws Throwable
    {
       disconnect();
       super.finalize();

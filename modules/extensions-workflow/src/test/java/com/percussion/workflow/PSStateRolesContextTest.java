@@ -17,13 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.workflow;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.testing.IntegrationTest;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.experimental.categories.Category;
 
 import java.sql.Connection;
@@ -37,6 +40,8 @@ import java.sql.SQLException;
 public class PSStateRolesContextTest extends PSAbstractWorkflowTest 
 {
 
+   private static final Logger log = LogManager.getLogger(PSStateRolesContextTest.class);
+
    public PSStateRolesContextTest (String[] args)
    {
       
@@ -45,7 +50,7 @@ public class PSStateRolesContextTest extends PSAbstractWorkflowTest
    public void ExecuteTest(Connection connection)
       throws PSWorkflowTestException
    {
-      System.out.println("Entering Method ExecuteTest");
+      log.info("Entering Method ExecuteTest");
       Exception except = null;
       String exceptionMessage = "";
       PSStateRolesContext context = null;
@@ -59,26 +64,30 @@ public class PSStateRolesContextTest extends PSAbstractWorkflowTest
                                            connection,
                                            stateID,
                                            assignmentType);
-         System.out.println("context = " + context);
+         log.info("context = {}", context);
       }
       catch (SQLException e) 
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "SQL exception: ";
          except = e;
       }
       catch (PSRoleException e) 
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          exceptionMessage = "Role exception";
          except = e;
       }
       catch(PSEntryNotFoundException e)
       {
-         System.out.println("State roles context not found.");
+         log.info("State roles context not found.");
          except = e;
       }
       finally 
       {
-         System.out.println("Exiting Method ExecuteTest");
+         log.info("Exiting Method ExecuteTest");
          if (null != except) 
          {
             throw new PSWorkflowTestException(exceptionMessage,

@@ -322,12 +322,12 @@
                 else if (opts.tooltipAxes == 'x') {
                     str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[0]);
                 }
-                else if (opts.tooltipAxes == 'y') {
+                else if (opts.tooltipAxes === 'y') {
                     str = $.jqplot.sprintf(opts.tooltipFormatString, neighbor.data[1]);
                 } 
             }
         }
-        if ($.isFunction(opts.tooltipContentEditor)) {
+        if ( typeof opts.tooltipContentEditor === "function") {
             // args str, seriesIndex, pointIndex are essential so the hook can look up
             // extra data for the point.
             str = opts.tooltipContentEditor(str, neighbor.seriesIndex, neighbor.pointIndex, plot);

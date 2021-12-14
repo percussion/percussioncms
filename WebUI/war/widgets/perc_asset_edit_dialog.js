@@ -18,7 +18,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -262,7 +262,7 @@
                             maximized=true;
                           });
        
-              $(window).resize(resizer);
+              $(window).trigger("resize",resizer);
             }
           });
 
@@ -287,7 +287,7 @@
         $.PercContentPreSubmitHandlers.clearHandlers();
 
         // Bind the frame load to execute different methods based on whether the frame is loaded initially or through form submit.
-        $("#edit-widget-content-frame").load(function()
+        $("#edit-widget-content-frame").on("load",function()
         {
             if(initialized == false){
                 initialized = true;
@@ -453,7 +453,7 @@
                     location.reload();
                   },
               function(data, textStatus){
-                    $("#edit-widget-content-frame").contents().find("#perc-content-form").submit();
+                    $("#edit-widget-content-frame").contents().find("#perc-content-form").trigger("submit");
               }
           );
 
@@ -476,6 +476,7 @@
       function onLaterFrameLoads() {
          if ($("#edit-widget-content-frame").contents().find("#perc-content-edit-errors").length > 0) {
             $.unblockUI();
+             $.PercDirtyController.setDirty(false);
             return;
          }
          var ediv = $("#edit-widget-content").get(0);
@@ -498,6 +499,7 @@
          } else {
             $.PercAssetService.updateAsset(parentId, assetid, function() {
                 reload_callback(assetid,producesResource);
+                $.PercDirtyController.setDirty(false);
                 $.unblockUI();
             });
          }

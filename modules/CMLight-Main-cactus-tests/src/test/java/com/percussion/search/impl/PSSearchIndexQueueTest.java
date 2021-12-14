@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,14 +28,13 @@ import com.percussion.search.IPSSearchIndexQueue;
 import com.percussion.search.PSSearchEditorChangeEvent;
 import com.percussion.search.PSSearchIndexQueueLocator;
 import com.percussion.search.data.PSSearchIndexQueueItem;
+import com.percussion.utils.testing.IntegrationTest;
+import org.apache.cactus.ServletTestCase;
+import org.junit.experimental.categories.Category;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.cactus.ServletTestCase;
-import org.junit.experimental.categories.Category;
 
 /**
  * Class description - Unit tests for the FTS Search Indexer
@@ -104,9 +103,7 @@ public class PSSearchIndexQueueTest extends ServletTestCase
    }
 
    /**
-    * Test method for {@link
-    * com.percussion.search.impl.PSSearchIndexQueue#deleteItems(Collection<
-    * Integer> queueIds) } .
+    * Test method for: .
     */
    public void fixme_testDeleteItems()
    {

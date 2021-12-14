@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,8 +27,8 @@ import com.percussion.soln.linkback.codec.LinkbackTokenCodec;
 import com.percussion.soln.linkback.codec.impl.StringLinkBackTokenImpl;
 import com.percussion.soln.linkback.utils.LinkbackUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -59,7 +59,7 @@ import static java.text.MessageFormat.format;
  */
 public class GenericLinkbackController extends AbstractController {
 
-    private static final Log log = LogFactory.getLog(GenericLinkbackController.class);
+    private static final Logger log = LogManager.getLogger(GenericLinkbackController.class);
 
     private String linkbackParameterName = LinkbackUtils.LINKBACK_PARAM_NAME;
 
@@ -71,11 +71,11 @@ public class GenericLinkbackController extends AbstractController {
 
     private LinkbackTokenCodec linkbackCodec = null;
 
-    private List<String> requiredParameterNames = new ArrayList<String>();
+    private List<String> requiredParameterNames = new ArrayList<>();
 
-    private List<String> optionalParameterNames = new ArrayList<String>();
+    private List<String> optionalParameterNames = new ArrayList<>();
 
-    private Map<String, String> additionalParameters = new HashMap<String, String>();
+    private Map<String, String> additionalParameters = new HashMap<>();
 
     /**
      * If linkback token is not blank, this method calls
@@ -84,11 +84,11 @@ public class GenericLinkbackController extends AbstractController {
      */
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
+             {
         initCodec();
 
         String linkbackToken = request.getParameter(linkbackParameterName);
-        log.debug("linkbackToken=" + linkbackToken);
+        log.debug("linkbackToken={}" , linkbackToken);
 
         if (linkbackToken == null) {
 
@@ -99,9 +99,8 @@ public class GenericLinkbackController extends AbstractController {
         }
 
         Map<String, String> params = linkbackCodec.decode(linkbackToken);
-        log.debug("map: " + params);
-        ModelAndView mav = handleLinkBackRedirect(params);
-        return mav;
+        log.debug("map: {}" , params);
+        return  handleLinkBackRedirect(params);
 
     }
 
@@ -110,12 +109,11 @@ public class GenericLinkbackController extends AbstractController {
      * model. Subclasses override this method to determine how the linkback
      * should be handled.
      * 
-     * @param params
-     *            map of parameter values
+     * @param tokenParams map of parameter values
      * @return ModelAndView
      */
     protected ModelAndView handleLinkBackRedirect(Map<String, String> tokenParams) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         if (!checkAndCopyRequiredParams(tokenParams, params)) {
             String message = "Required Parameter missing, required parameters are " + getRequiredParameterNames();
             return createErrorView(message);
@@ -124,7 +122,7 @@ public class GenericLinkbackController extends AbstractController {
         params.putAll(getAdditionalParameters());
         modifyParameterMap(params);
         String path = getRedirectPath();
-        log.debug("redirect path: " + path);
+        log.debug("redirect path: {}",  path);
         return new ModelAndView(new RedirectView(path, true), params);
     }
 

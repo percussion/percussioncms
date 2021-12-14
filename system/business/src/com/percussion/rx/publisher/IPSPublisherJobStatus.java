@@ -17,17 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher;
 
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * The public (read-only) interface to the job status. A job can be in a number

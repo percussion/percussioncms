@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,7 +34,6 @@ import antlr.TokenBuffer;
 import antlr.TokenStream;
 import antlr.TokenStreamException;
 import antlr.collections.impl.BitSet;
-
 import com.percussion.services.contentmgr.data.PSQuery;
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
@@ -45,10 +44,9 @@ import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeVariable;
 import com.percussion.utils.types.PSPair;
 
+import javax.jcr.query.Query;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.jcr.query.Query;
 
 public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
 {
@@ -89,7 +87,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
       IPSQueryNode w = null;
       List<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>> o = null;
       PSPair<PSQueryNodeIdentifier, String> eldata = null;
-      List<String> path = new ArrayList<String>();
+      List<String> path = new ArrayList<>();
       String pp = null;
       query = new PSQuery(Query.XPATH);
       List al = null;
@@ -396,7 +394,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
       Token prop = null;
 
       PSQueryNodeIdentifier type = null;
-      eldata = new PSPair<PSQueryNodeIdentifier, String>();
+      eldata = new PSPair<>();
 
       try
       { // for error handling
@@ -591,7 +589,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
       List<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>> solist;
 
       PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder> adef = null;
-      solist = new ArrayList<PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>>();
+      solist = new ArrayList<>();
 
       try
       { // for error handling
@@ -1294,7 +1292,7 @@ public class XpathParser extends antlr.LLkParser implements XpathTokenTypes
          if (inputState.guessing == 0)
          {
 
-            rval = new PSPair<PSQueryNodeIdentifier, PSQuery.SortOrder>(p, asc
+            rval = new PSPair<>(p, asc
                   ? PSQuery.SortOrder.ASC
                   : PSQuery.SortOrder.DSC);
 

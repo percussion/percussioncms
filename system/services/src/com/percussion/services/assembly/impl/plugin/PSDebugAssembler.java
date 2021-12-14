@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,13 +30,13 @@ import com.percussion.services.assembly.IPSAssembler;
 import com.percussion.services.assembly.IPSAssemblyErrors;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult;
+import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.assembly.IPSSlotContentFinder;
 import com.percussion.services.assembly.IPSTemplateSlot;
 import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
-import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.services.assembly.impl.PSAssemblyJexlEvaluator;
 import com.percussion.services.assembly.impl.PSAssemblyService;
 import com.percussion.services.contentmgr.IPSContentMgr;
@@ -47,19 +47,9 @@ import com.percussion.util.PSUrlUtils;
 import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.PSJexlEvaluator;
-
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicLong;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -72,10 +62,18 @@ import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 import javax.jcr.nodetype.PropertyDefinition;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * The debug assembler outputs text/html that has the input binding data,
@@ -93,7 +91,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
    /**
     * Logger for the debug assembler
     */
-   private static Log ms_log = LogFactory.getLog(PSDebugAssembler.class);
+   private static final Logger ms_log = LogManager.getLogger(PSDebugAssembler.class);
 
    /**
     * Counter used to create ids for the output document. The ids are used for
@@ -140,7 +138,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
     */
    public List<IPSAssemblyResult> assemble(List<IPSAssemblyItem> items)
    {
-      List<IPSAssemblyResult> results = new ArrayList<IPSAssemblyResult>();
+      List<IPSAssemblyResult> results = new ArrayList<>();
       for (IPSAssemblyItem item : items)
       {
          try
@@ -194,7 +192,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
       if (templ != null
             && item.getTemplate().getAssembler().endsWith("dispatchAssembler"))
       {
-         Map<String, String> params = new HashMap<String, String>();
+         Map<String, String> params = new HashMap<>();
          String template = templ.toString();
          params.put(IPSHtmlParameters.SYS_TEMPLATE, template);
          if (item.getFolderId() > 0)
@@ -396,9 +394,9 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
          try
          {
             List<IPSAssemblyItem> relitems = finder.find(item, slot,
-                  new HashMap<String, Object>());
+                  new HashMap<>());
             pw.println("<tr><th>Id</th><th>Title</th><th>Template</th></tr>");
-            List<IPSGuid> ids = new ArrayList<IPSGuid>();
+            List<IPSGuid> ids = new ArrayList<>();
             for (IPSAssemblyItem ritem : relitems)
             {
                ids.clear();
@@ -495,7 +493,7 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
       if (toggleprops)
          outputToggler(pw, "<b>Properties:</b>", true);
       PropertyIterator iter = node.getProperties();
-      Set<String> alphabetized = new TreeSet<String>();
+      Set<String> alphabetized = new TreeSet<>();
       while (iter.hasNext())
       {
          Property p = iter.nextProperty();

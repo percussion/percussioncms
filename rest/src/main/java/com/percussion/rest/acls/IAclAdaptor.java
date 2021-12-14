@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -36,7 +36,7 @@ public interface IAclAdaptor {
     UserAccessLevel getUserAccessLevel(Guid objectGuid);
     UserAccessLevel calculateUserAccessLevel(String aclGuid);
     Acl createAcl(Guid objGuid, TypedPrincipal owner);
-    AclList loadAcls(GuidList aclGuids)throws PSSecurityException;;
+    AclList loadAcls(GuidList aclGuids)throws PSSecurityException;
     Acl loadAcl(Guid aclGuid) throws PSSecurityException;
     AclList loadAclsForObjects(GuidList objectGuids);
     Acl loadAclForObject(Guid objectGuid);

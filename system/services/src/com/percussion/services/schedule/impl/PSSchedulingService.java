@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.schedule.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -34,8 +35,8 @@ import com.percussion.services.schedule.data.PSNotificationTemplate;
 import com.percussion.services.schedule.data.PSScheduledTask;
 import com.percussion.services.schedule.data.PSScheduledTaskLog;
 import com.percussion.utils.guid.IPSGuid;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -148,7 +149,7 @@ public class PSSchedulingService
    // see base
    public Collection<PSScheduledTask> findAllSchedules() throws PSSchedulingException
    {
-      final List<PSScheduledTask> schedules = new ArrayList<PSScheduledTask>();
+      final List<PSScheduledTask> schedules = new ArrayList<>();
       try
       {
          
@@ -234,8 +235,10 @@ public class PSSchedulingService
          PSTaskAdapter.runJob(schedule,m_scheduler,true);
 
       } catch (SchedulerException e) {
-         ms_log.error("An unexpected error occurred while running job: " + schedule.getName() + " Error:" + e.getLocalizedMessage());
-         ms_log.debug(e);
+         ms_log.error("An unexpected error occurred while running job: {} Error: {}",
+                 schedule.getName(),
+                 PSExceptionUtils.getMessageForLog(e));
+         ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
 
    }
@@ -424,7 +427,7 @@ public class PSSchedulingService
    @Transactional(readOnly = true, noRollbackFor = Exception.class)
    public Set<String> findAllNotificationTemplatesNames()
    {
-      final Set<String> labels = new HashSet<String>(); 
+      final Set<String> labels = new HashSet<>();
       for (PSNotificationTemplate n : findAllNotificationTemplates())
       {
          labels.add(n.getName());
@@ -595,7 +598,7 @@ public class PSSchedulingService
          
          List<Object[]> results = c.list();
          
-         List<PSScheduledTaskLog> retval = new ArrayList<PSScheduledTaskLog>();
+         List<PSScheduledTaskLog> retval = new ArrayList<>();
          for (Object[] props : results)
          {
             retval.add(getScheduledTask(props));
@@ -688,5 +691,5 @@ public class PSSchedulingService
    /**
     * The logger for this class.
     */
-   private final static Log ms_log = LogFactory.getLog(PSSchedulingService.class);   
+   private static final Logger ms_log = LogManager.getLogger(PSSchedulingService.class);   
 }

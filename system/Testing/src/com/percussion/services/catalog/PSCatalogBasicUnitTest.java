@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,16 +25,16 @@ package com.percussion.services.catalog;
 
 import com.percussion.services.assembly.IPSAssemblyService;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.PSFilterServiceLocator;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
-
-import java.util.List;
-
 import com.percussion.utils.testing.IntegrationTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -60,27 +60,23 @@ public class PSCatalogBasicUnitTest
          .getPublisherService();
 
    @Test
-   public void testAssemblyEnumeration() throws PSCatalogException
-   {
+   public void testAssemblyEnumeration() throws PSCatalogException, PSNotFoundException {
       doEnumerationTest(asm);
    }
 
    @Test
-   public void testFilterEnumeration() throws PSCatalogException
-   {
+   public void testFilterEnumeration() throws PSCatalogException, PSNotFoundException {
       doEnumerationTest(fsvc);
    }
 
    @Test
-   public void testPublisherEnumeration() throws PSCatalogException
-   {
+   public void testPublisherEnumeration() throws PSCatalogException, PSNotFoundException {
       doEnumerationTest(psvc);
    }
 
-   private void doEnumerationTest(IPSCataloger cat) throws PSCatalogException
-   {
+   private void doEnumerationTest(IPSCataloger cat) throws PSCatalogException, PSNotFoundException {
       // Check getTypes
-      PSTypeEnum types[] = cat.getTypes();
+      PSTypeEnum[] types = cat.getTypes();
       
       assertNotNull(types);
       assertTrue(types.length >= 1);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -211,7 +211,7 @@ public class PSCatalogResultColumn implements IPSDeployComponent
          throw new IllegalArgumentException("sourceNode may not be null");
          
       //make sure we got the correct root node tag
-      if (false == XML_NODE_NAME.equals (sourceNode.getNodeName()))
+      if (!XML_NODE_NAME.equals(sourceNode.getNodeName()))
       {
          Object[] args = { XML_NODE_NAME, sourceNode.getNodeName() };
          throw new PSUnknownNodeTypeException(
@@ -393,7 +393,7 @@ public class PSCatalogResultColumn implements IPSDeployComponent
     * #TYPE_NUMERIC numeric}, {@link #TYPE_DATE date} and {@link #TYPE_BOOL 
     * boolean} for the corresponding supported object types(classes).
     */
-   private static Map<Class, Integer> ms_typeObjects = new HashMap<Class, Integer>();
+   private static Map<Class, Integer> ms_typeObjects = new HashMap<>();
    static
    {      
       ms_typeObjects.put(String.class,  PSCatalogResultColumn.TYPE_TEXT);

@@ -17,15 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.dao.impl;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.share.dao.IPSContentItemDao;
@@ -33,13 +29,17 @@ import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.dao.impl.PSContentItem;
 import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
 
 
 public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> implements IPSGenericDao<T, String>
@@ -58,7 +58,7 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     protected abstract void convertToItem(T page, PSContentItem contentItem);
     
     protected void postItemSave(@SuppressWarnings("unused") T object, 
-            @SuppressWarnings("unused") PSContentItem contentItem) {
+            @SuppressWarnings("unused") PSContentItem contentItem) throws SaveException, LoadException {
     }
 
     public PSAbstractContentItemDao(IPSContentItemDao contentItemDao, IPSIdMapper idMapper)
@@ -73,19 +73,17 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         return contentItemDao;
     }
 
-    @Override
-    public void delete(String id) throws com.percussion.share.dao.IPSGenericDao.DeleteException
-    {
+
+    public void delete(String id) throws PSDataServiceException {
         find(id);
         contentItemDao.delete(id);
     }
 
-    @Override
-    public List<T> findAll() throws LoadException
+    public List<T> findAll() throws PSDataServiceException
     {
         
         Collection<Integer> ids = getContentItemDao().findAllItemIdsByType(getType());
-        List<T> results = new ArrayList<T>();
+        List<T> results = new ArrayList<>();
         for (Integer id : ids)
         {
             PSLegacyGuid guid = new PSLegacyGuid(id, -1);
@@ -95,16 +93,14 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         return results;
     }
 
-    @Override
-    public T find(String id) throws com.percussion.share.dao.IPSGenericDao.LoadException
+    public T find(String id) throws PSDataServiceException
     {
         notNull(id, "id");
         PSContentItem contentItem = contentItemDao.find(id);
-        if (contentItem == null) return null;
+        if (contentItem == null) {return null;}
         
         if ( ! getType().equals(contentItem.getType()) ) {
-            log.debug("Item is not of template type");
-            return null;
+           throw new LoadException("Type does not match!");
         }
         
         return getObjectFromContentItem(contentItem);
@@ -131,9 +127,8 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         return object;        
     }
 
-    @Override
-    public T save(T object) throws com.percussion.share.dao.IPSGenericDao.SaveException
-    {
+
+    public T save(T object) throws PSDataServiceException {
         PSContentItem item = new PSContentItem();
         item.setId(object.getId());
         item.setType(getType());
@@ -149,14 +144,15 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
     
     protected String getFolderPath(PSContentItem contentItem) {
         List<String> paths = contentItem.getFolderPaths();
-        if (paths != null && ! paths.isEmpty()) return paths.get(0);
+        if (paths != null && ! paths.isEmpty()){ return paths.get(0);}
         return null;
     }
     
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSAbstractContentItemDao.class);
+
+    private static final Logger log = LogManager.getLogger(PSAbstractContentItemDao.class);
     
 
 }

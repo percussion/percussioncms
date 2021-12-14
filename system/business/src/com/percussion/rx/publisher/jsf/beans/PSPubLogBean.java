@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -31,17 +31,16 @@ import com.percussion.services.publisher.IPSPubItemStatus;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.services.publisher.data.PSSortCriterion;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.myfaces.trinidad.model.CollectionModel;
+import org.apache.myfaces.trinidad.model.SortCriterion;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.trinidad.model.CollectionModel;
-import org.apache.myfaces.trinidad.model.SortCriterion;
 
 /**
  * Maintain the information to scroll through a list of log items. 
@@ -54,7 +53,7 @@ public class PSPubLogBean extends CollectionModel
    /**
     * Logger
     */
-   private static Log ms_log = LogFactory.getLog(PSPubLogBean.class);
+   private static final Logger ms_log = LogManager.getLogger(PSPubLogBean.class);
 
    /**
     * Holds the current job id.
@@ -125,7 +124,7 @@ public class PSPubLogBean extends CollectionModel
          throw new IllegalArgumentException("runtimeNavigation may not be null");
       }
       
-      m_sortCriteria = new ArrayList<SortCriterion>();
+      m_sortCriteria = new ArrayList<>();
       m_sortCriteria.add(new SortCriterion("referenceId", true));
       m_runtimeNavigation = runtimeNavigation;
    }
@@ -285,7 +284,7 @@ public class PSPubLogBean extends CollectionModel
    {
       IPSPublisherService psvc = PSPublisherServiceLocator
             .getPublisherService();
-      List<PSSortCriterion> sortCrit = new ArrayList<PSSortCriterion>();
+      List<PSSortCriterion> sortCrit = new ArrayList<>();
       for (SortCriterion criteria : getSortCriteria())
       {
          sortCrit.add(new PSSortCriterion(criteria.getProperty(), criteria.isAscending()));
@@ -315,12 +314,12 @@ public class PSPubLogBean extends CollectionModel
 
       m_currRange.mi_entries = new PSPubItemEntry[m_currRange.mi_endRow
             - m_currRange.mi_startRow + 1];
-      List<Long> refs = new ArrayList<Long>();
+      List<Long> refs = new ArrayList<>();
       for (int j=m_currRange.mi_startRow; j<=m_currRange.mi_endRow; j++)
       {
          refs.add(m_refIds[j]);
       }
-      Map<Long, IPSPubItemStatus> idMap = new HashMap<Long, IPSPubItemStatus>();
+      Map<Long, IPSPubItemStatus> idMap = new HashMap<>();
       for (IPSPubItemStatus entry : psvc.findPubItemStatusForReferenceIds(refs))
       {
          idMap.put(entry.getReferenceId(), entry);

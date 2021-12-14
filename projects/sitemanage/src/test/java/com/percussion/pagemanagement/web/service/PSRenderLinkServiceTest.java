@@ -17,11 +17,26 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.web.service;
+
+import com.percussion.assetmanagement.data.PSAsset;
+import com.percussion.pagemanagement.data.PSInlineLinkRequest;
+import com.percussion.pagemanagement.data.PSRenderLink;
+import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
+import com.percussion.share.test.PSRestTestCase;
+import com.percussion.share.test.PSTestUtils;
+import com.percussion.utils.testing.IntegrationTest;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.io.InputStream;
 
 import static com.percussion.share.test.PSMatchers.containsRegEx;
 import static java.util.Arrays.asList;
@@ -31,25 +46,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-
-import com.percussion.assetmanagement.data.PSAsset;
-import com.percussion.pagemanagement.data.PSInlineLinkRequest;
-import com.percussion.pagemanagement.data.PSRenderLink;
-import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
-import com.percussion.share.test.PSRestTestCase;
-import com.percussion.share.test.PSTestUtils;
-
-import java.io.InputStream;
-
-import com.percussion.utils.testing.IntegrationTest;
-import net.sf.oval.constraint.AssertFalse;
-import net.sf.oval.constraint.AssertTrue;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
 
 /**
  * Tests generating links.

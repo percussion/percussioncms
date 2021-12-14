@@ -136,6 +136,11 @@
             <AppenderRef ref="FILE"/>
         </AsyncLogger>
 
+        <AsyncLogger name="com.zaxxer.hikari" level="ERROR" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
         <AsyncLogger name="com.percussion" level="info" includeLocation="true" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="FILE"/>
@@ -163,6 +168,11 @@
             <AppenderRef ref="VELOCITY"/>
         </AsyncLogger>
 
+        <AsyncLogger name="velocity" level="info" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="VELOCITY"/>
+        </AsyncLogger>
+
         <AsyncLogger name="com.percussion.services.assembly.impl.plugin.PSVelocityAssembler" level="info" includeLocation="true" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="VELOCITY"/>
@@ -176,6 +186,12 @@
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="FILE"/>
         </AsyncLogger>
+
+        <AsyncLogger name="org.apache.shindig" level="off" includeLocation="true" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+        </AsyncLogger>
+
        <!-- <AsyncLogger name="com.percussion.rx.delivery" level="DEBUG" includeLocation="true">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="FILE"/>

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,8 +52,8 @@ import com.percussion.webservices.ui.IPSUiDesignWs;
 import com.percussion.webservices.ui.PSUiWsLocator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -85,7 +85,7 @@ public class PSTemplateActionMenuHelper {
         IPSCmsObjectMgr objMgr = PSCmsObjectMgrLocator.getObjectManager();
         Set<Long> contentType = objMgr.findContentTypesForIds(Collections.singletonList(contentId));
         PSGuid typeGuid = new PSGuid(PSTypeEnum.NODEDEF, contentType.iterator().next());
-        List<PSActionMenu> structuredActions = new ArrayList<PSActionMenu>();
+        List<PSActionMenu> structuredActions = new ArrayList<>();
 
         // Find all templates assigned to content type
         IPSAssemblyService asm = PSAssemblyServiceLocator.getAssemblyService();
@@ -101,7 +101,7 @@ public class PSTemplateActionMenuHelper {
             IPSSecurityWs sec = PSSecurityWsLocator.getSecurityWebservice();
 
             @SuppressWarnings("unchecked")
-            List<IPSGuid> templateGuids = new ArrayList<IPSGuid>(CollectionUtils.collect(templates, new Transformer() {
+            List<IPSGuid> templateGuids = new ArrayList<>(CollectionUtils.collect(templates, new Transformer() {
                 public Object transform(Object input) {
                     return ((IPSAssemblyTemplate) input).getGUID();
                 }
@@ -109,7 +109,7 @@ public class PSTemplateActionMenuHelper {
 
             List<IPSGuid> filtered = sec.filterByRuntimeVisibility(templateGuids);
 
-            Map<String, List<PSActionMenu>> folderActions = new HashMap<String, List<PSActionMenu>>();
+            Map<String, List<PSActionMenu>> folderActions = new HashMap<>();
             String templatesGrouping = PSServer.getProperty(SERVER_PROP_GROUP_TEMPLATES);
             boolean structure = false;
             if (templatesGrouping != null)
@@ -142,7 +142,7 @@ public class PSTemplateActionMenuHelper {
                             }
                             List<PSActionMenu> pathItems = folderActions.get(path);
                             if (pathItems == null) {
-                                pathItems = new ArrayList<PSActionMenu>();
+                                pathItems = new ArrayList<>();
                                 folderActions.put(path, pathItems);
                             }
                             pathItems.add(action);
@@ -174,7 +174,7 @@ public class PSTemplateActionMenuHelper {
         String community = session.getUserCurrentCommunity();
         Collection<IPSGuid> visibleTemplates = svc.findObjectsVisibleToCommunities(Collections.singletonList(community),
                 PSTypeEnum.TEMPLATE);
-        List<IPSGuid> filteredRet = new ArrayList<IPSGuid>(CollectionUtils.intersection(visibleTemplates, filtered));
+        List<IPSGuid> filteredRet = new ArrayList<>(CollectionUtils.intersection(visibleTemplates, filtered));
         return filteredRet;
     }
 
@@ -185,7 +185,7 @@ public class PSTemplateActionMenuHelper {
         String skipFolders = PSServer.getProperty(SERVER_PROP_SKIP_FOLDERS);
         if (skipFolders != null)
             alwaysShowSubmenu = skipFolders.trim().equalsIgnoreCase("false");
-        List<PSActionMenu> retList = new ArrayList<PSActionMenu>();
+        List<PSActionMenu> retList = new ArrayList<>();
 
         List<PSActionMenu> thisLevelActions = folderActions.get("");
         // add all without any further path
@@ -195,7 +195,7 @@ public class PSTemplateActionMenuHelper {
             alwaysShowSubmenu = (thisLevelActions.size() > 0);
         }
         // split out the first part of the path
-        Map<String, List<String>> pathSplit = new HashMap<String, List<String>>();
+        Map<String, List<String>> pathSplit = new HashMap<>();
         for (String path : folderActions.keySet())
         {
             if (path.length() > 0)
@@ -215,7 +215,7 @@ public class PSTemplateActionMenuHelper {
                 List<String> rights = pathSplit.get(left);
                 if (rights == null)
                 {
-                    rights = new ArrayList<String>();
+                    rights = new ArrayList<>();
                     pathSplit.put(left, rights);
                 }
                 rights.add(right);
@@ -228,7 +228,7 @@ public class PSTemplateActionMenuHelper {
         for (String folder : folders)
         {
 
-            Map<String, List<PSActionMenu>> submenuActions = new HashMap<String, List<PSActionMenu>>();
+            Map<String, List<PSActionMenu>> submenuActions = new HashMap<>();
             // create a modified action map stripping off the first part of the
             // path
             for (String right : pathSplit.get(folder))
@@ -282,7 +282,7 @@ public class PSTemplateActionMenuHelper {
 
         String il8nLabel = PSI18nUtils.getString(PSI18nUtils.makeLookupKey(list), lang);
 
-        HashMap<String, Object> paramMap = new HashMap<String, Object>();
+        HashMap<String, Object> paramMap = new HashMap<>();
 
         String sourceUrl = "../assembler/render";
 
@@ -391,7 +391,7 @@ public class PSTemplateActionMenuHelper {
     private static List<String> ms_removeParamsList = Collections.unmodifiableList(Arrays.asList("targetStyle",
             "pssessionid", "target", "launchesWindow", "refreshHint"));
 
-    private static Log ms_log = LogFactory.getLog(PSTemplateActionMenuHelper.class);
+    private static final Logger ms_log = LogManager.getLogger(PSTemplateActionMenuHelper.class);
 
     private static PSTemplateActionMenuHelper instance;
 

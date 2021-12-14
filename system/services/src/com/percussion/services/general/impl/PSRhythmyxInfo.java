@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -114,5 +114,5 @@ public class PSRhythmyxInfo implements IPSRhythmyxInfo
    /**
     * Map of the Rhythmyx information properties. Access must be synchronized.
     */
-   private Map<Key, Object> m_propMap = new HashMap<Key, Object>();
+   private Map<Key, Object> m_propMap = new HashMap<>();
 }

@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.touchitem.impl;
-
-import static java.util.Arrays.asList;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSKey;
@@ -42,6 +40,8 @@ import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.utils.exceptions.PSORMException;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.log4j.Logger;
+import static java.util.Arrays.asList;
 
 /**
  * This is touch parent code that used to be
@@ -94,7 +94,7 @@ public final class PSTouchParentHelper
       Set<Integer> processedIds = (Set<Integer>) request.getPrivateObject(PROCESSED_DEPENDENTS);
       if (processedIds == null)
       {
-         processedIds = new HashSet<Integer>();
+         processedIds = new HashSet<>();
          request.setPrivateObject(PROCESSED_DEPENDENTS, processedIds);
       }
       AtomicInteger counter = new AtomicInteger(0);
@@ -151,7 +151,7 @@ public final class PSTouchParentHelper
             PSRelationshipConfig.TYPE_FOLDER_CONTENT, locator);
 
       int counter = 0;
-      Set<Integer> ids = new HashSet<Integer>();
+      Set<Integer> ids = new HashSet<>();
       Integer id;
       // process a group (1000 items) at a time
       for (int i = 0; i < locators.length; i++)
@@ -195,7 +195,7 @@ public final class PSTouchParentHelper
       if (ms_logger.isDebugEnabled()) {
          ms_logger.debug("Touching items and their parents: " + ids + " processed: " + processedIds);
       }
-      List<ItemId> items = new ArrayList<ItemId>();
+      List<ItemId> items = new ArrayList<>();
       for (Integer id : ids) {
          if (processedIds.contains(id)) continue;
          items.add(new ItemId(id));
@@ -208,7 +208,7 @@ public final class PSTouchParentHelper
       {
          throw new RuntimeException(e);
       }
-      ids = new ArrayList<Integer>();
+      ids = new ArrayList<>();
       for (ItemId i : items) {
          ids.add(i.getContentId());
       }
@@ -277,7 +277,7 @@ public final class PSTouchParentHelper
    /**
     * The singleton instance logger used by this class.
     */
-   final private static Logger ms_logger = Logger
+   private static final  Logger ms_logger = LogManager
          .getLogger(PSTouchParentHelper.class);
 
 

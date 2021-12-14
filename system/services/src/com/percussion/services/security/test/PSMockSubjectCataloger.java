@@ -17,31 +17,29 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.test;
 
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.security.IPSPrincipalAttribute;
+import com.percussion.security.IPSPrincipalAttribute.PrincipalAttributes;
+import com.percussion.security.IPSSubjectCataloger;
+import com.percussion.security.IPSTypedPrincipal;
+import com.percussion.security.PSSecurityCatalogException;
 import com.percussion.services.security.PSJaasUtils;
 import com.percussion.services.security.PSPrincipalAttribute;
 import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.utils.tools.PSPatternMatcher;
-import com.percussion.utils.security.IPSPrincipalAttribute;
-import com.percussion.utils.security.IPSPrincipalAttribute.PrincipalAttributes;
-import com.percussion.utils.security.IPSSubjectCataloger;
-import com.percussion.utils.security.IPSTypedPrincipal;
-import com.percussion.utils.security.PSSecurityCatalogException;
+import org.apache.commons.lang.StringUtils;
 
+import javax.security.auth.Subject;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import javax.security.auth.Subject;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Mock implementation of the {@link IPSSubjectCataloger} for testing purposes.
@@ -81,7 +79,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    
    static
    {
-      List<String> allUsers = new ArrayList<String>();
+      List<String> allUsers = new ArrayList<>();
       for (int i = 0; i < GROUPMEMBERS.length; i++)
       {
          for (int j = 0; j < GROUPMEMBERS[i].length; j++)
@@ -94,7 +92,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
    
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getName()
+    * @see com.percussion.security.IPSSubjectCataloger#getName()
     */
    public String getName()
    {
@@ -102,7 +100,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#setName(String)
+    * @see com.percussion.security.IPSSubjectCataloger#setName(String)
     */
    public void setName(String name)
    {
@@ -113,7 +111,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getDescription()
+    * @see com.percussion.security.IPSSubjectCataloger#getDescription()
     */
    public String getDescription()
    {
@@ -135,7 +133,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    public List<Subject> findUsers(List<String> names)
       throws PSSecurityCatalogException
    {
-      List<Subject> results = new ArrayList<Subject>();
+      List<Subject> results = new ArrayList<>();
       
       Boolean[] matches = new Boolean[ALLUSERS.length];
       boolean allMatch = false;
@@ -166,7 +164,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
             Subject sub = createSubject(ALLUSERS[i]);
             
             // add email attribute
-            List<String> values = new ArrayList<String>();
+            List<String> values = new ArrayList<>();
             String addr;
             if (m_emailAddress != null)
                addr = "\"" + ALLUSERS[i] + "\"<" + m_emailAddress + ">";
@@ -198,7 +196,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }   
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#supportsGroups()
+    * @see com.percussion.security.IPSSubjectCataloger#supportsGroups()
     */
    public boolean supportsGroups()
    {
@@ -231,13 +229,13 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#findGroups(java.lang.String)
+    * @see com.percussion.security.IPSSubjectCataloger#findGroups(java.lang.String)
     */
    @SuppressWarnings("unused")
    public List<Principal> findGroups(String pattern)
       throws PSSecurityCatalogException
    {
-      List<Principal> results = new ArrayList<Principal>();
+      List<Principal> results = new ArrayList<>();
       if (!m_supportsGroups)
          return results;
       
@@ -269,7 +267,7 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getGroupMembers(java.util.List)
+    * @see com.percussion.security.IPSSubjectCataloger#getGroupMembers(java.util.List)
     */
    public List<IPSTypedPrincipal> getGroupMembers(
       Collection<? extends Principal> groups)
@@ -277,12 +275,12 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
       if (groups == null)
          throw new IllegalArgumentException("groups may not be null");
       
-      List<IPSTypedPrincipal> results = new ArrayList<IPSTypedPrincipal>();
+      List<IPSTypedPrincipal> results = new ArrayList<>();
       if (!m_supportsGroups)
          return results;
       
       // copy list for removing during traversal
-      List<Principal> testGroups = new ArrayList<Principal>(groups);
+      List<Principal> testGroups = new ArrayList<>(groups);
       for (Principal group : testGroups)
       {
          for (int i = 0; i < GROUPS.length; i++)
@@ -304,14 +302,14 @@ public class PSMockSubjectCataloger implements IPSSubjectCataloger
    }
 
    /* (non-Javadoc)
-    * @see com.percussion.utils.security.IPSSubjectCataloger#getUserGroups(java.security.Principal)
+    * @see com.percussion.security.IPSSubjectCataloger#getUserGroups(java.security.Principal)
     */
    public List<Principal> getUserGroups(Principal user)
    {
       if (user == null)
          throw new IllegalArgumentException("user may not be null");
       
-      List<Principal> results = new ArrayList<Principal>();
+      List<Principal> results = new ArrayList<>();
       if (!m_supportsGroups)
          return results;
       

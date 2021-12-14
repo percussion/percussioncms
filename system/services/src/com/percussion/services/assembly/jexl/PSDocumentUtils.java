@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,7 +37,17 @@ import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.string.PSStringUtils;
 import com.percussion.utils.timing.PSStopwatchStack;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.BasicScheme;
+import org.apache.commons.httpclient.cookie.CookiePolicy;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
+import javax.servlet.ServletException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,18 +58,7 @@ import java.net.MalformedURLException;
 import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-
-import javax.servlet.ServletException;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.BasicScheme;
-import org.apache.commons.httpclient.cookie.CookiePolicy;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utilities to make document requests from a velocity macro
@@ -216,7 +215,7 @@ public class PSDocumentUtils extends PSJexlUtilBase
    private String getExternalDocument(String url, String user, String password) throws UnknownHostException, MalformedURLException, IOException, HttpException
    {
       HttpClient client = new HttpClient();
-      client.getState().setCookiePolicy(CookiePolicy.COMPATIBILITY);
+      client.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
 
       HttpMethod method = new GetMethod(url);
       if (user != null && password != null)
@@ -258,36 +257,37 @@ public class PSDocumentUtils extends PSJexlUtilBase
    {@IPSJexlParam(name = "resultData", description = "the original result data, assumed not null")})
    public String extractBody(IPSAssemblyResult rval) throws IOException
    {
+
       PSStopwatchStack sws = PSStopwatchStack.getStack();
-      sws.start(getClass().getCanonicalName() + "#extractBody");
-      try
-      {
-         if (rval == null)
-         {
+      try {
+         sws.start(getClass().getCanonicalName() + "#extractBody");
+
+         if (rval == null) {
             throw new IllegalArgumentException("rval may not be null");
          }
-         StringWriter w = new StringWriter();
-         InputStream stream = new ByteArrayInputStream(rval.getResultData());
-         PSHtmlBodyInputStream bodyInputStream = new PSHtmlBodyInputStream(
-               stream);
-         Charset cset = PSStringUtils
-               .getCharsetFromMimeType(rval.getMimeType());
-         String input = new String(rval.getResultData(), cset.name());
-         if (!input.toLowerCase().contains("<body"))
-            return input;
-         else
-         {
-            Reader r = new InputStreamReader(bodyInputStream, cset);
-            char buf[] = new char[65536];
-            while (true)
-            {
-               int count = r.read(buf);
-               if (count <= 0)
-                  break;
-               w.write(buf, 0, count);
+         try (StringWriter w = new StringWriter()) {
+            try (InputStream stream = new ByteArrayInputStream(rval.getResultData())) {
+               try (PSHtmlBodyInputStream bodyInputStream = new PSHtmlBodyInputStream(
+                       stream)) {
+                  Charset cset = PSStringUtils
+                          .getCharsetFromMimeType(rval.getMimeType());
+                  String input = new String(rval.getResultData(), cset.name());
+                  if (!input.toLowerCase().contains("<body"))
+                     return input;
+                  else {
+                     try (Reader r = new InputStreamReader(bodyInputStream, cset)) {
+                        char buf[] = new char[65536];
+                        while (true) {
+                           int count = r.read(buf);
+                           if (count <= 0)
+                              break;
+                           w.write(buf, 0, count);
+                        }
+                        return w.toString();
+                     }
+                  }
+               }
             }
-            w.close();
-            return w.toString();
          }
       }
       finally
@@ -319,20 +319,20 @@ public class PSDocumentUtils extends PSJexlUtilBase
          {
             StringWriter w = new StringWriter();
             InputStream stream = new ByteArrayInputStream(
-                  input.getBytes("UTF8"));
+                  input.getBytes(StandardCharsets.UTF_8));
             PSHtmlBodyInputStream bodyInputStream = new PSHtmlBodyInputStream(
                   stream);
-            Reader r = new InputStreamReader(bodyInputStream, "UTF8");
-            char buf[] = new char[65536];
-            while (true)
-            {
-               int count = r.read(buf);
-               if (count <= 0)
-                  break;
-               w.write(buf, 0, count);
+            try(Reader r = new InputStreamReader(bodyInputStream, StandardCharsets.UTF_8)) {
+               char[] buf = new char[65536];
+               while (true) {
+                  int count = r.read(buf);
+                  if (count <= 0)
+                     break;
+                  w.write(buf, 0, count);
+               }
+               w.close();
+               return w.toString();
             }
-            w.close();
-            return w.toString();
          }
       }
       finally

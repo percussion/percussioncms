@@ -17,31 +17,28 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.parser;
 
-import static org.apache.commons.lang.Validate.*;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Stack;
-
+import com.percussion.pagemanagement.data.PSAbstractRegion;
+import com.percussion.pagemanagement.data.PSRegionCode;
+import com.percussion.pagemanagement.parser.IPSRegionParser.IPSRegionParserRegionFactory;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 import net.htmlparser.jericho.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Stack;
 
-import com.percussion.pagemanagement.data.PSAbstractRegion;
-import com.percussion.pagemanagement.data.PSRegionCode;
-import com.percussion.pagemanagement.data.PSRegionNode;
-import com.percussion.pagemanagement.parser.IPSRegionParser.IPSRegionParserRegionFactory;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Walks the HTML Tree pulling out regions and code transforming
@@ -87,8 +84,8 @@ public class PSRegionParser<REGION extends PSAbstractRegion, CODE extends PSRegi
     public PSParsedRegionTree<REGION, CODE> parse(String text) {
         Source src = new Source(text);
         Iterator<Segment> it = src.iterator();
-        Stack<RegionToken> regionStack = new Stack<RegionToken>();
-        PSParsedRegionTree<REGION, CODE> tree = new PSParsedRegionTree<REGION, CODE>(regionFactory);
+        Stack<RegionToken> regionStack = new Stack<>();
+        PSParsedRegionTree<REGION, CODE> tree = new PSParsedRegionTree<>(regionFactory);
         REGION root = tree.getRootNode();
         RegionToken rootToken = new RegionToken(null, root);
         regionStack.push(rootToken);
@@ -101,8 +98,9 @@ public class PSRegionParser<REGION extends PSAbstractRegion, CODE extends PSRegi
             Element element = regionStack.peek().element;
             REGION current = regionStack.peek().region;
             Segment seg = it.next();
-            if (current.getChildren() == null)
-                current.setChildren(new ArrayList<PSRegionNode>());
+            if (current.getChildren() == null) {
+                current.setChildren(new ArrayList<>());
+            }
             /*
              * Start of a Region ?
              */
@@ -114,8 +112,9 @@ public class PSRegionParser<REGION extends PSAbstractRegion, CODE extends PSRegi
                 current.getChildren().add(r);
                 tree.getRegions().put(r.getRegionId(), r);
                 RegionToken rt = new RegionToken(e,r);
-                if (e.getEndTag() != null) // FINDBUGS: NC - 1-16-16 - Removed ;
+                if (e.getEndTag() != null) { // FINDBUGS: NC - 1-16-16 - Removed ;
                     regionStack.push(rt);
+                }
             }
             /*
              * End of a region ?
@@ -168,8 +167,9 @@ public class PSRegionParser<REGION extends PSAbstractRegion, CODE extends PSRegi
     
     private REGION createRegion(Element elem)
     {
-        if (elem == null)
+        if (elem == null) {
             throw new IllegalArgumentException("elem may not be null");
+        }
         String regionId = elem.getAttributeValue(REGION_ID_ATTR);
         notNull(regionId);
         REGION region = regionFactory.createRegion(regionId);
@@ -202,5 +202,6 @@ public class PSRegionParser<REGION extends PSAbstractRegion, CODE extends PSRegi
     /**
      * Logger for this class.
      */
-    public static Log ms_log = LogFactory.getLog(PSRegionParser.class);
+
+    private static final Logger ms_log = LogManager.getLogger(PSRegionParser.class);
 }

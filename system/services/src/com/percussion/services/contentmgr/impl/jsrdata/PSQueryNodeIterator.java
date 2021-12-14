@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,14 +30,13 @@ import com.percussion.services.contentmgr.PSContentMgrOption;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jsr170.PSCollectionRangeIterator;
 
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-import javax.jcr.RepositoryException;
 
 /**
  * Implementation of a node iterator for use in queries
@@ -60,7 +59,7 @@ public class PSQueryNodeIterator extends PSCollectionRangeIterator<IPSGuid>
          throw new NoSuchElementException();
       }
       IPSContentMgr cms = PSContentMgrLocator.getContentMgr();
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       ids.add(nodeGuid);
       PSContentMgrConfig config = new PSContentMgrConfig();
       config.addOption(PSContentMgrOption.LOAD_MINIMAL);

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,30 +27,25 @@ import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
-import com.percussion.design.objectstore.PSUnknownNodeTypeException;
-import com.percussion.extension.PSExtensionProcessingException;
-import com.percussion.fastforward.utils.PSRelationshipHelper;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Class defines some useful static methods related a Site.
@@ -245,7 +240,7 @@ public class PSSite
       List siteFolderList)
       throws PSCmsException
    {
-      StringBuffer path = new StringBuffer();
+      StringBuilder path = new StringBuilder();
       ListIterator it = siteFolderList.listIterator();
       while (it.hasNext())
       {
@@ -278,7 +273,7 @@ public class PSSite
    public static String renderSiteFolderPathLocators(List siteFolderList)
          throws PSCmsException
    {
-      StringBuffer path = new StringBuffer();
+      StringBuilder path = new StringBuilder();
       ListIterator it = siteFolderList.listIterator();
       PSLocator loc;
       while (it.hasNext())
@@ -320,5 +315,5 @@ public class PSSite
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(PSSite.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSite.class);
 }

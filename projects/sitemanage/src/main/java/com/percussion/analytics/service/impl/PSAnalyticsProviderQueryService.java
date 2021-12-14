@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,10 +26,11 @@ package com.percussion.analytics.service.impl;
 import com.percussion.analytics.data.IPSAnalyticsQueryResult;
 import com.percussion.analytics.error.PSAnalyticsProviderException;
 import com.percussion.analytics.service.IPSAnalyticsProviderQueryService;
+import com.percussion.share.dao.IPSGenericDao;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.util.PSSiteManageBean;
 import com.percussion.utils.date.PSDateRange;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -54,8 +55,7 @@ public class PSAnalyticsProviderQueryService
     */
    public List<IPSAnalyticsQueryResult> getPageViewsByPathPrefix(
             String sitename, String pathPrefix, PSDateRange range)
-            throws PSAnalyticsProviderException
-   {
+           throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
       return handler.getPageViewsByPathPrefix(sitename, pathPrefix, range);
    }
 
@@ -64,8 +64,7 @@ public class PSAnalyticsProviderQueryService
     *   java.lang.String, com.percussion.utils.date.PSDateRange)
     */
    public List<IPSAnalyticsQueryResult> getVisitsViewsBySite(String sitename,
-            PSDateRange range) throws PSAnalyticsProviderException
-   {
+            PSDateRange range) throws PSAnalyticsProviderException, IPSGenericDao.LoadException, PSValidationException {
       return handler.getVisitsViewsBySite(sitename, range);
    }
    

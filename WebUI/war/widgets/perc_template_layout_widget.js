@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -82,18 +82,18 @@ var gSelectTemp = null;
 				self.renderWidgetLibrary(widgetLibrary);
 			});
 						
-			$('#perc-save').click(function()
+			$('#perc-save').on("click",function()
 			{
 				self._save();
 			});
 
-			$('#perc-layout-tab').click(function()
+			$('#perc-layout-tab').on("click",function()
 			{
 				self.initialize();
 			});
 
 			// TODO: remove this from the final release. This is only for testing purposes.
-			$('#perc-clear-page').click(function()
+			$('#perc-clear-page').on("click",function()
 			{
 				self.helper.clearPage(function() { self.render(); });
 			});
@@ -204,7 +204,7 @@ var gSelectTemp = null;
 			// add UI event handlers for adding, configuring widgets
 			this._addWidgetSupport();
 			
-			$('#perc-widget-library-toggle').click(function()
+			$('#perc-widget-library-toggle').on("click",function()
 			{
 				$('#perc-widget-library').toggle();
 			});
@@ -242,7 +242,6 @@ var gSelectTemp = null;
 		
 			if(this.pageId == null && gSelectTemp == null)
 			{
-			//	alert('You must select a page or a template first.');
 				return;
 			}
 	
@@ -278,7 +277,7 @@ var gSelectTemp = null;
 			this.renderCSS();
 
 			var self = this;
-			$('#showBorders').click(function()
+			$('#showBorders').on("click",function()
 			{
 				self.showBorders = !self.showBorders;
 				if(self.showBorders)
@@ -304,7 +303,7 @@ var gSelectTemp = null;
 			});
 		
 			// bind close menu button
-			$('#perc-close').click(function()
+			$('#perc-close').on("click",function()
 			{
 				if(self.selectedRegion)
 				{
@@ -325,7 +324,7 @@ var gSelectTemp = null;
 			});
 		
 			// bind edit menu button
-			$('#perc-edit').click(function()
+			$('#perc-edit').on("click",function()
 			{
 				if(self.selectedRegion)
 				{
@@ -435,7 +434,7 @@ var gSelectTemp = null;
 			//
 			// select widget
 			//
-			$('.perc-widget').click(function(event)
+			$('.perc-widget').on("click",function(event)
 			{
 				event.stopPropagation();					// dont propagate event to parents
 				$('.perc-region').each(function()			// unhighlight other regions
@@ -455,7 +454,7 @@ var gSelectTemp = null;
 			//
 			//	select regions
 			//
-			$('.perc-region').click(function(event)
+			$('.perc-region').on("click",function(event)
 			{
 				event.stopPropagation();
 				$('.perc-region').each(function()
@@ -601,11 +600,10 @@ var gSelectTemp = null;
 			{
 				return $("<div/>").addClass("perc-region-feedback").css({'position':'absolute'}).droppable(
 				{ 
-					//scope: $.perc_iframe_scope,
-					accept: '#region-tool', 
+					accept: '#region-tool',
 					tolerance: 'pointer', 
+					hoverClass: 'perc-show-feedback',
 					greedy: true,
-					hoverClass: 'perc-show-feedback', 
 					drop: function()
 					{
 						if(self.type == self.helper.Type.PAGE && $.inArray(region_id, self.helper.page.lockedTemplateRegions)!=-1)
@@ -682,7 +680,7 @@ var gSelectTemp = null;
 				    // set the CSS attribute and move on.
 				    
 				    //console.log("Setting #"+selector+" property "+property+":"+this.helper.regionCSS[selector][property]);
-				    if (property == "width" || property == "height")
+				    if (property === "width" || property === "height")
 					{
 					    $('#'+selector).css(property, this.helper.regionCSS[selector][property]);
 					} else 
@@ -696,7 +694,7 @@ var gSelectTemp = null;
 		},
 		render : function()
 		{
-			html = this.helper.rootRegion.generateHtml(false);
+			let html = this.helper.rootRegion.generateHtml(false);
 		     
 			this.element.html(html);
 			this._regionize();

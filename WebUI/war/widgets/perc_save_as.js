@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -143,7 +143,7 @@
         //If the type filter is a list, make it into a function which tests
         //for membership in that list. If a function has been passed in,
         //use that directly.
-        if( !$.isFunction( type_filter ) )
+        if(  typeof  type_filter !== "function" )
         {
             type_filter = function(x)
             {
@@ -172,7 +172,7 @@
         var top = window.parent.parent.jQuery("<div>"
 
             //A field at the top of the dialog to hold error messages.
-            + "<p id='perc-saveas-dialog-error' class='perc-field-error' />"
+            + "<p id='perc-saveas-dialog-error' class='perc-field-error'>"
 
             //Text field for the name under which to save the asset
             + ut.input( settings.asset_name ,
@@ -186,13 +186,13 @@
                 sa_tabindex )
 
             //Space for the directory navigation.
-            + "<div id='perc-saveas-dialog-direc'></div>"
+            + "</p><div id='perc-saveas-dialog-direc'></div>"
             + "</div>"
         );
     
         var root_direc = top.find( '#perc-saveas-dialog-direc' );
     
-        var path_select = top.find( '#perc-saveas-dialog-location' ).change(function()
+        var path_select = top.find( '#perc-saveas-dialog-location' ).on("change",function()
         {
             //Navigate to the path selected in the drop-down.
             var new_path = this.value.split('/');
@@ -236,7 +236,10 @@
     
         if( settings.new_folder_opt )
         {
-            top.parent().find('#perc-saveas-dialog-new-folder').click(function()    {  new_folder_callback(); });
+            top.parent().find('#perc-saveas-dialog-new-folder').on("click", function(e)
+            {
+                new_folder_callback();
+            });
         }
         else
         {
@@ -388,7 +391,7 @@
                 .data( 'tag', pref + (spec['name'] + "").toLowerCase() );
 
             var sclass = 'perc-saveas-dialog-selected';
-            function selectAnchor()
+            function selectAnchor(evt)
             {
                 anchor.siblings( '.'+sclass ).removeClass( sclass );
                 anchor.addClass( sclass );
@@ -406,11 +409,13 @@
             {
                 if( leaf_selectable )
                 {
-                    anchor.click( selectAnchor );
-                    anchor.dblclick( function()
+                    anchor.on("click",  function(evt){
+                        selectAnchor(evt);
+                    } );
+                    anchor.on("dblclick", function(evt)
                     {
-                        anchor.click();
-                        $("#perc-saveas-dialog-save-button").click();
+                        anchor.trigger("click");
+                        $("#perc-saveas-dialog-save-button").trigger("click");
                     });
                 }
             }
@@ -418,9 +423,11 @@
             {
                 if( folder_selectable )
                 {
-                    anchor.click( selectAnchor );
+                    anchor.on("click", function(evt){
+                        selectAnchor(evt);
+                    } );
                 }
-                anchor.dblclick( function()
+                anchor.on("dblclick", function(evt)
                 {
                     set_path( item_path );
                 });

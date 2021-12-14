@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,6 +30,8 @@ import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSRelationshipPropertyData;
 import com.percussion.services.relationship.data.PSRelationshipData;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,9 +40,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
 
 /**
  * A helper class used for building HQL from a given relationship filter.
@@ -69,8 +68,8 @@ class PSHQLQueryHelper  implements IPSQueryHelper
       {
          Collection<String> pduPropNames = PSRelationshipConfig
                .getPreDefinedUserPropertyNames();
-         m_pduProps = new ArrayList<Map.Entry<String, String>>();
-         m_customProps = new ArrayList<Map.Entry<String, String>>();
+         m_pduProps = new ArrayList<>();
+         m_customProps = new ArrayList<>();
 
          // separate pre-defined and customer properties
          Set<Map.Entry<String, String>> props = m_filter.getProperties()
@@ -322,7 +321,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
             m_qryBuffer.append(R_TABLE).append(FN_DEPENDENTID).append(" IN (:")
                   .append(FN_DEPENDENTIDS).append(") ");
             m_paramNames.add(FN_DEPENDENTIDS);
-            List<Integer> ids = new ArrayList<Integer>();
+            List<Integer> ids = new ArrayList<>();
             for (PSLocator loc : m_filter.getDependents())
                ids.add(loc.getId());
             m_paramValues.add(ids);
@@ -385,7 +384,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
          return (Set<Integer>) Collections.EMPTY_SET;
       }
 
-      HashSet<Integer> ids = new HashSet<Integer>();
+      HashSet<Integer> ids = new HashSet<>();
       Integer id;
       // get the names first
       for (String name : filter.getNames())
@@ -444,7 +443,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     */
    private Set<Integer> getConfigIdsFromType(String type)
    {
-      Set<Integer> ids = new HashSet<Integer>();
+      Set<Integer> ids = new HashSet<>();
 
       Collection<PSRelationshipConfig> configs = m_configMap.values();
       for (PSRelationshipConfig config : configs)
@@ -504,7 +503,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     * @param qryBuffer the buffer used to append the query string, assumed
     *    not <code>null</code>.
     */
-   private void appendSelectJoinOwnerId(StringBuffer qryBuffer)
+   private void appendSelectJoinOwnerId(StringBuilder qryBuffer)
    {
       qryBuffer.append(SELECT_FROM_R_AND_C);
       if (joinPropertiesTable())
@@ -522,7 +521,7 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     * @param qryBuffer the buffer used to append the query string, assumed
     *    not <code>null</code>.
     */
-   private void appendSelectJoinDependentId(StringBuffer qryBuffer)
+   private void appendSelectJoinDependentId(StringBuilder qryBuffer)
    {
       qryBuffer.append(SELECT_FROM_R_AND_C);
       if (joinPropertiesTable())
@@ -748,19 +747,19 @@ class PSHQLQueryHelper  implements IPSQueryHelper
     * The query string buffer, used to create HQL, never <code>null</code>,
     * may be empty.
     */
-   private StringBuffer m_qryBuffer = new StringBuffer();
+   private StringBuilder m_qryBuffer = new StringBuilder();
 
    /**
     * The parameter list, used to record the parameter names for the HQL,
     * never <code>null</code>, may be empty.
     */
-   private List<String> m_paramNames = new ArrayList<String>();
+   private List<String> m_paramNames = new ArrayList<>();
 
    /**
     * The parameter values list, used to record the values of the above
     * parameter names. Never <code>null</code>, may be empty.
     */
-   private List<Object> m_paramValues = new ArrayList<Object>();
+   private List<Object> m_paramValues = new ArrayList<>();
 
    /**
     * Determines whether to append a {@link #AND} before add further

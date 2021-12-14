@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,7 +30,8 @@ import com.percussion.rx.config.impl.jaxb.SolutionConfig;
 import com.percussion.rx.config.impl.jaxb.SolutionConfigurations;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -89,7 +90,7 @@ public class PSConfigNormalizer
       Map<String, Object> result = solConfToNormMap(sc);
       if (resolveValueMap)
       {
-         Map<String, Object> tgtMap = new HashMap<String, Object>();
+         Map<String, Object> tgtMap = new HashMap<>();
          tgtMap.putAll(result);
          appendFQNames(tgtMap, null, result);
          result = tgtMap;
@@ -153,7 +154,7 @@ public class PSConfigNormalizer
    @SuppressWarnings("unchecked")
    private Map<String, Object> solConfToNormMap(SolutionConfigurations sc)
    {
-      Map<String, Object> nameMap = new HashMap<String, Object>();
+      Map<String, Object> nameMap = new HashMap<>();
       List<SolutionConfig> solConfList = sc.getSolutionConfig();
 
       for (SolutionConfig solConf :  solConfList)
@@ -191,7 +192,7 @@ public class PSConfigNormalizer
          throw new IllegalArgumentException("propOrPropSetList may not be null");
       
       if (map == null)
-         map = new HashMap<String, Object>();
+         map = new HashMap<>();
       
       m_tagLevel++;
       for (Object obj : propOrPropSetList)
@@ -310,7 +311,7 @@ public class PSConfigNormalizer
       // If not, create one.
       Map<String, Object> returnMap = null;  
       if (map == null)
-         returnMap = new HashMap<String, Object>();
+         returnMap = new HashMap<>();
       else
          returnMap = map;
       
@@ -383,7 +384,7 @@ public class PSConfigNormalizer
       Map<String, Object> returnMap = null;  
       if (map == null)
       {
-         returnMap = new HashMap<String, Object>();
+         returnMap = new HashMap<>();
       }
       else
       {
@@ -421,7 +422,7 @@ public class PSConfigNormalizer
       else if ( (propertySetList = prop.getPropertySet()) != null &&
                 !propertySetList.isEmpty() )
       {
-         List<Object> objectList = new ArrayList<Object>();
+         List<Object> objectList = new ArrayList<>();
          for (PropertySet ps : propertySetList)
             objectList.add(ps);
 
@@ -481,7 +482,7 @@ public class PSConfigNormalizer
             !valuesList.isEmpty())
       {
          // deep copy
-         List<String> newValues = new ArrayList<String>();
+         List<String> newValues = new ArrayList<>();
          for (String s : valuesList)
          {
             newValues.add(new String(s));
@@ -511,11 +512,11 @@ public class PSConfigNormalizer
    private List<PSPair<String,String>> getPairList(List<Pair> pairList)
    {
       List<PSPair<String,String>> newPairs = 
-         new ArrayList<PSPair<String,String>>();
+         new ArrayList<>();
       for (Pair xpair : pairList)
       {
          PSPair<String,String> npair = 
-            new PSPair<String,String>();
+            new PSPair<>();
          String pvalue1 = xpair.getPvalue1();
          String pvalue2 = xpair.getPvalue2();
          String firstVal  = null;
@@ -636,7 +637,7 @@ public class PSConfigNormalizer
    private List<Object>
    createPropSetNameList(List<Object>childPropSetList)
    {
-      List<Object> listOfPropSetMaps = new ArrayList<Object>();
+      List<Object> listOfPropSetMaps = new ArrayList<>();
 
       // Traverse the list of PropertySets (which contains only PropertySets)
       for (Object childPropSet: childPropSetList)
@@ -652,7 +653,7 @@ public class PSConfigNormalizer
          List<Object> propSetOrPropList = 
             ((PropertySet) childPropSet).getPropertySetOrProperty();
 
-         Map<String, Object> propSetOrPropMap = new HashMap<String, Object>();
+         Map<String, Object> propSetOrPropMap = new HashMap<>();
          propSetOrPropMap = processPropertyOrPropertySetList( propSetOrPropList, 
                null, null);
 
@@ -677,7 +678,7 @@ public class PSConfigNormalizer
    /**
     * Reference to Log4j singleton object used to log any errors or debug info.
     */
-   private static Logger ms_log = Logger.getLogger(
+   private static final Logger ms_log = LogManager.getLogger(
          "com.percussion.rx.config.impl.PSConfigNormalizer");
 
 }

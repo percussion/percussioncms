@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.webservices.transformation.converter;
 
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.filter.IPSFilterService;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.services.filter.IPSItemFilterRuleDef;
@@ -33,6 +34,8 @@ import com.percussion.services.guidmgr.data.PSDesignGuid;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.system.PSFilterRule;
 import com.percussion.webservices.system.PSFilterRuleParam;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConversionException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,9 +44,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.apache.commons.beanutils.ConversionException;
 
 /**
  * Converts objects between the classes
@@ -147,7 +147,7 @@ public class PSItemFilterConverter extends PSConverter
             }
          }
       }
-      catch (PSFilterException e)
+      catch (PSFilterException | PSNotFoundException e)
       {
          throw new ConversionException(e);
       }
@@ -165,8 +165,7 @@ public class PSItemFilterConverter extends PSConverter
     */
    protected void convertRules(
       com.percussion.webservices.system.PSItemFilter orig,
-      PSItemFilter dest) throws PSFilterException
-   {
+      PSItemFilter dest) throws PSFilterException, PSNotFoundException {
       if (orig == null)
       {
          throw new IllegalArgumentException("orig must not be null");
@@ -184,11 +183,11 @@ public class PSItemFilterConverter extends PSConverter
          currentFilter = loadFilter(orig.getId());
       Set<IPSItemFilterRuleDef> currentRules = null;
       if (currentFilter == null)
-         currentRules = new HashSet<IPSItemFilterRuleDef>();
+         currentRules = new HashSet<>();
       else
          currentRules = currentFilter.getRuleDefs();
       PSFilterRule[] rules = orig.getRules();
-      Set<IPSItemFilterRuleDef> destRules = new HashSet<IPSItemFilterRuleDef>();
+      Set<IPSItemFilterRuleDef> destRules = new HashSet<>();
       for (PSFilterRule rule : rules)
       {
          if (rule == null) // only possible with WB side converter
@@ -217,7 +216,7 @@ public class PSItemFilterConverter extends PSConverter
          else
          {
             // create a new rule
-            Map<String, String> destParams = new HashMap<String, String>();
+            Map<String, String> destParams = new HashMap<>();
             for (PSFilterRuleParam param : params)
                destParams.put(param.getName(), param.getValue());
 
@@ -237,11 +236,10 @@ public class PSItemFilterConverter extends PSConverter
     * @return the filter for the supplied id, never <code>null</code>.
     * @throws PSFilterException if no filter is found for the supplied id.
     */
-   protected IPSItemFilter loadFilter(long id) throws PSFilterException
-   {
+   protected IPSItemFilter loadFilter(long id) throws PSFilterException, PSNotFoundException {
       IPSFilterService service = PSFilterServiceLocator.getFilterService();
 
-      List<IPSGuid> ids = new ArrayList<IPSGuid>();
+      List<IPSGuid> ids = new ArrayList<>();
       ids.add(new PSDesignGuid(id));
       List<IPSItemFilter> filters = service.loadFilter(ids);
 

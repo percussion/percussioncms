@@ -17,14 +17,15 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.spring;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.percussion.cms.IPSConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -54,17 +55,6 @@ public class PSSpringWebApplicationContextUtils
         webApplicationContext = context;
     }
 
-    // This does not work in JBoss 5 because JBoss sucks and because of
-    // component scanning bug.
-    // public static void injectDependenciesByAnnotations(Object bean) throws
-    // Exception {
-    // logAutoWire(bean);
-    // AutowireCapableBeanFactory beanFactory =
-    // getWebApplicationContext().getAutowireCapableBeanFactory();
-    // beanFactory.autowireBeanProperties(bean,
-    // AutowireCapableBeanFactory.AUTOWIRE_NO, false);
-    // beanFactory.initializeBean(bean, bean.getClass().getName());
-    // }
 
     /**
      * This will autowire objects using the objects getters and setters. It will
@@ -97,6 +87,6 @@ public class PSSpringWebApplicationContextUtils
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSpringWebApplicationContextUtils.class);
+    private static final Logger log = LogManager.getLogger(IPSConstants.SERVER_LOG);
 
 }

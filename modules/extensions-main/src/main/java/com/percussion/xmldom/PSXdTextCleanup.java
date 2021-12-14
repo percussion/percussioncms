@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -44,6 +44,16 @@ import com.percussion.utils.string.PSXmlPIUtils.Action;
 import com.percussion.utils.types.PSPair;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.commons.lang.CharUtils;
+import org.apache.commons.lang.StringUtils;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,17 +65,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.CharUtils;
-import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.ProcessingInstruction;
-import org.w3c.dom.Text;
 
 /**
  * A Rhythmyx extension used to translate a text field, parse it, tidy it, 
@@ -394,7 +393,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
    private void removeNamespaceAttributes(Node node)
    {
       NamedNodeMap nnm = node.getAttributes();
-      Set<String> remove = new HashSet<String>();
+      Set<String> remove = new HashSet<>();
       if (nnm != null)
       {
          Element el = (Element) node;
@@ -482,9 +481,9 @@ public class PSXdTextCleanup extends PSDefaultExtension
       {
          contxt.printTraceMessage("Writing file xmldombodyonly.txt");
          PSXmlTreeWalker outWalker = new PSXmlTreeWalker(resultDoc);
-         FileOutputStream fos = new FileOutputStream("xmldombodyonly.txt");
-         outWalker.write(fos);
-         fos.close();
+         try(FileOutputStream fos = new FileOutputStream("xmldombodyonly.txt")) {
+            outWalker.write(fos);
+         }
       }
 
       if (!inlineDisable)

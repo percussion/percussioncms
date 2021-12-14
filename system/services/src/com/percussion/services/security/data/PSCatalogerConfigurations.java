@@ -17,32 +17,31 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.data;
 
+import com.percussion.security.IPSRoleCataloger;
+import com.percussion.security.IPSSubjectCataloger;
 import com.percussion.services.security.IPSRoleMgr;
 import com.percussion.services.security.data.PSCatalogerConfig.ConfigTypes;
 import com.percussion.services.security.impl.PSRoleMgr;
-import com.percussion.utils.security.IPSRoleCataloger;
-import com.percussion.utils.security.IPSSubjectCataloger;
 import com.percussion.utils.servlet.PSServletUtils;
 import com.percussion.utils.spring.IPSBeanConfig;
 import com.percussion.utils.spring.PSSpringBeanUtils;
 import com.percussion.utils.spring.PSSpringConfiguration;
 import com.percussion.utils.xml.PSInvalidXmlException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * Manages persistence for the subject and role cataloger configurations, 
@@ -140,8 +139,8 @@ public class PSCatalogerConfigurations implements IPSBeanConfig
       PSSpringBeanUtils.addBeanRef(root, ROLE_MGR, 
          PSServletUtils.ROLE_MGR_BEAN_NAME);
       
-      List<PSCatalogerConfig> subConfigs = new ArrayList<PSCatalogerConfig>();
-      List<PSCatalogerConfig> roleConfigs = new ArrayList<PSCatalogerConfig>();
+      List<PSCatalogerConfig> subConfigs = new ArrayList<>();
+      List<PSCatalogerConfig> roleConfigs = new ArrayList<>();
       for (PSCatalogerConfig config : m_catalogerConfigs)
       {
          if (config.getConfigType().equals(ConfigTypes.SUBJECT))
@@ -196,7 +195,7 @@ public class PSCatalogerConfigurations implements IPSBeanConfig
    private Collection<PSCatalogerConfig> getCatalogerList(
       Element source, ConfigTypes type) throws PSInvalidXmlException
    {
-      List<PSCatalogerConfig> configs = new ArrayList<PSCatalogerConfig>();
+      List<PSCatalogerConfig> configs = new ArrayList<>();
       
       Element catEl = PSSpringBeanUtils.getNextPropertyListElement(source, 
          null);
@@ -290,6 +289,6 @@ public class PSCatalogerConfigurations implements IPSBeanConfig
     * as a result of calling {@link #getCatalogerConfigs(File)}.
     */
    private List<PSCatalogerConfig> m_catalogerConfigs = 
-      new ArrayList<PSCatalogerConfig>();   
+      new ArrayList<>();
 }
 

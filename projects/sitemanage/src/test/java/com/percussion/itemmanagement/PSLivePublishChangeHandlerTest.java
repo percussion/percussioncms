@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.itemmanagement;
-
-import static java.util.Arrays.asList;
 
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest;
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
@@ -49,17 +47,19 @@ import com.percussion.services.contentchange.data.PSContentChangeEvent;
 import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.guidmgr.PSGuidUtils;
 import com.percussion.services.pubserver.data.PSPubServer;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.content.PSContentWsLocator;
+import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
+import static java.util.Arrays.asList;
 
 public class PSLivePublishChangeHandlerTest extends PSItemWorkflowServiceTestBase
 {
@@ -315,8 +315,7 @@ public class PSLivePublishChangeHandlerTest extends PSItemWorkflowServiceTestBas
         
     }
 
-    private void createContentChange(long siteId, int contentId)
-    {
+    private void createContentChange(long siteId, int contentId) throws IPSGenericDao.SaveException {
         PSContentChangeEvent changeEvent;
         changeEvent = new PSContentChangeEvent();
         changeEvent.setChangeType(PSContentChangeType.PENDING_LIVE);

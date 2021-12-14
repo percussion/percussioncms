@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,13 +33,12 @@ import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.commons.lang.StringUtils;
+import org.json.simple.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.json.simple.JSONObject;
 
 /**
  * Utility class with static methods intended to be used in the AA interface.
@@ -60,7 +59,7 @@ public class PSWidgetUtils
       {
          throw new IllegalArgumentException("item must not be null");
       }
-      Map<String, String> params = new HashMap<String, String>();
+      Map<String, String> params = new HashMap<>();
       Map oldParams = item.getParameters();
       Iterator iter = oldParams.keySet().iterator();
       while (iter.hasNext())
@@ -229,7 +228,7 @@ public class PSWidgetUtils
    static private Map<String, String> parseCommonParams(Map params)
       throws PSAssemblyException, PSMissingBeanConfigurationException
    {
-      Map<String, String> id = new HashMap<String, String>();
+      Map<String, String> id = new HashMap<>();
       // ContentId
       String temp = parseParam(params, IPSHtmlParameters.SYS_CONTENTID, null,
          true);

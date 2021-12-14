@@ -17,21 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.dao.impl;
 
-import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
-import static com.percussion.util.PSSqlHelper.qualifyTableName;
-
-import static org.apache.commons.lang.StringUtils.join;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
-import static org.springframework.util.CollectionUtils.isEmpty;
-
 import com.percussion.cms.objectstore.PSFolder;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.pagemanagement.dao.IPSPageDaoHelper;
 import com.percussion.pagemanagement.data.PSPage;
 import com.percussion.pathmanagement.data.PSFolderProperties;
@@ -41,17 +34,11 @@ import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.PSWorkflowServiceLocator;
 import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.webservices.content.IPSContentWs;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -60,6 +47,20 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.percussion.services.utils.orm.PSDataCollectionHelper.MAX_IDS;
+import static com.percussion.util.PSSqlHelper.qualifyTableName;
+import static org.apache.commons.lang.StringUtils.join;
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 /**
  * @author miltonpividori
@@ -92,8 +93,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
      * (non-Javadoc)
      * @see com.percussion.pagemanagement.dao.IPSPageDaoHelper#setWorkflowAccordingToParentFolder(com.percussion.pagemanagement.data.PSPage)
      */
-    public void setWorkflowAccordingToParentFolder(PSPage page)
-    {
+    public void setWorkflowAccordingToParentFolder(PSPage page) throws PSValidationException {
         notNull(page, "page cannot be null");
         notEmpty(page.getFolderPaths(), "page.folderpaths cannot be null");
         
@@ -101,8 +101,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         page.setWorkflowId(getWorkflowIdForPath(page.getFolderPaths().get(0)));
     }
     
-    public int getWorkflowIdForPath(String folderPath)
-    {
+    public int getWorkflowIdForPath(String folderPath) throws PSValidationException {
         notEmpty(folderPath);
         
         int workflowId;
@@ -127,17 +126,16 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         Session sess = getSession();
         try
         {
-            String sql = "select distinct CONTENTID from " + qualifyTableName("CT_PAGE") + " where TEMPLATEID ='"
-                    + templateId + "'";
+            String sql = "select distinct CONTENTID from " + qualifyTableName(PAGE_TABLE) + " where TEMPLATEID = :template";
             
             SQLQuery query = sess.createSQLQuery(sql);
+            query.setString(TEMPLATE_PARAM, templateId);
             return query.list();
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE'";
-            ms_logger.error(error, e);
-            throw new PSRuntimeException(error, e);
+            log.error("Failed to get the fully qualified table name for '{}'", PAGE_TABLE);
+            throw new PSRuntimeException(e);
         }
     }
     
@@ -154,25 +152,30 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         try
         {
             String sql = "select distinct P.CONTENTID " +
-                         "from " + qualifyTableName("CT_PAGE") + " as P " +
-                         "inner join " + qualifyTableName("CONTENTSTATUS") + " as CS ON P.CONTENTID = CS.CONTENTID " +
-                         "where TEMPLATEID = '" + deletedTemplate + "' " +
+                         "from " + qualifyTableName(PAGE_TABLE) + " as P " +
+                         "inner join " + qualifyTableName(CONTENT_TABLE) + " as CS ON P.CONTENTID = CS.CONTENTID " +
+                         "where TEMPLATEID = :template " +
                          "    and (CS.CURRENTREVISION = P.REVISIONID " +
                          "         OR CS.TIPREVISION = P.REVISIONID) ";
             
             SQLQuery query = sess.createSQLQuery(sql);
+            query.setString(TEMPLATE_PARAM,deletedTemplate);
             List<Integer> results = query.list();
             if(results == null) 
             {
-                return new ArrayList<Integer>();
+                return new ArrayList<>();
             }
             return query.list();
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE'";
-            ms_logger.error(error, e);
-            throw new PSRuntimeException(error, e);
+            log.error("Failed to get the fully qualified table name for {}. Error: {}",
+                    PAGE_TABLE,
+                    PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+
+            //This method should not be failing upstream transactions with a runtime exception.
+            return new ArrayList<>();
         }
         
     }
@@ -188,7 +191,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         Collection<Integer> pages = findPageIdsByTemplate(deletedTemplate);
         
         // get the new template to use for each page
-        Map<String, String> mapPageToTemplate = findTemplateUsedByCurrentRevisionOfPages(new ArrayList<Integer>(pages));
+        Map<String, String> mapPageToTemplate = findTemplateUsedByCurrentRevisionOfPages(new ArrayList<>(pages));
         
         // make the update of each page revision
         replaceTemplateForPages(mapPageToTemplate, deletedTemplate);
@@ -209,23 +212,28 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         Session sess = getSession();
         try
         {
-            String tableName = qualifyTableName("CT_PAGE");
-            for(String pageToUpdate : mapPageToTemplate.keySet())
+            String tableName = qualifyTableName(PAGE_TABLE);
+            for(Map.Entry<String,String> entry : mapPageToTemplate.entrySet())
             {
                 String sql = "UPDATE " + tableName + " "
-                           + "SET TEMPLATEID = '" + mapPageToTemplate.get(pageToUpdate)+ "' "
-                           + "WHERE CONTENTID = " + Integer.parseInt(pageToUpdate) + " " 
-                           + "    AND TEMPLATEID = '"+ deletedTemplate +"' "; 
+                           + "SET TEMPLATEID = :template "
+                           + "WHERE CONTENTID = :contentid"
+                           + "    AND TEMPLATEID = :deletedtemplate";
 
                 SQLQuery query = sess.createSQLQuery(sql);
+
+                query.setString(TEMPLATE_PARAM,entry.getValue());
+                query.setInteger("contentid",Integer.parseInt(entry.getKey()));
+                query.setString("deletedtemplate",deletedTemplate);
+
                 query.executeUpdate();
             }
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE' or 'CONTENTSTATUS'";
-            ms_logger.error(error, e);
-            throw new PSRuntimeException(error, e);
+            log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSRuntimeException(e);
         }    
     }
 
@@ -236,7 +244,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     {
         if(isEmpty(pages))
         {
-            return new HashMap<String, String>();
+            return new HashMap<>();
         }
         
         if (pages.size() < MAX_IDS)
@@ -246,10 +254,10 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         else
         {
             // we need to paginate the query to avoid oracle problems
-            Map<String, String> mapPageToTemplate = new HashMap<String, String>();
+            Map<String, String> mapPageToTemplate = new HashMap<>();
             for (int i = 0; i < pages.size(); i += MAX_IDS)
             {
-                int end = (i + MAX_IDS > pages.size()) ? pages.size() : i + MAX_IDS;
+                int end = Math.min(i + MAX_IDS, pages.size());
                 // make the query
                 mapPageToTemplate.putAll(findTemplateUsedByCurrentRevision(pages.subList(i, end)));
             }
@@ -266,7 +274,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         
         if(isEmpty(pages))
         {
-            return new ArrayList<Integer>();
+            return new ArrayList<>();
         }
         
         if (pages.size() < MAX_IDS)
@@ -276,10 +284,10 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         else
         {
             // we need to paginate the query to avoid oracle problems
-            List<Integer> results =  new ArrayList<Integer>();
+            List<Integer> results =  new ArrayList<>();
             for (int i = 0; i < pages.size(); i += MAX_IDS)
             {
-                int end = (i + MAX_IDS > pages.size()) ? pages.size() : i + MAX_IDS;
+                int end = Math.min(i + MAX_IDS, pages.size());
                 // make the query
                 results.addAll(findPageIdsByTemplateAndImportedPageIds(templateId, pages.subList(i, end)));
             }
@@ -299,19 +307,20 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     @Transactional
     public Map<String, String> findTemplateUsedByCurrentRevision(List<Integer> pages)
     {
-        Map<String, String> mapPageToTemplate = new HashMap<String, String>();
+        Map<String, String> mapPageToTemplate = new HashMap<>();
 
         Session sess = getSession();
         try
         {
             String sql = "SELECT P.CONTENTID, P.TEMPLATEID " 
-                       + "FROM " + qualifyTableName("CT_PAGE")
-                       + " AS P INNER JOIN " + qualifyTableName("CONTENTSTATUS") 
+                       + "FROM " + qualifyTableName(PAGE_TABLE)
+                       + " AS P INNER JOIN " + qualifyTableName(CONTENT_TABLE)
                        + " AS CS ON P.CONTENTID = CS.CONTENTID "
                        + "WHERE P.CONTENTID IN (" + join(pages, ",") + ") "
                        + "    AND CS.CURRENTREVISION = P.REVISIONID ";
 
             SQLQuery query = sess.createSQLQuery(sql);
+
             List<Object[]> results = query.list();
             for(Object[] row : results)
             {
@@ -321,9 +330,10 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE' or 'CONTENTSTATUS'";
-            ms_logger.error(error, e);
-            throw new PSRuntimeException(error, e);
+
+            log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSRuntimeException(e);
         }
     }
     
@@ -338,14 +348,13 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
      * @return {@link Map}<{@link String}, {@link String}> never
      *         <code>null</code> but may be empty.
      */
-    @SuppressWarnings("unchecked")
     @Transactional(noRollbackFor = Exception.class)
     public Collection<Integer> findPageIdsByTemplateAndImportedPageIds(String templateId, List<Integer> pages)
     {
         Session sess = getSession();
         try
         {
-            String sql = "select distinct CONTENTID from " + qualifyTableName("CT_PAGE") + " where TEMPLATEID ='"
+            String sql = "select distinct CONTENTID from " + qualifyTableName(PAGE_TABLE) + " where TEMPLATEID ='"
                     + templateId + "' AND CONTENTID in (" + join(pages, ",") + ") ";
            
             SQLQuery query = sess.createSQLQuery(sql);
@@ -353,9 +362,9 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE'";
-            ms_logger.error(error, e);
-            throw new PSRuntimeException(error, e);
+            log.error("Failed to get the fully qualified table name for '{}'", PAGE_TABLE);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+            throw new PSRuntimeException(e);
         }
      
     }
@@ -364,7 +373,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     {
         if(isEmpty(pages))
         {
-            return new HashMap<String, String>();
+            return new HashMap<>();
         }
         
         if (pages.size() < MAX_IDS)
@@ -374,10 +383,10 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         else
         {
             // we need to paginate the query to avoid oracle problems
-            Map<String, String> mapPageToLinkText = new HashMap<String, String>();
+            Map<String, String> mapPageToLinkText = new HashMap<>();
             for (int i = 0; i < pages.size(); i += MAX_IDS)
             {
-                int end = (i + MAX_IDS > pages.size()) ? pages.size() : i + MAX_IDS;
+                int end = Math.min(i + MAX_IDS, pages.size());
                 // make the query
                 mapPageToLinkText.putAll(findLinkTextForCurrentRevision(pages.subList(i, end)));
             }
@@ -388,14 +397,14 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     @Transactional
     public Map<String, String> findLinkTextForCurrentRevision(List<Integer> pages)
     {
-        Map<String, String> mapPageToLinkText = new HashMap<String, String>();
+        Map<String, String> mapPageToLinkText = new HashMap<>();
 
         Session sess = getSession();
         try
         {
             String sql = "SELECT P.CONTENTID, P.RESOURCE_LINK_TITLE " 
-                       + "FROM " + qualifyTableName("CT_PAGE")
-                       + " AS P INNER JOIN " + qualifyTableName("CONTENTSTATUS") 
+                       + "FROM " + qualifyTableName(PAGE_TABLE)
+                       + " AS P INNER JOIN " + qualifyTableName(CONTENT_TABLE)
                        + " AS CS ON P.CONTENTID = CS.CONTENTID "
                        + "WHERE P.CONTENTID IN (" + join(pages, ",") + ") "
                        + "    AND CS.CURRENTREVISION = P.REVISIONID ";
@@ -410,9 +419,8 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         }
         catch (SQLException e)
         {
-            String error = "Failed to get the fully qualified table name for 'CT_PAGE' or 'CONTENTSTATUS'";
-            ms_logger.error(error, e);
-            throw new PSRuntimeException(error, e);
+            log.error(ERROR_QUALIFY, PAGE_TABLE,CONTENT_TABLE);
+            throw new PSRuntimeException(e);
         }
     }
     
@@ -420,12 +428,15 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
     {
         return this.sessionFactory.getCurrentSession();
     }
-    
-   
-    private static Logger ms_logger = Logger.getLogger(PSPageDaoHelper.class);
+
+    private static final String ERROR_QUALIFY = "Failed to get the fully qualified table name for '{}' or '{}'";
+    private static final String PAGE_TABLE="CT_PAGE";
+    private static final String CONTENT_TABLE = "CONTENTSTATUS";
+    private static final String TEMPLATE_PARAM = "template";
+    private static final Logger log = LogManager.getLogger(PSPageDaoHelper.class);
 
     @Transactional(noRollbackFor = Exception.class)
-    public Collection<Integer> findContentIdsByTemplateAndImportedPageIds(PSSearchCriteria criteria, List<Integer> contentIDs)
+    public Collection<Integer> getContentIdsForFetchingByStatus(PSSearchCriteria criteria, List<Integer> contentIDs)
     {
         Session sess = getSession();
         try
@@ -453,7 +464,7 @@ public class PSPageDaoHelper implements IPSPageDaoHelper
         catch (SQLException e)
         {
             String error = "Failed to get the fully qualified table name for 'CT_PAGE'";
-            ms_logger.error(error, e);
+            log.error(error, e);
             throw new PSRuntimeException(error, e);
         }
     }

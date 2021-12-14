@@ -17,25 +17,30 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.design.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.workflow.IPSWorkflowService;
 import com.percussion.services.workflow.data.PSWorkflow;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 public class PSWorkflowModel extends PSLimitedDesignModel
 {
+
+   private static final Logger log = LogManager.getLogger(PSWorkflowModel.class);
+
    @Override
    public Object load(IPSGuid guid)
    {
@@ -120,7 +125,8 @@ public class PSWorkflowModel extends PSLimitedDesignModel
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 }

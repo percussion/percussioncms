@@ -17,16 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.general;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSDefaultExtension;
@@ -37,6 +34,12 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * This pre-exit recursively looks up 0 or more (active assembly) parent items
@@ -50,6 +53,8 @@ public class PSTouchContentAndParentItems
    extends PSDefaultExtension 
    implements IPSRequestPreProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSTouchContentAndParentItems.class);
 
 
    /**
@@ -109,7 +114,7 @@ public class PSTouchContentAndParentItems
 
       try
       {
-         Collection<Integer> cids = new ArrayList<Integer>();
+         Collection<Integer> cids = new ArrayList<>();
          cids.add(contentId);
          IPSPublisherService pub = PSPublisherServiceLocator
                .getPublisherService();
@@ -117,7 +122,8 @@ public class PSTouchContentAndParentItems
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSExtensionProcessingException(this.getClass().getName(), e);
       }
    }

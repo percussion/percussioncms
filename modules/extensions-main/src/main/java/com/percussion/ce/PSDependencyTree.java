@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,6 +25,7 @@ package com.percussion.ce;
 
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.design.objectstore.PSRelationshipConfig;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.IPSResultDocumentProcessor;
 import com.percussion.extension.PSExtensionException;
@@ -36,6 +37,8 @@ import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -49,6 +52,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class modifies the result document to append all child and paraent
@@ -56,6 +60,9 @@ import java.util.Iterator;
  */
 public class PSDependencyTree implements IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSDependencyTree.class);
+
    /*
     * Implementation of the method required by the interface IPSExtension.
     */
@@ -82,7 +89,7 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
          throws PSParameterMismatchException,
                PSExtensionProcessingException
    {
-      HashMap htmlParams = request.getParameters();
+      Map<String,Object> htmlParams = request.getParameters();
       ArrayList itemsRendered = new ArrayList();
       PSXmlTreeWalker walker = new PSXmlTreeWalker(resDoc);
       try
@@ -121,6 +128,8 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
       }
       catch(Exception e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSExtensionProcessingException("sys_ceDependencyTree", e);
       }
       request.setParameters(htmlParams);
@@ -130,12 +139,12 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
    /**
     * This method is called recursively to render the child and/or parent items
     * to render their children or parents.
-    * @param iemsRendered is a list all items rendered so far. List is different
+    * @param itemsRendered is a list all items rendered so far. List is different
     *    for child treeand parent tree.
     * @param indent to be used to indicate the child-parent relationship. Each
     * recursive call increments the indent by INDENT.
     * @param parent is the result element being built
-    * @param connection HTTPConnection object to extract the child XML document.
+    * @param request HTTPConnection object to extract the child XML document.
     * @param url the URL object for the child or parent item of the current
     * item
     */
@@ -194,7 +203,9 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
       catch(Exception e)
       {
          PSXmlDocumentBuilder.addElement(
-               parent.getOwnerDocument(), parent, "ExitError", e.getMessage());
+               parent.getOwnerDocument(), parent, "ExitError",PSExceptionUtils.getMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -307,19 +318,19 @@ public class PSDependencyTree implements IPSResultDocumentProcessor
     */
    public static void main(String[] args)
    {
-      try
-      {
-         PSDependencyTree pSDependencyTree = new PSDependencyTree();
-         FileInputStream fis = new FileInputStream("c:/depend.xml");
+
+      PSDependencyTree pSDependencyTree = new PSDependencyTree();
+      try(FileInputStream fis = new FileInputStream("c:/depend.xml")){
          Document doc = PSXmlDocumentBuilder.createXmlDocument(new InputSource(fis), false);
          doc = pSDependencyTree.processResultDocument(null, null, doc);
 
          StringWriter sw = new  StringWriter();
-         System.out.print(sw.toString());
+         log.info(sw.toString());
       }
       catch(Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
   }
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,7 +25,14 @@ package com.percussion.user.web.service;
 
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.test.PSObjectRestClient;
-import com.percussion.user.data.*;
+import com.percussion.user.data.PSAccessLevel;
+import com.percussion.user.data.PSAccessLevelRequest;
+import com.percussion.user.data.PSCurrentUser;
+import com.percussion.user.data.PSExternalUser;
+import com.percussion.user.data.PSImportedUser;
+import com.percussion.user.data.PSRoleList;
+import com.percussion.user.data.PSUser;
+import com.percussion.user.data.PSUserList;
 import com.percussion.user.service.IPSUserService;
 
 import java.util.List;
@@ -52,7 +59,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
     }
 
     @Override
-    public void delete(String name) throws PSDataServiceException
+    public void delete(String name)
     {
         super.delete(concatPath(getPath(), "delete", name));
     }
@@ -77,7 +84,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
         return getObjectFromPath(concatPath(getPath(), "external/status"), PSDirectoryServiceStatus.class);
     }
 
-    public PSRoleList getRoles() throws PSDataServiceException
+    public PSRoleList getRoles()
     {
         return getObjectFromPath(concatPath(getPath(), "roles"), PSRoleList.class);
     }
@@ -87,7 +94,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
         return getObjectFromPath(concatPath(getPath(), "users"), PSUserList.class);
     }
     
-    public PSUserList getUsersByRole(String roleName) throws PSDataServiceException
+    public PSUserList getUsersByRole(String roleName)
     {
         return getObjectFromPath(concatPath(getPath(), "usersByRole", roleName), PSUserList.class);
     }
@@ -97,12 +104,12 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
         return postObjectToPath(concatPath(getPath(),"update"), user, PSUser.class);
     }
     
-    public PSUser changePassword(PSUser user) throws PSDataServiceException
+    public PSUser changePassword(PSUser user)
     {
         return putObjectToPath(concatPath(getPath(),"changepw"), user, PSUser.class);
     }
 
-    public PSCurrentUser getCurrentUser() throws PSNoCurrentUserException
+    public PSCurrentUser getCurrentUser()
     {
         return getObjectFromPath(concatPath(getPath(), "current"), PSCurrentUser.class);
     }
@@ -122,7 +129,7 @@ public class PSUserServiceRestClient extends PSObjectRestClient implements IPSUs
     }
 
     @Override
-    public PSUserList getUserNames(String nameFilter) throws PSDataServiceException
+    public PSUserList getUserNames(String nameFilter)
     {
         return getObjectFromPath(concatPath(getPath(), "users/names", nameFilter), PSUserList.class);
     }

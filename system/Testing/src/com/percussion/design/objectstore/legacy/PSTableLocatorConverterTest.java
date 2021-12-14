@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -26,10 +26,12 @@ package com.percussion.design.objectstore.legacy;
 import com.percussion.design.objectstore.PSComponent;
 import com.percussion.design.objectstore.PSTableLocator;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
+import com.percussion.security.PSEncryptor;
 import com.percussion.utils.container.IPSJndiDatasource;
+import com.percussion.utils.io.PathUtils;
 import com.percussion.utils.jdbc.IPSDatasourceConfig;
 import com.percussion.utils.jdbc.IPSDatasourceResolver;
-import com.percussion.utils.security.deprecated.PSLegacyEncrypter;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -60,7 +62,10 @@ public class PSTableLocatorConverterTest extends PSBaseConverterTest
       IPSConfigFileLocator locator = initFileLocator();
       
       // create the ctx
-      PSConfigurationCtx ctx = new PSConfigurationCtxMock(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      PSConfigurationCtx ctx = new PSConfigurationCtxMock(locator,
+              PSLegacyEncrypter.getInstance(
+                      PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+              ).OLD_SECURITY_KEY());
       com.percussion.design.objectstore.PSTableLocator convTable;
       boolean didThrow;
       
@@ -116,7 +121,9 @@ public class PSTableLocatorConverterTest extends PSBaseConverterTest
       IPSConfigFileLocator locator = initFileLocator();
       
       // create the ctx
-      PSConfigurationCtx ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      PSConfigurationCtx ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).OLD_SECURITY_KEY());
       com.percussion.design.objectstore.PSTableLocator convTable;
       boolean didThrow;
       
@@ -151,7 +158,9 @@ public class PSTableLocatorConverterTest extends PSBaseConverterTest
       
       // test existing driver config only
       // reset the ctx
-      ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).OLD_SECURITY_KEY());
       List<IPSJndiDatasource> datasources = ctx.getJndiDatasources();
       assertEquals(datasources.size(), 1);
       srcTable = new PSLegacyTableLocator(getTableXml("driver-match"), 
@@ -198,7 +207,9 @@ public class PSTableLocatorConverterTest extends PSBaseConverterTest
       IPSConfigFileLocator locator = initFileLocator();
       
       // create the ctx
-      PSConfigurationCtx ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.OLD_SECURITY_KEY());
+      PSConfigurationCtx ctx = new PSConfigurationCtx(locator, PSLegacyEncrypter.getInstance(
+              PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
+      ).OLD_SECURITY_KEY());
       com.percussion.design.objectstore.PSTableLocator convTable;
       boolean didThrow;
       

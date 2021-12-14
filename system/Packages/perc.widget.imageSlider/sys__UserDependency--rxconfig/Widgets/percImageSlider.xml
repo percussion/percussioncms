@@ -1,31 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~     Percussion CMS
-  ~     Copyright (C) 1999-2020 Percussion Software, Inc.
-  ~
-  ~     This program is free software: you can redistribute it and/or modify
-  ~     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-  ~
-  ~     This program is distributed in the hope that it will be useful,
-  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~     GNU Affero General Public License for more details.
-  ~
-  ~     Mailing Address:
-  ~
-  ~      Percussion Software, Inc.
-  ~      PO Box 767
-  ~      Burlington, MA 01803, USA
-  ~      +01-781-438-9900
-  ~      support@percussion.com
-  ~      https://www.percusssion.com
-  ~
-  ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
-  -->
-
-<!--
-   [percImageSlider
--->
 <Widget>
     <WidgetPrefs title="Image Slider"
                  contenttype_name="percImageSlider"
@@ -292,9 +265,8 @@
         ## only output slider content if valid slider values are selected ##
         #if( $validNumbers == 'true' )##
         <script>
-         window.addEventListener('DOMContentLoaded', function() {
-              $(document).ready(function(){
-                /* main slider settings */
+         $(function() {
+                 /* main slider settings */
                 $('.${sliderName}-${sliderId}').slick({
                 #if( $perc_slide_layout == 'navigation')##
                 asNavFor: ".${sliderName}-${sliderId}-navigation",
@@ -352,7 +324,6 @@
                   nextArrow: '<a class="slick-next $perc_next_arrow_class"></a>'#end##
                 });
                 #end
-              });
              });
         </script>
 
@@ -489,8 +460,9 @@
 
           ## First check if path is broken
           ## If path is broken the image has been deleted and should not be included in the slider
-          #if( $image.percImagePath && $image.percImagePath != '#' )##
+           #if( $image.percImagePath && $image.percImagePath != '#' )##
           #set( $query = "" )##
+          #if($rx.pageutils.isValidString(${image.percImageContentId}))##
           #set( $query = "select * from rx:percImageAsset where rx:sys_contentid = ${image.percImageContentId}")##
           #set( $maxResults = 1 )##
           #set( $params= $rx.string.stringToMap(null) )##
@@ -540,6 +512,7 @@
           #set( $maxResults = 1 )##
           #set( $params = $rx.string.stringToMap(null) )##
           #set( $dummy = $params.put('query', $query) )##
+
           #set( $dummy = $params.put('max_results', $maxResults) )##
           #set( $finderName = "Java/global/percussion/widgetcontentfinder/perc_AutoWidgetContentFinder" )##
           #set( $pageResult = "" )##
@@ -568,6 +541,7 @@
           #set( $dummy = $qualifiedImages.add($image) )##
           #end##
 
+          #end##End if valid image percImageContentId
           #end## end if valid image
           #end## end foreach original image
 
@@ -580,7 +554,7 @@
                 #if( $perc_slide_caption_location == "above" && $image.hasCaptions == "Y" )##
                 <div class="perc-slide-caption-container">
                   #if( $image.clickableLink != "" )##
-                  <a href="$image.clickableLink" target="_blank">
+                  <a href="$image.clickableLink" target="_blank" rel = "noopener noreferrer">
                   #end##
                   <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
                   #if( $image.clickableLink != "" )##
@@ -590,7 +564,7 @@
                 </div>
                 #end##
                 #if( $image.clickableLink != "" )##
-                <a href="$image.clickableLink" target="_blank">
+                <a href="$image.clickableLink" target="_blank" rel = "noopener noreferrer">
                 #end##
                   <div class="perc-slide-image-container" style="background-image: url('${image.percImagePath}')" role="img" aria-label="$image.altText">
                   #if( $perc_slide_caption_location == "over" && $image.hasCaptions == "Y" )##
@@ -609,7 +583,7 @@
                 #if( $perc_slide_caption_location == "below" && $image.hasCaptions == "Y" )##
                 <div class="perc-slide-caption-container">
                   #if( $image.clickableLink != "" )##
-                  <a href="$image.clickableLink" target="_blank">
+                  <a href="$image.clickableLink" target="_blank" rel = "noopener noreferrer">
                   #end##
                   <$perc_slide_caption_tag_type class="perc-slide-image-caption perc-slide-caption-horizontal-${perc_slide_caption_alignment} $captionclass">${image.imageCaption}</$perc_slide_caption_tag_type>
                   #if( $image.clickableLink != "" )##

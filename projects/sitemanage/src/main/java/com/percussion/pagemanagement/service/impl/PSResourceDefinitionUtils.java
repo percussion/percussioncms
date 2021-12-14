@@ -17,24 +17,24 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.service.impl;
+
+import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
+import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDependency;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static org.apache.commons.collections.CollectionUtils.intersection;
 import static org.apache.commons.collections.CollectionUtils.isSubCollection;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDefinition;
-import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSResourceDependency;
 
 public class PSResourceDefinitionUtils
 {
@@ -56,17 +56,16 @@ public class PSResourceDefinitionUtils
         notNull(resources, "resources");
         int size = resources.size();
         
-        if (size == 0) return new ArrayList<T>();
+        if (size == 0) return new ArrayList<>();
         
         /*
          * It should take less than n*n times to sort the deps.
          * If it takes longer we have cycle(s).
          */
-        //FB: UC_USELESS_CONDITION  NC 1-16-16
         int cutOff = (size - 1) * (size - 1) + 4;
         
-        List<T> resourceBag = new ArrayList<T>();
-        List<T> sortedResources = new ArrayList<T>();
+        List<T> resourceBag = new ArrayList<>();
+        List<T> sortedResources = new ArrayList<>();
         List<String> allIds = getResourceIds(resources);
         resourceBag.addAll(resources);
         while( ! resourceBag.isEmpty()  && cutOff != 0) {
@@ -99,7 +98,7 @@ public class PSResourceDefinitionUtils
      */
     public static <T extends PSResourceDependency> List<String> getResourceDependeeIds(Collection<T> deps) {
         notNull(deps, "deps");
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         for (T d : deps) {
             ids.add(d.getDependeeId());
         }
@@ -160,7 +159,7 @@ public class PSResourceDefinitionUtils
      */
     public static <T extends PSResourceDefinition> List<String> getResourceIds(Collection<T> resources) {
         notNull(resources, "resources");
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
         for (T r : resources) {
             ids.add(r.getUniqueId());
         }

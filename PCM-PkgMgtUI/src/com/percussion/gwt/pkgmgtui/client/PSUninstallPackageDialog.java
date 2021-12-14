@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -65,7 +65,7 @@ public class PSUninstallPackageDialog extends
       setWidth(DIALOG_WIDTH);
       setIsModal(true);
       setCanDragResize(true);
-      setResizeFrom(IPSConstants.DIALOG_RESIZE_OPTIONS);
+      setResizeFrom(PSConstants.getDialogResizeOptions());
       setCanDragReposition(true);
       setAutoCenter(true);
       setShowToolbar(true);
@@ -144,7 +144,7 @@ public class PSUninstallPackageDialog extends
       });
       m_finishBtn.setAutoFit(true);
       m_finishBtn.hide();
-      btnStack.setMembersMargin(IPSConstants.MEMBERS_MARGIN);
+      btnStack.setMembersMargin(PSConstants.getMembersMargin());
       btnStack.setAlign(Alignment.RIGHT);
       btnStack.setHeight(m_oKBtn.getHeight());
       return btnStack;
@@ -258,9 +258,8 @@ public class PSUninstallPackageDialog extends
    {
       RestDataSource restDs = new RestDataSource();
       restDs.setFields(createDsFields());
-      restDs.setXmlRecordXPath("/Messages/message");
-      restDs.setRecordXPath("/Messages");
       restDs.setUpdateDataURL(m_checkDepsUrl + m_packageName);
+      restDs.setXmlRecordXPath("/Messages/Message");
       restDs.updateData(new ListGridRecord(), new DSCallback()
       {
          public void execute(DSResponse response, Object rawData,
@@ -293,9 +292,8 @@ public class PSUninstallPackageDialog extends
    {
       RestDataSource restDs = new RestDataSource();
       restDs.setFields(createDsFields());
-      restDs.setXmlRecordXPath("/Messages/message");
-      restDs.setRecordXPath("/Messages");
       restDs.setUpdateDataURL(m_updateUrl + m_packageName);
+      restDs.setXmlRecordXPath("/Messages/Message");
       restDs.updateData(new ListGridRecord(), new DSCallback()
       {
          public void execute(DSResponse response, Object rawData,
@@ -391,14 +389,14 @@ public class PSUninstallPackageDialog extends
 
    private boolean m_depsChecked = false;
 
-   private final String m_checkDepsUrl = PkgMgtUI.ms_serviceRoot
+   private static final  String  m_checkDepsUrl = PkgMgtUI.ms_serviceRoot
          + "checkPackageDependencies.xml?packageName=";
 
-   private final String m_updateUrl = PkgMgtUI.ms_serviceRoot
+   private static final  String m_updateUrl = PkgMgtUI.ms_serviceRoot
          + "uninstallPackage.xml?packageName=";
 
-   private int DIALOG_HEIGHT = 300;
+   private static final int DIALOG_HEIGHT = 300;
 
-   private int DIALOG_WIDTH = 500;
+   private static final int DIALOG_WIDTH = 500;
 
 }

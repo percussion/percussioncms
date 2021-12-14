@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -41,16 +41,15 @@ import com.percussion.services.publisher.IPSSiteItem;
 import com.percussion.services.pubserver.data.PSPubServer;
 import com.percussion.services.sitemgr.IPSSite;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
+import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * A post publish edition task that runs if a siteimprove configuration is found.
@@ -71,7 +70,7 @@ public class PSSiteimproveEditionTask implements IPSEditionTask {
 	private static final String HTTP = "http";
 
 	private static IPSIntegrationProviderService siteimproveService = new PSSiteImproveProviderService();
-	private static Logger logger = Logger.getLogger(PSSiteimproveEditionTask.class);
+	private static final Logger logger = LogManager.getLogger(PSSiteimproveEditionTask.class);
 	private IPSMetadataService metadataService;
 	private IPSPubServerService pubServerService;
 
@@ -226,7 +225,7 @@ public class PSSiteimproveEditionTask implements IPSEditionTask {
 
 		JSONObject credentialsJSON = JSONObject.fromObject(credentialsData);
 
-		Map<String, String> credentials = new HashMap<String, String>();
+		Map<String, String> credentials = new HashMap<>();
 
 
 		if (!credentialsJSON.has(SITE_NAME)) {

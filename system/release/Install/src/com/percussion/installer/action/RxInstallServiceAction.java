@@ -51,8 +51,8 @@ public class RxInstallServiceAction extends RxIAAction
     */
    private static void removeDuplicatesWithOrder(ArrayList<String> arlList)
    {
-      Set<String> set = new HashSet<String>();
-      java.util.List<String> newList = new ArrayList<String>();
+      Set<String> set = new HashSet<>();
+      java.util.List<String> newList = new ArrayList<>();
       for (java.util.Iterator iter = arlList.iterator(); iter.hasNext();)
       {
          String tmpStr = (String) iter.next();
@@ -189,16 +189,16 @@ public class RxInstallServiceAction extends RxIAAction
       // generate array lists for the old class path from the registry and
       // for the classpath builtin to the exe
       ArrayList<String> oldClassPathArr =
-         new ArrayList<String>((List<String>) Arrays.asList(oldClassPath));
+         new ArrayList<>((List<String>) Arrays.asList(oldClassPath));
       
       /*
        * Remove any duplicate entries in the oldClassPath Array
        */
       removeDuplicatesWithOrder(oldClassPathArr);
       ArrayList<String> exeClassPathArr =
-         new ArrayList<String>((List<String>) Arrays.asList(ms_ClassPath));
+         new ArrayList<>((List<String>) Arrays.asList(ms_ClassPath));
       ArrayList<String> excludeClassPathArr =
-         new ArrayList<String>((List<String>) Arrays.asList(ms_validExcludes));
+         new ArrayList<>((List<String>) Arrays.asList(ms_validExcludes));
       
       /*
        * Remove any jars from the oldClassPath Array that exist in the exe's CP
@@ -216,7 +216,7 @@ public class RxInstallServiceAction extends RxIAAction
       // 1.4 is smart to figure out forward vs backward slash ;)
       // if the CP file exists merge entries from the purified registry CP..
       File cpFile = new File(installDir + "/RhythmyxServer.cp");
-      ArrayList<String> cpFileArr = new ArrayList<String>();
+      ArrayList<String> cpFileArr = new ArrayList<>();
       cpFileArr.ensureCapacity(20);
       
       if ( cpFile.exists() )
@@ -278,7 +278,7 @@ public class RxInstallServiceAction extends RxIAAction
       RegVars regvars    = getCPandVMOptsFromRegistry(svcName);
       String[] oldVMOpts = regvars.getVmOpts();
       ArrayList<String> oldVMOptsArr = 
-         new ArrayList<String>((List<String>)Arrays.asList(oldVMOpts));
+         new ArrayList<>((List<String>)Arrays.asList(oldVMOpts));
       
       // Build up the current opts
       String[] curOpts = ms_vmLibOpts.split("\\;");
@@ -286,7 +286,7 @@ public class RxInstallServiceAction extends RxIAAction
       + installDir + File.separator + "plugins;";
       String libOpts = "-Djava.library.path=" + svcLibPath;
       ArrayList<String> curOptsArr = 
-         new ArrayList<String>((List<String>)Arrays.asList(curOpts));
+         new ArrayList<>((List<String>)Arrays.asList(curOpts));
       curOptsArr.add(libOpts);
       
       // Iterate oldOpts and prune curOpts for any identical 
@@ -346,7 +346,7 @@ public class RxInstallServiceAction extends RxIAAction
       oldVMOptsArr.addAll(curOptsArr);
       
       File vmOptsFile = new File(installDir + "/RhythmyxServer.ja");
-      ArrayList<String> vmOptsFileArr = new ArrayList<String>();
+      ArrayList<String> vmOptsFileArr = new ArrayList<>();
       vmOptsFileArr.ensureCapacity(20);
       
       if ( vmOptsFile.exists() )

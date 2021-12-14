@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,12 +28,13 @@ import com.percussion.rx.config.IPSPropertySetter;
 import com.percussion.rx.config.PSConfigException;
 import com.percussion.rx.config.PSConfigValidation;
 import com.percussion.rx.design.IPSAssociationSet;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.SimpleTypeConverter;
 
 import java.lang.reflect.Method;
@@ -174,8 +175,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
    /*
     * //see base interface method for details
     */
-   public void addPropertyDefs(Object obj, Map<String, Object> defs)
-   {
+   public void addPropertyDefs(Object obj, Map<String, Object> defs) throws PSNotFoundException {
       if (defs == null)
          throw new IllegalArgumentException("defs may not be null.");
       
@@ -203,8 +203,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
     * otherwise return <code>true</code>.
     */
    protected boolean addPropertyDefs(Object obj, String propName,
-         Object pvalue, Map<String, Object> defs)
-   {
+         Object pvalue, Map<String, Object> defs) throws PSNotFoundException {
       if (obj == null)
          throw new IllegalArgumentException("obj may not be null.");
       if (StringUtils.isBlank(propName))
@@ -276,8 +275,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
     * 
     * @throws Exception if failed to get the property value.
     */
-   protected Object getPropertyValue(Object obj, String propName)
-   {
+   protected Object getPropertyValue(Object obj, String propName) throws PSNotFoundException {
       if (obj == null)
          throw new IllegalArgumentException("obj may not be null.");
       if (StringUtils.isBlank(propName))
@@ -744,7 +742,7 @@ public class PSSimplePropertySetter implements IPSPropertySetter
    /**
     * Logger for this class.
     */
-   private static Log ms_log = LogFactory.getLog("PSSimplePropertySetter");
+   private static final Logger ms_log = LogManager.getLogger("PSSimplePropertySetter");
    
    /**
     * This is used when creating a property definition in a default configure

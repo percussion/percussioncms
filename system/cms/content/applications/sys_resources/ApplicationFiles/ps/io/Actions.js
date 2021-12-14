@@ -23,7 +23,7 @@ dojo.require("dojo.string.extras");
  * This javascript class contains a stub function for each action available on
  * the server side AA servlet.
  */
-ps.io.Actions = new function()
+ps.io.Actions = function()
 {
    
    this.MIMETYPE_PLAIN = "text/plain";
@@ -62,7 +62,7 @@ ps.io.Actions = new function()
       }
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, objectId.serialize(), params);
-   }
+   };
    
    /**
     * Moves a slot item to another slot.
@@ -96,7 +96,7 @@ ps.io.Actions = new function()
       }
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, objectId.serialize(), params);
-   }
+   };
    
    /**
     * Retrieves the url for the specified action name and content item.
@@ -140,13 +140,13 @@ ps.io.Actions = new function()
       params.add("actionname", actionname);
       try
       {
-         if(___sys_aamode != undefined && ___sys_aamode != null)
-            params.add("sys_aamode", new String(___sys_aamode));
+         if(___sys_aamode !== undefined && ___sys_aamode != null)
+            params.add("sys_aamode", ___sys_aamode);
       }
       catch(ignore){}
       return this._makeRequest(
          action, this.MIMETYPE_JSON, objectId.serialize(), params);
-   }
+   };
 
    /**
     * Looks up an action based on a name, then calculates whether the current
@@ -174,7 +174,7 @@ ps.io.Actions = new function()
       {
          var result = new ps.io.Response();
          result._m_success = true;
-         result._m_value = new Object();
+         result._m_value = {};
          return result;
       }
 
@@ -188,7 +188,7 @@ ps.io.Actions = new function()
          result._m_value = result._m_value[0];
       }
       return result;
-   }
+   };
    
    /**
     * Converts the supplied type to an Object whose properties are the action 
@@ -205,16 +205,16 @@ ps.io.Actions = new function()
     */
    this._normalizeNames = function(actionNames)
    {
-      if (typeof actionNames == "undefined" || actionNames == null
-         || (typeof actionNames == "array" && empty(actionNames)))
+      if (typeof actionNames == "undefined" || actionNames == null ||
+          (Array.isArray(actionNames) && empty(actionNames)))
       {
          var result = new ps.io.Response();
          result._m_success = true;
-         result._m_value = new Object();
+         result._m_value = {};
          return result;
       }
       
-      var p = new Object();
+      var p = {};
       if (typeof actionNames == "string")
       {
          p.names = {actionNames:null};
@@ -227,7 +227,7 @@ ps.io.Actions = new function()
             p.names = actionNames;
       }
       return p;
-   }
+   };
    
    /**
     * Looks up an action based on a name, then retrieves its label.
@@ -250,7 +250,7 @@ ps.io.Actions = new function()
       params.add("names", o.names);      
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
    /**
     * Returns the allowed content types for the specified slot.
@@ -271,7 +271,7 @@ ps.io.Actions = new function()
       var action = "GetAllowedContentTypeForSlot";
       return this._makeRequest(
          action, this.MIMETYPE_JSON, objectId.serialize(), null);
-   }
+   };
 
    /**
     * Retrieves the content type id for the content id passed in.
@@ -291,7 +291,7 @@ ps.io.Actions = new function()
       params.add("sys_contentid", contentid);      
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
    /**
     * Returns the urls of images of templates.
@@ -319,7 +319,7 @@ ps.io.Actions = new function()
       params.add("sys_contenttypeid", contentTypeId);      
       return this._makeRequest(
          action, this.MIMETYPE_JSON, objectId.serialize(), params);
-   }
+   };
    
    /**
     * Creates an item of supplied content type. 
@@ -353,7 +353,7 @@ ps.io.Actions = new function()
       params.add("itemTitle", itemTitle);      
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
     
    /**
     * Returns the item path of the supplied object id. 
@@ -371,7 +371,7 @@ ps.io.Actions = new function()
       var action = "GetItemPath";
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, objectId.serialize(), null);
-   }
+   };
 
    /**
     * Action to get the content id or folder id by path
@@ -389,7 +389,7 @@ ps.io.Actions = new function()
       
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
 
    /**
@@ -416,7 +416,7 @@ ps.io.Actions = new function()
       var action = "GetAllowedSnippetTemplates";
       return this._makeRequest(
          action, this.MIMETYPE_JSON, objectId.serialize(), null);
-   }
+   };
    
    /**
     * Returns the allowed templates for the specified slot.
@@ -438,7 +438,7 @@ ps.io.Actions = new function()
       var action = "GetItemTemplatesForSlot";
       return this._makeRequest(
          action, this.MIMETYPE_JSON, objectId.serialize(), null);
-   }
+   };
    
    /**
     * Returns the assembled content for the specified field.
@@ -456,12 +456,12 @@ ps.io.Actions = new function()
       {
          params = new dojo.collections.Dictionary();
          params.add("isaamode", "true");
-         if(___sys_aamode != undefined && ___sys_aamode != null)
-            params.add("sys_aamode", new String(___sys_aamode));   
+         if(___sys_aamode !== undefined && ___sys_aamode != null)
+            params.add("sys_aamode", ___sys_aamode);
       }
       return this._makeRequest(
          action, this.MIMETYPE_HTML, objectId.serialize(), params);
-   }
+   };
    
    /**
     * Returns the assembled content for the specified slot.
@@ -480,12 +480,12 @@ ps.io.Actions = new function()
       {
          params = new dojo.collections.Dictionary();
          params.add("isaamode", "true");
-         if(___sys_aamode != undefined && ___sys_aamode != null)
-            params.add("sys_aamode", new String(___sys_aamode));
+         if(___sys_aamode !== undefined && ___sys_aamode != null)
+            params.add("sys_aamode", ___sys_aamode);
       }
       return this._makeRequest(
          action, this.MIMETYPE_HTML, objectId.serialize(), params);
-   }
+   };
    
    /**
     * Returns the assembled content for the specified snippet.
@@ -503,11 +503,11 @@ ps.io.Actions = new function()
       {
          params = new dojo.collections.Dictionary();
          params.add("isaamode", "true");
-         if(___sys_aamode != undefined && ___sys_aamode != null)
-            params.add("sys_aamode", new String(___sys_aamode));
+         if(___sys_aamode !== undefined && ___sys_aamode != null)
+            params.add("sys_aamode", ___sys_aamode);
       }
-		if(selectedtext != undefined && 
-		   selectedtext != null && selectedtext.length > 0)
+		if(selectedtext !== undefined &&
+		   selectedtext !== null && selectedtext.length > 0)
 		{
 			if(params == null)
 			   params = new dojo.collections.Dictionary();
@@ -515,7 +515,7 @@ ps.io.Actions = new function()
 		}      
       return this._makeRequest(
          action, this.MIMETYPE_HTML, objectId.serialize(), params);
-   }
+   };
 	
     /**
     * Return the mime type of the assembled snippet.
@@ -533,7 +533,7 @@ ps.io.Actions = new function()
         var action = "GetSnippetMimeType";
          return this._makeRequest(
          action, this.MIMETYPE_JSON, objectId.serialize(), null);
-    }
+    };
 
    /**
    * Returns the assembled slot content for snippet picker dialog.
@@ -554,7 +554,7 @@ ps.io.Actions = new function()
       }      
       return this._makeRequest(
       action, this.MIMETYPE_HTML, objectId.serialize(), params);
-   }
+   };
 
   /**
     * Removes a specified snippet (or relationship).
@@ -570,7 +570,7 @@ ps.io.Actions = new function()
 
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, params);
-   }
+   };
    
    /**
     * Adds a specified (new) snippet.
@@ -605,7 +605,7 @@ ps.io.Actions = new function()
          
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
    /**
     * Checks in the specified item.
@@ -625,7 +625,7 @@ ps.io.Actions = new function()
          
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, params);
-   }
+   };
 
    /**
     * Checks out the specified item.
@@ -645,7 +645,7 @@ ps.io.Actions = new function()
          
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, params);
-   }
+   };
 
    /**
     * Transition and check out the specified item.
@@ -668,7 +668,7 @@ ps.io.Actions = new function()
          
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, params);
-   }
+   };
 
    /**
     * Transition the specified item.
@@ -691,7 +691,7 @@ ps.io.Actions = new function()
          
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, params);
-   }
+   };
 
    /**
     * Adds the specified key/value to the given parameters if the
@@ -706,7 +706,7 @@ ps.io.Actions = new function()
    {
       if (value != null && (!dojo.lang.isUndefined(value)))
          params.add(key, value);  
-   }
+   };
    
    /**
     * Retrieves the sort rank for the items relationship.
@@ -721,7 +721,7 @@ ps.io.Actions = new function()
       
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, params);
-   }
+   };
 
    /**
     * Get all server properties.
@@ -733,7 +733,7 @@ ps.io.Actions = new function()
       var action = "GetServerProperties";
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, null);
-   }
+   };
    
    /**
     * Get all registered sites from the system.
@@ -744,7 +744,7 @@ ps.io.Actions = new function()
       var action = "GetSites";
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, null);
-   }
+   };
    
    /**
     * Get all root folders (Children of //Folders in the CX) from the system.
@@ -755,7 +755,7 @@ ps.io.Actions = new function()
       var action = "GetRootFolders";
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, null);
-   }
+   };
 
    /**
     * Resolves the id values for the passed in site and site folder.
@@ -770,7 +770,7 @@ ps.io.Actions = new function()
       params.add("siteName", siteName);
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
    /**
     * Create a folder with supplied name under the parent folder supplied (by
@@ -799,7 +799,7 @@ ps.io.Actions = new function()
       params.add("category", isSiteFolder ? "sites" : "folders");
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
     /**
     * Get the children of the supplied  folder path filtered for
@@ -833,7 +833,7 @@ ps.io.Actions = new function()
       params.add("category", isSiteFolder ? "sites" : "folders");
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
     /**
     * Get the children of the supplied  folder path filtered for
@@ -861,7 +861,7 @@ ps.io.Actions = new function()
       params.add("category", isSiteFolder ? "sites" : "folders");
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
    /**
     * Gets the inline link parent ids for the specified dependent id. 
@@ -880,7 +880,7 @@ ps.io.Actions = new function()
       params.add("managedIds", dojo.json.serialize(managedIds));
       return this._makeRequest(
          action, this.MIMETYPE_JSON, null, params);
-   }
+   };
    
    /**
     * Gets the value of the field from the content editor.
@@ -893,7 +893,7 @@ ps.io.Actions = new function()
       var action = "GetContentEditorFieldValue";
       return this._makeRequest(
       action, this.MIMETYPE_HTML, objectId.serialize(), null);
-   }
+   };
    
    /**
     * Sets the supplied value to the supplied fieldname that is part of the 
@@ -909,7 +909,7 @@ ps.io.Actions = new function()
       params.add("fieldValue", fieldValue);      
       return this._makeRequest(
          action, this.MIMETYPE_JSON, objectId.serialize(), params);
-   }
+   };
    
    /**
    * Builds action url for getting the related content search results.
@@ -917,7 +917,7 @@ ps.io.Actions = new function()
    this.getUpdateItemUrl = function()
    {
       return this._buildRequestUrl("UpdateItem",null);
-   }
+   };
    
    /**
     * Retrieves the server session max timeout in seconds.
@@ -927,7 +927,7 @@ ps.io.Actions = new function()
       var action = "GetMaxTimeout";            
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, null);
-   }
+   };
    
    /**
     * How many locales does the server support. If the request to the server
@@ -953,7 +953,7 @@ ps.io.Actions = new function()
          localeCount = 1;
       }
       return this.localeCount;
-   }
+   };
    
    /**
     * Builds action url for getting the related content search results.
@@ -961,7 +961,7 @@ ps.io.Actions = new function()
    this.getRcSearchUrl = function()
    {
       return this._buildRequestUrl("GetSearchResults",null);
-   }
+   };
       
    /**
     * Calls onsubmit on the supplied form object. If the form is not bound to 
@@ -981,7 +981,7 @@ ps.io.Actions = new function()
        }
        formObj.onsubmit();
        return this.formSubmitResults;
-    }
+    };
     
     /**
      * Initializes the formbind object with the supplied action and form. 
@@ -1000,7 +1000,7 @@ ps.io.Actions = new function()
       mimetype: mimetype,
       formNode:formId,
       load: function(load, data, e) {
-            if(load == "error")
+            if(load === "error")
             {
                result._m_success = false;
                var msg = ps.io.Actions._parseError(data.message, e);
@@ -1018,7 +1018,7 @@ ps.io.Actions = new function()
             _this.formSubmitResults = result;
          }
       });
-    }
+    };
 
    /**
     * Function to test calling the server .
@@ -1033,7 +1033,7 @@ ps.io.Actions = new function()
       params.add("mode", mode);      
       return this._makeRequest(
          action, this.MIMETYPE_PLAIN, null, params);
-   }
+   };
    
    /**
     * Sends a test request to the server to keep the session alive.
@@ -1046,8 +1046,8 @@ ps.io.Actions = new function()
       if(!aresponse.isSuccess())
          return;
       var delay = parseInt(aresponse.getValue()) * 900;
-      setTimeout("ps.io.Actions.keepAlive()", delay);
-   }
+      setTimeout(ps.io.Actions.keepAlive(), delay);
+   };
    
    // Private functions
    
@@ -1066,7 +1066,7 @@ ps.io.Actions = new function()
          base += "&objectId=" + escape(objectId);
       }      
       return base;
-   }
+   };
    
    /**
     * Gets request url and makes the request
@@ -1083,14 +1083,14 @@ ps.io.Actions = new function()
       var transError = "XMLHttpTransport Error:";      
       var result = new ps.io.Response();
       var requestUrl = this._buildRequestUrl(action, objectId);
-      var paramsObj = new Object();
-      if(params != null && params != undefined)
+      var paramsObj = {};
+      if(params !== null && params !== undefined)
       {                
          var keys = params.getKeyList();
-         for(i = 0; i < keys.length; i++)
+         for(let i = 0; i < keys.length; i++)
          {
             var val = params.item(keys[i]);
-            if(val == null || val == "" || val == undefined)
+            if(val == null || val === "" || val === undefined)
                continue;
             paramsObj[keys[i]] = val;   
          }
@@ -1120,14 +1120,14 @@ ps.io.Actions = new function()
                }
            });
            return result;
-   }
+   };
     
    /**
     * Helper method that parses a response error string
     */
    this._parseError = function(error, e)
    {
-      var results = new Object();
+      var results = {};
       var transError = "XMLHttpTransport Error: ";
       if(dojo.string.startsWith(error, transError))
       {
@@ -1154,7 +1154,7 @@ ps.io.Actions = new function()
       }
       return results;
       
-   }
+   };
    
    /**
     * Flattens any single value array properties
@@ -1165,11 +1165,11 @@ ps.io.Actions = new function()
    {
       if (typeof(obj) != "object")
          return obj;
-      var newObj = dojo.lang.isArrayLike(obj) ? [] : new Object();
+      var newObj = dojo.lang.isArrayLike(obj) ? [] : {};
       for (var item in obj)
       {
          var prop = obj[item];
-         if(dojo.lang.isArrayLike(prop) && prop.length == 1)
+         if(dojo.lang.isArrayLike(prop) && prop.length === 1)
          {
             newObj[item] = prop[0];            
          }
@@ -1179,7 +1179,7 @@ ps.io.Actions = new function()
          }
       }
       return newObj;
-   }
+   };
 
    /**
     * If the provided action response indicates an error,
@@ -1195,7 +1195,7 @@ ps.io.Actions = new function()
       {
          ps.error(response.getValue());
       }
-   }
+   };
    
    /**
     * Constant for needs template error

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -60,7 +60,7 @@ $.fn.fullCalendar = function(options) {
 
 		// a method call
 		if (typeof options === 'string') {
-			if (calendar && $.isFunction(calendar[options])) {
+			if (calendar && typeof calendar[options] === 'function') {
 				singleRes = calendar[options].apply(calendar, args);
 				if (!i) {
 					res = singleRes; // record the first method call result
@@ -584,7 +584,7 @@ function parseFieldSpecs(input) {
 	else if (typeof input === 'function') {
 		tokens = [ input ];
 	}
-	else if ($.isArray(input)) {
+	else if (Array.isArray(input)) {
 		tokens = input;
 	}
 
@@ -960,7 +960,7 @@ function isAtomic(val) {
 
 
 function applyAll(functions, thisObj, args) {
-	if ($.isFunction(functions)) {
+	if (typeof functions === 'function') {
 		functions = [ functions ];
 	}
 	if (functions) {
@@ -1171,7 +1171,7 @@ function makeMoment(args, parseAsUTC, parseZone) {
 				isAmbigZone = true;
 			}
 		}
-		else if ($.isArray(input)) {
+		else if (Array.isArray(input)) {
 			// arrays have no timezone information, so assume ambiguous zone
 			isAmbigZone = true;
 		}
@@ -4636,7 +4636,7 @@ Grid.mixin({
 			// Test that the dragged element passes the dropAccept selector or filter function.
 			// FYI, the default is "*" (matches all)
 			accept = view.opt('dropAccept');
-			if ($.isFunction(accept) ? accept.call(el[0], el) : el.is(accept)) {
+			if ((typeof accept === 'function') ? accept.call(el[0], el) : el.is(accept)) {
 				if (!this.isDraggingExternal) { // prevent double-listening if fired twice
 					this.listenToExternalDrag(el, ev, ui);
 				}
@@ -6919,7 +6919,7 @@ var TimeGrid = FC.TimeGrid = Grid.extend(DayTableMixin, {
 		// might be an array value (for TimelineView).
 		// if so, getting the most granular entry (the last one probably).
 		input = view.opt('slotLabelFormat');
-		if ($.isArray(input)) {
+		if (Array.isArray(input)) {
 			input = input[input.length - 1];
 		}
 
@@ -9720,7 +9720,7 @@ function Calendar_constructor(element, overrides) {
 
 		if (t.options.handleWindowResize) {
 			windowResizeProxy = debounce(windowResize, t.options.windowResizeDelay); // prevents rapid calls
-			$(window).resize(windowResizeProxy);
+			$(window).on('resize', windowResizeProxy);
 		}
 	}
 
@@ -9748,7 +9748,7 @@ function Calendar_constructor(element, overrides) {
 		element.removeClass('fc fc-ltr fc-rtl fc-unthemed ui-widget');
 
 		if (windowResizeProxy) {
-			$(window).unbind('resize', windowResizeProxy);
+			$(window).off('resize', windowResizeProxy);
 		}
 	}
 
@@ -10750,7 +10750,7 @@ function Header(calendar) {
 									innerHtml +
 								'</button>'
 								)
-								.click(function(ev) {
+								.on("click",function(ev) {
 									// don't process clicks for disabled buttons
 									if (!button.hasClass(tm + '-state-disabled')) {
 
@@ -10766,7 +10766,7 @@ function Header(calendar) {
 										}
 									}
 								})
-								.mousedown(function() {
+								.on("mousedown",function() {
 									// the *down* effect (mouse pressed in).
 									// only on buttons that are not the "active" tab, or disabled
 									button
@@ -10774,11 +10774,11 @@ function Header(calendar) {
 										.not('.' + tm + '-state-disabled')
 										.addClass(tm + '-state-down');
 								})
-								.mouseup(function() {
+								.on("mouseup", function() {
 									// undo the *down* effect
 									button.removeClass(tm + '-state-down');
 								})
-								.hover(
+								.on("mouseenter",
 									function() {
 										// the *hover* effect.
 										// only on buttons that are not the "active" tab, or disabled
@@ -10786,14 +10786,13 @@ function Header(calendar) {
 											.not('.' + tm + '-state-active')
 											.not('.' + tm + '-state-disabled')
 											.addClass(tm + '-state-hover');
-									},
-									function() {
+									}).
+									on("mouseleave",function() {
 										// undo the *hover* effect
 										button
 											.removeClass(tm + '-state-hover')
 											.removeClass(tm + '-state-down'); // if mouseleave happens before mouseup
-									}
-								);
+									});
 
 							groupChildren = groupChildren.add(button);
 						}
@@ -10986,7 +10985,7 @@ function EventManager() { // assumed to be a calendar
 	// caller is responsible for incrementing pendingSourceCnt first.
 	function tryFetchEventSource(source, fetchId) {
 		_fetchEventSource(source, function(eventInputs) {
-			var isArraySource = $.isArray(source.events);
+			var isArraySource = Array.isArray(source.events);
 			var i, eventInput;
 			var abstractEvent;
 
@@ -11072,7 +11071,7 @@ function EventManager() { // assumed to be a calendar
 
 		var events = source.events;
 		if (events) {
-			if ($.isFunction(events)) {
+			if (typeof events === 'function') {
 				t.pushLoading();
 				events.call(
 					t, // this, the Calendar object
@@ -11085,7 +11084,7 @@ function EventManager() { // assumed to be a calendar
 					}
 				);
 			}
-			else if ($.isArray(events)) {
+			else if (Array.isArray(events)) {
 				callback(events);
 			}
 			else {
@@ -11100,7 +11099,7 @@ function EventManager() { // assumed to be a calendar
 
 				// retrieve any outbound GET/POST $.ajax data from the options
 				var customData;
-				if ($.isFunction(source.data)) {
+				if (typeof source.data === 'function') {
 					// supplied as a function that returns a key/value object
 					customData = source.data();
 				}
@@ -11133,7 +11132,7 @@ function EventManager() { // assumed to be a calendar
 					success: function(events) {
 						events = events || [];
 						var res = applyAll(success, this, arguments);
-						if ($.isArray(res)) {
+						if (Array.isArray(res)) {
 							events = res;
 						}
 						callback(events);
@@ -11173,7 +11172,7 @@ function EventManager() { // assumed to be a calendar
 		var source;
 		var i;
 
-		if ($.isFunction(sourceInput) || $.isArray(sourceInput)) {
+		if (typeof sourceInput === 'function' || Array.isArray(sourceInput)) {
 			source = { events: sourceInput };
 		}
 		else if (typeof sourceInput === 'string') {
@@ -11197,7 +11196,7 @@ function EventManager() { // assumed to be a calendar
 			}
 
 			// for array sources, we convert to standard Event Objects up front
-			if ($.isArray(source.events)) {
+			if (Array.isArray(source.events)) {
 				source.origArray = source.events; // for removeEventSource
 				source.events = $.map(source.events, function(eventInput) {
 					return buildEventFromInput(eventInput, source);
@@ -11282,7 +11281,7 @@ function EventManager() { // assumed to be a calendar
 		if (!matchInputs) {
 			matchInputs = [];
 		}
-		else if (!$.isArray(matchInputs)) {
+		else if (!Array.isArray(matchInputs)) {
 			matchInputs = [ matchInputs ];
 		}
 
@@ -11435,7 +11434,7 @@ function EventManager() { // assumed to be a calendar
 		if (filter == null) { // null or undefined. remove all events
 			filter = function() { return true; }; // will always match
 		}
-		else if (!$.isFunction(filter)) { // an event ID
+		else if (typeof filter !== 'function') { // an event ID
 			eventID = filter + '';
 			filter = function(event) {
 				return event._id == eventID;
@@ -11449,7 +11448,7 @@ function EventManager() { // assumed to be a calendar
 		// This works because they have been converted to official Event Objects up front.
 		// (and as a result, event._id has been calculated).
 		for (i=0; i<sources.length; i++) {
-			if ($.isArray(sources[i].events)) {
+			if (Array.isArray(sources[i].events)) {
 				sources[i].events = $.grep(sources[i].events, filter, true);
 			}
 		}
@@ -11459,7 +11458,7 @@ function EventManager() { // assumed to be a calendar
 
 
 	function clientEvents(filter) {
-		if ($.isFunction(filter)) {
+		if (typeof filter === 'function') {
 			return $.grep(cache, filter);
 		}
 		else if (filter != null) { // not null, not undefined. an event ID
@@ -11481,7 +11480,7 @@ function EventManager() { // assumed to be a calendar
 
 		for (i = 0; i < sources.length; i++) {
 			events = sources[i].events;
-			if ($.isArray(events)) {
+			if (Array.isArray(events)) {
 
 				for (j = 0; j < events.length; j++) {
 					rezoneEventDates(events[j]);
@@ -12137,7 +12136,7 @@ Calendar.prototype.computeBusinessHourEvents = function(wholeDay, input) {
 	else if ($.isPlainObject(input)) {
 		return this.expandBusinessHourEvents(wholeDay, [ input ]);
 	}
-	else if ($.isArray(input)) {
+	else if (Array.isArray(input)) {
 		return this.expandBusinessHourEvents(wholeDay, input, true);
 	}
 	else {

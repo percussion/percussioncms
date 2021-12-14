@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -1649,7 +1649,7 @@ public class PSWsHelper extends PSWsHelperBase implements IPSWsHelper
    {
       // get the inbox list of ids as an xml string
       String data = executeCallDirect(auth, viewName, null);
-      StringBuffer ids = new StringBuffer();
+      StringBuilder ids = new StringBuilder();
 
       /**
        * The data returned from the above call looks like the following:

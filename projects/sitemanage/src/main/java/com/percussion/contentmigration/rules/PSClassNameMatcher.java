@@ -17,22 +17,22 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.contentmigration.rules;
 
-import static com.percussion.contentmigration.rules.PSBaseMatchingMigrationRule.filterClassName;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.Validate;
+import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.Validate;
-import org.jsoup.nodes.Element;
+import static com.percussion.contentmigration.rules.PSBaseMatchingMigrationRule.filterClassName;
 
 /**
  * Handles matching an element based on a set of class names, walking up the parent element chain.  Each time
@@ -47,7 +47,7 @@ public class PSClassNameMatcher
     
     Element cur;
     
-    List<Element> parents = new ArrayList<Element>();
+    List<Element> parents = new ArrayList<>();
 
     /**
      * Construct the matcher from the Element to start matching on, walking up it's parent chain.
@@ -91,7 +91,7 @@ public class PSClassNameMatcher
      */
     public Set<String> getNextParentElementClasses()
     {
-        Set<String> classNames = new HashSet<String>();
+        Set<String> classNames = new HashSet<>();
 
         while (classNames.isEmpty() && !parents.isEmpty())
         {

@@ -17,12 +17,13 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.security.impl;
 
+import com.percussion.security.IPSTypedPrincipal.PrincipalTypes;
 import com.percussion.security.PSGroupEntry;
 import com.percussion.security.PSRoleEntry;
 import com.percussion.security.PSUserAttributes;
@@ -34,13 +35,11 @@ import com.percussion.services.security.PSTypedPrincipal;
 import com.percussion.services.security.data.PSAccessLevelImpl;
 import com.percussion.services.security.data.PSAclEntryImpl;
 import com.percussion.services.security.data.PSAclImpl;
-import com.percussion.utils.security.IPSTypedPrincipal.PrincipalTypes;
+import junit.framework.TestCase;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import junit.framework.TestCase;
 
 /**
  * Test the iterator used to determine a user's permissions in a given acl

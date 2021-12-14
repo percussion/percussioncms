@@ -17,21 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.share.extension;
 
-import java.util.Properties;
-
-import org.apache.log4j.Logger;
-
 import com.percussion.server.IPSStartupProcess;
 import com.percussion.server.IPSStartupProcessManager;
 import com.percussion.server.cache.PSAutotuneCache;
 import com.percussion.server.cache.PSAutotuneCacheLocator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Properties;
 
 /**
  * Startup process to auto tune the ehcache.xml.<br/><br/>
@@ -42,7 +42,7 @@ import com.percussion.server.cache.PSAutotuneCacheLocator;
  */
 public class PSAutotuneCacheStartup implements IPSStartupProcess {
     
-    private static final Logger log = Logger
+    private static final Logger log = LogManager
             .getLogger(PSAutotuneCacheStartup.class.getName());
 
     @Override

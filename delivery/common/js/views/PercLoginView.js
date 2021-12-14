@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -45,8 +45,8 @@
                 //If the user is logged in, show the welcome message
                 $.PercMembershipService.getUser(sessionId, function(status, data) {
                     if (status === $.PercServiceUtils.STATUS_SUCCESS && null != data.userSummary && '' !== data.userSummary.email) {
-                        var loginMessage = ($.parseJSON(currentLoginWidget.attr("data"))).loggedInMessage;
-                        var showUsername = ($.parseJSON(currentLoginWidget.attr("data"))).showUsername;
+                        var loginMessage = (JSON.parse(currentLoginWidget.attr("data"))).loggedInMessage;
+                        var showUsername = (JSON.parse(currentLoginWidget.attr("data"))).showUsername;
                         if(null !== showUsername && 'undefined' !== typeof (showUsername) && 'showUsername' === showUsername) {
                             loginMessage += data.userSummary.email;   
                         }
@@ -69,7 +69,7 @@
             // Configure the login form handler. The form is rendered only in render as form mode.
             $('.perc-login-form').each(function() {
                 var self = $(this);
-                self.submit(handleSubmitForm);
+                self.on("submit", handleSubmitForm);
             });
         });
     }
@@ -86,7 +86,7 @@
         var currentLoginWidget = $(self.parents(".percLogin"));
         if (self.validate().form()) {
             // Retrieve options object and create loginObj passed to login service
-            var options = $.parseJSON(currentLoginWidget.attr('data'));
+            var options = JSON.parse(currentLoginWidget.attr('data'));
             var loginObj = {
                 email    : self.find("input[name=perc-login-email-field]").val(),
                 password : self.find("input[name=perc-login-password-field]").val()

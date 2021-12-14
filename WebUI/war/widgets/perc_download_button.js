@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -52,26 +52,26 @@
             //     2. Add to the previous condition(s): file should be under path "/Design/Web Resources/themes"
             //        {0:"", 1:"Design", 2:"Web Resources", 3:"themes", 4:"THEMENAME", 5:"THEMEFILE"}
             //     3. The element selected is a file (not a folder)
-            if(path[1] == $.perc_paths.DESIGN_ROOT_NO_SLASH && path.length > 4)
+            if(path[1] === $.perc_paths.DESIGN_ROOT_NO_SLASH && path.length > 4)
             {
                 // Get the selected item from Column or List mode with the class FSFile
-            	selectedItemSpec = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
-                if (selectedItemSpec == undefined)
+            	var selectedItemSpec = $("#perc-finder-listview .perc-datatable-row-highlighted").data("percRowData");
+                if (typeof selectedItemSpec === 'undefined')
                 {
-                	var selectedItemSpec = $(".mcol-listing.perc-listing-type-FSFile.mcol-opened.perc_last_selected").data("spec");
+                	 selectedItemSpec = $(".mcol-listing.perc-listing-type-FSFile.mcol-opened.perc_last_selected").data("spec");
                 }
                 // Now check the 3rd condition, that the element selected is a file under Design
-                if (selectedItemSpec != undefined 
-                        && selectedItemSpec.type == 'FSFile'
-                        && selectedItemSpec.leaf)
+                if (typeof selectedItemSpec !== 'undefined' &&
+                    selectedItemSpec.type === 'FSFile' &&
+                    selectedItemSpec.leaf)
                 {
-                    updateButtonUrl(true)
+                    updateButtonUrl(true);
                     enableButton(true);
                     return;
                 }
             }
             // Any other option disables the button
-            updateButtonUrl(false)
+            updateButtonUrl(false);
             enableButton(false);
         }
 
@@ -83,11 +83,14 @@
         {
             if (flag)
             {
-                btn.removeClass('ui-disabled').addClass('ui-enabled').unbind('click').click( launchDownload );
+                btn.removeClass('ui-disabled').addClass('ui-enabled').off('click').on("click",
+                    function(evt) {
+                        launchDownload(evt);
+                    });
             }
             else
             {
-                btn.addClass('ui-disabled').removeClass('ui-enabled').unbind('click');
+                btn.addClass('ui-disabled').removeClass('ui-enabled').off('click');
             }
             btn.trigger('actions-change-enabled-state');
         }
@@ -95,9 +98,8 @@
         /**
          * Launches the download functionality specific to the browser on the selected item.
          */
-        function launchDownload()
+        function launchDownload(evt)
         {
-            ;
         }
         
         /**

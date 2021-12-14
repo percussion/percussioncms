@@ -1,5 +1,7 @@
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
+
 <%--
   ~     Percussion CMS
   ~     Copyright (C) 1999-2020 Percussion Software, Inc.
@@ -19,22 +21,22 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
 
 <%
-	String locale= PSRoleUtilities.getUserCurrentLocale();
-	String lang="en";
-	if(locale==null){
-		locale="en-us";
-	}else{
-		if(locale.contains("-"))
-			lang=locale.split("-")[0];
-		else
-			lang=locale;
-	}
+    String locale= PSRoleUtilities.getUserCurrentLocale();
+    String lang="en";
+    if(locale==null){
+        locale="en-us";
+    }else{
+        if(locale.contains("-"))
+            lang=locale.split("-")[0];
+        else
+            lang=locale;
+    }
     String debug = request.getParameter("debug");
     boolean isDebug = "true".equals(debug);
     String debugQueryString = isDebug ? "?debug=true" : "";
@@ -42,6 +44,12 @@
     if (debug == null)
         debug = "false";
 %>
+<script>
+    function toggle(index){
+        $("#perc-styleTabs").tabs({ active: index });
+    }
+
+</script>
 <i18n:settings lang="<%= locale %>" prefixes="perc.ui." debug="<%=debug%>"/>
 
 <div id="ui-layout-west">
@@ -49,11 +57,11 @@
         <div class='perc-template-container'>
             <div id="perc-styleTabs">
                 <ul>
-                    <div id = "perc-dropdown-actions-style"></div>
-                    <div id = "perc-dropdown-view-style"></div>
-                    <li onclick="$j(this).find('a').click();"><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
-                    <li onclick="$j(this).find('a').click();"><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
-                    <li onclick="$j(this).find('a').click();"><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
+                    <div id = "perc-dropdown-actions-style" style="float:left;"></div>
+                    <div id = "perc-dropdown-view-style" style="float:left;"></div>
+                    <li onclick="toggle(0);"><a class="perc-style-sub-tab" href="#perc-styleTabs-1"><i18n:message key = "perc.ui.template.layout@Select Theme"/></a></li>
+                    <li onclick="toggle(1);"><a class="perc-style-sub-tab" href="#perc-styleTabs-2"><i18n:message key = "perc.ui.template.layout@View Theme CSS"/></a></li>
+                    <li onclick="toggle(2);"><a class="perc-style-sub-tab" href="#perc-styleTabs-3"><i18n:message key = "perc.ui.template.layout@Override Theme CSS"/></a></li>
                     <div style="text-align: right; float : right" class="ui-layout-east">
                         <button id="perc-css-editor-save"   class="btn btn-primary" name="perc_wizard_save"   ><i18n:message key ="perc.ui.button@Save"/></button>
                         <button id="perc-css-editor-cancel" class="btn btn-primary" name="perc_wizard_cancel" ><i18n:message key ="perc.ui.common.label@Cancel"/></button>
@@ -71,8 +79,8 @@
                     <div id="perc-css-editor">
                     </div>
                 </div>
-            </div>  
-        </div>        
+            </div>
+        </div>
     </div>
 </div>
 

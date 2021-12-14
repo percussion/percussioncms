@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -39,14 +39,14 @@ import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSRequest;
 import com.percussion.server.job.IPSJobErrors;
 import com.percussion.server.job.PSJobException;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
 import org.w3c.dom.Document;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -86,10 +86,10 @@ public class PSValidationJob extends PSDeployJob
       {
          m_descriptor = new PSImportDescriptor(descriptor.getDocumentElement());
          List pkgList = new ArrayList();
-         Iterator importPkgs = m_descriptor.getImportPackageList().iterator();
+         Iterator<PSImportPackage> importPkgs = m_descriptor.getImportPackageList().iterator();
          while (importPkgs.hasNext())
          {
-            PSImportPackage importPkg = (PSImportPackage)importPkgs.next();
+            PSImportPackage importPkg = importPkgs.next();
             pkgList.add(importPkg.getPackage());
          }
          initDepCount(pkgList.iterator(), false);
@@ -123,19 +123,11 @@ public class PSValidationJob extends PSDeployJob
                + ".xml");
             resultsFile.getParentFile().mkdirs();
             resultsFile.deleteOnExit();
-            
-            FileOutputStream out = null;
-            try 
-            {
-               out = new FileOutputStream(resultsFile);
+
+            try(FileOutputStream out = new FileOutputStream(resultsFile)){
                PSXmlDocumentBuilder.write(doc, out);
             }
-            finally 
-            {
-               if (out != null)
-                  try {out.close();} catch (IOException e){}
-            }
-            
+
             setStatus(100);  
             setStatusMessage(PSDeploymentManager.getBundle().getString("completed"));       
          }
@@ -145,7 +137,7 @@ public class PSValidationJob extends PSDeployJob
          // getLocalizedMessage often returns empty string
          setStatusMessage("error: " + ex.toString());
          setStatus(-1);
-         LogFactory.getLog(getClass()).error("Error validating Deployer "
+         LogManager.getLogger(getClass()).error("Error validating Deployer "
                + "package", ex);
       }
       finally
@@ -164,8 +156,7 @@ public class PSValidationJob extends PSDeployJob
     * 
     * @throws PSDeployException If there are any errors.
     */
-   public void validate(PSImportDescriptor descriptor, IPSJobHandle jobHandle, PSSecurityToken tok) throws PSDeployException
-   {
+   public void validate(PSImportDescriptor descriptor, IPSJobHandle jobHandle, PSSecurityToken tok) throws PSDeployException, PSNotFoundException {
        Validate.notNull(descriptor);
        Validate.notNull(jobHandle);
        Validate.notNull(tok);

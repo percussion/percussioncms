@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -34,12 +34,8 @@ import com.percussion.extensions.general.PSMakeIntLink;
 import com.percussion.server.IPSInternalRequest;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.xml.PSXmlDocumentBuilder;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,6 +44,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * This exit is used to produce database publisher documents that conform to
  * the sys_DatabasePublisher.dtd out of input documents conforming to the
@@ -55,6 +56,9 @@ import org.w3c.dom.Text;
  */
 public class PSDatabasePublisher implements IPSResultDocumentProcessor
 {
+
+   private static final Logger log = LogManager.getLogger(PSDatabasePublisher.class);
+
    // see IPSResultDocumentProcessor#canModifyStyleSheet()
    public boolean canModifyStyleSheet()
    {
@@ -161,7 +165,8 @@ public class PSDatabasePublisher implements IPSResultDocumentProcessor
       }
       catch (Throwable t)
       {
-         t.printStackTrace();
+         log.error(t.getMessage());
+         log.debug(t.getMessage(), t);
          throw new PSExtensionProcessingException(0, t.getLocalizedMessage());
       }
       finally

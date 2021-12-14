@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -69,17 +69,22 @@
             var callbackOptions = {};
             
             
-            $.extend(this.settings, $.parseJSON($(this).attr('data-options')));
-			$.extend(this.settings.query, $.parseJSON($(this).attr('data-query')));
+            $.extend(this.settings, JSON.parse($(this).attr('data-options')));
+			$.extend(this.settings.query, JSON.parse($(this).attr('data-query')));
 			var rootElem = $("<div/>");
 			
-			if(this.settings.eventListLimitOverride > 0 && (this.settings.eventListLimitOverride != this.settings.maxEvents)){
+			if(this.settings.eventListLimitOverride > 0 && (this.settings.eventListLimitOverride !== this.settings.maxEvents)){
 			this.settings.maxEvents = this.settings.eventListLimitOverride;
 			}
 		
 			
 			$.PercEmsEventListService.getPageEntries(this.settings, function(status, result, settings )
             {
+
+				if('object' !== typeof(result)){
+					result = JSON.parse(result);
+				}
+
                 if (result && result.length)
                 {
 					var titleElem = createTitleHtml(settings);
@@ -151,7 +156,7 @@ var dEventDate  = new Date(eventDate);
 var timeOptions = { hour: 'numeric', minute: 'numeric'}		
 		
 		
-		listItem = $("<li>").addClass("ui-perc-list-element").append('<a href="' + settings.baseEmsEventLink + eventId + '" title="' + eventName + '" target="_blank" class="perc-emseventlist-eventtitle">' + eventName + '</a>');
+		listItem = $("<li>").addClass("ui-perc-list-element").append('<a href="' + settings.baseEmsEventLink + eventId + '" title="' + eventName + '" target="_blank" rel = "noopener noreferrer" class="perc-emseventlist-eventtitle">' + eventName + '</a>');
         
 		if(settings.enableCalenderIcon){
 			listItem.append('<div class="perc-emseventlist-calicon"> <div class="perc-emseventlist-calicon-month">'+ dEventDate.toLocaleDateString(settings.locale, calOptions) + '</div><div class="perc-emseventlist-calicon-day">' +dEventDate.getDate() + '</div></div>');

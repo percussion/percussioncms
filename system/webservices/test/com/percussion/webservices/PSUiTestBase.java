@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,15 +37,13 @@ import com.percussion.webservices.uidesign.FindHierarchyNodesRequest;
 import com.percussion.webservices.uidesign.LoadHierarchyNodesRequest;
 import com.percussion.webservices.uidesign.SaveHierarchyNodesRequest;
 import com.percussion.webservices.uidesign.UiDesignSOAPStub;
-
-import javax.xml.rpc.ServiceException;
-
 import junit.framework.AssertionFailedError;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.experimental.categories.Category;
+
+import javax.xml.rpc.ServiceException;
 
 import static org.junit.Assert.assertNotNull;
 

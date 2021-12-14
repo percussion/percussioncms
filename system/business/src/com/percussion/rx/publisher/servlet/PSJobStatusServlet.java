@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -29,13 +29,21 @@ import com.percussion.rx.publisher.IPSRxPublisherServiceInternal;
 import com.percussion.rx.publisher.PSRxPubServiceInternalLocator;
 import com.percussion.rx.publisher.jsf.nodes.PSPublishingStatusHelper;
 import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.publisher.IPSEdition;
 import com.percussion.services.publisher.IPSPublisherService;
 import com.percussion.services.publisher.PSPublisherServiceLocator;
 import com.percussion.utils.guid.IPSGuid;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONArray;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
@@ -43,15 +51,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.json.JSONArray;
 
 /**
  * Returns the status of one job or all jobs as JSON encoded data. The
@@ -96,7 +95,7 @@ public class PSJobStatusServlet extends HttpServlet
          if (StringUtils.isNotBlank(stopjob))
          {
             psvc.cancelPublishingJob(Long.parseLong(stopjob));
-            Map<String, Object> data = new HashMap<String, Object>();
+            Map<String, Object> data = new HashMap<>();
             data.put("cancelled", stopjob);
             arr.put(data);
          }
@@ -111,7 +110,7 @@ public class PSJobStatusServlet extends HttpServlet
                }
                catch (IllegalStateException e)
                {
-                  data = new HashMap<String, Object>();
+                  data = new HashMap<>();
                   data.put("statename", IPSPublisherJobStatus.State.INACTIVE
                         .name());
                }
@@ -122,7 +121,7 @@ public class PSJobStatusServlet extends HttpServlet
       }
       catch (Exception e)
       {
-         Map<String, Object> data = new HashMap<String, Object>();
+         Map<String, Object> data = new HashMap<>();
          data.put("exception", e.getLocalizedMessage());
          arr.put(data);
       }
@@ -156,7 +155,7 @@ public class PSJobStatusServlet extends HttpServlet
    private Collection<Long> getJobs(String edition,
          String requestid, IPSRxPublisherServiceInternal psvc)
    {
-      Collection<Long> jobs = new ArrayList<Long>();
+      Collection<Long> jobs = new ArrayList<>();
       if (edition != null)
       {
          IPSGuidManager gmgr = PSGuidManagerLocator.getGuidMgr();
@@ -193,11 +192,10 @@ public class PSJobStatusServlet extends HttpServlet
     * @return a map of data from the job's status, never <code>null</code>.
     */
    private Map<String, Object> getJobStatus(IPSRxPublisherService psvc,
-         IPSPublisherService pubsvc, DateFormat fmt, Long job)
-   {
+         IPSPublisherService pubsvc, DateFormat fmt, Long job) throws PSNotFoundException {
       IPSPublisherJobStatus stat = psvc.getPublishingJobStatus(job);
       IPSEdition ed = pubsvc.loadEdition(stat.getEditionId());
-      Map<String, Object> data = new HashMap<String, Object>();
+      Map<String, Object> data = new HashMap<>();
       data.put("job_id", job);
       data.put("percent", PSPublishingStatusHelper.getJobCompletionPercent(stat));
       data.put("assembled", stat.countAssembledItems());

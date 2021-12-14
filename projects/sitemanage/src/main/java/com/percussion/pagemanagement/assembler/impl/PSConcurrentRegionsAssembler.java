@@ -17,16 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.assembler.impl;
-
-import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
-
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.Validate.notNull;
 
 import com.percussion.pagemanagement.assembler.IPSRegionAssembler;
 import com.percussion.pagemanagement.assembler.IPSRegionsAssembler;
@@ -42,6 +37,10 @@ import com.percussion.services.assembly.PSAssemblyException;
 import com.percussion.services.assembly.PSAssemblyServiceLocator;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.webservices.PSWebserviceUtils;
+import org.apache.commons.collections.list.AbstractListDecorator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,10 +53,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.apache.commons.collections.list.AbstractListDecorator;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.StopWatch;
+import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * Concurrently assemblies a collection of regions.
@@ -92,8 +90,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             Collection<PSMergedRegion> mergedRegions)
     {
         StopWatch sw = new StopWatch(getClass().getSimpleName()+"#assembleRegions");
-        List<RegionResultsCallable> calls = new ArrayList<RegionResultsCallable>();
-        List<PSMergedRegion> mrList = new ArrayList<PSMergedRegion>(mergedRegions);
+        List<RegionResultsCallable> calls = new ArrayList<>();
+        List<PSMergedRegion> mrList = new ArrayList<>(mergedRegions);
         sw.start("cloneRequest");
         for(PSMergedRegion mr : mergedRegions) {
             notNull(mr, "Merged Region");
@@ -111,7 +109,7 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
                 results = executorService.invokeAll(calls);
             }
             else {
-                results = new ArrayList<Future<List<PSRegionResult>>>();
+                results = new ArrayList<>();
                 for(RegionResultsCallable c : calls) {
                     Future<List<PSRegionResult>> f = executorService.submit(c);
                     results.add(f);
@@ -119,7 +117,7 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             }
             for(Future<List<PSRegionResult>> f : results) {
                 PSMergedRegion mr = mrList.get(i);
-                List<PSRegionResult> regions = new FutureList<PSRegionResult>(f);
+                List<PSRegionResult> regions = new FutureList<>(f);
                 context.getRegions().put(mr.getRegionId(), regions);
                 ++i;
             }
@@ -127,7 +125,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
         }
         catch (InterruptedException e)
         {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+
         }
         finally {
             executorService.shutdown();
@@ -169,8 +168,9 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             
             setPreviewUrlGenerator(request);
 
-            if ( isNotBlank(assemblyItem.getUserName()) )
+            if ( isNotBlank(assemblyItem.getUserName()) ) {
                 PSWebserviceUtils.setUserName(assemblyItem.getUserName());
+            }
                 
             
             List<PSRegionResult> regions = 
@@ -244,7 +244,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
             }
             catch (InterruptedException e)
             {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
+                return null;
             }
             catch (ExecutionException e)
             {
@@ -296,7 +297,8 @@ public class PSConcurrentRegionsAssembler implements IPSRegionsAssembler
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSConcurrentRegionsAssembler.class);
+
+    private static final Logger log = LogManager.getLogger(PSConcurrentRegionsAssembler.class);
 
 }
 

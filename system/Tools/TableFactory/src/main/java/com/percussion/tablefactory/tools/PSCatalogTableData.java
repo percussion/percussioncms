@@ -17,24 +17,47 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.tablefactory.tools;
 
-import com.percussion.tablefactory.*;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.tablefactory.PSJdbcColumnDef;
+import com.percussion.tablefactory.PSJdbcDataTypeMap;
+import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcImportExportHelper;
+import com.percussion.tablefactory.PSJdbcTableData;
+import com.percussion.tablefactory.PSJdbcTableFactory;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
+import com.percussion.tablefactory.PSJdbcTableSchema;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Uses the table factory to export a given database table's definition (schema)
@@ -42,6 +65,9 @@ import java.util.*;
  */ 
 public class PSCatalogTableData
 {
+
+   private static final Logger log = LogManager.getLogger(PSCatalogTableData.class);
+
    /**
     * Creates a <code>PSJdbcDbmsDef</code> by loading the specified properties 
     * file.  Assumes that the password in the properties file is encrypted.
@@ -58,6 +84,7 @@ public class PSCatalogTableData
     * @throws PSJdbcTableFactoryException if an error occurs while decrypting
     * the database password specified in the properties file.
     */
+   @SuppressFBWarnings("HARD_CODE_PASSWORD")
    public static PSJdbcDbmsDef loadProps(String propsName)
       throws PSJdbcTableFactoryException, IOException
    {
@@ -248,7 +275,8 @@ public class PSCatalogTableData
       } catch (Exception e)
       {
          System.out.println( "Unexpected error: " );
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          System.exit( 1 );
       } finally
       {
@@ -449,7 +477,8 @@ public class PSCatalogTableData
          System.exit(0);
       }
       catch (Exception e) {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 

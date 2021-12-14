@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -28,8 +28,8 @@ import com.percussion.delivery.metadata.IPSBlogPostVisit;
 import com.percussion.delivery.metadata.IPSBlogPostVisitDao;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
 import org.apache.commons.lang.Validate;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
     /**
      * Logger for this class.
      */
-    private static final Log log = LogFactory.getLog(PSBlogPostVisitDao.class);
+    private static final Logger log = LogManager.getLogger(PSBlogPostVisitDao.class);
 
     private static PSHashCalculator hashCalculator = new PSHashCalculator();
 
@@ -215,7 +215,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
 
     private Collection<String> getPagepathHashes(Collection<String> pagepaths)
     {
-        List<String> pagepathHashes = new ArrayList<String>();
+        List<String> pagepathHashes = new ArrayList<>();
 
         for (String pp : pagepaths)
         {
@@ -228,7 +228,7 @@ public class PSBlogPostVisitDao  implements IPSBlogPostVisitDao {
     private Collection<PSDbBlogPostVisit> convertToDbVisits(Collection<IPSBlogPostVisit> visits) {
         Validate.notNull(visits, "list of visits cannot be null");
 
-        Collection<PSDbBlogPostVisit> result = new ArrayList<PSDbBlogPostVisit>();
+        Collection<PSDbBlogPostVisit> result = new ArrayList<>();
         for (IPSBlogPostVisit visit : visits) {
             PSDbBlogPostVisit dbVisit = findBlogPostVisitByDate(visit.getPagepath(), visit.getHitDate());
             if (dbVisit != null) {

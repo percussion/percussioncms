@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -33,7 +33,6 @@ import com.percussion.delivery.metadata.IPSMetadataIndexerService;
 import com.percussion.delivery.metadata.IPSMetadataProperty;
 import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.IPSMetadataRestService;
-import com.percussion.delivery.metadata.data.HrefData;
 import com.percussion.delivery.metadata.data.PSCookieConsentQuery;
 import com.percussion.delivery.metadata.data.PSMetadataBlogResult;
 import com.percussion.delivery.metadata.data.PSMetadataDatedEntries;
@@ -48,6 +47,7 @@ import com.percussion.delivery.metadata.data.PSVisitQuery;
 import com.percussion.delivery.metadata.data.PSVisitRestEntry;
 import com.percussion.delivery.metadata.impl.utils.PSPair;
 import com.percussion.delivery.services.PSAbstractRestService;
+import com.percussion.error.PSExceptionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,14 +55,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -71,8 +73,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -81,8 +81,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-//import org.apache.commons.logging.Log;
-//import org.apache.commons.logging.LogFactory;
 
 /**
  * REST/Webservice layer for metadata services.
@@ -90,7 +88,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Path("/metadata")
 @Component
-@Scope("singleton")
 public class PSMetadataRestService extends PSAbstractRestService implements IPSMetadataRestService
 {
     /**
@@ -116,8 +113,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     /**
      * Logger for this class.
      */
-    //public static Log log = LogFactory.getLog(PSMetadataRestService.class);
-    private final static Logger log = LogManager.getLogger(PSMetadataRestService.class);
+    private static final Logger log = LogManager.getLogger(PSMetadataRestService.class);
 
     public PSMetadataRestService(){}
 
@@ -133,10 +129,20 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         this.cookieService = cookieService;
     }
 
-    /**
-     * Date format used for string serialized date. 2011-01-21T09:36:05
-     */
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    @HEAD
+    @Path("/csrf")
+    public void csrf(@Context HttpServletRequest request, @Context HttpServletResponse response)  {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return;
+        }
+        for(Cookie cookie: cookies){
+            if("XSRF-TOKEN".equals(cookie.getName())){
+                response.setHeader("X-CSRF-HEADER", "X-XSRF-TOKEN");
+                response.setHeader("X-CSRF-TOKEN", cookie.getValue());
+            }
+        }
+    }
 
     /* (non-Javadoc)
      * @see com.percussion.delivery.metadata.impl.IPSMetadataRestService#get(com.percussion.delivery.metadata.data.PSMetadataQuery)
@@ -149,15 +155,20 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     public PSSearchResults get(PSMetadataQuery metadataQuery)
     {
         // execute the query
-        List<PSMetadataRestEntry> resultArr = new ArrayList<PSMetadataRestEntry>();
+        List<PSMetadataRestEntry> resultArr = new ArrayList<>();
         PSSearchResults searchResults = new PSSearchResults();
 
         if(metadataQuery == null) {
             log.error("Illegal argument passed. MetadataQuery cannot be null.");
             return searchResults;
         }
+        //Check FOR CMS-6530 Vulnerability ISSUE
+        if(metadataQuery.getOrderBy() != null && metadataQuery.getOrderBy().toUpperCase().contains(" OR ")){
+            log.error("Blind SQL Injection Vulnerability found.");
+            return searchResults;
+        }
         if(log.isDebugEnabled()){
-            log.debug("Metadata query criteria in the service is :" + metadataQuery.getCriteria().toString());
+            log.debug("Metadata query criteria in the service is : {}", metadataQuery.getCriteria());
         }
 
         try
@@ -173,7 +184,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during searching metadata : " + e.getLocalizedMessage());
+            log.error("Exception during searching metadata : {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -195,7 +206,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
 
         if(log.isDebugEnabled()){
-            log.debug("Metadata query criteria in the service is :" + metadataQuery.getCriteria().toString());
+            log.debug("Metadata query criteria in the service is : {}" , metadataQuery.getCriteria());
         }
 
         try
@@ -210,7 +221,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting tag list : " + e.getLocalizedMessage());
+            log.error("Exception during getting tag list : {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -226,27 +237,27 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     public PSMetadataBlogResult getBlog(PSMetadataQuery metadataQuery)
     {
 
-        String currentPageId = metadataQuery.getCurrentPageId();
         if(metadataQuery == null) {
             log.error("Illegal argument passed. MetadataQuery cannot be null.");
             return null;
         }
+
+        String currentPageId = metadataQuery.getCurrentPageId();
 
         if(StringUtils.isEmpty(currentPageId)) {
             log.error("Illegal argument passed to getBlog. Current Page Id was missing from request.");
             return null;
         }
 
-        if(log.isDebugEnabled()){
-            log.debug("Metadata query criteria in the service is :" + metadataQuery.getCriteria().toString());
-            log.debug("Current page id in the service is :" + currentPageId);
-        }
+        log.debug("Metadata query criteria in the service is : {}",  metadataQuery.getCriteria());
+        log.debug("Current page id in the service is : {}",  currentPageId);
+
 
         try
         {
             PSPair<List<IPSMetadataEntry>, Integer> metadataResults = queryService.executeQuery(metadataQuery);
             List<IPSMetadataEntry> results = metadataResults.getFirst();
-            List<PSMetadataRestEntry> resultArr = new ArrayList<PSMetadataRestEntry>();
+            List<PSMetadataRestEntry> resultArr = new ArrayList<>();
             for (IPSMetadataEntry entry : results)
             {
                 resultArr.add(toRestMetadataEntry(entry));
@@ -276,7 +287,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting current blog : " + e.getLocalizedMessage());
+            log.error("Exception during getting current blog : {}",PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -300,11 +311,11 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
 
         try
         {
-            PSPair<List<IPSMetadataEntry>, Integer> metadataResults = queryService.executeQuery(metadataQuery);
-            List<IPSMetadataEntry> results = metadataResults.getFirst();
+            //Getting all pages that match query
+            List<Object[]> cats = queryService.executeCategoryQuery(metadataQuery);
             PSMetadataCategoriesHelper psMetadataCategoriesHelper = new PSMetadataCategoriesHelper();
 
-            return psMetadataCategoriesHelper.processCategories(results);
+            return psMetadataCategoriesHelper.processCategorySummary(cats);
 
         }
         catch (Exception e)
@@ -329,9 +340,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return null;
         }
 
-        if(log.isDebugEnabled()){
-            log.debug("Metadata query criteria in the service is :" + metadataQuery.getCriteria().toString());
-        }
+        log.debug("Metadata query criteria in the service is: {}" , metadataQuery.getCriteria());
 
         try
         {
@@ -343,7 +352,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting blogs : " + e.getLocalizedMessage());
+            log.error("Exception during getting blogs: {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -363,9 +372,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return null;
         }
 
-        if(log.isDebugEnabled()){
-            log.debug("Metadata query criteria in the service is :" + metadataQuery.getCriteria().toString());
-        }
+        log.debug("Metadata query criteria in the service is: {}" , metadataQuery.getCriteria());
 
         try
         {
@@ -378,7 +385,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting dated entries : " + e.getLocalizedMessage());
+            log.error("Exception during getting dated entries : {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -394,7 +401,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     {
         try
         {
-            if (pagepaths.size() > 0)
+            if (!pagepaths.isEmpty())
             {
                 indexer.delete(pagepaths);
                 visitService.delete(pagepaths);
@@ -402,7 +409,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during delete : " + e.getLocalizedMessage());
+            log.error("Exception during delete : {}",PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -424,7 +431,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Exception during getting all indexed directories : " + e.getLocalizedMessage());
+            log.error("Exception during getting all indexed directories: {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -464,16 +471,12 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
      *            PSMetadataTagsHelper.processTags method. Should never be
      *            <code>null</code>.
      * @return A PSMetadataRestTagList instance.
-     * @throws Exception
      */
-    private PSMetadataRestTagList toRestMetadataTagList(List<PSPair<String, Integer>> tags) throws Exception
+    private PSMetadataRestTagList toRestMetadataTagList(List<PSPair<String, Integer>> tags)
     {
         PSMetadataRestTagList tagListResults = new PSMetadataRestTagList();
 
-        for (int i = 0; i < tags.size(); i++)
-        {
-            PSPair<String, Integer> tag = tags.get(i);
-
+        for (PSPair<String, Integer> tag : tags) {
             PSMetadataRestTag metadataTag = new PSMetadataRestTag();
             metadataTag.setTagName(tag.getFirst());
             metadataTag.setTagCount(tag.getSecond());
@@ -507,20 +510,20 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     public String updateCategoryInDTS(String category, @PathParam("sitename") String sitename, @PathParam("deliveryserver") String deliveryserver) {
 
         JSONObject categoryJson = null;
-        JSONObject returnJson = null;
+        JSONObject returnJson = new JSONObject();
         JSONArray categoryArray = null;
 
         try {
 
             categoryArray = new JSONArray(category);
 
-            if(categoryArray != null && categoryArray.length() != 0) {
+            if( categoryArray.length() != 0) {
                 returnJson = categoryArray.getJSONObject(0);
 
                 for(int i = 0; i < categoryArray.length(); i++) {
                     categoryJson = categoryArray.getJSONObject(i);
 
-                    int updatedRows = dao.updateByCategoryProperty(categoryJson.get("previousCategoryName").toString(), categoryJson.get("title").toString());
+                   dao.updateByCategoryProperty(categoryJson.get("previousCategoryName").toString(), categoryJson.get("title").toString());
                 }
             } else {
                 returnJson = new JSONObject();
@@ -531,9 +534,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             }
         } catch (JSONException e) {
 
-            log.error("JSON Exception during updating the categories : " + e.getLocalizedMessage());
-
-            e.printStackTrace();
+            log.error("JSON Exception during updating the categories : {}" ,e.getMessage());
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
 
         return  returnJson.toString();
@@ -557,7 +559,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
     @Path("/topblogposts")
     @Produces(MediaType.APPLICATION_JSON)
     public List<PSMetadataRestEntry> getTopVisitedBlogPosts(PSVisitQuery visitQuery) {
-        List<PSMetadataRestEntry> results  = new ArrayList<PSMetadataRestEntry>();
+        List<PSMetadataRestEntry> results  = new ArrayList<>();
         try {
             List<String> promotedPagePaths = new ArrayList<>(Arrays.asList(StringUtils.defaultString(visitQuery.getPromotedPagePaths(), "").split(";")));
 
@@ -588,7 +590,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             }
 
         } catch (Exception e) {
-            log.error("Exception during getting top read blog posts : " + e.getLocalizedMessage());
+            log.error("Exception during getting top read blog posts: {}" ,PSExceptionUtils.getMessageForLog(e));
 
             throw new WebApplicationException(e, Response.serverError().build());
         }
@@ -607,8 +609,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return;
         }
 
-        log.debug("Cookie consent query object to save is: " + consentQuery.toString());
-        log.debug("IP to save is: " + req.getRemoteAddr());
+        log.debug("Cookie consent query object to save is: {}" , consentQuery);
+        log.debug("IP to save is: {}",  req.getRemoteAddr());
 
         consentQuery.setIP(req.getRemoteAddr());
         // logging through visit service to make use of
@@ -629,9 +631,9 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return Response.serverError().build();
         }
 
-        log.debug("Exporting all site stats.  CSV file name is: " + csvFileName);
+        log.debug("Exporting all site stats.  CSV file name is: {}", csvFileName);
 
-        Collection<IPSCookieConsent> consents = new ArrayList<IPSCookieConsent>();
+        Collection<IPSCookieConsent> consents;
         consents = this.cookieService.getAllConsentStats();
         PSCookieConsentCSVWriter writer = new PSCookieConsentCSVWriter(consents);
 
@@ -643,7 +645,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error getting cookie consent entries.", e);
+            log.error("Error getting cookie consent entries. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -661,9 +664,9 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return Response.serverError().build();
         }
 
-        log.debug("Exporting CSV entries for site:" + siteName + " with CSV name: " + csvFileName);
+        log.debug("Exporting CSV entries for site: {} with CSV name: {}" ,siteName,csvFileName);
 
-        Collection<IPSCookieConsent> consents = new ArrayList<IPSCookieConsent>();
+        Collection<IPSCookieConsent> consents = new ArrayList<>();
         consents = this.cookieService.getAllConsentStatsForSite(siteName);
         PSCookieConsentCSVWriter writer = new PSCookieConsentCSVWriter(consents);
 
@@ -715,7 +718,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return totals;
         }
 
-        log.debug("Getting cookie consent entries for site: " + siteName);
+        log.debug("Getting cookie consent entries for site: {}" , siteName);
 
         try
         {
@@ -723,7 +726,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error getting total cookie consents per site with name: " + siteName, e);
+            log.error("Error getting total cookie consents per site with name: {} Error: {}" , siteName,PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
 
@@ -744,7 +748,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error deleting all cookie consent entries.", e);
+            log.error("Error deleting all cookie consent entries. Error: {}", PSExceptionUtils.getMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -761,7 +765,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return Response.serverError().build();
         }
 
-        log.debug("Deleting all cookie consent entries for site: " + siteName);
+        log.debug("Deleting all cookie consent entries for site: {}" , siteName);
 
         try
         {
@@ -770,7 +774,8 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
         }
         catch (Exception e)
         {
-            log.error("Error deleting all cookie consent entries.", e);
+            log.error("Error deleting all cookie consent entries. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             throw new WebApplicationException(e, Response.serverError().build());
         }
     }
@@ -780,7 +785,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
 
         String version = super.getVersion();
 
-        log.info("getVersion() from PSMetadataRestService ..." + version);
+        log.info("getVersion() from PSMetadataRestService ... {}", version);
 
         return version;
     }
@@ -806,7 +811,7 @@ public class PSMetadataRestService extends PSAbstractRestService implements IPSM
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        log.info("Logging with: " + prevSiteName);
+        log.info("Logging with: {}" , prevSiteName);
         dao.deleteBySite(prevSiteName, newSiteName);
 
         Collection<IPSCookieConsent> cookies = cookieService.getAllConsentStatsForSite(prevSiteName);

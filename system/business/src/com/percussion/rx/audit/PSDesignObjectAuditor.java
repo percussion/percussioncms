@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -32,13 +32,12 @@ import com.percussion.services.audit.data.PSAuditLogEntry.AuditTypes;
 import com.percussion.services.catalog.IPSCatalogIdentifier;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
+import org.aspectj.lang.JoinPoint;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
-import org.aspectj.lang.JoinPoint;
 
 /**
  * This class is intended to be configured with Spring AOP to write 
@@ -95,7 +94,7 @@ public class PSDesignObjectAuditor
       
       IPSDesignObjectAuditService svc = 
          PSDesignObjectAuditServiceLocator.getAuditService();
-      Collection<PSAuditLogEntry> entries = new ArrayList<PSAuditLogEntry>();
+      Collection<PSAuditLogEntry> entries = new ArrayList<>();
       
       // assume we are auditing the first argument since all service method
       // signatures follow this pattern
@@ -137,7 +136,7 @@ public class PSDesignObjectAuditor
    public Collection<PSAuditData> createAuditData(String methodName, 
       Object arg)
    {
-      Collection<PSAuditData> dataList = new ArrayList<PSAuditData>();
+      Collection<PSAuditData> dataList = new ArrayList<>();
       
       if (methodName == null)
          return dataList;

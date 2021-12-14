@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -25,9 +25,9 @@ package com.percussion.proxyconfig.service.impl;
 
 import com.percussion.delivery.service.impl.PSDeliveryInfoLoader;
 import com.percussion.proxyconfig.service.impl.ProxyConfig.Password;
+import com.percussion.security.PSEncryptor;
 import com.percussion.server.PSServer;
 import com.percussion.share.dao.PSSerializerUtils;
-import com.percussion.utils.security.PSEncryptor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -140,11 +140,11 @@ public class ProxyConfigTest
             String origPwVal = s.getPassword().getValue();
 
             origPw.setEncrypted(Boolean.TRUE);
-            String enc = PSEncryptor.getInstance().encrypt(origPwVal);
+            String enc = PSEncryptor.encryptString(rxdeploydir, origPwVal);
             origPw.setValue(enc);
 
             // make sure password can be decrypted  
-            String pw = PSEncryptor.getInstance().decrypt(enc);
+            String pw = PSEncryptor.decryptString(rxdeploydir,enc);
             assertTrue(origPwVal.equals(pw));
         }
         

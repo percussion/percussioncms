@@ -17,24 +17,23 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.extensions.cms;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.percussion.data.PSConversionException;
+import com.percussion.extension.PSSimpleJavaUdfExtension;
+import com.percussion.server.IPSInternalRequest;
+import com.percussion.server.IPSRequestContext;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
-import com.percussion.data.PSConversionException;
-import com.percussion.extension.PSSimpleJavaUdfExtension;
-import com.percussion.server.IPSInternalRequest;
-import com.percussion.server.IPSRequestContext;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a generic UDF that can be used to compute field value to override 

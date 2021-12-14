@@ -1,6 +1,6 @@
 /*
  *     Percussion CMS
- *     Copyright (C) 1999-2020 Percussion Software, Inc.
+ *     Copyright (C) 1999-2021 Percussion Software, Inc.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -17,15 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 
 package com.percussion.preinstall;
 
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.xml.PSSecureXMLUtils;
+import com.percussion.security.xml.PSXmlSecurityOptions;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tools.ant.taskdefs.Replace;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,14 +40,18 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
-import java.nio.file.DirectoryStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -50,6 +59,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class Main {
+
+    private static final Logger log = LogManager.getLogger(Main.class);
 
     public static String DISTRIBUTION_DIR = "distribution";
     public static final String PERC_JAVA_HOME = "perc.java.home";
@@ -60,15 +71,20 @@ public class Main {
     public static final String DEVELOPMENT = "DEVELOPMENT";
     public static final String ANT_INSTALL = "install.xml";
     public static final String JAVA_TEMP = "java.io.tmpdir";
+    public static final String VERSION_PROPERTIES = "Version.properties";
+    private static final String INSTALLATION_PROPS_PATH = "/jetty/base/etc/installation.properties";
+    private static final String SERVER_PROPS_PATH = "/rxconfig/Server/server.properties";
     public static File tmpFolder;
 
     public static String developmentFlag = "false";
     public static String percVersion;
-    public static volatile int currentLineNo;
-    public static volatile int currentErrLineNo;
+    public static AtomicInteger currentLineNo = new AtomicInteger(0);
+    public static AtomicInteger currentErrLineNo = new AtomicInteger(0);
     public static volatile String debug="false";
     public static Integer processCode=0;
     public static Boolean error=false;
+    public static int majorVersion = 0;
+    public static int minorVersion = 0;
 
     public static void main(String[] args) {
         try {
@@ -112,6 +128,20 @@ public class Main {
 
 
             System.out.println("Installation folder is " + installPath.toAbsolutePath().toString());
+
+            Properties existingVersion = loadVersionProperties(installPath);
+            if(existingVersion != null) {
+                String major = existingVersion.getProperty("majorVersion");
+                String minor = existingVersion.getProperty("minorVersion");
+                log.info("Major Version Found: {}" , major);
+                log.info("Minor Version Found: {}" ,minor);
+                try {
+                    majorVersion = Integer.parseInt(major);
+                    minorVersion = Integer.parseInt(minor);
+                }catch (NumberFormatException ne){
+                    log.warn("Invalid Version number in Version File");
+                }
+            }
 
             Path installSrc;
             Path currentJar = Paths.get(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
@@ -172,7 +202,7 @@ public class Main {
 
             // copy each entry in the dest path
             for (ZipEntry entry : entries) {
-                currentLineNo++;
+                currentLineNo.getAndIncrement();
                 String entryName = entry.getName();
                 if (!entryName.startsWith(folderPrefix))
                     continue;
@@ -192,7 +222,7 @@ public class Main {
                     continue;
                 }
                 if(MainIAInstall.installerProxy!=null){
-                    MainIAInstall.showProgress(MainIAInstall.installerProxy,currentLineNo,"Extracting temporary files...",entryDest.toString());
+                    MainIAInstall.showProgress(MainIAInstall.installerProxy,currentLineNo.get(),"Extracting temporary files...",entryDest.toString());
                 }else {
                     System.out.println("Creating file " + entryDest);
                 }
@@ -201,7 +231,8 @@ public class Main {
 
             }
         }   catch(Exception ex){
-            ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             error=true;
         }
     }
@@ -222,91 +253,145 @@ public class Main {
             } else {
                 javabin = javaHome + "\\bin\\java.exe";
             }
-
             //"-Dlistener=com.percussion.preinstall.AntBuildListener",
             ProcessBuilder builder = new ProcessBuilder(
-                    javabin,"-Dfile.encoding=UTF8","-Dsun.jnu.encoding=UTF8", "-Dinstall.dir=" + installDir.toAbsolutePath().toString(), "-jar", jar.toAbsolutePath().toString(), "-f", ANT_INSTALL).directory(execPath.toFile());
+                    javabin,"-Dfile.encoding=UTF-8","-Dsun.jnu.encoding=UTF-8", "-Dinstall.dir=" + installDir.toAbsolutePath().toString(), "-jar", jar.toAbsolutePath().toString(), "-f", ANT_INSTALL).directory(execPath.toFile());
 
             //pass in known flags
             builder.environment().put(DEVELOPMENT, developmentFlag);
             builder.environment().put(PERCUSSION_VERSION, percVersion);
-
             //Pass on the temp dir if set
             builder.environment().put(JAVA_TEMP, System.getProperty("java.io.tmpdir"));
             Process process = builder.inheritIO().start();
 
-            InputStream inStream = process.getInputStream();
-            InputStream inErrStream = process.getErrorStream();
+            try(InputStream inStream = process.getInputStream()) {
+                try (InputStream inErrStream = process.getErrorStream()) {
 
-            InputStreamLineBuffer outBuff = new InputStreamLineBuffer(inStream);
-            InputStreamLineBuffer errBuff = new InputStreamLineBuffer(inErrStream);
-            Thread streamReader = new Thread(new Runnable() {
-                public void run() {
-                    // start the input reader buffer threads
-                    outBuff.start();
-                    errBuff.start();
+                    InputStreamLineBuffer outBuff = new InputStreamLineBuffer(inStream);
+                    InputStreamLineBuffer errBuff = new InputStreamLineBuffer(inErrStream);
+                    Thread streamReader = new Thread(new Runnable() {
+                        public void run() {
+                            // start the input reader buffer threads
+                            outBuff.start();
+                            errBuff.start();
 
-                    // while an input reader buffer thread is alive
-                    // or there are unconsumed data left
-                    while (outBuff.isAlive() || outBuff.hasNext() ||
-                            errBuff.isAlive() || errBuff.hasNext()) {
+                            // while an input reader buffer thread is alive
+                            // or there are unconsumed data left
+                            while (outBuff.isAlive() || outBuff.hasNext() ||
+                                    errBuff.isAlive() || errBuff.hasNext()) {
 
-                        // get the normal output if at least 50 millis have passed
-                        if (outBuff.timeElapsed() > 50)
-                            while (outBuff.hasNext()) {
-                                currentLineNo++;
+                                // get the normal output if at least 50 millis have passed
+                                if (outBuff.timeElapsed() > 50)
+                                    while (outBuff.hasNext()) {
+                                        currentLineNo.getAndIncrement();
+                                        if (MainIAInstall.installerProxy != null) {
+                                            MainIAInstall.showProgress(MainIAInstall.installerProxy, currentLineNo.get(), "Installing files...", outBuff.getNext());
+                                        } else {
+                                            System.out.println(errBuff.getNext());
+                                        }
+                                    }
+                                // get the error output if at least 50 millis have passed
+                                if (errBuff.timeElapsed() > 50)
+                                    while (errBuff.hasNext())
+                                        currentErrLineNo.getAndIncrement();
+
                                 if (MainIAInstall.installerProxy != null) {
-                                    MainIAInstall.showProgress(MainIAInstall.installerProxy, currentLineNo, "Installing files...", outBuff.getNext());
+                                    MainIAInstall.showProgress(MainIAInstall.installerProxy, currentErrLineNo.get(), "Installing files...", errBuff.getNext());
                                 } else {
-                                    System.out.println(errBuff.getNext());
+                                    System.err.println(errBuff.getNext());
+                                }
+                                // sleep a bit bofore next run
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    Thread.currentThread().interrupt();
                                 }
                             }
-                        // get the error output if at least 50 millis have passed
-                        if (errBuff.timeElapsed() > 50)
-                            while (errBuff.hasNext())
-                                currentErrLineNo++;
+                            System.out.println("Finish reading error and output stream");
+                        }
+                    });
 
-                        if (MainIAInstall.installerProxy != null) {
-                            MainIAInstall.showProgress(MainIAInstall.installerProxy, currentErrLineNo, "Installing files...", errBuff.getNext());
-                        } else {
-                            System.err.println(errBuff.getNext());
-                        }
-                        // sleep a bit bofore next run
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                        }
+                    streamReader.start();
+
+                    process.waitFor();
+
+                    //Shutdown threads and streams
+                    streamReader.interrupt();
+                    process.getInputStream().close();
+                    process.getErrorStream().close();
+
+                    streamReader.join();
+                    updateUserSpringConfig(installDir);
+                    updateCategoryXMLForUpgrade(installDir);
+                    //Loading JettyServerPort & SSL settings from server.xml for 5.3 and prior release
+                    //After that the properties are in Installation.properties, thus no need to load from that file.
+                    if(majorVersion == 5 && minorVersion < 4 ) {
+                        log.info("Updating JettyServerPortAndSSLToPreUpgradeSettings from 5.3" );
+                        updateJettyServerPortAndSSLToPreUpgradeSettings(installDir);
                     }
-                    System.out.println("Finish reading error and output stream");
+                    updateSSLProtocol(installDir);
+                    processCode = process.exitValue();
+                    if(processCode!=0){
+                        error=true;
+                    }
                 }
-            });
-            streamReader.start();
-
-            process.waitFor();
-
-            //Shutdown threads and streams
-            streamReader.interrupt();
-            process.getInputStream().close();
-            process.getErrorStream().close();
-
-            streamReader.join();
-            updateUserSpringConfig(installDir);
-            updateCategoryXMLForUpgrade(installDir);
-            updateJettyServerPortAndSSLToPreUpgradeSettings(installDir);
-            processCode = process.exitValue();
-            if(processCode!=0){
-                error=true;
             }
-
         }
 
         catch(Exception ex){
-            ex.printStackTrace();
+            log.error(ex.getMessage());
+            log.debug(ex.getMessage(), ex);
             processCode=-2;
             error=true;
         }
         return processCode;
+    }
+
+    private static Properties loadVersionProperties(Path installDir){
+        File versionFile = new File(installDir + File.separator + VERSION_PROPERTIES);
+        Properties rawVersionProperties = new Properties();
+        if (versionFile.exists())
+        {
+            try(FileInputStream versionfileStream = new FileInputStream(versionFile)){
+                rawVersionProperties.load(versionfileStream);
+                return rawVersionProperties;
+            } catch (IOException e) {
+                log.info("Loading Version.properties file failed",PSExceptionUtils.getMessageForLog(e));
+            }
+        }
+        return rawVersionProperties;
+    }
+
+    private static void updateSSLProtocol(Path installDir){
+        String installationPropertiesFilePath = installDir.toAbsolutePath().toString()+INSTALLATION_PROPS_PATH;
+        File installationPropertiesFile = new File(installationPropertiesFilePath);
+        Properties installationProperties = new Properties();
+        String newProtocol = null;
+        if (installationPropertiesFile.exists())
+        {
+            try(FileInputStream installationPropsfileStream = new FileInputStream(installationPropertiesFile)){
+                installationProperties.load(installationPropsfileStream);
+                String protocols = installationProperties.getProperty("perc.ssl.protocols");
+                if(protocols != null) {
+                    String[] protocolArray = protocols.split(",");
+                    for (String pr : protocolArray) {
+                        if (!"".equals(pr) && !"TLSv1".equals(pr) && !"TLSv1.1".equals(pr)) {
+                            if (newProtocol == null) {
+                                newProtocol = pr;
+                            } else {
+                                newProtocol += "," + pr;
+                            }
+                        }
+                    }
+                    installationProperties.setProperty("perc.ssl.protocols", protocols);
+                    try (FileOutputStream os = new FileOutputStream(installationPropertiesFile)){
+                        installationProperties.store(os,"update ssl Protocol");
+                    }
+                }
+            } catch (IOException e) {
+                log.info("Loading Installation.properties file failed",PSExceptionUtils.getMessageForLog(e));
+            }
+        }
     }
 
     public static void updateUserSpringConfig(Path installDir){
@@ -357,7 +442,8 @@ public class Main {
                     }
                 });
             }catch (Exception e) {
-                e.printStackTrace();
+                log.error(PSExceptionUtils.getMessageForLog(e));
+                log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
 
             if(!topLevelNodeStringPresent.get()){
@@ -380,52 +466,88 @@ public class Main {
     public static void updateJettyServerPortAndSSLToPreUpgradeSettings(Path installDir) throws ParserConfigurationException, IOException, SAXException {
         String oldServerXMLDir = installDir.toAbsolutePath().toString()+"/JBossServerXML_BAK/";
         File oldServerXMLFile=  new File(oldServerXMLDir+"server.xml");
-        if(oldServerXMLFile.exists()){
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        log.info("In updateJettyServerPortAndSSLToPreUpgradeSettings");
+        if(oldServerXMLFile.exists()) {
+            DocumentBuilderFactory dbf = PSSecureXMLUtils.getSecuredDocumentBuilderFactory(
+                    new PSXmlSecurityOptions(
+                            true,
+                            true,
+                            true,
+                            false,
+                            true,
+                            false
+                    )
+            );
             dbf.setValidating(false);
             DocumentBuilder db = dbf.newDocumentBuilder();
-
-            Document doc = db.parse(new FileInputStream(oldServerXMLFile));
-            NodeList nodeList = doc.getElementsByTagName("Connector");
-            for(int i=0;i<nodeList.getLength();i++){
-                Element e = (Element) nodeList.item(i);
-                boolean hasAttribute = e.hasAttribute("scheme");
-                if(hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("http")){
-                    writeInstallationPropertiesForJetty(installDir,"jetty.http.port=",e.getAttribute("port"));
-                }
-                if(hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("https")){
-                    writeInstallationPropertiesForJetty(installDir,"jetty.ssl.port=",e.getAttribute("port"));
-                    String keyStorefileAttr = e.getAttribute("keystoreFile");
-                    String keyStorefileName = "";
-                    String keyStoreFilePath = "";
-                    String keystorePassWord = e.getAttribute("keystorePass");
-                    String[] splitArr;
-                    if(keyStorefileAttr!="") {
-                        splitArr = keyStorefileAttr.split("/");
-                        keyStorefileName = splitArr[splitArr.length - 1];
-                        if(System.getProperty("file.separator").equals("/")){
-                            keyStoreFilePath="etc/"+keyStorefileName;
-                        }else{
-                            String wPath = installDir.toAbsolutePath().toString().replace("\\","\\\\");
-                            keyStoreFilePath="etc\\\\"+keyStorefileName;
-                        }
+            try (FileInputStream fis = new FileInputStream(oldServerXMLFile)) {
+                log.info("Updating connectors");
+                Document doc = db.parse(fis);
+                NodeList nodeList = doc.getElementsByTagName("Connector");
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Element e = (Element) nodeList.item(i);
+                    boolean hasAttribute = e.hasAttribute("scheme");
+                    if (hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("http")) {
+                        writeInstallationPropertiesForJetty(installDir, "jetty.http.port=", e.getAttribute("port"));
                     }
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.keyStorePath=",keyStoreFilePath);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.trustStorePath=",keyStoreFilePath);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.keyStorePassword=",keystorePassWord);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.keyManagerPassword=",keystorePassWord);
-                    writeInstallationPropertiesForJetty(installDir,"jetty.sslContext.trustStorePassword=",keystorePassWord);
-                    writeInstallationPropertiesForJetty(installDir,"perc.ssl.protocols=",e.getAttribute("protocols"));
+                    if (hasAttribute && e.getAttribute("scheme").equalsIgnoreCase("https")) {
+                        setSSLConnectorProperties(installDir,e);
+                        updateServerPropsForJettySSL(installDir);
+                    }
                 }
             }
         }
+    }
+
+    private static void setSSLConnectorProperties(Path installDir,Element e) throws IOException {
+        writeInstallationPropertiesForJetty(installDir, "jetty.ssl.port=", e.getAttribute("port"));
+        String keyStorefileAttr = e.getAttribute("keystoreFile");
+        String keyStorefileName = "";
+        String keystorePassWord = e.getAttribute("keystorePass");
+        String keyStoreFilePath = e.getAttribute("jetty.sslContext.keyStorePath");
+        String sslProtocols= e.getAttribute("protocols");
+        if(keyStoreFilePath == null || keyStoreFilePath.trim().equals("") ) {
+            String[] splitArr;
+            if (keyStorefileAttr != "") {
+                splitArr = keyStorefileAttr.split("/");
+                keyStorefileName = splitArr[splitArr.length - 1];
+                if (System.getProperty("file.separator").equals("/")) {
+                    keyStoreFilePath = "etc/" + keyStorefileName;
+                } else {
+                    String wPath = installDir.toAbsolutePath().toString().replace("\\", "\\\\");
+                    keyStoreFilePath = "etc\\\\" + keyStorefileName;
+                }
+            }
+        }
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePath=", keyStoreFilePath);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePath=", keyStoreFilePath);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyStorePassword=", keystorePassWord);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.keyManagerPassword=", keystorePassWord);
+        writeInstallationPropertiesForJetty(installDir, "jetty.sslContext.trustStorePassword=", keystorePassWord);
+        String newProtocol = null;
+        if(sslProtocols != null) {
+            String[] protocolArray = sslProtocols.split(",");
+            for (String pr : protocolArray) {
+                if (!"".equals(pr) && !"TLSv1".equals(pr) && !"TLSv1.1".equals(pr)) {
+                    if (newProtocol == null) {
+                        newProtocol = pr;
+                    } else {
+                        newProtocol += "," + pr;
+                    }
+                }
+            }
+        }
+        if(newProtocol == null){
+            newProtocol = "";
+        }
+        writeInstallationPropertiesForJetty(installDir, "perc.ssl.protocols=", newProtocol);
     }
 
     public static void writeInstallationPropertiesForJetty(Path installDir, String replaceToken, String value) throws IOException {
         AtomicReference<String> replaceString = new AtomicReference<>("");
         AtomicReference<String> replaceValue = new AtomicReference<>("");
 
-        String installationPropertiesFileDir = installDir.toAbsolutePath().toString()+"/jetty/base/etc/installation.properties";
+        String installationPropertiesFileDir = installDir.toAbsolutePath().toString()+INSTALLATION_PROPS_PATH;
 
         try (Stream<String> stream = Files.lines(Paths.get(installationPropertiesFileDir))) {
             stream.forEach(s ->{if(s.contains(replaceToken)){
@@ -434,8 +556,29 @@ public class Main {
             }
             });
         }
-        File installationPropertiesFile = new File(installDir.toAbsolutePath().toString()+"/jetty/base/etc/installation.properties");
+        File installationPropertiesFile = new File(installDir.toAbsolutePath().toString()+INSTALLATION_PROPS_PATH);
         replaceTokens(installationPropertiesFile,replaceString.get(),replaceValue.get());
     }
 
+    public static void updateServerPropsForJettySSL(Path installDir) throws IOException {
+        String serverPropertiesFilePath = installDir.toAbsolutePath().toString()+SERVER_PROPS_PATH;
+        File serverPropertiesFile = new File(serverPropertiesFilePath);
+        Properties serverProperties = new Properties();
+        String newProtocol = null;
+        if (serverPropertiesFile.exists())
+        {
+            try(FileInputStream serverfileStream = new FileInputStream(serverPropertiesFile)){
+                serverProperties.load(serverfileStream);
+                String requireHTTPS = serverProperties.getProperty("requireHTTPS");
+                if(requireHTTPS != null) {
+                    serverProperties.setProperty("requireHTTPS", "true");
+                    try (FileOutputStream os = new FileOutputStream(serverPropertiesFile)){
+                        serverProperties.store(os,"updated requiredHTTPS Flag");
+                    }
+                }
+            } catch (IOException e) {
+                log.error("Loading Server.properties file failed. Error: {}", PSExceptionUtils.getMessageForLog(e));
+            }
+        }
+    }
 }

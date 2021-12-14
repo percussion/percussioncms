@@ -27,7 +27,7 @@
   ~      Burlington, MA 01803, USA
   ~      +01-781-438-9900
   ~      support@percussion.com
-  ~      https://www.percusssion.com
+  ~      https://www.percussion.com
   ~
   ~     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
   --%>
@@ -39,7 +39,7 @@
 	String locale = PSRoleUtilities.getUserCurrentLocale();
 	String localeDisplay = PSLocaleManager.getInstance().getLocale(locale).getDisplayName();
 	String redirect = (String) request.getParameter("sys_redirecturl");
-	String rxloginurl = "../../sys_welcome/rxlogin.html?communitypage=yes";
+	String rxloginurl = "/login";
 	if (redirect != null)
 	{
 	   rxloginurl += "&sys_redirecturl=" + URLEncoder.encode(redirect, "UTF-8");

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -38,7 +38,7 @@ define(['jquery'], function($) {
      */
     var request = function(options) {
         options.dataType = options.dataType || 'json';
-        options.dataType = (options.dataType == 'undefined') ? undefined : options.dataType;
+        options.dataType = (options.dataType === 'undefined') ? undefined : options.dataType;
         
         var req = $.ajax({
             url: options.url,

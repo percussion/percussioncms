@@ -17,17 +17,18 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.utils.jsr170;
 
-import javax.jcr.Value;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
+import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 
 /**
  * Base implementation class for JCR values
@@ -86,8 +87,7 @@ public abstract class PSBaseValue<Type> implements Value, IPSJcrCacheItem
     * (non-Javadoc)
     * @see com.percussion.utils.jsr170.IPSJcrCacheItem#getSizeInBytes()
     */
-   public long getSizeInBytes()
-   {
+   public long getSizeInBytes() throws RepositoryException {
       return 8;
    } 
 }

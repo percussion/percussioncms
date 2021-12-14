@@ -69,8 +69,9 @@ public class RxServerAdminUserModel extends RxIAModel
       
       if (ms_userLogins.containsKey(ms_adminUserName))
       {
-         if (!StringUtils.equals(ms_userLogins.get(ms_adminUserName),
-               DigestUtils.shaHex(ms_adminUserPassword)))
+
+         if (!PSPasswordHandler.checkHashedPassword(
+                 ms_adminUserPassword,ms_userLogins.get(ms_adminUserName)))
          {
             validationError(RxInstallerProperties.getResources().getString(
                   "invalidAdminPassword"), null, null);
@@ -286,5 +287,5 @@ public class RxServerAdminUserModel extends RxIAModel
     */
    private static String ms_adminUserPassword = "";
    
-   private static Map<String, String> ms_userLogins = new HashMap<String,String>();
+   private static Map<String, String> ms_userLogins = new HashMap<>();
 }

@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -54,18 +54,19 @@ import com.percussion.webservices.securitydesign.GetVisibilityByCommunityRequest
 import com.percussion.webservices.securitydesign.SecurityDesignSOAPStub;
 import com.percussion.webservices.system.SwitchCommunityRequest;
 import com.percussion.webservices.system.SystemSOAPStub;
-
-import java.rmi.RemoteException;
-import java.util.Arrays;
-
 import junit.framework.AssertionFailedError;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import static org.junit.Assert.*;
+import java.rmi.RemoteException;
+import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test case for all public security web services

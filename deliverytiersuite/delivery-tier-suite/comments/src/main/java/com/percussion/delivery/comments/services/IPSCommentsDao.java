@@ -17,16 +17,16 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.comments.services;
 
 import com.percussion.delivery.comments.data.IPSComment;
+import com.percussion.delivery.comments.data.IPSComment.APPROVAL_STATE;
 import com.percussion.delivery.comments.data.PSCommentCriteria;
 import com.percussion.delivery.comments.data.PSPageInfo;
-import com.percussion.delivery.comments.data.IPSComment.APPROVAL_STATE;
 
 import java.util.Collection;
 import java.util.List;

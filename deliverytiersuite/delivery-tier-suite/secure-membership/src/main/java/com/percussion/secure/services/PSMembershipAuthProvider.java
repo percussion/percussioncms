@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -62,7 +62,7 @@ public class PSMembershipAuthProvider extends  AbstractUserDetailsAuthentication
         /**
          * Stores the current thread session id so that it can be obtained elsewhere to set the membership session cookie.
          */
-    private static final ThreadLocal<String> SESSION_ID = new ThreadLocal<String>();
+    private static final ThreadLocal<String> SESSION_ID = new ThreadLocal<>();
 
     private static Client ms_client = ClientBuilder.newClient();
     
@@ -123,7 +123,7 @@ public class PSMembershipAuthProvider extends  AbstractUserDetailsAuthentication
             throws AuthenticationException
     {
         String groups = login(username, authentication.getCredentials().toString());
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
         
         if(StringUtils.isEmpty(groups))
         	return new User(username, "", authorities);
@@ -172,6 +172,7 @@ public class PSMembershipAuthProvider extends  AbstractUserDetailsAuthentication
         {
             // log an error and then auth should fail
             logger.error("Error authenticating user " + userId, e);
+            logger.debug(e.getMessage(), e);
             throw new BadCredentialsException("");
         }
     }

@@ -17,19 +17,21 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.pagemanagement.data;
 
-import static com.percussion.share.dao.PSSerializerUtils.*;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Test;
+
+import static com.percussion.share.dao.PSSerializerUtils.getJsonFromObject;
+import static com.percussion.share.dao.PSSerializerUtils.getObjectFromJson;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class PSWidgetPropertyJsonTest
 {
@@ -65,5 +67,5 @@ public class PSWidgetPropertyJsonTest
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSWidgetPropertyJsonTest.class);
+    private static final Logger log = LogManager.getLogger(PSWidgetPropertyJsonTest.class);
 }

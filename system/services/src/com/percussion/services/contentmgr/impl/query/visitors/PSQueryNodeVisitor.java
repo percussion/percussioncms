@@ -17,13 +17,14 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.services.contentmgr.impl.query.visitors;
 
 import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode;
+import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeComparison;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeConjunction;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeFunction;
@@ -31,13 +32,11 @@ import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeIdentifier
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeLiteral;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeValue;
 import com.percussion.services.contentmgr.impl.query.nodes.PSQueryNodeVariable;
-import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 
+import javax.jcr.query.InvalidQueryException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.query.InvalidQueryException;
 
 /**
  * The base class for query visitors, used for validation and transformation.
@@ -110,7 +109,7 @@ public abstract class PSQueryNodeVisitor
       {
          throw new IllegalArgumentException("functionNode may not be null");
       }
-      List<IPSQueryNode> params = new ArrayList<IPSQueryNode>();
+      List<IPSQueryNode> params = new ArrayList<>();
       int count = functionNode.getParameterCount();
       for (int i = 0; i < count; i++)
       {

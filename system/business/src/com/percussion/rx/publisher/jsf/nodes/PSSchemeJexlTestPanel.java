@@ -17,13 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.rx.publisher.jsf.nodes;
-
-import static com.percussion.rx.publisher.jsf.nodes.PSLocationSchemeEditor.JEXL_GENERATOR;
 
 import com.percussion.cms.PSCmsException;
 import com.percussion.cms.objectstore.PSComponentSummary;
@@ -38,24 +36,25 @@ import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSServerFolderProcessor;
+import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.PSCmsObjectMgrLocator;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSBaseHttpUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.faces.model.SelectItem;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import static com.percussion.rx.publisher.jsf.nodes.PSLocationSchemeEditor.JEXL_GENERATOR;
 
 /**
  * The backing bean for the test panel of the Location Scheme Editor.
@@ -67,7 +66,7 @@ public class PSSchemeJexlTestPanel
    /**
     * The class log.
     */
-   private final static Log ms_log = LogFactory.getLog(PSSchemeJexlTestPanel.class);
+   private static final Logger ms_log = LogManager.getLogger(PSSchemeJexlTestPanel.class);
 
    /**
     * The backing bean for the site id. It may be <code>null</code> if has 
@@ -130,8 +129,7 @@ public class PSSchemeJexlTestPanel
     * Invokes the Item Browser.
     * @return the outcome of the Item Browser, never <code>null</code> or empty.
     */
-   public String browseItem()
-   {
+   public String browseItem() throws PSNotFoundException {
       m_itemBrowser = new PSItemBrowser(this);
       m_itemBrowser.setPath(getStartingFolderPath());
       
@@ -162,8 +160,7 @@ public class PSSchemeJexlTestPanel
    /**
     * @return the starting folder of the item browser.
     */
-   private String getStartingFolderPath()
-   {
+   private String getStartingFolderPath() throws PSNotFoundException {
       if (!StringUtils.isBlank(m_itemPath))
       {
          try
@@ -228,8 +225,7 @@ public class PSSchemeJexlTestPanel
    /**
     * @return the current site id, may be <code>null</code>.
     */
-   public IPSGuid getSiteId()
-   {
+   public IPSGuid getSiteId() throws PSNotFoundException {
       if (m_siteId == null)
       {
          List<PSSiteNode> allSites = getAllSites();
@@ -274,9 +270,8 @@ public class PSSchemeJexlTestPanel
    /**
     * @return all available sites, never <code>null</code>, but may be empty.
     */
-   public SelectItem[] getSites()
-   {
-      List<SelectItem> siteList = new ArrayList<SelectItem>();
+   public SelectItem[] getSites() throws PSNotFoundException {
+      List<SelectItem> siteList = new ArrayList<>();
 
       for (PSSiteNode s : getAllSites())
       {
@@ -292,8 +287,7 @@ public class PSSchemeJexlTestPanel
     * @return all site nodes, never <code>null</code>, but may be empty.
     */
    @SuppressWarnings("unchecked")
-   private List<PSSiteNode> getAllSites()
-   {
+   private List<PSSiteNode> getAllSites() throws PSNotFoundException {
       if (m_allSites != null)
          return m_allSites;
       

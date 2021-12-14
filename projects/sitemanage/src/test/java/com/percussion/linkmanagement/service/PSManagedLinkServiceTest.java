@@ -17,40 +17,11 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.linkmanagement.service;
-
-import static com.percussion.linkmanagement.service.IPSManagedLinkService.HREF_ATTR;
-import static com.percussion.linkmanagement.service.IPSManagedLinkService.PERC_LINKID_ATTR;
-import static com.percussion.linkmanagement.service.IPSManagedLinkService.PERC_MANAGED_ATTR;
-import static com.percussion.linkmanagement.service.IPSManagedLinkService.SRC_ATTR;
-import static com.percussion.linkmanagement.service.IPSManagedLinkService.TRUE_VAL;
-import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
-import static java.util.Arrays.asList;
-
-import java.io.InputStream;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.percussion.utils.testing.IntegrationTest;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
-import org.jsoup.select.Elements;
 
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest;
 import com.percussion.assetmanagement.data.PSAbstractAssetRequest.AssetType;
@@ -72,15 +43,46 @@ import com.percussion.pathmanagement.service.impl.PSPathUtils;
 import com.percussion.server.PSRequest;
 import com.percussion.services.linkmanagement.IPSManagedLinkDao;
 import com.percussion.services.linkmanagement.data.PSManagedLink;
+import com.percussion.share.dao.IPSGenericDao;
 import com.percussion.share.service.IPSIdMapper;
+import com.percussion.share.service.exception.PSDataServiceException;
+import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 import com.percussion.share.test.PSTestUtils;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.test.PSServletTestCase;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.testing.IntegrationTest;
 import com.percussion.webservices.content.IPSContentWs;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
+import org.jsoup.select.Elements;
 import org.junit.experimental.categories.Category;
+
+import java.io.InputStream;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static com.percussion.linkmanagement.service.IPSManagedLinkService.HREF_ATTR;
+import static com.percussion.linkmanagement.service.IPSManagedLinkService.PERC_LINKID_ATTR;
+import static com.percussion.linkmanagement.service.IPSManagedLinkService.PERC_MANAGED_ATTR;
+import static com.percussion.linkmanagement.service.IPSManagedLinkService.SRC_ATTR;
+import static com.percussion.linkmanagement.service.IPSManagedLinkService.TRUE_VAL;
+import static com.percussion.util.IPSHtmlParameters.SYS_OVERWRITE_PREVIEW_URL_GEN;
+import static java.util.Arrays.asList;
 
 /**
  * @author JaySeletz
@@ -393,8 +395,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         }        
     }
 
-    private String createPage(String path, String name)
-    {
+    private String createPage(String path, String name) throws PSDataServiceException {
         PSPage page = new PSPage();
 
         String pageId;
@@ -467,8 +468,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         return getItemId(site.getFolderPath() + "/index.html");
     }
 
-    private void createManagedLink(int parentId, int revision, int childId)
-    {
+    private void createManagedLink(int parentId, int revision, int childId) throws IPSGenericDao.SaveException {
         PSManagedLink link = dao.createLink(parentId, revision, childId, null);
         dao.saveLink(link);        
     }
@@ -966,8 +966,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         return asset;
     }
     
-    private PSAsset createFileAsset(int count)
-    {
+    private PSAsset createFileAsset(int count) throws PSDataServiceException {
         String fileName = "managed-link.txt";
         String file = PSTestUtils.resourceToBase64(PSManagedLinkServiceTest.class, fileName);
         
@@ -988,8 +987,7 @@ public class PSManagedLinkServiceTest extends PSServletTestCase
         return asset;
     }
 
-    private PSAsset createImgAsset()
-    {
+    private PSAsset createImgAsset() throws IPSAssetService.PSAssetServiceException, PSValidationException {
         
         String fileName = "managed-image.jpg";
         /*

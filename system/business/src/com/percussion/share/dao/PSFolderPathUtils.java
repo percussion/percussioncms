@@ -17,11 +17,20 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.share.dao;
+
+import com.percussion.security.SecureStringUtils;
+import com.percussion.share.data.IPSFolderPath;
+import com.percussion.share.data.IPSItemSummary;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -34,16 +43,6 @@ import static org.apache.commons.lang.StringUtils.substringBeforeLast;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.percussion.cms.IPSConstants;
-import com.percussion.share.data.IPSFolderPath;
-import com.percussion.share.data.IPSItemSummary;
 
 /**
  * 
@@ -78,7 +77,7 @@ public class PSFolderPathUtils
      * It is the combination of "invalid characters for the file name in 
      * Windows" and "unsafe URL characters".
      */
-    public static String INVALID_ITEM_NAME_CHARACTERS = IPSConstants.INVALID_ITEM_NAME_CHARACTERS;
+    public static String INVALID_ITEM_NAME_CHARACTERS = SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS;
     
     /**
      * Concats paths by putting the proper path separators
@@ -246,8 +245,8 @@ public class PSFolderPathUtils
      * @return a new list never <code>null</code>.
      */
     public static List<String> matchingDescedentPaths(String sitePath, Collection<String> folderPaths) {
-        if (folderPaths == null) return new ArrayList<String>();
-        List<String> paths = new ArrayList<String>();
+        if (folderPaths == null) return new ArrayList<>();
+        List<String> paths = new ArrayList<>();
         for(String folderPath : folderPaths) {
             if (isDescedentPath(folderPath, sitePath)) {
                 paths.add(folderPath);
@@ -293,7 +292,7 @@ public class PSFolderPathUtils
         if (item.getFolderPaths() == null || item.getFolderPaths().isEmpty())
             return null;
         
-        List<String> matchingPaths = new ArrayList<String>();
+        List<String> matchingPaths = new ArrayList<>();
         for (IPSFolderPath p : paths) {
             if (p == null || isBlank(p.getFolderPath())) 
                 continue;
@@ -390,7 +389,7 @@ public class PSFolderPathUtils
     
     private static String repeat(String pattern, int count) {
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (int i=0; i < count; i++)
 
         buffer.append(pattern);
@@ -410,13 +409,13 @@ public class PSFolderPathUtils
     }
     
     /**
-     * Checks if the supplied string contains any characters that are invalid for sys title specified in {@link IPSConstants#INVALID_ITEM_NAME_CHARACTERS}
+     * Checks if the supplied string contains any characters that are invalid for sys title specified in {@link SecureStringUtils#INVALID_ITEM_NAME_CHARACTERS}
      * @param testString  The string to check
      * @return true if invalid characters found
      */
     public static boolean testHasInvalidChars(String testString)
     {  
-        return StringUtils.containsAny(testString, IPSConstants.INVALID_ITEM_NAME_CHARACTERS);                
+        return StringUtils.containsAny(testString, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS);
     }
     
 

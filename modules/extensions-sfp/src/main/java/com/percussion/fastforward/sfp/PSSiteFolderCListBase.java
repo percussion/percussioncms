@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -30,6 +30,7 @@ import com.percussion.data.PSInternalRequestCallException;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.PSExtensionProcessingException;
 import com.percussion.fastforward.utils.PSRelationshipHelper;
 import com.percussion.server.IPSInternalRequest;
@@ -37,6 +38,11 @@ import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSServerFolderProcessor;
 import com.percussion.util.IPSHtmlParameters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,11 +50,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
-
-import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * The base class used for generating Rhythmyx content list XML for all content
@@ -289,7 +290,8 @@ public abstract class PSSiteFolderCListBase
       }
       catch (Exception e)
       {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          m_helper = null;
       }
    }
@@ -343,16 +345,14 @@ public abstract class PSSiteFolderCListBase
          Cache paginated publisher requests. */
 
       m_debugModeOn = (sys_publicationid == null);
-      m_log.debug("m_debugModeOn=" + m_debugModeOn);
+      log.debug("m_debugModeOn= {}", m_debugModeOn);
       if (sys_publicationid != null)
       {
          // check for a cached content list
          m_contentList = getCachedContentList(sys_publicationid);
          if (m_contentList != null)
          {
-            m_log.debug(
-               "using cached content list for publication id="
-                  + sys_publicationid);
+            log.debug("using cached content list for publication id= {} ", sys_publicationid);
 
             // clear the cached list if the last page has been requested
             if ((indexOfFirstItem + m_maxRowsPerPage) >= m_contentList.size())
@@ -362,9 +362,7 @@ public abstract class PSSiteFolderCListBase
          }
          else
          {
-            m_log.debug(
-               "did not find cached content list for publication id="
-                  + sys_publicationid);
+            log.debug("did not find cached content list for publication id= {} ", sys_publicationid);
          }
       }
 
@@ -379,13 +377,9 @@ public abstract class PSSiteFolderCListBase
       if (m_request != null && m_helper != null)
       {
          if (m_isIncremental)
-            m_log.debug(
-               "creating incremental content list with contentvalid="
-                  + m_publishableContentValidValues);
+            log.debug("creating incremental content list with contentvalid= {}", m_publishableContentValidValues);
          else
-            m_log.debug(
-               "creating full content list with contentvalid="
-                  + m_publishableContentValidValues);
+            log.debug("creating full content list with contentvalid= {}", m_publishableContentValidValues);
 
          PublishFolder folder = getPublishFolder(publishFolderPath, siteFolderPath);
          if (folder != null)
@@ -407,7 +401,7 @@ public abstract class PSSiteFolderCListBase
                   fnLst.add(fn);
                   temp = temp.substring(0, temp.lastIndexOf("/"));
                }
-               StringBuffer folderPathBuf = new StringBuffer();
+               StringBuilder folderPathBuf = new StringBuilder();
                for (int i = fnLst.size() - 1; i >= 0; i--)
                {
                   folderPathBuf.append("/");
@@ -468,15 +462,11 @@ public abstract class PSSiteFolderCListBase
 
       if (rootLocator == null)
       {
-         m_log.warn(
-            "The supplied folder path does not resolve to a folder: "
-               + siteFolderPath);
+         log.warn("The supplied folder path does not resolve to a folder: {}", siteFolderPath);
       }
       else if (folderLocator == null)
       {
-         m_log.warn(
-            "The supplied folder path does not resolve to a folder: "
-               + publishFolder);
+         log.warn("The supplied folder path does not resolve to a folder: {}", publishFolder);
       }
       // publish the while site
       else if (folderLocator.getId() == rootLocator.getId())
@@ -488,10 +478,7 @@ public abstract class PSSiteFolderCListBase
       {
          if (! m_helper.isFolderDescendent(rootLocator, folderLocator))
          {
-            m_log.warn(
-                  "The supplied folder path, '" + publishFolder +
-                  "', is not a decendent of the site folder path, '" +
-                  siteFolderPath + "'");
+            log.warn("The supplied folder path, '{}', is not a decendent of the site folder path, '{}'", publishFolder, siteFolderPath);
          }
          else
          {
@@ -642,7 +629,7 @@ public abstract class PSSiteFolderCListBase
       String sys_publicationid,
       PSContentList list)
    {
-      m_log.debug("caching content list for publication id=" + sys_publicationid);
+      log.debug("caching content list for publication id=" + sys_publicationid);
       m_request.setSessionPrivateObject(
          CONTENT_LIST_CACHE_KEY + sys_publicationid,
          list);
@@ -650,9 +637,7 @@ public abstract class PSSiteFolderCListBase
 
    private void clearCachedContentList(String sys_publicationid)
    {
-      m_log.debug(
-         "clearing cached content list for publication id="
-            + sys_publicationid);
+      log.debug("clearing cached content list for publication id={}", sys_publicationid);
       m_request.setSessionPrivateObject(
          CONTENT_LIST_CACHE_KEY + sys_publicationid,
          null);
@@ -674,7 +659,7 @@ public abstract class PSSiteFolderCListBase
       if (m_publishableContentValidValues.indexOf("'") >= 0)
          return m_publishableContentValidValues; // no need to convert
 
-      StringBuffer values = new StringBuffer();
+      StringBuilder values = new StringBuilder();
 
       StringTokenizer tokenizer = new StringTokenizer(
             m_publishableContentValidValues, ",");
@@ -736,8 +721,7 @@ public abstract class PSSiteFolderCListBase
             false);
       if (iRequest == null)
       {
-         m_log.error("Cannot find query resource: " +
-                  LOOKUP_FOLDER_PUBLISH_FLAGS);
+         log.error("Cannot find query resource: {}", LOOKUP_FOLDER_PUBLISH_FLAGS);
       }
       else
       {
@@ -762,11 +746,9 @@ public abstract class PSSiteFolderCListBase
          }
          catch (PSInternalRequestCallException e)
          {
-            m_log.error(
-               "ERROR: while making internal request to "
-                  + LOOKUP_FOLDER_PUBLISH_FLAGS);
-            m_log.error(getClass().getName(), e);
-
+            log.error("ERROR: while making internal request to {}", LOOKUP_FOLDER_PUBLISH_FLAGS);
+            log.error(getClass().getName(), e);
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
          }
       }
       return flags;
@@ -813,10 +795,7 @@ public abstract class PSSiteFolderCListBase
     */
    protected String m_contentResourceName;
 
-   /**
-    * Reference to Log4j singleton object used to log any errors or debug info.
-    */
-   protected Logger m_log = Logger.getLogger(getClass());
+   protected final Logger log = LogManager.getLogger(PSSiteFolderCListBase.class);
 
    /**
     * Caches the sys_casGeneratePubLocation UDF used to build pub locations

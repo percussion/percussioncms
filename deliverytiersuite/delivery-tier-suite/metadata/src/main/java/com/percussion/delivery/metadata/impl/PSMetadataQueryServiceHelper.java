@@ -17,20 +17,19 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
 package com.percussion.delivery.metadata.impl;
 
-import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.IPSMetadataProperty.VALUETYPE;
+import com.percussion.delivery.metadata.IPSMetadataQueryService;
 import com.percussion.delivery.metadata.data.impl.PSCriteriaElement;
 import com.percussion.delivery.metadata.utils.PSHashCalculator;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -68,7 +67,7 @@ public abstract class PSMetadataQueryServiceHelper
     /**
      * 2011-01-21T09:36:05
      */
-    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static FastDateFormat dateFormat = FastDateFormat.getInstance("yyyy-MM-dd'T'HH:mm:ss");
 
     public static VALUETYPE getDatatype(String name, PSPropertyDatatypeMappings datatypeMappings)
     {
@@ -82,6 +81,7 @@ public abstract class PSMetadataQueryServiceHelper
           return datatypeMappings.getDatatype(nameWithOutNamespace);
     }
 
+    @SuppressWarnings("unchecked")
     public static List parseToList(String key, String val, PSPropertyDatatypeMappings datatypeMappings, PSHashCalculator hashCalc) throws ParseException
     {
        VALUETYPE type = datatypeMappings.getDatatype(key);

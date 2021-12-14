@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -61,7 +61,7 @@
         onDialogCloseCallback = _onDialogCloseCallback;
         onSuccessCallback = _onSuccessCallback;
         onErrorCallback = _onErrorCallback;
-        var activateButton = percJQuery(`<a href="#" class="perc-lmg-activate" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</a>`).click(function(event)
+        var activateButton = percJQuery(`<a href="#" class="perc-lmg-activate" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</a>`).on("click",function(event)
         {
             event.preventDefault();
             _createActivationDialog(_onDialogCloseCallback, _onSuccessCallback, _onErrorCallback, false);
@@ -78,7 +78,7 @@
      */
     function createEditButton(_onDialogCloseCallback, _onSuccessCallback, _onErrorCallback)
     {
-        var editButton = percJQuery(`<a class="perc-lmg-edit" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Edit")}" href="#">${I18N.message("perc.ui.gadgets.licenseMonitor@Edit")}</a>`).click(function(event)
+        var editButton = percJQuery(`<a class="perc-lmg-edit" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Edit")}" href="#">${I18N.message("perc.ui.gadgets.licenseMonitor@Edit")}</a>`).on("click",function(event)
         {
             event.preventDefault();
             _createActivationDialog(_onDialogCloseCallback, _onSuccessCallback, _onErrorCallback, true);
@@ -95,7 +95,7 @@
      */
     function createModuleLicenseEditButton(onDialogCloseCallback, cloudInfo, combinedInfo)
     {
-        var editButton = percJQuery(`<a class="perc-lmg-edit" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}" href="#">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</a>`).click(function(event)
+        var editButton = percJQuery(`<a class="perc-lmg-edit" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}" href="#">${I18N.message("perc.ui.gadgets.licenseMonitor@Activate")}</a>`).on("click",function(event)
         {
             event.preventDefault();
             _createModuleLicenseActivationDialog(onDialogCloseCallback, cloudInfo, combinedInfo);
@@ -166,7 +166,7 @@
         // Bind the submit event of the form inside the dialog to the same callback used in the
         // Activate button of the dialog
         activationForm.submit(submitActivationCode);
-        percJQuery('.perc-lmg-activate').click(function(event) {
+        percJQuery('.perc-lmg-activate').on("click",function(event) {
             activationForm.trigger('submit');
         });
         return false;
@@ -178,6 +178,7 @@
         var infoText = I18N.message("perc.ui.gadgets.licenseMonitor@Module License Activation Dialog");
         // Set the basic markup for the dialog and assign it to the module's dialog variable
         var dialogContent;
+        var content;
         dialogContent =  '<div>';
         dialogContent +=     '<div class="perc-lmg-edit-panels-container">';
         dialogContent +=        '<div class="perc-lmg-edit-activation-panel">';
@@ -189,10 +190,9 @@
         dialogContent +=        '</div>';
         dialogContent +=     '</div>';
         dialogContent += '</div>';
-        dialogContent = $(dialogContent);
-        dialogContent.find("#perc-module-license-display-container").append($.perc_module_license_manager.generateLicenseView(combinedInfo));
-        dialogContent.find("#perc-module-license-activate-container").append($.perc_module_license_manager.generateLicenseActivatorView(cloudInfo.licenseTypes, activationSuccessCallback));
-
+        content = percJQuery(dialogContent);
+        content.find("#perc-module-license-display-container").append($.perc_module_license_manager.generateLicenseView(combinedInfo));
+        content.find("#perc-module-license-activate-container").append($.perc_module_license_manager.generateLicenseActivatorView(cloudInfo.licenseTypes, activationSuccessCallback));
         buttons = {
             [I18N.message("perc.ui.gadgets.licenseMonitor@Close")] : {
                 'id': 'perc-lmg-activation-dialog-cancel',
@@ -204,7 +204,7 @@
         };
         var dlgTitle = I18N.message("perc.ui.gadgets.licenseMonitor@Edit Module Licenses");
 
-        dialog = percJQuery(dialogContent).perc_dialog({
+        dialog = content.perc_dialog({
             'id' : constants.DIALOG_MODULE_ID,
             'width': 343,
             'resizable': false,
@@ -222,7 +222,7 @@
                 }
             }
             combinedInfo[i] = newCombinedInfo;
-            dialogContent.find("#perc-module-license-display-container").empty().append($.perc_module_license_manager.generateLicenseView(combinedInfo));
+            content.find("#perc-module-license-display-container").empty().append($.perc_module_license_manager.generateLicenseView(combinedInfo));
         }
     }
     /**
@@ -291,7 +291,7 @@
         event.preventDefault();
 
         // Retrieve the activation code and encode it, because we are appending it to the URL
-        activationCode = $.trim(activationForm.find('#perc-lmg-activation-code').val());
+        activationCode = activationForm.find('#perc-lmg-activation-code').val().trim();
         activationCode = encodeURIComponent(activationCode);
         
         // Hide error message and check that the activationCode field is not empty
@@ -362,7 +362,7 @@
 
         resolveDialogMessage = I18N.message("perc.ui.gadgets.licenseMonitor@Resolve Dialog");
 
-        resolveButton = percJQuery(`<a class="perc-lmg-button perc-lmg-resolve hidden" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Resolve")}" href="#">${I18N.message("perc.ui.gadgets.licenseMonitor@Resolve")}</a>`).click(function(event)
+        resolveButton = percJQuery(`<a class="perc-lmg-button perc-lmg-resolve hidden" alt="${I18N.message("perc.ui.gadgets.licenseMonitor@Resolve")}" href="#">${I18N.message("perc.ui.gadgets.licenseMonitor@Resolve")}</a>`).on("click",function(event)
         {
             event.preventDefault();
             percJQuery.perc_utils.alert_dialog({

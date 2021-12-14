@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -202,7 +202,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                     return pathItem && (pathItem.type === 'percPage' || pathItem.type === 'percImageAsset' || pathItem.type === 'percFileAsset')?null:'Please select a page, file, or an image';
                 };
 
-                jQuery('[aria-label=\'Insert link\']').find('.mce-btn.mce-open').click(function(){
+                jQuery('[aria-label=\'Insert link\']').find('.mce-btn.mce-open').on("click", function(){
                     var pathSelectionOptions = {
                         okCallback: updateLinkData,
                         dialogTitle: I18N.message("perc.ui.widget.tinymce@Please select"),
@@ -326,7 +326,7 @@ tinymce.PluginManager.add('percadvlink', function(editor) {
                 cm1LinkData.pathItem = pathItem;
                 win.find('#href').value(renderLink.url);
                 win.find('#title').value(renderLink.title);
-                if(topFrJQ.isFunction(callback)) {
+                if(typeof callback === "function") {
                     callback(renderLink.url, renderLink.title);
                 }
             });

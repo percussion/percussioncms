@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -346,7 +346,7 @@
 	        }
 	      
             var usernamePattern = /^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){2,18}[a-zA-Z0-9]$/;
-	        if(username!="" && !usernamePattern.test(username)){
+	        if(state == STATE_ADDING_NEW_USER && username!="" && !usernamePattern.test(username)){
                 view.alertDialog(I18N.message( "perc.ui.user.controller@Error" ), I18N.message( "perc.ui.user.controller@User name invalid pattern" ));
                 return;
             }

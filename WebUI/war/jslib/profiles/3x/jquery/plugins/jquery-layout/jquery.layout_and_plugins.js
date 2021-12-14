@@ -43,13 +43,13 @@
              * @param {Array.<string>} a_fn
              */
             , runPluginCallbacks = function (Instance, a_fn) {
-                if ($.isArray(a_fn))
+                if (Array.isArray(a_fn))
                     for (var i = 0, c = a_fn.length; i < c; i++) {
                         var fn = a_fn[i];
                         try {
                             if (isStr(fn)) // 'name' of a function
                                 fn = eval(fn);
-                            if ($.isFunction(fn))
+                            if (typeof fn === "function")
                                 g(fn)(Instance);
                         } catch (ex) {
                         }
@@ -1188,7 +1188,7 @@
                                     fn = eval(fn);
                             }
                             // execute the callback, if exists
-                            if ($.isFunction(fn)) {
+                            if (typeof fn === "function") {
                                 if (args.length)
                                     retVal = g(fn)(args[1]); // pass the argument parsed from 'list'
                                 else if (hasPane)
@@ -1198,7 +1198,7 @@
                                     retVal = g(fn)(Instance, s, o, lName);
                             }
                         } catch (ex) {
-                            _log(options.errors.callbackError.replace(/EVENT/, $.trim((pane || "") + " " + lng)), false);
+                            _log(options.errors.callbackError.replace(/EVENT/, ((pane || "").trim() + " " + lng)), false);
                             if ($.type(ex) === "string" && string.length)
                                 _log("Exception:  " + ex, false);
                         }
@@ -1522,7 +1522,7 @@
                     if (type == "resizer" && $El.hasClass(root + _slide))
                         classes += (root + _slide + _hover) + (root + _pane + _slide + _hover);
 
-                    return $.trim(classes);
+                    return classes.trim();
                 }
                 , addHover = function (evt, el) {
                     var $E = $(el || this);
@@ -1730,7 +1730,7 @@
                     ;
                     if ($.isPlainObject(cos))
                         cos = [cos]; // convert a hash to a 1-elem array
-                    else if (!cos || !$.isArray(cos))
+                    else if (!cos || !Array.isArray(cos))
                         return;
 
                     $.each(cos, function (idx, co) {
@@ -2459,7 +2459,12 @@
 
                     // check option for auto-handling of pop-ups & drop-downs
                     if (o.showOverflowOnHover)
-                        $P.hover(allowOverflow, resetOverflow);
+                        $P.on("mouseenter", function(e){
+                            allowOverflow(e);
+                        })
+                            .on("mouseleave",function(e){
+                                resetOverflow(e);
+                            });
 
                     // if manually adding a pane AFTER layout initialization, then...
                     if (state.initialized) {
@@ -2595,16 +2600,31 @@
                             .css(_c.resizers.cssReq).css("zIndex", options.zIndexes.resizer_normal)
                             .css(o.applyDemoStyles ? _c.resizers.cssDemo : {}) // add demo styles
                             .addClass(rClass + " " + rClass + _pane)
-                            .hover(addHover, removeHover) // ALWAYS add hover-classes, even if resizing is not enabled - handle with CSS instead
-                            .hover(onResizerEnter, onResizerLeave) // ALWAYS NEED resizer.mouseleave to balance toggler.mouseenter
-                            .mousedown($.layout.disableTextSelection) // prevent text-selection OUTSIDE resizer
-                            .mouseup($.layout.enableTextSelection)  // not really necessary, but just in case
+                            .on("mouseenter",function(e){
+                                addHover(e);
+                            }).on("mouseleave", function(e){
+                                removeHover(e);
+                        }) // ALWAYS add hover-classes, even if resizing is not enabled - handle with CSS instead
+                            .on("mouseenter",function(e){
+                                onResizerEnter(e);
+                            }).on("mouseleave", function(e){
+                                onResizerLeave(e);
+                        }) // ALWAYS NEED resizer.mouseleave to balance toggler.mouseenter
+                            .on("mousedown",function(e){
+                                $.layout.disableTextSelection(e);
+                            }) // prevent text-selection OUTSIDE resizer
+                            .on("mouseup",function(e){
+                                $.layout.enableTextSelection(e);
+                            })  // not really necessary, but just in case
                             .appendTo($N) // append DIV to container
                         ;
                         if ($.fn.disableSelection)
                             $R.disableSelection(); // prevent text-selection INSIDE resizer
                         if (o.resizerDblClickToggle)
-                            $R.on("dblclick." + sID, toggle);
+                            $R.on("dblclick." + sID,
+                                function(e){
+                                    toggle(e);
+                                });
 
                         if ($T) {
                             $T // if paneSelector is an ID, then create a matching ID for the resizer, eg: "#paneLeft" => "#paneLeft-toggler"
@@ -2618,8 +2638,14 @@
                                 .css(_c.togglers.cssReq) // add base/required styles
                                 .css(o.applyDemoStyles ? _c.togglers.cssDemo : {}) // add demo styles
                                 .addClass(tClass + " " + tClass + _pane)
-                                .hover(addHover, removeHover) // ALWAYS add hover-classes, even if toggling is not enabled - handle with CSS instead
-                                .on("mouseenter", onResizerEnter) // NEED toggler.mouseenter because mouseenter MAY NOT fire on resizer
+                                .on("mouseenter",function(e) {
+                                    addHover(e);
+                                }).on("mouseleave", function(e) {
+                                removeHover(e);
+                            }) // ALWAYS add hover-classes, even if toggling is not enabled - handle with CSS instead
+                            .on("mouseenter", function(e){
+                                onResizerEnter(e);
+                            }) // NEED toggler.mouseenter because mouseenter MAY NOT fire on resizer
                                 .appendTo($R) // append SPAN to resizer DIV
                             ;
                             // ADD INNER-SPANS TO TOGGLER
@@ -5485,7 +5511,7 @@ jQuery.cookie = function (name, value, options) {
                 , pair, data, i
             ;
             for (i = 0; pair = cs[i]; i++) {
-                data = $.trim(pair).split('='); // name=value => [ name, value ]
+                data = pair.trim().split('='); // name=value => [ name, value ]
                 if (data[0] == name) // found the layout cookie
                     return decodeURIComponent(data[1]);
             }
@@ -5777,7 +5803,7 @@ jQuery.cookie = function (name, value, options) {
                 , pair, pane, key, val
                 , ps, pC, child, array, count, branch
             ;
-            if ($.isArray(keys))
+            if (Array.isArray(keys))
                 keys = keys.join(",");
             // convert keys to an array and change delimiters from '__' to '.'
             keys = keys.replace(/__/g, ".").split(',');
@@ -5831,7 +5857,7 @@ jQuery.cookie = function (name, value, options) {
 
             function stringify(h) {
                 var D = [], i = 0, k, v, t // k = key, v = value
-                    , a = $.isArray(h)
+                    , a = Array.isArray(h)
                 ;
                 for (k in h) {
                     v = h[k];
@@ -5852,7 +5878,7 @@ jQuery.cookie = function (name, value, options) {
          */
         , decodeJSON: function (str) {
             try {
-                return $.parseJSON ? $.parseJSON(str) : window["eval"]("(" + str + ")") || {};
+                return $.JSON.parse ? $.JSON.parse(str) : window["eval"]("(" + str + ")") || {};
             } catch (e) {
                 return {};
             }
@@ -5911,7 +5937,7 @@ jQuery.cookie = function (name, value, options) {
             } else if (sm.enabled) {
                 // update the options from cookie or callback
                 // if options is a function, call it to get stateData
-                if ($.isFunction(sm.autoLoad)) {
+                if (typeof sm.autoLoad === "function") {
                     var d = {};
                     try {
                         d = sm.autoLoad(inst, inst.state, inst.options, inst.options.name || ''); // try to get data from fn
@@ -5928,7 +5954,7 @@ jQuery.cookie = function (name, value, options) {
             var sm = inst.options.stateManagement;
             if (sm.enabled && sm.autoSave) {
                 // if options is a function, call it to save the stateData
-                if ($.isFunction(sm.autoSave)) {
+                if (typeof sm.autoSave === "function") {
                     try {
                         sm.autoSave(inst, inst.state, inst.options, inst.options.name || ''); // try to get data from fn
                     } catch (e) {
@@ -6458,7 +6484,7 @@ jQuery.cookie = function (name, value, options) {
         // find all data tables inside this pane and resize them
         $($.fn.dataTable.fnTables(true)).each(function (i, table) {
             if ($.contains(oPane, table)) {
-                $(table).dataTable().fnAdjustColumnSizing();
+                $(table).dataTable().columns().adjust();
             }
         });
     };

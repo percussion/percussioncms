@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -27,13 +27,14 @@ import com.percussion.share.dao.IPSFolderHelper;
 import com.percussion.share.dao.IPSFolderHelper.PathTarget;
 import com.percussion.share.data.IPSFolderPath;
 import com.percussion.share.data.IPSItemSummary;
+import com.percussion.share.service.IPSDataService;
 import com.percussion.sitemanage.service.IPSSiteSectionMetaDataService;
 import com.percussion.webservices.content.IPSContentWs;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -43,7 +44,11 @@ import java.util.List;
 
 import static java.text.MessageFormat.format;
 import static java.util.Collections.emptyList;
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.contains;
+import static org.apache.commons.lang.StringUtils.endsWith;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.removeEnd;
+import static org.apache.commons.lang.StringUtils.startsWith;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notNull;
 
@@ -111,7 +116,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         String sectionPath = section.getFolderPath();
         validateSection(sectionPath);
         String systemSectionPath = folderHelper.concatPath(sectionPath, SECTION_SYSTEM_FOLDER_NAME);
-        List<String> catPaths = new ArrayList<String>();
+        List<String> catPaths = new ArrayList<>();
         try
         {
             catPaths = folderHelper.findChildren(systemSectionPath);
@@ -120,7 +125,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         {
             log.error("failed to find children for path: " + systemSectionPath);
         }
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         for (String c : catPaths)
         {
             paths.add(folderHelper.name(c));
@@ -129,8 +134,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
         return paths;
     }
 
-    public List<IPSItemSummary> findItems(IPSFolderPath section, String category)
-    {
+    public List<IPSItemSummary> findItems(IPSFolderPath section, String category) throws IPSDataService.DataServiceNotFoundException {
         String path = sectionToPath(section, category);
         PathTarget p = folderHelper.pathTarget(path);
         if ( p.isToNothing())
@@ -177,7 +181,7 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
                         itemId, category));
             }
 
-            List<IPSFolderPath> sections = new ArrayList<IPSFolderPath>();
+            List<IPSFolderPath> sections = new ArrayList<>();
             for (String p : paths)
             {
                 if (endsWith(p, matchPath))
@@ -276,6 +280,6 @@ public class PSSiteSectionMetaDataService implements IPSSiteSectionMetaDataServi
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(PSSiteSectionMetaDataService.class);
+    private static final Logger log = LogManager.getLogger(PSSiteSectionMetaDataService.class);
 
 }

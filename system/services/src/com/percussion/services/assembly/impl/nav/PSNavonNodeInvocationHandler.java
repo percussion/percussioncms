@@ -17,7 +17,7 @@
  *      Burlington, MA 01803, USA
  *      +01-781-438-9900
  *      support@percussion.com
- *      https://www.percusssion.com
+ *      https://www.percussion.com
  *
  *     You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>
  */
@@ -37,7 +37,14 @@ import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jsr170.PSNodeIterator;
 import com.percussion.utils.jsr170.PSProperty;
 import com.percussion.utils.jsr170.PSPropertyIterator;
+import org.apache.commons.collections.MultiHashMap;
+import org.apache.commons.collections.MultiMap;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
+import javax.jcr.Node;
+import javax.jcr.Property;
+import javax.jcr.RepositoryException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -46,15 +53,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.jcr.AccessDeniedException;
-import javax.jcr.ItemNotFoundException;
-import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.RepositoryException;
-
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
 
 /**
  * This invocation handler wraps the behavior of the content node, augmenting it
@@ -218,7 +216,7 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
                (PSPropertyIterator) method.invoke(m_containedNode, args);
 
             // Add nav properties
-            Map<String,Property> map = new HashMap<String,Property>(iter.getMap());
+            Map<String,Property> map = new HashMap<>(iter.getMap());
             for(String prop : NAV_PROPERTIES)
             {
                Property p = getNavProperty((Node) proxy, prop);
@@ -406,7 +404,7 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
    private List<Node> getAncestors() throws ItemNotFoundException,
          AccessDeniedException, RepositoryException
    {
-      List<Node> ancesters = new ArrayList<Node>();
+      List<Node> ancesters = new ArrayList<>();
       Node node = m_containedNode;
       while (node.getParent() != null)
       {
