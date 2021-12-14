@@ -27,7 +27,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.0.3-SNAPSHOT</version>
+        <version>8.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -164,7 +164,7 @@
                                 <groupId>com.percussion</groupId>
                                 <artifactId>perc-toolkit</artifactId>
                                 <version>${project.version}</version>
-                                <type>zip</type>
+                                <type>jar</type>
                                 <outputDirectory>${packages-directory}</outputDirectory>
                             </artifactItem>
 
@@ -176,6 +176,7 @@
                                 <overWrite>true</overWrite>
                                 <outputDirectory>${extensions-directory}/Exits</outputDirectory>
                             </artifactItem>
+
                             <artifactItem>
                                 <groupId>com.percussion</groupId>
                                 <artifactId>extensions-nav</artifactId>
